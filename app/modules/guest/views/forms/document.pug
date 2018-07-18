@@ -1,0 +1,56 @@
+extends ../../../../templates/masterguests
+block main
+	.profile-page
+		//- Heading Page
+		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/docu1.jpg');")
+			.container
+				.row
+					.col-md-9.main-header__textbox
+						h1.font-italic Document Request
+		#raised-section.main.main-raised
+			.container
+				.row
+					.col-md-12
+						hr.mt-5.mx-5
+				.row
+					.col-md-12.my-3
+						h3.text-center.text-uppercase.guidelines--text Request Form
+				.row
+					.col-md-8.my-auto.mx-auto
+						form(action="/guest/document/form" enctype="multipart/form-data" method='post')
+							.form-group
+								label.label-control Document
+									select.selectpicker.form-control(type="text" name='documenttype')
+										option Baptismal Certificate
+										option Confirmation Certificate
+										option First Communion Certificate
+							.form-group.form-file-upload.form-file-multiple
+								.fileinput.fileinput-new.text-center(data-provides='fileinput')
+									.fileinput-new.thumbnail.img-no-padding(style='max-width: 400px; max-height: 250px;')
+										img(src='/img/image_holder.png', alt='...')
+									.fileinput-preview.fileinput-exists.thumbnail.img-no-padding(style='max-width: 400px; max-height: 250px;')
+									div
+										span.btn.btn-default.btn-file.btn-round
+											span.fileinput-new 
+												i.fa.fa-cloud-upload
+											span.fileinput-exists Change
+											input(type='file', name='image' accept='image/*' required)
+										a.btn.btn-link.btn-danger.fileinput-exists.btn-round(href='javascript:void(0)', data-dismiss='fileinput')
+											i.fa.fa-times
+											|  Remove
+							.row
+								.col-md-12.my-3
+									label.label-control Person in the Certificate:
+							.row
+								.col-md-6.my-3
+									input#lastName.form-control(type='text' name='lastname' placeholder='Last name')
+								.col-md-6.my-3
+									input#firstName.form-control(type='text' name='firstname' placeholder='First name')
+							.row
+								.col-md-12.my-3
+									.form-group
+										label(for='exampleFormControlTextarea1') Purpose:
+										textarea#exampleFormControlTextarea1.form-control(rows='3' name= 'purpose')
+							.row
+								.col-md-12.my-5.text-center
+									button.btn.btn-primary(type="submit") Submit

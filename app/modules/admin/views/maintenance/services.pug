@@ -1,0 +1,200 @@
+extends ../../../../templates/masteradmin1
+block addcss
+block prepend main
+	#wrap
+	//- #calendar
+	div(style='clear:both')
+	.content
+		.container-fluid
+			.row
+				.col-lg-12.col-md-12
+						.card
+								.card-header.card-header-primary
+										h4.card-title Sacramental Services
+								.card-body.table-responsive
+										table.table.table-hover
+												thead.text-primary
+														th ID
+														th Name
+														
+														th.text-center(style=" width:120px") Actions
+												tbody
+														each sacrament in sacraments
+															tr
+																td=sacrament.int_eventID
+																td=sacrament.var_eventname
+																td.td-actions.text-center
+																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${sacrament.int_eventID}`)
+																		i.material-icons close
+																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${sacrament.int_eventID}`)
+																		i.material-icons edit
+						.card
+								.card-header.card-header-primary
+										h4.card-title Special Services
+								.card-body.table-responsive
+										table.table.table-hover
+												thead.text-primary
+														th ID
+														th Name
+														
+														th.text-center(style=" width:120px") Actions
+												tbody
+														each service in services
+															tr
+																td=service.int_eventID
+																td=service.var_eventname
+																td.td-actions.text-center
+																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${service.int_eventID}`)
+																		i.material-icons close
+																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${service.int_eventID}`)
+																		i.material-icons edit
+								.card-footer.text-right
+									.col-md-3
+									.col-md-6.text-right
+										<nav aria-label="Page navigation example">
+											<ul class="pagination justify-content-center">
+												<li class="page-item">
+													<a class="page-link" href="#" tabindex="-1">Previous</a>
+												</li>
+												<li class="page-item"><a class="page-link" href="#">1</a></li>
+												<li class="page-item">
+													<a class="page-link" href="#">Next</a>
+												</li>
+											</ul>
+										</nav>
+									.col-md-3.text-right
+										a(href="#" data-toggle="modal" data-target="#conditionModal") Add Service
+			
+	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
+		.modal-dialog.modal-notify.modal-success(role='document')
+			.modal-content
+				.modal-header
+					p.heading.lead Add Facility
+					button.close(type='button' data-dismiss='modal' aria-label='Close')
+						span.white-text(aria-hidden='true') &times;
+				.modal-body
+					form.form(action="/admin/maintenance-services/add" method="post")
+						.form-group
+							label.label-control Event Name
+							input.form-control(type='text' name='eventname')
+						.form-group
+							label.label-control Event Description
+							input.form-control(type='text' name='eventdesc')
+						.form-group
+							label.label-control Service Type
+								select(type="text" name='event_type')
+									option(value="Sacrament") Sacrament
+									option(Value="Special Service") Special Service
+						.col-md-6.my-3
+						.row
+							.col-md-12.text-center.my-3
+								button.btn.btn-primary(type='submit') Add
+	#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
+		.modal-dialog.modal-notify.modal-success(role='document')
+			.modal-content
+				.modal-header
+					p.heading.lead Edit Event
+					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
+						span.white-text(aria-hidden='true') &times;
+				.modal-body#updateAppend                
+					.col-md-12.text-center.my-3
+				.modal-footer
+					button.btn.btn-primary#updateSubmitButton(type="button") Update
+	#modal-warning1.modal.modal-warning.fade
+			.modal-dialog
+			.modal-content
+				.modal-header
+				button.close(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true') ×
+				h4.modal-title Warning
+				.modal-body
+				p Are you sure you?
+				.modal-footer
+					button.btn.btn-outline.pull-left#cancelButton1(type='button', data-dismiss='modal') No
+					button.btn.btn-outline.pull-right#deleteSubmit1 Yes
+block addjs
+	script(src='/js/forIndex.js')
+	script.
+		$(document).ready(function() {
+		$('.deleteButton').click(function(){
+			var idNow = $(this).val();
+			console.log(idNow)
+			$('#modal-warning1').modal('show');
+			$('#deleteSubmit1').css('display', 'block');
+			$('#cancelButton1').css('display', 'block');
+				$('#deleteSubmit1').click(function(){
+					$.post('/admin/maintenance-services/delete',{id1:idNow})
+						.done(data =>{
+						if(data){
+							swal({
+							title:'Success', 
+							text:'service deleted', 
+							icon:'success'
+							}).then(function(){
+								location.reload();
+							})     
+							$('#modal-warning1').modal('hide');
+						}
+
+				});                        
+			});
+		});
+
+		$('.updateButton').click(function(){
+			var idNow = $(this).val();
+			console.log(idNow)
+				$.post('/admin/maintenance-services/query',{id1:idNow})
+			.done(data=>{
+				$('#updateAppend').append(`
+				<div class="form-group">
+					<label class="label-control">Service Name</label>
+					<input type="text"  id="eventname" value="${data.var_eventname}" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label class="label-control">Service Description</label>
+					<textarea id="eventdesc" class="form-control">${data.var_eventdesc}</textarea>
+				</div>
+				<div class="form-group">
+					<label class="label-control">Service Type</label>
+					<select id="eventtype" value="${data.var_type}" class="form-control">
+						<option value="Special Service">Special Service</option>
+						<option value="Sacrament">Sacraments</option>
+					</select>
+				</div>
+				`)
+				$('#updateModal').modal('show')
+				$('#cancelButton').click(function(){
+					$('#updateAppend').empty();
+				})
+				$(document).keyup(function(e) {
+				if (e.keyCode === 27) 
+					{
+					$('#updateModal').modal('hide');
+					$('#updateAppend').empty();
+					};
+				});
+				$('#updateSubmitButton').click(function(){
+					$.post('/admin/maintenance-services/edit',{
+					eventname:$('#eventname').val(),
+					eventdesc:$('#eventdesc').val(),
+					eventtype:$('#eventtype').val(),
+					id1:idNow
+					})
+					.done(data=>{
+						if(data){
+							swal({
+							title:'Success', 
+							text:'service updated', 
+							icon:'success'
+							}).then(function(){
+								location.reload();
+							})
+							$('#updateModal').modal('hide');
+							$('#updateAppend').empty();
+						}
+					})
+				})
+			})
+
+		})
+		});

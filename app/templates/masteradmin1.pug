@@ -1,0 +1,180 @@
+extends ./baseadmin1
+block body
+	#loader-wrapper
+		#loader
+		.loader-section.section-left
+		.loader-section.section-right
+	.wrapper
+		.sidebar(data-color='brown', data-background-color='white', data-image='/img/sidebar-1.jpg')
+			//
+				Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+				Tip 2: you can also add an image using data-image tag
+			.logo
+				a.simple-text.logo-normal(href='#')
+					| INLPP
+			.sidebar-wrapper
+				ul.nav
+					li.nav-item.active
+						a.nav-link(href='/admin')
+							i.material-icons dashboard
+							p Dashboard
+					li.nav-item
+						a.nav-link(data-toggle="collapse" href="#maintenance")
+							i.material-icons developer_board
+							p Maintenace
+								b.caret
+					.collapse#maintenance
+						
+						li.nav-item.ml-2
+							a.nav-link(href='/admin/maintenance-events')
+								i.material-icons event
+								p Events
+						li.nav-item.ml-2
+							a.nav-link(href='/admin/maintenance-facilities')
+								i.material-icons location_city
+								p Facilities
+						li.nav-item.ml-2
+							a.nav-link(href='/admin/maintenance-ministries')
+								i.material-icons local_pharmacy
+								p Ministries
+						li.nav-item.ml-2
+							a.nav-link(data-toggle="collapse" href="#requirements")
+								i.material-icons layers
+								p Requirements
+									b.caret
+						.collapse#requirements
+							li.nav-item.ml-3
+								a.nav-link(href='/admin/maintenance-wedrequirements')
+									i.material-icons insert_invitation
+									p Wedding
+							li.nav-item.ml-3
+								a.nav-link(href='/admin/maintenance-nonwedrequirements')
+									i.material-icons insert_invitation
+									p Non-wedding
+						
+						li.nav-item.ml-2
+							a.nav-link(href='/admin/maintenance-services')
+								i.material-icons list_alt
+								p Services
+					li.nav-item
+						a.nav-link(data-toggle="collapse" href='#transaction')
+							i.material-icons content_paste
+							p Transactions
+								b.caret
+					#transaction.collapse
+						li.nav-item.ml-2
+							a.nav-link(href='/admin/transaction-documentrequest')
+								i.material-icons assignment
+								p Document Requests
+						li.nav-item.ml-2
+							a.nav-link(data-toggle="collapse" href="#events")
+								i.material-icons layers
+								p Event Appilications
+									b.caret
+						.collapse#events
+							li.nav-item.ml-3
+								a.nav-link(href='/admin/transaction-baptism')
+									i.material-icons insert_invitation
+									p Baptism
+							li.nav-item.ml-3
+								a.nav-link(href='/admin/transaction-blessings')
+									i.material-icons insert_invitation
+									p Blessings
+							li.nav-item.ml-3
+								a.nav-link(href='/admin/transaction-confirmation')
+									i.material-icons insert_invitation
+									p Confirmation
+							li.nav-item.ml-3
+								a.nav-link(href='/admin/transaction-marriage')
+									i.material-icons insert_invitation
+									p Marriage
+						li.nav-item.ml-2
+							a.nav-link(href='/admin/transaction-eventproposal')
+								i.material-icons location_city
+								p Event Proposals
+						li.nav-item.ml-2
+							a.nav-link(href='/admin/transaction-facilityreservation')
+								i.material-icons location_city
+								p Facility Reservations
+						li.nav-item.ml-2
+							a.nav-link(href='/admin/transaction-walkin')
+								i.material-icons location_city
+								p Walk-in
+					li.nav-item
+						a.nav-link(href='/queries')
+							i.material-icons library_books
+							p Queries
+					
+					li.nav-item
+						a.nav-link(href='/report')
+							i.material-icons report
+							p Reports
+					li.nav-item
+						a.nav-link(href='utilities')
+							i.material-icons settings
+							p Utilities
+		.main-panel
+			// Navbar
+			nav.navbar.navbar-expand-lg.navbar-transparent.navbar-absolute.fixed-top
+				.container-fluid
+					.navbar-wrapper
+						//- a.navbar-brand(href='#pablo') Dashboard
+					button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navigation', aria-controls='navigation-index', aria-expanded='false', aria-label='Toggle navigation')
+						span.sr-only Toggle navigation
+						span.navbar-toggler-icon.icon-bar
+						span.navbar-toggler-icon.icon-bar
+						span.navbar-toggler-icon.icon-bar
+					#navigation.collapse.navbar-collapse.justify-content-end
+						form.navbar-form
+							.input-group.no-border
+								input.form-control(type='text', value='', placeholder='Search...')
+								button.btn.btn-white.btn-round.btn-just-icon(type='submit')
+									i.material-icons search
+									.ripple-container
+						ul.navbar-nav
+							li.nav-item
+								a.nav-link(href='#pablo')
+									i.material-icons dashboard
+									p
+										span.d-lg-none.d-md-block Stats
+							li.nav-item.dropdown
+								a#navbarDropdownMenuLink.nav-link(href='http://example.com', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+									i.material-icons notifications
+									span.notification 5
+									p
+										span.d-lg-none.d-md-block Some Actions
+								.dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownMenuLink')
+									a.dropdown-item(href='#') Mike John responded to your email
+									a.dropdown-item(href='#') You have 5 new tasks
+									a.dropdown-item(href='#') You&apos;re now friend with Andrew
+									a.dropdown-item(href='#') Another Notification
+									a.dropdown-item(href='#') Another One
+							li.nav-item
+								a.nav-link(href='#pablo')
+									i.material-icons person
+									p
+										span.d-lg-none.d-md-block Account
+			
+			block main
+
+			footer.footer
+				.container-fluid
+					nav.pull-left
+						ul
+							li
+								a(href='https://www.creative-tim.com')
+									| Creative Tim
+							li
+								a(href='http://presentation.creative-tim.com')
+									| About Us
+							li
+								a(href='http://blog.creative-tim.com')
+									| Blog
+							li
+								a(href='https://www.creative-tim.com/license')
+									| Licenses
+					.copyright.pull-right
+						| &copy;
+						script.
+							document.write(new Date().getFullYear())
+						| , Ina ng Lupang Pangako Parish
