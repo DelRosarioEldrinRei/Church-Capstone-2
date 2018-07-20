@@ -1,8 +1,9 @@
-$(document).ready(function() {
- 
-  // Fakes the loading setting a timeout
-    setTimeout(function() {
-        $('body').toggle('loaded');
-    }, 1000);
- 
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loader');
+  setTimeout(() => {
+    loader.classList.add('fadeOut');
+  }, 300);
+  $(document).ready(function(){
+    $('#wrapper').fadeIn(600);
+  });
 });
