@@ -31,7 +31,7 @@ html(lang='en')
 				#headers
 					// Light header
 					header#header-style-1
-						nav.navbar.navbar-toggleable-sm.navbar-light.bg-faded
+						nav.navbar.navbar-toggleable-sm.navbar-light
 							.container
 								a.navbar-brand(href='index.html')
 									img(src='/guest/img/logo-2.png', alt='')
@@ -40,23 +40,31 @@ html(lang='en')
 								#navbarCollapse.collapse.navbar-collapse.justify-content-end
 									ul.navbar-nav
 										li.nav-item
-											a.nav-link(href='index.html') Home
+											a.nav-link(href='/index') Home
 										li.nav-item
 											a.nav-link(href='#about') About
 										li.nav-item
 											a.nav-link(href='#portfolio') Portfolio
 										li.nav-item
-											a.nav-link(href='#facts') Facts
+											a.nav-link(href='#facts') Events
 										li.nav-item
-											a.nav-link(href='#services') Services
+											a.nav-link(href='#services') Parish Services
+										//- li.nav-item.dropdown
+										//- 	a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Parish Services
+										//- 	.dropdown-menu
+										//- 		a.dropdown-item(href='#') Anointing of the sick
+										//- 		a.dropdown-item(href='#') Baptism
+										//- 		a.dropdown-item(href='#') Confirmation
+										//- 		a.dropdown-item(href='#') Funeral Blessing
+										//- 		a.dropdown-item(href='#') Marriage
+										//- 		a.dropdown-item(href='#') Document Request
+										//- 		a.dropdown-item(href='#') Establishment Blessing
+										//- 		a.dropdown-item(href='#') Facility Reservation
+												
 										li.nav-item
 											a.nav-link(href='/login') Login
-										li.nav-item.dropdown
-											a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Dropdown Item
-											.dropdown-menu
-												a.dropdown-item(href='#') Action
-												a.dropdown-item(href='#') Another action
-												a.dropdown-item(href='#') Something else here
+										li.nav-item
+											a.nav-link(href='/signup') Sign-up
 						.container
 							.header-caption
 								.row
@@ -84,6 +92,7 @@ html(lang='en')
 		script(src='/guest/js/form-validator.min.js')
 		script(src='/guest/js/contact-form-script.js')
 		script(src='/guest/js/main.js')
+		block addjs
 		script.
 			$(document).ready(function() {
 				//MixitUp
