@@ -203,11 +203,11 @@ block prepend main
 									i.fa.fa-cogs
 								.service-content
 									h4
-										a(href='#') #{event.var_eventname}
+										a(href='#')=`${event.var_eventname}`
 									p
 										| #{event.var_eventdesc.substring(0, 100)}...
 									.learn-more
-										button.btn.std-btn.btn-common#inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value='#{event.int_eventID}') Inquire
+										button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
 										// Modal
 										#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 											.modal-dialog(role='document')
