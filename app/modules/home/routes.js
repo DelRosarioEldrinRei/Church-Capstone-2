@@ -29,4 +29,10 @@ indexRouter.get('/schedule', (req, res) => {
 });
 
 
+indexRouter.route('/document')
+.get(authMiddleware.noAuthed, (req, res) => {
+    res.render('home/views/document', req.query);
+})
+
+
 exports.index = indexRouter;

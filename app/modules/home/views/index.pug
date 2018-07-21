@@ -237,9 +237,18 @@ block prepend main
 							<h5 id="exampleModalLabel" class="modal-title">${data.var_eventname}</h5>
 							`)
 							$('#bodyAppend').append(`
+							<p><strong>Service Description</strong></p>
 							<p>${data.var_eventdesc}</p>
+							<br>
+							<p><strong>Requirements</strong></p>
+							
+
 							`)
 							$('#inquireModal').modal('show');	
+							$('#inquireModal').on('hidden.bs.modal',function(){
+								$('#bodyAppend').empty()
+								$('#headerAppend').empty()
+							})
 							$('#cancelButton').css('display', 'block');
 							$('#proceedButton').css('display', 'block');
 							})

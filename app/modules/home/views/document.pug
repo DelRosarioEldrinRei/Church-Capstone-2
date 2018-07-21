@@ -1,0 +1,43 @@
+extends ../../../templates/home
+block prepend main
+	.container
+		.row
+			.col-md-12
+				hr.mt-5.mx-5
+	.row
+		.col-md-12.my-3
+			h3.text-center.text-uppercase Request Form
+	.row
+		.col-md-8.my-auto.mx-auto
+			form(action="/guest/document/form" enctype="multipart/form-data" method='post')
+				.row
+					.col-md-6
+						.form-group
+							label.label-control Document
+							select.selectpicker.form-control(type="text" name='documenttype')
+								option Baptismal Certificate
+								option Confirmation Certificate
+								option First Communion Certificate
+					.col-md-6
+						.form-group
+							label.label-control(for='exampleFormControlFile1') Choose File:
+							input#exampleFormControlFile1.form-control-file.form-control(type='file')
+				.row
+					.col-md-12.my-3
+						h5.text-center.text-uppercase Person in the certificate
+				.row
+					.col-md-6
+						label.label-control First Name:
+						input#firstName.form-control(type='text' name='firstname' placeholder='Ex. John Mark')
+					.col-md-6
+						label.label-control Last Name:
+						input#lastName.form-control(type='text' name='lastname' placeholder='Ex. Doe')
+				.row
+					.col-md-12
+						.form-group
+							label(for='exampleFormControlTextarea1') Purpose:
+							textarea#exampleFormControlTextarea1.form-control(rows='3' name= 'purpose')
+				.row
+					.col-md-12.text-center
+						.learn-more
+							button.btn.std-btn.btn-common.btn-info(type='button') Submit
