@@ -8,7 +8,7 @@ html(lang='en')
 		meta(name='keywords', content='ui kit')
 		
 		meta(name='author', content='UIdeck')
-		title Headers - Helium Bootstrap 4 UI Kit
+		title Guest
 		
 		// CSS Files
 		link(rel='stylesheet', href='/guest/css/bootstrap.min.css')
@@ -39,37 +39,18 @@ html(lang='en')
 									i.fa.fa-bars
 								#navbarCollapse.collapse.navbar-collapse.justify-content-end
 									ul.navbar-nav
-										li.nav-item: a.nav-link(href="/guest")
-											| Home
-										li.nav-item: a.nav-link(href="/guest/schedule")
-											| Schedule
-										li.dropdown.nav-item
-											a.dropdown-toggle.nav-link(href="#" data-toggle="dropdown")
-												| Parish Services	
-											.dropdown-menu
-												a.dropdown-item(href="/guest/anointing")
-													| &nbsp; Anointing of the Sick
-												a.dropdown-item(href="/guest/baptism")
-													| &nbsp; Baptism
-												a.dropdown-item(href="/guest/confirmation")
-													| &nbsp; Confirmation
-												a.dropdown-item(href="/guest/funeral")
-													| &nbsp; Funeral Blessing
-												a.dropdown-item(href="/guest/marriage")
-													| &nbsp; Marriage
-												hr
-												a.dropdown-item(href="/guest/document")
-													| &nbsp; Document Request
-												a.dropdown-item(href="/guest/facilities")
-													| &nbsp; Facility Reservation
-												a.dropdown-item(href="/guest/establishment")
-													| &nbsp; Establishment Blessing
-										li.nav-item: a.nav-link(href="/guest/parishevents")
-											| Events
-										li.nav-item: a.nav-link(href="/guest/about")
-											| About Us						
+										li.nav-item
+											a.nav-link(href='/guest') Home
+										li.nav-item
+											a.nav-link(href='#about') About
+										li.nav-item
+											a.nav-link(href='#portfolio') Portfolio
+										li.nav-item
+											a.nav-link(href='#facts') Events
+										li.nav-item
+											a.nav-link(href='#services') Parish Services	
 										li.nav-item.dropdown
-											a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Dropdown Item
+											a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') My Account
 											.dropdown-menu
 												a.dropdown-item(href='#') My Profile
 												a.dropdown-item(href='#') Messages

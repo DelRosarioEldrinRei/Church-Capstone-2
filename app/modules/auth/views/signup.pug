@@ -1,99 +1,108 @@
-extends ../../../templates/masterhome
-block main
-	.header-filter(filter-color='black', style="background-image: url('./img/bg1.png'); background-size: cover; background-position: top center;")
-		.container
-			.row
-				.col-md-10.ml-auto.mr-auto.mt-5
-					.card.card-signup.mt-5
-						h2.text-center.mt-3 Sign-up
-						.card-body
-							.row.mb-3
-								.col-md-5.ml-auto
-									.info.info-horizontal.py-0
-										.icon.icon-rose
-											i.fa.fa-shopping-cart(aria-hidden='true')
-										.description
-											h4.info-title Reserve
-											p.description
-												| We've created the marketing campaign of the website. It was a very interesting collaboration.
-									.info.info-horizontal.py-0
-										.icon.icon-primary
-											i.fa.fa-bar-chart(aria-hidden='true')
-										.description
-											h4.info-title Manage
-											p.description
-												| We've developed the website with HTML5 and CSS3. The client has access to the code using GitHub.
-									.info.info-horizontal.py-0
-										.icon.icon-info
-											i.fa.fa-users(aria-hidden='true')
-										.description
-											h4.info-title Audience
-											p.description
-												| We've made this for the church to easily manage the reservation of events, services, and many other more!.
-									.social.text-center
-										button.btn.btn-just-icon.btn-round.btn-twitter
-											i.fa.fa-twitter
-										button.btn.btn-just-icon.btn-round.btn-dribbble
-											i.fa.fa-dribbble
-										button.btn.btn-just-icon.btn-round.btn-facebook
-											i.fa.fa-facebook  
-										h4  or be classical 
-								.col-md-5.mr-5
-									form.form(action="/signup" method="post")
-										.form-group
-											label.label-control Name:										
-											.row
-												.col-md-4
-													.form-group.pt-0
-														input.form-control(type='text' placeholder="Last Name" name='lastname')
-												.col-md-4
-													.form-group.pt-0
-														input.form-control(type='text' placeholder="First Name" name='firstname')
-												.col-md-4
-													.form-group.pt-0
-														input.form-control(type='text' placeholder="Middle Name" name='middlename')
-										.form-group.m-0
-											label.label-control Gender:
-												.form-check.ml-3
-													label.form-check-label
-														input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Male")
-														| Male
-														span.circle
-															span.check
-													label.form-check-label.ml-3
-														input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Female")
-														| Female
-														span.circle
-															span.check
-										.form-group
-											label.label-control Birthday
-											input#datepicker.form-control(type='date' name='birthday')
-										.form-group
-											label(for='exampleFormControlTextarea1') Address:
-											textarea#exampleFormControlTextarea1.form-control(rows='2' name='address')
-										.form-group
-											label.label-control Contact Number:
-											input.form-control(type='text' name='contactnumber')
-										.form-group
-											label.label-control Email Address:
-											input.form-control(type='text' name='email')
-										.form-group
-											label.label-control Username:
-											input.form-control(type='text' name='username')
-										.form-group
-											label.label-control Password:
-											input.form-control(type='password' name='password')
-										.form-group
-											label.label-control Confirm password:
-											input.form-control(type='password' name='confirmpassword')
-										
-										.form-check
-											label.form-check-label
-											input.form-check-input(type='checkbox', value='', checked='')
-											span.form-check-sign
-												span.check
-												| ..I agree to the 
-												a(href='#something') terms and conditions
-												| .
-											.text-center
-												button.btn.btn-primary(type='submit') Submit
+doctype html
+html
+	head
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+		title Sign Up
+		link(href='/css/loader.css', rel='stylesheet')
+		link(href='/admin/style.css', rel='stylesheet')
+	body.app
+		#loader
+			.spinner
+		#wrapper
+			.peers.ai-s.fxw-nw.h-100vh
+				.peer.peer-greed.h-100.pos-r.bgr-n.bgpX-c.bgpY-c.bgsz-cv(class='d-n@sm-', style='background-image: url("/admin/assets/static/images/bg.jpg")')
+					.pos-a.centerXY
+						.bgc-white.bdrs-50p.pos-r(style='width: 120px; height: 120px;')
+							img.pos-a.centerXY(src='/admin/assets/static/images/logo.png', alt='')
+				.col-12.col-md-5.peer.pX-40.pY-40.h-100.bgc-white.scrollable.pos-r(style='min-width: 320px;')
+					h3.c-grey-900.mB-10 Register
+					form#needs-validation.form(method='POST', action='/signup' novalidate)
+						.form-group
+							.form-row
+								.form-group.col-md-4.m-0
+									.form-group
+										label.h6 Last Name
+											.text-danger.d-inline *
+										input.form-control(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+										.invalid-feedback Please re-enter your password valid Last Name.
+
+								.form-group.col-md-4.m-0
+									.form-group
+										.invalid-feedback Please re-enter your password valid Last Name.
+										label.h6 First Name
+											.text-danger.d-inline *
+										input.form-control(type='text' placeholder="Ex. Juan" name='firstname' required)
+										.invalid-feedback Please provide a valid First Name.
+								.form-group.col-md-4.m-0
+									.form-group
+										label.h6 Middle Name
+										input.form-control(type='text' placeholder="Ex. Santos" name='middlename')
+							.form-row
+								.form-group.col-md-6
+									label.h6 Gender
+										.text-danger.d-inline *
+									select#inputState.form-control(required) 
+										option(selected='' value="" disabled) Choose...
+										option(value="Male") Male
+										option(value="Female") Female
+									.invalid-feedback Please choose a gender.
+								.form-group.col-md-6
+									label.h6 Contact Number:
+									input.form-control(type='text' name='contactnumber' placeholder="Ex. 093345312346")
+							.form-group
+								label.h6(for='exampleFormControlTextarea1') Address:
+								textarea#exampleFormControlTextarea1.form-control(rows='1' name='address' placeholder="Ex. 56 Sampaguita Street Sta. Maria")
+							.form-row
+								.form-group.col-md-6
+									label.h6 Username:
+										.text-danger.d-inline *
+									input.form-control(type='text' name='username' placeholder="Ex. Mark234" required)
+									.invalid-feedback Please provide a username.
+								.form-group.col-md-6
+									label.h6 Email Address:
+										.text-danger.d-inline *
+									input.form-control(type='text' name='email' placeholder="Ex. markfrancisco@gmail.com" required)
+									.invalid-feedback Please provide a valid email address.
+							.form-group
+								label.h6 Password:
+									.text-danger.d-inline *
+								input.form-control(type='password' name='password' placeholder="Enter Password" required)
+								.invalid-feedback Please provide password.
+							.form-group
+								label.h6 Confirm Password:
+									.text-danger.d-inline *
+								input.form-control(type='password' name='confirmpassword' placeholder="Re-enter Password" required)
+								.invalid-feedback Please re-enter your password.
+							.form-check
+								label.form-check-label
+								input.form-check-input(type='checkbox', value='', checked='' required)
+								.invalid-feedback You must agree to our terms and conditions
+								span.form-check-sign
+									span.check
+									| I agree to the 
+									a(href='#something') terms and conditions
+									| .
+									.text-danger.d-inline *
+							.text-center
+								button.btn.btn-primary.mt-3(type='submit') Submit
+
+	script(type='text/javascript', src='/js/jquery.min.js')
+	script(type='text/javascript', src='/admin/vendor.js')
+	script(type='text/javascript', src='/admin/bundle.js')
+	script(type='text/javascript', src='/js/loader.js')
+	script.
+		(function() {
+			'use strict';
+
+			window.addEventListener('load', function() {
+				var form = document.getElementById('needs-validation');
+				form.addEventListener('submit', function(event) {
+					if (form.checkValidity() === false) {
+						event.preventDefault();
+						event.stopPropagation();
+					}
+					form.classList.add('was-validated');
+				}, false);
+			}, false);
+		})();
