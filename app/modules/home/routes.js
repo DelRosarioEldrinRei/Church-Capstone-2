@@ -14,11 +14,14 @@ indexRouter.get('/', (req, res) => {
 
 })
 indexRouter.post('/query', (req, res) => {
-  var queryString =`SELECT * FROM tbl_event where tbl_event.int_eventID = ? `
-  db.query(queryString,[req.body.id], (err, results, fields) => {
-      if (err) console.log(err);
-      res.send(results[0]);
-      console.log(results)
+  var queryString1 =`SELECT * FROM tbl_event where int_eventID = ? `
+  db.query(queryString1,[req.body.id], (err, results1, fields) => {
+    var queryString2 =`select var_reqname from tbl_requirementtype where int_eventID = ?`
+    
+  db.query(queryString2,[req.body.id], (err, results2, fields) => {
+    if (err) console.log(err);
+    res.send({firstQuery:results1[0],secondQuery:results2});
+  });
   });
 
 })

@@ -19,7 +19,7 @@ block main
 						form(action="/guest/document/form" enctype="multipart/form-data" method='post')
 							.form-group
 								label.label-control Document
-									select.selectpicker.form-control(type="text" name='documenttype')
+									select.selectpicker.form-control#documenttype(type="text" name='documenttype')
 										option Baptismal Certificate
 										option Confirmation Certificate
 										option First Communion Certificate
@@ -53,3 +53,24 @@ block main
 							.row
 								.col-md-12.my-5.text-center
 									button.btn.btn-primary(type="submit") Submit
+	block addjs
+		script.
+		script.
+			$(document).ready(function(){
+				$('.inquireButton').click(function(){
+					var idNow = $(this).val();
+					console.log(idNow)
+						$.post('/document/query',{id:idNow})
+							.done(data =>{
+							$('#headerAppend').append(`
+							<h5 id="exampleModalLabel" class="modal-title">${data.var_eventname}</h5>
+							`)
+							$('#bodyAppend').append(`
+							<p>${data.var_eventdesc}</p>
+							`)
+							$('#inquireModal').modal('show');	
+							$('#cancelButton').css('display', 'block');
+							$('#proceedButton').css('display', 'block');
+							})
+									
+				})
