@@ -9,8 +9,8 @@ window.addEventListener('load', () => {
 });
 
 //for lifehack para sa document request dahil nagmamadali na
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    $('#inquireModal').modal('show');
-  }, 700);  
-});
+// window.addEventListener('load', () => {
+//   setTimeout(() => {
+//     $('#inquireModal').modal('show');
+//   }, 700);  
+// });

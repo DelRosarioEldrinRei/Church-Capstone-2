@@ -1,0 +1,265 @@
+extends ../../../templates/home
+block prepend main
+	.container
+		//- .header-caption
+		//- 	.row
+		//- 		.col-md-12.header-content
+		//- 			h3.header-title.animated.fadeInDown
+		//- 				span.text-primary Helium 
+		//- 				|  - Bootstrap 4 UI Kit
+		//- 			h5.header-text.animated.fadeIn
+		//- 				| Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+		//- 				br
+		//- 				| Lorem ipsum dolor sit amet, consectetuer.
+		//- 			a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp(href='#') Download Now
+		//- 			a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp(href='#') Explore
+	.container
+		section#about
+			.container
+				.row
+					.col-md-12
+						.page-header-title
+							h2.heading-title.text-center About Us
+				.row
+					.col-sm-6.col-md-3
+						.about.block.text-center
+							img(src='/guest/img/about/img1.png', alt='')
+							h5
+								a(href='#') About Title
+							p
+								| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+					.col-sm-6.col-md-3
+						.about.block.text-center
+							img(src='/guest/img/about/img2.png', alt='')
+							h5
+								a(href='#') About Title
+							p
+								| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+					.col-sm-6.col-md-3
+						.about.block.text-center
+							img(src='/guest/img/about/img3.png', alt='')
+							h5
+								a(href='#') About Title
+							p
+								| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+					.col-sm-6.col-md-3
+						.about.block.text-center
+							img(src='/guest/img/about/img4.png', alt='')
+							h5
+								a(href='#') About Title
+							p
+								| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+
+
+	section#portfolio.section-padding
+		.row
+			.col-md-12.pl-0
+				.page-header-title
+					h2.heading-title.text-center Portfolio
+		.row
+			.col-lg-12.col-md-12
+				.controls.text-center.wow.fadeInUpQuick(data-wow-delay='.6s')
+					a.filter.active.btn.btn-common(data-filter='all')
+						| All
+					a.filter.btn.btn-common(data-filter='.branding')
+						| Branding
+					a.filter.btn.btn-common(data-filter='.marketing')
+						| Marketing
+					a.filter.btn.btn-common(data-filter='.planning')
+						| Planning
+					a.filter.btn.btn-common(data-filter='.research')
+						| Research
+			.container
+				.row.wow.fadeInUpQuick(data-wow-delay='0.8s')
+					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning
+						.portfolio-item
+							.portfolio-img
+								img(src='/img/portfolio/img1.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+					.col-lg-4.col-md-6.col-xs-12.mix.branding.planning
+						.portfolio-item
+							.portfolio-img
+								img(src='/img/portfolio/img2.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+					.col-lg-4.col-md-6.col-xs-12.mix.branding.research
+						.portfolio-item
+							.portfolio-img
+								img(src='/img/portfolio/img3.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+					.col-lg-4.col-md-6.col-xs-12.mix.marketing.research
+						.portfolio-item
+							.portfolio-img
+								img(src='/img/portfolio/img4.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning
+						.portfolio-item
+							.portfolio-img
+								img(src='/img/portfolio/img5.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+					.col-lg-4.col-md-6.col-xs-12.mix.planning.research
+						.portfolio-item
+							.portfolio-img
+								img(src='/img/portfolio/img6.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+		section#facts
+			.single-testimonial-area
+				.container
+					.row
+						.col-sm-6.col-md-3.text-center
+							i.fact-icon.fa.fa-user
+							h3#websites.timer.text-white(data-to='560', data-speed='1000') 560
+							h5.fact-title.text-white Happy Clients
+						.col-sm-6.col-md-3.text-center
+							i.fact-icon.fa.fa-rocket
+							h3#code.timer.text-white(data-to='2700', data-speed='1500') 2700
+							h5.fact-title.text-white Project Lanched
+						.col-sm-6.col-md-3.text-center
+							i.fact-icon.fa.fa-coffee
+							h3#coffee.timer.text-white(data-to='234', data-speed='2000') 234
+							h5.fact-title.text-white Cup of Coffee
+						.col-sm-6.col-md-3.text-center
+							i.fact-icon.fa.fa-heart
+							h3#emails.timer.text-white(data-to='234', data-speed='2500') 970
+							h5.fact-title.text-white Peoples Love
+
+
+		section#services
+			.container
+				.row
+					.col-md-12
+						.page-header-title
+							h2.heading-title.text-center Services
+				.row
+					each event in events
+						.col-md-4.col-sm-6
+							.service-box
+								.service-icon
+									i.fa.fa-cogs
+								.service-content
+									h4
+										a(href='#')=`${event.var_eventname}`
+									p
+										| #{event.var_eventdesc.substring(0, 100)}...
+									.learn-more
+										button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
+										// Modal
+										#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+											.modal-dialog(role='document')
+												.modal-content#each
+													.modal-header#headerAppend
+														//- h5#exampleModalLabel.modal-title
+														button.close(type='button', data-dismiss='modal', aria-label='Close')
+															span.p-3(aria-hidden='true') ×
+													.modal-body#bodyAppend
+													.modal-body#reqAppend
+													.modal-footer
+														button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button') Save Changes
+
+					.col-md-12.text-center
+						.learn-more
+							button.btn.std-btn.btn-common(type='button') View All
+	block addjs
+		script.
+			$(document).ready(function(){
+				$('.inquireButton').click(function(){
+					var idNow = $(this).val();
+					console.log(idNow)
+						$.post('/index/query',{id:idNow})
+							.done(data =>{
+							
+							$('#headerAppend').append(`
+								<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
+								`)
+								$('#bodyAppend').append(`
+								<p><strong>Service Description</strong></p>
+								<p>${data.firstQuery.var_eventdesc}</p>
+								<br>
+								<p><strong>Requirements</strong></p>
+								
+							`)
+							for(i=0;i<data.secondQuery.length;i++){
+							$('#reqAppend').append(`
+								<p>${data.secondQuery[i].var_reqname}</p>
+							`)
+							}
+							$('#inquireModal').modal('show');	
+							$('#inquireModal').on('hidden.bs.modal',function(){
+								$('#bodyAppend').empty()
+								$('#headerAppend').empty()
+								$('#reqAppend').empty()
+
+							})
+							$('#cancelButton').css('display', 'block');
+							$('#proceedButton').css('display', 'block');
+							})
+									
+				})
+			})
+			

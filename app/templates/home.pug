@@ -1,102 +1,226 @@
 doctype html
 html(lang='en')
 	head
-		// meta tags
-		meta(charset='utf-8')
+		meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-		meta(name='description', content='Bootstrap UI Kit')
-		meta(name='keywords', content='ui kit')
-		
-		meta(name='author', content='UIdeck')
-		title Church to Go
-		
-		// CSS Files
-		link(rel='stylesheet', href='/guest/css/bootstrap.min.css')
-		link(rel='stylesheet', href='/guest/css/main.css')
-		link(rel='stylesheet', href='/guest/css/animate.css')
-		link(rel='stylesheet', href='/guest/css/owl.carousel.css')
-		link(rel='stylesheet', href='/guest/css/owl.theme.css')
-		link(href='/css/loader.css', rel='stylesheet')
-		link(rel='stylesheet', href='/guest/css/responsive.css')
-		// Fonts icons
-		link(rel='stylesheet', href='/guest/css/font-awesome.min.css')
+		title Helium - Bootstrap 4 Onepage Template
+		link(rel='stylesheet', href='/Helium/css/bootstrap.min.css')
+		link(rel='stylesheet', href='/Helium/css/font-awesome.min.css')
+		link(rel='stylesheet', href='/Helium/css/owl.carousel.css')
+		link(rel='stylesheet', href='/Helium/css/owl.theme.css')
+		link(rel='stylesheet', href='/Helium/css/animate.css')
+		link(rel='stylesheet', href='/Helium/css/main.css')
+		link(rel='stylesheet', href='/Helium/css/extras.css')
+		link(rel='stylesheet', href='/Helium/css/responsive.css')
+		link(rel='stylesheet', href='/Helium/css/helium.css')
+		link(rel='stylesheet', href='/css/loader.css')
 	body
 		#loader
 			.spinner
-		// Page Wrapper Start
 		#wrapper
-			// Content Area Start
-			#content
-				// Headers Start
-				#headers
-					// Light header
-					header#header-style-1
-						nav.navbar.navbar-toggleable-sm.navbar-light
-							.container
-								a.navbar-brand(href='index.html')
-									img(src='/guest/img/logo-2.png', alt='')
-								button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarCollapse', aria-controls='navbarCollapse', aria-expanded='false', aria-label='Toggle navigation')
-									i.fa.fa-bars
-								#navbarCollapse.collapse.navbar-collapse.justify-content-end
-									ul.navbar-nav
-										li.nav-item
-											a.nav-link(href='/index') Home
-										li.nav-item
-											a.nav-link(href='#about') About
-										li.nav-item
-											a.nav-link(href='#portfolio') Portfolio
-										li.nav-item
-											a.nav-link(href='#facts') Events
-										li.nav-item
-											a.nav-link(href='#services') Parish Services
-										//- li.nav-item.dropdown
-										//- 	a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Parish Services
-										//- 	.dropdown-menu
-										//- 		a.dropdown-item(href='#') Anointing of the sick
-										//- 		a.dropdown-item(href='#') Baptism
-										//- 		a.dropdown-item(href='#') Confirmation
-										//- 		a.dropdown-item(href='#') Funeral Blessing
-										//- 		a.dropdown-item(href='#') Marriage
-										//- 		a.dropdown-item(href='#') Document Request
-										//- 		a.dropdown-item(href='#') Establishment Blessing
-										//- 		a.dropdown-item(href='#') Facility Reservation
-												
-										li.nav-item
-											a.nav-link(href='/login') Login
-										li.nav-item
-											a.nav-link(href='/signup') Sign-up
-						.container
-							.header-caption
-								.row
-									.col-md-12.header-content
-										h3.header-title.animated.fadeInDown
-											span.text-primary Helium 
-											|  - Bootstrap 4 UI Kit
-										h5.header-text.animated.fadeIn
-											| Lorem ipsum dolor sit amet, consectetuer adipiscing elit
-											br
-											| Lorem ipsum dolor sit amet, consectetuer.
-										a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp(href='#') Download Now
-										a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp(href='#') Explore
-				block main
-				// Headers End
-			// Content Area End
-		// Page Wrapper End
-		// jQuery first, then Tether, then Bootstrap JS.
-		script(src='/guest/js/jquery.min.js')
-		script(src='/guest/js/tether.min.js')
-		script(src='/guest/js/bootstrap.min.js')
-		script(src='/guest/js/owl.carousel.min.js')
-		script(src='/guest/js/jquery.mixitup.js')
+			block nav
+				nav.navbar.navbar-expand-lg.fixed-top.scrolling-navbar.indigo
+					.container
+						.navbar-header
+							.slicknav_menu
+								liner.slicknav_btn.slicknav_collapsed(aria-haspopup='true', tabindex='0', style='outline: none;')
+									span.slicknav_menutxt
+									span.slicknav_icon.slicknav_no-text
+										span.slicknav_icon-bar
+										span.slicknav_icon-bar
+										span.slicknav_icon-bar
+								ul.slicknav_nav.slicknav_hidden(aria-hidden='true', role='menu', style='display: none;')
+									li
+										a.page-scroll(href='#sliders', role='menuitem', tabindex='-1')
+											| Home
+									li
+										a.page-scroll(href='#about', role='menuitem', tabindex='-1')
+											| About
+									li
+										a.page-scroll(href='#services', role='menuitem', tabindex='-1')
+											| Services
+									li
+										a.page-scroll(href='#portfolio', role='menuitem', tabindex='-1')
+											| Portfolio
+									li
+										a.page-scroll(href='#feature', role='menuitem', tabindex='-1')
+											| Features
+									li
+										a.page-scroll(href='#team', role='menuitem', tabindex='-1')
+											| Team
+									li
+										a.page-scroll(href='#pricing', role='menuitem', tabindex='-1')
+											| Pricing
+									li
+										a.page-scroll(href='#contact', role='menuitem', tabindex='-1')
+											| Contact
+									li
+										a.page-scroll(href='/login', role='menuitem', tabindex='-1')
+											| Login
+									li
+										a.page-scroll(href='/signup', role='menuitem', tabindex='-1')
+											| Sign-up
+							button.navbar-toggler(type='button', data-toggle='collapse', data-target='#main-navbar', aria-controls='main-navbar', aria-expanded='false', aria-label='Toggle navigation')
+								span.navbar-toggler-icon
+								span.icon-menu
+								span.icon-menu
+								span.icon-menu
+							a.navbar-brand(href='')
+								img(src='/Helium/img/logo.png', alt='')
+						#main-navbar.collapse.navbar-collapse
+							ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix
+								li.nav-item.active
+									a.nav-link(href='#sliders')
+										| Home
+								li.nav-item
+									a.nav-link(href='#about')
+										| About
+								li.nav-item
+									a.nav-link(href='#services')
+										| Services
+								li.nav-item
+									a.nav-link(href='#portfolio')
+										| Portfolio
+								li.nav-item
+									a.nav-link(href='#feature')
+										| Features
+								li.nav-item
+									a.nav-link(href='#team')
+										| Team
+								li.nav-item
+									a.nav-link(href='#pricing')
+										| Pricing
+								li.nav-item
+									a.nav-link(href='#contact')
+										| Contact
+								li.nav-item
+									a.nav-link(href='/login')
+										| Login
+								li.nav-item
+									a.nav-link(href='/signup')
+										| Sign-up
+					ul.mobile-menu.navbar-nav
+						li.active
+							a.page-scroll(href='#sliders')
+								| Home
+						li
+							a.page-scroll(href='#about')
+								| About
+						li
+							a.page-scroll(href='#services')
+								| Services
+						li
+							a.page-scroll(href='#portfolio')
+								| Portfolio
+						li
+							a.page-scroll(href='#feature')
+								| Features
+						li
+							a.page-scroll(href='#team')
+								| Team
+						li
+							a.page-scroll(href='#pricing')
+								| Pricing
+						li
+							a.page-scroll(href='#contact')
+								| Contact
+						li
+							a.page-scroll(href='/login')
+								| Login
+						li
+							a.page-scroll(href='/signup')
+								| Signup
+			block main
+		footer.footer
+			.container
+				.row.section
+					.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn
+						h3.small-title
+							| About Us
+						p
+							| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis veritatis eius porro modi hic. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+						.social-footer
+							a(href='#')
+								i.fa.fa-facebook.icon-round
+							a(href='#')
+								i.fa.fa-twitter.icon-round
+							a(href='#')
+								i.fa.fa-linkedin.icon-round
+							a(href='#')
+								i.fa.fa-google-plus.icon-round
+					.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.2s')
+						h3.small-title
+							| Links
+						ul.menu
+							li
+								a(href='#') About Us
+							li
+								a(href='#') Services
+							li
+								a(href='#') Works
+							li
+								a(href='#') Pricing
+							li
+								a(href='#') Contact
+					.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.5s')
+						h3.small-title
+							| GALLERY
+						.plain-flicker-gallery
+							a(href='#')
+								img(src='/Helium/img/img1(2).jpg', alt='')
+							a(href='#')
+								img(src='/Helium/img/img2(2).jpg', alt='')
+							a(href='#')
+								img(src='/Helium/img/img3(2).jpg', alt='')
+							a(href='#')
+								img(src='/Helium/img/img4(1).jpg', alt='')
+							a(href='#')
+								img(src='/Helium/img/img5(1).jpg', alt='')
+							a(href='#')
+								img(src='/Helium/img/img6(1).jpg', alt='')
+					.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.8s')
+						h3.small-title
+							| SUBSCRIBE US
+						.contact-us
+							form
+								.form-group
+									input#exampleInputName2.form-control(type='text', placeholder='Enter your name')
+								.form-group
+									input#exampleInputEmail2.form-control(type='email', placeholder='Enter your email')
+								button.btn.btn-common(type='submit') Submit
+			#copyright
+				.container
+					.row
+						.col-lg-6.col-md-6.col-xs-12
+							p.copyright-text
+								| All copyrights reserved © 2018 - Designed & Developed by 
+								a(rel='nofollow', href='https://uideck.com/') UIdeck
+						.col-lg-6.col-md-6.col-xs-12
+							ul.nav.nav-inline.justify-content-end
+								li.nav-item
+									a.nav-link.active(href='#') Home
+								li.nav-item
+									a.nav-link(href='#') Sitemap
+								li.nav-item
+									a.nav-link(href='#') Privacy Policy
+								li.nav-item
+									a.nav-link(href='#') Terms of services
+		a.back-to-top(href='#', style='display: none;')
+			i.fa.fa-arrow-up
+		#preloader(style='display: none;')
+			#loader-1.loader
+		script(src='/Helium/js/jquery-min.js')
+		script(src='/Helium/js/popper.min.js')
+		script(src='/Helium/js/bootstrap.min.js')
+		script(src='/Helium/js/owl.carousel.min.js')
+		script(src='/Helium/js/jquery.mixitup.js')
+		script(src='/Helium/js/jquery.countTo.js')
+		script(src='/Helium/js/jquery.nav.js')
+		script(src='/Helium/js/scrolling-nav.js')
+		script(src='/Helium/js/jquery.easing.min.js')
+		script(src='/Helium/js/jquery.slicknav.js')
+		script(src='/Helium/js/form-validator.min.js')
+		script(src='/Helium/js/contact-form-script.js')
+		script(src='/Helium/js/main.js')
 		script(src='/js/loader.js')
-		script(src='/guest/js/form-validator.min.js')
-		script(src='/guest/js/contact-form-script.js')
-		script(src='/guest/js/main.js')
 		block addjs
-		script.
-			$(document).ready(function() {
-				//MixitUp
-				$(function() {
-					$('#portfolio').mixItUp();
-				});
-			});
