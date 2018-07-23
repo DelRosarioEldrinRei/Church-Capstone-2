@@ -1,251 +1,597 @@
-extends ../../../templates/guests
+extends ../../../templates/home
 block prepend main
-	.container
-		section#about
-			.container
-				.row
-					.col-md-12
-						.page-header-title
-							h2.heading-title.text-center About Us
-				.row
-					.col-sm-6.col-md-3
-						.about.block.text-center
-							img(src='/guest/img/about/img1.png', alt='')
-							h5
-								a(href='#') About Title
-							p
-								| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
-					.col-sm-6.col-md-3
-						.about.block.text-center
-							img(src='/guest/img/about/img2.png', alt='')
-							h5
-								a(href='#') About Title
-							p
-								| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
-					.col-sm-6.col-md-3
-						.about.block.text-center
-							img(src='/guest/img/about/img3.png', alt='')
-							h5
-								a(href='#') About Title
-							p
-								| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
-					.col-sm-6.col-md-3
-						.about.block.text-center
-							img(src='/guest/img/about/img4.png', alt='')
-							h5
-								a(href='#') About Title
-							p
-								| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
-
-
-	section#portfolio.section-padding
-		.row
-			.col-md-12.pl-0
-				.page-header-title
-					h2.heading-title.text-center Portfolio
-		.row
-			.col-lg-12.col-md-12
-				.controls.text-center.wow.fadeInUpQuick(data-wow-delay='.6s')
-					a.filter.active.btn.btn-common(data-filter='all')
-						| All
-					a.filter.btn.btn-common(data-filter='.branding')
-						| Branding
-					a.filter.btn.btn-common(data-filter='.marketing')
-						| Marketing
-					a.filter.btn.btn-common(data-filter='.planning')
-						| Planning
-					a.filter.btn.btn-common(data-filter='.research')
-						| Research
-			.container
-				.row.wow.fadeInUpQuick(data-wow-delay='0.8s')
-					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning
-						.portfolio-item
-							.portfolio-img
-								img(src='/img/portfolio/img1.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-					.col-lg-4.col-md-6.col-xs-12.mix.branding.planning
-						.portfolio-item
-							.portfolio-img
-								img(src='/img/portfolio/img2.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-					.col-lg-4.col-md-6.col-xs-12.mix.branding.research
-						.portfolio-item
-							.portfolio-img
-								img(src='/img/portfolio/img3.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-					.col-lg-4.col-md-6.col-xs-12.mix.marketing.research
-						.portfolio-item
-							.portfolio-img
-								img(src='/img/portfolio/img4.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning
-						.portfolio-item
-							.portfolio-img
-								img(src='/img/portfolio/img5.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-					.col-lg-4.col-md-6.col-xs-12.mix.planning.research
-						.portfolio-item
-							.portfolio-img
-								img(src='/img/portfolio/img6.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-		section#facts
-			.single-testimonial-area
-				.container
-					.row
-						.col-sm-6.col-md-3.text-center
-							i.fact-icon.fa.fa-user
-							h3#websites.timer.text-white(data-to='560', data-speed='1000') 560
-							h5.fact-title.text-white Happy Clients
-						.col-sm-6.col-md-3.text-center
-							i.fact-icon.fa.fa-rocket
-							h3#code.timer.text-white(data-to='2700', data-speed='1500') 2700
-							h5.fact-title.text-white Project Lanched
-						.col-sm-6.col-md-3.text-center
-							i.fact-icon.fa.fa-coffee
-							h3#coffee.timer.text-white(data-to='234', data-speed='2000') 234
-							h5.fact-title.text-white Cup of Coffee
-						.col-sm-6.col-md-3.text-center
-							i.fact-icon.fa.fa-heart
-							h3#emails.timer.text-white(data-to='234', data-speed='2500') 970
-							h5.fact-title.text-white Peoples Love
-
-
-		section#services
-			.container
-				.row
-					.col-md-12
-						.page-header-title
-							h2.heading-title.text-center Services
-				.row
-					// Start Service Icon 1
-					.col-md-4.col-sm-6
+	#sliders
+		.full-width
+			#light-slider.carousel.slide
+				#carousel-area
+					#carousel-slider.carousel.slide(data-ride='carousel')
+						ol.carousel-indicators
+							li(data-target='#carousel-slider', data-slide-to='0')
+							li.active(data-target='#carousel-slider', data-slide-to='1')
+							li(data-target='#carousel-slider', data-slide-to='2')
+						.carousel-inner(role='listbox')
+							.carousel-item
+								img(src='/Helium/img/bg-1.jpg', alt='')
+								.carousel-caption
+									h3.slide-title.animated.fadeInDown
+										span Helium
+										|  - Bootstrap 4 UI Kit
+									h5.slide-text.animated.fadeIn
+										| Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+										br
+										|  Curabitur ultricies nisi Nam eget dui. Etiam rhoncus
+									a.btn.btn-lg.btn-common.animated.fadeInUp(href='#') Get Started
+									a.btn.btn-lg.btn-border.animated.fadeInUp(href='#') Learn More
+							.carousel-item.active
+								img(src='/Helium/img/bg-2.jpg', alt='')
+								.carousel-caption
+									h3.slide-title.animated.fadeInDown
+										span Cutting-edge
+										|  Features
+									h5.slide-text.animated.fadeIn
+										| Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+										br
+										|  Curabitur ultricies nisi Nam eget dui. Etiam rhoncus
+									a.btn.btn-lg.btn-common.animated.fadeInUp(href='#') Download Now
+							.carousel-item
+								img(src='/Helium/img/bg-3.jpg', alt='')
+								.carousel-caption
+									h3.slide-title.animated.fadeInDown
+										span 100+
+										|  UI Blocks & Components
+									h5.slide-text.animated.fadeIn
+										| Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+										br
+										|  Curabitur ultricies nisi Nam eget dui. Etiam rhoncus
+									a.btn.btn-lg.btn-border.animated.fadeInUp(href='#') Get Started
+									a.btn.btn-lg.btn-common.animated.fadeInUp(href='#') Download
+						a.carousel-control-prev(href='#carousel-slider', role='button', data-slide='prev')
+							i.fa.fa-chevron-left
+						a.carousel-control-next(href='#carousel-slider', role='button', data-slide='next')
+							i.fa.fa-chevron-right
+	#about.section-padding
+		.container
+			.row
+				.col-lg-3.col-md-6.col-xs-12
+					.about.block.text-center
+						img(src='/Helium/img/img1.png', alt='')
+						h5
+							a(href='#') About Title
+						p
+							| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+				.col-lg-3.col-md-6.col-xs-12
+					.about.block.text-center
+						img(src='/Helium/img/img2.png', alt='')
+						h5
+							a(href='#') About Title
+						p
+							| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+				.col-lg-3.col-md-6.col-xs-12
+					.about.block.text-center
+						img(src='/Helium/img/img3.png', alt='')
+						h5
+							a(href='#') About Title
+						p
+							| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+				.col-lg-3.col-md-6.col-xs-12
+					.about.block.text-center
+						img(src='/Helium/img/img4.png', alt='')
+						h5
+							a(href='#') About Title
+						p
+							| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+	section#services
+		.container
+			.row
+				.col-md-12
+					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Services
+			.row
+				each event in events
+					.col-md-4.col-sm-6.col-xs-12
 						.service-box
 							.service-icon
 								i.fa.fa-cogs
 							.service-content
 								h4
-									a(href='#') Easy to Customize
+									a(href='#')=`${event.var_eventname}`
 								p
-									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto officiis consequuntur vero error excepturi.
-					// End Service Icon 1
-					// Start Service Icon 2
-					.col-md-4.col-sm-6
-						.service-box
-							.service-icon
-								i.fa.fa-cubes
-							.service-content
-								h4
-									a(href='#') 100+ Components
-								p
-									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto officiis consequuntur vero error excepturi.
-					// End Service Icon 2
-					// Start Service Icon 3
-					.col-md-4.col-sm-6
-						.service-box
-							.service-icon
-								i.fa.fa-tachometer
-							.service-content
-								h4
-									a(href='#') Super Fast
-								p
-									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto officiis consequuntur vero error excepturi.
-					// End Service Icon 3
-					// Start Service Icon 4
-					.col-md-4.col-sm-6
-						.service-box
-							.service-icon
-								i.fa.fa-check
-							.service-content
-								h4
-									a(href='#') Clean Design
-								p
-									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto officiis consequuntur vero error excepturi.
-					// End Service Icon 4
-					// Start Service Icon 5
-					.col-md-4.col-sm-6
-						.service-box
-							.service-icon
-								i.fa.fa-flash
-							.service-content
-								h4
-									a(href='#') Bootstrap 4 UI Kit
-								p
-									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto officiis consequuntur vero error excepturi.
-					// End Service Icon 5
-					// Start Service Icon 6
-					.col-md-4.col-sm-6
-						.service-box
-							.service-icon
-								i.fa.fa-hand-pointer-o
-							.service-content
-								h4
-									a(href='#') Advanced Features
-								p
-									| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto officiis consequuntur vero error excepturi.
-					// End Service Icon 6
+									| #{event.var_eventdesc.substring(0, 100)}...
+									.learn-more
+										button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
+										// Modal
+										#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+											.modal-dialog.modal-lg(role='document')
+												.modal-content#each
+													.modal-header#headerAppend
+														//- h5#exampleModalLabel.modal-title
+														button.close(type='button', data-dismiss='modal', aria-label='Close')
+															span.p-3(aria-hidden='true') ×
+													.modal-body#bodyAppend
+													.modal-body#reqAppend
+													.modal-footer
+														button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button') Save Changes
+				.col-md-12.text-center
+					.learn-more
+						button.btn.std-btn.btn-common(type='button') View All
+	section#portfolio.section-padding
+		.container
+			.row
+				.col-md-12
+					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Portfolio
+			.row
+				.col-lg-12.col-md-12
+					.controls.text-center.wow.fadeInUpQuick(data-wow-delay='.6s')
+						a.filter.btn.btn-common.active(data-filter='all')
+							| All
+						a.filter.btn.btn-common(data-filter='.branding')
+							| Branding
+						a.filter.btn.btn-common(data-filter='.marketing')
+							| Marketing
+						a.filter.btn.btn-common(data-filter='.planning')
+							| Planning
+						a.filter.btn.btn-common(data-filter='.research')
+							| Research
+				#portfolio.row.wow.fadeInUpQuick(data-wow-delay='0.8s')
+					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning(style='display: inline-block;', data-bound='')
+						.portfolio-item
+							.portfolio-img
+								img(src='/Helium/img/img1.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+					.col-lg-4.col-md-6.col-xs-12.mix.branding.planning(style='display: inline-block;', data-bound='')
+						.portfolio-item
+							.portfolio-img
+								img(src='./Helium/img/img2.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+					.col-lg-4.col-md-6.col-xs-12.mix.branding.research(style='display: inline-block;', data-bound='')
+						.portfolio-item
+							.portfolio-img
+								img(src='/Helium/img/img3.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+					.col-lg-4.col-md-6.col-xs-12.mix.marketing.research(style='display: inline-block;', data-bound='')
+						.portfolio-item
+							.portfolio-img
+								img(src='/Helium/img/img4.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning(style='display: inline-block;', data-bound='')
+						.portfolio-item
+							.portfolio-img
+								img(src='/Helium/img/img5.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+					.col-lg-4.col-md-6.col-xs-12.mix.planning.research(style='display: inline-block;', data-bound='')
+						.portfolio-item
+							.portfolio-img
+								img(src='/Helium/img/img6.jpg', alt='')
+							.portfoli-content
+								.sup-desc-wrap
+									.sup-desc-inner
+										.sup-link
+											a.left-link(href='#')
+												i.fa.fa-link
+											a.right-link(href='#')
+												i.fa.fa-heart
+										.sup-meta-wrap
+											a.sup-title(href='#')
+												h4 TITLE HERE
+											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+	#feature.section-padding
+		.container
+			.row
+				.col-md-12
+					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Features
+			.row
+				.col-lg-4.col-md-6.col-xs-12
+					.featured-box-item
+						.featured-icon
+							i.fa.fa-bolt
+						.featured-content
+							h4 Bootstrap 4
+							p
+								| Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et magna aliqua.
+				.col-lg-4.col-md-6.col-xs-12
+					.featured-box-item
+						.featured-icon
+							i.fa.fa-diamond
+						.featured-content
+							h4 Clean Design
+							p
+								| Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et magna aliqua.
+				.col-lg-4.col-md-6.col-xs-12
+					.featured-box-item
+						.featured-icon
+							i.fa.fa-cubes
+						.featured-content
+							h4 100+ Components
+							p
+								| Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et magna aliqua.
+				.col-lg-4.col-md-6.col-xs-12
+					.featured-box-item
+						.featured-icon
+							i.fa.fa-cogs
+						.featured-content
+							h4 Easy to Customize
+							p
+								| Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et magna aliqua.
+				.col-lg-4.col-md-6.col-xs-12
+					.featured-box-item
+						.featured-icon
+							i.fa.fa-check
+						.featured-content
+							h4 Pixel Perfect
+							p
+								| Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et magna aliqua.
+				.col-lg-4.col-md-6.col-xs-12
+					.featured-box-item
+						.featured-icon
+							i.fa.fa-cloud
+						.featured-content
+							h4 Cloud Backup
+							p
+								| Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et magna aliqua.
+	#counter
+		.container
+			.row.count-to-sec
+				.col-lg-3.col-md-6.col-xs-12.count-one
+					span.icon
+						i.fa.fa-download  
+					h3.timer.count-value(data-to='561', data-speed='1000') 561
+					hr.width25-divider
+					small.count-title Downloads
+				.col-lg-3.col-md-6.col-xs-12.count-one
+					span.icon
+						i.fa.fa-user  
+					h3.timer.count-value(data-to='950', data-speed='1000') 950
+					hr.width25-divider
+					small.count-title Developers
+				.col-lg-3.col-md-6.col-xs-12.count-one
+					span.icon
+						i.fa.fa-desktop  
+					h3.timer.count-value(data-to='978', data-speed='1000') 978
+					hr.width25-divider
+					small.count-title Lines of code written
+				.col-lg-3.col-md-6.col-xs-12.count-one
+					span.icon
+						i.fa.fa-coffee  
+					h3.timer.count-value(data-to='1700', data-speed='1000') 1700
+					hr.width25-divider
+					small.count-title Cups of coffee consumed
+	#team.team-members-tow.section-padding
+		.container
+			.row
+				.col-md-12
+					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Our Team
+			.row
+				.col-lg-4.col-md-6.col-xs-12
+					figure
+						img(src='/Helium/img/team-05.jpg', alt='')
+						.image-overlay
+							.overlay-text.text-center
+								.info-text
+									strong Melody Clark
+									span UX Specialist
+								hr.small-divider
+								ul.social-icons
+									li
+										a(href='#')
+											i.fa.fa-facebook(aria-hidden='true')
+									li
+										a(href='#')
+											i.fa.fa-twitter(aria-hidden='true')
+									li
+										a(href='#')
+											i.fa.fa-instagram(aria-hidden='true')
+				.col-lg-4.col-md-6.col-xs-12
+					figure
+						img(src='/Helium/img/team-06.jpg', alt='')
+						.image-overlay
+							.overlay-text.text-center
+								.info-text
+									strong Danny Burton
+									span Senior Designer
+								hr.small-divider
+								ul.social-icons
+									li
+										a(href='#')
+											i.fa.fa-facebook(aria-hidden='true')
+									li
+										a(href='#')
+											i.fa.fa-twitter(aria-hidden='true')
+									li
+										a(href='#')
+											i.fa.fa-instagram(aria-hidden='true')
+				.col-lg-4.col-md-6.col-xs-12
+					figure
+						img(src='/Helium/img/team-07.jpg', alt='')
+						.image-overlay
+							.overlay-text.text-center
+								.info-text
+									strong Elizabeth Jones
+									span Art Director
+								hr.small-divider
+								ul.social-icons
+									li
+										a(href='#')
+											i.fa.fa-facebook(aria-hidden='true')
+									li
+										a(href='#')
+											i.fa.fa-twitter(aria-hidden='true')
+									li
+										a(href='#')
+											i.fa.fa-instagram(aria-hidden='true')
+	section#pricing.section-padding
+		.container
+			.row
+				.col-md-12
+					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Pricing Table
+			.row
+				.col-lg-4.col-md-6.col-xs-12
+					.pricing-table-item
+						.plan-name
+							h3 Basic
+						.plan-price
+							.price-value $ 10
+							.interval per month
+						.plan-list
+							ul
+								li
+									i.fa.fa-check
+									| 2GB Disk Space
+								li
+									i.fa.fa-check
+									| 3 Sub Domains
+								li
+									i.fa.fa-check
+									| 12 Database
+								li
+									i.fa.fa-check
+									| Unlimited Users
+						.plan-signup
+							a.btn.btn-common(href='#') Get Started
+				.col-lg-4.col-md-6.col-xs-12
+					.pricing-table-item.table-active
+						.plan-name
+							h3 Premium
+						.plan-price
+							.price-value $ 69 
+							.interval per month
+						.plan-list
+							ul
+								li
+									i.fa.fa-check
+									| 10GB Disk Space
+								li
+									i.fa.fa-check
+									| 5 Sub Domains
+								li
+									i.fa.fa-check
+									| 12 Database
+								li
+									i.fa.fa-check
+									| Unlimited Users
+						.plan-signup
+							a.btn.btn-common(href='#') Get Started
+				.col-lg-4.col-md-6.col-xs-12
+					.pricing-table-item
+						.plan-name
+							h3 Unltimate
+						.plan-price
+							.price-value $ 79 
+							.interval per month
+						.plan-list
+							ul
+								li
+									i.fa.fa-check
+									| 50GB Disk Space
+								li
+									i.fa.fa-check
+									| 20 Sub Domains
+								li
+									i.fa.fa-check
+									| 36 Database
+								li
+									i.fa.fa-check
+									| Unlimited Users
+						.plan-signup
+							a.btn.btn-common(href='#') Get Started
+	.single-testimonial-area
+		.container
+			#single-testimonial-item.owl-carousel.owl-theme(style='opacity: 1; display: block;')
+				.owl-wrapper-outer
+					.owl-wrapper(style='width: 6660px; left: 0px; display: block;')
+						.owl-item(style='width: 1110px;')
+							.item
+								.row.justify-content-md-center
+									.col-lg-8.col-md-12.col-xs-12.col-md-auto
+										.testimonial-inner.text-md-center
+											blockquote
+												| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id ipsam, non ut molestiae rerum praesentium repellat debitis iure reiciendis, eius culpa beatae commodi facere ad numquam. Quisquam dignissimos similique sunt iure fugit, omnis vel cupiditate repellendus magni nihil molestiae quam, delectus
+											.testimonial-images
+												img.img-circle.text-md-center(src='/Helium/img/img1(1).jpg', alt='')
+											.testimonial-footer
+												i.fa.fa-user
+												|  Arman
+												a(href='#')  UIdeck
+						.owl-item(style='width: 1110px;')
+							.item
+								.row.justify-content-md-center
+									.col-lg-8.col-md-12.col-xs-12.col-md-auto
+										.testimonial-inner.text-md-center
+											blockquote
+												| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id ipsam, non ut molestiae rerum praesentium repellat debitis iure reiciendis, eius culpa beatae commodi facere ad numquam. Quisquam dignissimos similique sunt iure fugit, omnis vel cupiditate repellendus magni nihil molestiae quam, delectus
+											.testimonial-images
+												img.img-circle.text-md-center(src='/Helium/img/img2(1).jpg', alt='')
+											.testimonial-footer
+												i.fa.fa-user
+												|  Jeniffer
+												a(href='#')  GrayGrids
+						.owl-item(style='width: 1110px;')
+							.item
+								.row.justify-content-md-center
+									.col-lg-8.col-md-12.col-xs-12.col-md-auto
+										.testimonial-inner.text-md-center
+											blockquote
+												| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id ipsam, non ut molestiae rerum praesentium repellat debitis iure reiciendis, eius culpa beatae commodi facere ad numquam. Quisquam dignissimos similique sunt iure fugit, omnis vel cupiditate repellendus magni nihil molestiae quam, delectus
+											.testimonial-images
+												img.img-circle.text-md-center(src='/Helium/img/img3(1).jpg', alt='')
+											.testimonial-footer
+												i.fa.fa-user
+												|  Elon Musk
+												a(href='#')  Tesla
+				.owl-controls.clickable
+					.owl-buttons
+						.owl-prev
+							i.fa.fa-angle-left
+						.owl-next
+							i.fa.fa-angle-right
+	section#contact.contact-form.section-padding
+		.container
+			.row
+				.col-md-12
+					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Contact Us
+			.row
+				.col-lg-8.col-md-6.col-xs-12
+					h3.title-head.text-left Get in touch
+					form.contact-form(data-toggle='validator', novalidate='true')
+						.row
+							.col-lg-4.col-md-12.col-xs-12
+								.form-group
+									i.contact-icon.fa.fa-user
+									input#name.form-control(type='text', placeholder='Full Name', required='', data-error='Please enter your name')
+									.help-block.with-errors
+							.col-lg-4.col-md-12.col-xs-12
+								.form-group
+									i.contact-icon.fa.fa-envelope-o
+									input#email.form-control(type='email', placeholder='Email', required='', data-error='Please enter your email')
+									.help-block.with-errors
+							.col-lg-4.col-md-12.col-xs-12
+								.form-group
+									i.contact-icon.fa.fa-pencil-square-o
+									input#subject.form-control(type='text', placeholder='Subject', required='', data-error='Please enter your Subject')
+									.help-block.with-errors
+							.col-lg-12.col-md-12.col-xs-12
+								textarea#message.form-control(rows='4', placeholder='Message', required='', data-error='Please enter your message')
+								.help-block.with-errors
+								button#form-submit.btn.btn-common.btn-form-submit.disabled(type='submit', style='pointer-events: all; cursor: pointer;') Send Message
+								#msgSubmit.h3.text-center.hidden
+								.clearfix
+				.col-lg-4.col-md-6.col-xs-12
+					h4.contact-info-title.text-left Contact Information
+					.contact-info
+						address
+							i.lni-map-marker.icons.cyan-color.contact-info-icon
+							| Level 13, 2 Elizabeth St, Melbourne,
+						.tel-info
+							a(href='tel:1800452308')
+								i.lni-mobile.icons.cyan-color.contact-info-icon
+								| 1800 452 308
+							a(href='tel:+61(8)82343555')
+								i.lni-phone.icons.cyan-color.contact-info-icon
+								| +61 (8) 8234 3555
+						a(href='mailto:hello@spiritapp.com')
+							i.lni-envelope.icons.cyan-color.contact-info-icon
+							| admin@uideck.com
+						a(href='#')
+							i.lni-tab.icons.cyan-color.contact-info-icon
+							| www.uideck.com
+						ul.social-links
+							li
+								a.fa.fa-facebook(href='#')
+							li
+								a.fa.fa-twitter(href='#')
+							li
+								a.fa.fa-instagram(href='#')
+							li
+								a.fa.fa-linkedin(href='#')
+	block addjs
+		script.
+			$(document).ready(function(){
+				$('.inquireButton').click(function(){
+					var idNow = $(this).val();
+					console.log(idNow)
+						$.post('/index/query',{id:idNow})
+							.done(data =>{
+							
+							$('#headerAppend').append(`
+								<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
+								`)
+								$('#bodyAppend').append(`
+								<p><strong>Service Description</strong></p>
+								<p>${data.firstQuery.var_eventdesc}</p>
+								<br>
+								<p><strong>Requirements</strong></p>
+								
+							`)
+							for(i=0;i<data.secondQuery.length;i++){
+							$('#reqAppend').append(`
+								<p>${data.secondQuery[i].var_reqname}</p>
+							`)
+							}
+							$('#inquireModal').modal('show');	
+							$('#inquireModal').on('hidden.bs.modal',function(){
+								$('#bodyAppend').empty()
+								$('#headerAppend').empty()
+								$('#reqAppend').empty()
+
+							})
+							$('#cancelButton').css('display', 'block');
+							$('#proceedButton').css('display', 'block');
+							})
+									
+				})
+			})
+			
