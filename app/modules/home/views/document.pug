@@ -153,6 +153,8 @@ block prepend main
 							
 	block addjs
 		script.
-			function myFunction() {
-				location.reload();
-			}
+			const loader = document.getElementById('loader');
+			setTimeout(() => {
+				loader.classList.remove('fadeOut');
+				loader.classList.add('fadeIn');
+			}, 2000);
