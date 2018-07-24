@@ -137,13 +137,13 @@ block prepend main
 				.row
 					.col-md-12.text-center
 						.learn-more
-							button.btn.std-btn.btn-common.btn-info(type='button' onclick="myFunction()") Submit
+							button.btn.std-btn.btn-common.btn-info(type='button') Submit
 													// Modal
-				#inquireModal.modal.fade2(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-					.modal-dialog.modal-lg(role='document')
+				#submitModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+					.modal-dialog(role='document')
 						.modal-content
 							.modal-header#headerAppend
-								//- h5#exampleModalLabel.modal-title
+								h5#exampleModalLabel.modal-title.text-success Success!
 								button.close(type='button', data-dismiss='modal', aria-label='Close')
 									span.p-3(aria-hidden='true') ×
 							.modal-body#bodyAppend
@@ -153,8 +153,15 @@ block prepend main
 							
 	block addjs
 		script.
-			//- const loader = document.getElementById('loader');
-			//- 	loader.classList.remove('fadeOut');
-			//- setTimeout(() => {
-			//- 	loader.classList.add('fadeIn');
-			//- }, 2000);
+			$(".btn.std-btn.btn-common.btn-info").click(function(){
+				const loader = document.getElementById('loader');
+					loader.classList.toggle('fadeOut');
+					loader.classList.toggle('fadeIn');
+				setTimeout(() => {
+					loader.classList.toggle('fadeOut');
+					loader.classList.toggle('fadeIn');
+					setTimeout(() => {
+					$('#submitModal').modal('show');
+					},300);
+				}, 2000);
+			});
