@@ -7,10 +7,22 @@
     z-index: 9999999;
 }
 
+.modal-dialog.modal-lg {
+    position:absolute;
+    top:45% !important;
+    left: 16%;
+    transform: translate(0, -50%) !important;
+    -ms-transform: translate(0, -50%) !important;
+    -webkit-transform: translate(0, -50%) !important;
+    margin:auto 5%;
+    width:90%;
+    height:80%;
+  }
+
 .modal-dialog {
     position:absolute;
     top:45% !important;
-    left: 15%;
+    left: 26%;
     transform: translate(0, -50%) !important;
     -ms-transform: translate(0, -50%) !important;
     -webkit-transform: translate(0, -50%) !important;
