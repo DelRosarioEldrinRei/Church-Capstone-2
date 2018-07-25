@@ -231,7 +231,7 @@ block prepend main
 	#feature.section-padding
 		.container
 			.row
-				.col-md-12\
+				.col-md-12
 
 					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Features
 			.row
@@ -567,6 +567,7 @@ block prepend main
 							.done(data =>{
 							
 							$('#headerAppend').append(`
+								<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
 								<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
 								`)
 								$('#bodyAppend').append(`
@@ -591,7 +592,9 @@ block prepend main
 							$('#cancelButton').css('display', 'block');
 							$('#proceedButton').css('display', 'block');
 								$('#proceedButton').click(function(){
-									
+									$.post('/login/query',{id:data.firstQuery.int_eventID}).done(data =>{
+										window.location='/login'
+									})
 								})
 							})
 									

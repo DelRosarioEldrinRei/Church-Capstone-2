@@ -4,20 +4,26 @@ var logoutRouter = express.Router();
 var signupRouter = express.Router();
 var authMiddleware = require('./middlewares/auth');
 var db = require('../../lib/database')();
-
 loginRouter.route('/')
     .get(authMiddleware.noAuthed, (req, res) => {
         res.render('auth/views/login', req.query);
     })
-
+loginRouter.route('/query')
+    .post(authMiddleware.noAuthed, (req, res) => {
+        console.log(req.body.id)
+        req.session.eventId = req.body.id
+        res.render('auth/views/login');
+    })
 loginRouter.route('/')
     .get(authMiddleware.noAuthed, (req, res) => {
         res.render('auth/views/login', req.query);
     })
     .post((req, res) => {
         console.log('POST LOGIN');
+        console.log(req.session)
         var db = require('../../lib/database')();
         db.query(`SELECT * FROM tbl_user WHERE var_username="${req.body.user_username}"`, (err, results, fields) => {
+        
             if (err) throw err;
             if (results.length === 0) return res.redirect('/index?incorrect');
 
@@ -61,11 +67,15 @@ loginRouter.route('/')
                 
             }
 
-            else{                
+            else{
+                              
+                if(req.session.eventId == 3){
                 delete user.var_password;
                 req.session.user = user;
                 console.log(req.session);
-                return res.redirect('/guest');
+                return res.redirect('/guest/baptism/form');
+                }
+                
             }
         });
     })

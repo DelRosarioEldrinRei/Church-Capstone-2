@@ -1,4 +1,4 @@
-extends ../../../../templates/masterguests
+extends ../../../../templates/guests
 block main
 	.profile-page
 		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/docu1.jpg');")
@@ -23,20 +23,9 @@ block main
 										option Baptismal Certificate
 										option Confirmation Certificate
 										option First Communion Certificate
-							.form-group.form-file-upload.form-file-multiple
-								.fileinput.fileinput-new.text-center(data-provides='fileinput')
-									.fileinput-new.thumbnail.img-no-padding(style='max-width: 400px; max-height: 250px;')
-										img(src='/img/image_holder.png', alt='...')
-									.fileinput-preview.fileinput-exists.thumbnail.img-no-padding(style='max-width: 400px; max-height: 250px;')
-									div
-										span.btn.btn-default.btn-file.btn-round
-											span.fileinput-new 
-												i.fa.fa-cloud-upload
-											span.fileinput-exists Change
-											input(type='file', name='image' accept='image/*' required)
-										a.btn.btn-link.btn-danger.fileinput-exists.btn-round(href='javascript:void(0)', data-dismiss='fileinput')
-											i.fa.fa-times
-											|  Remove
+							.form-group
+								.file-loading
+									input#file-0b.file(type='file',accept='image/*',name="image")
 							.row
 								.col-md-12.my-3
 									label.label-control Person in the Certificate:
@@ -53,24 +42,8 @@ block main
 							.row
 								.col-md-12.my-5.text-center
 									button.btn.btn-primary(type="submit") Submit
-	block addjs
-		script.
-		script.
-			$(document).ready(function(){
-				$('.inquireButton').click(function(){
-					var idNow = $(this).val();
-					console.log(idNow)
-						$.post('/document/query',{id:idNow})
-							.done(data =>{
-							$('#headerAppend').append(`
-							<h5 id="exampleModalLabel" class="modal-title">${data.var_eventname}</h5>
-							`)
-							$('#bodyAppend').append(`
-							<p>${data.var_eventdesc}</p>
-							`)
-							$('#inquireModal').modal('show');	
-							$('#cancelButton').css('display', 'block');
-							$('#proceedButton').css('display', 'block');
-							})
-									
-				})
+			block addjs
+				script.
+					$(document).ready(function(){
+						$("#file-0b").fileinput();
+					})

@@ -18,7 +18,12 @@ var upload = multer({ storage: storage})
 //===============================================================================================//
     guestRouter.use(authMiddleware.guestAuth)
     guestRouter.get('/', (req, res)=>{
-        res.render('guest/views/index')
+        var queryString1 =`SELECT * FROM tbl_event where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' or var_eventname = 'Establishment Blessing' `
+        db.query(queryString1, (err, results, fields) => {
+          var events =results;
+            if (err) console.log(err);
+            return res.render('guest/views/index',{ events : events });
+        });
     });
 
     guestRouter.get('/schedule', (req, res)=>{
