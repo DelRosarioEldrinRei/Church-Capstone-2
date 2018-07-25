@@ -29,12 +29,15 @@ html
             .form-group
               .peers.ai-c.jc-sb.fxw-nw
                 .peer
-                  .checkbox.checkbox-circle.checkbox-info.peers.ai-c
-                    input#inputCall1.peer(type='checkbox', name='inputCheckboxesCall')
-                    label.peers.peer-greed.js-sb.ai-c(for='inputCall1')
-                      span.peer.peer-greed Remember Me
+                  a.peer.peer-greed(href="#") Don't have an account? Sign-up
+                  //- .checkbox.checkbox-circle.checkbox-info.peers.ai-c
+                  //-   input#inputCall1.peer(type='checkbox', name='inputCheckboxesCall')
+                  //-   label.peers.peer-greed.js-sb.ai-c(for='inputCall1')
                 .peer
                   button.btn.btn-primary(type="submit") Login
+          a.peer.peer-greed.mt-5.pt-5.text-center(href="/")
+            i.ti-arrow-left
+            |  Go Back
   script(type='text/javascript', src='/js/jquery.min.js')
   script(type='text/javascript', src='/admin/vendor.js')
   script(type='text/javascript', src='/admin/bundle.js')
