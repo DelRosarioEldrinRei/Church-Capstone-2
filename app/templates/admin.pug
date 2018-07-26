@@ -5,6 +5,7 @@ html
 		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
 		title Admin
 		link(href='/css/loader.css', rel='stylesheet')
+		link(rel='stylesheet', href='/css/modal-anim.css')
 		link(href='/admin/style.css', rel='stylesheet')
 	body.app
 		// @TOC
@@ -87,6 +88,8 @@ html
 								span.arrow
 									i.ti-angle-right
 							ul.dropdown-menu
+								li
+									a(href='/admin/transaction-documentrequest') Document Request
 								li
 									a(href='google-maps.html') Google Map
 								li
@@ -283,7 +286,12 @@ html
 						| Copyright © 2017 Designed by 
 						a(href='https://colorlib.com', target='_blank', title='Colorlib') Colorlib
 						| . All rights reserved.
-	script(type='text/javascript', src='/js/jquery.min.js')
-	script(type='text/javascript', src='/js/loader.js')
-	script(type='text/javascript', src='/admin/vendor.js')
-	script(type='text/javascript', src='/admin/bundle.js')
+	script(src='/js/jquery.min.js')
+	script(src='/js/loader.js')
+	script(src='/js/jquery-ui.min.js')
+	script(src='/Helium/js/bootstrap.min.js')
+	script(src='/js/moment.min.js')
+	script(src="/js/jspdf.min.js")
+	script(src='/admin/vendor.js')
+	script(src='/admin/bundle.js')
+	block addjs
