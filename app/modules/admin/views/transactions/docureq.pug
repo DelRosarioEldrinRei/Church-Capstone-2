@@ -86,7 +86,11 @@ block addjs
 								console.log('RESULT:', dataUrl)
 								var doc = new jsPDF();
 								
+<<<<<<< HEAD
 								doc.addImage(dataUrl,'PNG',0,0,$(window).width(),$(window).height())
+=======
+								doc.addImage(dataUrl,'png',0,0,210,297)
+>>>>>>> 834ce348548b921243a7e2c33a3f5042de7b9633
 								doc.save('document.pdf')
 								})
 								
