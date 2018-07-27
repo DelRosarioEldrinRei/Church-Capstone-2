@@ -62,7 +62,7 @@ block addjs
 						</div>
 						<div class="form-group">
 							<label class="label-control">Document</label>
-							<img id=imageid src=${data.var_doctemplatepath}>
+								<img id=imageid src=${data.var_doctemplatepath}>
 						</div>
 						`)
 						$('#viewModal').modal('show');	
@@ -84,14 +84,14 @@ block addjs
 								}
 								toDataURL(data.var_doctemplatepath, function(dataUrl) {
 								console.log('RESULT:', dataUrl)
-								var doc = new jsPDF();
-								
-<<<<<<< HEAD
-								doc.addImage(dataUrl,'PNG',0,0,$(window).width(),$(window).height())
-=======
-								doc.addImage(dataUrl,'png',0,0,210,297)
->>>>>>> 834ce348548b921243a7e2c33a3f5042de7b9633
-								doc.save('document.pdf')
+								var docDefinition ={
+									content: [{
+										image:dataUrl,
+										width:500,
+										height:500,
+									}]
+								}
+								pdfMake.createPdf(docDefinition).open();	
 								})
 								
 							})
