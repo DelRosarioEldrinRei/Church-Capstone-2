@@ -29,74 +29,75 @@ block prepend main
 																td=request.char_docustatus
 																td.td-actions.text-center
 																	button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${request.int_requestID}`)
-																		i.material-icons person
-	#viewModal.modal.modal-warning.fade
-			.modal-dialog
-			.modal-content
-				.modal-header
-				button.close(type='button', data-dismiss='modal', aria-label='Close')
-					span(aria-hidden='true') ×
-				h4.modal-title Warning
-				.modal-body#documentAppend
-				.modal-footer
-					button.btn.btn-outline.pull-left#cancelButton(type='button', data-dismiss='modal') Cancel
-					button.btn.btn-outline.pull-right#generateButton Generate	
+																		i.ti-user
+		#append.container
+			| Hi
+	#viewModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header
+						h5.modal-title Modal Title
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true') ×
+						//- h4.modal-title Warning
+					.modal-body#documentAppend
+					.modal-footer
+						button.btn.btn-outline.pull-left#cancelButton(type='button', data-dismiss='modal') Cancel
+						button.btn.btn-outline.pull-right#generateButton Generate
 block addjs
-	script(src='js/forIndex.js')
 	script.
 		$(document).ready(function(){
 			$('.viewButton').click(function(){
 				var idNow = $(this).val();
 				console.log(idNow)
-					$.post('/admin/transaction-documentrequest/query',{id:idNow})
-						.done(data =>{
-						var date_requested = moment(data.date_requested, 'YYYY-MM-DD').format('YYYY-MM-DD');
-						$('#documentAppend').append(`
-						<div class="form-group">
-							<label class="label-control">Name of tenant</label>
-							<p>${data.var_docfirstname} ${data.var_docfirstname}</p>
-						</div>
-						<div class="form-group">
-							<label class="label-control">Date</label>
-							<p>${data.date_docurequested}</p>
-						</div>
-						<div class="form-group">
-							<label class="label-control">Document</label>
-							<img id=imageid src=${data.var_doctemplatepath}>
-						</div>
-						`)
-						$('#viewModal').modal('show');	
-						$('#cancelButton').css('display', 'block');
-						$('#generateButton').css('display', 'block');
-						$('#generateButton').click(function(){
-								function toDataURL(url, callback) {
-								var xhr = new XMLHttpRequest();
-								xhr.onload = function() {
-									var reader = new FileReader();
-									reader.onloadend = function() {
-									callback(reader.result);
-									}
-									reader.readAsDataURL(xhr.response);
-								};
-								xhr.open('GET', url);
-								xhr.responseType = 'blob';
-								xhr.send();
+				$.post('/admin/transaction-documentrequest/query',{id:idNow})
+					.done(data =>{
+					var date_requested = moment(data.date_requested, 'YYYY-MM-DD').format('YYYY-MM-DD');
+					$('#documentAppend').append(`
+					<div class="form-group">
+						<label class="label-control">Name of tenant</label>
+						<p>${data.var_docfirstname} ${data.var_docfirstname}</p>
+					</div>
+					<div class="form-group">
+						<label class="label-control">Date</label>
+						<p>${data.date_docurequested}</p>
+					</div>
+					<div class="form-group">
+						<label class="label-control">Document</label>
+						<img id=imageid src=${data.var_doctemplatepath}>
+					</div>
+					`)
+					$('#viewModal').modal('show');	
+					$('#cancelButton').css('display', 'block');
+					$('#generateButton').css('display', 'block');
+					$('#generateButton').click(function(){
+						function toDataURL(url, callback) {
+							var xhr = new XMLHttpRequest();
+							xhr.onload = function() {
+								var reader = new FileReader();
+								reader.onloadend = function() {
+								callback(reader.result);
 								}
-								toDataURL(data.var_doctemplatepath, function(dataUrl) {
-								console.log('RESULT:', dataUrl)
-								var doc = new jsPDF();
-								
-<<<<<<< HEAD
-								doc.addImage(dataUrl,'PNG',0,0,$(window).width(),$(window).height())
-=======
-								doc.addImage(dataUrl,'png',0,0,210,297)
->>>>>>> 834ce348548b921243a7e2c33a3f5042de7b9633
-								doc.save('document.pdf')
-								})
-								
-							})
+								reader.readAsDataURL(xhr.response);
+							};
+							xhr.open('GET', url);
+							xhr.responseType = 'blob';
+							xhr.send();
+						}
+						toDataURL(data.var_doctemplatepath, function(dataUrl) {
+							var docDefinition = { 
+								content: [
+									{
+										image: dataUrl,
+										width: 500,
+										height: 500,
+									}
+								]
+							}
+							pdfMake.createPdf(docDefinition).open();
 						})
-							
+					})
+				})
 			})
 		})
 		
