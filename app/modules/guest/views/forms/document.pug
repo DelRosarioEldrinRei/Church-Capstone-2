@@ -16,7 +16,6 @@ block main
 						h3.text-center.text-uppercase.guidelines--text Request Form
 				.row
 					.col-md-8.my-auto.mx-auto
-						form(action="/guest/document/form" enctype="multipart/form-data" method='post')
 							.form-group
 								label.label-control Document
 									select.selectpicker.form-control#documenttype(type="text" name='documenttype')
@@ -31,19 +30,46 @@ block main
 									label.label-control Person in the Certificate:
 							.row
 								.col-md-6.my-3
-									input#lastName.form-control(type='text' name='lastname' placeholder='Last name')
+									input#lastname.form-control(type='text' name='lastname' placeholder='Last name')
 								.col-md-6.my-3
-									input#firstName.form-control(type='text' name='firstname' placeholder='First name')
+									input#firstname.form-control(type='text' name='firstname' placeholder='First name')
 							.row
 								.col-md-12.my-3
 									.form-group
 										label(for='exampleFormControlTextarea1') Purpose:
-										textarea#exampleFormControlTextarea1.form-control(rows='3' name= 'purpose')
+										textarea#purpose.form-control(rows='3' name= 'purpose')
 							.row
 								.col-md-12.my-5.text-center
-									button.btn.btn-primary(type="submit") Submit
+									button.btn.btn-primary#submit(type="button") Submit
 			block addjs
 				script.
 					$(document).ready(function(){
 						$("#file-0b").fileinput();
+						$('#submit').click(function(){
+							var formData = new FormData();
+							formData.append('documenttype', $('#documenttype').val())
+							formData.append('image', $('#file-0b')[0].files[0]);
+							formData.append('lastname', $('#lastname').val())
+							formData.append('firstname', $('#firstname').val())
+							formData.append('purpose', $('#purpose').val())
+							$.ajax({
+								type:'POST',
+								url:'/guest/document/form',
+								data: formData,
+								processData:false,
+								contentType:false,
+								success: function(data){
+									swal({
+										title:'You can wait until 3 fucking days',
+										icon:'success',
+										buttons: {
+											Okay: 'okay'
+										}
+									}).then((value)=>{
+										window.location='/guest'
+									})
+								}
+							})
+						})
+
 					})

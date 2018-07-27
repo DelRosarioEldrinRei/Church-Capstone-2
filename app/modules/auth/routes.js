@@ -67,15 +67,45 @@ loginRouter.route('/')
                 
             }
 
-            else{
-                              
+            if(user.char_usertype=="Guest"){         
                 if(req.session.eventId == 3){
                 delete user.var_password;
                 req.session.user = user;
                 console.log(req.session);
                 return res.redirect('/guest/baptism/form');
                 }
+                else if(req.session.eventId == 4){
+                    delete user.var_password;
+                    req.session.user = user;
+                    console.log(req.session);
+                    return res.redirect('/guest/funeral/form');
+                }
+                else if(req.session.eventId == 5){
+                    delete user.var_password;
+                    req.session.user = user;
+                    console.log(req.session);
+                    return res.redirect('/guest/marriage/form');
+                }
+                else if(req.session.eventId == 6){
+                    delete user.var_password;
+                    req.session.user = user;
+                    console.log(req.session);
+                    return res.redirect('/guest/communion/form');
+                }
+                else if(req.session.eventId == 14){
+                    delete user.var_password;
+                    req.session.user = user;
+                    console.log(req.session);
+                    return res.redirect('/guest/document/form');
+                }
                 
+                else{
+                    delete user.var_password;
+                    req.session.user = user;
+                    console.log(req.session);
+                    return res.redirect('/guest')
+                    }  
+
             }
         });
     })
