@@ -69,19 +69,19 @@ adminRouter.use(authMiddleware.adminAuth)
     });
 
 
-    adminRouter.post('/maintenance-events/cancel/:int_specialeventID', (req, res) => {
-        const queryString = `UPDATE tbl_specialevent SET var_approvalstatus = "Cancelled"
-        WHERE int_specialeventID= ${req.params.int_specialeventID}`; 
+    // adminRouter.post('/maintenance-events/cancel/:int_specialeventID', (req, res) => {
+    //     const queryString = `UPDATE tbl_specialevent SET var_approvalstatus = "Cancelled"
+    //     WHERE int_specialeventID= ${req.params.int_specialeventID}`; 
         
-        db.query(queryString, (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/admin/maintenance-events');
+    //     db.query(queryString, (err, results, fields) => {        
+    //         if (err) throw err;
+    //         return res.redirect('/admin/maintenance-events');
             
-        });
-    });
+    //     });
+    // });
     adminRouter.post('/maintenance-events/query', (req, res) => {
         const queryString = `select * from tbl_specialevent WHERE int_specialeventID = ?`;
-        db.query(queryString,[req.body.id2], (err, results, fields) => {        
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
         if (err) throw err;
         res.send(results[0])
         console.log(results[0])
@@ -101,15 +101,13 @@ adminRouter.use(authMiddleware.adminAuth)
 //SERVICES
 //=======================================================
     adminRouter.get('/maintenance-services', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_event where var_type = "Sacrament"`
-        db.query(queryString1, (err, results, fields) => {
-            if (err) console.log(err);
-            var sacraments = results;  
-            var queryString2 =`SELECT * FROM tbl_event where var_type = "Special Service"`
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var services = results;        
-            return res.render('admin/views/maintenance/services',{ sacraments : sacraments, services:services });    
+        var queryString1 =`SELECT * FROM tbl_event where char_type = "Sacrament"`
+        db.query(queryString1, (err, results1, fields) => {
+            if (err) console.log(err)  
+            var queryString2 =`SELECT * FROM tbl_event where char_type = "Special Service"`
+            db.query(queryString2, (err, results2, fields) => {
+                if (err) console.log(err);      
+            return res.render('admin/views/maintenance/services',{ sacraments : results1, services:results2 });    
         }); });
     });
 
@@ -117,7 +115,7 @@ adminRouter.use(authMiddleware.adminAuth)
         var queryString= `INSERT INTO tbl_event(
             var_eventname,
             var_eventdesc, 
-            var_type
+            char_type
             ) VALUES(?,?,?);`  
             db.query(queryString, [req.body.eventname,req.body.eventdesc,req.body.event_type], (err, results, fields) => {
                 if (err) throw err;
@@ -136,7 +134,7 @@ adminRouter.use(authMiddleware.adminAuth)
 
 
     adminRouter.post('/maintenance-services/edit', (req, res) => {
-        const queryString = `UPDATE tbl_event SET var_eventname = ?,var_eventdesc = ?, var_type = ? WHERE int_eventID= ?`; 
+        const queryString = `UPDATE tbl_event SET var_eventname = ?,var_eventdesc = ?, char_type = ? WHERE int_eventID= ?`; 
         db.query(queryString,[req.body.eventname,req.body.eventdesc,req.body.eventtype,req.body.id1], (err, results, fields) => {        
             if (err) throw err;
             return res.redirect('/admin/maintenance-services');
@@ -145,7 +143,7 @@ adminRouter.use(authMiddleware.adminAuth)
     adminRouter.post('/maintenance-services/query', (req, res) => {
         var queryString = `SELECT * FROM tbl_event 
         WHERE int_eventID = ?`;
-        db.query(queryString,[req.body.id1], (err, results, fields) => {        
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
             if (err) throw err;
             res.send(results[0])
             console.log(results[0])   
@@ -165,8 +163,8 @@ adminRouter.use(authMiddleware.adminAuth)
 
     adminRouter.post('/maintenance-facilities/addfacility', (req, res) => {
     
-        var queryString= `INSERT INTO tbl_facility(var_facilityname, flt_rentfee) VALUES(?,?);`  
-            db.query(queryString,  [req.body.facilityname, req.body.fee], (err, results, fields) => {
+        var queryString= `INSERT INTO tbl_facility(var_facilityname, var_facilitydesc) VALUES(?,?);`  
+            db.query(queryString,  [req.body.facilityname, req.body.facilitydesc], (err, results, fields) => {
                 if (err) throw err;
                     return res.redirect('/admin/maintenance-facilities');
             });            
@@ -182,7 +180,7 @@ adminRouter.use(authMiddleware.adminAuth)
 
     adminRouter.post('/maintenance-facilities/query', (req, res) => {
         const queryString = `SELECT * FROM tbl_facility WHERE int_facilityID = ?`;
-        db.query(queryString,[req.body.id2], (err, results, fields) => {        
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
             if (err) throw err;
             res.send(results[0])
             console.log(results[0])
@@ -190,9 +188,9 @@ adminRouter.use(authMiddleware.adminAuth)
     });
 
     adminRouter.post('/maintenance-facilities/edit', (req, res) => {
-        const queryString = `UPDATE tbl_facility SET var_facilityname =?, flt_rentfee= ?
+        const queryString = `UPDATE tbl_facility SET var_facilityname =?, var_facilitydesc= ?
         WHERE int_facilityID= ?`;
-        db.query(queryString,[req.body.facilityname, req.body.flt_rentfee,req.body.id1], (err, results, fields) => {        
+        db.query(queryString,[req.body.facilityname, req.body.facilitydesc,req.body.id], (err, results, fields) => {        
             if (err) throw err;
             return res.redirect('/admin/maintenance-facilities');
             
@@ -212,7 +210,7 @@ adminRouter.use(authMiddleware.adminAuth)
 
     adminRouter.post('/maintenance-ministries/addministry', (req, res) => {
     
-        var queryString= `INSERT INTO tbl_ministry(var_ministry_name,var_ministry_desc) VALUES(?,?);`  
+        var queryString= `INSERT INTO tbl_ministry(var_ministryname,var_ministrydesc) VALUES(?,?);`  
             db.query(queryString,  [req.body.ministryname,req.body.ministrydesc], (err, results, fields) => {
                 if (err) throw err;
                     return res.redirect('/admin/maintenance-ministries');
@@ -220,7 +218,7 @@ adminRouter.use(authMiddleware.adminAuth)
         });
     adminRouter.post('/maintenance-ministries/delete', (req, res) => {
         const queryString = `DELETE FROM tbl_ministry
-        WHERE int_ministry_ID= ?`;
+        WHERE int_ministryID= ?`;
         
         db.query(queryString,[req.body.id1], (err, results, fields) => {        
             if (err) throw err;
@@ -232,8 +230,8 @@ adminRouter.use(authMiddleware.adminAuth)
     adminRouter.post('/maintenance-ministries/query', (req, res) => {
         
         var queryString = `SELECT * FROM tbl_ministry 
-        WHERE int_ministry_ID = ?`;
-        db.query(queryString,[req.body.id2], (err, results, fields) => {        
+        WHERE int_ministryID = ?`;
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
             if (err) throw err;
             res.send(results[0])
             console.log(results[0])
@@ -241,8 +239,8 @@ adminRouter.use(authMiddleware.adminAuth)
     });
 
     adminRouter.post('/maintenance-ministries/edit', (req, res) => {
-        const queryString = `UPDATE tbl_ministry SET var_ministry_name =?,var_ministry_desc=?
-        WHERE int_ministry_ID= ?`;
+        const queryString = `UPDATE tbl_ministry SET var_ministryname =?,var_ministrydesc=?
+        WHERE int_ministryID= ?`;
         
         db.query(queryString,[req.body.ministryname,req.body.ministrydesc,req.body.id1], (err, results, fields) => {        
             if (err) throw err;

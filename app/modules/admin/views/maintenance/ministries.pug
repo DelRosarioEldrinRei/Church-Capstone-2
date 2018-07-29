@@ -1,5 +1,4 @@
-extends ../../../../templates/masteradmin1
-block addcss
+extends ../../../../templates/admin
 block prepend main
 	#wrap
 	div(style='clear:both')
@@ -11,7 +10,11 @@ block prepend main
 						
 						.card
 								.card-header.card-header-primary
-										h4.card-title Special Events
+									.row
+										.col-md-6
+											h4.card-title Ministries
+										.col-md-6
+											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add
 								.card-body.table-responsive
 										table.table.table-hover
 												thead.text-primary
@@ -22,14 +25,14 @@ block prepend main
 												tbody
 														each ministry in ministries
 															tr
-																td=ministry.int_ministry_ID
-																td=ministry.var_ministry_name
-																td=ministry.var_ministry_desc
+																td=ministry.int_ministryID
+																td=ministry.var_ministryname
+																td=ministry.var_ministrydesc
 																td.td-actions.text-center
-																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${ministry.int_ministry_ID}`)
-																		i.material-icons close	
-																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${ministry.int_ministry_ID}`)
-																		i.material-icons edit
+																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${ministry.int_ministryID}`)
+																		i.ti-close
+																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${ministry.int_ministryID}`)
+																		i.ti-pencil
 								.card-footer.text-right
 									.col-md-3
 									.col-md-6.text-right
@@ -117,18 +120,18 @@ block addjs
 				});
 		});
 		$('.updateButton').click(function(){
-			var idNow1 = $(this).val();
-			console.log(idNow1)
-				$.post('/admin/maintenance-ministries/query',{id2:idNow1})
+			var idNow = $(this).val();
+			console.log(idNow)
+				$.post('/admin/maintenance-ministries/query',{id:idNow})
 			.done(data=>{
 				$('#updateAppend').append(`
 				<div class="form-group">
 					<label class="label-control">Ministry Name</label>
-					<input type="text" id="ministryname" value="${data.var_ministry_name}" class="form-control"/>
+					<input type="text" id="ministryname" value="${data.var_ministryname}" class="form-control"/>
 				</div>
 				<div class="form-group">
 					<label class="label-control">Ministry Desctription</label>
-					<input type="text" id="ministrydesc" value="${data.var_ministry_desc}" class="form-control"/>
+					<input type="text" id="ministrydesc" value="${data.var_ministrydesc}" class="form-control"/>
 				</div>
 				`)
 				$('#updateModal').modal('show')
@@ -146,7 +149,7 @@ block addjs
 					$.post('/admin/maintenance-ministries/edit',{
 					ministryname:$('#ministryname').val(),
 					ministrydesc:$('#ministrydesc').val(),
-					id1:idNow1
+					id1:idNow
 					})
 					.done(data=>{
 						if(data){

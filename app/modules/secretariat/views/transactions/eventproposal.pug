@@ -1,0 +1,70 @@
+extends ../../../../templates/secretariat
+block addcss
+	//- link(rel='stylesheet' href='css/fullcalendar.css')
+	//- link(rel='stylesheet' href='css/fullcalendar.print.css'  media='print')
+
+block prepend main
+	#wrap
+	//- #calendar
+	div(style='clear:both')
+	.content
+		.container-fluid
+			//- <div class="alert alert-warning" role="alert">
+			//- 	| <cite>Note:</cite> Deadline for sumbission of requirements will be on <u><cite> June 20, 2018</u></cite>
+			//- </div>
+			
+			.row
+				.col-lg-12.col-md-12
+						.card
+								.card-header.card-header-primary
+										h4.card-title Event Proposals
+										
+								.card-body.table-responsive
+										table.table.table-hover
+												thead.text-primary
+														th ID
+														th Event Name
+														th Start
+														th End
+														th Venue
+														//- th Proposed By
+														th Status
+														th.text-center(style=" width:120px") Actions
+												tbody
+														each proposal in proposals
+															tr
+																td=proposal.int_specialeventID
+																td=proposal.var_spceventname
+																td=proposal.time_eventstart
+																td=proposal.time_eventend
+																td=proposal.var_eventvenue
+																//- td=proposal.var_userlname + ", " + proposal.var_userfname
+																td=proposal.var_approvalstatus
+																<td class="td-actions text-right">
+																		a.button(rel="tooltip" class="btn btn-info" href=`/admin/transaction-eventproposal`)
+																				<i class="material-icons">person</i>
+																		a.button(rel="tooltip" class="btn btn-success" href=`/admin/transaction-eventproposal/edit/${proposal.int_specialeventID}`)
+																				<i class="material-icons">edit</i>
+																		a.button(rel="tooltip" class="btn btn-danger" href=`/admin/transaction-eventproposal/delete/${proposal.int_specialeventID}`)
+																				<i class="material-icons">close</i>
+																</td>	
+															
+								.card-footer.text-right
+									.col-md-7
+										<cite title="Source Title">Showing 6 of 25 entries</cite> 
+									.col-md-6.text-right
+										<nav aria-label="Page navigation example">
+											<ul class="pagination justify-content-center">
+												<li class="page-item">
+													<a class="page-link" href="#" tabindex="-1">Previous</a>
+												</li>
+												<li class="page-item"><a class="page-link" href="#">1</a></li>
+												<li class="page-item">
+													<a class="page-link" href="#">Next</a>
+												</li>
+											</ul>
+										</nav>
+			
+block addjs
+	script(src='js/forIndex.js')
+	//- script(src='js/loader.js')

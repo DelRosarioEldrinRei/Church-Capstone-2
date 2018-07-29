@@ -867,6 +867,22 @@ var upload = multer({ storage: storage})
     guestRouter.get('/document/form', (req, res)=>{
         res.render('guest/views/forms/document')
     });
+    guestRouter.post('/document/form/query', (req, res)=>{
+        var queryString =`SELECT tbl_document.var_documenttype,tbl_relation.var_fname,tbl_relation.var_lname,tbl_eventinfo.date_approveddate
+        FROM tbl_document 
+        JOIN tbl_documents_in_events ON tbl_documents_in_events.int_documentID = tbl_document.int_documentID
+        JOIN tbl_eventinfo ON tbl_eventinfo.int_eventID = tbl_documents_in_events.int_eventID
+        JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        WHERE tbl_document.var_documenttype = ?
+        AND tbl_relation.var_fname = ?
+        AND tbl_relation.var_lname = ?
+        AND tbl_eventinfo.date_approveddate = ?`
+        db.query(queryString,[req.body.documentType,req.body.firstName,req.body.lastName,req.body.eventDate],(err,results,fields)=>{
+        if (err) throw err;
+        res.send(results[0])
+        console.log(results[0])
+        })
+    });
 
     guestRouter.post('/document/form',upload.single('image'), (req, res) => {
     console.log(req.file)
@@ -878,8 +894,8 @@ var upload = multer({ storage: storage})
                 var datenow= new Date();
                 console.log(req.session.user);
                 
-            var queryString1 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus) VALUES(?,?,?,?,?,?,?)`;
-                db.query(queryString1, [req.session.user.int_userID, documentID.int_documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Requested"], (err, results, fields) => {
+            var queryString1 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus,date_doceventdate) VALUES(?,?,?,?,?,?,?,?)`;
+                db.query(queryString1, [req.session.user.int_userID, documentID.int_documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Requested",req.body.eventDate], (err, results, fields) => {
                     // console.log(req.body)
                     if (err) throw err;
                     var requestID =results;

@@ -22,22 +22,26 @@ block main
 										option Baptismal Certificate
 										option Confirmation Certificate
 										option First Communion Certificate
-							.form-group
-								.file-loading
-									input#file-0b.file(type='file',accept='image/*',name="image")
 							.row
 								.col-md-12.my-3
 									label.label-control Person in the Certificate:
 							.row
 								.col-md-6.my-3
-									input#lastname.form-control(type='text' name='lastname' placeholder='Last name')
+									input#lastName.form-control(type='text' name='lastname' placeholder='Last name')
 								.col-md-6.my-3
-									input#firstname.form-control(type='text' name='firstname' placeholder='First name')
+									input#firstName.form-control(type='text' name='firstname' placeholder='First name')
+							.row
+								.col-md-9.my-3
+									label.label-control Event Date
+									input#eventDate.datepicker.form-control(type='date' name='start')
 							.row
 								.col-md-12.my-3
 									.form-group
 										label(for='exampleFormControlTextarea1') Purpose:
 										textarea#purpose.form-control(rows='3' name= 'purpose')
+							.form-group
+								.file-loading
+									input#file-0b.file(type='file',accept='image/*',name="image")
 							.row
 								.col-md-12.my-5.text-center
 									button.btn.btn-primary#submit(type="button") Submit
@@ -46,30 +50,57 @@ block main
 					$(document).ready(function(){
 						$("#file-0b").fileinput();
 						$('#submit').click(function(){
-							var formData = new FormData();
-							formData.append('documenttype', $('#documenttype').val())
-							formData.append('image', $('#file-0b')[0].files[0]);
-							formData.append('lastname', $('#lastname').val())
-							formData.append('firstname', $('#firstname').val())
-							formData.append('purpose', $('#purpose').val())
-							$.ajax({
-								type:'POST',
-								url:'/guest/document/form',
-								data: formData,
-								processData:false,
-								contentType:false,
-								success: function(data){
-									swal({
-										title:'You can wait until 3 fucking days',
-										icon:'success',
-										buttons: {
-											Okay: 'okay'
-										}
-									}).then((value)=>{
-										window.location='/guest'
-									})
+						var eventDate = moment($('#eventDate').val()).format('YYYY-MM-DD');
+						 $.post('/guest/document/form/query',{
+						 	eventDate:eventDate,
+						 	firstName:$('#firstName').val(),
+						 	lastName:$('#lastName').val(),
+						 	documentType:$('#documenttype').val(),
+							 }).done(data=>{
+							 	var fnInput = $('#lastname').val() + ', ' + $('#firstname').val();
+							 	var documentType = $('#documenttype').val();
+							 	var fnValidate = data.var_doclastname + ', ' + data.var_docfirstname;
+							 	if(fnInput == fnValidate && eventDate == data.date_approveddate && documentType == data.var_documenttype){
+								var formData = new FormData();
+								formData.append('documenttype', $('#documenttype').val())
+								formData.append('image', $('#file-0b')[0].files[0]);
+								formData.append('lastname', $('#lastname').val())
+								formData.append('firstname', $('#firstname').val())
+								formData.append('eventDate', $('#eventDate').val())
+								formData.append('purpose', $('#purpose').val())
+								$.ajax({
+									type:'POST',
+									url:'/guest/document/form',
+									data: formData,
+									processData:false,
+									contentType:false,
+									success: function(data){
+										swal({
+											title:'You can wait until 3 days, wait for an email coming',
+											icon:'success',
+											buttons: {
+												Okay: 'okay'
+											}
+										}).then((value)=>{
+											window.location='/guest'
+										})
+									}
+								})
 								}
-							})
-						})
-
+								else{
+									success: function(data){
+										swal({
+											title:'Sorry but your transaction did not exist',
+											icon:'warning',
+											buttons: {
+												Okay: 'okay'
+											}
+										}).then((value)=>{
+											window.location='/guest'
+										})
+									}
+								}
+						 })
+						 })
 					})
+					

@@ -1,5 +1,4 @@
-extends ../../../../templates/masteradmin1
-block addcss
+extends ../../../../templates/admin
 block prepend main
 	#wrap
 	//- #calendar
@@ -10,13 +9,16 @@ block prepend main
 				.col-lg-12.col-md-12
 						.card
 								.card-header.card-header-primary
-										h4.card-title Sacramental Services
+									.row
+										.col-md-6
+											h4.card-title Sacramental Services
+										.col-md-6
+											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add
 								.card-body.table-responsive
 										table.table.table-hover
 												thead.text-primary
 														th ID
 														th Name
-														
 														th.text-center(style=" width:120px") Actions
 												tbody
 														each sacrament in sacraments
@@ -25,9 +27,9 @@ block prepend main
 																td=sacrament.var_eventname
 																td.td-actions.text-center
 																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${sacrament.int_eventID}`)
-																		i.material-icons close
+																		i.ti-close
 																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${sacrament.int_eventID}`)
-																		i.material-icons edit
+																		i.ti-pencil
 						.card
 								.card-header.card-header-primary
 										h4.card-title Special Services
@@ -48,22 +50,24 @@ block prepend main
 																		i.material-icons close
 																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${service.int_eventID}`)
 																		i.material-icons edit
-								.card-footer.text-right
-									.col-md-3
-									.col-md-6.text-right
-										<nav aria-label="Page navigation example">
-											<ul class="pagination justify-content-center">
-												<li class="page-item">
-													<a class="page-link" href="#" tabindex="-1">Previous</a>
-												</li>
-												<li class="page-item"><a class="page-link" href="#">1</a></li>
-												<li class="page-item">
-													<a class="page-link" href="#">Next</a>
-												</li>
-											</ul>
-										</nav>
-									.col-md-3.text-right
-										a(href="#" data-toggle="modal" data-target="#conditionModal") Add Service
+												
+								.col-md-9.text-right
+									button.btn.btn-info(href="#" data-toggle="modal" data-target="#conditionModal") 
+										i.ti-plus Add Service
+								//- .card-footer.text-right
+								//- 	.col-md-3
+								//- 	.col-md-6.text-right
+								//- 		<nav aria-label="Page navigation example">
+								//- 			<ul class="pagination justify-content-center">
+								//- 				<li class="page-item">
+								//- 					<a class="page-link" href="#" tabindex="-1">Previous</a>
+								//- 				</li>
+								//- 				<li class="page-item"><a class="page-link" href="#">1</a></li>
+								//- 				<li class="page-item">
+								//- 					<a class="page-link" href="#">Next</a>
+								//- 				</li>
+								//- 			</ul>
+								//- 		</nav>
 			
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
@@ -143,7 +147,7 @@ block addjs
 		$('.updateButton').click(function(){
 			var idNow = $(this).val();
 			console.log(idNow)
-				$.post('/admin/maintenance-services/query',{id1:idNow})
+				$.post('/admin/maintenance-services/query',{id:idNow})
 			.done(data=>{
 				$('#updateAppend').append(`
 				<div class="form-group">
@@ -156,7 +160,7 @@ block addjs
 				</div>
 				<div class="form-group">
 					<label class="label-control">Service Type</label>
-					<select id="eventtype" value="${data.var_type}" class="form-control">
+					<select id="eventtype" value="${data.char_type}" class="form-control">
 						<option value="Special Service">Special Service</option>
 						<option value="Sacrament">Sacraments</option>
 					</select>
