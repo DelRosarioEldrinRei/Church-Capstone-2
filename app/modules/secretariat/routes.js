@@ -443,7 +443,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             for(var i = 0; i < requests.length; i++){
                 requests[i].date_docurequested= moment(requests[i].date_docurequested).format('MM/DD/YYYY');
             }
-            return res.render('secretariat/views/docureq',{ requests : requests });
+            return res.render('secretariat/views/transactions/docureq',{ requests : requests });
         }); 
         
     });

@@ -25,6 +25,44 @@ var upload = multer({ storage: storage})
             return res.render('guest/views/index',{ events : events });
         });
     });
+    
+    guestRouter.post('/query', (req, res) => {
+    
+    var queryString1 =`SELECT * FROM tbl_event where int_eventID = ? `
+    db.query(queryString1,[req.body.id], (err, results1, fields) => {
+        req.session.eventId = req.body.id
+        var queryString2 =`select var_reqname from tbl_requirementtype where int_eventID = ?`
+      
+    db.query(queryString2,[req.body.id], (err, results2, fields) => {
+      if (err) console.log(err);
+      res.send({firstQuery:results1[0],secondQuery:results2});
+    });
+    });
+  
+  })
+    guestRouter.get('/service', (req, res)=>{
+        console.log(req.session)
+            if(req.session.eventId == 3){
+            return res.render('guest/views/forms/baptism',{user: req.session.user});
+            }
+            else if(req.session.eventId == 4){
+                return res.render('guest/views/forms/funeral',{user: req.session.user});
+            }
+            else if(req.session.eventId == 5){
+                return res.render('guest/views/forms/marriage',{user: req.session.user});
+            }
+            else if(req.session.eventId == 6){
+                return res.render('guest/views/forms/communion',{user: req.session.user});
+            }
+            else if(req.session.eventId == 14){
+                return res.render('guest/views/forms/document',{user: req.session.user});
+            }
+            
+            else{
+                return res.redirect('/guest')
+                }
+    });
+
 
     guestRouter.get('/schedule', (req, res)=>{
         res.render('guest/views/schedule2')
@@ -879,8 +917,8 @@ var upload = multer({ storage: storage})
         AND tbl_eventinfo.date_approveddate = ?`
         db.query(queryString,[req.body.documentType,req.body.firstName,req.body.lastName,req.body.eventDate],(err,results,fields)=>{
         if (err) throw err;
-        res.send(results[0])
-        console.log(results[0])
+        res.send(results[0]);
+        console.log(results[0]);
         })
     });
 
@@ -894,8 +932,8 @@ var upload = multer({ storage: storage})
                 var datenow= new Date();
                 console.log(req.session.user);
                 
-            var queryString1 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus,date_doceventdate) VALUES(?,?,?,?,?,?,?,?)`;
-                db.query(queryString1, [req.session.user.int_userID, documentID.int_documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Requested",req.body.eventDate], (err, results, fields) => {
+            var queryString1 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus) VALUES(?,?,?,?,?,?,?)`;
+                db.query(queryString1, [req.session.user.int_userID, documentID.int_documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Requested"], (err, results, fields) => {
                     // console.log(req.body)
                     if (err) throw err;
                     var requestID =results;

@@ -260,6 +260,9 @@ block addjs
 					</label>
 				</div>`)
 				$('#updateModal').modal('show')
+				$('#updateModal').on('hidden.bs.modal',function(){
+								$('#updateAppend').empty()
+							})
 				$('#cancelButton').click(function(){
 					$('#updateAppend').empty();
 				})

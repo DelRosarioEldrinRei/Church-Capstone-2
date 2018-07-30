@@ -1,7 +1,4 @@
 extends ../../../../templates/secretariat
-block addcss
-	//- link(rel='stylesheet' href='css/fullcalendar.css')
-	//- link(rel='stylesheet' href='css/fullcalendar.print.css'  media='print')
 
 block prepend main
 	#wrap
@@ -42,9 +39,9 @@ block prepend main
 																td=proposal.var_approvalstatus
 																<td class="td-actions text-right">
 																		a.button(rel="tooltip" class="btn btn-info" href=`/admin/transaction-eventproposal`)
-																				<i class="material-icons">person</i>
+																			i.fa.fa-person
 																		a.button(rel="tooltip" class="btn btn-success" href=`/admin/transaction-eventproposal/edit/${proposal.int_specialeventID}`)
-																				<i class="material-icons">edit</i>
+																			i.fa.fa-pencil
 																		a.button(rel="tooltip" class="btn btn-danger" href=`/admin/transaction-eventproposal/delete/${proposal.int_specialeventID}`)
 																				<i class="material-icons">close</i>
 																</td>	
