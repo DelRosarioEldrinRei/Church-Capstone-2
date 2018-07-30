@@ -868,7 +868,8 @@ var upload = multer({ storage: storage})
         res.render('guest/views/forms/document')
     });
     guestRouter.post('/document/form/query', (req, res)=>{
-        var queryString =`SELECT tbl_document.var_documenttype,tbl_relation.var_fname,tbl_relation.var_lname,tbl_eventinfo.date_approveddate
+        var queryString =`SELECT tbl_document.var_documenttype,tbl_relation.var_fname,tbl_relation.var_lname,
+        tbl_eventinfo.date_approveddate
         FROM tbl_document 
         JOIN tbl_documents_in_events ON tbl_documents_in_events.int_documentID = tbl_document.int_documentID
         JOIN tbl_eventinfo ON tbl_eventinfo.int_eventID = tbl_documents_in_events.int_eventID
