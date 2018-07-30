@@ -103,7 +103,6 @@ block prepend main
 											.modal-dialog.modal-lg(role='document')
 												.modal-content#each
 													.modal-header#headerAppend
-														//- h5#exampleModalLabel.modal-title
 														button.close(type='button', data-dismiss='modal', aria-label='Close')
 															span.p-3(aria-hidden='true') ×
 													.modal-body#bodyAppend
@@ -563,10 +562,11 @@ block prepend main
 				$('.inquireButton').click(function(){
 					var idNow = $(this).val();
 					console.log(idNow)
-						$.post('/index/query',{id:idNow})
+						$.post('/guest/query',{id:idNow})
 							.done(data =>{
 							
 							$('#headerAppend').append(`
+								<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
 								<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
 								`)
 								$('#bodyAppend').append(`
@@ -590,6 +590,11 @@ block prepend main
 							})
 							$('#cancelButton').css('display', 'block');
 							$('#proceedButton').css('display', 'block');
+								$('#proceedButton').click(function(){
+									$.post('/guest/query',{id:data.firstQuery.int_eventID}).done(data =>{
+										window.location='/guest/service'
+									})
+								})
 							})
 									
 				})

@@ -1,181 +1,211 @@
 extends ../../../../templates/guests
 block main
-	.profile-page
-		//- Heading Page
-		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/Nave.jpeg');")
+	#headers
+		#header-style-1
 			.container
-				.row
-					.col-md-9.main-header__textbox
-						h1.font-italic Baptism
-						a(href="/guest/baptism")
-							p.text-uppercase.card-desc
-								| Guidelines | Requirements
-		#raised-section.main.main-raised
-			.container
-				.row
-					.col-md-12
-						hr.mt-5.mx-5
-				.row
-					.col-md-12.my-3
-						h3.text-center.text-uppercase.guidelines--text Application Form
-				form(action="/guest/baptism/form" enctype="multipart/form-data" method="post")
-					input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+				.header-caption
 					.row
-						.col-md-6.my-3
-							.form-group
-								label.label-control Name of the child:
-								.row
-									.col-md-4
-										.form-group.pt-0
-											input.form-control(type='text' placeholder="Last Name" name='lastname')
-									.col-md-4.p-0
-										.form-group.pt-0
-											input.form-control(type='text' placeholder="First Name" name='firstname')
-									.col-md-4
-										.form-group.pt-0
-											input.form-control(type='text' placeholder="Middle Name" name='middlename')
-							.form-group.m-0
-								label.label-control Gender:
-									.form-check.ml-3
-										label.form-check-label
-											input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Male")
-											| Male
-											span.circle
-												span.check
-										label.form-check-label.ml-3
-											input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Female")
-											| Female
-											span.circle
-												span.check
-							.form-group
-								label.label-control Birthday
-								input.datepickerBirthday.form-control(type='date' name='birthday')
-							.form-group
-								label.label-control Birthplace:
-								input.form-control(type='text' name='birthplace')
-							.form-group
-								label(for='exampleFormControlTextarea1') Family address:
-								textarea#exampleFormControlTextarea1.form-control(rows='2' name='address')
-							.form-group
-								label.label-control Relationship with the child
-									select.selectpicker.form-control(type="text" name='relation')
-										option Parent
-										option Grandparent
-										option Aunt/Uncle
-							.form-group.m-0
-								label.label-control Baptism Type & Date:
-									.form-check.ml-3.mt-3
-										label.form-check-label
-											input#radio1.form-check-input(type="radio" name="baptismtype" value="Regular")
-											| Regular
-											span.circle
-												span.check
-										label.form-check-label.ml-3
-											input#radio2.form-check-input(type="radio" name="baptismtype" value="Special")
-											| Special
-											span.circle
-												span.check
-								#regular.form-group
-									label.label-control Regular Baptism Date
-									input.datepickerRegularDesiredDate.form-control(type='date' name='regdesireddate')
-								#special
-									.row
-										.col-md-6
-											.form-group
-												label.label-control Special Baptism Date
-												input.datepickerSpecialDesiredDate.form-control(type='date' name='spcdesireddate')
-										.col-md-6
-											//- .form-group
-											//- 	label.label-control Special Baptism Time
-											//- 	input.timepicker.form-control(type='text' name='desireddate1')
-											.form-group
-												label.label-control Special Baptism Time
-													select.selectpicker.form-control(type="text" name='desiredtime')
-														option 10:00AM
-														option 11:00AM
-														option 1:00PM
-														option 2:00PM
-						.col-md-6.my-3
-							.form-group
-								label.label-control Mother's full name:
-								input.form-control(type='text' name='mothername')
-							.form-group
-								label.label-control Mother's birthplace:
-								input.form-control(type='text' name='motherbirthplace')
-							.form-group
-								label.label-control Father's full name:
-								input.form-control(type='text' name='fathername')
-							.form-group
-								label.label-control Father's birthplace:
-								input.form-control(type='text' name='fatherbirthplace')
-							.form-group
-								label(for='exampleFormControlTextarea1') Parent's marriage address:
-								textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress')
-							.form-group
-								label.label-control Contact number
-								input#datepicker.form-control(type='text' name='contactnumber')
-							.form-group.form-file-upload.form-file-multiple
-								.fileinput.fileinput-new.text-center(data-provides='fileinput')
-									.fileinput-new.thumbnail.img-no-padding(style='max-width: 400px; max-height: 250px;')
-										img(src='/img/image_holder.png', alt='...')
-									.fileinput-preview.fileinput-exists.thumbnail.img-no-padding(style='max-width: 400px; max-height: 250px;')
-									div
-										span.btn.btn-default.btn-file.btn-round
-											span.fileinput-new 
-												i.fa.fa-cloud-upload
-											span.fileinput-exists Change
-											input(type='file', name='image' accept='image/*' required)
-										a.btn.btn-link.btn-danger.fileinput-exists.btn-round(href='javascript:void(0)', data-dismiss='fileinput')
-											i.fa.fa-times
-											|  Remove
-								
+						.col-md-12.header-content
+							h3.header-title.animated.fadeInDown.invisible
+								span.text-primary Helium - 
+								| Bootstrap 4 UI Kit
+							h5.header-text.animated.fadeIn.invisible
+								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
+	#raised-section.main.main-raised
+		.container
+			.row
+				.col-md-12
+					hr.mt-5.mx-5
+			.row
+				.col-md-12.my-3
+					h3.text-center.text-uppercase.guidelines--text Application Form
+			form(action="/guest/baptism/form" enctype="multipart/form-data" method="post")
+				input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+				h5.label-control Name of the child:
+				.row
+					.col-md-4
+						.form-group.pt-0
+							input.form-control(type='text' placeholder="Last Name" name='lastname')
+					.col-md-4.p-0
+						.form-group.pt-0
+							input.form-control(type='text' placeholder="First Name" name='firstname')
+					.col-md-4
+						.form-group.pt-0
+							input.form-control(type='text' placeholder="Middle Name" name='middlename')
+				.row
+					.col-md-4
+						.form-group.m-0
+							h5.label-control Gender:
+							//- 	.form-check.ml-3.mt-3
+							//- 		label.form-check-label
+							//- 			input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Male")
+							//- 			| Male
+							//- 			span.circle
+							//- 				span.check
+							//- 		label.form-check-label.ml-4
+							//- 			input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Female")
+							//- 			| Female
+							//- 			span.circle
+							//- 				span.check
+							.custom-control.custom-radio
+								input#customRadio1.custom-control-input(type='radio', name='gender' value="Male")
+								label.custom-control-label(for='customRadio1') 
+									h5 Male
+							.custom-control.custom-radio
+								input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
+								label.custom-control-label(for='customRadio2') 
+									h5 Female
 
-					.row#principalSponsor
-						.col-md-6.mt-3
-							//- button#addPrincipalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
-							//- 	i.material-icons add
-							.form-group.m-0
-								label.label-control Principal Sponsors
-								input.form-control(type='text' name='sponsorname')
-						.col-md-6.my-3
-							.form-group
-								input.form-control.balance(type='text' name='sponsorname')
-						//- .col-md-6.mb-4.pb-3
-						//- 	.input-group
-						//- 		input.form-control(type='text', name='sponsorname')
-						//- 		.input-group-prepend
-						//- 			span.btnDelete.input-group-text.rounded
-						//- 				i.material-icons.text-danger delete
+					.col-md-4
+						.form-group
+							h5.label-control Birthday
+							input.datepicker.form-control(type='date' name='birthday')
+					.col-md-4
+						.form-group
+							h5.label-control Birthplace:
+							input.form-control(type='text' name='birthplace')
+						br
+						br
+				.row
+					.col-md-6.my-3
+						.form-group
+							h5.label-control Father's Full Name:
+							input.form-control(type='text' name='fathername')
+						.form-group
+							h5.label-control Mother's Full name:
+							input.form-control(type='text' name='mothername')
+						.form-group
+							h5(for='exampleFormControlTextarea1') Family address:
+							textarea#exampleFormControlTextarea1.form-control(rows='2' name='address')
+						.form-group
+							h5.label-control Relationship with the Child
+								br
+								.mb-2
+								select.form-control(type="text" name='relation')
+									option Parent
+									option Grandparent
+									option Aunt/Uncle
+						.form-group.m-0
+							h5.label-control Baptism Type & Date:
+								//- .form-check.ml-3.mt-3
+								//- 	label.form-check-label
+								//- 		input#radio1.form-check-input(type="radio" name="baptismtype" value="Regular")
+								//- 		| Regular
+								//- 		span.circle
+								//- 			span.check
+								//- 	label.form-check-label.ml-4
+								//- 		input#radio2.form-check-input(type="radio" name="baptismtype" value="Special")
+								//- 		| Special
+								//- 		span.circle
+								//- 			span.check
+								.custom-control.custom-radio.mt-2
+									input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
+									label.custom-control-label(for='radio1') 
+										h5 Regular
+								.custom-control.custom-radio
+									input#radio2.custom-control-input(type='radio', name='baptismtype' value="Special")
+									label.custom-control-label(for='radio2') 
+										h5 Special
+							#regular.mt-4
+								.form-group
+									h5.label-control Regular Baptism Date
+									input.datepicker1.RegularDesiredDate.form-control(type='date' name='regdesireddate')
+							#special
+								.row.mt-4
+									.col-md-6
+										.form-group
+											h5.label-control Special Baptism Date
+											input.datepicker.SpecialDesiredDate.form-control(type='date' name='spcdesireddate')
+									.col-md-6.mt-2
+										//- .form-group
+										//- 	label.label-control Special Baptism Time
+										//- 	input.timepicker.form-control(type='text' name='desireddate1')
+										.form-group
+											h5.label-control Special Baptism Time
+												select.selectpicker.form-control(type="text" name='desiredtime')
+													option 10:00AM
+													option 11:00AM
+													option 1:00PM
+													option 2:00PM
+					.col-md-6.my-3
+						.form-group
+							h5.label-control Father's Birthplace:
+							input.form-control(type='text' name='fatherbirthplace')
+						.form-group
+							h5.label-control Mother's birthplace:
+							input.form-control(type='text' name='motherbirthplace')
+						.form-group
+							h5(for='exampleFormControlTextarea1') Parent's Marriage Address:
+							textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress')
+						.form-group
+							h5.label-control Contact number
+							input#datepicker.form-control(type='text' name='contactnumber')
+						.form-group
+							h5.label-control Select Image
+							input#datepicker(type='file' name='image')
+						//- .form-group.form-file-upload.form-file-multiple
+						//- 	.fileinput.fileinput-new.text-center(data-provides='fileinput')
+						//- 		.fileinput-new.thumbnail.img-no-padding(style='max-width: 400px; max-height: 250px;')
+						//- 			img(src='/img/image_holder.png', alt='...')
+						//- 		.fileinput-preview.fileinput-exists.thumbnail.img-no-padding(style='max-width: 400px; max-height: 250px;')
+						//- 		div
+						//- 			span.btn.btn-default.btn-file.btn-round
+						//- 				span.fileinput-new 
+						//- 					i.fa.fa-cloud-upload
+						//- 				span.fileinput-exists Change
+						//- 				input(type='file', name='image' accept='image/*' required)
+						//- 			a.btn.btn-link.btn-danger.fileinput-exists.btn-round(href='javascript:void(0)', data-dismiss='fileinput')
+						//- 				i.fa.fa-times
+						//- 				|  Remove
+							
 
-					.row#additionalSponsor
-						.col-md-6.mt-3
-							button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
-								i.material-icons add
-							.form-group.m-0
-								label.label-control Additional Sponsors
-								input.form-control(type='text' name='sponsorname')
-						.col-md-6.my-3
-							.form-group
-								input.form-control.balance(type='text' name='sponsorname')
-						//- .col-md-6.mb-4.pb-3
-						//- 	.input-group
-						//- 		input.form-control(type='text', name='sponsorname')
-						//- 		.input-group-prepend
-						//- 			span.btnDelete.input-group-text.rounded
-						//- 				i.material-icons delete
+				.row#principalSponsor
+					.col-md-6
+						.form-group.m-0
+							h5.label-control Principal Sponsors
+							input.form-control(type='text' name='sponsorname')
+					.col-md-6
+						.form-group
+							h5.label-control.invisible Principal Sponsors
+							input.form-control.balance(type='text' name='sponsorname')
+					//- .col-md-6.mb-4.pb-3
+					//- 	.input-group
+					//- 		input.form-control(type='text', name='sponsorname')
+					//- 		.input-group-prepend
+					//- 			span.btnDelete.input-group-text.rounded
+					//- 				i.material-icons.text-danger delete
+				button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
+					i.fa.fa-plus
+				.row#additionalSponsor
+					.col-md-6.mt-3
+						.form-group.m-0
+							h5.label-control Additional Sponsors
+							input.form-control(type='text' name='sponsorname')
+					.col-md-6.my-3
+						.form-group
+							h5.label-control.invisible Additional Sponsors
+							input.form-control.balance(type='text' name='sponsorname')
+					//- .col-md-6.mb-4.pb-3
+					//- 	.input-group
+					//- 		input.form-control(type='text', name='sponsorname')
+					//- 		.input-group-prepend
+					//- 			span.btnDelete.input-group-text.rounded
+					//- 				i.material-icons delete
 
-					.row
-						.col-md-12.my-5.text-center
-							//- a.btn-design.mx-2(href="#") Submit
-							button.btn.btn-primary(type='submit') Submit
+				.row
+					.col-md-12.my-5.text-center
+						.learn-more
+							button.btn.std-btn.btn-common#submit(type='submit') Submit
 
 
 block addjs
 	script.
-		$('.selectpicker').selectpicker({
-			style: 'btn-primary',
-			size: 4
-		});
+		//- $('.selectpicker').selectpicker({
+		//- 	style: 'btn-primary',
+		//- 	size: 4
+		//- });
 	
 		$('#textarea1').hide();
 		$('#textarea2').hide();
@@ -207,7 +237,7 @@ block addjs
 		//add and delete side
 
 		$("#addPrincipalSponsor").click(function(event){
-				var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='material-icons'>delete</i></span></div></div></div>"
+				var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
 				$(principal).hide().appendTo("#principalSponsor").fadeIn(500);
 		});
 
@@ -219,7 +249,7 @@ block addjs
 		});
 
 		$("#addAdditionalSponsor").click(function(event){
-				var item2 = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='material-icons'>delete</i></span></div></div></div>"
+				var item2 = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
 				$(item2).hide().appendTo("#additionalSponsor").fadeIn(500);
 		});
 
