@@ -495,7 +495,12 @@
     // B A P T I S M
     //==============================================================
         guestRouter.get('/baptism/form', (req, res)=>{
-            res.render('guest/views/forms/baptism',{user: req.session.user})
+            var queryString= `SELECT int_agemax, int_agemin, double_fee FROM tbl_utilities where int_eventID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
+            db.query(queryString, (err, results, fields) => {
+                if (err) throw err;
+                console.log(results);
+            return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results})
+            });
         });
     
         guestRouter.post('/baptism/form',upload.single('image'), (req, res) => {
