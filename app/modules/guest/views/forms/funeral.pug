@@ -1,4 +1,4 @@
-extends ../../../../templates/masterguests
+extends ../../../../templates/guests
 block main
 	.profile-page
 		//- Heading Page
@@ -60,20 +60,20 @@ block main
 								.col-md-6
 									.form-group
 										label.label-control Desired Date
-										input.datepickerFBlessingDesiredDate.form-control(type='date' name='desireddate1')
+										input.datepickerFBlessingDesiredDate.form-control(type='date' name='desireddate')
 								.col-md-6
 									.form-group.mt-1
 										label.label-control Desired Time
-										input.timepicker.form-control(type='text' name='desiredtime1')
-							.row
-								.col-md-6
-									.form-group
-										label.label-control Alternative Date
-										input.datepicker3.form-control(type='date' name='desireddate2')
-								.col-md-6
-									.form-group.mt-1
-										label.label-control Alternative Time
-										input.timepicker.form-control(type='text' name='desiredtime2')
+										input.timepicker.form-control(type='text' name='desiredtime')
+							//- .row
+							//- 	.col-md-6
+							//- 		.form-group
+							//- 			label.label-control Alternative Date
+							//- 			input.datepicker3.form-control(type='date' name='desireddate2')
+							//- 	.col-md-6
+							//- 		.form-group.mt-1
+							//- 			label.label-control Alternative Time
+							//- 			input.timepicker.form-control(type='text' name='desiredtime2')
 						.col-md-6.my-3
 							.form-group
 								label.label-control Relationship with the Deceased

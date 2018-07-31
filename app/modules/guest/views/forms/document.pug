@@ -20,23 +20,6 @@ block nav
 									a.page-scroll(href='#about', role='menuitem', tabindex='-1')
 										| About
 								li
-								//- 	a.page-scroll(href='#services', role='menuitem', tabindex='-1')
-								//- 		| Services
-								//- li
-								//- 	a.page-scroll(href='#portfolio', role='menuitem', tabindex='-1')
-								//- 		| Portfolio
-								//- li
-								//- 	a.page-scroll(href='#feature', role='menuitem', tabindex='-1')
-								//- 		| Features
-								//- li
-								//- 	a.page-scroll(href='#team', role='menuitem', tabindex='-1')
-								//- 		| Team
-								//- li
-								//- 	a.page-scroll(href='#pricing', role='menuitem', tabindex='-1')
-								//- 		| Pricing
-								//- li
-								//- 	a.page-scroll(href='#contact', role='menuitem', tabindex='-1')
-								//- 		| Contact
 								li.page-scroll.dropdown
 									a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') My Account
 									.dropdown-menu
@@ -61,24 +44,6 @@ block nav
 							li.nav-item
 								a.nav-link(href='#about')
 									| About
-							//- li.nav-item
-							//- 	a.nav-link(href='#services')
-							//- 		| Services
-							//- li.nav-item
-							//- 	a.nav-link(href='#portfolio')
-							//- 		| Portfolio
-							//- li.nav-item
-							//- 	a.nav-link(href='#feature')
-							//- 		| Features
-							//- li.nav-item
-							//- 	a.nav-link(href='#team')
-							//- 		| Team
-							//- li.nav-item
-							//- 	a.nav-link(href='#pricing')
-							//- 		| Pricing
-							//- li.nav-item
-							//- 	a.nav-link(href='#contact')
-							//- 		| Contact
 							li.nav-item.dropdown
 								a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') My Account
 								.dropdown-menu
@@ -91,28 +56,10 @@ block nav
 				ul.mobile-menu.navbar-nav
 					li.active
 						a.page-scroll(href='#sliders')
-							| Home
+							| Home		
 					li
 						a.page-scroll(href='#about')
 							| About
-					//- li
-					//- 	a.page-scroll(href='#services')
-					//- 		| Services
-					//- li
-					//- 	a.page-scroll(href='#portfolio')
-					//- 		| Portfolio
-					//- li
-					//- 	a.page-scroll(href='#feature')
-					//- 		| Features
-					//- li
-					//- 	a.page-scroll(href='#team')
-					//- 		| Team
-					//- li
-					//- 	a.page-scroll(href='#pricing')
-					//- 		| Pricing
-					//- li
-					//- 	a.page-scroll(href='#contact')
-					//- 		| Contact
 					li.dropdown
 						a.nav-link.page-scroll.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') My Account
 						.dropdown-menu
@@ -131,8 +78,7 @@ block nav
 								| Bootstrap 4 UI Kit
 							h5.header-text.animated.fadeIn.invisible
 								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
-							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
-							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
+					
 block main
 	#raised-section.main.main-raised
 		.container
@@ -208,7 +154,8 @@ block addjs
 						contentType:false,
 						success: function(data){
 							swal({
-								title:'You can wait until 3 days, wait for an email coming',
+								title:'Record found!',
+								text:'Please wait for 3',
 								icon:'success',
 								buttons: {
 									Okay: 'okay'

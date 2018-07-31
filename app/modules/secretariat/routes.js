@@ -101,10 +101,10 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 //SERVICES
 //=======================================================
     secretariatRouter.get('/maintenance-services', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_event where char_type = "Sacrament"`
+        var queryString1 =`SELECT * FROM tbl_services where char_type = "Sacrament"`
         db.query(queryString1, (err, results1, fields) => {
             if (err) console.log(err)  
-            var queryString2 =`SELECT * FROM tbl_event where char_type = "Special Service"`
+            var queryString2 =`SELECT * FROM tbl_services where char_type = "Special Service"`
             db.query(queryString2, (err, results2, fields) => {
                 if (err) console.log(err);      
             return res.render('secretariat/views/maintenance/services',{ sacraments : results1, services:results2 });    
@@ -125,7 +125,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
         
     secretariatRouter.post('/maintenance-services/delete', (req, res) => {
-        const queryString = `DELETE FROM tbl_event WHERE int_eventID=?`;
+        const queryString = `DELETE FROM tbl_services WHERE int_eventID=?`;
         db.query(queryString,[req.body.id1], (err, results, fields) => {        
             if (err) throw err;
             return res.redirect('/secretariat/maintenance-services');
@@ -134,14 +134,14 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
 
     secretariatRouter.post('/maintenance-services/edit', (req, res) => {
-        const queryString = `UPDATE tbl_event SET var_eventname = ?,var_eventdesc = ?, char_type = ? WHERE int_eventID= ?`; 
+        const queryString = `UPDATE tbl_services SET var_eventname = ?,var_eventdesc = ?, char_type = ? WHERE int_eventID= ?`; 
         db.query(queryString,[req.body.eventname,req.body.eventdesc,req.body.eventtype,req.body.id1], (err, results, fields) => {        
             if (err) throw err;
             return res.redirect('/secretariat/maintenance-services');
         });
     });
     secretariatRouter.post('/maintenance-services/query', (req, res) => {
-        var queryString = `SELECT * FROM tbl_event 
+        var queryString = `SELECT * FROM tbl_services 
         WHERE int_eventID = ?`;
         db.query(queryString,[req.body.id], (err, results, fields) => {        
             if (err) throw err;
@@ -254,16 +254,16 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     
     //non-wedding requirements
         secretariatRouter.get('/maintenance-nonwedrequirements', (req, res)=>{
-            var queryString1 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Anointing of the sick")`
-            var queryString2 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Baptism")`
-            var queryString3 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Confirmation")`
-            var queryString4 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Funeral Mass=" or var_eventname= "Funeral Service" )`
-            // var queryString5 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Marriage")`
-            var queryString6 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Establishment Blessing")`
-            var queryString8 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="First Communion")`
-            var queryString9 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Facility Reservation")`
-            var queryString10 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Document Request")`
-            var queryString11 =`SELECT var_eventname FROM tbl_event ORDER BY var_eventname`
+            var queryString1 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Anointing of the sick")`
+            var queryString2 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Baptism")`
+            var queryString3 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Confirmation")`
+            var queryString4 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Funeral Mass=" or var_eventname= "Funeral Service" )`
+            // var queryString5 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage")`
+            var queryString6 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Establishment Blessing")`
+            var queryString8 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="First Communion")`
+            var queryString9 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Facility Reservation")`
+            var queryString10 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Document Request")`
+            var queryString11 =`SELECT var_eventname FROM tbl_services ORDER BY var_eventname`
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err); 
                 var anointings = results;
@@ -301,7 +301,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         });
         
         secretariatRouter.post('/maintenance-nonwedrequirements/add', (req, res) => {
-            var queryString= `select int_eventID from tbl_event where var_eventname = ?`
+            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
             db.query(queryString, [req.body.eventname], (err, results, fields) => {
                 if (err) throw err;
                     var eventid = results[0];
@@ -326,7 +326,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             });
 
             secretariatRouter.post('/maintenance-nonwedrequirements/edit', (req, res) => {
-                var queryString= `select int_eventID from tbl_event where var_eventname = ?`
+                var queryString= `select int_eventID from tbl_services where var_eventname = ?`
                 db.query(queryString,  [req.body.eventname], (err, results, fields) => {
                     if (err) throw err;
                         var eventid = results[0];
@@ -344,15 +344,15 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         
     //wedding requirements
         secretariatRouter.get('/maintenance-wedrequirements', (req, res)=>{
-            var queryString5 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Marriage") AND char_reqtype = "Civil"`
+            var queryString5 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage") AND char_reqtype = "Civil"`
                 db.query(queryString5, (err, results, fields) => {
                     if (err) console.log(err); 
                     var civils = results;
-                    var queryString6 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Marriage") AND char_reqtype = "Church"`
+                    var queryString6 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage") AND char_reqtype = "Church"`
                         db.query(queryString6, (err, results, fields) => {
                             if (err) console.log(err); 
                             var churches = results;
-                            var queryString7 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_event where var_eventname ="Marriage") AND char_reqtype = "Chancery"`
+                            var queryString7 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage") AND char_reqtype = "Chancery"`
                             db.query(queryString7, (err, results, fields) => {
                                 if (err) console.log(err); 
                                 var chanceries = results;
@@ -363,7 +363,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         });
 
         secretariatRouter.post('/maintenance-wedrequirements/add', (req, res) => {
-            var queryString= `select int_eventID from tbl_event where var_eventname = ?`
+            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
             db.query(queryString, ["Marriage"], (err, results, fields) => {
                 if (err) throw err;
                     var eventid = results[0];
@@ -398,7 +398,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         });
         
         secretariatRouter.post('/maintenance-wedrequirements/edit', (req, res) => {
-            var queryString= `select int_eventID from tbl_event where var_eventname = ?`
+            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
             db.query(queryString,  [req.body.eventname], (err, results, fields) => {
                 if (err) throw err;
                     var eventid = results[0];
@@ -465,11 +465,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
         JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
-        JOIN tbl_event ON tbl_event.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         join tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
         
-        where tbl_event.var_eventname ='Baptism'`
+        where tbl_services.var_eventname ='Baptism'`
 
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
@@ -484,11 +484,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 var queryString3 =`SELECT * FROM tbl_eventinfo 
                     JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
                     JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
-                    JOIN tbl_event ON tbl_event.int_eventID = tbl_eventinfo.int_eventID  
+                    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
                     JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
                     join tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
                     
-                    where tbl_event.var_eventname ='Special Baptism'`
+                    where tbl_services.var_eventname ='Special Baptism'`
 
                         db.query(queryString3, (err, results, fields) => {
                             if (err) console.log(err);
@@ -510,11 +510,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
         JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
-        JOIN tbl_event ON tbl_event.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
         
-        where tbl_event.var_eventname ='Anointings of the sick'`
+        where tbl_services.var_eventname ='Anointings of the sick'`
 
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
@@ -531,11 +531,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 var queryString3 =`SELECT * FROM tbl_eventinfo 
                     JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
                     JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
-                    JOIN tbl_event ON tbl_event.int_eventID = tbl_eventinfo.int_eventID  
+                    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
                     JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
                     join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
                     
-                    where tbl_event.var_eventname ='Funeral Service' OR tbl_event.var_eventname ='Funeral Mass'`
+                    where tbl_services.var_eventname ='Funeral Service' OR tbl_services.var_eventname ='Funeral Mass'`
 
                         db.query(queryString3, (err, results, fields) => {
                             if (err) console.log(err);
@@ -553,10 +553,10 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                     var queryString4 =`SELECT * FROM tbl_eventinfo 
                     JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
                     JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
-                    JOIN tbl_event ON tbl_event.int_eventID = tbl_eventinfo.int_eventID  
+                    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
                     join tbl_houseblessing on tbl_eventinfo.int_eventinfoID = tbl_houseblessing.int_eventinfoID
                     
-                    where tbl_event.var_eventname ='Establishment Blessing'`
+                    where tbl_services.var_eventname ='Establishment Blessing'`
 
                         db.query(queryString4, (err, results, fields) => {
                             if (err) console.log(err);
@@ -580,11 +580,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
         JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
-        JOIN tbl_event ON tbl_event.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         join tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
         
-        where tbl_event.var_eventname ='Confirmation'`
+        where tbl_services.var_eventname ='Confirmation'`
 
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
@@ -599,11 +599,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 var queryString3 =`SELECT * FROM tbl_eventinfo 
                     JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
                     JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
-                    JOIN tbl_event ON tbl_event.int_eventID = tbl_eventinfo.int_eventID  
+                    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
                     JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
                     join tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
                     
-                    where tbl_event.var_eventname ='Special Confirmation'`
+                    where tbl_services.var_eventname ='Special Confirmation'`
 
                         db.query(queryString3, (err, results, fields) => {
                             if (err) console.log(err);
@@ -625,13 +625,13 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
         JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
-        JOIN tbl_event ON tbl_event.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         JOIN tbl_wedbride on tbl_eventinfo.int_eventinfoID = tbl_wedbride.int_eventinfoID
         JOIN tbl_wedcouple on tbl_eventinfo.int_eventinfoID = tbl_wedcouple.int_eventinfoID
         JOIN tbl_wedgroom on tbl_eventinfo.int_eventinfoID = tbl_wedgroom.int_eventinfoID
         
-        where tbl_event.var_eventname ='Marriage'`
+        where tbl_services.var_eventname ='Marriage'`
 
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
