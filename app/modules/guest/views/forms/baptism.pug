@@ -28,7 +28,7 @@ block main
 					.col-md-4
 						.form-group.pt-0
 							input.form-control(type='text' placeholder="Last Name" name='lastname')
-					.col-md-4.p-0
+					.col-md-4
 						.form-group.pt-0
 							input.form-control(type='text' placeholder="First Name" name='firstname')
 					.col-md-4
@@ -37,18 +37,7 @@ block main
 				.row
 					.col-md-4
 						.form-group.m-0
-							h5.label-control Gender:
-							//- 	.form-check.ml-3.mt-3
-							//- 		label.form-check-label
-							//- 			input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Male")
-							//- 			| Male
-							//- 			span.circle
-							//- 				span.check
-							//- 		label.form-check-label.ml-4
-							//- 			input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Female")
-							//- 			| Female
-							//- 			span.circle
-							//- 				span.check
+							h5.label-control Gender
 							.custom-control.custom-radio
 								input#customRadio1.custom-control-input(type='radio', name='gender' value="Male")
 								label.custom-control-label(for='customRadio1') 
@@ -66,8 +55,6 @@ block main
 						.form-group
 							h5.label-control Birthplace:
 							input.form-control(type='text' name='birthplace')
-						br
-						br
 				.row
 					.col-md-6.my-3
 						.form-group
@@ -89,17 +76,6 @@ block main
 									option Aunt/Uncle
 						.form-group.m-0
 							h5.label-control Baptism Type & Date:
-								//- .form-check.ml-3.mt-3
-								//- 	label.form-check-label
-								//- 		input#radio1.form-check-input(type="radio" name="baptismtype" value="Regular")
-								//- 		| Regular
-								//- 		span.circle
-								//- 			span.check
-								//- 	label.form-check-label.ml-4
-								//- 		input#radio2.form-check-input(type="radio" name="baptismtype" value="Special")
-								//- 		| Special
-								//- 		span.circle
-								//- 			span.check
 								.custom-control.custom-radio.mt-2
 									input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
 									label.custom-control-label(for='radio1') 
@@ -170,12 +146,6 @@ block main
 						.form-group
 							h5.label-control.invisible Principal Sponsors
 							input.form-control.balance(type='text' name='sponsorname')
-					//- .col-md-6.mb-4.pb-3
-					//- 	.input-group
-					//- 		input.form-control(type='text', name='sponsorname')
-					//- 		.input-group-prepend
-					//- 			span.btnDelete.input-group-text.rounded
-					//- 				i.material-icons.text-danger delete
 				button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
 					i.fa.fa-plus
 				.row#additionalSponsor
@@ -187,13 +157,6 @@ block main
 						.form-group
 							h5.label-control.invisible Additional Sponsors
 							input.form-control.balance(type='text' name='sponsorname')
-					//- .col-md-6.mb-4.pb-3
-					//- 	.input-group
-					//- 		input.form-control(type='text', name='sponsorname')
-					//- 		.input-group-prepend
-					//- 			span.btnDelete.input-group-text.rounded
-					//- 				i.material-icons delete
-
 				.row
 					.col-md-12.my-5.text-center
 						.learn-more
