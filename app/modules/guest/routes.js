@@ -674,6 +674,7 @@
                 
     
         });
+    // });
     //==============================================================
     // F U N E R A L  B L E S S I N G
     //==============================================================
@@ -748,7 +749,7 @@
     
                             
                 });
-        // }
+        });
     //==============================================================
     // M A R R I A G E
     //============================================================== 
@@ -823,7 +824,7 @@
             });          
         });
     //===============================================================================================//
-    // F A C I L I T I E S //
+    // F A C I L I T I E S 
     //===============================================================================================//
         guestRouter.get('/facilities', (req, res)=>{
             res.render('guest/views/facilities/index')
@@ -859,15 +860,15 @@
                     });    
                 });            
             });
-        });
-    //===============================================================================================//
-    // D O C U M E N T  //
-    //===============================================================================================//
-        // guestRouter.get('/document', (req, res)=>{
-        //     res.render('guest/views/document')
         // });
-    
+    //===============================================================================================//
+    // D O C U M E N T  
+    //===============================================================================================//
         guestRouter.get('/document', (req, res)=>{
+            res.render('guest/views/document')
+        });
+    
+        guestRouter.get('/document/form', (req, res)=>{
             res.render('guest/views/forms/document')
         });
         guestRouter.post('/document/query', (req, res)=>{
@@ -889,45 +890,6 @@
         });
     
         guestRouter.post('/document/form',upload.single('image'), (req, res) => {
-        console.log(req.file)
-            var queryString= `select int_documentID from tbl_document where var_documenttype= ?`  
-                db.query(queryString,[req.body.documenttype], (err, results, fields) => {
-                    if (err) throw err;
-                    console.log(results);
-                    var documentID =results[0];
-                    var datenow= new Date();
-                    console.log(req.session.user);
-                    
-                var queryString1 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus,date_doceventdate) VALUES(?,?,?,?,?,?,?,?)`;
-                    db.query(queryString1, [req.session.user.int_userID, documentID.int_documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Requested",req.body.eventDate], (err, results, fields) => {
-                        // console.log(req.body)
-                        if (err) throw err;
-                        var requestID =results;
-                        console.log(results)
-                        var path = '/img/req/'+req.file.filename;
-                        var nowDate = new Date(); 
-                        var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
-                        var queryString7 = `INSERT INTO tbl_requirements(int_requestID,var_reqpath,date_reqreceived,int_reqtypeID) VALUES (?,?,?,?);`
-                        db.query(queryString7,[requestID.insertId,path,date,5],(err, results, fields)=>{     
-                        if (err) throw err;
-                        return res.redirect(`/guest`);
-                        });
-                    });    
-                });            
-                
-            });
-    //===============================================================================================//
-    // F A C I L I T Y   //
-    //===============================================================================================//
-        // guestRouter.get('/document', (req, res)=>{
-        //     res.render('guest/views/document')
-        // });
-    
-        guestRouter.get('/facility/form', (req, res)=>{
-            res.render('guest/views/facilities/index')
-        });
-        
-        guestRouter.post('/facility/form',upload.single('image'), (req, res) => {
         console.log(req.file)
             var queryString= `select int_documentID from tbl_document where var_documenttype= ?`  
                 db.query(queryString,[req.body.documenttype], (err, results, fields) => {

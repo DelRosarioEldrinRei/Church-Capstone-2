@@ -3,15 +3,6 @@ block main
 	#headers
 		#header-style-1
 			.container
-<<<<<<< HEAD
-				.row
-					.col-md-9.main-header__textbox
-						h1.font-italic Confirmation
-						a(href="/guest/confirmation/form")
-							p.text-uppercase.card-desc
-								| Guidelines | Requirements
-		#raised-section.main.main-raised
-=======
 				.header-caption
 					.row
 						.col-md-12.header-content
@@ -24,13 +15,12 @@ block main
 							//- a.page-scroll.btn.btn-lg.btn-secondary.animated.fadeInUp.invisible(href="#") Explore
 	#raised-section.main.main-raised
 		section.form-box
->>>>>>> e1faff8cf531b6fdf14db969d676c5b1948c7f13
 			.container
 				.row
 					.col-md-12.form-wizard
 						// Form Wizard
 						form(role='form' action="/guest/baptism/form" enctype="multipart/form-data" method="post")
-							h3 Sign Up Office Employee Account
+							h3 Confirmation Application
 							p Fill all form field to go next step
 							// Form progress
 							.form-wizard-steps.form-wizard-tolal-steps-3
@@ -46,13 +36,13 @@ block main
 								.form-wizard-step
 									.form-wizard-step-icon
 										i.fa.fa-location-arrow(aria-hidden='true')
-									p Contact
+									p Baptism Type and Schedule
 								// Step 2
 								// Step 3
 								.form-wizard-step
 									.form-wizard-step-icon
 										i.fa.fa-briefcase(aria-hidden='true')
-									p Official
+									p Sponsors
 								// Step 3
 							// Form progress
 							// Form Step 1
@@ -64,7 +54,7 @@ block main
 									br
 									input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 									.container
-										h6.label-control Name of the child:
+										h6.label-control Name:
 										.row
 											.col-md-4
 												.form-group.pt-0
@@ -82,11 +72,11 @@ block main
 													.custom-control.custom-radio
 														input#customRadio1.custom-control-input(type='radio', name='gender' value="Male")
 														label.custom-control-label(for='customRadio1') 
-															h6 Male
+															| Male
 													.custom-control.custom-radio
 														input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
 														label.custom-control-label(for='customRadio2') 
-															h6 Female
+															| Female
 
 											.col-md-4
 												.form-group
@@ -137,7 +127,7 @@ block main
 							// Form Step 2
 							fieldset
 								h4
-									| Contact Information : 
+									| Baptism Type and Schedule
 									span Step 2 - 3
 									.container
 										.row
@@ -179,7 +169,7 @@ block main
 							// Form Step 3
 							fieldset
 								h4
-									| Official Information: 
+									| Sponsors 
 									span Step 3 - 3
 									.container.mt-2
 										.row#principalSponsor

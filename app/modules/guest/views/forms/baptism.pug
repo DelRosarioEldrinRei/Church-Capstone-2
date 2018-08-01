@@ -9,161 +9,195 @@ block main
 							h3.header-title.animated.fadeInDown.invisible
 								span.text-primary Helium - 
 								| Bootstrap 4 UI Kit
-							h5.header-text.animated.fadeIn.invisible
-								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+							h6.header-text.animated.fadeIn.invisible
+								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h6>
 							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
-							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
+							//- a.page-scroll.btn.btn-lg.btn-secondary.animated.fadeInUp.invisible(href="#") Explore
 	#raised-section.main.main-raised
-		.container
-			.row
-				.col-md-12
-					hr.mt-5.mx-5
-			.row
-				.col-md-12.my-3
-					h3.text-center.text-uppercase.guidelines--text Application Form
-			form(action="/guest/baptism/form" enctype="multipart/form-data" method="post")
-				input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
-				h5.label-control Name of the child:
+		section.form-box
+			.container
 				.row
-					.col-md-4
-						.form-group.pt-0
-							input.form-control(type='text' placeholder="Last Name" name='lastname')
-					.col-md-4
-						.form-group.pt-0
-							input.form-control(type='text' placeholder="First Name" name='firstname')
-					.col-md-4
-						.form-group.pt-0
-							input.form-control(type='text' placeholder="Middle Name" name='middlename')
-				.row
-					.col-md-4
-						.form-group.m-0
-<<<<<<< HEAD
-							h5.label-control Gender:
-=======
-							h5.label-control Gender
->>>>>>> e1faff8cf531b6fdf14db969d676c5b1948c7f13
-							.custom-control.custom-radio
-								input#customRadio1.custom-control-input(type='radio', name='gender' value="Male")
-								label.custom-control-label(for='customRadio1') 
-									h5 Male
-							.custom-control.custom-radio
-								input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
-								label.custom-control-label(for='customRadio2') 
-									h5 Female
-
-					.col-md-4
-						.form-group
-							h5.label-control Birthday
-							input.datepicker.form-control(type='date' name='birthday')
-					.col-md-4
-						.form-group
-							h5.label-control Birthplace:
-							input.form-control(type='text' name='birthplace')
-				.row
-					.col-md-6.my-3
-						.form-group
-							h5.label-control Father's Full Name:
-							input.form-control(type='text' name='fathername')
-						.form-group
-							h5.label-control Mother's Full name:
-							input.form-control(type='text' name='mothername')
-						.form-group
-							h5(for='exampleFormControlTextarea1') Family address:
-							textarea#exampleFormControlTextarea1.form-control(rows='2' name='address')
-						.form-group
-							h5.label-control Relationship with the Child
-								br
-								.mb-2
-								select.form-control(type="text" name='relation')
-									option Parent
-									option Grandparent
-									option Aunt/Uncle
-						.form-group.m-0
-							h5.label-control Baptism Type & Date:
-								.custom-control.custom-radio.mt-2
-									input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
-									label.custom-control-label(for='radio1') 
-										h5 Regular
-								.custom-control.custom-radio
-									input#radio2.custom-control-input(type='radio', name='baptismtype' value="Special")
-									label.custom-control-label(for='radio2') 
-										h5 Special
-							#regular.mt-4
+					.col-md-12.form-wizard
+						// Form Wizard
+						form(role='form' action="/guest/baptism/form" enctype="multipart/form-data" method="post")
+							h3 Baptism Application
+							p Fill all form field to go next step
+							// Form progress
+							.form-wizard-steps.form-wizard-tolal-steps-3
+								.form-wizard-progress
+									.form-wizard-progress-line(data-now-value='12.25' data-number-of-steps='3' style='width: 12.25%;')
+								// Step 1
+								.form-wizard-step.active
+									.form-wizard-step-icon
+										i.fa.fa-user(aria-hidden='true')
+									p Personal
+								// Step 1
+								// Step 2
+								.form-wizard-step
+									.form-wizard-step-icon
+										i.fa.fa-location-arrow(aria-hidden='true')
+									p Baptism Type and Schedule
+								// Step 2
+								// Step 3
+								.form-wizard-step
+									.form-wizard-step-icon
+										i.fa.fa-briefcase(aria-hidden='true')
+									p Sponsors
+								// Step 3
+							// Form progress
+							// Form Step 1
+							fieldset
+								h4
+									| Personal Information: 
+									span Step 1 - 3
 								.form-group
-									h5.label-control Regular Baptism Date
-									input.datepicker1.RegularDesiredDate.form-control(type='date' name='regdesireddate')
-							#special
-								.row.mt-4
-									.col-md-6
-										.form-group
-											h5.label-control Special Baptism Date
-											input.datepicker.SpecialDesiredDate.form-control(type='date' name='spcdesireddate')
-									.col-md-6.mt-2
-										.form-group
-											h5.label-control Special Baptism Time
-												select.selectpicker.form-control(type="text" name='desiredtime')
-													option 10:00AM
-													option 11:00AM
-													option 1:00PM
-													option 2:00PM
-					.col-md-6.my-3
-						.form-group
-							h5.label-control Father's Birthplace:
-							input.form-control(type='text' name='fatherbirthplace')
-						.form-group
-							h5.label-control Mother's birthplace:
-							input.form-control(type='text' name='motherbirthplace')
-						.form-group
-							h5(for='exampleFormControlTextarea1') Parent's Marriage Address:
-							textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress')
-						.form-group
-							h5.label-control Contact number
-							input#datepicker.form-control(type='text' name='contactnumber')
-						.form-group
-							h5.label-control Select Image
-							input#datepicker(type='file' name='image')
-						//- .form-group.form-file-upload.form-file-multiple
-						//- 	.fileinput.fileinput-new.text-center(data-provides='fileinput')
-						//- 		.fileinput-new.thumbnail.img-no-padding(style='max-width: 400px; max-height: 250px;')
-						//- 			img(src='/img/image_holder.png', alt='...')
-						//- 		.fileinput-preview.fileinput-exists.thumbnail.img-no-padding(style='max-width: 400px; max-height: 250px;')
-						//- 		div
-						//- 			span.btn.btn-default.btn-file.btn-round
-						//- 				span.fileinput-new 
-						//- 					i.fa.fa-cloud-upload
-						//- 				span.fileinput-exists Change
-						//- 				input(type='file', name='image' accept='image/*' required)
-						//- 			a.btn.btn-link.btn-danger.fileinput-exists.btn-round(href='javascript:void(0)', data-dismiss='fileinput')
-						//- 				i.fa.fa-times
-						//- 				|  Remove
-							
+									br
+									input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+									.container
+										h6.label-control Name of the child:
+										.row
+											.col-md-4
+												.form-group.pt-0
+													input.form-control(type='text' placeholder="Last Name" name='lastname')
+											.col-md-4
+												.form-group.pt-0
+													input.form-control(type='text' placeholder="First Name" name='firstname')
+											.col-md-4
+												.form-group.pt-0
+													input.form-control(type='text' placeholder="Middle Name" name='middlename')
+										.row
+											.col-md-4
+												.form-group.m-0
+													h6.label-control Gender
+													.custom-control.custom-radio
+														input#customRadio1.custom-control-input(type='radio', name='gender' value="Male")
+														label.custom-control-label(for='customRadio1') 
+															| Male
+													.custom-control.custom-radio
+														input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
+														label.custom-control-label(for='customRadio2') 
+															| Female
 
-				.row#principalSponsor
-					.col-md-6
-						.form-group.m-0
-							h5.label-control Principal Sponsors
-							input.form-control(type='text' name='sponsorname')
-					.col-md-6
-						.form-group
-							h5.label-control.invisible Principal Sponsors
-							input.form-control.balance(type='text' name='sponsorname')
-				button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
-					i.fa.fa-plus
-				.row#additionalSponsor
-					.col-md-6.mt-3
-						.form-group.m-0
-							h5.label-control Additional Sponsors
-							input.form-control(type='text' name='sponsorname')
-					.col-md-6.my-3
-						.form-group
-							h5.label-control.invisible Additional Sponsors
-							input.form-control.balance(type='text' name='sponsorname')
-				.row
-					.col-md-12.my-5.text-center
-						.learn-more
-							button.btn.std-btn.btn-common#submit(type='submit') Submit
+											.col-md-4
+												.form-group
+													h6.label-control Birthday
+													input.datepicker.form-control(type='date' name='birthday')
+											.col-md-4
+												.form-group
+													h6.label-control Birthplace:
+													input.form-control(type='text' name='birthplace')
+										.row
+											.col-md-6
+												.form-group
+													h6.label-control Father's Full Name:
+													input.form-control(type='text' name='fathername')
+												.form-group
+													h6.label-control Mother's Full name:
+													input.form-control(type='text' name='mothername')
+												.form-group
+													h6.label-control Relationship with the Child
+														br
+														select(type="text" name='relation')
+															option Parent
+															option Grandparent
+															option Aunt/Uncle
+												.form-group.mt-5.pt-3
+													h6(for='exampleFormControlTextarea1') Parent's Marriage Address:
+													textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress')
+											.col-md-6
+												.form-group
+													h6.label-control Father's Birthplace:
+													input.form-control(type='text' name='fatherbirthplace')
+												.form-group
+													h6.label-control Mother's birthplace:
+													input.form-control(type='text' name='motherbirthplace')
+												.form-group
+													h6.label-control Contact number
+													input#datepicker.form-control(type='text' name='contactnumber')
+												.form-group
+													h6(for='exampleFormControlTextarea1') Family address:
+													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address')
+												.form-group
+													h6.label-control Select Image
+													input#datepicker(type='file' name='image')
+										.learn-more.pull-right
+											button.btn.btn-next(type='button') Next
 
-
+							// Form Step 1
+							// Form Step 2
+							fieldset
+								h4
+									| Contact Information : 
+									span Step 2 - 3
+									.container
+										.row
+											.col-md-3
+												.form-group
+													br
+													h6.label-control Baptism Type & Date:
+														.custom-control.custom-radio.mt-2
+															input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
+															label.custom-control-label(for='radio1') 
+																h6 Regular
+														.custom-control.custom-radio
+															input#radio2.custom-control-input(type='radio', name='baptismtype' value="Special")
+															label.custom-control-label(for='radio2') 
+																h6 Special
+											.col-md-9
+												#regular.mt-4
+													.form-group
+														h6.label-control Regular Baptism Date
+														input.datepicker1.RegularDesiredDate.form-control(type='date' name='regdesireddate')
+												#special
+													.row.mt-4
+														.col-md-6
+															.form-group
+																h6.label-control Special Baptism Date
+																input.datepicker.SpecialDesiredDate.form-control(type='date' name='spcdesireddate')
+														.col-md-6.mt-2
+															.form-group
+																h6.label-control Special Baptism Time
+																	select.selectpicker.form-control(type="text" name='desiredtime')
+																		option 10:00AM
+																		option 11:00AM
+																		option 1:00PM
+																		option 2:00PM
+								.learn-more.pull-right
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
+									button.btn.btn-next(type='button') Next
+							// Form Step 2
+							// Form Step 3
+							fieldset
+								h4
+									| Official Information: 
+									span Step 3 - 3
+									.container.mt-2
+										.row#principalSponsor
+											.col-md-6
+												.form-group.m-0
+													h6.label-control Principal Sponsors
+													input.form-control(type='text' name='sponsorname')
+											.col-md-6
+												.form-group
+													h6.label-control.invisible Principal Sponsors
+													input.form-control.balance(type='text' name='sponsorname')
+										button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
+											i.fa.fa-plus
+										.row#additionalSponsor
+											.col-md-6.mt-3
+												.form-group.m-0
+													h6.label-control Additional Sponsors
+													input.form-control(type='text' name='sponsorname')
+											.col-md-6.my-3
+												.form-group
+													h6.label-control.invisible Additional Sponsors
+													input.form-control.balance(type='text' name='sponsorname')
+								br
+								.learn-more.pull-right
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
+									button.btn.btn-submit(type='submit') Submit
+							// Form Step 3
+						// Form Wizard
 block addjs
 	script.
 		//- $('.selectpicker').selectpicker({
