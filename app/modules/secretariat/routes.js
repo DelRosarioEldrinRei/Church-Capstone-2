@@ -445,13 +445,9 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             for(var i = 0; i < requests.length; i++){
                 requests[i].date_docurequested= moment(requests[i].date_docurequested).format('MM/DD/YYYY');
             }
+
             
-            for(var i = 0; i < requests.length; i++){
-                if(requests[i].char_docustatus=="Requested"){
-                    
-                }
-            }
-            return res.render('secretariat/views/transactions/docureq',{ requests : requests,arrays : arrays });
+            return res.render('secretariat/views/transactions/docureq',{ requests : requests });
         }); 
         
     });
