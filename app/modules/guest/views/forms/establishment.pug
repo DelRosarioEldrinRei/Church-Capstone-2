@@ -74,7 +74,7 @@ block main
 															input.form-control.mb-2(type='Email' name='email1')
 														.form-group
 															h6.label-control Select Image:
-															input(type='file', name='image' accept='image/*' required)
+															input(type='file', name='image' accept='image/*')
 							// Form Step 1
 							// Form Step 2
 							.container
@@ -87,11 +87,12 @@ block main
 										.form-group.mt-1
 											h6.label-control Desired Time
 											input.timepicker.form-control(type='text' name='desiredtime1')
-							br
-							.learn-more.pull-center
-								button.btn.btn-submit(type='submit') Submit
-								// Form Step 2
-							// Form Wizard
+							.row
+								.col-md-12.my-5.text-center
+									.learn-more
+										button.btn.std-btn.btn-common#submit(type='submit') Submit
+										// Form Step 2
+									// Form Wizard
 
 block addjs
 	script.
