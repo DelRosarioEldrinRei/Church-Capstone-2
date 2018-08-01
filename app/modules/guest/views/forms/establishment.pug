@@ -21,113 +21,85 @@ block main
 						// Form Wizard
 						form(role='form' action="/guest/establishment/form"   enctype="multipart/form-data" method="post")
 							h3 Sign Up Office Employee Account
-							p Fill all form field to go next step
-							// Form progress
-							.form-wizard-steps.form-wizard-tolal-steps-3
-								.form-wizard-progress
-									.form-wizard-progress-line(data-now-value='12.25' data-number-of-steps='3' style='width: 12.25%;')
-								// Step 1
-								.form-wizard-step.active
-									.form-wizard-step-icon
-										i.fa.fa-user(aria-hidden='true')
-									p Personal
-								// Step 1
-								// Step 2
-								.form-wizard-step
-									.form-wizard-step-icon
-										i.fa.fa-briefcase(aria-hidden='true')
-									p Official
-								// Step 2
-							// Form progress
+							p.mb-4 Fill all form field to go next step
 							// Form Step 1
-							fieldset
-								h4
-									| Personal Information: 
-									span Step 1 - 2
-									each user in users
-										input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
-										.container
-											.row
-												.col-md-3.pr-0
-													.form-group.pt-2
-														h6.label-control Place where the will happen:
-														.ml-4
-															//- h6.form-check-label
-															//- 	input#ourhomeradio.form-check-input(type="radio" name="establishment" value="ourhome" checked)
-															//- 	.dropdown-toggle.mr-3 Our Home
-															//- 	span.circle
-															//- 		span.check
-															.custom-control.custom-radio.mt-2
-																input#ourhomeradio.custom-control-input(type='radio', name='establishment' value="ourhome" checked)
-																label.custom-control-label(for='ourhomeradio') 
-																	h6 Regular
-															//- h6.form-check-label
-															//- 	input#otherradio.form-check-input(type="radio" name="establishment" value="other")
-															//- 	.dropdown-toggle.mr-3 Other
-															//- 	span.circle
-															//- 		span.check
-															.custom-control.custom-radio
-																input#otherradio.custom-control-input(type='radio', name='establishment' value="other")
-																label.custom-control-label(for='otherradio') 
-																	h6 Special
-												.col-md-9
-													#ourhome.form-group
-														.row
-															.col-md-6
-																	.form-group
-																		h6.label-control Owner:
-																		input.form-control(type='text' value=	`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
-																	.form-group
-																		h6.label-control House/Establishment Location:
-																		input.form-control(value=`${user.var_useraddress}` rows="3" name='location')
-															.col-md-6
-																		.form-group
-																			h6.label-control Contact Number:
-																			input.form-control(type='text' value=`${user.var_usercontactnum}` name='contactnumber')
-																		.form-group
-																			h6.label-control Email:
-																			input.form-control(type='Email' value=`${user.var_useremail}` name='email')
-													#other.form-group.pt-2
-														.row
-															.col-md-6
-																.form-group
-																	h6.label-control Owner:
-																	input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1')
-																.form-group
-																	h6.label-control House/Establishment Location:
-																	textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location1')
-															.col-md-6
+							each user in users
+								input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+								.container
+									.row
+										.col-md-3.pr-0
+											.form-group.pt-2
+												h6.label-control Place where the will happen:
+												.ml-4
+													//- h6.form-check-label
+													//- 	input#ourhomeradio.form-check-input(type="radio" name="establishment" value="ourhome" checked)
+													//- 	.dropdown-toggle.mr-3 Our Home
+													//- 	span.circle
+													//- 		span.check
+													.custom-control.custom-radio.mt-2
+														input#ourhomeradio.custom-control-input(type='radio', name='establishment' value="ourhome" checked)
+														label.custom-control-label(for='ourhomeradio') 
+															h6 Regular
+													//- h6.form-check-label
+													//- 	input#otherradio.form-check-input(type="radio" name="establishment" value="other")
+													//- 	.dropdown-toggle.mr-3 Other
+													//- 	span.circle
+													//- 		span.check
+													.custom-control.custom-radio
+														input#otherradio.custom-control-input(type='radio', name='establishment' value="other")
+														label.custom-control-label(for='otherradio') 
+															h6 Special
+										.col-md-9
+											#ourhome.form-group
+												.row
+													.col-md-6
+															.form-group
+																h6.label-control Owner:
+																input.form-control(type='text' value=	`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
+															.form-group
+																h6.label-control House/Establishment Location:
+																input.form-control(value=`${user.var_useraddress}` rows="3" name='location')
+													.col-md-6
 																.form-group
 																	h6.label-control Contact Number:
-																	input.form-control(type='text' name='contactnumber1')
+																	input.form-control(type='text' value=`${user.var_usercontactnum}` name='contactnumber')
 																.form-group
 																	h6.label-control Email:
-																	input.form-control.mb-2(type='Email' name='email1')
-																.form-group
-																	h6.label-control Select Image:
-																	input(type='file', name='image' accept='image/*' required)
-											.learn-more.pull-right
-												button.btn.btn-next(type='button') Next
+																	input.form-control(type='Email' value=`${user.var_useremail}` name='email')
+											#other.form-group.pt-2
+												.row
+													.col-md-6
+														.form-group
+															h6.label-control Owner:
+															input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1')
+														.form-group
+															h6.label-control House/Establishment Location:
+															textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location1')
+													.col-md-6
+														.form-group
+															h6.label-control Contact Number:
+															input.form-control(type='text' name='contactnumber1')
+														.form-group
+															h6.label-control Email:
+															input.form-control.mb-2(type='Email' name='email1')
+														.form-group
+															h6.label-control Select Image:
+															input(type='file', name='image' accept='image/*' required)
 							// Form Step 1
 							// Form Step 2
-							fieldset
-								h4
-									| Official Information: 
-									span Step 2 - 2
-									.container
-										.row.mt-3
-											.col-md-6
-												.form-group
-													h6.label-control Desired Date
-													input.datepicker.form-control(type='date' name='desireddate1')
-											.col-md-6
-												.form-group.mt-1
-													h6.label-control Desired Time
-													input.timepicker.form-control(type='text' name='desiredtime1')
-									br
-									.learn-more.pull-right
-										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
-										button.btn.btn-submit(type='submit') Submit
+							.container
+								.row.mt-3
+									.col-md-6
+										.form-group
+											h6.label-control Desired Date
+											input.datepicker.form-control(type='date' name='desireddate1')
+									.col-md-6
+										.form-group.mt-1
+											h6.label-control Desired Time
+											input.timepicker.form-control(type='text' name='desiredtime1')
+							br
+							.learn-more.pull-center
+								button.btn.btn-submit(type='submit') Submit
 								// Form Step 2
 							// Form Wizard
 
