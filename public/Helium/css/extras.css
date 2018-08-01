@@ -112,7 +112,7 @@ a a:focus {
 }
 
 .slicknav_menu .slicknav_icon-bar {
-  background: #4c2508;
+  background: #fff;
 }
 
 /* only small tablets */
@@ -177,7 +177,7 @@ a a:focus {
     display: block;
   }
   .slicknav_nav .active a {
-    background: #E91E63;
+    background: #4c2508;
     color: #fff;
   }
   .slicknav_nav a:hover,

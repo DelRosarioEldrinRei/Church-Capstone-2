@@ -57,6 +57,18 @@ html(lang='en')
 				color: #6c757d;
 				background-color:#ffffff;
 			}
+			#mobile-nav {
+				float: none;
+				padding-left: 4%;
+				}
+
+				.js nav {
+				display:none;
+				}
+
+				.js .slicknav_menu {
+				display:block;
+				}
 	body
 		#loader
 			.spinner
@@ -74,30 +86,16 @@ html(lang='en')
 								img(src='/Helium/img/logo.png', alt='')
 						#main-navbar.collapse.navbar-collapse
 							ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix
-								li.nav-item.active
-									a.nav-link(href='#sliders')
-										| Home
-								li.nav-item
-									a.nav-link(href='#about')
-										| About
-								li.nav-item
-									a.nav-link(href='#services')
-										| Services
-								li.nav-item
-									a.nav-link(href='#portfolio')
-										| Portfolio
-								li.nav-item
-									a.nav-link(href='#feature')
-										| Features
-								li.nav-item
-									a.nav-link(href='#team')
-										| Team
-								li.nav-item
-									a.nav-link(href='#pricing')
-										| Pricing
-								li.nav-item
-									a.nav-link(href='#contact')
-										| Contact
+								li.nav-item.active: a.nav-link(href="/guest")
+									| Home
+								li.nav-item: a.nav-link(href="#services")
+									| Services
+								li.nav-item: a.nav-link(href="#portfolio")
+									| Events
+								li.nav-item: a.nav-link(href="#team")
+									| Team
+								li.nav-item: a.nav-link(href="#contact")
+									| Contact
 								li.nav-item.dropdown
 									a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') My Account
 									.dropdown-menu
@@ -108,32 +106,23 @@ html(lang='en')
 										hr
 										a.dropdown-item(href='/logout') Logout
 					ul.mobile-menu.navbar-nav
-						li.active
-							a.page-scroll(href='#sliders')
+						li
+							a.page-scroll(href='#sliders', role='menuitem', tabindex='-1')
 								| Home
 						li
-							a.page-scroll(href='#about')
-								| About
-						li
-							a.page-scroll(href='#services')
+							a.page-scroll(href='#services', role='menuitem', tabindex='-1')
 								| Services
 						li
-							a.page-scroll(href='#portfolio')
-								| Portfolio
+							a.page-scroll(href='#portfolio', role='menuitem', tabindex='-1')
+								| Events
 						li
-							a.page-scroll(href='#feature')
-								| Features
-						li
-							a.page-scroll(href='#team')
+							a.page-scroll(href='#team', role='menuitem', tabindex='-1')
 								| Team
 						li
-							a.page-scroll(href='#pricing')
-								| Pricing
-						li
-							a.page-scroll(href='#contact')
+							a.page-scroll(href='#contact', role='menuitem', tabindex='-1')
 								| Contact
-						li.dropdown
-							a.page-scroll.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') My Account
+						li.page-scroll.dropdown
+							a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true') My Account
 							.dropdown-menu
 								a.dropdown-item(href='#') My Profile
 								a.dropdown-item(href='#') Messages
