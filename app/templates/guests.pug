@@ -13,6 +13,7 @@ html(lang='en')
 		link(rel='stylesheet', href='/Helium/css/extras.css')
 		link(rel='stylesheet', href='/Helium/css/responsive.css')
 		link(rel='stylesheet', href='/css/modal-anim.css')
+		link(rel='stylesheet', href='/css/form-wizard.css')
 		link(rel='stylesheet', href='/css/loader.css')
 		link(rel="stylesheet" href="/css/jasny-bootstrap.min.css")
 		link(rel="stylesheet" href="/css/fileinput-rtl.css")
@@ -44,6 +45,17 @@ html(lang='en')
 			}
 			input::placeholder {
 				color: #ada9a0 !important;
+			}
+			textarea::placeholder {
+				color: #ada9a0 !important;
+			}
+			.btn-next:hover, .btn-submit:hover {
+				background-color:#000;
+				color:#dddddd
+			}
+			.btn-previous:hover {
+				color: #6c757d;
+				background-color:#ffffff;
 			}
 	body
 		#loader
@@ -86,7 +98,13 @@ html(lang='en')
 										a.page-scroll(href='#contact', role='menuitem', tabindex='-1')
 											| Contact
 									li.page-scroll.dropdown
-										a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') My Account
+										a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true'
+										mousewheel: true,
+										setCurrentTime: false,
+										primaryColor: ,
+										borderColor: ,
+										backgroundColor: ,
+										textColor: ,) My Account
 										.dropdown-menu
 											a.dropdown-item(href='#') My Profile
 											a.dropdown-item(href='#') Messages
@@ -268,6 +286,7 @@ html(lang='en')
 		script(src='/js/fileinput.js')
 		script(src='/js/fileinput.min.js')
 		script(src='/js/plugins/sortable.js')
+		script(src='/js/form-wizard.js')
 		script(src='/js/locales/fr.js')
 		script(src='/js/locales/es.js')
 		script(src='/themes/explorer-fa/theme.js')
@@ -307,7 +326,15 @@ html(lang='en')
 				}
 			});
 			
-			$('.timepicker').timeDropper();
+			$('.timepicker').timeDropper({
+				meridians: true,
+				mousewheel: true,
+				setCurrentTime: false,
+				primaryColor: "#d6b872",
+				borderColor: "#836323",
+				//- backgroundColor: ,
+				//- textColor: ,
+			});
 
 			$('.timepicker1').datetimepicker({
 				icons: {
