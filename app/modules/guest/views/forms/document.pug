@@ -155,7 +155,7 @@ block addjs
 						success: function(data){
 							swal({
 								title:'Record found!',
-								text:'Please wait for 3 days or your request t e processed. We will send you an emil once it is ready to be released. You may also be ',
+								text:'Please wait for 3 days for your request to be processed. We will send you an email once it is ready to be released. You may also be ',
 								icon:'success',
 								buttons: {
 									Okay: 'okay'
@@ -168,7 +168,8 @@ block addjs
 					}
 					else{
 							swal({
-								title:'Sorry but your transaction did not exist',
+								title:'Sorry',
+								text: 'Your transaction does not exist. Check the data you have entered and try again.',
 								icon:'warning',
 								buttons: {
 									Okay: 'okay'
@@ -181,4 +182,3 @@ block addjs
 				})
 				})
 		})
-		
