@@ -42,10 +42,19 @@ html
 								.form-group.col-md-6
 									label.h6 Gender
 										.text-danger.d-inline *
-									select#inputState.form-control(required) 
+									select#inputState.form-control(name="gender" required) 
 										option(selected='' value="" disabled) Choose...
 										option(value="Male") Male
 										option(value="Female") Female
+							//- .form-check
+							//- 	label.form-check-label
+							//- 		input#gridRadios1.form-check-input(type='radio', name='gridRadios', value='option1', checked='')
+							//- 		| ption one is this and that—be sure to include why it's great
+							//- .form-check
+							//- 	label.form-check-label
+							//- 		input#gridRadios2.form-check-input(type='radio', name='gridRadios', value='option2')
+							//- 		| ption two can be something else and selecting it will deselect option one
+
 									.invalid-feedback Please choose a gender.
 								.form-group.col-md-6
 									label.h6 Contact Number:
