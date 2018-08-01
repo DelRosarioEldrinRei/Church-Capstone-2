@@ -93,7 +93,7 @@ block prepend main
 								i.fa.fa-cogs
 							.service-content
 								h4
-									a(href='#')=`${event.var_eventname}`
+									a(href='#' name='eventname')=`${event.var_eventname}`
 								p
 									| #{event.var_eventdesc.substring(0, 100)}...
 									.learn-more

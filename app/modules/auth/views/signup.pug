@@ -49,9 +49,11 @@ html
 									.invalid-feedback Please choose a gender.
 								.form-group.col-md-6
 									label.h6 Contact Number:
-									input.form-control(type='text' name='contactnumber' placeholder="Ex. 093345312346")
+										.text-danger.d-inline *
+									input.form-control(type='text' name='contactnumber' placeholder="Ex. 091234567890	")
 							.form-group
 								label.h6(for='exampleFormControlTextarea1') Address:
+									.text-danger.d-inline *
 								textarea#exampleFormControlTextarea1.form-control(rows='1' name='address' placeholder="Ex. 56 Sampaguita Street Sta. Maria")
 							.form-row
 								.form-group.col-md-6
@@ -82,9 +84,10 @@ html
 									| I agree to the 
 									a(href='#something') terms and conditions
 									| .
-									.text-danger.d-inline *	mysql-init.txt.
-								.invalid-feedback You must agree to our terms and conditions
-							.text-center
+									.text-danger.d-inline
+									//-  *	mysql-init.txt.
+
+								.invalid-feedback You must agree to our terms and conditions							.text-center
 								button.btn.btn-primary.mt-3(type='submit') Submit
 
 	script(type='text/javascript', src='/js/jquery.min.js')

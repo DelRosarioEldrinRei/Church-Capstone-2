@@ -26,9 +26,9 @@ block prepend main
 																td=request.var_doclastname + ", " + request.var_docfirstname
 																td=request.var_documenttype
 																td=request.date_docurequested
+																label#status(value=request.docustatus hidden='')
 																td
 																	select.form-control
-																		option=request.char_docustatus
 																td.td-actions.text-center
 																	button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${request.int_requestID}`)
 																		i.ti-user
@@ -39,15 +39,19 @@ block prepend main
 						h5.modal-title Document Request
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true') ×
-						//- h4.modal-title Warning
 					.modal-body#documentAppend
 					.modal-footer
 						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-						//- button.btn.btn-outline.pull-right Update
 						button.btn.btn-outline.btn-primary.pull-right#generateButton Generate
 	block addjs
 		script.
 			$(document).ready(function(){
+				//- if($('#status').val(); == "Released"){
+				//- $('#optionAppend').append(`
+				//- <option selected="selected">Released</option>
+				//- <option>To Be Released</option>
+				//- <option>Released</option></option>
+				//- `)}
 				$('.viewButton').click(function(){
 					var idNow = $(this).val();
 					console.log(idNow)
@@ -99,12 +103,11 @@ block prepend main
 									]
 								}
 								pdfMake.createPdf(docDefinition).open();
-								//- pdfMake.createPdf(docDefinition).on('hidden.bs.modal', function(){
-								//- 	$(docDefinition).empty()
-								//- })
+								
 							})
 						})
 					})
 				})
+				
 			})
 		

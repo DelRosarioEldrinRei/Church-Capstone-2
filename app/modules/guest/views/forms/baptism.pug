@@ -38,17 +38,6 @@ block main
 					.col-md-4
 						.form-group.m-0
 							h5.label-control Gender:
-							//- 	.form-check.ml-3.mt-3
-							//- 		label.form-check-label
-							//- 			input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Male")
-							//- 			| Male
-							//- 			span.circle
-							//- 				span.check
-							//- 		label.form-check-label.ml-4
-							//- 			input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Female")
-							//- 			| Female
-							//- 			span.circle
-							//- 				span.check
 							.custom-control.custom-radio
 								input#customRadio1.custom-control-input(type='radio', name='gender' value="Male")
 								label.custom-control-label(for='customRadio1') 
@@ -89,17 +78,6 @@ block main
 									option Aunt/Uncle
 						.form-group.m-0
 							h5.label-control Baptism Type & Date:
-								//- .form-check.ml-3.mt-3
-								//- 	label.form-check-label
-								//- 		input#radio1.form-check-input(type="radio" name="baptismtype" value="Regular")
-								//- 		| Regular
-								//- 		span.circle
-								//- 			span.check
-								//- 	label.form-check-label.ml-4
-								//- 		input#radio2.form-check-input(type="radio" name="baptismtype" value="Special")
-								//- 		| Special
-								//- 		span.circle
-								//- 			span.check
 								.custom-control.custom-radio.mt-2
 									input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
 									label.custom-control-label(for='radio1') 
@@ -119,9 +97,6 @@ block main
 											h5.label-control Special Baptism Date
 											input.datepicker.SpecialDesiredDate.form-control(type='date' name='spcdesireddate')
 									.col-md-6.mt-2
-										//- .form-group
-										//- 	label.label-control Special Baptism Time
-										//- 	input.timepicker.form-control(type='text' name='desireddate1')
 										.form-group
 											h5.label-control Special Baptism Time
 												select.selectpicker.form-control(type="text" name='desiredtime')

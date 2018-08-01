@@ -76,45 +76,10 @@
         guestRouter.get('/weddingorg/items', (req, res)=>{res.render('guest/views/forms/weddingorg1') });
         guestRouter.get('/voucher', (req, res)=>{res.render('guest/views/voucher/facility') });
         
-        guestRouter.get('/schedule', (req, res)=>{
-            res.render('guest/views/schedule2')
-        });
-    
-        guestRouter.get('/entourage', (req, res)=>{
-            res.render('guest/views/entourage')
-        });
-    
-        guestRouter.get('/parishevents', (req, res)=>{
-            res.render('guest/views/parishevents1')
-        });
-    
-        guestRouter.get('/parishevents/details', (req, res)=>{
-            res.render('guest/views/parishdetails')
-        });
-    
-        guestRouter.get('/parishservices', (req, res)=>{
-            res.render('guest/views/parishservices')
-        });
-    
-        guestRouter.get('/weddingorg', (req, res)=>{
-            res.render('guest/views/forms/weddingorg')
-        });
-    
-        guestRouter.get('/weddingorg/items', (req, res)=>{
-            res.render('guest/views/forms/weddingorg1')
-        });
-    
-        guestRouter.get('/voucher', (req, res)=>{
-            res.render('guest/views/voucher/facility')
-        });
     //===============================================================================================//
     // R E S E R V A T I O N //
     //===============================================================================================//
-        guestRouter.get('/reservation/SB1801', (req, res)=>{
-            res.render('guest/views/reservations/techno');
-    
-        });
-    
+        
         guestRouter.get('/reservation', (req, res)=>{
             var queryString1 =`SELECT * FROM tbl_eventinfo 
             JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
@@ -418,26 +383,7 @@
     //==============================================================
     // E V E N T S  I N F O
     //==============================================================
-        guestRouter.get('/anointing', (req, res)=>{
-            res.render('guest/views/events/anointing')
-        });
-        guestRouter.get('/baptism', (req, res)=>{
-            res.render('guest/views/events/baptism')
-        });
-    
-        guestRouter.get('/confirmation', (req, res)=>{
-            res.render('guest/views/events/confirmation')
-        });
-        guestRouter.get('/establishment', (req, res)=>{
-            res.render('guest/views/events/establishment')
-        });
-        guestRouter.get('/funeral', (req, res)=>{
-            res.render('guest/views/events/funeral')
-        });
-        guestRouter.get('/rcia', (req, res)=>{
-            res.render('guest/views/events/rcia')
-        });
-        guestRouter.get('/marriage', (req, res)=>{
+        guestRouter.get('/marriageinfo', (req, res)=>{
             res.render('guest/views/events/marriage')
         });
     
@@ -498,7 +444,7 @@
             res.render('guest/views/forms/baptism',{user: req.session.user})
         });
     
-        guestRouter.post('/baptism/form',upload.single('image'), (req, res) => {
+        guestRouter.post('/baptism/form',upload.single('image'), (req, res) => { 
         console.log(req.file)
         console.log(req.body)
         
@@ -912,17 +858,17 @@
     //===============================================================================================//
     // D O C U M E N T  //
     //===============================================================================================//
-        guestRouter.get('/document', (req, res)=>{
-            res.render('guest/views/document')
-        });
+        // guestRouter.get('/document', (req, res)=>{
+        //     res.render('guest/views/document')
+        // });
     
-        guestRouter.get('/document/form', (req, res)=>{
+        guestRouter.get('/document', (req, res)=>{
             res.render('guest/views/forms/document')
         });
-        guestRouter.post('/document/form/query', (req, res)=>{
+        guestRouter.post('/document/query', (req, res)=>{
             var queryString =`SELECT tbl_document.var_documenttype,tbl_relation.var_fname,tbl_relation.var_lname,
             tbl_eventinfo.date_approveddate
-            FROM tbl_document 
+            FROM tbl_document
             JOIN tbl_documentsevents ON tbl_documentsevents.int_documentID = tbl_document.int_documentID
             JOIN tbl_eventinfo ON tbl_eventinfo.int_eventID = tbl_documentsevents.int_eventID
             JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
@@ -938,6 +884,45 @@
         });
     
         guestRouter.post('/document/form',upload.single('image'), (req, res) => {
+        console.log(req.file)
+            var queryString= `select int_documentID from tbl_document where var_documenttype= ?`  
+                db.query(queryString,[req.body.documenttype], (err, results, fields) => {
+                    if (err) throw err;
+                    console.log(results);
+                    var documentID =results[0];
+                    var datenow= new Date();
+                    console.log(req.session.user);
+                    
+                var queryString1 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus,date_doceventdate) VALUES(?,?,?,?,?,?,?,?)`;
+                    db.query(queryString1, [req.session.user.int_userID, documentID.int_documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Requested",req.body.eventDate], (err, results, fields) => {
+                        // console.log(req.body)
+                        if (err) throw err;
+                        var requestID =results;
+                        console.log(results)
+                        var path = '/img/req/'+req.file.filename;
+                        var nowDate = new Date(); 
+                        var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
+                        var queryString7 = `INSERT INTO tbl_requirements(int_requestID,var_reqpath,date_reqreceived,int_reqtypeID) VALUES (?,?,?,?);`
+                        db.query(queryString7,[requestID.insertId,path,date,5],(err, results, fields)=>{     
+                        if (err) throw err;
+                        return res.redirect(`/guest`);
+                        });
+                    });    
+                });            
+                
+            });
+    //===============================================================================================//
+    // F A C I L I T Y   //
+    //===============================================================================================//
+        // guestRouter.get('/document', (req, res)=>{
+        //     res.render('guest/views/document')
+        // });
+    
+        guestRouter.get('/facility/form', (req, res)=>{
+            res.render('guest/views/facilities/index')
+        });
+        
+        guestRouter.post('/facility/form',upload.single('image'), (req, res) => {
         console.log(req.file)
             var queryString= `select int_documentID from tbl_document where var_documenttype= ?`  
                 db.query(queryString,[req.body.documenttype], (err, results, fields) => {

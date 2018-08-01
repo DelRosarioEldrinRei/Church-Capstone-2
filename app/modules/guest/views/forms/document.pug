@@ -138,7 +138,7 @@ block addjs
 					var fnInput = $('#lastname').val() + ', ' + $('#firstname').val();
 					var documentType = $('#documenttype').val();
 					var fnValidate = data.var_doclastname + ', ' + data.var_docfirstname;
-					if(data){
+					if(fnValidate == fnInput && data.var_documenttype == documentType || data.date_approveddate == eventDate){
 					var formData = new FormData();
 					formData.append('documenttype', $('#documenttype').val())
 					formData.append('image', $('#file-0b')[0].files[0]);
@@ -148,14 +148,14 @@ block addjs
 					formData.append('purpose', $('#purpose').val())
 					$.ajax({
 						type:'POST',
-						url:'/guest/document/form',
+						url:'/guest/Document',
 						data: formData,
 						processData:false,
 						contentType:false,
 						success: function(data){
 							swal({
 								title:'Record found!',
-								text:'Please wait for 3',
+								text:'Please wait for 3 days',
 								icon:'success',
 								buttons: {
 									Okay: 'okay'

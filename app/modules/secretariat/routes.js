@@ -438,12 +438,20 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID 
         join tbl_user on tbl_documentrequest.int_userID = tbl_user.int_userID`
         db.query(queryString1, (err, results, fields) => {
+            
             if (err) console.log(err);       
             var requests = results;
+            // var arrays
             for(var i = 0; i < requests.length; i++){
                 requests[i].date_docurequested= moment(requests[i].date_docurequested).format('MM/DD/YYYY');
             }
-            return res.render('secretariat/views/transactions/docureq',{ requests : requests });
+            
+            for(var i = 0; i < requests.length; i++){
+                if(requests[i].char_docustatus=="Requested"){
+                    
+                }
+            }
+            return res.render('secretariat/views/transactions/docureq',{ requests : requests,arrays : arrays });
         }); 
         
     });
