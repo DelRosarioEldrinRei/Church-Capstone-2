@@ -91,7 +91,7 @@ block main
 								.form-check
 									label.form-check-label
 										input#exampleRadios1.form-check-input(type="radio" name="venue" value="hospital")
-										.dropdown-toggle.mr-3 Hospital/Center
+										.dropdown-toggle.mr-2 Hospital/Center
 										span.circle
 											span.check
 									#textarea1.form-group
@@ -104,7 +104,9 @@ block main
 											span.check
 									#textarea2.form-group
 										textarea.form-control(placeholder="Please enter complete address" rows="2" name='othervenue')
-
+						.form-group
+							h6.label-control Select Image
+							input#datepicker(type='file' name='image')
 					.col-md-6
 						.form-group
 							h5(for='exampleFormControlTextarea1') Address:
