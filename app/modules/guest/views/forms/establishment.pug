@@ -40,7 +40,7 @@ block main
 														label.custom-control-label(for='otherradio') 
 															h6 Special
 										.col-md-9
-											#ourhome.form-group
+											#ourhome.form-group.pt-2
 												.row
 													.col-md-6
 															.form-group
@@ -48,14 +48,17 @@ block main
 																input.form-control(type='text' value=	`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
 															.form-group
 																h6.label-control House/Establishment Location:
-																input.form-control(value=`${user.var_useraddress}` rows="3" name='location')
+																input.form-control(value=`${user.var_useraddress}` rows="4" name='location')
 													.col-md-6
 																.form-group
 																	h6.label-control Contact Number:
 																	input.form-control(type='text' value=`${user.var_usercontactnum}` name='contactnumber')
 																.form-group
 																	h6.label-control Email:
-																	input.form-control(type='Email' value=`${user.var_useremail}` name='email')
+																	input.form-control.mb-2(type='Email' value=`${user.var_useremail}` name='email')
+																.form-group
+																	h6.label-control Select Image:
+																	input(type='file', name='image' accept='image/*')
 											#other.form-group.pt-2
 												.row
 													.col-md-6

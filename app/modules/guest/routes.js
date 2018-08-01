@@ -872,6 +872,7 @@
             res.render('guest/views/forms/document')
         });
         guestRouter.post('/document/query', (req, res)=>{
+
             var queryString =`SELECT tbl_document.var_documenttype,tbl_relation.var_fname,tbl_relation.var_lname,
             tbl_eventinfo.date_approveddate
             FROM tbl_document
@@ -881,13 +882,12 @@
             WHERE tbl_document.var_documenttype = ?
             AND tbl_relation.var_fname = ?
             AND tbl_relation.var_lname = ?
-            or tbl_relation.var_fname = ?
-            AND tbl_relation.var_lname = ?
             tbl_eventinfo.date_approveddate = ?`
             db.query(queryString,[req.body.documentType,req.body.firstName,req.body.lastName,req.body.eventDate],(err,results,fields)=>{
             if (err) throw err;
-            res.send(results[0])
-            console.log(results[0])
+            res.send(results)
+            console.log(req.body)
+            console.log(results)
             })
         });
     
