@@ -1,4 +1,3 @@
-
 var express = require('express');
 var loginRouter = express.Router();
 var logoutRouter = express.Router();

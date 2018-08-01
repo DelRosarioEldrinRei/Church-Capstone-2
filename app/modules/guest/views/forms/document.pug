@@ -148,14 +148,14 @@ block addjs
 					formData.append('purpose', $('#purpose').val())
 					$.ajax({
 						type:'POST',
-						url:'/guest/Document',
+						url:'/guest/document/form',
 						data: formData,
 						processData:false,
 						contentType:false,
 						success: function(data){
 							swal({
 								title:'Record found!',
-								text:'Please wait for 3 days',
+								text:'Please wait for 3 days or your request t e processed. We will send you an emil once it is ready to be released. You may also be ',
 								icon:'success',
 								buttons: {
 									Okay: 'okay'
