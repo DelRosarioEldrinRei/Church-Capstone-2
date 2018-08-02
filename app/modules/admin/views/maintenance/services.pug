@@ -13,7 +13,7 @@ block prepend main
 										.col-md-6
 											h4.card-title Sacramental Services
 										.col-md-6
-											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add
+											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Service
 								.card-body.table-responsive
 										table.table.table-hover
 												thead.text-primary
@@ -27,12 +27,17 @@ block prepend main
 																td=sacrament.var_eventname
 																td.td-actions.text-center
 																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${sacrament.int_eventID}`)
-																		i.ti-close
-																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${sacrament.int_eventID}`)
+																		i.ti-close 
+																	| &nbsp;
+																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${sacrament.int_eventID}`)
 																		i.ti-pencil
 						.card
 								.card-header.card-header-primary
-										h4.card-title Special Services
+									.row
+										.col-md-6
+											h4.card-title Special Services
+										.col-md-6
+											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Service
 								.card-body.table-responsive
 										table.table.table-hover
 												thead.text-primary
@@ -48,25 +53,9 @@ block prepend main
 																td.td-actions.text-center
 																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${service.int_eventID}`)
 																		i.ti-close
-																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${service.int_eventID}`)
+																	| &nbsp;
+																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${service.int_eventID}`)
 																		i.ti-pencil
-								.col-md-9.text-right
-									button.btn.btn-info(href="#" data-toggle="modal" data-target="#conditionModal") 
-										i.ti-plus Add Service
-								//- .card-footer.text-right
-								//- 	.col-md-3
-								//- 	.col-md-6.text-right
-								//- 		<nav aria-label="Page navigation example">
-								//- 			<ul class="pagination justify-content-center">
-								//- 				<li class="page-item">
-								//- 					<a class="page-link" href="#" tabindex="-1">Previous</a>
-								//- 				</li>
-								//- 				<li class="page-item"><a class="page-link" href="#">1</a></li>
-								//- 				<li class="page-item">
-								//- 					<a class="page-link" href="#">Next</a>
-								//- 				</li>
-								//- 			</ul>
-								//- 		</nav>
 			
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
