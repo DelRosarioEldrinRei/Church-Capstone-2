@@ -90,22 +90,100 @@ block prepend main
 								xhr.responseType = 'blob';
 								xhr.send();
 							}
-							toDataURL('/document_templates/baptism_certificate.jpg', function(dataUrl) {
+							toDataURL(data.var_doctemplatepath, function(dataUrl) {
 							var fullName = data.var_doclastname + ', ' + data.var_docfirstname;
 							var dateRequested = moment(data.date_docurequested).format('MM/DD/YYYY');
+							//- Margin 
+							//-  First Param = ?
+							//-  Second Param = Top
+							//-  Second Param = Top
+							//-  Third Param = ?
+							//-  Fourth Param = ?
 								var docDefinition = {
-									pageMargins: [ 0, 0, 0, 0 ],
+									pageMargins: [ 40, 40, 40, 40 ],
 									content: [
 										{
 											image: dataUrl,
-											width: 610,
-											//- height: 100,
+											width: 500,
+											height: 100,
+											
 										},
 										{
-										text: fullName,
-										style: 'styleLabelFill',
-										absolutePosition: {x:125, y:247},
+										text: 'Certficate of Baptism',
+										style: 'styleHeader',
+										//- text: 'Name: ' + fullName,
 										//- text: 'Date: ' + dateRequested,
+										},
+										{
+										text: 'This is to certify',
+										style: 'styleHeader2',
+										},
+										{
+										text: 'that _____________________________________',
+										style: 'styleLabel',
+										},
+										{
+										text: 'child of  ___________________________________',
+										style: 'styleLabel',
+										},
+										{
+										text: 'and _____________________________________',
+										style: 'styleLabel',
+										},
+										{
+										text: 'born in  ___________________________________',
+										style: 'styleLabel',
+										},
+										{
+										text: 'on the __________ day of ______________________',
+										style: 'styleLabel',
+										},
+										{
+										text: 'was Solemnly Baptized',
+										style: 'styleHeader2',
+										},
+										{
+										text: 'on the__________ day of ______________________',
+										style: 'styleLabel',
+										},
+										{
+										text: 'according to the Rites of the Roman Catholic Church',
+										style: 'styleHeader2',
+										},
+										{
+										text: 'by the Rev _________________________________',
+										style: 'styleLabel',
+										},
+										{
+										text: 'the sponsors being ______________________________',
+										style: 'styleLabel',
+										},
+										{
+										text: 'and _____________________________________',
+										style: 'styleLabel',
+										},
+										{
+										text: 'as appears on the Baptismal Register of this Church',
+										style: 'styleHeader2',
+										},
+										{
+										text: 'Bk. No. ________ Page ________ Line _________',
+										style: 'styleLabel',
+										},
+										{
+										text: 'Dated _______________',
+										style: 'styleLabel',
+										},
+										{
+										text: '_________________',
+										style: 'styleLabel',
+										alignment: 'right',
+										},
+										{
+										text: 'Parish Priest',
+										style: 'styleLabel',
+										alignment: 'right',
+										margin: [0, 0, 52, 0],
 										},
 									],
 									styles: {
@@ -128,10 +206,6 @@ block prepend main
 										styleLabel: {
 											font: 'EdwardianScript',
 											fontSize: 26,
-										},
-										styleLabelFill: {
-											font: 'EdwardianScript',
-											fontSize: 35,
 										},
 									},
 								}

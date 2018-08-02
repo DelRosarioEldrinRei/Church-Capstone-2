@@ -19,7 +19,7 @@ block main
 				.row
 					.col-md-12.form-wizard
 						// Form Wizard
-						form(role='form' action="/guest/baptism/form" enctype="multipart/form-data" method="post")
+						form(role='form' action="/guest/confirmation/form" enctype="multipart/form-data" method="post")
 							h3 Confirmation Application
 							p Fill all form field to go next step
 							// Form progress
@@ -36,7 +36,7 @@ block main
 								.form-wizard-step
 									.form-wizard-step-icon
 										i.fa.fa-location-arrow(aria-hidden='true')
-									p Baptism Type and Schedule
+									p Confirmation Details
 								// Step 2
 								// Step 3
 								.form-wizard-step
@@ -54,12 +54,12 @@ block main
 									br
 									input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 									.container
-										h6.label-control Name:
+										h6.label-control Name of the child:
 										.row
 											.col-md-4
 												.form-group.pt-0
 													input.form-control(type='text' placeholder="Last Name" name='lastname')
-											.col-md-4
+											.col-md-4.p-lg-0
 												.form-group.pt-0
 													input.form-control(type='text' placeholder="First Name" name='firstname')
 											.col-md-4
@@ -78,7 +78,7 @@ block main
 														label.custom-control-label(for='customRadio2') 
 															| Female
 
-											.col-md-4
+											.col-md-4.p-lg-0
 												.form-group
 													h6.label-control Birthday
 													input.datepicker.form-control(type='date' name='birthday')
@@ -91,9 +91,21 @@ block main
 												.form-group
 													h6.label-control Father's Full Name:
 													input.form-control(type='text' name='fathername')
+											.col-md-6
+												.form-group
+													h6.label-control Father's Birthplace:
+													input.form-control(type='text' name='fatherbirthplace')
+										.row
+											.col-md-6
 												.form-group
 													h6.label-control Mother's Full name:
 													input.form-control(type='text' name='mothername')
+											.col-md-6
+												.form-group
+													h6.label-control Mother's birthplace:
+													input.form-control(type='text' name='motherbirthplace')
+										.row
+											.col-md-6
 												.form-group
 													h6.label-control Relationship with the Child
 														br
@@ -101,22 +113,22 @@ block main
 															option Parent
 															option Grandparent
 															option Aunt/Uncle
-												.form-group.mt-5.pt-3
+											.col-md-6
+												.form-group
+													h6.label-control Contact number
+													input#datepicker.form-control(type='text' name='contactnumber')
+										.row
+											.col-md-6
+												.form-group
 													h6(for='exampleFormControlTextarea1') Parent's Marriage Address:
 													textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress')
 											.col-md-6
 												.form-group
-													h6.label-control Father's Birthplace:
-													input.form-control(type='text' name='fatherbirthplace')
-												.form-group
-													h6.label-control Mother's birthplace:
-													input.form-control(type='text' name='motherbirthplace')
-												.form-group
-													h6.label-control Contact number
-													input#datepicker.form-control(type='text' name='contactnumber')
-												.form-group
 													h6(for='exampleFormControlTextarea1') Family address:
 													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address')
+										.row
+											.col-md-6
+											.col-md-6
 												.form-group
 													h6.label-control Select Image
 													input#datepicker(type='file' name='image')
@@ -127,7 +139,7 @@ block main
 							// Form Step 2
 							fieldset
 								h4
-									| Baptism Type and Schedule
+									| Contact Information : 
 									span Step 2 - 3
 									.container
 										.row
@@ -169,29 +181,28 @@ block main
 							// Form Step 3
 							fieldset
 								h4
-									| Sponsors 
+									| Official Information: 
 									span Step 3 - 3
-									.container.mt-2
-										.row#principalSponsor
-											.col-md-6
-												.form-group.m-0
-													h6.label-control Principal Sponsors
-													input.form-control(type='text' name='sponsorname')
-											.col-md-6
-												.form-group
-													h6.label-control.invisible Principal Sponsors
-													input.form-control.balance(type='text' name='sponsorname')
-										button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
-											i.fa.fa-plus
-										.row#additionalSponsor
-											.col-md-6.mt-3
-												.form-group.m-0
-													h6.label-control Additional Sponsors
-													input.form-control(type='text' name='sponsorname')
-											.col-md-6.my-3
-												.form-group
-													h6.label-control.invisible Additional Sponsors
-													input.form-control.balance(type='text' name='sponsorname')
+									.row#principalSponsor
+										.col-md-6
+											.form-group.m-0
+												h6.label-control Principal Sponsors
+												input.form-control(type='text' name='sponsorname')
+										.col-md-6
+											.form-group.m-0
+												h6.label-control.invisible Principal Sponsors
+												input.form-control.balance(type='text' name='sponsorname')
+									button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
+										i.fa.fa-plus
+									.row#additionalSponsor
+										.col-md-6
+											.form-group.m-0
+												h6.label-control Additional Sponsors
+												input.form-control(type='text' name='sponsorname')
+										.col-md-6
+											.form-group.m-0
+												h6.label-control.invisible Additional Sponsors
+												input.form-control.balance(type='text' name='sponsorname')
 								br
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
@@ -200,10 +211,6 @@ block main
 						// Form Wizard
 block addjs
 	script.
-		//- $('.selectpicker').selectpicker({
-		//- 	style: 'btn-primary',
-		//- 	size: 4
-		//- });
 	
 		$('#textarea1').hide();
 		$('#textarea2').hide();
