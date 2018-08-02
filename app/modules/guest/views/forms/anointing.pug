@@ -20,10 +20,11 @@ block main
 					hr.mt-5.mx-5
 			.row
 				.col-md-12.my-3
-					h3.text-center.text-uppercase.guidelines--text Request Form
+					h3 Request Form
+					p Fill all form field to go next step
 			form(action="/guest/anointing/form" enctype="multipart/form-data" method="post")
 				input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
-				h5.label-control Name of the sick:
+				h5.label-control Name of the Ill:
 				.row
 					.col-md-4
 						.form-group.pt-0
@@ -67,7 +68,7 @@ block main
 									input.timepicker.form-control(type='text' name='desiredtime1')
 					.col-md-4
 						.form-group
-							h5.label-control Relationship with the Sick:
+							h5.label-control Relationship with the Ill:
 							select(type="text" name='relation')
 								option Spouse
 								option Parent
@@ -131,7 +132,7 @@ block addjs
 		$('#radioup').click(function() {
 			$('#textarea1').slideUp();
 			$('#textarea2').slideUp();
-		});
+		});	
 		$('#exampleRadios1').click(function() {
 			$('#textarea1').slideDown();
 			$('#textarea2').slideUp();

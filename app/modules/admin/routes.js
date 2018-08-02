@@ -112,7 +112,7 @@ adminRouter.use(authMiddleware.adminAuth)
     });
 
     adminRouter.post('/maintenance-services/add', (req, res) => {
-        var queryString= `INSERT INTO tbl_event(
+        var queryString= `INSERT INTO tbl_services(
             var_eventname,
             var_eventdesc, 
             char_type

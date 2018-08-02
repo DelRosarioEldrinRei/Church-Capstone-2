@@ -50,12 +50,19 @@
         })
         guestRouter.get('/service', (req, res)=>{
             console.log(req.session)
-                if(req.session.eventId == 3){ return res.render('guest/views/forms/baptism',{user: req.session.user});}
-                else if(req.session.eventId == 4){ return res.render('guest/views/forms/funeral',{user: req.session.user})}
-                else if(req.session.eventId == 5){ return res.render('guest/views/forms/marriage',{user: req.session.user});}
-                else if(req.session.eventId == 6){ return res.render('guest/views/forms/communion',{user: req.session.user});}
-                else if(req.session.eventId == 14){ return res.render('guest/views/forms/document',{user: req.session.user});}
+            var queryString =`select var_eventname from tbl_services where int_eventID =${req.session.eventId}`
+            db.query(queryString, (err, results, fields) => {
+                if (err) console.log(err);
+                var services = results[0];
+                if(services.var_eventname== 'Baptism'){ return res.render('guest/views/forms/baptism',{user: req.session.user});}
+                else if(services.var_eventname== 'Funeral Service'){ return res.render('guest/views/forms/funeral',{user: req.session.user})}
+                else if(services.var_eventname== 'Marriage'){ return res.render('guest/views/forms/marriage',{user: req.session.user});}
+                else if(services.var_eventname== 'Confirmation'){ return res.render('guest/views/forms/confirmation',{user: req.session.user});}
+                else if(services.var_eventname== 'Document Request'){ return res.render('guest/views/forms/document',{user: req.session.user});}
+                else if(services.var_eventname== 'Facility Reservation'){ return res.render('guest/views/forms/facility',{user: req.session.user});}
+                else if(services.var_eventname== 'Anointing of the sick'){ return res.render('guest/views/forms/anointing',{user: req.session.user});}
                 else{ return res.redirect('/guest')}
+            });
         });
     
         // guestRouter.get('/allservices',(req,res)=>{
