@@ -12,7 +12,7 @@ block main
 							h5.header-text.animated.fadeIn.invisible
 								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
 							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
-							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
+							//- a.page-scroll.btn.btn-lg.btn-success.animated.fadeInUp.invisible(href="#") Explore
 		#raised-section.main.main-raised
 		section.form-box
 			.container
@@ -20,7 +20,7 @@ block main
 					.col-md-12.form-wizard
 						// Form Wizard
 						form#form(role='form' action="/guest/marriage/form" enctype="multipart/form-data" method="post")
-							h3 Marriage Application
+							h3 Marriage Application Request
 							p Fill all form field to go next step
 							// Form progress
 							.form-wizard-steps.form-wizard-tolal-steps-5
@@ -474,7 +474,21 @@ block main
 								br
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
-									button.btn.btn-submit(type='submit') Submit
+									button.btn.btn-next(type='button' data-toggle='modal', data-target='#exampleModal') Proceed
+							#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' data-controls-modal="exampleModal" data-backdrop="static" data-keyboard="false")
+								.modal-dialog.modal-lg(role='document')
+									.modal-content 
+										.modal-header
+											h5 Wee woo woo
+										.modal-body.text-left
+											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+											brbr
+											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+										.modal-footer
+											button.btn.std-btn.btn-danger.m-0#cancelButton(type='button') Cancel
+											button.btn.std-btn.btn-success.btn-info.mb-0#proceedButton(type='button') Agree
 							// Form Step 3
 						// Form Wizard
 block addjs
@@ -537,7 +551,7 @@ block addjs
 		//- 	// This function will display the specified tab of the form ...
 		//- 	var x = document.getElementsByClassName("tab");
 		//- 	x[n].style.display = "block";
-		//- 	// ... and fix the Previous/Next buttons:
+		//- 	// ... and fix the Previou data-toggle='modal', data-target='#exampleModal's/Proceed buttons:
 		//- 	if (n == 0) {
 		//- 		document.getElementById("prevBtn").style.display = "none";
 		//- 	} else {
@@ -561,8 +575,8 @@ block addjs
 		//- 	x[currentTab].style.display = "none";
 		//- 	// Increase or decrease the current tab by 1:
 		//- 	currentTab = currentTab + n;
-		//- 	// if you have reached the end of the form... :
-		//- 	if (currentTab >= x.length) {
+		//- 	// if you have ed  Wee woo woothe end of the form... :
+		//- 	if (currentTab >=.length) {
 		//- 		//...the form gets submitted:
 		//- 		document.getElementById("form").submit();
 		//- 		return false;

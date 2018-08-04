@@ -31,6 +31,11 @@ indexRouter.get('/schedule', (req, res) => {
     res.render('home/views/schedule', req.query);
 });
 
+indexRouter.get('/store', (req, res) => {
+
+    res.render('home/views/index1', req.query);
+});
+
 
 indexRouter.route('/document')
 .get(authMiddleware.noAuthed, (req, res) => {

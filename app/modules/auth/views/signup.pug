@@ -11,12 +11,14 @@ html
 			.spinner
 		#wrapper
 			.peers.ai-s.fxw-nw.h-100vh
-				.peer.peer-greed.h-100.pos-r.bgr-n.bgpX-c.bgpY-c.bgsz-cv(class='d-n@sm-', style='background-image: url("/admin/assets/static/images/bg.jpg")')
+				.peer.peer-greed.h-100.pos-r.bgr-n.bgpX-c.bgpY-c.bgsz-cv(class='d-n@sm-', style='background-image: url("/imgchurch/bg5.jpg")')
 					.pos-a.centerXY
-						.bgc-white.bdrs-50p.pos-r(style='width: 120px; height: 120px;')
-							img.pos-a.centerXY(src='/admin/assets/static/images/logo.png', alt='')
+						//- .bgc-white.bdrs-50p.pos-r(style='width: 105px; height: 105px; margin-left:30px;')
+						//- 	img.rounded-circle.border.border-dark.pos-a.centerXY(src='/Helium/img/churchiconblack.png', alt=''  style="width: 5rem")
 				.col-12.col-md-5.peer.pX-40.pY-40.h-100.bgc-white.scrollable.pos-r(style='min-width: 320px;')
-					h3.c-grey-900.mB-10 Register
+					h3.c-grey-900.mB-10 
+						img.rounded-circle.border.border-dark(src='/Helium/img/churchiconblack.png', alt=''  style="width: 3rem")
+						|  Register
 					form#needs-validation.form(method='POST', action='/signup' novalidate)
 						.form-group
 							.form-row
@@ -99,8 +101,9 @@ html
 									.text-danger.d-inline
 									//-  *	mysql-init.txt.
 
-								.invalid-feedback You must agree to our terms and conditions							.text-center
-								button.btn.btn-primary.mt-3(type='submit') Submit
+								.invalid-feedback You must agree to our terms and conditions
+								.text-center
+									button.btn.btn-primary.mt-3(type='submit') Submit
 
 	script(type='text/javascript', src='/js/jquery.min.js')
 	script(type='text/javascript', src='/admin/vendor.js')
