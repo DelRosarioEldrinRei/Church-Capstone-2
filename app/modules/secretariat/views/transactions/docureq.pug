@@ -23,7 +23,10 @@ block prepend main
 														each request in requests
 															tr
 																td=request.int_requestID
-																td=request.var_doclastname + ", " + request.var_docfirstname
+																td=request.var_doclastname + ", " + request.var_docSecondname
+																td=request.var_documenttype
+																td=request.Third
+																td=request.Fourth
 																td=request.var_documenttype
 																td=request.date_docurequested
 																td=request.char_docustatus
@@ -142,20 +145,67 @@ block prepend main
 								xhr.responseType = 'blob';
 								xhr.send();
 							}
-							toDataURL(data.var_doctemplatepath, function(dataUrl) {
+							toDataURL('/document_templates/baptism_certificate.jpg', function(dataUrl) {
 							var fullName = data.var_doclastname + ', ' + data.var_docfirstname;
 							var dateRequested = moment(data.date_docurequested).format('MM/DD/YYYY');
-								var docDefinition = { 
+								var docDefinition = {
+									pageMargins: [ 0, 0, 0, 0 ],
 									content: [
 										{
 											image: dataUrl,
-											width: 500,
-											height: 100,
-											
+											width: 610,
+											//- height: 100,
 										},
-									'Name: ' + fullName,
-									'Date: ' + dateRequested
-									]
+										{
+										text: fullName,
+										style: 'styleLabelFill',
+										absolutePosition: {x:125, y:247},
+										//- text: 'Date: ' + dateRequested,
+										},
+									],
+									styles: {
+										styleLabel: {
+											font: 'EdwardianScript',
+											fontSize:85,
+										},
+										styleHeader: {
+											font: 'OldEnglishText',
+											fontSize: 45,
+											alignment: 'center',
+											margin: [0, 15, 0, 0],
+										},
+										styleHeader2: {
+											font: 'EdwardianScript',
+											fontSize: 33,
+											alignment: 'center',
+											margin: [0, 5, 0, 5],
+										},
+										styleLabel: {
+											font: 'EdwardianScript',
+											fontSize: 26,
+										},
+										styleLabelFill: {
+											font: 'EdwardianScript',
+											fontSize: 35,
+										},
+									},
+								}
+								pdfMake.fonts = {
+									Roboto: {
+										normal: 'Roboto-Regular.ttf',
+										bold: 'Roboto-Medium.ttf',
+										italic: 'Roboto-Italic.ttf',
+										bolditalics: 'Roboto-MediumItalic.ttf',
+									},
+									EdwardianScript: {
+										normal: 'Edwardian-script-itc-Regular.TTF'
+									},
+									OldEnglishText: {
+										normal: 'Old-english-text-mt-Regular.ttf'
+									},
+									TimesNewRoman: {
+										normal: 'Times-new-roman-Regular.ttf'
+									}
 								}
 								pdfMake.createPdf(docDefinition).open();
 								

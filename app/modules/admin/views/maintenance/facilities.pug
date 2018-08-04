@@ -17,7 +17,7 @@ block prepend main
 										.col-md-6
 											h4.card-title Facilities
 										.col-md-6
-											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add
+											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Facility
 								.card-body.table-responsive
 										table.table.table-hover
 												thead.text-primary
@@ -35,7 +35,8 @@ block prepend main
 																td.td-actions.text-center
 																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${facility.int_facilityID}`)
 																		i.ti-close
-																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${facility.int_facilityID}`)
+																	| &nbsp;
+																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${facility.int_facilityID}`)
 																		i.ti-pencil
 																
 														
@@ -54,8 +55,6 @@ block prepend main
 												</li>
 											</ul>
 										</nav>
-									.col-md-3.text-right
-										a(href="#" data-toggle="modal" data-target="#conditionModal") Add Facility
 	
 
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')

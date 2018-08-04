@@ -13,7 +13,7 @@ block prepend main
 										.col-md-6
 											h4.card-title Special Events
 										.col-md-6
-											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add
+											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Event
 											//- a(href="#" data-toggle="modal" data-target="#conditionModal") Add Event
 								.card-body.table-responsive
 										table.table.table-hover
@@ -35,7 +35,8 @@ block prepend main
 																td.td-actions.text-center
 																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${specialevent.int_specialeventID}`)
 																		i.ti-close
-																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${specialevent.int_specialeventID}`)
+																	| &nbsp;
+																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${specialevent.int_specialeventID}`)
 																		i.ti-pencil
 																//- <td class="td-actions text-right">
 																//- 		a.button(rel="tooltip" class="btn btn-info" href=`/admin/maintenance-events`)
@@ -120,18 +121,18 @@ block prepend main
 					.col-md-12.text-center.my-3
 				.modal-footer
 					button.btn.btn-primary#updateSubmitButton(type="button") Update
-	#modal-warning1.modal.modal-warning.fade
-		.modal-dialog
-		.modal-content
-			.modal-header
-			button.close(type='button', data-dismiss='modal', aria-label='Close')
-				span(aria-hidden='true') ×
-			h4.modal-title Warning
-			.modal-body
-			p Are you sure you?
-			.modal-footer
-				button.btn.btn-outline.pull-left#cancelButton1(type='button', data-dismiss='modal') No
-				button.btn.btn-outline.pull-right#deleteSubmit1 Yes	
+	//- #modal-warning1.modal.modal-warning.fade
+	//- 	.modal-dialog
+	//- 	.modal-content
+	//- 		.modal-header
+	//- 		button.close(type='button', data-dismiss='modal', aria-label='Close')
+	//- 			span(aria-hidden='true') ×
+	//- 		h4.modal-title Warning
+	//- 		.modal-body
+	//- 		p Are you sure you?
+	//- 		.modal-footer
+	//- 			button.btn.btn-outline.pull-left#cancelButton1(type='button', data-dismiss='modal') No
+	//- 			button.btn.btn-outline.pull-right#deleteSubmit1 Yes	
 block addjs
 	script(src='/js/forIndex.js')
 	script.
@@ -194,28 +195,34 @@ block addjs
 		$(document).ready(function(){
 		$('.deleteButton').click(function(){
 			var idNow = $(this).val();
-			console.log(idNow)
-			$('#modal-warning1').modal('show');
-			$('#deleteSubmit1').css('display', 'block');
-			$('#cancelButton1').css('display', 'block');
-				$('#deleteSubmit1').click(function(){
-					$.post('/admin/maintenance-events/delete',{id1:idNow})
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Confirm'
+				}).then((result) => {
+					if (result.value) {
+						$.post('/admin/maintenance-events/delete',{id1:idNow})
 						.done(data =>{
-						if(data){
-							swal({
-							title:'Success', 
-							text:'Special event deleted', 
-							icon:'success'
-							}).then(function(){
-								location.reload();
-							})     
-							$('#modal-warning1').modal('hide');
-						}
-
-				});
-				});
-				});                        
-			});
+							if(data){
+								swal({
+								title:'Success', 
+								text:'Special event deleted', 
+								icon:'success'
+								}).then(function(){
+									location.reload();
+								})
+							}
+						});
+					}
+				})
+			})
+		})		
+				
+			
 		$('.updateButton').click(function(){
 			var idNow = $(this).val();
 			console.log(idNow)
@@ -298,5 +305,4 @@ block addjs
 					})
 				})
 			})
-
 		})

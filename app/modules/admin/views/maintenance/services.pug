@@ -7,82 +7,112 @@ block prepend main
 		.container-fluid
 			.row
 				.col-lg-12.col-md-12
-						.card
-								.card-header.card-header-primary
-									.row
-										.col-md-6
-											h4.card-title Sacramental Services
-										.col-md-6
-											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add
-								.card-body.table-responsive
-										table.table.table-hover
-												thead.text-primary
-														th ID
-														th Name
-														th.text-center(style=" width:120px") Actions
-												tbody
-														each sacrament in sacraments
-															tr
-																td=sacrament.int_eventID
-																td=sacrament.var_eventname
-																td.td-actions.text-center
-																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${sacrament.int_eventID}`)
-																		i.ti-close
-																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${sacrament.int_eventID}`)
-																		i.ti-pencil
-						.card
-								.card-header.card-header-primary
-										h4.card-title Special Services
-								.card-body.table-responsive
-										table.table.table-hover
-												thead.text-primary
-														th ID
-														th Name
-														
-														th.text-center(style=" width:120px") Actions
-												tbody
-														each service in services
-															tr
-																td=service.int_eventID
-																td=service.var_eventname
-																td.td-actions.text-center
-																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${service.int_eventID}`)
-																		i.material-icons close
-																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${service.int_eventID}`)
-																		i.material-icons edit
-												
-								.col-md-9.text-right
-									button.btn.btn-info(href="#" data-toggle="modal" data-target="#conditionModal") 
-										i.ti-plus Add Service
-								//- .card-footer.text-right
-								//- 	.col-md-3
-								//- 	.col-md-6.text-right
-								//- 		<nav aria-label="Page navigation example">
-								//- 			<ul class="pagination justify-content-center">
-								//- 				<li class="page-item">
-								//- 					<a class="page-link" href="#" tabindex="-1">Previous</a>
-								//- 				</li>
-								//- 				<li class="page-item"><a class="page-link" href="#">1</a></li>
-								//- 				<li class="page-item">
-								//- 					<a class="page-link" href="#">Next</a>
-								//- 				</li>
-								//- 			</ul>
-								//- 		</nav>
-			
+					br
+					//Outer Tabs
+					ul.nav.nav-tabs
+						li.nav-item
+							a.nav-link.active(data-toggle='tab', href='#nonwedding') Non-Wedding
+						li.nav-item
+							a.nav-link(data-toggle='tab', href='#wedding') Wedding
+						li.nav-item
+							a.nav-link(data-toggle='tab', href='#facility') Facility Reservation
+						li.nav-item
+							a.nav-link(data-toggle='tab', href='#') Document Request
+					// Tab panes
+					.tab-content
+						#nonwedding.tab-pane.active.mx-3
+							br
+							// Inner Nav tabs
+							ul.nav.nav-tabs
+								li.nav-item
+									a.nav-link.active(data-toggle='tab', href='#sacrament') Sacrament
+								li.nav-item
+									a.nav-link(data-toggle='tab', href='#special') Special Service
+								li.nav-item
+									a.nav-link(data-toggle='tab', href='#') Anointing of the Sick
+								li.nav-item
+									a.nav-link(data-toggle='tab', href='#') Baptism
+								li.nav-item
+									a.nav-link(data-toggle='tab', href='#') Confirmation
+							// Tab panes
+							.tab-content
+								#sacrament.tab-pane.active
+									br
+									.card
+											.card-header.card-header-primary
+												.row
+													.col-md-6
+														h4.card-title Sacramental Services
+													.col-md-6
+														a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Service
+											.card-body.table-responsive
+													table.table.table-hover
+															thead.text-primary
+																	th ID
+																	th Name
+																	th.text-center(style=" width:120px") Actions
+															tbody
+																	each sacrament in sacraments
+																		tr
+																			td=sacrament.int_eventID
+																			td=sacrament.var_eventname
+																			td.td-actions.text-center
+																				button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${sacrament.int_eventID}`)
+																					i.ti-close 
+																				| &nbsp;
+																				button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${sacrament.int_eventID}`)
+																					i.ti-pencil
+								#special.tab-pane.fade
+									br
+									.card
+										.card-header.card-header-primary
+											.row
+												.col-md-6
+													h4.card-title Special Services
+												.col-md-6
+													a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Service
+										.card-body.table-responsive
+												table.table.table-hover
+														thead.text-primary
+																th ID
+																th Name
+																
+																th.text-center(style=" width:120px") Actions
+														tbody
+																each service in services
+																	tr
+																		td=service.int_eventID
+																		td=service.var_eventname
+																		td.td-actions.text-center
+																			button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${service.int_eventID}`)
+																				i.ti-close
+																			| &nbsp;
+																			button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${service.int_eventID}`)
+																				i.ti-pencil
+						#wedding.container.tab-pane.fade
+							br
+							h3 Menu 1
+							p
+								| Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+						#facility.container.tab-pane.fade
+							br
+							h3 Menu 2
+							p
+								| Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
 			.modal-content
 				.modal-header
-					p.heading.lead Add Facility
+					p.heading.lead Add Service
 					button.close(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				.modal-body
 					form.form(action="/admin/maintenance-services/add" method="post")
 						.form-group
-							label.label-control Event Name
+							label.label-control Service Name
 							input.form-control(type='text' name='eventname')
 						.form-group
-							label.label-control Event Description
+							label.label-control Service Description
 							input.form-control(type='text' name='eventdesc')
 						.form-group
 							label.label-control Service Type
