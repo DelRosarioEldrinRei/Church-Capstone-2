@@ -4,6 +4,7 @@
     var authMiddleware = require('../auth/middlewares/auth');
     var db = require('../../lib/database')();
     var multer = require('multer');
+    var swal = require('sweetalert2')
     var storage = multer.diskStorage({
         destination: function (req, file, cb) {
           cb(null, './public/img/req')
@@ -872,7 +873,6 @@
             res.render('guest/views/forms/document')
         });
         guestRouter.post('/document/query', (req, res)=>{
-
             var queryString =`SELECT tbl_document.var_documenttype,tbl_relation.var_fname,tbl_relation.var_lname,
             tbl_eventinfo.date_approveddate
             FROM tbl_document
@@ -885,39 +885,50 @@
             and tbl_eventinfo.date_approveddate = ?`
             db.query(queryString,[req.body.documentType,req.body.firstName,req.body.lastName,req.body.eventDate],(err,results,fields)=>{
             if (err) throw err;
-            res.send(results)
+            if(results[0] == undefined){
+                console.log("WRONG INPUT")
+                res.send(results[0])
+            }
+            else{
             console.log(req.body)
+            results[0].date_approveddate = moment(results[0].date_approveddate).format('YYYY-MM-DD');
             console.log(results)
+            res.send(results[0])
+            }
             })
         });
     
         guestRouter.post('/document/form',upload.single('image'), (req, res) => {
         console.log(req.file)
-            var queryString= `select int_documentID from tbl_document where var_documenttype= ?`  
-                db.query(queryString,[req.body.documenttype], (err, results, fields) => {
+            var queryString1 = `select int_documentID,dbl_docuprice from tbl_document where var_documenttype= ?`  
+                db.query(queryString1,[req.body.documenttype], (err, results1, fields) => {
                     if (err) throw err;
-                    console.log(results);
-                    var documentID =results[0];
-                    var datenow= new Date();
+                    var documentID =results1[0].int_documentID;
+                    var docuPrice =results1[0].dbl_docuprice;
+                    console.log(results1)
                     console.log(req.session.user);
-                    
-                var queryString1 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus,date_doceventdate) VALUES(?,?,?,?,?,?,?,?)`;
-                    db.query(queryString1, [req.session.user.int_userID, documentID.int_documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Requested",req.body.eventDate], (err, results, fields) => {
-                        // console.log(req.body)
+                    var queryString2 = `INSERT INTO tbl_payment(dbl_amount,char_paymentstatus) VALUES(?,?)`
+                        db.query(queryString2,[docuPrice,"Unpaid"],(err, results2, fields)=>{
                         if (err) throw err;
-                        var requestID =results;
-                        console.log(results)
-                        var path = '/img/req/'+req.file.filename;
-                        var nowDate = new Date(); 
-                        var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
-                        var queryString7 = `INSERT INTO tbl_requirements(int_requestID,var_reqpath,date_reqreceived,int_reqtypeID) VALUES (?,?,?,?);`
-                        db.query(queryString7,[requestID.insertId,path,date,5],(err, results, fields)=>{     
-                        if (err) throw err;
-                        return res.redirect(`/guest`);
-                        });
-                    });    
-                });            
-                
-            });
+                        console.log(results2)
+                        var paymentID = results2.insertId;
+                        var datenow= new Date();
+                        var queryString3 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus,date_doceventdate,int_paymentID) VALUES(?,?,?,?,?,?,?,?,?)`;
+                            db.query(queryString3, [req.session.user.int_userID, documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Requested",req.body.eventDate,paymentID], (err, results3, fields) => {
+                                if (err) throw err;
+                                var requestID =results3.insertId;
+                                var path = '/img/req/'+req.file.filename;
+                                var nowDate = new Date(); 
+                                var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
+                                var queryString7 = `INSERT INTO tbl_requirements(int_requestID,var_reqpath,date_reqreceived,int_reqtypeID) VALUES (?,?,?,?);`
+                                db.query(queryString7,[requestID,path,date,5],(err, results, fields)=>{     
+                                    if (err) throw err;
+                                        return res.redirect(`/guest`);
+                                    })
+                                });
+                            });    
+                        });            
+                        
+                    });
     //===============================================================================================================
     exports.guest = guestRouter;

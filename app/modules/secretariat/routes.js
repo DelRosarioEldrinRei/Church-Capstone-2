@@ -445,7 +445,9 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             for(var i = 0; i < requests.length; i++){
                 requests[i].date_docurequested= moment(requests[i].date_docurequested).format('MM/DD/YYYY');
             }
-
+            // for(var i = 0; i < requests.length; i++){
+            //     requests[i].date_docurequested= moment(requests[i].date_docurequested).format('MM/DD/YYYY');
+            // }
             
             return res.render('secretariat/views/transactions/docureq',{ requests : requests });
         }); 
@@ -454,13 +456,26 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     secretariatRouter.post('/transaction-documentrequest/query', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_documentrequest 
         join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
-        where int_requestID = ?`
+        join tbl_requirements on tbl_documentrequest.int_requestID = tbl_requirements.int_requestID
+        join tbl_requirementtype on tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
+        where tbl_documentrequest.int_requestID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);
             res.send(results[0])
             console.log(results[0])
-        }); 
-        
+        });
+    });
+    secretariatRouter.post('/transaction-documentrequest/update/query', (req, res)=>{
+        var queryString1 =`SELECT * FROM tbl_documentrequest 
+        join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
+        join tbl_requirements on tbl_documentrequest.int_requestID = tbl_requirements.int_requestID
+        join tbl_requirementtype on tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
+        where tbl_documentrequest.int_requestID = ?`
+        db.query(queryString1,[req.body.id], (err, results, fields) => {
+            if (err) console.log(err);
+            res.send(results[0])
+            console.log(results[0])
+        });
     });
     secretariatRouter.get('/transaction-walkin', (req, res)=>{
         res.render('secretariat/views/transactions/walkin')
