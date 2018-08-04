@@ -169,16 +169,18 @@ block prepend main
 					$.post('/secretariat/transaction-documentrequest/update/query',{id:idNow}).done(data =>{
 						$('#updateAppend').append(`
 						<div class="form-group m-0">
-						<thead class="text-primary">
-							<th>ID</th>
-							<th>Document Name</th>
-							</thead>
-							<tbody></tbody>
-							<tr></tr>
-							<td>Current</td>
-							<td class="td-actions text-center"></td>
-							<button type="button" rel="tooltip" class="btn btn-info viewButton"></button><i class="ti-user"></i>
-							<button type="button" rel="tooltip" class="btn btn-primary updateButton"></button><i class="ti-pencil"></i>
+						<div class="form-group">
+							<label class="label-control"> <strong> Status: </strong> ${data.char_docustatus}</label>
+						</div>
+						<div class="form-group">
+							<label class="label-control"> <strong> Payment Status: </strong> ${data.char_paymentstatus}</label>
+						</div>
+						<div class="form-group">
+								<label class="label-control"> <strong> Price : </strong> ${data.dbl_docuprice}</label>
+						</div>
+						<div class="form-group">
+								<label class="label-control"> <strong> Requirement Status : </strong> ${data.var_reqstatus}</label>
+						</div>
 						</div>
 						`)
 						$('#updateModal').modal('show');

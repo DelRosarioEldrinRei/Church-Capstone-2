@@ -466,7 +466,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         });
     });
     secretariatRouter.post('/transaction-documentrequest/update/query', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_documentrequest 
+        var queryString1 =`SELECT char_docustatus,char_paymentstatus,var_reqstatus,dbl_docuprice FROM tbl_documentrequest 
+        join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID
         join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
         join tbl_requirements on tbl_documentrequest.int_requestID = tbl_requirements.int_requestID
         join tbl_requirementtype on tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
