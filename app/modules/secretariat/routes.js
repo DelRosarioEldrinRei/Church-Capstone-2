@@ -466,7 +466,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         });
     });
     secretariatRouter.post('/transaction-documentrequest/update/query', (req, res)=>{
-        var queryString1 =`SELECT char_docustatus,char_paymentstatus,var_reqstatus,dbl_docuprice FROM tbl_documentrequest 
+        var queryString1 =`SELECT tbl_documentrequest.int_requestID,char_docustatus,tbl_payment.int_paymentID,char_paymentstatus,tbl_requirements.int_requirementID,var_reqstatus,dbl_docuprice FROM tbl_documentrequest 
         join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID
         join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
         join tbl_requirements on tbl_documentrequest.int_requestID = tbl_requirements.int_requestID
@@ -476,6 +476,23 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             if (err) console.log(err);
             res.send(results[0])
             console.log(results[0])
+        });
+    });
+    secretariatRouter.post('/transaction-documentrequest/update', (req, res)=>{
+        console.log(req.body)
+        var queryString1 =`UPDATE tbl_documentrequest SET char_docustatus = ? 
+        WHERE int_requestID =?`
+        db.query(queryString1,[req.body.docustatus,req.body.docuid], (err, results, fields) => {
+            var queryString2 =`UPDATE tbl_requirements SET var_reqstatus = ? 
+            WHERE int_requestID =?`
+            db.query(queryString2,[req.body.reqstatus,req.body.reqid], (err, results, fields) => {
+                var queryString2 =`UPDATE tbl_payment SET char_paymentstatus = ? 
+                WHERE int_paymentID =?`
+                db.query(queryString2,[req.body.paystatus,req.body.payid], (err, results, fields) => {
+                if (err) console.log(err);
+                return res.redirect('/secretariat/transaction-documentrequest')
+                });
+            });
         });
     });
     secretariatRouter.get('/transaction-walkin', (req, res)=>{

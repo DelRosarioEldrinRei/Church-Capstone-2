@@ -23,10 +23,7 @@ block prepend main
 														each request in requests
 															tr
 																td=request.int_requestID
-																td=request.var_doclastname + ", " + request.var_docSecondname
-																td=request.var_documenttype
-																td=request.Third
-																td=request.Fourth
+																td=request.var_doclastname + ", " + request.var_docfirstname
 																td=request.var_documenttype
 																td=request.date_docurequested
 																td=request.char_docustatus
@@ -56,7 +53,7 @@ block prepend main
 					.modal-body#updateAppend
 					.modal-footer
 						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-						button.btn.btn-outline.btn-primary.pull-right#saveButton Save Changes						
+						button.btn.btn-primary#updateSubmitButton(type="button") Update						
 	#myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-label='Close')
 			span(aria-hidden='true') ×
@@ -218,24 +215,80 @@ block prepend main
 					console.log(idNow)
 					$.post('/secretariat/transaction-documentrequest/update/query',{id:idNow}).done(data =>{
 						$('#updateAppend').append(`
-						<div class="form-group m-0">
-						<div class="form-group">
-							<label class="label-control"> <strong> Status: </strong> ${data.char_docustatus}</label>
-						</div>
-						<div class="form-group">
-							<label class="label-control"> <strong> Payment Status: </strong> ${data.char_paymentstatus}</label>
-						</div>
-						<div class="form-group">
-								<label class="label-control"> <strong> Price : </strong> ${data.dbl_docuprice}</label>
-						</div>
-						<div class="form-group">
-								<label class="label-control"> <strong> Requirement Status : </strong> ${data.var_reqstatus}</label>
-						</div>
-						</div>
+						<col-md-4 class="p-lg-0">
+							<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+								<input id="docuid" type="hidden" value="${data.int_requestID}"></input>
+								<h6 class="label-control"><strong>Current Status:  </strong>${data.char_docustatus}</h6>
+								<select id="docustatus" type="text">
+									<option>Requested</option>
+									<option>To Be Released</option>
+									<option>Released</option>
+								</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+								<input id="reqid" type="hidden" value="${data.int_requirementID}"></input>
+								<h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.var_reqstatus}</h6>
+								<select id="reqstatus" type="text">
+									<option>Pending</option>
+									<option>Incomplete</option>
+									<option>Approved</option>
+								</select>
+								</div>
+							</div>
+							</div>
+							<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+								<input id="payid" type="hidden" value="${data.int_paymentID}"></input>
+								<h6 class="label-control"><strong> Current Payment Status: </strong> ${data.char_paymentstatus}</h6>
+								<select id="paystatus" type="text">
+									<option>Unpaid</option>
+									<option>Paid</option>
+								</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+								<strong> Price : </strong>P ${data.dbl_docuprice}
+								</div>
+							</div>
+							</div>
+							</div>
 						`)
 						$('#updateModal').modal('show');
 						$('#updateModal').on('hidden.bs.modal',function(){
 							$('#updateAppend').empty()
+						})
+						$('#cancelButton').click(function(){
+							$('#updateAppend').empty();
+						})
+						$('#updateSubmitButton').click(function(){	
+							console.log('clicked')
+							$.post('/secretariat/transaction-documentrequest/update',{
+							docustatus:$('#docustatus').val(),
+							docuid:$('#docuid').val(),
+							reqid:$('#reqid').val(),
+							reqstatus:$('#reqstatus').val(),
+							payid:$('#payid').val(),
+							paystatus:$('#paystatus').val()
+							})
+							.done(data=>{
+								if(data){
+									swal({
+									title:'Success', 
+									text:'Status updated', 
+									icon:'success'
+									}).then(function(){
+										location.reload();
+									})
+									$('#updateModal').modal('hide');
+									$('#updateAppend').empty();
+								}
+							})
 						})
 					})
 				})
