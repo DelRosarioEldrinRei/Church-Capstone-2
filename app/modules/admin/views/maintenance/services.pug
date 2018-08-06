@@ -46,19 +46,19 @@ block prepend main
 													.col-md-6
 														a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Service
 											.card-body.table-responsive
-													table.table.table-hover
+													table.dataTable.table.table-hover.dt-responsive
 															thead.text-primary
-																	th ID
-																	th Name
-																	th.text-center(style=" width:120px") Actions
+																	th(style="width:25rem;") ID
+																	th.pl-5(style="width:41rem;") Name
+																	th.pl-4(style="width:15rem;") Actions
 															tbody
 																	each sacrament in sacraments
 																		tr
 																			td=sacrament.int_eventID
 																			td=sacrament.var_eventname
-																			td.td-actions.text-center
+																			td.td-actions
 																				button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${sacrament.int_eventID}`)
-																					i.ti-close 
+																					i.ti-close
 																				| &nbsp;
 																				button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${sacrament.int_eventID}`)
 																					i.ti-pencil
@@ -72,12 +72,11 @@ block prepend main
 												.col-md-6
 													a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Service
 										.card-body.table-responsive
-												table.table.table-hover
+												table.dataTable.table.table-hover
 														thead.text-primary
-																th ID
-																th Name
-																
-																th.text-center(style=" width:120px") Actions
+																th(style="width:25rem;") ID
+																th.pl-4(style="width:41rem;") Name
+																th.text-center(style="width:15rem;")  Actions
 														tbody
 																each service in services
 																	tr

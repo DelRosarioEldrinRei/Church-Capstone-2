@@ -1,5 +1,9 @@
 extends ../../../../templates/secretariat
 block prepend main
+	style.
+		.dataTables_wrapper {
+			overflow: visible !important;
+		}
 	#wrap
 	div(style='clear:both')
 	.content
@@ -11,27 +15,28 @@ block prepend main
 										h4.card-title Document Requests
 										input#toggleInput(type="hidden" value=0)
 								.card-body.table-responsive
-										table.table.table-hover
-												thead.text-primary
-														th ID
-														th Document Name
-														th Document type
-														th Date Requested
-														th Status
-														th.text-center(style=" width:120px") Actions
-												tbody
-														each request in requests
-															tr
-																td=request.int_requestID
-																td=request.var_doclastname + ", " + request.var_docfirstname
-																td=request.var_documenttype
-																td=request.date_docurequested
-																td=request.char_docustatus
-																td.td-actions.text-center
-																	button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${request.int_requestID}`)
-																		i.ti-user
-																	button.btn.btn-primary.updateButton(type='button',rel='tooltip',value=`${request.int_requestID}`)
-																		i.ti-pencil
+									table.dataTable.table.table-hover
+											thead.text-primary
+													th ID
+													th Document Name
+													th Document type
+													th Date Requested
+													th Status
+													th.text-center(style=" width:11rem") Actions
+											tbody
+													each request in requests
+														tr
+															td=request.int_requestID
+															td=request.var_doclastname + ", " + request.var_docfirstname
+															td=request.var_documenttype
+															td=request.date_docurequested
+															td=request.char_docustatus
+															td.td-actions.text-center
+																button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${request.int_requestID}`)
+																	i.ti-user
+																| &nbsp;
+																button.btn.btn-primary.updateButton(type='button',rel='tooltip',value=`${request.int_requestID}`)
+																	i.ti-pencil
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -59,240 +64,228 @@ block prepend main
 			span(aria-hidden='true') ×
 		img.modal-content1#imgReq
 		
-		script(src='/js/jquery.min.js' type='text/javascript')
-		script(src='/js/loader.js')
-		script(src='/admin/vendor.js')
-		script(src='/admin/bundle.js')
-		script(src='/js/moment.min.js')
-		script(src='/Helium/js/bootstrap.min.js')
-		script(src='/js/pdfmake.js')
-		script(src='/js/vfs_fonts.js')
-		script(src='/js/sweetalert2.all.min.js')
-		script(src="/js/bootstrap-datetimepicker.min.js")
-		script(src="/js/bootstrap-material-datetimepicker.js")
-		script(src="/js/imageModal.js")
-		script(type='text/javascript').
-			$(document).ready(function(){
-				$('.viewButton').click(function(){
-					var idNow = $(this).val();
-					console.log(idNow)
-					$.post('/secretariat/transaction-documentrequest/query',{id:idNow})
-						.done(data =>{
+block addjs
+	script(type='text/javascript').
+		$(document).ready(function(){
+			$('.viewButton').click(function(){
+				var idNow = $(this).val();
+				console.log(idNow)
+				$.post('/secretariat/transaction-documentrequest/query',{id:idNow})
+					.done(data =>{
+					var dateRequested = moment(data.date_docurequested).format('MM/DD/YYYY');
+					$('#documentAppend').append(`
+					<div class="form-group m-0">
+						<label class="label-control"><strong> Name of the Child: </strong> ${data.var_doclastname}, ${data.var_docfirstname}</label>
+					</div>
+					<div class="form-group">
+						<label class="label-control"> <strong> Date: </strong> ${dateRequested}</label>
+					</div>
+					<div class="form-group">
+						<label class="label-control"> <strong> Purpose: </strong> ${data.text_purpose}</label>
+					</div>
+					<div class="form-group">
+							<label class="label-control"> <strong> Requirements: </strong> ${data.var_reqname}</label>
+					</div>
+					<div class="form-group">
+						<img id="myImg" class="img-responsive" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px;">
+					</div>
+					`)
+					$('#viewModal').modal('show');
+					$('#myModal').on('shown.bs.modal',function(){
+						$('#toggleInput').val(0)
+					})	
+					$('#cancelButton').css('display', 'block');
+					$('#viewModal').on('hidden.bs.modal',function(){
+						$('#documentAppend').empty()
+					})
+					$('#myImg').click(function(){
+						$('#myModal').modal('show');
+						$("#imgReq").attr("src",`${data.var_reqpath}`);
+						$('#toggleInput').val(1)
+					});
+					$('#myModal').on('shown.bs.modal',function(){
+						$('#toggleInput').val(1)
+					})
+					$('#myModal').on('hidden.bs.modal',function(){
+						$('#toggleInput').val(0)
+					})
+					$(document).on('keypress',function(e) {
+						if (e.keyCode == 27) {
+							console.log($('#toggleInput').val())
+							if($('#toggleInput').val() == 1){
+								$('#myModal').modal('hide')
+								$('#toggleInput').val(0)
+							}
+							else if($('#toggleInput').val() == 0){
+								$('#viewModal').modal('hide')
+								$('#toggleInput').val(0)
+							}
+						}
+					});
+					$(document).on(	'click', '#generateButton', function(){
+						$(document).off('click', '#generateButton')
+						function toDataURL(url, callback) {
+							var xhr = new XMLHttpRequest();
+							xhr.onload = function() {
+								var reader = new FileReader();
+								reader.onloadend = function() {
+								callback(reader.result);
+								}
+								reader.readAsDataURL(xhr.response);
+							};
+							xhr.open('GET', url);
+							xhr.responseType = 'blob';
+							xhr.send();
+						}
+						toDataURL('/document_templates/baptism_certificate.jpg', function(dataUrl) {
+						var fullName = data.var_doclastname + ', ' + data.var_docfirstname;
 						var dateRequested = moment(data.date_docurequested).format('MM/DD/YYYY');
-						$('#documentAppend').append(`
-						<div class="form-group m-0">
-							<label class="label-control"><strong> Name of the Child: </strong> ${data.var_doclastname}, ${data.var_docfirstname}</label>
-						</div>
-						<div class="form-group">
-							<label class="label-control"> <strong> Date: </strong> ${dateRequested}</label>
-						</div>
-						<div class="form-group">
-							<label class="label-control"> <strong> Purpose: </strong> ${data.text_purpose}</label>
-						</div>
-						<div class="form-group">
-								<label class="label-control"> <strong> Requirements: </strong> ${data.var_reqname}</label>
-						</div>
-						<div class="form-group">
-							<img id="myImg" class="img-responsive" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px;">
-						</div>
-						`)
-						$('#viewModal').modal('show');
-						$('#myModal').on('shown.bs.modal',function(){
-							$('#toggleInput').val(0)
-						})	
-						$('#cancelButton').css('display', 'block');
-						$('#viewModal').on('hidden.bs.modal',function(){
-							$('#documentAppend').empty()
-						})
-						$('#myImg').click(function(){
-							$('#myModal').modal('show');
-							$("#imgReq").attr("src",`${data.var_reqpath}`);
-							$('#toggleInput').val(1)
-						});
-						$('#myModal').on('shown.bs.modal',function(){
-							$('#toggleInput').val(1)
-						})
-						$('#myModal').on('hidden.bs.modal',function(){
-							$('#toggleInput').val(0)
-						})
-						$(document).on('keypress',function(e) {
-							if (e.keyCode == 27) {
-								console.log($('#toggleInput').val())
-								if($('#toggleInput').val() == 1){
-									$('#myModal').modal('hide')
-									$('#toggleInput').val(0)
-								}
-								else if($('#toggleInput').val() == 0){
-									$('#viewModal').modal('hide')
-									$('#toggleInput').val(0)
+							var docDefinition = {
+								pageMargins: [ 0, 0, 0, 0 ],
+								content: [
+									{
+										image: dataUrl,
+										width: 610,
+										//- height: 100,
+									},
+									{
+									text: fullName,
+									style: 'styleLabelFill',
+									absolutePosition: {x:125, y:247},
+									//- text: 'Date: ' + dateRequested,
+									},
+								],
+								styles: {
+									styleLabel: {
+										font: 'EdwardianScript',
+										fontSize:85,
+									},
+									styleHeader: {
+										font: 'OldEnglishText',
+										fontSize: 45,
+										alignment: 'center',
+										margin: [0, 15, 0, 0],
+									},
+									styleHeader2: {
+										font: 'EdwardianScript',
+										fontSize: 33,
+										alignment: 'center',
+										margin: [0, 5, 0, 5],
+									},
+									styleLabel: {
+										font: 'EdwardianScript',
+										fontSize: 26,
+									},
+									styleLabelFill: {
+										font: 'EdwardianScript',
+										fontSize: 35,
+									},
+								},
+							}
+							pdfMake.fonts = {
+								Roboto: {
+									normal: 'Roboto-Regular.ttf',
+									bold: 'Roboto-Medium.ttf',
+									italic: 'Roboto-Italic.ttf',
+									bolditalics: 'Roboto-MediumItalic.ttf',
+								},
+								EdwardianScript: {
+									normal: 'Edwardian-script-itc-Regular.TTF'
+								},
+								OldEnglishText: {
+									normal: 'Old-english-text-mt-Regular.ttf'
+								},
+								TimesNewRoman: {
+									normal: 'Times-new-roman-Regular.ttf'
 								}
 							}
-						});
-						$(document).on(	'click', '#generateButton', function(){
-							$(document).off('click', '#generateButton')
-							function toDataURL(url, callback) {
-								var xhr = new XMLHttpRequest();
-								xhr.onload = function() {
-									var reader = new FileReader();
-									reader.onloadend = function() {
-									callback(reader.result);
-									}
-									reader.readAsDataURL(xhr.response);
-								};
-								xhr.open('GET', url);
-								xhr.responseType = 'blob';
-								xhr.send();
-							}
-							toDataURL('/document_templates/baptism_certificate.jpg', function(dataUrl) {
-							var fullName = data.var_doclastname + ', ' + data.var_docfirstname;
-							var dateRequested = moment(data.date_docurequested).format('MM/DD/YYYY');
-								var docDefinition = {
-									pageMargins: [ 0, 0, 0, 0 ],
-									content: [
-										{
-											image: dataUrl,
-											width: 610,
-											//- height: 100,
-										},
-										{
-										text: fullName,
-										style: 'styleLabelFill',
-										absolutePosition: {x:125, y:247},
-										//- text: 'Date: ' + dateRequested,
-										},
-									],
-									styles: {
-										styleLabel: {
-											font: 'EdwardianScript',
-											fontSize:85,
-										},
-										styleHeader: {
-											font: 'OldEnglishText',
-											fontSize: 45,
-											alignment: 'center',
-											margin: [0, 15, 0, 0],
-										},
-										styleHeader2: {
-											font: 'EdwardianScript',
-											fontSize: 33,
-											alignment: 'center',
-											margin: [0, 5, 0, 5],
-										},
-										styleLabel: {
-											font: 'EdwardianScript',
-											fontSize: 26,
-										},
-										styleLabelFill: {
-											font: 'EdwardianScript',
-											fontSize: 35,
-										},
-									},
-								}
-								pdfMake.fonts = {
-									Roboto: {
-										normal: 'Roboto-Regular.ttf',
-										bold: 'Roboto-Medium.ttf',
-										italic: 'Roboto-Italic.ttf',
-										bolditalics: 'Roboto-MediumItalic.ttf',
-									},
-									EdwardianScript: {
-										normal: 'Edwardian-script-itc-Regular.TTF'
-									},
-									OldEnglishText: {
-										normal: 'Old-english-text-mt-Regular.ttf'
-									},
-									TimesNewRoman: {
-										normal: 'Times-new-roman-Regular.ttf'
-									}
-								}
-								pdfMake.createPdf(docDefinition).open();
-								
-							})
+							pdfMake.createPdf(docDefinition).open();
+							
 						})
 					})
 				})
-				$('.updateButton').click(function(){
-					var idNow = $(this).val();
-					console.log(idNow)
-					$.post('/secretariat/transaction-documentrequest/update/query',{id:idNow}).done(data =>{
-						$('#updateAppend').append(`
-						<col-md-4 class="p-lg-0">
-							<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-								<input id="docuid" type="hidden" value="${data.int_requestID}"></input>
-								<h6 class="label-control"><strong>Current Status:  </strong>${data.char_docustatus}</h6>
-								<select id="docustatus" type="text">
-									<option>Requested</option>
-									<option>To Be Released</option>
-									<option>Released</option>
-								</select>
-								</div>
+			})
+			$('.updateButton').click(function(){
+				var idNow = $(this).val();
+				console.log(idNow)
+				$.post('/secretariat/transaction-documentrequest/update/query',{id:idNow}).done(data =>{
+					$('#updateAppend').append(`
+					<col-md-4 class="p-lg-0">
+						<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+							<input id="docuid" type="hidden" value="${data.int_requestID}"></input>
+							<h6 class="label-control"><strong>Current Status:  </strong>${data.char_docustatus}</h6>
+							<select id="docustatus" type="text">
+								<option>Requested</option>
+								<option>To Be Released</option>
+								<option>Released</option>
+							</select>
 							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-								<input id="reqid" type="hidden" value="${data.int_requirementID}"></input>
-								<h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.var_reqstatus}</h6>
-								<select id="reqstatus" type="text">
-									<option>Pending</option>
-									<option>Incomplete</option>
-									<option>Approved</option>
-								</select>
-								</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+							<input id="reqid" type="hidden" value="${data.int_requirementID}"></input>
+							<h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.var_reqstatus}</h6>
+							<select id="reqstatus" type="text">
+								<option>Pending</option>
+								<option>Incomplete</option>
+								<option>Approved</option>
+							</select>
 							</div>
+						</div>
+						</div>
+						<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+							<input id="payid" type="hidden" value="${data.int_paymentID}"></input>
+							<h6 class="label-control"><strong> Current Payment Status: </strong> ${data.char_paymentstatus}</h6>
+							<select id="paystatus" type="text">
+								<option>Unpaid</option>
+								<option>Paid</option>
+							</select>
 							</div>
-							<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-								<input id="payid" type="hidden" value="${data.int_paymentID}"></input>
-								<h6 class="label-control"><strong> Current Payment Status: </strong> ${data.char_paymentstatus}</h6>
-								<select id="paystatus" type="text">
-									<option>Unpaid</option>
-									<option>Paid</option>
-								</select>
-								</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+							<strong> Price : </strong>P ${data.dbl_docuprice}
 							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-								<strong> Price : </strong>P ${data.dbl_docuprice}
-								</div>
-							</div>
-							</div>
-							</div>
-						`)
-						$('#updateModal').modal('show');
-						$('#updateModal').on('hidden.bs.modal',function(){
-							$('#updateAppend').empty()
+						</div>
+						</div>
+						</div>
+					`)
+					$('#updateModal').modal('show');
+					$('#updateModal').on('hidden.bs.modal',function(){
+						$('#updateAppend').empty()
+					})
+					$('#cancelButton').click(function(){
+						$('#updateAppend').empty();
+					})
+					$('#updateSubmitButton').click(function(){	
+						console.log('clicked')
+						$.post('/secretariat/transaction-documentrequest/update',{
+						docustatus:$('#docustatus').val(),
+						docuid:$('#docuid').val(),
+						reqid:$('#reqid').val(),
+						reqstatus:$('#reqstatus').val(),
+						payid:$('#payid').val(),
+						paystatus:$('#paystatus').val()
 						})
-						$('#cancelButton').click(function(){
-							$('#updateAppend').empty();
-						})
-						$('#updateSubmitButton').click(function(){	
-							console.log('clicked')
-							$.post('/secretariat/transaction-documentrequest/update',{
-							docustatus:$('#docustatus').val(),
-							docuid:$('#docuid').val(),
-							reqid:$('#reqid').val(),
-							reqstatus:$('#reqstatus').val(),
-							payid:$('#payid').val(),
-							paystatus:$('#paystatus').val()
-							})
-							.done(data=>{
-								if(data){
-									swal({
-									title:'Success', 
-									text:'Status updated', 
-									icon:'success'
-									}).then(function(){
-										location.reload();
-									})
-									$('#updateModal').modal('hide');
-									$('#updateAppend').empty();
-								}
-							})
+						.done(data=>{
+							if(data){
+								swal({
+								title:'Success', 
+								text:'Status updated', 
+								icon:'success'
+								}).then(function(){
+									location.reload();
+								})
+								$('#updateModal').modal('hide');
+								$('#updateAppend').empty();
+							}
 						})
 					})
 				})
-				
-			});
-		
+			})
+			
+		});

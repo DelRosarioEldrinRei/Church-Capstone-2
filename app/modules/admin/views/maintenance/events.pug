@@ -15,14 +15,14 @@ block prepend main
 										.col-md-6
 											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Event
 								.card-body.table-responsive
-										table.table.table-hover
+										table.dataTable.table.table-hover.dt-responsive
 												thead.text-primary
 														th ID
 														th Event Name
 														th Start
 														th End
 														th Venue
-														th.text-center(style=" width:120px") Actions
+														th.text-center(style=" width:11rem") Actions
 												tbody
 														each specialevent in specialevents
 															tr
@@ -38,21 +38,21 @@ block prepend main
 																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${specialevent.int_specialeventID}`)
 																		i.ti-pencil
 																//- </td>								
-								.card-footer.text-right
-									.col-md-3
-									.col-md-6.text-right
-										<nav aria-label="Page navigation example">
-											<ul class="pagination justify-content-center">
-												<li class="page-item">
-													<a class="page-link" href="#" tabindex="-1">Previous</a>
-												</li>
-												<li class="page-item"><a class="page-link" href="#">1</a></li>
-												<li class="page-item">
-													<a class="page-link" href="#">Next</a>
-												</li>
-											</ul>
-										</nav>
-									.col-md-3.text-right
+								//- .card-footer.text-right
+								//- 	.col-md-3
+								//- 	.col-md-6.text-right
+								//- 		<nav aria-label="Page navigation example">
+								//- 			<ul class="pagination justify-content-center">
+								//- 				<li class="page-item">
+								//- 					<a class="page-link" href="#" tabindex="-1">Previous</a>
+								//- 				</li>
+								//- 				<li class="page-item"><a class="page-link" href="#">1</a></li>
+								//- 				<li class="page-item">
+								//- 					<a class="page-link" href="#">Next</a>
+								//- 				</li>
+								//- 			</ul>
+								//- 		</nav>
+								//- 	.col-md-3.text-right
 										
 			
 	
