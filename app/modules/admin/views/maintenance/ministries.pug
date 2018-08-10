@@ -16,12 +16,12 @@ block prepend main
 										.col-md-6
 											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Ministry
 								.card-body.table-responsive
-										table.table.table-hover
+										table.dataTable.table.table-hover
 												thead.text-primary
 														th ID
 														th Ministry Name
 														th Ministry Description
-														th.text-center(style=" width:120px") Actions
+														th.text-center(style=" width:11rem") Actions
 												tbody
 														each ministry in ministries
 															tr
@@ -34,22 +34,22 @@ block prepend main
 																	| &nbsp;
 																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${ministry.int_ministryID}`)
 																		i.ti-pencil
-								.card-footer.text-right
-									.col-md-3
-									.col-md-6.text-right
-										<nav aria-label="Page navigation example">
-											<ul class="pagination justify-content-center">
-												<li class="page-item">
-													<a class="page-link" href="#" tabindex="-1">Previous</a>
-												</li>
-												<li class="page-item"><a class="page-link" href="#">1</a></li>
-												<li class="page-item">
-													<a class="page-link" href="#">Next</a>
-												</li>
-											</ul>
-										</nav>
-									.col-md-3.text-right
-										a(href="#" data-toggle="modal" data-target="#conditionModal") Add Event
+								//- .card-footer.text-right
+								//- 	.col-md-3
+								//- 	.col-md-6.text-right
+								//- 		<nav aria-label="Page navigation example">
+								//- 			<ul class="pagination justify-content-center">
+								//- 				<li class="page-item">
+								//- 					<a class="page-link" href="#" tabindex="-1">Previous</a>
+								//- 				</li>
+								//- 				<li class="page-item"><a class="page-link" href="#">1</a></li>
+								//- 				<li class="page-item">
+								//- 					<a class="page-link" href="#">Next</a>
+								//- 				</li>
+								//- 			</ul>
+								//- 		</nav>
+								//- 	.col-md-3.text-right
+								//- 		a(href="#" data-toggle="modal" data-target="#conditionModal") Add Event
 			
 	
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
