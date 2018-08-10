@@ -10,11 +10,9 @@
 }
 
 #loader.fadeOut {
-  opacity: 0;
+  opacity: 1;
   visibility: hidden;
 }
-
-
 
 .spinner {
   width: 40px;

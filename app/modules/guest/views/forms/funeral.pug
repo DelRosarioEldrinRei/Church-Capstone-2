@@ -25,17 +25,17 @@ block main
 					input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 					h6.label-control Name of the deceased:
 					.row
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group.pt-0
 								input.form-control(type='text' placeholder="Last Name" name='lastname')
-						.col-md-4.p-lg-0
+						.col-md-4.p-lg-0.px-md-3.px-sm-0
 							.form-group.pt-0
 								input.form-control(type='text' placeholder="First Name" name='firstname')
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group.pt-0
 								input.form-control(type='text' placeholder="Middle Name" name='middlename')
 					.row
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group.m-0
 								h6.label-control Gender:
 									.form-check.ml-3
@@ -50,16 +50,16 @@ block main
 											| Female
 											span.circle
 												span.check
-						.col-md-4.p-lg-0
+						.col-md-4.p-lg-0.px-md-3.px-sm-0
 							.form-group
 								h6.label-control Birthday
 								input.datepicker.form-control(type='date' name='birthday')
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group
 								h6.label-control Birthplace:
-								input.form-control(type='text' name='birthplace')
+								input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City")
 					.row
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group
 								h6.label-control Relationship with the Deceased
 									br
@@ -73,16 +73,16 @@ block main
 										option Nephew/Niece
 										option BF/GF
 										option Friend
-						.col-md-4
+						.col-md-4.p-lg-0.px-md-3.px-sm-0
 							.form-group
 								h6.label-control Desired Date
 								input.datepicker.FBlessingDesiredDate.form-control(type='date' name='desireddate')
-						.col-md-4.m-0
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group
 								h6.label-control Desired Time
 								input.timepicker.form-control(type='text' name='desiredtime')
 					.row
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group
 								label.label-control Place where the will happen:
 								.ml-4
@@ -104,28 +104,28 @@ block main
 											.dropdown-toggle.mr-3 Other
 											span.circle
 												span.check
-						.col-md-8
+						.col-md-8.px-lg-3.px-md-3.px-sm-0
 							.row
 								.col-md-10
 									#textarea2.form-group
 										h6.label-control Enter Address of Other
 										textarea.form-control(placeholder="Please Enter Complete Address" rows="3" name='othervenue')
 							.row
-								.col-md-6.mt-2
+								.col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
 									h6.label-control Birth Certificate
 									input(type='file', name='birthCertificate' accept='image/*' required)
-								.col-md-6.mt-2
+								.col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
 									h6.label-control Death Certificate
 									input(type='file', name='deathCertificate' accept='image/*' required)
 					.row
-						.col-md-6
+						.col-md-6.px-lg-3.px-md-3.px-sm-0
 							.form-group
 								h6(for='exampleFormControlTextarea1') Address:
-								textarea#exampleFormControlTextarea1.form-control(rows='3' name='address')
-						.col-md-6
+								textarea#exampleFormControlTextarea1.form-control(rows='3' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
+						.col-md-6.px-lg-3.px-md-3.px-sm-0
 							.form-group
 								h6.label-control Cause of Death:
-								textarea#exampleFormControlTextarea2.form-control(rows='3' name='details')
+								textarea#exampleFormControlTextarea2.form-control(rows='3' name='details' placeholder="Please enter the cause of death")
 					.row
 						.col-md-12.my-5.text-center
 							.learn-more

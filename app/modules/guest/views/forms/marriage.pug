@@ -1,5 +1,15 @@
 extends ../../../../templates/guests
 block main
+	style.
+		@media screen and (max-width: 576px) {
+			.col-md-4, .col-md-6 {
+				padding-left: 0;
+				padding-right: 0;
+			}
+			.extra-small-balance {
+				padding-left: 1rem;
+			}
+		}
 	#headers
 		#header-style-1
 			.container
@@ -30,52 +40,53 @@ block main
 								.form-wizard-step.active
 									.form-wizard-step-icon
 										i.fa.fa-user(aria-hidden='true')
-									p Schedule
+									p.d-none.d-sm-block Schedule
 								// Step 1
 								// Step 2
 								.form-wizard-step
 									.form-wizard-step-icon
 										i.fa.fa-location-arrow(aria-hidden='true')
-									p Groom Form
+									p.d-none.d-sm-block Groom
 								// Step 2
 								// Step 3
 								.form-wizard-step
 									.form-wizard-step-icon
 										i.fa.fa-briefcase(aria-hidden='true')
-									p Bride Form
+									p.d-none.d-sm-block Bride
 								// Step 3
 								// Step 4
 								.form-wizard-step
 									.form-wizard-step-icon
 										i.fa.fa-briefcase(aria-hidden='true')
-									p For the Couple
+									p.d-none.d-sm-block Couple
 								// Step 4
 								// Step 4
 								.form-wizard-step
 									.form-wizard-step-icon
 										i.fa.fa-briefcase(aria-hidden='true')
-									p Sponsors
+									p.d-none.d-sm-block Sponsors
 								// Step 4
 							// Form progress
 							// Form Step 1
 							fieldset
 								h4
-									| Personal Information: 
+									.d-none.d-sm-inline Schedule Date: 
 									span Step 1 - 5
+									h6.label-control.text-lg-center.text-sm-left Desired Date
 									.row
-										.col-md-6.mx-auto.my-auto
+										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
-												h6.label-control Desired Date
 												input.datepicker.form-control(type='date' name='desireddate')
-											.row
-												.col-md-4.mx-auto.my-auto
-													.form-group
-														h6.label-control Desired Time
-															select.ml-2.mt-2(type="text" name='desiredtime')
-																option 10:00AM
-																option 11:00AM
-																option 1:00PM
-																option 2:00PM
+									.row
+										.col-md-12.text-lg-center.text-sm-left
+											.form-group
+												h6.label-control Desired Time
+													br
+													select.ml-lg-2.mt-lg-2(type="text" name='desiredtime')
+														option 10:00AM
+														option 11:00AM
+														option 1:00PM
+														option 2:00PM
 									.learn-more.pull-right
 										button.btn.btn-next(type='button') Next
 
@@ -83,46 +94,46 @@ block main
 							// Form Step 2
 							fieldset
 								h4
-									| Groom : 
+									.d-none.d-sm-inline Groom's Form: 
 									span Step 2 - 5
 								.form-group
 									br
 									.container
 										h6.label-control Name
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													input.form-control(type='text' placeholder="Last Name" name='lastname')
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													input.form-control(type='text' placeholder="First Name" name='firstname')
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													input.form-control(type='text' placeholder="Middle Name" name='middlename')
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Birthday
 													input.datepicker.form-control(type='date' name='birthday')
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Birthplace:
 													input.form-control(type='text' name='birthplace')
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Nationality:
 													input.form-control(type='text' name='gnationality')
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Father's name:
 													input.form-control(type='text' name='gfathername')
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Father's birthplace:
 													input.form-control(type='text' name='gfatherbplace')
-											.col-md-4
-												.form-group.text-center
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group.text-lg-center.text-sm-left
 													h6.label-control Father's Religion
 													select(type="text" name='gfatherreligion')
 														option Catholic
@@ -130,16 +141,16 @@ block main
 														option Non-Christion
 														option No religion
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Mother's name:
 													input.form-control(type='text' name='gmothername')
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Mother's birthplace:
 													input.form-control(type='text' name='gmotherbplace')
-											.col-md-4
-												.form-group.text-center
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group.text-lg-center.text-sm-left
 													h6.label-control Mother's Religion
 													select(type="text" name='gmotherreligion')
 														option Catholic
@@ -147,9 +158,9 @@ block main
 														option Non-Christion
 														option No religion
 										.row
-											.col-md-6
-												.row.text-center
-													.col-md-6
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.row.text-lg-center.text-sm-left
+													.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
 														.form-group
 															h6.label-control Civil Status
 															select(type="text" name='gcivilstatus')
@@ -157,7 +168,7 @@ block main
 																option Married
 																option Divorced
 																option Widower
-													.col-md-6
+													.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
 														.form-group
 															h6.label-control Religion
 															select(type="text" name='greligion')
@@ -165,68 +176,75 @@ block main
 																option Non-Catholic
 																option Non-Christion
 																option No religion
-											.col-md-6
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Address:
 													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address')
 										.row
-											.col-md-6
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
 													h6.label-control Current parish:
 													input.form-control(type='text' name='gcurrentparish')
-											.col-md-6
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
 													h6.label-control Occupation:
 													input.form-control(type='text' name='goccupation')
 										.row
-											.col-md-6
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Valid ID
+													input(type='file')
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Birth Certificate
+													input(type='file')
+										.row
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
 													h6.label-control Baptized?
-													.ml-4
-														.form-check
-															label.form-check-label
-																input.exampleRadios1.form-check-input(type="radio" name="gbaptized" value="1")
-																.dropdown-toggle.mr-3 Yes
-																span.circle
-																	span.check
-															.textarea1.form-group
-																.form-group
-																	label.label-control Parish where you were baptized:
-																	input.form-control(type='text' name='gbapplace')
-																.form-group
-																	label.label-control Date when you were baptized:
-																	input.datepicker2.form-control(type='date' name='gbapdate')
+													.form-check
+														label.form-check-label
+															input.exampleRadios1.form-check-input(type="radio" name="gbaptized" value="1")
+															.dropdown-toggle.mr-3 Yes
+															span.circle
+																span.check
+														.textarea1.form-group
+															.form-group
+																label.label-control Parish where you were baptized:
+																input.form-control(type='text' name='gbapplace')
+															.form-group
+																label.label-control Date when you were baptized:
+																input.datepicker2.form-control(type='date' name='gbapdate')
 																
-														.form-check
-															label.form-check-label
-																input.radioup.form-check-input(type="radio" name="gbaptized" value="0" )
-																| No
-																span.circle
-																	span.check
-											.col-md-6
+													.form-check
+														label.form-check-label
+															input.radioup.form-check-input(type="radio" name="gbaptized" value="0" )
+															| No
+															span.circle
+																span.check
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
 													h6.label-control Confirmed?
-													.ml-4
-														.form-check
-															label.form-check-label
-																input.exampleRadios2.form-check-input(type="radio" name="gconfirmed" value="1")
-																.dropdown-toggle.mr-3 Yes
-																span.circle
-																	span.check
-															.textarea2.form-group
-																.form-group
-																	label.label-control Parish where you were confirmed:
-																	input.form-control(type='text' name='gconplace')
-																.form-group
-																	label.label-control Date when you were confirmed:
-																	input.datepicker2.form-control(type='date' name='gcondate')
-																
-														.form-check
-															label.form-check-label
-																input.radioup2.form-check-input(type="radio" name="gconfirmed" value="0" )
-																| No
-																span.circle
-																	span.check
+													.form-check
+														label.form-check-label
+															input.exampleRadios2.form-check-input(type="radio" name="gconfirmed" value="1")
+															.dropdown-toggle.mr-3 Yes
+															span.circle
+																span.check
+														.textarea2.form-group
+															.form-group
+																label.label-control Parish where you were confirmed:
+																input.form-control(type='text' name='gconplace')
+															.form-group
+																label.label-control Date when you were confirmed:
+																input.datepicker2.form-control(type='date' name='gcondate')
+															
+													.form-check
+														label.form-check-label
+															input.radioup2.form-check-input(type="radio" name="gconfirmed" value="0" )
+															| No
+															span.circle
+																span.check
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
 									button.btn.btn-next(type='button') Next
@@ -234,46 +252,46 @@ block main
 							// Form Step 3
 							fieldset
 								h4
-									| Bride : 
+									.d-none.d-sm-inline Bride's Form : 
 									span Step 3 - 5
 								.form-group
 									br
 									.container
 										h6.label-control Name
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													input.form-control(type='text' placeholder="Last Name" name='blastname')
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													input.form-control(type='text' placeholder="First Name" name='bfirstname')
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													input.form-control(type='text' placeholder="Middle Name" name='bmiddlename')
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Birthday
 													input.datepicker.form-control(type='date' name='bbirthday')
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Birthplace:
 													input.form-control(type='text' name='bbirthplace')
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Nationality:
 													input.form-control(type='text' name='bnationality')
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Father's name:
 													input.form-control(type='text' name='bfathername')
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Father's birthplace:
 													input.form-control(type='text' name='bfatherbplace')
-											.col-md-4
-												.form-group.text-center
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group.text-lg-center.text-sm-left
 													h6.label-control Father's Religion
 													select(type="text" name='bfatherreligion')
 														option Catholic
@@ -281,16 +299,16 @@ block main
 														option Non-Christion
 														option No religion
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Mother's name:
 													input.form-control(type='text' name='bmothername')
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Mother's birthplace:
 													input.form-control(type='text' name='bmotherbplace')
-											.col-md-4
-												.form-group.text-center
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group.text-lg-center.text-sm-left
 													h6.label-control Mother's Religion
 													select(type="text" name='bmotherreligion')
 														option Catholic
@@ -298,9 +316,9 @@ block main
 														option Non-Christion
 														option No religion
 										.row
-											.col-md-6
-												.row.text-center
-													.col-md-6
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.row.text-lg-center.text-sm-left
+													.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
 														.form-group
 															h6.label-control Civil Status
 															select(type="text" name='bcivilstatus')
@@ -308,7 +326,7 @@ block main
 																option Married
 																option Divorced
 																option Widower
-													.col-md-6
+													.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
 														.form-group
 															h6.label-control Religion
 															select(type="text" name='breligion')
@@ -316,12 +334,12 @@ block main
 																option Non-Catholic
 																option Non-Christion
 																option No religion
-											.col-md-6
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Address:
 													textarea#exampleFormControlTextarea1.form-control(rows='2' name='bddress')
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.m-0
 													h6.label-control Are you 5months or above pregnant?
 													.form-check.ml-3
@@ -336,16 +354,25 @@ block main
 															| No
 															span.circle
 																span.check
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Current parish:
 													input.form-control(type='text' name='bcurrentparish')
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Occupation:
 													input.form-control(type='text' name='boccupation')
 										.row
-											.col-md-6
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Valid ID
+													input(type='file')
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Birth Certificate
+													input(type='file')
+										.row
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
 													h6.label-control Baptized?
 													.ml-4
@@ -369,7 +396,7 @@ block main
 																| No
 																span.circle
 																	span.check
-											.col-md-6
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
 													h6.label-control Confirmed?
 													.ml-4
@@ -400,13 +427,13 @@ block main
 							// Form Step 4
 							fieldset
 								h4
-									| Official Information: 
-									span Step 3 - 5
+									.d-none.d-sm-inline Couple's Form: 
+									span Step 4 - 5
+									h6.label-control Living Together?
 									.row
-										.col-md-6
+										.col-md-6.px-lg-3.px-md-0.px-sm-0
 											//- h2.main--header.font-italic For the couple
 											.form-group.m-0
-												h6.label-control Living Together?
 												.form-check
 													h6.form-check-label
 														input.form-check-input(type="radio" name="boollivingin" id="exampleRadios2" value="1")
@@ -433,7 +460,8 @@ block main
 														| No
 														span.circle
 															span.check
-										.col-md-6
+									.row
+										.col-lg-6.px-lg-3.px-md-0.px-sm-0
 											.textarea3.form-group
 												.form-group
 													h6.label-control Previous wedding date
@@ -446,50 +474,57 @@ block main
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
 									button.btn.btn-next(type='button') Next
 							// Form Step 4
-							// Form Step 3
+							// Form Step 5
 							fieldset
 								h4
-									| Official Information: 
-									span Step 3 - 3
+									.d-none.d-sm-inline Sponsors Information	
+									span Step 5 - 5
+									h6.label-control Principal Sponsors
 									.row#principalSponsor
-										.col-md-6
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group.m-0
-												h6.label-control Principal Sponsors
 												input.form-control(type='text' name='sponsorname')
-										.col-md-6
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group.m-0
-												h6.label-control.invisible Principal Sponsors
 												input.form-control.balance(type='text' name='sponsorname')
 									button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
 										i.fa.fa-plus
 									.row#additionalSponsor
-										.col-md-6
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group.m-0
 												h6.label-control Additional Sponsors
 												input.form-control(type='text' name='sponsorname')
-										.col-md-6
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group.m-0
 												h6.label-control.invisible Additional Sponsors
 												input.form-control.balance(type='text' name='sponsorname')
 								br
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
-									button.btn.btn-next(type='button' data-toggle='modal', data-target='#exampleModal') Proceed
-							#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' data-controls-modal="exampleModal" data-backdrop="static" data-keyboard="false")
+									button.btn(type='button' data-toggle='modal', data-target='#exampleModal') Proceed
+							#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' data-controls-modal="exampleModal")
 								.modal-dialog.modal-lg(role='document')
 									.modal-content 
 										.modal-header
+											button.close(type='button', data-dismiss='modal', aria-label='Close')
+												span.p-3(aria-hidden='true') ×
 											h5 Wee woo woo
 										.modal-body.text-left
 											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
 											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
-											brbr
+											br
+											br
 											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
 											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+											br
+											h5 Mode of Payment
+											select
+												option(value="") Full Payment
+												option(value="") Half Payment 
 										.modal-footer
-											button.btn.std-btn.btn-danger.m-0#cancelButton(type='button') Cancel
-											button.btn.std-btn.btn-success.btn-info.mb-0#proceedButton(type='button') Agree
-							// Form Step 3
+											button.btn.std-btn.btn-danger.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
+											button.btn.std-btn.btn-success.btn-info.mb-0#proceedButton(type='button' onclick="location.href='guest/marriage1/form'") Agree
+							// Form Step 5
 						// Form Wizard
 block addjs
 	script.

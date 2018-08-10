@@ -1,5 +1,15 @@
 extends ../../../../templates/guests
 block main
+	style.
+		@media screen and (max-width: 576px) {
+			.col-md-4, .col-md-6, .col-md-9 {
+				padding-left: 0;
+				padding-right: 0;
+			}
+			.form-wizard-step {
+				padding-bottom: 10px !important;
+			}
+		}
 	#headers
 		#header-style-1
 			.container
@@ -12,7 +22,7 @@ block main
 							h6.header-text.animated.fadeIn.invisible
 								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h6>
 							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
-							//- a.page-scroll.btn.btn-lg.btn-secondary.animated.fadeInUp.invisible(href="#") Explore
+							//- a.page-scroll.btn.btn-lg.btn-secondary.animated.fadeInUp.invisible.destination(href="#") Explore
 	#raised-section.main.main-raised
 		section.form-box
 			.container
@@ -30,25 +40,25 @@ block main
 								.form-wizard-step.active
 									.form-wizard-step-icon
 										i.fa.fa-user(aria-hidden='true')
-									p Personal
+									p.d-none.d-sm-block Personal Information
 								// Step 1
 								// Step 2
 								.form-wizard-step
 									.form-wizard-step-icon
 										i.fa.fa-location-arrow(aria-hidden='true')
-									p Baptism Details
+									p.d-none.d-sm-block Baptism Details
 								// Step 2
 								// Step 3
 								.form-wizard-step
 									.form-wizard-step-icon
 										i.fa.fa-briefcase(aria-hidden='true')
-									p Sponsors
+									p.d-none.d-sm-block Sponsors Information
 								// Step 3
 							// Form progress
 							// Form Step 1
 							fieldset
 								h4
-									| Personal Information: 
+									.d-none.d-sm-inline Personal Information: 
 									span Step 1 - 3
 								.form-group
 									br
@@ -56,17 +66,17 @@ block main
 									.container
 										h6.label-control Name of the child:
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.pt-0
 													input.form-control(type='text' placeholder="Last Name" name='lastname')
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group.pt-0
 													input.form-control(type='text' placeholder="First Name" name='firstname')
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.pt-0
 													input.form-control(type='text' placeholder="Middle Name" name='middlename')
 										.row
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.m-0
 													h6.label-control Gender
 													.custom-control.custom-radio
@@ -78,57 +88,57 @@ block main
 														label.custom-control-label(for='customRadio2') 
 															| Female
 
-											.col-md-4.p-lg-0
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Birthday
 													input.datepicker.form-control(type='date' name='birthday')
-											.col-md-4
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Birthplace:
-													input.form-control(type='text' name='birthplace')
+													input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City")
 										.row
-											.col-md-6
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Father's Full Name:
-													input.form-control(type='text' name='fathername')
-											.col-md-6
+													input.form-control(type='text' name='fathername' placeholder="Ex. Ernesto Dela Cruz")
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Father's Birthplace:
-													input.form-control(type='text' name='fatherbirthplace')
+													input.form-control(type='text' name='fatherbirthplace' placeholder="Ex. Caloocan, Quezon City")
 										.row
-											.col-md-6
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Mother's Full name:
-													input.form-control(type='text' name='mothername')
-											.col-md-6
+													input.form-control(type='text' name='mothername' placeholder="Ex. Maria Leonora Dela Cruz")
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Mother's birthplace:
-													input.form-control(type='text' name='motherbirthplace')
+													input.form-control(type='text' name='motherbirthplace' placeholder="Ex. San Isidro, Quezon City")
 										.row
-											.col-md-6
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Relationship with the Child
-														br
-														select(type="text" name='relation')
-															option Parent
-															option Grandparent
-															option Aunt/Uncle
-											.col-md-6
+													select(type="text" name='relation')
+														option(selected="" value="" disabled) Choose...
+														option Parent
+														option Grandparent
+														option Aunt/Uncle
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Family's Contact number
-													input#datepicker.form-control(type='text' name='contactnumber')
+													input#datepicker.form-control(type='text' name='contactnumber' placeholder="Ex. 09423523412")
 										.row
-											.col-md-6
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Parent's Marriage Address:
-													textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress')
-											.col-md-6
+													textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Family address:
-													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address')
+													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City")
 										.row
 											.col-md-6
-											.col-md-6
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Select Image
 													input#datepicker(type='file' name='image')
@@ -139,11 +149,11 @@ block main
 							// Form Step 2
 							fieldset
 								h4
-									| Contact Information : 
+									.d-none.d-sm-inline Baptism Details: 
 									span Step 2 - 3
 									.container
 										.row
-											.col-md-3
+											.col-md-3.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													br
 													h6.label-control Baptism Type & Date:
@@ -155,55 +165,56 @@ block main
 															input#radio2.custom-control-input(type='radio', name='baptismtype' value="Special")
 															label.custom-control-label(for='radio2') 
 																h6 Special
-											.col-md-9
+										.row
+											.col-md-9.px-lg-3.px-md-3.px-sm-0
 												#regular.mt-4
 													.form-group
 														h6.label-control Regular Baptism Date
 														input.datepicker1.RegularDesiredDate.form-control(type='date' name='regdesireddate')
 												#special
 													.row.mt-4
-														.col-md-6
+														.col-md-6.px-lg-3.px-md-3.px-sm-0
 															.form-group
 																h6.label-control Special Baptism Date
-																input.datepicker.SpecialDesiredDate.form-control(type='date' name='spcdesireddate')
-														.col-md-6.mt-2
+																	input.datepicker.SpecialDesiredDate.form-control(type='date' name='spcdesireddate')
+														.col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
 															.form-group
 																h6.label-control Special Baptism Time
-																	select.selectpicker.form-control(type="text" name='desiredtime')
+																	br
+																	select(type="text" name='desiredtime')
+																		option(selected="" value="" disabled) Choose...
 																		each time in times
 																			option=time.time_availabletime
 								.learn-more.pull-right
-									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									button.btn.btn-next(type='button') Next
 							// Form Step 2
 							// Form Step 3
 							fieldset
 								h4
-									| Official Information: 
+									.d-none.d-sm-inline Sponsors Information:
 									span Step 3 - 3
-									.row#principalSponsor
-										.col-md-6
-											.form-group.m-0
-												h6.label-control Principal Sponsors
-												input.form-control(type='text' name='sponsorname')
-										.col-md-6
-											.form-group.m-0
-												h6.label-control.invisible Principal Sponsors
-												input.form-control.balance(type='text' name='sponsorname')
-									button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
-										i.fa.fa-plus
-									.row#additionalSponsor
-										.col-md-6
-											.form-group.m-0
-												h6.label-control Additional Sponsors
-												input.form-control(type='text' name='sponsorname')
-										.col-md-6
-											.form-group.m-0
-												h6.label-control.invisible Additional Sponsors
-												input.form-control.balance(type='text' name='sponsorname')
+									h6.label-control Principal Sponsors
+										.row#principalSponsor
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.form-group.m-0
+													input.form-control(type='text' name='sponsorname' placeholder="First Name")
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.form-group.m-0
+													input.form-control.balance(type='text' name='sponsorname' placeholder="Last Name")
+										button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
+											i.fa.fa-plus
+									h6.label-control Additional Sponsors
+										.row#additionalSponsor
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.form-group.m-0
+													input.form-control(type='text' name='sponsorname' placeholder="First Name")
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.form-group.m-0
+													input.form-control.balance(type='text' name='sponsorname' placeholder="Last Name")
 								br
 								.learn-more.pull-right
-									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									button.btn.btn-submit(type='submit') Submit
 							// Form Step 3
 						// Form Wizard
