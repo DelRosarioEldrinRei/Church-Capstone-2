@@ -9,11 +9,11 @@ block prepend main
 				.col-lg-12.col-md-12
 					br
 					//Outer Tabs
-					ul.nav.nav-tabs
-						li.nav-item
-							a.nav-link.active(data-toggle='tab', href='#nonwedding') Services
-						li.nav-item
-							a.nav-link(data-toggle='tab', href='#wedding') Wedding
+					//- ul.nav.nav-tabs
+					//- 	li.nav-item
+					//- 		a.nav-link.active(data-toggle='tab', href='#nonwedding') Services
+						//- li.nav-item
+						//- 	a.nav-link(data-toggle='tab', href='#wedding') Wedding
 						//- li.nav-item
 						//- 	a.nav-link(data-toggle='tab', href='#facility') Facility Reservation
 						//- li.nav-item
@@ -28,8 +28,8 @@ block prepend main
 									a.nav-link.active(data-toggle='tab', href='#sacrament') Sacrament
 								li.nav-item
 									a.nav-link(data-toggle='tab', href='#special') Special Service
-								li.nav-item
-									a.nav-link(data-toggle='tab', href='#') Events
+								//- li.nav-item
+								//- 	a.nav-link(data-toggle='tab', href='#') Events
 								//- li.nav-item
 								//- 	a.nav-link(data-toggle='tab', href='#') Baptism
 								//- li.nav-item
@@ -50,12 +50,14 @@ block prepend main
 															thead.text-primary
 																	th ID
 																	th Name
+																	th Status
 																	th.text-center(style=" width:120px") Actions
 															tbody
 																	each sacrament in sacraments
 																		tr
 																			td=sacrament.int_eventID
 																			td=sacrament.var_eventname
+																			td=sacrament.char_status
 																			td.td-actions.text-center
 																				button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${sacrament.int_eventID}`)
 																					i.ti-close 
@@ -177,7 +179,6 @@ block addjs
 					}
 				})
 		});
-
 		$('.updateButton').click(function(){
 			var idNow = $(this).val();
 			console.log(idNow)
@@ -197,6 +198,11 @@ block addjs
 					<select id="eventtype" class="form-control">
 					</select>
 				</div>
+				<div class="form-group">
+					<label class="label-control">Status</label>
+					<select id="status" class="form-control">
+					</select>
+				</div>
 				`)
 				$('#updateModal').modal('show')
 				if(data.char_type == "Sacrament"){
@@ -209,6 +215,18 @@ block addjs
 					$('#eventtype').append(`
 					<option value="Special Service" selected="selected">Special Service</option>
 					<option value="Sacrament">Sacraments</option>
+					`)
+				}
+				if(data.char_status == "Enabled"){
+					$('#status').append(`
+					<option value="Enabled" selected="selected">Enabled</option>
+					<option value="Disabled" >Disabled</option>
+					`)
+				}
+				else if(data.char_status == "Disabled"){
+					$('#status').append(`
+					<option value="Enabled" >Enabled</option>
+					<option value="Disabled" selected="selected">Disabled</option>
 					`)
 				}
 				$('#cancelButton').click(function(){
@@ -229,6 +247,7 @@ block addjs
 					eventname:$('#eventname').val(),
 					eventdesc:$('#eventdesc').val(),
 					eventtype:$('#eventtype').val(),
+					status:$('#status').val(),
 					id1:idNow
 					})
 					.done(data=>{

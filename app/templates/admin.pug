@@ -48,7 +48,7 @@ html
 					// ### $Sidebar Menu ###
 					ul.sidebar-menu.scrollable.pos-r
 						li.nav-item.mT-30.active
-							a.sidebar-link(href='#')
+							a.sidebar-link(href='/admin')
 								span.icon-holder
 									i.c-blue-500.ti-home
 								span.title Dashboard
@@ -75,8 +75,19 @@ html
 									a.sidebar-link(href='/admin/maintenance-facilities') Facilities
 								li
 									a.sidebar-link(href='/admin/maintenance-ministries') Ministries
-								li
-									a.sidebar-link(href='#') Requirements
+								li.nav-item.dropdown
+									a.dropdown-toggle(href='javascript:void(0);')
+										span.icon-holder
+										span.title Requirements
+										span.arrow
+											i.ti-angle-right
+									ul.dropdown-menu
+										li
+											a.sidebar-link(href='/admin/maintenance-service-requirements') Service
+										li
+											a.sidebar-link(href='/admin/maintenance-document-requirements') Document Request
+										li
+											a.sidebar-link(href='/admin/maintenance-facility-requirements') Facility Reservation
 								li
 									a.sidebar-link(href='#') Marriage Steps
 								li

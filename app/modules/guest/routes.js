@@ -55,7 +55,20 @@
             db.query(queryString, (err, results, fields) => {
                 if (err) console.log(err);
                 var services = results[0];
-                if(services.var_eventname== 'Baptism'){ return res.render('guest/views/forms/baptism',{user: req.session.user});}
+                if(services.var_eventname== 'Baptism'){ 
+                    var queryString1= `SELECT int_agemax, int_agemin, double_fee FROM tbl_utilities where int_eventID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
+                    db.query(queryString1, (err, results1, fields) => {
+                        var queryString2= `SELECT time_availabletime FROM tbl_utilities_availabletime where int_serviceID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
+                        db.query(queryString2, (err, results2, fields) => {
+                            for(i=0;i<results2.length;i++){
+                            results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
+                            }
+                            if (err) throw err;
+                        console.log(results2);
+                    return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1,times:results2})
+                        });    
+                    });
+                ;}
                 else if(services.var_eventname== 'Funeral Service'){ return res.render('guest/views/forms/funeral',{user: req.session.user})}
                 else if(services.var_eventname== 'Marriage'){ return res.render('guest/views/forms/marriage',{user: req.session.user});}
                 else if(services.var_eventname== 'Confirmation'){ return res.render('guest/views/forms/confirmation',{user: req.session.user});}
@@ -449,11 +462,17 @@
     // B A P T I S M
     //==============================================================
         guestRouter.get('/baptism/form', (req, res)=>{
-            var queryString= `SELECT int_agemax, int_agemin, double_fee FROM tbl_utilities where int_eventID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
-            db.query(queryString, (err, results, fields) => {
-                if (err) throw err;
-                console.log(results);
-            return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results})
+            var queryString1= `SELECT int_agemax, int_agemin, double_fee FROM tbl_utilities where int_eventID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
+            db.query(queryString1, (err, results1, fields) => {
+                var queryString2= `SELECT time_availabletime FROM tbl_utilities_availabletime where int_serviceID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
+                db.query(queryString2, (err, results2, fields) => {
+                    for(i=0;i<results2.length;i++){
+                    results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
+                    }
+                    if (err) throw err;
+                console.log(results2);
+            return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1,times:results2})
+                });    
             });
         });
     
@@ -496,8 +515,8 @@
                     db.query(queryString1, [req.body.userID, req.session.user.eventID.int_eventID], (err, results, fields) => {
                         if (err) throw err;
                         var eventinfoID= results;       
-                        var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, char_feestatus, char_reqstatus) VALUES(?,?,?,?)`;        
-                        db.query(queryString2,[eventinfoID.insertId, "Pending", "Unpaid", "Incomplete"], (err, results, fields) => {
+                        var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID) VALUES(?,?)`;        
+                        db.query(queryString2,[eventinfoID.insertId, "Pending", "Unpaid"], (err, results, fields) => {
                             if (err) throw err;
     
                             var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_relation, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?,?);`
@@ -506,8 +525,8 @@
                                 var path = '/img/req/'+req.file.filename;
                                 var nowDate = new Date(); 
                                 var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
-                                var queryString7 = `INSERT INTO tbl_requirements(int_eventinfoID,var_reqpath,date_reqreceived,int_reqtypeID) VALUES (?,?,?,?);`
-                                db.query(queryString7,[eventinfoID.insertId,path,date,1],(err, results, fields)=>{
+                                var queryString7 = `INSERT INTO tbl_requirements(int_eventinfoID,var_reqpath,date_reqreceived,int_reqtypeID, var_reqstatus) VALUES (?,?,?,?,?);`
+                                db.query(queryString7,[eventinfoID.insertId,path,date,1,"Complete"],(err, results, fields)=>{
                                     // console.log(date);
                                     if (err) throw err;
                                     

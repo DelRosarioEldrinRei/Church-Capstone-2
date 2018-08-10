@@ -15,30 +15,27 @@ block prepend main
 								.card-header.card-header-primary
 									.row
 										.col-md-6
-											h4.card-title Facilities
+											h4.card-title Requirements on Document Request
 										.col-md-6
-											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Facility
+											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Requirement
 								.card-body.table-responsive
 										table.table.table-hover
 												thead.text-primary
 														th ID
-														th Name
-														//- th.text-left(style=" width:120px") Fee
+														th Requirement
 														th Description
-														th Maximum Pax
 														th.text-center(style=" width:120px") Actions
 												tbody
-														each facility in facilities
+														each requirement in requirements
 															tr
-																td=facility.int_facilityID
-																td=facility.var_facilityname
-																td=facility.var_facilitydesc
-																td=facility.int_maxpax
+																td=requirement.int_docureqtypeID
+																td=requirement.var_reqname
+																td=requirement.var_reqdesc
 																td.td-actions.text-center
-																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${facility.int_facilityID}`)
+																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${requirement.int_docureqtypeID}`)
 																		i.ti-close
 																	| &nbsp;
-																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${facility.int_facilityID}`)
+																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${requirement.int_docureqtypeID}`)
 																		i.ti-pencil
 																
 														
@@ -65,21 +62,18 @@ block prepend main
 			.modal-content
 				// Header
 				.modal-header
-					p.heading.lead Add Facility
+					p.heading.lead Add Requirement
 					button.close(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				// Body
 				.modal-body
-					form.form(action="/admin/maintenance-facilities/addfacility" method="post")
+					form.form(action='/admin/maintenance-document-requirements/add' method="post")
 						.form-group
-							label.label-control Facility Name
-							input.form-control(type='text' name='facilityname')
+							label.label-control Requirements
+							input.form-control(type='text' name='reqname')
 						.form-group
-							label.label-control Facility Description
-							textarea.form-control(name='facilitydesc')
-						.form-group
-							label.label-control Maximum Pax
-							input.form-control(type='number' name='maxpax')
+							label.label-control Description
+							textarea.form-control(name='reqdesc')
 						.row
 							.col-md-12.text-center.my-3
 								button.btn.btn-primary(type='submit') Add	
@@ -88,73 +82,66 @@ block prepend main
 		.modal-dialog.modal-notify.modal-success(role='document')
 			.modal-content
 				.modal-header
-					p.heading.lead Edit Facility
+					p.heading.lead Edit Requirement
 					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				.modal-body#updateAppend                
 					.col-md-12.text-center.my-3
 				.modal-footer
 					button.btn.btn-primary#updateSubmitButton(type="button") Update
-	#modal-warning1.modal.modal-warning.fade
-			.modal-dialog
-			.modal-content
-				.modal-header
-				button.close(type='button', data-dismiss='modal', aria-label='Close')
-					span(aria-hidden='true') ×
-				h4.modal-title Warning
-				.modal-body
-				p Are you sure you?
-				.modal-footer
-					button.btn.btn-outline.pull-left#cancelButton1(type='button', data-dismiss='modal') No
-					button.btn.btn-outline.pull-right#deleteSubmit1 Yes
 block addjs
 	script(src='/js/forIndex.js')
 	script.
 		$(document).ready(function() {
 		$('.deleteButton').click(function(){
 			var idNow = $(this).val();
-			console.log(idNow)
-			$('#modal-warning1').modal('show');
-			$('#deleteSubmit1').css('display', 'block');
-			$('#cancelButton1').css('display', 'block');
-				$('#deleteSubmit1').click(function(){
-					$.post('/admin/maintenance-facilities/delete',{id1:idNow})
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Confirm'
+				}).then((result) => {
+					if (result.value) {
+						$.post('/admin/maintenance-document-requirements/delete',{id:idNow})
 						.done(data =>{
-						if(data){
-							swal({
-							title:'Success', 
-							text:'service deleted', 
-							icon:'success'
-							}).then(function(){
-								location.reload();
-							})     
-							$('#modal-warning1').modal('hide');
-						}
-
-				});                        
-			});
+							if(data){
+								swal({
+								title:'Success', 
+								text:'Requirement Deleted', 
+								icon:'success'
+								}).then(function(){
+									location.reload();
+								})
+							}
+						});
+					}
+				})
 		});
+		
 
 		$('.updateButton').click(function(){
 			var idNow = $(this).val();
 			console.log(idNow)
-				$.post('/admin/maintenance-facilities/query',{id:idNow})
+				$.post('/admin/maintenance-document-requirements/query',{id:idNow})
 			.done(data=>{
 				$('#updateAppend').append(`
 				<div class="form-group">
-					<label class="label-control">Facility Name</label>
-					<input type="text" name="facilityname" id="facilityname" value="${data.var_facilityname}" class="form-control"/>
+					<label class="label-control">Requirements</label>
+					<input type="text" id="reqname" class="form-control" value="${data.var_reqname}"/>
 				</div>
 				<div class="form-group">
-					<label class="label-control">Facility Description</label>
-					<textarea name="facilitydesc" id="facilitydesc" class="form-control">${data.var_facilitydesc}</textarea>
+					<label class="label-control">Description</label>
+					<textarea id="reqdesc" class="form-control">${data.var_reqdesc}</textarea>
 				</div>
-				<div class="form-group">
-					<label class="label-control">Maximum Pax</label>
-					<textarea name="facilitydesc" id="maxpax" class="form-control">${data.int_maxpax}</textarea>
 				</div>
 				`)
 				$('#updateModal').modal('show')
+				$('#updateModal').on('hidden.bs.modal',function(){
+					$('#updateAppend').empty()
+				})
 				$('#cancelButton').click(function(){
 					$('#updateAppend').empty();
 				})
@@ -166,17 +153,17 @@ block addjs
 					};
 				});
 				$('#updateSubmitButton').click(function(){
-					$.post('/admin/maintenance-facilities/edit',{
-					facilityname:$('#facilityname').val(),
-					facilitydesc:$('#facilitydesc').val(),
-					maxpax:$('#maxpax').val(),
+					$.post('/admin/maintenance-document-requirements/edit',{
+					reqname:$('#reqname').val(),
+					reqdesc:$('#reqdesc').val(),
+					eventID:$('#id').val(),
 					id:idNow
 					})
 					.done(data=>{
 						if(data){
 							swal({
 							title:'Success', 
-							text:'Facilities information updated', 
+							text:'Requirement information updated', 
 							icon:'success'
 							}).then(function(){
 								location.reload();

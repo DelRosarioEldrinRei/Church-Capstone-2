@@ -101,10 +101,10 @@ adminRouter.use(authMiddleware.adminAuth)
 //SERVICES
 //=======================================================
     adminRouter.get('/maintenance-services', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_services where char_type = "Sacrament"`
+        var queryString1 =`SELECT * FROM tbl_services where char_type = "Sacrament" AND bool_isDeleted = 0`
         db.query(queryString1, (err, results1, fields) => {
             if (err) console.log(err)  
-            var queryString2 =`SELECT * FROM tbl_services where char_type = "Special Service"`
+            var queryString2 =`SELECT * FROM tbl_services where char_type = "Special Service" AND bool_isDeleted = 0`
             db.query(queryString2, (err, results2, fields) => {
                 if (err) console.log(err);      
             return res.render('admin/views/maintenance/services',{ sacraments : results1, services:results2 });    
@@ -115,8 +115,9 @@ adminRouter.use(authMiddleware.adminAuth)
         var queryString= `INSERT INTO tbl_services(
             var_eventname,
             var_eventdesc, 
-            char_type
-            ) VALUES(?,?,?);`  
+            char_type,
+            bool_isDeleted
+            ) VALUES(?,?,?,0);`  
             db.query(queryString, [req.body.eventname,req.body.eventdesc,req.body.event_type], (err, results, fields) => {
                 if (err) throw err;
                     return res.redirect('/admin/maintenance-services');
@@ -125,8 +126,8 @@ adminRouter.use(authMiddleware.adminAuth)
 
         
     adminRouter.post('/maintenance-services/delete', (req, res) => {
-        const queryString = `DELETE FROM tbl_services WHERE int_eventID=?`;
-        db.query(queryString,[req.body.id1], (err, results, fields) => {        
+        const queryString = `UPDATE tbl_services SET bool_isDeleted = 1`;
+        db.query(queryString, (err, results, fields) => {        
             if (err) throw err;
             return res.redirect('/admin/maintenance-services');
         });
@@ -134,8 +135,8 @@ adminRouter.use(authMiddleware.adminAuth)
 
 
     adminRouter.post('/maintenance-services/edit', (req, res) => {
-        const queryString = `UPDATE tbl_services SET var_eventname = ?,var_eventdesc = ?, char_type = ? WHERE int_eventID= ?`; 
-        db.query(queryString,[req.body.eventname,req.body.eventdesc,req.body.eventtype,req.body.id1], (err, results, fields) => {        
+        const queryString = `UPDATE tbl_services SET var_eventname = ?,var_eventdesc = ?, char_type = ?, char_status =? WHERE int_eventID= ?`; 
+        db.query(queryString,[req.body.eventname,req.body.eventdesc,req.body.eventtype,req.body.status,req.body.id1], (err, results, fields) => {        
             if (err) throw err;
             return res.redirect('/admin/maintenance-services');
         });
@@ -163,8 +164,8 @@ adminRouter.use(authMiddleware.adminAuth)
 
     adminRouter.post('/maintenance-facilities/addfacility', (req, res) => {
     
-        var queryString= `INSERT INTO tbl_facility(var_facilityname, var_facilitydesc) VALUES(?,?);`  
-            db.query(queryString,  [req.body.facilityname, req.body.facilitydesc], (err, results, fields) => {
+        var queryString= `INSERT INTO tbl_facility(var_facilityname, var_facilitydesc,int_maxpax) VALUES(?,?,?);`  
+            db.query(queryString,  [req.body.facilityname, req.body.facilitydesc,req.body.maxpax], (err, results, fields) => {
                 if (err) throw err;
                     return res.redirect('/admin/maintenance-facilities');
             });            
@@ -188,9 +189,9 @@ adminRouter.use(authMiddleware.adminAuth)
     });
 
     adminRouter.post('/maintenance-facilities/edit', (req, res) => {
-        const queryString = `UPDATE tbl_facility SET var_facilityname =?, var_facilitydesc= ?
+        const queryString = `UPDATE tbl_facility SET var_facilityname =?, var_facilitydesc= ?,int_maxpax=?
         WHERE int_facilityID= ?`;
-        db.query(queryString,[req.body.facilityname, req.body.facilitydesc,req.body.id], (err, results, fields) => {        
+        db.query(queryString,[req.body.facilityname, req.body.facilitydesc,req.body.maxpax,req.body.id], (err, results, fields) => {        
             if (err) throw err;
             return res.redirect('/admin/maintenance-facilities');
             
@@ -251,168 +252,101 @@ adminRouter.use(authMiddleware.adminAuth)
 //=======================================================
 //REQUIREMENTS 
 //=======================================================
-    
-    //non-wedding requirements
-        adminRouter.get('/maintenance-nonwedrequirements', (req, res)=>{
-            var queryString1 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Anointing of the sick")`
-            var queryString2 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Baptism")`
-            var queryString3 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Confirmation")`
-            var queryString4 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Funeral Mass=" or var_eventname= "Funeral Service" )`
-            // var queryString5 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage")`
-            var queryString6 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Establishment Blessing")`
-            var queryString8 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="First Communion")`
-            var queryString9 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Facility Reservation")`
-            var queryString10 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Document Request")`
-            var queryString11 =`SELECT var_eventname FROM tbl_services ORDER BY var_eventname`
-            db.query(queryString1, (err, results, fields) => {
-                if (err) console.log(err); 
-                var anointings = results;
-                db.query(queryString2, (err, results, fields) => {
-                    if (err) console.log(err); 
-                    var baptisms = results;
-                    db.query(queryString3, (err, results, fields) => {
-                        if (err) console.log(err); 
-                        var confirmations = results;
-                        db.query(queryString4, (err, results, fields) => {
-                            if (err) console.log(err); 
-                            var funerals = results;
-                            // db.query(queryString5, (err, results, fields) => {
-                            //     if (err) console.log(err); 
-                            //     var marriages = results;
-                                db.query(queryString6, (err, results, fields) => {
-                                    if (err) console.log(err);
-                                    var establishments = results; 
-                                        db.query(queryString8, (err, results, fields) => {
-                                            if (err) console.log(err);
-                                            var eucharists = results;       
-                                            db.query(queryString9, (err, results, fields) => {
-                                                if (err) console.log(err);
-                                                var reservations = results;       
-                                                db.query(queryString10, (err, results, fields) => {
-                                                    if (err) console.log(err);
-                                                    var requests = results; 
-                                                    db.query(queryString11, (err, results, fields) => {
-                                                        if (err) console.log(err);
-                                                        var services = results;       
-                                                        console.log(services)
-                return res.render('admin/views/maintenance/nonwedrequirements',{ anointings : anointings,baptisms : baptisms,confirmations : confirmations,funerals : funerals, establishments : establishments,eucharists : eucharists,reservations : reservations,requests: requests, services:services});
-            }); }); }); }); }); }); }); }); }); 
-            // });     
-        });
-        
-        adminRouter.post('/maintenance-nonwedrequirements/add', (req, res) => {
-            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
-            db.query(queryString, [req.body.eventname], (err, results, fields) => {
-                if (err) throw err;
-                    var eventid = results[0];
-                    console.log(eventid)
-                    var queryString1= `INSERT INTO tbl_requirementtype(int_eventID, var_reqname, var_reqdesc) VALUES(?,?,?);`  
-                    db.query(queryString1,  [eventid.int_eventID, req.body.reqname, req.body.reqdesc], (err, results, fields) => {
-                        if (err) throw err;
-                        return res.redirect('/admin/maintenance-nonwedrequirements');
-                    });
-                });            
+    adminRouter.get('/maintenance-service-requirements', (req, res)=>{
+        var queryString1 =`SELECT * FROM tbl_requirementtype 
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_requirementtype.int_eventID`
+        db.query(queryString1, (err, results1, fields) => {
+            var queryString2 =`SELECT * FROM tbl_services`
+            db.query(queryString2, (err, results2, fields) => {
+            if (err) console.log(err);       
+            return res.render('admin/views/maintenance/eventrequirements',{ requirements:results1,services:results2 });
             });
-
-            adminRouter.post('/maintenance-nonwedrequirements/delete', (req, res) => {
-                const queryString = `DELETE FROM tbl_requirementtype
-                WHERE int_reqtypeID= ${req.params.int_reqtypeID}`;
-                
-                db.query(queryString, (err, results, fields) => {        
-                    if (err) throw err;
-                    return res.redirect('/admin/maintenance-requirements');
-                    
-                });
-            });
-
-            adminRouter.post('/maintenance-nonwedrequirements/edit', (req, res) => {
-                var queryString= `select int_eventID from tbl_services where var_eventname = ?`
-                db.query(queryString,  [req.body.eventname], (err, results, fields) => {
-                    if (err) throw err;
-                        var eventid = results[0];
-                        console.log(eventid);
-                        const queryString1 = `UPDATE tbl_requirementtype SET int_eventID=?, var_reqname =?, var_reqdesc= ?
-                        WHERE int_reqtypeID= ${req.params.int_reqtypeID}`;
-                    
-                        db.query(queryString1,[eventid.int_eventID, req.body.reqname, req.body.reqdesc], (err, results, fields) => {        
-                            if (err) throw err;
-                            return res.redirect('/admin/maintenance-requirements');
-                        });    
-                });
-            });
-            
-        
-    //wedding requirements
-        adminRouter.get('/maintenance-wedrequirements', (req, res)=>{
-            var queryString5 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage") AND char_reqtype = "Civil"`
-                db.query(queryString5, (err, results, fields) => {
-                    if (err) console.log(err); 
-                    var civils = results;
-                    var queryString6 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage") AND char_reqtype = "Church"`
-                        db.query(queryString6, (err, results, fields) => {
-                            if (err) console.log(err); 
-                            var churches = results;
-                            var queryString7 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage") AND char_reqtype = "Chancery"`
-                            db.query(queryString7, (err, results, fields) => {
-                                if (err) console.log(err); 
-                                var chanceries = results;
-                return res.render('admin/views/maintenance/wedrequirements',{ civils : civils, churches: churches, chanceries: chanceries});
-            }); 
-            });     
         });     
-        });
-
-        adminRouter.post('/maintenance-wedrequirements/add', (req, res) => {
-            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
-            db.query(queryString, ["Marriage"], (err, results, fields) => {
-                if (err) throw err;
-                    var eventid = results[0];
-                    console.log(eventid)
-                    var queryString1= `INSERT INTO tbl_requirementtype(int_eventID, var_reqname, var_reqdesc, char_reqmode, var_case, char_reqtype) VALUES(?,?,?,?,?,?);`  
-                    db.query(queryString1,  [eventid.int_eventID, req.body.reqname, req.body.reqdesc, req.body.reqmode, req.body.case,  req.body.reqtype ], (err, results, fields) => {
-                        if (err) throw err;
-                        return res.redirect('/admin/maintenance-wedrequirements');
-                    });
-                });            
-        });
-
-        adminRouter.post('/maintenance-wedrequirements/delete', (req, res) => {
-            const queryString = `DELETE FROM tbl_requirementtype
-            WHERE int_reqtypeID= ?`;
+    });
+    adminRouter.post('/maintenance-service-requirements/add', (req, res) => {
+        var queryString=`INSERT INTO tbl_requirementtype(var_reqname,var_reqdesc,char_reqmode,char_reqtype,int_eventID) 
+        VALUES(?,?,?,?,?)`  
+            db.query(queryString,[req.body.reqname,req.body.reqdesc,req.body.reqmode,req.body.reqtype,req.body.id], (err, results, fields) => {
+                if (err) console.log(err);
+                    return res.redirect('/admin/maintenance-service-requirements');
+            });            
+    });
+    adminRouter.post('/maintenance-service-requirements/delete', (req, res) => {
+        const queryString = `DELETE FROM tbl_requirementtype
+        WHERE int_reqtypeID= ?`;
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-service-requirements');
             
-            db.query(queryString,[req.body.id1], (err, results, fields) => {        
-                if (err) throw err;
-                return res.redirect('/admin/maintenance-wedrequirements');
-                
+        });
+    });
+    adminRouter.post('/maintenance-service-requirements/query', (req, res) => {
+        const queryString1 = `SELECT tbl_requirementtype.*,tbl_services.var_eventname FROM tbl_requirementtype 
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_requirementtype.int_eventID
+        WHERE int_reqtypeID = ?`;
+        db.query(queryString1,[req.body.id], (err, results1, fields) => {
+            const queryString2 = `SELECT int_eventID,var_eventname from tbl_services`;
+        db.query(queryString2, (err, results2, fields) => {        
+            if (err) throw err;
+            res.send({requirementtype:results1[0],services:results2})
+            console.log(results1[0])
+            console.log(results2)
             });
         });
-        
-        adminRouter.post('/maintenance-wedrequirements/query', (req, res) => {
+    });
 
-            const queryString = `select * from tbl_requirementtype WHERE int_reqtypeID = ?`;
-            db.query(queryString,[req.body.id2], (err, results, fields) => {        
+    adminRouter.post('/maintenance-services-requirements/edit', (req, res) => {
+        const queryString = `UPDATE tbl_requirementtype SET var_reqname =?, var_reqdesc= ?, char_reqmode=?,char_reqtype=?,int_eventID=?
+        WHERE int_reqtypeID= ?`;
+        db.query(queryString,[req.body.reqname, req.body.reqdesc,req.body.reqmode,req.body.reqtype,req.body.eventID,req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-facilities');
+            
+        });
+    });
+    // Documents Requirements
+    adminRouter.get('/maintenance-document-requirements', (req, res)=>{
+            var queryString =`SELECT * FROM tbl_docureqtype`
+            db.query(queryString, (err, results, fields) => {
+            if (err) console.log(err);       
+            return res.render('admin/views/maintenance/docurequirements',{requirements:results});
+            });
+    });
+    adminRouter.post('/maintenance-document-requirements/add', (req, res) => {
+        var queryString=`INSERT INTO tbl_docureqtype(var_reqname,var_reqdesc) 
+        VALUES(?,?)`  
+            db.query(queryString,[req.body.reqname,req.body.reqdesc], (err, results, fields) => {
+                if (err) console.log(err);
+                    return res.redirect('/admin/maintenance-document-requirements');
+            });            
+    });
+    adminRouter.post('/maintenance-document-requirements/delete', (req, res) => {
+        const queryString = `DELETE FROM tbl_docureqtype
+        WHERE int_docureqtypeID= ?`;
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-document-requirements');
+            
+        });
+    });
+    adminRouter.post('/maintenance-document -requirements/query', (req, res) => {
+        const queryString = `SELECT * from tbl_docureqtype
+        WHERE int_docureqtypeID = ?`;
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
             if (err) throw err;
             res.send(results[0])
-            console.log(results[0])
+            console.log(results)
             });
+    });
+    adminRouter.post('/maintenance-services-requirements/edit', (req, res) => {
+        const queryString = `UPDATE tbl_docureqtype SET var_reqname =?, var_reqdesc= ?
+        WHERE int_docureqtypeID= ?`;
+        db.query(queryString,[req.body.reqname, req.body.reqdesc,req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-document-requirements');
+            
         });
-        
-        adminRouter.post('/maintenance-wedrequirements/edit', (req, res) => {
-            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
-            db.query(queryString,  [req.body.eventname], (err, results, fields) => {
-                if (err) throw err;
-                    var eventid = results[0];
-                    console.log(eventid);
-                    const queryString1 = `UPDATE tbl_requirementtype SET int_eventID=?, var_reqname =?, var_reqdesc= ?
-                    WHERE int_reqtypeID=?`;
-                
-                    db.query(queryString1,[eventid.int_eventID, req.body.reqname, req.body.reqdesc,req.body.id1], (err, results, fields) => {        
-                        if (err) throw err;
-                        return res.redirect('/admin/maintenance-wedrequirements');
-                    });    
-            });
-        });
-
+    });
 //===============================================================================================//
 // T R A N S A C T I O N S //
 //===============================================================================================//

@@ -115,7 +115,7 @@ block main
 															option Aunt/Uncle
 											.col-md-6
 												.form-group
-													h6.label-control Contact number
+													h6.label-control Family's Contact number
 													input#datepicker.form-control(type='text' name='contactnumber')
 										.row
 											.col-md-6
@@ -170,10 +170,8 @@ block main
 															.form-group
 																h6.label-control Special Baptism Time
 																	select.selectpicker.form-control(type="text" name='desiredtime')
-																		option 10:00AM
-																		option 11:00AM
-																		option 1:00PM
-																		option 2:00PM
+																		each time in times
+																			option=time.time_availabletime
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
 									button.btn.btn-next(type='button') Next
