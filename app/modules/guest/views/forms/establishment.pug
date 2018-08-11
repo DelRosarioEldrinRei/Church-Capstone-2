@@ -1,5 +1,12 @@
 extends ../../../../templates/guests
 block main
+	style.
+		@media screen and (max-width: 576px) {
+			.col-md-4, .col-md-6, .col-md-9, .col-md-3 {
+				padding-left: 0;
+				padding-right: 0;
+			}
+		}
 	#headers
 		#header-style-1
 			.container
@@ -14,88 +21,88 @@ block main
 							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
 							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
 		#raised-section.main.main-raised
-		section.form-box
-			.container
-				.row
-					.col-md-12.form-wizard
-						// Form Wizard
-						form(role='form' action="/guest/establishment/form"   enctype="multipart/form-data" method="post")
-							h3 Sign Up Office Employee Account
-							p.mb-4 Fill all form field to go next step
-							// Form Step 1
-							each user in users
-								input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
-								.container
-									.row
-										.col-md-3.pr-0
-											.form-group.pt-2
-												h6.label-control Place where the will happen:
-												.ml-4
-													.custom-control.custom-radio.mt-2
-														input#ourhomeradio.custom-control-input(type='radio', name='establishment' value="ourhome" checked)
-														label.custom-control-label(for='ourhomeradio') 
-															h6 Regular
-													.custom-control.custom-radio
-														input#otherradio.custom-control-input(type='radio', name='establishment' value="other")
-														label.custom-control-label(for='otherradio') 
-															h6 Special
-										.col-md-9
-											#ourhome.form-group.pt-2
-												.row
-													.col-md-6
-															.form-group
-																h6.label-control Owner:
-																input.form-control(type='text' value=	`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
-															.form-group
-																h6.label-control House/Establishment Location:
-																input.form-control(value=`${user.var_useraddress}` rows="4" name='location')
-													.col-md-6
+			section.form-box
+				.container
+					.row
+						.col-md-12.form-wizard
+							// Form Wizard
+							form(role='form' action="/guest/establishment/form"   enctype="multipart/form-data" method="post")
+								h3 Sign Up Office Employee Account
+								p.mb-4 Fill all form field to go next step
+								fieldset
+									// Form Step 1
+									each user in users
+										input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+										.container
+											.row
+												.col-md-3.px-lg-3.px-md-0.px-sm-0
+													.form-group.pt-2
+														h6.label-control Place where the will happen:
+														.ml-4
+															.custom-control.custom-radio.mt-2
+																input#ourhomeradio.custom-control-input(type='radio', name='establishment' value="ourhome" checked)
+																label.custom-control-label(for='ourhomeradio') 
+																	h6 Regular
+															.custom-control.custom-radio
+																input#otherradio.custom-control-input(type='radio', name='establishment' value="other")
+																label.custom-control-label(for='otherradio') 
+																	h6 Special
+												.col-md-9.px-lg-3.px-md-3.px-sm-0
+													#ourhome.form-group.pt-2
+														.row
+															.col-md-6.px-lg-3.px-md-3.px-sm-0
+																	.form-group
+																		h6.label-control Owner:
+																		input.form-control(type='text' value=	`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
+																	.form-group
+																		h6.label-control House/Establishment Location:
+																		textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location1') #{user.var_useraddress}
+															.col-md-6.px-lg-3.px-md-3.px-sm-0
+																		.form-group
+																			h6.label-control Contact Number:
+																			input.form-control(type='text' value=`${user.var_usercontactnum}` name='contactnumber')
+																		.form-group
+																			h6.label-control Email:
+																			input.form-control.mb-2(type='Email' value=`${user.var_useremail}` name='email')
+																		.form-group
+																			h6.label-control Select Image:
+																			input(type='file', name='image' accept='image/*')
+													#other.form-group.pt-2
+														.row
+															.col-md-6.px-lg-3.px-md-3.px-sm-0
+																.form-group
+																	h6.label-control Owner:
+																	input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1')
+																.form-group
+																	h6.label-control House/Establishment Location:
+																	textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location1')
+															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																.form-group
 																	h6.label-control Contact Number:
-																	input.form-control(type='text' value=`${user.var_usercontactnum}` name='contactnumber')
+																	input.form-control(type='text' name='contactnumber1' placeholder="Ex. 09324252345")
 																.form-group
 																	h6.label-control Email:
-																	input.form-control.mb-2(type='Email' value=`${user.var_useremail}` name='email')
+																	input.form-control.mb-2(type='Email' name='email1' placeholder="mark242@gmail.com")
 																.form-group
 																	h6.label-control Select Image:
 																	input(type='file', name='image' accept='image/*')
-											#other.form-group.pt-2
-												.row
-													.col-md-6
-														.form-group
-															h6.label-control Owner:
-															input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1')
-														.form-group
-															h6.label-control House/Establishment Location:
-															textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location1')
-													.col-md-6
-														.form-group
-															h6.label-control Contact Number:
-															input.form-control(type='text' name='contactnumber1')
-														.form-group
-															h6.label-control Email:
-															input.form-control.mb-2(type='Email' name='email1')
-														.form-group
-															h6.label-control Select Image:
-															input(type='file', name='image' accept='image/*')
-							// Form Step 1
-							// Form Step 2
-							.container
-								.row.mt-3
-									.col-md-6
-										.form-group
-											h6.label-control Desired Date
-											input.datepicker.form-control(type='date' name='desireddate1')
-									.col-md-6
-										.form-group.mt-1
-											h6.label-control Desired Time
-											input.timepicker.form-control(type='text' name='desiredtime1')
-							.row
-								.col-md-12.my-5.text-center
-									.learn-more
-										button.btn.std-btn.btn-common#submit(type='submit') Submit
-										// Form Step 2
-									// Form Wizard
+									// Form Step 1
+									// Form Step 2
+									.row.mt-3
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.form-group
+												h6.label-control Desired Date
+												input.datepicker.form-control(type='date' name='desireddate1')
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.form-group.mt-1
+												h6.label-control Desired Time
+												input.timepicker.form-control(type='text' name='desiredtime1')
+									.row
+										.col-md-12.my-5.text-center
+											.learn-more
+												button.btn.std-btn.btn-common#submit(type='submit') Submit
+												// Form Step 2
+											// Form Wizard
 
 block addjs
 	script.

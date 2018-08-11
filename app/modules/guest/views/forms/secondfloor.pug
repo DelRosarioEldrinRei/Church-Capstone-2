@@ -1,15 +1,18 @@
-extends ../../../../templates/masterguests
+extends ../../../../templates/guests
 block main
-	.profile-page
-		//- Heading Page
-		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/Nave.jpeg');")
+	#headers
+		#header-style-1
 			.container
-				.row
-					.col-md-9.main-header__textbox
-						h1.font-italic Second Floor
-						a(href="/guest/facilities/secondfloor")
-							p.text-uppercase.card-desc
-								| Guidelines | Requirements
+				.header-caption
+					.row
+						.col-md-12.header-content
+							h3.header-title.animated.fadeInDown.invisible
+								span.text-primary Helium - 
+								| Bootstrap 4 UI Kit
+							h5.header-text.animated.fadeIn.invisible
+								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+							//- a.page-scroll.btn.btn-lg.btn-success.animated.fadeInUp.invisible(href="#") Explore
 		#raised-section.main.main-raised
 			.container
 				.row

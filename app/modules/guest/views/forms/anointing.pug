@@ -24,17 +24,17 @@ block main
 					input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 					h5.label-control Name of the Ill:
 					.row
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group.pt-0
 								input.form-control(type='text' placeholder="Last Name" name='lastname')
-						.col-md-4.p-lg-0
+						.col-md-4.p-lg-0.px-md-3.px-sm-0
 							.form-group.p-0
 								input.form-control(type='text' placeholder="First Name" name='firstname')
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group.pt-0
 								input.form-control(type='text' placeholder="Middle Name" name='middlename')
 					.row
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group.m-0
 								h5.label-control Gender
 							.custom-control.custom-radio
@@ -45,19 +45,20 @@ block main
 								input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
 								label.custom-control-label(for='customRadio2') 
 									label Female
-						.col-md-4.p-lg-0
+						.col-md-4.p-lg-0.px-md-3.px-sm-0
 							.form-group
 								h5.label-control Birthday
 								input.datepicker.form-control(type='date' name='birthday')
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group
 								h5.label-control Birthplace:
-								input.form-control(type='text' name='birthplace')
+								input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City")
 					.row
-						.col-md-4
+						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group
 								h5.label-control Relationship with the Sick:
 								select(type="text" name='relation')
+									option(selected="" value="" disabled) Choose...
 									option Spouse
 									option Parent
 									option Child
@@ -69,16 +70,16 @@ block main
 									option Friend
 						.col-md-8
 							.row
-								.col-md-6.p-lg-0
+								.col-md-6.p-lg-0.px-md-3.px-sm-0
 									.form-group
 										h5.label-control Desired Date
 										input.datepicker.form-control(type='date' name='desireddate1')
-								.col-md-6
+								.col-md-6.px-lg-3.px-md-0.px-sm-0
 									.form-group
 										h5.label-control Desired Time
 										input.timepicker.form-control(type='text' name='desiredtime1')
 					.row
-						.col-md-6
+						.col-md-6.px-lg-3.px-md-3.px-sm-0
 							.form-group
 								h5.label-control Place where the blessing will happen:
 								.ml-4
@@ -104,16 +105,16 @@ block main
 												span.check
 										#textarea2.form-group
 											textarea.form-control(placeholder="Please enter complete address" rows="3" name='othervenue')
-						.col-md-6
+						.col-md-6.px-lg-3.px-md-3.px-sm-0
 							.form-group
 								h6.label-control Select Image
 								input#datepicker(type='file' name='image')
 					.row
-						.col-md-6
+						.col-md-6.px-lg-3.px-md-3.px-sm-0
 							.form-group
 								h5(for='exampleFormControlTextarea1') Address:
-								textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='address')
-						.col-md-6
+								textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
+						.col-md-6.px-lg-3.px-md-3.px-sm-0
 							.form-group
 								h5(for='exampleFormControlTextarea1') Details:
 								textarea#exampleFormControlTextarea1.form-control(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)")
