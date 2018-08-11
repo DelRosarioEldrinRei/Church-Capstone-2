@@ -26,7 +26,7 @@
                 return res.render('guest/views/index',{ events : events });
             });
         });
-        guestRouter.use(authMiddleware.guestAuth)
+        
         guestRouter.get('/', (req, res)=>{
             var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' or var_eventname = 'Establishment Blessing' `
             db.query(queryString1, (err, results, fields) => {
@@ -411,6 +411,22 @@
     //==============================================================
     //E V E N T S  F O R M S                                      
     //==============================================================
+    function payment(eventid){
+        var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
+        db.query(paymentQuery,[eventid], (err, results, fields) => {
+            if (err) throw err;
+            var amount= results[0];
+            console.log(amount)
+            console.log(results)
+            var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
+            db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
+                if (err) throw err;
+                var paymentID= results;
+                return paymentID.insertId;
+            });        
+        });
+    }
+    //==============================================================
     // A N O I N T I N G
     //==============================================================
         guestRouter.get('/anointing/form', (req, res)=>{
@@ -421,19 +437,22 @@
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     console.log(results);
-                    req.session.user.eventID =results[0];
+                    var eventID = results[0];
+                    // var eventID = results[0];
                     console.log(req.session.user);
                     
                 var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                    db.query(queryString1, [req.body.userID, req.session.user.eventID.int_eventID], (err, results, fields) => {
+                    db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
                         if (err) throw err;
                         var eventinfoID= results;
                         if(req.body.venue == 'sameaddress') var venue= req.body.address;
                         if(req.body.venue == 'hospital') var venue= req.body.hospitalname;
                         if(req.body.venue == 'other') var venue= req.body.othervenue;
                         
-                        var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, char_feestatus, char_reqstatus) VALUES(?,?,?,?)`;        
-                        db.query(queryString2,[eventinfoID.insertId, "Pending", "Unpaid", "Incomplete"], (err, results, fields) => {
+                        // var paymentid= payment(eventID.int_eventID);
+                
+                        var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus) VALUES(?,?)`;        
+                        db.query(queryString2,[eventinfoID.insertId, "Pending"], (err, results, fields) => {
                             if (err) throw err;
                             
                             var desiredtime1= moment(req.body.desiredtime1, 'hh:mm A').format('HH:mm:ss');
@@ -445,8 +464,8 @@
                                     var path = '/img/req/'+req.file.filename;
                                     var nowDate = new Date(); 
                                     var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
-                                    var queryString7 = `INSERT INTO tbl_requirements(int_eventinfoID,var_reqpath,date_reqreceived,int_reqtypeID) VALUES (?,?,?,?);`
-                                    db.query(queryString7,[eventinfoID.insertId,path,date,1],(err, results, fields)=>{    
+                                    var queryString7 = `INSERT INTO tbl_requirements(var_reqpath,date_reqreceived,int_reqtypeID, var_reqstatus) VALUES (?,?,?,?);`
+                                    db.query(queryString7,[path,date,1, 'Unchecked'],(err, results, fields)=>{    
                                         if (err) throw err;
                                         return res.redirect(`/guest`);
                                     });
@@ -482,14 +501,13 @@
         
         if (req.body.baptismtype == 'Regular'){
             var desireddate= moment(req.body.regdesireddate, 'YYYY/MM/DD').format('YYYY-MM-DD');
-            var desiredtime="11:00:00"
-            // var desiredtime= moment(req.body.desiredtime).format('HH:mm:ss');
-            //KUKUNIN SA UTILITIES YUNG ORAS
+            var defaulttimeQuery =`select time_defaulttime from tbl_utilitiesdefaulttime where int_eventID= (select int_eventID from tbl_services where var_eventname = 'Baptism')`
+            //var desiredtime="11:00:00"
             var queryString= `select int_eventID from tbl_services where var_eventname="Baptism";`  
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     // console.log(results);
-                    req.session.user.eventID =results[0];
+                    var eventID = results[0];
                     // console.log(req.session.user);
                     queries();
                 });
@@ -502,7 +520,7 @@
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     // console.log(results);
-                    req.session.user.eventID =results[0];
+                    var eventID = results[0];
                     // console.log(req.session.user);
                     queries();
                 });
@@ -512,7 +530,7 @@
                 console.log(desireddate)
                 console.log(desiredtime)
                 var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                    db.query(queryString1, [req.body.userID, req.session.user.eventID.int_eventID], (err, results, fields) => {
+                    db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
                         if (err) throw err;
                         var eventinfoID= results;       
                         var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID) VALUES(?,?)`;        
@@ -575,7 +593,7 @@
                     db.query(queryString, (err, results, fields) => {
                         if (err) throw err;
                         console.log(results);
-                        req.session.user.eventID =results[0];
+                        var eventID = results[0];
                         console.log(req.session.user);
                         queries();
                     });
@@ -588,7 +606,7 @@
                         db.query(queryString, (err, results, fields) => {
                             if (err) throw err;
                             console.log(results);
-                            req.session.user.eventID =results[0];
+                            var eventID = results[0];
                             console.log(req.session.user);
                             queries();
                         });
@@ -597,7 +615,7 @@
     
             function queries(){
                 var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                    db.query(queryString1, [req.body.userID, req.session.user.eventID.int_eventID], (err, results, fields) => {
+                    db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
                         if (err) throw err;
                         var eventinfoID= results;
                         var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, char_feestatus, char_reqstatus) VALUES(?,?,?,?)`;        
@@ -664,11 +682,11 @@
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     console.log(results);
-                    req.session.user.eventID =results[0];
+                    var eventID = results[0];
                     console.log(req.session.user);
                     
                 var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                    db.query(queryString1, [req.body.userID, req.session.user.eventID.int_eventID], (err, results, fields) => {
+                    db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
                         if (err) throw err;
                         var eventinfoID= results;
                         
@@ -715,7 +733,7 @@
                 var queryString= `select int_eventID from tbl_services where var_eventname="Funeral Service";`  
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
-                    req.session.user.eventID =results[0];
+                    var eventID = results[0];
                     queries(venue);
                 });
             }
@@ -725,7 +743,7 @@
                 var queryString5= `select int_eventID from tbl_services where var_eventname="Funeral Mass";`  
                 db.query(queryString5, (err, results, fields) => {
                     if (err) throw err;
-                    req.session.user.eventID =results[0];
+                    var eventID = results[0];
                     queries(venue);
                 });    
             }
@@ -734,7 +752,7 @@
                 var queryString6= `select int_eventID from tbl_services where var_eventname="Funeral Service";`  
                 db.query(queryString6, (err, results, fields) => {
                     if (err) throw err;
-                    req.session.user.eventID =results[0];
+                    var eventID = results[0];
                     queries(venue);
                 });
             }
@@ -743,7 +761,7 @@
                 req.body.image =req.file.filename
                 console.log(req.body.image)
                 var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                    db.query(queryString1, [req.body.userID, req.session.user.eventID.int_eventID], (err, results, fields) => {
+                    db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
                         if (err) throw err;
                         var eventinfoID= results;
                         var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, char_feestatus, char_reqstatus) VALUES(?,?,?,?)`;        
@@ -789,11 +807,11 @@
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     console.log(results);
-                    req.session.user.eventID =results[0];
+                    var eventID = results[0];
                     console.log(req.session.user);
                     
                 var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                    db.query(queryString1, [req.body.userID, req.session.user.eventID.int_eventID], (err, results, fields) => {
+                    db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
                         if (err) throw err;
                         var eventinfoID= results;
                         var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, char_feestatus, char_reqstatus) VALUES(?,?,?,?)`;        

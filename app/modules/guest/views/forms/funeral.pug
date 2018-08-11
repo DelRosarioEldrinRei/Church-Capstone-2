@@ -19,8 +19,8 @@ block main
 				.row
 					.col-md-12.form-wizard
 						// Form Wizard
-						h3 Sign Up Office Employee Account
-						p.mb-2 Fill all form field to go next step
+						h3 Funeral Blessing Form
+						p.mb-2 Fill all form fields
 				form(action="/guest/funeral/form" enctype="multipart/form-data" method="post")
 					input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 					h6.label-control Name of the deceased:
@@ -62,25 +62,28 @@ block main
 						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group
 								h6.label-control Relationship with the Deceased
-									br
-									select.mt-2(type="text" name='relation')
-										option Spouse
-										option Parent
-										option Child
-										option Grandparent
-										option Grandchild
-										option Aunt/Uncle
-										option Nephew/Niece
-										option BF/GF
-										option Friend
-						.col-md-4.p-lg-0.px-md-3.px-sm-0
+								select(type="text" name='relation')
+									option Spouse
+									option Parent
+									option Child
+									option Grandparent
+									option Grandchild
+									option Aunt/Uncle
+									option Nephew/Niece
+									option BF/GF
+									option Friend
+						.col-md-8.pl-lg-0.px-md-0.pl-md-3.px-sm-0
 							.form-group
-								h6.label-control Desired Date
-								input.datepicker.FBlessingDesiredDate.form-control(type='date' name='desireddate')
-						.col-md-4.px-lg-3.px-md-0.px-sm-0
-							.form-group
-								h6.label-control Desired Time
-								input.timepicker.form-control(type='text' name='desiredtime')
+								h6(for='exampleFormControlTextarea1') Address:
+								textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
+						//- .col-md-4.p-lg-0.px-md-3.px-sm-0
+						//- 	.form-group
+						//- 		h6.label-control Desired Date
+						//- 		input.datepicker.FBlessingDesiredDate.form-control(type='date' name='desireddate')
+						//- .col-md-4.px-lg-3.px-md-0.px-sm-0
+						//- 	.form-group
+						//- 		h6.label-control Desired Time
+						//- 		input.timepicker.form-control(type='text' name='desiredtime')
 					.row
 						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group
@@ -106,10 +109,27 @@ block main
 												span.check
 						.col-md-8.px-lg-3.px-md-3.px-sm-0
 							.row
-								.col-md-10
+								.col-md-12.px-lg-0.px-md-0.px-sm-0
 									#textarea2.form-group
-										h6.label-control Enter Address of Other
-										textarea.form-control(placeholder="Please Enter Complete Address" rows="3" name='othervenue')
+										h6.label-control Enter Complete Address
+										textarea.form-control(placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" rows="2" name='othervenue')
+							.row
+								.col-md-6.p-lg-0.px-md-3.px-sm-0
+									.form-group
+										h6.label-control Desired Date
+										input.datepicker.FBlessingDesiredDate.form-control(type='date' name='desireddate')
+								.col-md-6.pl-lg-3.px-md-0.px-sm-0
+									.form-group
+										h6.label-control Desired Time
+										input.timepicker.form-control(type='text' name='desiredtime')
+								//- .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-3
+								//- 	h6.label-control Birth Certificate
+								//- 	input(type='file', name='birthCertificate' accept='image/*' required)
+								//- .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-3.mb-2
+								//- 	h6.label-control Death Certificate
+								//- 	input(type='file', name='deathCertificate' accept='image/*' required)
+					.row
+						.col-lg-6.col-md-12.px-lg-3.px-md-0.px-sm-0.mb-2
 							.row
 								.col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
 									h6.label-control Birth Certificate
@@ -117,12 +137,7 @@ block main
 								.col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
 									h6.label-control Death Certificate
 									input(type='file', name='deathCertificate' accept='image/*' required)
-					.row
-						.col-md-6.px-lg-3.px-md-3.px-sm-0
-							.form-group
-								h6(for='exampleFormControlTextarea1') Address:
-								textarea#exampleFormControlTextarea1.form-control(rows='3' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
-						.col-md-6.px-lg-3.px-md-3.px-sm-0
+						.col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
 							.form-group
 								h6.label-control Cause of Death:
 								textarea#exampleFormControlTextarea2.form-control(rows='3' name='details' placeholder="Please enter the cause of death")

@@ -130,17 +130,24 @@ block main
 										.row
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
-													h6(for='exampleFormControlTextarea1') Parent's Marriage Address:
+													h6(for='exampleFormControlTextarea1') Parents' Marriage Address:
 													textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Family address:
 													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City")
 										.row
-											.col-md-6
-											.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
-													h6.label-control Select Image
+													h6.label-control Birth Certificate
+													input#datepicker(type='file' name='image')
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Baptismal Certificate
+													input#datepicker(type='file' name='image')
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Valid ID
 													input#datepicker(type='file' name='image')
 										.learn-more.pull-right
 											button.btn.btn-next(type='button') Next
