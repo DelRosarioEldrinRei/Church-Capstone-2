@@ -113,6 +113,27 @@ block prepend main
 				.col-md-12.text-center
 					.learn-more
 						a.btn.std-btn.btn-common(href='/guest/allservices') View All
+	section#document
+		.container
+			.row
+				.col-md-12
+					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Document Request
+			.row
+				.col-md-4.col-sm-6.col-xs-12
+					.service-box
+						.service-icon
+							i.fa.fa-cogs
+						.service-content
+							h4
+								a(href='#' name='eventname')
+							p
+								| #{event.var_eventdesc.substring(0, 100)}...
+								.learn-more
+									button.btn.std-btn.btn-common(type='button', data-toggle='modal', data-target='#exampleModal') Inquire
+									
+			.col-md-12.text-center
+				.learn-more
+					a.btn.std-btn.btn-common(href='/guest/allservices') View All
 	section#portfolio.section-padding
 		.container
 			.row
