@@ -21,9 +21,8 @@ indexRouter.post('/query', (req, res) => {
   db.query(queryString2,[req.body.id], (err, results2, fields) => {
     if (err) console.log(err);
     res.send({firstQuery:results1[0],secondQuery:results2});
-  });
-  });
-
+    });
+  })
 })
 
 indexRouter.get('/schedule', (req, res) => {

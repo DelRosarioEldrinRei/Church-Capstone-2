@@ -946,8 +946,8 @@
                                 var path = '/img/req/'+req.file.filename;
                                 var nowDate = new Date(); 
                                 var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
-                                var queryString7 = `INSERT INTO tbl_requirements(int_requestID,var_reqpath,date_reqreceived,int_reqtypeID,var_reqstatus) VALUES (?,?,?,?,?);`
-                                db.query(queryString7,[requestID,path,date,5,"Pending"],(err, results, fields)=>{     
+                                var queryString7 = `INSERT INTO tbl_requirementsdocument(int_requestID,var_reqpath,date_reqreceived,int_docureqtypeID,bool_reqstatus) VALUES (?,?,?,?,?);`
+                                db.query(queryString7,[requestID,path,date,1,"Pending"],(err, results, fields)=>{     
                                     if (err) throw err;
                                         return res.redirect(`/guest`);
                                     })
