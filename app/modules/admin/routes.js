@@ -329,7 +329,7 @@ adminRouter.use(authMiddleware.adminAuth)
             
         });
     });
-    adminRouter.post('/maintenance-document -requirements/query', (req, res) => {
+    adminRouter.post('/maintenance-document-requirements/query', (req, res) => {
         const queryString = `SELECT * from tbl_docureqtype
         WHERE int_docureqtypeID = ?`;
         db.query(queryString,[req.body.id], (err, results, fields) => {        
@@ -338,15 +338,76 @@ adminRouter.use(authMiddleware.adminAuth)
             console.log(results)
             });
     });
-    adminRouter.post('/maintenance-services-requirements/edit', (req, res) => {
+    adminRouter.post('/maintenance-document-requirements/edit', (req, res) => {
         const queryString = `UPDATE tbl_docureqtype SET var_reqname =?, var_reqdesc= ?
         WHERE int_docureqtypeID= ?`;
-        db.query(queryString,[req.body.reqname, req.body.reqdesc,req.body.id], (err, results, fields) => {        
+        db.query(queryString,[req.body.reqname,req.body.reqdesc,req.body.id], (err, results, fields) => {        
             if (err) throw err;
             return res.redirect('/admin/maintenance-document-requirements');
             
         });
     });
+    // Facility Reservation Requirements
+    adminRouter.get('/maintenance-facility-requirements', (req, res)=>{
+        var queryString =`SELECT * FROM tbl_facilityreqtype`
+        db.query(queryString, (err, results, fields) => {
+        if (err) console.log(err);       
+        return res.render('admin/views/maintenance/facilityrequirements',{requirements:results});
+        });
+    });
+    adminRouter.post('/maintenance-facility-requirements/add', (req, res) => {
+        var queryString=`INSERT INTO tbl_facilityreqtype(var_reqname,var_reqdesc) 
+        VALUES(?,?)`  
+            db.query(queryString,[req.body.reqname,req.body.reqdesc], (err, results, fields) => {
+                if (err) console.log(err);
+                    return res.redirect('/admin/maintenance-facility-requirements');
+            }); 
+        });
+    adminRouter.post('/maintenance-facility-requirements/delete', (req, res) => {
+        const queryString = `DELETE FROM tbl_facilityreqtype
+        WHERE int_facilityreqtypeID= ?`;
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-facility-requirements');
+            
+        });
+    });
+    adminRouter.post('/maintenance-facility-requirements/query', (req, res) => {
+        const queryString = `SELECT * from tbl_facilityreqtype
+        WHERE int_facilityreqtypeID = ?`;
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            res.send(results[0])
+            console.log(results)
+            });
+    });
+    adminRouter.post('/maintenance-facility-requirements/edit', (req, res) => {
+        const queryString = `UPDATE tbl_facilityreqtype SET var_reqname =?, var_reqdesc= ?
+        WHERE int_facilityreqtypeID= ?`;
+        db.query(queryString,[req.body.reqname,req.body.reqdesc,req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-facility-requirements');    
+        });
+    });
+//=======================================================
+// ITEM MONITORING
+//=======================================================
+
+    adminRouter.get('/maintenance-items', (req, res)=>{
+        var queryString =`SELECT * FROM tbl_items`
+        db.query(queryString, (err, results, fields) => {
+        if (err) console.log(err);
+        return res.render('admin/views/maintenance/item',{items:results});
+        });
+    });
+    adminRouter.post('/maintenance-items/add', (req, res) => {
+        var queryString=`INSERT INTO tbl_items(var_reqname,var_reqdesc) 
+        VALUES(?,?)`  
+            db.query(queryString,[req.body.reqname,req.body.reqdesc], (err, results, fields) => {
+                if (err) console.log(err);
+                    return res.redirect('/admin/maintenance-facility-requirements');
+            }); 
+        });
 //===============================================================================================//
 // T R A N S A C T I O N S //
 //===============================================================================================//
