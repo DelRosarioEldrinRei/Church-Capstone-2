@@ -9,6 +9,10 @@ block main
 			.extra-small-balance {
 				padding-left: 1rem;
 			}
+
+			.form-wizard-step {
+				padding-bottom: 10px !important;
+			}
 		}
 	#headers
 		#header-style-1
@@ -118,20 +122,20 @@ block main
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Birthplace:
-													input.form-control(type='text' name='birthplace')
+													input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City")
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Nationality:
-													input.form-control(type='text' name='gnationality')
+													input.form-control(type='text' name='gnationality' placeholder="Ex. Filipino")
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
-													h6.label-control Father's name:
-													input.form-control(type='text' name='gfathername')
+													h6.label-control Father's Full Name:
+													input.form-control(type='text' name='gfathername' placeholder="Ex. Juan Dela Cruz")
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
-													h6.label-control Father's birthplace:
-													input.form-control(type='text' name='gfatherbplace')
+													h6.label-control Father's Birthplace:
+													input.form-control(type='text' name='gfatherbplace' placeholder="Ex. Caloocan, Quezon City")
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.text-lg-center.text-sm-left
 													h6.label-control Father's Religion
@@ -143,12 +147,12 @@ block main
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
-													h6.label-control Mother's name:
-													input.form-control(type='text' name='gmothername')
+													h6.label-control Mother's Full Name:
+													input.form-control(type='text' name='gmothername' placeholder="Ex. Maria Dela Cruz")
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
-													h6.label-control Mother's birthplace:
-													input.form-control(type='text' name='gmotherbplace')
+													h6.label-control Mother's Birthplace:
+													input.form-control(type='text' name='gmotherbplace' placeholder="Ex. San Isidro, Quezon City")
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.text-lg-center.text-sm-left
 													h6.label-control Mother's Religion
@@ -179,16 +183,16 @@ block main
 											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Address:
-													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address')
+													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
 										.row
 											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
-													h6.label-control Current parish:
-													input.form-control(type='text' name='gcurrentparish')
+													h6.label-control Current Parish:
+													input.form-control(type='text' name='gcurrentparish' placeholder=" Ex. Ina ng Lupang Pangako Parish")
 											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
 													h6.label-control Occupation:
-													input.form-control(type='text' name='goccupation')
+													input.form-control(type='text' name='goccupation' placeholder="Ex. Driver")
 										.row
 											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
@@ -211,14 +215,14 @@ block main
 														.textarea1.form-group
 															.form-group
 																label.label-control Parish where you were baptized:
-																input.form-control(type='text' name='gbapplace')
+																input.form-control(type='text' name='gbapplace' placeholder=" Ex. Ina ng Lupang Pangako Parish")
 															.form-group
 																label.label-control Date when you were baptized:
 																input.datepicker2.form-control(type='date' name='gbapdate')
 																
 													.form-check
 														label.form-check-label
-															input.radioup.form-check-input(type="radio" name="gbaptized" value="0" )
+															input.radioup.form-check-input(type="radio" name="gbaptized" value="0")
 															| No
 															span.circle
 																span.check
@@ -233,10 +237,10 @@ block main
 																span.check
 														.textarea2.form-group
 															.form-group
-																label.label-control Parish where you were confirmed:
-																input.form-control(type='text' name='gconplace')
+																label.label-control Parish Where You Were Confirmed:
+																input.form-control(type='text' name='gconplace' placeholder=" Ex. Ina ng Lupang Pangako Parish")
 															.form-group
-																label.label-control Date when you were confirmed:
+																label.label-control Date When You Were Confirmed:
 																input.datepicker2.form-control(type='date' name='gcondate')
 															
 													.form-check
@@ -246,7 +250,7 @@ block main
 															span.circle
 																span.check
 								.learn-more.pull-right
-									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									button.btn.btn-next(type='button') Next
 							// Form Step 2
 							// Form Step 3
@@ -276,20 +280,20 @@ block main
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Birthplace:
-													input.form-control(type='text' name='bbirthplace')
+													input.form-control(type='text' name='bbirthplace' placeholder="Ex. Payatas, Quezon City")
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Nationality:
-													input.form-control(type='text' name='bnationality')
+													input.form-control(type='text' name='bnationality' placeholder="Ex. Filipino")
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
-													h6.label-control Father's name:
-													input.form-control(type='text' name='bfathername')
+													h6.label-control Father's Full Name:
+													input.form-control(type='text' name='bfathername' placeholder="Ex. Juan Dela Cruz")
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
-													h6.label-control Father's birthplace:
-													input.form-control(type='text' name='bfatherbplace')
+													h6.label-control Father's Birthplace:
+													input.form-control(type='text' name='bfatherbplace' placeholder="Ex. Caloocan, Quezon City")
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.text-lg-center.text-sm-left
 													h6.label-control Father's Religion
@@ -301,12 +305,12 @@ block main
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
-													h6.label-control Mother's name:
-													input.form-control(type='text' name='bmothername')
+													h6.label-control Mother's Full Name:
+													input.form-control(type='text' name='bmothername' placeholder="Ex. Maria Dela Cruz")
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
-													h6.label-control Mother's birthplace:
-													input.form-control(type='text' name='bmotherbplace')
+													h6.label-control Mother's Birthplace:
+													input.form-control(type='text' name='bmotherbplace' placeholder="Ex. San Isidro, Quezon City")
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.text-lg-center.text-sm-left
 													h6.label-control Mother's Religion
@@ -337,11 +341,11 @@ block main
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Address:
-													textarea#exampleFormControlTextarea1.form-control(rows='2' name='bddress')
+													textarea#exampleFormControlTextarea1.form-control(rows='2' name='bddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.m-0
-													h6.label-control Are you 5months or above pregnant?
+													h6.label-control Are You 5months or Above Pregnant?
 													.form-check.ml-3
 														label.form-check-label
 															input.form-check-input(type="radio" name="boolpregnant" id="exampleRadios2" value="1")
@@ -356,12 +360,12 @@ block main
 																span.check
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
-													h6.label-control Current parish:
-													input.form-control(type='text' name='bcurrentparish')
+													h6.label-control Current Parish:
+													input.form-control(type='text' name='bcurrentparish' placeholder="Ex. Ina ng Lupang Pangako Parish")
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Occupation:
-													input.form-control(type='text' name='boccupation')
+													input.form-control(type='text' name='boccupation' placeholder="Ex. Housewife")
 										.row
 											.col-md-6.px-lg-3.pr-md-3.px-sm-0
 												.form-group
@@ -384,10 +388,10 @@ block main
 																	span.check
 															.textarea1.form-group
 																.form-group
-																	label.label-control Parish where you were baptized:
+																	label.label-control Parish Where You Were Baptized:
 																	input.form-control(type='text' name='bbapplace')
 																.form-group
-																	label.label-control Date when you were baptized:
+																	label.label-control Date When You Were Baptized:
 																	input.datepicker2.form-control(type='date' name='bbapdate')
 																
 														.form-check
@@ -408,10 +412,10 @@ block main
 																	span.check
 															.textarea2.form-group
 																.form-group
-																	label.label-control Parish where you were confirmed:
-																	input.form-control(type='text' name='bconplace')
+																	label.label-control Parish where you were Confirmed:
+																	input.form-control(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
 																.form-group
-																	label.label-control Date when you were confirmed:
+																	label.label-control Date when you were Confirmed:
 																	input.datepicker2.form-control(type='date' name='bcondate')
 																
 														.form-check
@@ -421,7 +425,7 @@ block main
 																span.circle
 																	span.check
 								.learn-more.pull-right
-									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									button.btn.btn-next(type='button') Next
 							// Form Step 3
 							// Form Step 4
@@ -447,7 +451,7 @@ block main
 														span.circle
 															span.check
 											.form-group.mt-3
-												h6.label-control Were the couple married before?
+												h6.label-control Were the Couple Married Before?
 												.form-check
 													h6.form-check-label
 														input.exampleRadios3.form-check-input(type="radio" name="boolmarried" value="1")
@@ -464,14 +468,14 @@ block main
 										.col-lg-6.px-lg-3.px-md-0.px-sm-0
 											.textarea3.form-group
 												.form-group
-													h6.label-control Previous wedding date
+													h6.label-control Previous Wedding Date
 													input.datepicker.form-control(type='date' name='cprevweddingdate')
 												.form-group
-													h6.label-control Previous wedding place/parish
+													h6.label-control Previous Wedding Place/Parish
 													input.datepicker.form-control(type='text' name='cprevweddingplace')
 								br
 								.learn-more.pull-right
-									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									button.btn.btn-next(type='button') Next
 							// Form Step 4
 							// Form Step 5
@@ -487,20 +491,13 @@ block main
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group.m-0
 												input.form-control.balance(type='text' name='sponsorname')
-									button#addAdditionalSponsor.btn.btn-success.btn-fab.btn-fab-mini.btn-round.ml-2(type="button")
-										i.fa.fa-plus
+										button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button")
+											i.fa.fa-plus
+									h6.label-control Secondary Sponsors
 									.row#additionalSponsor
-										.col-md-6.px-lg-3.px-md-3.px-sm-0
-											.form-group.m-0
-												h6.label-control Additional Sponsors
-												input.form-control(type='text' name='sponsorname')
-										.col-md-6.px-lg-3.px-md-3.px-sm-0
-											.form-group.m-0
-												h6.label-control.invisible Additional Sponsors
-												input.form-control.balance(type='text' name='sponsorname')
 								br
 								.learn-more.pull-right
-									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Previous
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									button.btn(type='button' data-toggle='modal', data-target='#exampleModal') Proceed
 							#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' data-controls-modal="exampleModal")
 								.modal-dialog.modal-lg(role='document')
@@ -516,6 +513,7 @@ block main
 											br
 											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
 											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+											br
 											br
 											h5 Mode of Payment
 											select
@@ -567,7 +565,13 @@ block addjs
 		});
 
 		$("#addAdditionalSponsor").click(function(event){
-			var item2 = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
+			var item2 = `
+				<div class="col-md-6 px-lg-3 px-md-3 px-sm-0 mt-3">
+					<div class="input-group m-0">
+						<input class="form-control" type="text" name="sponsorname" placeholder="Enter Full Name"/>
+						<div class="input-group-prepend"><span class="btnDelete p-1 input-group-text rounded"><i class="fa fa-trash"></i></span></div>
+					</div>
+				</div>`
 			$(item2).hide().appendTo("#additionalSponsor").fadeIn(500);
 		});
 

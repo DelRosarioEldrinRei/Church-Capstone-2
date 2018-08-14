@@ -15,6 +15,34 @@
     })
     var upload = multer({ storage: storage})
     //===============================================================================================//
+    // F U N C T I O N S
+    //===============================================================================================//
+    function payment(eventid){
+        var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
+        db.query(paymentQuery,[eventid], (err, results, fields) => {
+            if (err) throw err;
+            var amount= results[0];
+            console.log(amount)
+            console.log(results)
+            var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
+            db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
+                if (err) throw err;
+                var paymentID= results;
+                return paymentID.insertId;
+            });        
+        });
+    }
+    function sponsors(eventinfoID){
+        var i;
+        for(i=0; i < req.body.sponsorname.length; i++){
+            var queryString5= `INSERT INTO tbl_sponsors(int_eventinfoID, var_sponsorname) VALUES (?,?);`
+            db.query(queryString5, [eventinfoID, req.body.sponsorname[i]], (err, results, fields) => {
+                if(err) throw err;
+            });
+        }
+        
+    }
+    //===============================================================================================//
     // I N D E X //
     //===============================================================================================//
         guestRouter.use(authMiddleware.guestAuth)
@@ -100,7 +128,6 @@
     //===============================================================================================//
     // R E S E R V A T I O N //
     //===============================================================================================//
-        
         guestRouter.get('/reservation', (req, res)=>{
             var queryString1 =`SELECT * FROM tbl_eventinfo 
             JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
@@ -113,7 +140,6 @@
             });
     
         });
-    
         guestRouter.get('/reservation/:int_eventinfoID', (req, res)=>{
             var queryString1 =`SELECT * FROM tbl_eventinfo 
             JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
@@ -221,7 +247,6 @@
             });
     
         });
-    
     // ---------------------------------------------------------------------------------------------------------
     // E  D  I  T    D  E  T  A  I  L  S 
     // ---------------------------------------------------------------------------------------------------------
@@ -353,7 +378,6 @@
                 }
             });
         });
-    
         guestRouter.post('/reservation/:int_eventinfoID/edit', (req, res) => {
     
             if(req.body.eventname == 'Anointing of the sick'){
@@ -393,11 +417,9 @@
                 });
             }
         });
-    
     //===============================================================================================//
     // E V E N T S //
     //===============================================================================================//
-    
         guestRouter.get('/events', (req, res)=>{
             res.render('guest/views/events/index')
         });
@@ -411,21 +433,7 @@
     //==============================================================
     //E V E N T S  F O R M S                                      
     //==============================================================
-    function payment(eventid){
-        var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
-        db.query(paymentQuery,[eventid], (err, results, fields) => {
-            if (err) throw err;
-            var amount= results[0];
-            console.log(amount)
-            console.log(results)
-            var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
-            db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
-                if (err) throw err;
-                var paymentID= results;
-                return paymentID.insertId;
-            });        
-        });
-    }
+    
     //==============================================================
     // A N O I N T I N G
     //==============================================================
@@ -461,14 +469,21 @@
                                 if (err) throw err;
                                 var queryString4 =`INSERT INTO tbl_blessing(int_eventinfoID, var_blessingvenue, var_blessingdetails, date_desireddate, time_desiredtime) VALUES (?,?,?,?,?)`
                                 db.query(queryString4, [eventinfoID.insertId, venue, req.body.details, req.body.desireddate1, desiredtime1], (err, results, fields) => {
-                                    var path = '/img/req/'+req.file.filename;
-                                    var nowDate = new Date(); 
-                                    var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
-                                    var queryString7 = `INSERT INTO tbl_requirements(var_reqpath,date_reqreceived,int_reqtypeID, var_reqstatus) VALUES (?,?,?,?);`
-                                    db.query(queryString7,[path,date,1, 'Unchecked'],(err, results, fields)=>{    
+
+                                    var requirementQuery = `select int_reqtypeID from tbl_requirementtype where int_eventID = ?`
+                                    db.query(requirementQuery, [eventID.int_eventID], (err, results, fields) => {
                                         if (err) throw err;
-                                        return res.redirect(`/guest`);
+                                        
+                                        //mali, pagkuha ng requirement id sa tbl_requirementtype aaaaaaaaaaaaa
+                                        var path = '/img/req/'+req.file.filename;
+                                        var nowDate = new Date(); 
+                                        var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
+                                        var queryString7 = `INSERT INTO tbl_requirements(var_reqpath,date_reqreceived,int_reqtypeID, var_reqstatus) VALUES (?,?,?,?);`
+                                        db.query(queryString7,[path,date,1, 'Submitted'],(err, results, fields)=>{    
+                                            if (err) throw err;
+                                            return res.redirect(`/guest`);
                                     });
+                                });
                                 });
                             });
                         });
@@ -501,16 +516,18 @@
         
         if (req.body.baptismtype == 'Regular'){
             var desireddate= moment(req.body.regdesireddate, 'YYYY/MM/DD').format('YYYY-MM-DD');
-            var defaulttimeQuery =`select time_defaulttime from tbl_utilitiesdefaulttime where int_eventID= (select int_eventID from tbl_services where var_eventname = 'Baptism')`
             //var desiredtime="11:00:00"
             var queryString= `select int_eventID from tbl_services where var_eventname="Baptism";`  
-                db.query(queryString, (err, results, fields) => {
+            db.query(queryString, (err, results, fields) => {
+                if (err) throw err;
+                var eventID = results[0];
+            
+                var defaulttimeQuery =`select time_defaulttime from tbl_utilitiesdefaulttime where int_eventID= ?`
+                db.query(defaulttimeQuery,[eventID.int_eventID], (err, results, fields) => {
                     if (err) throw err;
-                    // console.log(results);
-                    var eventID = results[0];
-                    // console.log(req.session.user);
                     queries();
                 });
+            });
             }            
         if (req.body.baptismtype == 'Special'){
             var desireddate= moment(req.body.spcdesireddate, 'YYYY/MM/DD').format('YYYY-MM-DD');
@@ -544,7 +561,7 @@
                                 var nowDate = new Date(); 
                                 var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
                                 var queryString7 = `INSERT INTO tbl_requirements(int_eventinfoID,var_reqpath,date_reqreceived,int_reqtypeID, var_reqstatus) VALUES (?,?,?,?,?);`
-                                db.query(queryString7,[eventinfoID.insertId,path,date,1,"Complete"],(err, results, fields)=>{
+                                db.query(queryString7,[eventinfoID.insertId,path,date,1,"Submitted"],(err, results, fields)=>{
                                     // console.log(date);
                                     if (err) throw err;
                                     
@@ -555,16 +572,7 @@
                                             sponsors(eventinfoID.insertId);
                                             return res.redirect(`/guest`);
                                 })
-                                function sponsors(eventinfoID){
-                                    var i;
-                                    for(i=0; i < req.body.sponsorname.length; i++){
-                                        var queryString5= `INSERT INTO tbl_sponsors(int_eventinfoID, var_sponsorname) VALUES (?,?);`
-                                        db.query(queryString5, [eventinfoID, req.body.sponsorname[i]], (err, results, fields) => {
-                                            if(err) throw err;
-                                        });
-                                    }
-                                    
-                                }
+                                
                             });
                         });
                     });

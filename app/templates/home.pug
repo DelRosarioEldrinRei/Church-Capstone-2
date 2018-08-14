@@ -20,53 +20,53 @@ html(lang='en')
 		#wrapper
 			block nav
 				nav.navbar.navbar-expand-lg.fixed-top.scrolling-navbar.indigo
-					.container
-						.navbar-header
-							button.navbar-toggler(type='button', data-toggle='collapse', data-target='#main-navbar', aria-controls='main-navbar', aria-expanded='false', aria-label='Toggle navigation')
-								span.navbar-toggler-icon
-								span.icon-menu
-								span.icon-menu
-								span.icon-menu
-							a.navbar-brand.pt-md-2.pt-sm-0(href='')
-								img.rounded-circle.border.border-dark(src='/Helium/img/churchiconblack.png', alt='' style="width: 3rem;")
-						#main-navbar.collapse.navbar-collapse
-							ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix
-								li.nav-item: a.nav-link(href="/index")
+						.container
+							.navbar-header
+								button.navbar-toggler(type='button', data-toggle='collapse', data-target='#main-navbar', aria-controls='main-navbar', aria-expanded='false', aria-label='Toggle navigation')
+									span.navbar-toggler-icon
+									span.icon-menu
+									span.icon-menu
+									span.icon-menu
+								a.navbar-brand.pt-md-1.pl-md-5.pt-sm-0(href='')
+									img.rounded-circle.border.border-dark(src='/Helium/img/churchiconblack.png', alt='' style="width: 3rem;")
+							#main-navbar.collapse.navbar-collapse
+								ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix
+									li.nav-item: a.nav-link(href="/index")
+										| Home
+									li.nav-item: a.nav-link(href="#services")
+										| Services
+									li.nav-item: a.nav-link(href="#portfolio")
+										| Events
+									li.nav-item: a.nav-link(href="#team")
+										| Team
+									li.nav-item: a.nav-link(href="#contact")
+										| Contact
+									li.nav-item: a.nav-link(href="/login")
+										| Login
+									li.nav-item: a.nav-link(href="/signup")
+										| Signup
+						ul.mobile-menu.navbar-nav
+							li
+								a.page-scroll(href='/index', role='menuitem', tabindex='-1')
 									| Home
-								li.nav-item: a.nav-link(href="#services")
+							li
+								a.page-scroll(href='#services', role='menuitem', tabindex='-1')
 									| Services
-								li.nav-item: a.nav-link(href="#portfolio")
+							li
+								a.page-scroll(href='#portfolio', role='menuitem', tabindex='-1')
 									| Events
-								li.nav-item: a.nav-link(href="#team")
+							li
+								a.page-scroll(href='#team', role='menuitem', tabindex='-1')
 									| Team
-								li.nav-item: a.nav-link(href="#contact")
+							li
+								a.page-scroll(href='#contact', role='menuitem', tabindex='-1')
 									| Contact
-								li.nav-item: a.nav-link(href="/login")
+							li
+								a.page-scroll(href='/login', role='menuitem', tabindex='-1')
 									| Login
-								li.nav-item: a.nav-link(href="/signup")
+							li
+								a.page-scroll(href='/signup', role='menuitem', tabindex='-1')
 									| Signup
-					ul.mobile-menu.navbar-nav
-						li
-							a.page-scroll(href='/index', role='menuitem', tabindex='-1')
-								| Home
-						li
-							a.page-scroll(href='#services', role='menuitem', tabindex='-1')
-								| Services
-						li
-							a.page-scroll(href='#portfolio', role='menuitem', tabindex='-1')
-								| Events
-						li
-							a.page-scroll(href='#team', role='menuitem', tabindex='-1')
-								| Team
-						li
-							a.page-scroll(href='#contact', role='menuitem', tabindex='-1')
-								| Contact
-						li
-							a.page-scroll(href='/login', role='menuitem', tabindex='-1')
-								| Login
-						li
-							a.page-scroll(href='/signup', role='menuitem', tabindex='-1')
-								| Signup
 			block main
 		footer.footer
 			.container
