@@ -572,12 +572,10 @@ block prepend main
 								$('#bodyAppend').append(`
 								<p><strong>Service Description</strong></p>
 								<p>${data.firstQuery.var_eventdesc}</p>
-								<br>
-								<p><strong>Requirements</strong></p>
-								
 							`)
 							for(i=0;i<data.secondQuery.length;i++){
 							$('#reqAppend').append(`
+								<p><strong>Requirements</strong></p>
 								<p>${data.secondQuery[i].var_reqname}</p>
 							`)
 							}

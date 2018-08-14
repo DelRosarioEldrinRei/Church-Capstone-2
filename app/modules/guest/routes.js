@@ -14,34 +14,7 @@
         }
     })
     var upload = multer({ storage: storage})
-    //===============================================================================================//
-    // F U N C T I O N S
-    //===============================================================================================//
-    function payment(eventid){
-        var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
-        db.query(paymentQuery,[eventid], (err, results, fields) => {
-            if (err) throw err;
-            var amount= results[0];
-            console.log(amount)
-            console.log(results)
-            var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
-            db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
-                if (err) throw err;
-                var paymentID= results;
-                return paymentID.insertId;
-            });        
-        });
-    }
-    function sponsors(eventinfoID){
-        var i;
-        for(i=0; i < req.body.sponsorname.length; i++){
-            var queryString5= `INSERT INTO tbl_sponsors(int_eventinfoID, var_sponsorname) VALUES (?,?);`
-            db.query(queryString5, [eventinfoID, req.body.sponsorname[i]], (err, results, fields) => {
-                if(err) throw err;
-            });
-        }
-        
-    }
+    
     //===============================================================================================//
     // I N D E X //
     //===============================================================================================//
@@ -433,7 +406,34 @@
     //==============================================================
     //E V E N T S  F O R M S                                      
     //==============================================================
-    
+    //===============================================================================================//
+    // F U N C T I O N S
+    //===============================================================================================//
+    function payment(eventid){
+        var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
+        db.query(paymentQuery,[eventid], (err, results, fields) => {
+            if (err) throw err;
+            var amount= results[0];
+            console.log(amount)
+            console.log(results)
+            var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
+            db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
+                if (err) throw err;
+                var paymentID= results;
+                return paymentID.insertId;
+            });        
+        });
+    }
+    function sponsors(eventinfoID){
+        var i;
+        for(i=0; i < req.body.sponsorname.length; i++){
+            var queryString5= `INSERT INTO tbl_sponsors(int_eventinfoID, var_sponsorname) VALUES (?,?);`
+            db.query(queryString5, [eventinfoID, req.body.sponsorname[i]], (err, results, fields) => {
+                if(err) throw err;
+            });
+        }
+        
+    }
     //==============================================================
     // A N O I N T I N G
     //==============================================================
@@ -522,9 +522,10 @@
                 if (err) throw err;
                 var eventID = results[0];
             
-                var defaulttimeQuery =`select time_defaulttime from tbl_utilitiesdefaulttime where int_eventID= ?`
+                var defaulttimeQuery =`select time_defaulttime from tbl_defaulttime where int_eventID= ?`
                 db.query(defaulttimeQuery,[eventID.int_eventID], (err, results, fields) => {
                     if (err) throw err;
+                    var desiredtime=results.time_availabletime;
                     queries();
                 });
             });
@@ -539,24 +540,28 @@
                     // console.log(results);
                     var eventID = results[0];
                     // console.log(req.session.user);
-                    queries();
+                    queries(eventID.int_eventID);
                 });
             }            
             
-            function queries(){
+            function queries(eventid){
                 console.log(desireddate)
                 console.log(desiredtime)
                 var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                    db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
+                    db.query(queryString1, [req.body.userID, eventid], (err, results, fields) => {
                         if (err) throw err;
                         var eventinfoID= results;       
+
+                        payment(eventid);
                         var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID) VALUES(?,?)`;        
-                        db.query(queryString2,[eventinfoID.insertId, "Pending", "Unpaid"], (err, results, fields) => {
+                        db.query(queryString2,[eventinfoID.insertId, "Pending", ], (err, results, fields) => {
                             if (err) throw err;
     
                             var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_relation, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?,?);`
                             db.query(queryString3, [eventinfoID.insertId, req.body.relation, req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.birthday, req.body.birthplace], (err, results, fields) => {
                                 if (err) throw err;
+
+                                //select req id
                                 var path = '/img/req/'+req.file.filename;
                                 var nowDate = new Date(); 
                                 var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
