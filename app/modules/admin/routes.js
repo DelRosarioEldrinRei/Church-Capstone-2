@@ -401,11 +401,11 @@ adminRouter.use(authMiddleware.adminAuth)
         });
     });
     adminRouter.post('/maintenance-items/add', (req, res) => {
-        var queryString=`INSERT INTO tbl_items(var_reqname,var_reqdesc) 
+        var queryString1=`INSERT INTO tbl_items(var_reqname,var_reqdesc) 
         VALUES(?,?)`  
-            db.query(queryString,[req.body.reqname,req.body.reqdesc], (err, results, fields) => {
+        db.query(queryString1,[req.body.reqname,req.body.reqdesc], (err, results, fields) => {
                 if (err) console.log(err);
-                    return res.redirect('/admin/maintenance-facility-requirements');
+                return res.redirect('/admin/maintenance-facility-requirements');
             }); 
         });
 //===============================================================================================//
