@@ -401,13 +401,54 @@ adminRouter.use(authMiddleware.adminAuth)
         });
     });
     adminRouter.post('/maintenance-items/add', (req, res) => {
-        var queryString=`INSERT INTO tbl_items(var_reqname,var_reqdesc) 
-        VALUES(?,?)`  
-            db.query(queryString,[req.body.reqname,req.body.reqdesc], (err, results, fields) => {
+        var queryString1=`INSERT INTO tbl_items(var_itemname,var_itemdesc,int_goodquantity,int_damagedquantity) 
+        VALUES(?,?,?,?)`  
+        db.query(queryString1,[req.body.reqname,req.body.reqdesc,req.body.good,0], (err, results, fields) => {
                 if (err) console.log(err);
-                    return res.redirect('/admin/maintenance-facility-requirements');
+                return res.redirect('/admin/maintenance-items');
             }); 
         });
+    adminRouter.post('/maintenance-items/delete', (req, res) => {
+        const queryString = `DELETE FROM tbl_items
+        WHERE int_itemID= ?`;
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-items');
+            
+        });
+    });
+    adminRouter.post('/maintenance-items/query', (req, res) => {
+        const queryString = `SELECT * from tbl_items
+        WHERE int_itemID = ?`;
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            res.send(results[0])
+            console.log(results[0].int_goodquantity)
+            });
+    });
+    adminRouter.post('/maintenance-items/addItems', (req, res) => {
+        const queryString1 = `SELECT int_goodquantity from tbl_items
+        WHERE int_itemID = ?`;
+        db.query(queryString1,[req.body.id], (err, results1, fields) => {
+            console.log(results1[0].int_goodquantity)
+            sum = eval(req.body.total) + eval(results1[0].int_goodquantity)
+            console.log("sum: " + sum)
+            const queryString2 = `UPDATE tbl_items SET int_goodquantity =?
+            WHERE int_itemID =?`;
+            db.query(queryString2,[sum,req.body.id], (err, results2, fields) => { 
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-items');
+            });
+        });
+    });
+    adminRouter.post('/maintenance-items/edit', (req, res) => {
+        const queryString = `UPDATE tbl_items SET var_itemname =?, var_itemdesc= ?,int_goodquantity=?,int_damagedquantity=?
+        WHERE int_itemID= ?`;
+        db.query(queryString,[req.body.itemname,req.body.itemdesc,req.body.good,req.body.damaged,req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-items');    
+        });
+    });
 //===============================================================================================//
 // T R A N S A C T I O N S //
 //===============================================================================================//
