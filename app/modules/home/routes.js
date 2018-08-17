@@ -30,6 +30,11 @@ indexRouter.get('/schedule', (req, res) => {
     res.render('home/views/schedule', req.query);
 });
 
+indexRouter.get('/services', (req, res) => {
+
+    res.render('home/views/services', req.query);
+});
+
 indexRouter.get('/store', (req, res) => {
 
     res.render('home/views/index1', req.query);
