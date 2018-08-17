@@ -1,64 +1,101 @@
-extends ../../../partials/masterhome
-mixin card(icon,title,text)
-	.col-md-4
-		.card.bg-danger.text-center.my-3.p-2
-			.card-body
-				i(class="fa fa-" +icon)
-				h3.card-title= title
-				p.card-text= text
-mixin testimony(quote,credits,from)
-	div
-		blockquote.blockquote.mx-5.px-5
-			p.mb-0= quote
-			footer.blockquote-footer.text-left=credits
-				cite(title="company")= from
+extends ../../../templates/home
 block main
-	.profile-page
-		//- Heading Page
-		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/IMG20170408203149.jpg');")
+	#headers
+		#header-style-1
+			.container
+				.header-caption
+					.row
+						.col-md-12.header-content
+							h3.header-title.animated.fadeInDown.invisible
+								span.text-primary Helium - 
+								| Bootstrap 4 UI Kit
+							h5.header-text.animated.fadeIn.invisible
+								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
+	#raised-section.main.main-raised
+		section.form-box
 			.container
 				.row
-					.col-md-7
-						h1.text-white About Us
-						p Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam maxime rerum expedita ea sequi nesciun
-		#raised-section.main.main-raised
-			.profile-content
-				.container
+					.col-md-12.form-wizard
+						h3 Services
+						p Choose a service to inquire
+				event in events
 					.row
-						.col-md-6.mt-3
-							h1 What We Do
-							p 
-								| Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, error vitae corrupti 
-								| nostrum magni doloribus eius aliquam adipisci natus quos voluptas et distinctio dicta
-								| modi dolore suscipit quaerat fuga cumque!
-								br
-								br
-								| Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, id veniam aliquam 
-								| similique facilis error voluptatibus iste pariatur ullam? Provident quod pariatur vero hic. 
-								| Nemo ab accusamus tenetur ipsam excepturi!
-						.col-md-6.d-flex.justify-content-center
-							img.img-raised.rounded-circle.img-fluid.d-md-block.d-none.d-md-block(src='/img/pBVRAXidhQxS.jpg', alt='Circle Image' style="height: 400px; width: 400px")
-			//- Icon Boxes
-			#icon-boxes
-				.container
-					.row
-						+card("building","Lorem Ipsum","Lorem ipsum dolor sit amet consectetur adipisicing elit amet consectetur.")
-						+card("bullhorn","Lorem Ipsum","Lorem ipsum dolor sit amet consectetur adipisicing elit amet consectetur.")
-						+card("comments","Lorem Ipsum","Lorem ipsum dolor sit amet consectetur adipisicing elit amet consectetur.")
-					.row
-						+card("clock-o","Lorem Ipsum","Lorem ipsum dolor sit amet consectetur adipisicing elit amet consectetur.")
-						+card("cc","Lorem Ipsum","Lorem ipsum dolor sit amet consectetur adipisicing elit amet consectetur.")
-						+card("coffee","Lorem Ipsum","Lorem ipsum dolor sit amet consectetur adipisicing elit amet consectetur.")
-					//- Testimonials
-			#testimonial-section.bg-dark.text-white.d-none.d-sm-block
-				.container
-					h3.text-center.pt-3.m-0 Testimonials
-					.row
-						.col-md-12
-							.slider.bg-dark.text-white
-								+testimony("Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, provident consectetur adipisicing elit.","John Doe From","Company 1")
-								+testimony("Life is struggle, accept it. Charrrlalu","Norme Ann Joyce Peñaverde","Infanta, Quezon")
-								+testimony("La ako maisip. Pero yun. Do your best to pass yun lang XD","Joshua Rae Macaya","BSIT 3-3")
-								+testimony("Alam ko, wala akong specific na motto sa buhay.","Kristine Mae Gamayo","Penge Pasalubong")
-			.container.invisible Invisible Content
+						.col-md-4
+							.card.shadow2
+								img.card-img-top(src="img/card/img-05.jpg" alt="")
+								.card-block.text-center
+									h3.card-title #{event.var_eventname}
+									p.card-text #{event.var_eventdesc.substring(0, 70)}...
+									.learn-more
+										button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
+										// Modal
+										#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+											.modal-dialog.modal-lg(role='document')
+												.modal-content#each
+													.modal-header#headerAppend
+														button.close(type='button', data-dismiss='modal', aria-label='Close')
+															span.p-3(aria-hidden='true') ×
+													.modal-body#bodyAppend
+													.modal-body#reqAppend
+													.modal-footer
+														button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button') Apply
+					//- .col-md-4
+					//- 	.card.shadow2
+					//- 		img.card-img-top(src="img/card/img-06.jpg" alt="")
+					//- 		.card-block.text-center
+					//- 			h3.card-title Item Title
+					//- 			p.card-text Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+					//- 			a.btn.card-btn.btn-common(href="#") Inquire 
+					//- .col-md-4
+					//- 	.card.shadow2
+					//- 		img.card-img-top(src="img/card/img-07.jpg" alt="")
+					//- 		.card-block.text-center
+					//- 			h3.card-title Item Title
+					//- 			p.card-text Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+					//- 			a.btn.card-btn.btn-common(href="#") Inquire 
+block addjs
+	script.
+		$(document).ready(function(){
+			$('.inquireButton').click(function(){
+				var idNow = $(this).val();
+				console.log(idNow)
+					$.post('/index/query',{id:idNow})
+						.done(data =>{
+						
+						$('#headerAppend').append(`
+							<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
+							<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
+							`)
+							$('#bodyAppend').append(`
+							<p><strong>Service Description</strong></p>
+							<p>${data.firstQuery.var_eventdesc}</p>
+							<br>
+							<p><strong>Requirements</strong></p>
+							
+						`)
+						for(i=0;i<data.secondQuery.length;i++){
+						$('#reqAppend').append(`
+							<p>${data.secondQuery[i].var_reqname}</p>
+						`)
+						}
+						$('#inquireModal').modal('show');	
+						$('#inquireModal').on('hidden.bs.modal',function(){
+							$('#bodyAppend').empty()
+							$('#headerAppend').empty()
+							$('#reqAppend').empty()
 
+						})
+						$('#cancelButton').css('display', 'block');
+						$('#proceedButton').css('display', 'block');
+							$('#proceedButton').click(function(){
+								$.post('/login/query',{id:data.firstQuery.int_eventID}).done(data =>{
+									window.location='/login'
+								})
+							})
+						})
+								
+			})
+		})

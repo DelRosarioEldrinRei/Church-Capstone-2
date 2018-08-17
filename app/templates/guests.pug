@@ -15,6 +15,7 @@ html(lang='en')
 		link(rel='stylesheet', href='/Helium/css/responsive.css')
 		link(rel='stylesheet', href='/css/modal-anim.css')
 		link(rel='stylesheet', href='/css/form-wizard.css')
+		link(rel='stylesheet' href='/css/fullcalendar.min.css')
 		link(rel='stylesheet', href='/css/loader.css')
 		link(rel="stylesheet" href="/css/jasny-bootstrap.min.css")
 		link(rel="stylesheet" href="/css/fileinput-rtl.css")
@@ -73,6 +74,21 @@ html(lang='en')
 				.btn-sm-round {
 					padding: 5px 11px;
 				}
+
+				.card-block {
+					min-height: 246px;
+				}
+
+				.shadow {
+					box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
+
+				.shadow2 {
+					box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+				}
+					
+				.shadow3 {
+					box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+				}
 	body
 		#loader
 			.spinner
@@ -87,7 +103,7 @@ html(lang='en')
 								span.icon-menu
 								span.icon-menu
 							a.navbar-brand.pt-md-1.pl-md-5.pt-sm-0(href='')
-								img.rounded-circle.border.border-dark(src='/Helium/img/churchiconblack.png', alt='' style="width: 3rem")
+								img.rounded-circle.shadow2(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem")
 						#main-navbar.collapse.navbar-collapse
 							ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix
 								li.nav-item: a.nav-link(href="/guest")
@@ -229,6 +245,8 @@ html(lang='en')
 		script(src='/js/loader.js')
 		script(src='/js/moment.min.js')
 		script(src='/js/timedropper.min.js')
+		script(src="/js/calendar.js")
+		script(src="/js/fullcalendar.min.js")
 		script(src='/js/fileinput.js')
 		script(src='/js/fileinput.min.js')
 		script(src='/js/plugins/sortable.js')

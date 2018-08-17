@@ -1,63 +1,42 @@
-extends ../../../../templates/masterguests
-mixin card(facility,bgcolor,icon,title,text)
-	.col-md-4.px-1
-		a(href=`/guest/facilities/${facility}`)
-			.card.text-center.my-3.p-2.shadow(class=`bg-${bgcolor}`)
-				.card-body.px-2
-					i(class=`fa fa-${icon}`)
-					h3.mb-2.card-title.text-uppercase= title
-					p.card-text.text-uppercase
-						| Guidelines & Requirements
-					p.card-text.text-uppercase
-						| Inquire
-mixin testimony(quote,credits,from)
-	div
-		blockquote.blockquote.mx-5.px-5
-			p.mb-0= quote
-			footer.blockquote-footer.text-left=credits
-				cite(title="company")= from
+extends ../../../../templates/guests
 block main
-	.profile-page
-		//- Heading Page
-		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/facility/ceiling.jpg');")
+	#headers
+		#header-style-1
 			.container
-				.row
-					.col-md-7.main-header__textbox
-						h1.font-italic Facility Reservation
+				.header-caption
+					.row
+						.col-md-12.header-content
+							h3.header-title.animated.fadeInDown.invisible
+								span.text-primary Helium - 
+								| Bootstrap 4 UI Kit
+							h5.header-text.animated.fadeIn.invisible
+								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
 		#raised-section.main.main-raised
-			//- Icon Boxes
-			#icon-boxes
-				.row
-					.col-md-12
-						hr.mt-5.mx-5
-				//- .row
-				//- 	.col-md-12.my-3
-				//- 		h3.text-center.text-uppercase.guidelines--text Rooms
+			section.form-box
 				.container
 					.row
-						.col-md-6
-							.card.card-blog.mt-5.shadow2
-								.card-header.card-header-image
-									a.shadow.mt-5(href='#pablo')
-										img.img.img-fluid(src='/img/facility/facility_1.jpg')
-										.card-title
-											h2.main--header.font-italic.text-white.m-0 Meeting Room
-								.card-body
-									//- h6.card-category.text-muted.text-right ₱1200 for the first 4hrs(+₱300/additional hour)
-									//- .row
-									//- 	span
-									//- 		strong Rate: 
-									//- 		|      ₱1200 for the first 4hrs. +₱300/additional hour
-									//- .row
-									//- 	span
-									//- 		strong Ideal for:
-									//- 		|  Meetings, training, seminars, workshops
+						.col-md-12.form-wizard
+							h3 Facility Reservation
+							p Choose a facility to reserve
+			.container
+				.row
+					.col-md-4
+						.card-2.shadow2
+							.image
+								img(src='/img/facility/facility_1.jpg')
+							.card-block
+								h3.card-title Meeting Room
+								.meta
+									a Recommended
+								.description
 									.row
-										.col-md-3
+										.col-md-4
 											span
 												strong Rate: 
 											
-										.col-md-9
+										.col-md-8
 											.row
 												span
 												|      ₱1200 for the first 4hrs.
@@ -65,51 +44,47 @@ block main
 												span
 												|      +₱300/additional hour
 									.row
-										.col-md-3
+										.col-md-4
 											span
 												strong Ideal For: 
 											
-										.col-md-9
+										.col-md-8
 											.row
 												span
 												|      Meetings, training, seminars, workshops
 									.row
-										.col-md-3
+										.col-md-4
 											span
 												strong Size:
 											
-										.col-md-9
+										.col-md-8
 											.row
 												span
 												|      4.9m x 11.5m (16ft x 37ft)
+							.card-footer.p-0
+								.extra.p-3
+									.learn-more.text-center
+										a.btn.btn-common.ml-auto.mx-auto(href="/guest/facilities/secondfloor/form") Inquire
+									span.right
+										| ₱300/hr
+								//- span
+								//- 	i.fa.fa-user
+								//- 	|                   75 Friends
+					.col-md-4
+						.card-2.shadow2
+							.image
+								img(src='/img/facility/facility_2.jpg')
+							.card-block
+								h3.card-title Multi-purpose Room
+								.meta
+									a Highly Recommended
+								.description
 									.row
-										.col-md-3
-												
-								.card-footer
-									a.btn.btn-primary.ml-auto.mx-auto(href="/guest/facilities/secondfloor") Inquire
-
-						.col-md-6
-							.card.card-blog.mt-5.shadow2
-								.card-header.card-header-image
-									a.shadow.mt-5(href='#pablo')
-										img.img.img-fluid(src='/img/facility/facility_2.jpg')
-										.card-title
-											h2.main--header.font-italic.text-white.m-0 Multi-purpose Room
-								.card-body
-									//- .row
-									//- 	span
-									//- 		strong Rate: 
-									//- 		|  ₱1200 for the first 4hrs. +₱300/additional hour
-									//- .row
-									//- 	span
-									//- 		strong Ideal for:
-									//- 		|  Meetings, training, seminars, workshops, holiday parties, banquets, receptions, class reunions, anniversary parties, birthday parties, baby showers
-									.row
-										.col-md-3
+										.col-md-4
 											span
 												strong Rate: 
 											
-										.col-md-9
+										.col-md-8
 											.row
 												span
 												|      ₱1200 for the first 4hrs.
@@ -117,22 +92,29 @@ block main
 												span
 												|      +₱300/additional hour
 									.row
-										.col-md-3
+										.col-md-4
 											span
 												strong Ideal For: 
 											
-										.col-md-9
+										.col-md-8
 											.row
 												span
 												|      Meetings, training, seminars, workshops, holiday parties, banquets, receptions, class reunions, anniversary parties, birthday parties, baby showers
 									.row
-										.col-md-3
+										.col-md-4
 											span
 												strong Size:
 											
-										.col-md-9
+										.col-md-8
 											.row
 												span
 												|      4.9m x 11.5m (16ft x 37ft)
-								.card-footer
-									a.btn.btn-primary.ml-auto.mx-auto(href="#") Inquire
+							.card-footer.p-0
+								.extra.p-3
+									.learn-more.text-center
+										a.btn.btn-common.ml-auto.mx-auto(href="#") Inquire
+									span.right
+										| ₱300/hr
+								//- span
+								//- 	i.fa.fa-user
+								//- 	|                   75 Friends
