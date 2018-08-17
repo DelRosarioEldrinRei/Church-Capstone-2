@@ -109,7 +109,7 @@ block prepend main
 													.modal-body#reqAppend
 													.modal-footer
 														button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button') Apply
+														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${event.int_eventID}`) Apply
 				.col-md-12.text-center
 					.learn-more
 						a.btn.std-btn.btn-common(href='/services') View All
@@ -614,7 +614,8 @@ block prepend main
 							$('#proceedButton').css('display', 'block');
 								$('#proceedButton').click(function(){
 									$.post('/login/query',{id:data.firstQuery.int_eventID}).done(data =>{
-										window.location='/login'
+										window.location=`/login? 
+										redirect="${$(this).val()}"`
 									})
 								})
 							})

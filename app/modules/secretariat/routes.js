@@ -456,8 +456,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     secretariatRouter.post('/transaction-documentrequest/query', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_documentrequest 
         join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
-        join tbl_requirements on tbl_documentrequest.int_requestID = tbl_requirements.int_requestID
-        join tbl_requirementtype on tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
+        join tbl_requirementsdocument on tbl_documentrequest.int_requestID = tbl_requirementsdocument.int_requestID
+        join tbl_docureqtype on tbl_docureqtype.int_docureqtypeID = tbl_requirementsdocument.int_docureqtypeID
         where tbl_documentrequest.int_requestID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);
@@ -466,11 +466,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         });
     });
     secretariatRouter.post('/transaction-documentrequest/update/query', (req, res)=>{
-        var queryString1 =`SELECT tbl_documentrequest.int_requestID,char_docustatus,tbl_payment.int_paymentID,char_paymentstatus,tbl_requirements.int_requirementID,var_reqstatus,dbl_docuprice FROM tbl_documentrequest 
+        var queryString1 =`SELECT tbl_documentrequest.int_requestID,char_docustatus,tbl_payment.int_paymentID,char_paymentstatus,tbl_requirementsdocument.int_requirementdocumentID,bool_reqstatus,dbl_docuprice FROM tbl_documentrequest 
         join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID
         join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
-        join tbl_requirements on tbl_documentrequest.int_requestID = tbl_requirements.int_requestID
-        join tbl_requirementtype on tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
+        join tbl_requirementsdocument on tbl_documentrequest.int_requestID = tbl_requirementsdocument.int_requestID
+        join tbl_docureqtype on tbl_docureqtype.int_docureqtypeID = tbl_requirementsdocument.int_docureqtypeID
         where tbl_documentrequest.int_requestID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);
@@ -480,18 +480,45 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     });
     secretariatRouter.post('/transaction-documentrequest/update', (req, res)=>{
         console.log(req.body)
-        var queryString1 =`UPDATE tbl_documentrequest SET char_docustatus = ? 
-        WHERE int_requestID =?`
-        db.query(queryString1,[req.body.docustatus,req.body.docuid], (err, results, fields) => {
-            var queryString2 =`UPDATE tbl_requirements SET var_reqstatus = ? 
+        const queryString4 = `SELECT * from tbl_documentrequest where int_requestID=?`
+        db.query(queryString4,[req.body.docuid], (err, results1, fields) => {
+        
+            var queryString2 =`UPDATE tbl_requirementsdocument SET bool_reqstatus = ? 
             WHERE int_requestID =?`
             db.query(queryString2,[req.body.reqstatus,req.body.reqid], (err, results, fields) => {
-                var queryString2 =`UPDATE tbl_payment SET char_paymentstatus = ? 
-                WHERE int_paymentID =?`
-                db.query(queryString2,[req.body.paystatus,req.body.payid], (err, results, fields) => {
-                if (err) console.log(err);
-                return res.redirect('/secretariat/transaction-documentrequest')
-                });
+                console.log(req.body.reqstatus)
+                if(req.body.reqstatus == "Approved"){
+                    const queryString3 = `UPDATE tbl_documentrequest SET char_docustatus =? where int_requestID=?`
+                    db.query(queryString3,["To be Released",req.body.docuid], (err, results, fields) => {
+                        var queryString2 =`UPDATE tbl_payment SET char_paymentstatus = ? 
+                        WHERE int_paymentID =?`
+                        db.query(queryString2,[req.body.paystatus,req.body.payid], (err, results, fields) => {
+                            if(req.body.paystatus == "Paid"){
+                                const queryString3 = `UPDATE tbl_documentrequest SET char_docustatus =? where int_requestID=?`
+                                db.query(queryString3,["Released",req.body.docuid], (err, results, fields) => {
+                                    if (err) console.log(err);
+                                    return res.redirect('/secretariat/transaction-documentrequest')
+                                })
+                            }
+                            if(req.body.paystatus == "Unpaid"){
+                                const queryString3 = `UPDATE tbl_documentrequest SET char_docustatus =? where int_requestID=?`
+                                db.query(queryString3,["To Be Released",req.body.docuid], (err, results, fields) => {
+                                    if (err) console.log(err);
+                                    return res.redirect('/secretariat/transaction-documentrequest')
+                                })
+                            }
+                        });  
+                    })
+                }
+                if(req.body.reqstatus == "Pending"){
+                    const queryString3 = `UPDATE tbl_documentrequest SET char_docustatus =? where int_requestID=?`
+                    db.query(queryString3,["Requested",req.body.docuid], (err, results, fields) => {
+                        if (err) console.log(err);
+                        return res.redirect('/secretariat/transaction-documentrequest')
+                    })
+                }
+                
+                
             });
         });
     });

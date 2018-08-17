@@ -4,19 +4,21 @@ var logoutRouter = express.Router();
 var signupRouter = express.Router();
 var authMiddleware = require('./middlewares/auth');
 var db = require('../../lib/database')();
-loginRouter.route('/')
-    .get(authMiddleware.noAuthed, (req, res) => {
-        res.render('auth/views/login', req.query);
-    })
+
 loginRouter.route('/query')
     .post(authMiddleware.noAuthed, (req, res) => {
         console.log(req.body.id)
         req.session.eventId = req.body.id
         res.render('auth/views/login');
     })
-loginRouter.route('/')
+loginRouter.route('/')  
     .get(authMiddleware.noAuthed, (req, res) => {
-        res.render('auth/views/login', req.query);
+        if(req.query){
+            res.render('auth/views/login',{reqQuery:req.query});
+            }
+            else{
+                res.render('auth/views/login')
+            }
     })
     .post((req, res) => {
         console.log('POST LOGIN');

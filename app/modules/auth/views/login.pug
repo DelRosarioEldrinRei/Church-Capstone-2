@@ -46,7 +46,10 @@ html
 									//-   input#inputCall1.peer(type='checkbox', name='inputCheckboxesCall')
 									//-   label.peers.peer-greed.js-sb.ai-c(for='inputCall1')
 								.peer
+								-if(typeof reqQuery == 'undefined')
 									button.btn.btn-primary(type="submit") Login
+								-else
+									button.btn.btn-primary(type="submit" value=`${reqQuery.redirect}`) Login
 					.mt-5.pt-5.text-center
 						a.peer.peer-greed(href="/")
 							i.ti-arrow-left

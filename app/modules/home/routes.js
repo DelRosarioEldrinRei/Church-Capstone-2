@@ -31,8 +31,11 @@ indexRouter.get('/schedule', (req, res) => {
 });
 
 indexRouter.get('/services', (req, res) => {
-
-    res.render('home/views/services', req.query);
+  var queryString1 =`SELECT * FROM tbl_services `
+  db.query(queryString1, (err, results, fields) => {
+    if (err) console.log(err);
+    res.render('home/views/services',{ events : results });
+  });
 });
 
 indexRouter.get('/store', (req, res) => {
