@@ -13,13 +13,17 @@ block prepend main
                                         .col-md-6
                                             h4.card-title Facility Item Monitoring
                                         .col-md-6
-                                            a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Requirement
+                                            a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Item
                                 .card-body.table-responsive
                                         table.table.table-hover
                                                 thead.text-primary
                                                         th ID
                                                         th Item Name
-                                                        th Item Desc
+                                                        th Item Description
+                                                        th Good Condition Qty
+                                                        th Damaged Qty
+                                                        th Total Items
+                                                        th Add Items
                                                         th.text-center(style=" width:180px") Actions
                                                 tbody
                                                         each item in items
@@ -27,12 +31,16 @@ block prepend main
                                                                 td=item.int_itemID
                                                                 td=item.var_itemname
                                                                 td=item.var_itemdesc
+                                                                td=item.int_goodquantity
+                                                                td=item.int_damagedquantity
+                                                                td=item.int_goodquantity + item.int_damagedquantity
+                                                                td
+                                                                    button.btn.btn-primary.addButton(type='button',rel='tooltip', value=`${item.int_itemID}`)
+                                                                        i.ti-plus
                                                                 td.td-actions.text-center
-                                                                    button.btn.btn-primary.viewButton(type='button',rel='tooltip',value=`${int_itemID}`)
-                                                                        i.ti-eye
-                                                                    button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${int_itemID}`)
+                                                                    button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${item.int_itemID}`)
                                                                         i.ti-close
-                                                                    button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${int_itemID}`)
+                                                                    button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${item.int_itemID}`)
                                                                         i.ti-pencil
                                                                 
                                                         
@@ -58,27 +66,31 @@ block prepend main
             .modal-content
                 // Header
                 .modal-header
-                    p.heading.lead Add Requirement
+                    p.heading.lead Add Item
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                         span.white-text(aria-hidden='true') &times;
                 // Body
                 .modal-body
-                    form.form(action='/admin/maintenance-item/add' method="post")
+                    form.form(action='/admin/maintenance-items/add' method="post")
                         .form-group
-                            label.label-control Requirements
+                            label.label-control Item Name
                             input.form-control(type='text' name='reqname')
                         .form-group
                             label.label-control Description
                             textarea.form-control(name='reqdesc')
+                        .form-group
+                            label.label-control Quantity
+                            input.form-control(type='number' name='good')
                         .row
                             .col-md-12.text-center.my-3
-                                button.btn.btn-primary(type='submit') Add	
+                                button.btn.btn-primary(type='submit') Add
+                        
         
     #updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
         .modal-dialog.modal-notify.modal-success(role='document')
             .modal-content
                 .modal-header
-                    p.heading.lead Edit Requirement
+                    p.heading.lead Edit Items
                     button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
                         span.white-text(aria-hidden='true') &times;
                 .modal-body#updateAppend                
@@ -89,6 +101,38 @@ block addjs
     script(src='/js/forIndex.js')
     script.
         $(document).ready(function() {
+        $('.addButton').click(function(){
+            var idNow = $(this).val();
+            $.post('/admin/maintenance-items/query',{id:idNow})
+            .done(data =>{
+            var totalItems = data.int_goodquantity + data.int_damagedquantity
+            swal({
+            title:`Current Quantity: ` + totalItems,
+            text:'Number of items to be added:',
+            input:'number',
+            showCancelButton: true,
+            }).then((result) => {
+                    if (result.value) {
+                        var numAdded = eval(result.value)
+                        console.log(numAdded)
+                        $.post('/admin/maintenance-items/addItems',{
+                        total:numAdded,
+                        id:idNow})
+                        .done(data =>{
+                            if(data){
+                                swal({
+                                title:'Success', 
+                                text:'Quantity Added', 
+                                icon:'success'
+                                }).then(function(){
+                                    location.reload();
+                                })
+                            }
+                        });
+                    }
+                })
+            })
+        })
         $('.deleteButton').click(function(){
             var idNow = $(this).val();
             swal({
@@ -101,7 +145,7 @@ block addjs
                 confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.value) {
-                        $.post('/admin/maintenance-facility-requirements/delete',{id:idNow})
+                        $.post('/admin/maintenance-items/delete',{id:idNow})
                         .done(data =>{
                             if(data){
                                 swal({
@@ -121,16 +165,24 @@ block addjs
         $('.updateButton').click(function(){
             var idNow = $(this).val();
             console.log(idNow)
-                $.post('/admin/maintenance-facility-requirements/query',{id:idNow})
+                $.post('/admin/maintenance-items/query',{id:idNow})
             .done(data=>{
                 $('#updateAppend').append(`
                 <div class="form-group">
-                    <label class="label-control">Requirements</label>
-                    <input type="text" id="reqname" class="form-control" value="${data.var_reqname}"/>
+                    <label class="label-control">Item Name</label>
+                    <input type="text" id="itemname" class="form-control" value="${data.var_itemname}"/>
                 </div>
                 <div class="form-group">
                     <label class="label-control">Description</label>
-                    <textarea id="reqdesc" class="form-control">${data.var_reqdesc}</textarea>
+                    <textarea id="itemdesc" class="form-control">${data.var_itemdesc}</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="label-control"><strong>Good Condition Qty: ${data.int_goodquantity}</strong></label>
+                    <input type="number" id="good" class="form-control" value="0"/>
+                </div>
+                <div class="form-group">
+                    <label class="label-control"><strong>Damaged Qty: ${data.int_damagedquantity}</strong></label>
+                    <input type="number" id="damaged" class="form-control" value="0"/>
                 </div>
                 </div>
                 `)
@@ -149,9 +201,22 @@ block addjs
                     };
                 });
                 $('#updateSubmitButton').click(function(){
-                    $.post('/admin/maintenance-facility-requirements/edit',{
-                    reqname:$('#reqname').val(),
-                    reqdesc:$('#reqdesc').val(),
+                    var newGood = (data.int_goodquantity + eval($('#good').val()))-eval($('#damaged').val())
+                    var newDamaged = (data.int_damagedquantity + eval($('#damaged').val()))-eval($('#good').val())
+                    if(newGood < 0){
+                    newGood = 0;
+                    newDamaged = data.int_damagedquantity 
+                    }
+                    else if(newDamaged < 0){
+                    newDamaged = 0;
+                    newGood = data.int_goodquantity
+                    }
+                    console.log(newGood + newDamaged)
+                    $.post('/admin/maintenance-items/edit',{
+                    itemname:$('#itemname').val(),
+                    itemdesc:$('#itemdesc').val(),
+                    good:newGood,
+                    damaged:newDamaged,
                     id:idNow
                     })
                     .done(data=>{
