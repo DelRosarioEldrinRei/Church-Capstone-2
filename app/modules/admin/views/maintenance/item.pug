@@ -201,8 +201,25 @@ block addjs
                     };
                 });
                 $('#updateSubmitButton').click(function(){
+                    if(eval($('#good').val()) > data.int_damagedquantity){
+                        swal({
+                            title:'Invalid Input',
+                            text:'Insufficient number of Items was added from Damaged Items',
+                            type:'warning'
+                        })
+                    }
+                    else if(eval($('#damaged').val()) > data.int_goodquantity){
+                        swal({
+                            title:'Invalid Input',
+                            text:'Insufficient number of Items was added from Good Items',
+                            type:'warning'
+                        })
+                    }
+                    else{
                     var newGood = (data.int_goodquantity + eval($('#good').val()))-eval($('#damaged').val())
                     var newDamaged = (data.int_damagedquantity + eval($('#damaged').val()))-eval($('#good').val())
+
+                    
                     if(newGood < 0){
                     newGood = 0;
                     newDamaged = data.int_damagedquantity 
@@ -232,6 +249,7 @@ block addjs
                             $('#updateAppend').empty();
                         }
                     })
+                }
                 })
             })
 
