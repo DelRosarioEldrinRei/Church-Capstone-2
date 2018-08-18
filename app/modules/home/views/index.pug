@@ -26,32 +26,32 @@ block prepend main
 			.row
 				.col-lg-3.col-md-6.col-xs-12
 					.about.block.text-center
-						img(src='/Helium/img/img1.png', alt='')
+						img(src='/Helium/img/inquire.png', alt='')
 						h5
-							a(href='#') About Title
+							a(href='#') Inquire
 						p
-							| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+							| See the information, guidelines and requirements of the parish services.
 				.col-lg-3.col-md-6.col-xs-12
 					.about.block.text-center
-						img(src='/Helium/img/img2.png', alt='')
+						img(src='/Helium/img/submit.png', alt='')
 						h5
-							a(href='#') About Title
+							a(href='#') Submit
 						p
-							| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+							| Apply and submit requirements to our website.
 				.col-lg-3.col-md-6.col-xs-12
 					.about.block.text-center
-						img(src='/Helium/img/img3.png', alt='')
+						img(src='/Helium/img/visit.png', alt='')
 						h5
-							a(href='#') About Title
+							a(href='#') Visit
 						p
-							| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+							| Go and visit our parish.
 				.col-lg-3.col-md-6.col-xs-12
 					.about.block.text-center
-						img(src='/Helium/img/img4.png', alt='')
+						img(src='/Helium/img/complete.png', alt='')
 						h5
-							a(href='#') About Title
+							a(href='#') Complete
 						p
-							| Quisque sit amet libero purus. Nulla a dignissim quam. In hac habitasse platea dictumst.
+							| Complete and enjoy your reservation at our parish.
 	#services.section-padding
 		.container
 			.row
@@ -81,7 +81,6 @@ block prepend main
 													.modal-body#reqAppend
 													.modal-footer
 														button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-<<<<<<< HEAD
 														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${event.int_eventID}`) Apply
 				.col-md-12.text-center
 					.learn-more
@@ -104,9 +103,6 @@ block prepend main
 	//- 							.learn-more
 	//- 								button.btn.std-btn.btn-common(type='button', data-toggle='modal', data-target='#exampleModal') Inquire
 									
-=======
-														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button') Apply
->>>>>>> 01af262a247ceb50b9bd598456c4b1b451245cb6
 			.col-md-12.text-center
 				.learn-more
 					a.btn.std-btn.btn-common(href='/guest/allservices') View All
@@ -121,13 +117,13 @@ block prepend main
 						a.filter.btn.btn-common.active(data-filter='all')
 							| All
 						a.filter.btn.btn-common(data-filter='.branding')
-							| Branding
+							| Prayer
 						a.filter.btn.btn-common(data-filter='.marketing')
-							| Marketing
+							| Sceneries
 						a.filter.btn.btn-common(data-filter='.planning')
-							| Planning
+							| Peace
 						a.filter.btn.btn-common(data-filter='.research')
-							| Research
+							| Visits
 				#portfolio.row.wow.fadeInUpQuick(data-wow-delay='0.8s')
 					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning(style='display: inline-block;', data-bound='')
 						.portfolio-item
@@ -262,7 +258,7 @@ block prepend main
 				// Team Item Starts
 				.team-item
 					figure.team-profile
-						img(src='img/rae.jpg', alt='')
+						img(src='img/team/2.jpg', alt='')
 						figcaption.our-team
 							.details
 								p.content-white
@@ -286,7 +282,7 @@ block prepend main
 				// Team Item Starts
 				.team-item
 					figure.team-profile
-						img(src='img/jona.jpg', alt='')
+						img(src='img/team/1.jpg', alt='')
 						figcaption.our-team
 							.details
 								p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -308,7 +304,7 @@ block prepend main
 				// Team Item Starts
 				.team-item
 					figure.team-profile
-						img(src='img/norme.jpg', alt='')
+						img(src='img/team/3.jpg', alt='')
 						figcaption.our-team
 							.details
 								p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -330,7 +326,7 @@ block prepend main
 				// Team Item Starts
 				.team-item
 					figure.team-profile
-						img(src='img/eldrin.jpg', alt='')
+						img(src='img/team/4.jpg', alt='')
 						figcaption.our-team
 							.details
 								p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -347,81 +343,6 @@ block prepend main
 							| Eldrin Rei Del Rosario
 						p
 							| Web Designer
-	section#pricing.section-padding
-		.container
-			.row
-				.col-md-12
-					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Pricing Table
-			.row
-				.col-lg-4.col-md-6.col-xs-12
-					.pricing-table-item
-						.plan-name
-							h3 Basic
-						.plan-price
-							.price-value $ 10
-							.interval per month
-						.plan-list
-							ul
-								li
-									i.fa.fa-check
-									| 2GB Disk Space
-								li
-									i.fa.fa-check
-									| 3 Sub Domains
-								li
-									i.fa.fa-check
-									| 12 Database
-								li
-									i.fa.fa-check
-									| Unlimited Users
-						.plan-signup
-							a.btn.btn-common(href='#') Get Started
-				.col-lg-4.col-md-6.col-xs-12
-					.pricing-table-item.table-active
-						.plan-name
-							h3 Premium
-						.plan-price
-							.price-value $ 69 
-							.interval per month
-						.plan-list
-							ul
-								li
-									i.fa.fa-check
-									| 10GB Disk Space
-								li
-									i.fa.fa-check
-									| 5 Sub Domains
-								li
-									i.fa.fa-check
-									| 12 Database
-								li
-									i.fa.fa-check
-									| Unlimited Users
-						.plan-signup
-							a.btn.btn-common(href='#') Get Started
-				.col-lg-4.col-md-6.col-xs-12
-					.pricing-table-item
-						.plan-name
-							h3 Unltimate
-						.plan-price
-							.price-value $ 79 
-							.interval per month
-						.plan-list
-							ul
-								li
-									i.fa.fa-check
-									| 50GB Disk Space
-								li
-									i.fa.fa-check
-									| 20 Sub Domains
-								li
-									i.fa.fa-check
-									| 36 Database
-								li
-									i.fa.fa-check
-									| Unlimited Users
-						.plan-signup
-							a.btn.btn-common(href='#') Get Started
 	section#contact.contact-form.section-padding
 		.container
 			.row
@@ -458,20 +379,20 @@ block prepend main
 					.contact-info
 						address
 							i.lni-map-marker.icons.cyan-color.contact-info-icon
-							| Level 13, 2 Elizabeth St, Melbourne,
+							| Phase 1 Urban, Payatas B Quezon City
 						.tel-info
 							a(href='tel:1800452308')
 								i.lni-mobile.icons.cyan-color.contact-info-icon
-								| 1800 452 308
+								| (02) 500-0239
 							a(href='tel:+61(8)82343555')
 								i.lni-phone.icons.cyan-color.contact-info-icon
 								| +61 (8) 8234 3555
 						a(href='mailto:hello@spiritapp.com')
 							i.lni-envelope.icons.cyan-color.contact-info-icon
-							| admin@uideck.com
+							| inlpp@yahoo.com
 						a(href='#')
 							i.lni-tab.icons.cyan-color.contact-info-icon
-							| www.uideck.com
+							| www.inlpp.com
 						ul.social-links
 							li
 								a.fa.fa-facebook(href='#')

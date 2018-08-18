@@ -89,12 +89,15 @@ html(lang='en')
 				.shadow3 {
 					box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 				}
+				.bg-black {
+					background-color: #3333338c;
+				}
 	body
 		#loader
 			.spinner
 		#wrapper
 			block nav
-				nav.navbar.navbar-expand-lg.fixed-top.scrolling-navbar.indigo
+				nav.navbar.navbar-expand-lg.fixed-top.scrolling-navbar.bg-black
 					.container
 						.navbar-header
 							button.navbar-toggler(type='button', data-toggle='collapse', data-target='#main-navbar', aria-controls='main-navbar', aria-expanded='false', aria-label='Toggle navigation')
@@ -103,18 +106,18 @@ html(lang='en')
 								span.icon-menu
 								span.icon-menu
 							a.navbar-brand.pt-md-1.pl-md-5.pt-sm-0(href='')
-								img.rounded-circle.shadow2(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem")
+								img.rounded-circle.shadow(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem")
 						#main-navbar.collapse.navbar-collapse
 							ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix
 								li.nav-item: a.nav-link(href="/guest")
 									| Home
-								li.nav-item: a.nav-link(href="#services")
+								li.nav-item: a.nav-link(href="/guest/#services")
 									| Services
-								li.nav-item: a.nav-link(href="#portfolio")
+								li.nav-item: a.nav-link(href="/guest/#portfolio")
 									| Events
-								li.nav-item: a.nav-link(href="#team")
+								li.nav-item: a.nav-link(href="/guest/#team")
 									| Team
-								li.nav-item: a.nav-link(href="#contact")
+								li.nav-item: a.nav-link(href="/guest/#contact")
 									| Contact
 								li.nav-item.dropdown
 									a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') My Account
