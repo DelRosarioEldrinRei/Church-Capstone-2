@@ -77,8 +77,15 @@ block addjs
                     <div class="form-group m-0">
                         <label class="label-control"><strong> Name of the Child: </strong> ${data.var_doclastname}, ${data.var_docfirstname}</label>
                     </div>
+                    <div class="form-group m-0">
+                        <label class="label-control"><strong> Father's Name: </strong> ${data.var_fathername}</label>
+                    </div>
+                    
+                    <div class="form-group m-0">
+                        <label class="label-control"><strong> Mother's Name: </strong> ${data.var_mothername}</label>
+                    </div>
                     <div class="form-group">
-                        <label class="label-control"> <strong> Date: </strong> ${dateRequested}</label>
+                        <label class="label-control"> <strong> Baptism Date: </strong> ${dateRequested}</label>
                     </div>
                     <div class="form-group">
                         <label class="label-control"> <strong> Purpose: </strong> ${data.text_purpose}</label>
@@ -209,7 +216,6 @@ block addjs
                 var idNow = $(this).val();
                 console.log(idNow)
                 $.post('/secretariat/transaction-documentrequest/update/query',{id:idNow}).done(data =>{
-                
                     $('#updateAppend').append(`
                     <col-md-4 class="p-lg-0">
                         <div class="row">
@@ -217,34 +223,28 @@ block addjs
                             <div class="form-group">
                             <input id="docuid" type="hidden" value="${data.int_requestID}"></input>
                             <input id="docustatus" type="hidden" value="${data.char_docustatus}"></input>
-                            <h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.char_docustatus}</h6>
+                            <h6 class="label-control"><strong> Current Document Status : </strong> ${data.char_docustatus}</h6>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                            <input id="reqid" type="hidden" value="${data.int_requirementdocumentID}"></input>
-                            <h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.bool_reqstatus}</h6>
-                            <select id="reqstatus" type="text">
-                                <option>Pending</option>
-                                <option>Incomplete</option>
-                                <option>Approved</option>
-                            </select>
-                            </div>
                         </div>
                         </div>
                         <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                            <input id="payid" type="hidden" value="${data.int_paymentID}"></input>
-                            <h6 class="label-control"><strong> Current Payment Status: </strong> ${data.char_paymentstatus}</h6>
-                            <select id="paystatus" type="text">
-                                <option>Unpaid</option>
-                                <option>Paid</option>
+                            <input id="reqid" type="hidden" value="${data.int_requirementdocumentID}"></input>
+                            <h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.bool_reqstatus}</h6>
+                            <select id="reqstatus" type="text">
                             </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                            <input id="payid" type="hidden" value="${data.int_paymentID}"></input>
+                            <h6 class="label-control"><strong> Current Payment Status: </strong> ${data.char_paymentstatus}</h6>
+                            <select id="paystatus" type="text">
+                            </select>
+                            <div class="form-group">
                             <strong> Price : </strong>P ${data.dbl_docuprice}
+                            </div>
                             </div>
                         </div>
                         </div>
@@ -252,10 +252,66 @@ block addjs
                     `)
                     if(data.bool_reqstatus == "Pending"){
                     document.getElementById("paystatus").disabled=true;
+                    $('#reqstatus').append(`
+                    <option selected="selected">Pending</option>
+                    <option>Incomplete</option>
+                    <option>Approved</option>
+                    `)
+                    if(data.char_paymentstatus == "Paid"){
+                    $('#paystatus').append(`
+                    <option selected="selected">Paid</option>
+                    <option>Unpaid</option>
+                    `)
+                    }
+                    else if(data.char_paymentstatus == "Unpaid"){
+                    $('#paystatus').append(`
+                    <option>Paid</option>
+                    <option selected="selected">Unpaid</option>
+                    `)
+                    }
                     }
                     else if(data.bool_reqstatus == "Approved"){
                     document.getElementById("paystatus").disabled=false;
+                    $('#reqstatus').append(`
+                    <option>Pending</option>
+                    <option>Incomplete</option>
+                    <option selected="selected">Approved</option>
+                    `)
+                    if(data.char_paymentstatus == "Paid"){
+                    $('#paystatus').append(`
+                    <option selected="selected">Paid</option>
+                    <option>Unpaid</option>
+                    `)
                     }
+                    else if(data.char_paymentstatus == "Unpaid"){
+                    $('#paystatus').append(`
+                    <option>Paid</option>
+                    <option selected="selected">Unpaid</option>
+                    `)
+                    }
+                    }
+                    else if(data.bool_reqstatus == "Incomplete"){
+                    document.getElementById("paystatus").disabled=true;
+                    $('#reqstatus').append(`
+                    <option>Pending</option>
+                    <option selected="selected">Incomplete</option>
+                    <option>Approved</option>
+                    
+                    `)
+                    if(data.char_paymentstatus == "Paid"){
+                    $('#paystatus').append(`
+                    <option selected="selected">Paid</option>
+                    <option>Unpaid</option>
+                    `)
+                    }
+                    else if(data.char_paymentstatus == "Unpaid"){
+                    $('#paystatus').append(`
+                    <option>Paid</option>
+                    <option selected="selected">Unpaid</option>
+                    `)
+                    }
+                    }
+                    
                     $('#updateModal').modal('show');
                     $('#updateModal').on('hidden.bs.modal',function(){
                         $('#updateAppend').empty()
@@ -264,14 +320,7 @@ block addjs
                         $('#updateAppend').empty();
                     })
                     $('#updateSubmitButton').click(function(){
-                        if($('#paystatus').val() == "Paid" && data.bool_reqstatus == "Pending"){
-                        swal({
-                            title:'Invalid Input',
-                            text:'Applicant can not be Paid if Requirements are still Pending',
-                            type:'warning'
-                        })
-                        }
-                        else{
+                        console.log($('#reqstatus').val())
                         console.log('clicked')
                         swal({
                         title:'Are You Sure?', 
@@ -283,6 +332,7 @@ block addjs
                         confirmButtonText: 'Confirm'
                         }).then((result)=>{
                         if(result.value){
+                        console.log($('#reqstatus').val())
                         $.post('/secretariat/transaction-documentrequest/update',{
                         docustatus:$('#docustatus').val(),
                         docuid:$('#docuid').val(),
@@ -294,9 +344,9 @@ block addjs
                         .done(data=>{
                             if(data){
                                 swal({
-                                title:'Success', 
+                                title:'Success',
                                 text:'Status updated', 
-                                icon:'success'
+                                type:'success'
                                 }).then(function(){
                                     location.reload();
                                 })
@@ -306,7 +356,6 @@ block addjs
                         })
                         }
                     })
-                    }
                     })
                 })
             })

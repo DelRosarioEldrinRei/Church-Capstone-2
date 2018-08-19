@@ -504,11 +504,11 @@
                     queries(eventID.int_eventID, desiredtime, desireddate);
                 });
             });
-            }            
-
+            }
         if (req.body.baptismtype == 'Special'){
+            console.log(req.body)
             var desireddate= moment(req.body.spcdesireddate, 'YYYY/MM/DD').format('YYYY-MM-DD');
-            var desiredtime= moment(req.body.desiredtime).format('HH:mm:ss');
+            var desiredtime= moment(req.body.desiredtime,'HH:mm').format('HH:mm:ss');
             
             var queryString= `select int_eventID from tbl_services where var_eventname="Special Baptism";`  
                 db.query(queryString, (err, results, fields) => {
@@ -518,9 +518,9 @@
                     // console.log(req.session.user);
                     queries(eventID.int_eventID, desiredtime, desireddate);
                 });
-            }            
+            }
             
-            function queries(eventid, dtime, ddate){
+            function queries(eventid, dtime, ddate){    
                 console.log(desireddate)
                 console.log(desiredtime)
                 var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
@@ -556,15 +556,17 @@
                                             var nowDate = new Date(); 
                                             var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
                                             var queryString7 = `INSERT INTO tbl_requirements(var_reqpath,date_reqreceived,int_reqtypeID, var_reqstatus) VALUES (?,?,?,?);`
-                                                db.query(queryString7,[path,date,reqq.int_reqtypeID,"Submitted"],(err, results, fields)=>{
-                                            
-                                                if (err) throw err;
-                                            
-                                                var queryString4 = `INSERT INTO tbl_baptism(int_eventinfoID, var_parentmarriageadd, var_fatherbplace, var_motherbplace, var_fathername, var_mothername, var_contactnum, date_desireddate, time_desiredtime) VALUES(?,?,?, ?,?,? ,?,?,?);`
-                                                db.query(queryString4 , [eventinfoID.insertId, req.body.marriageaddress, req.body.fatherbirthplace, req.body.motherbirthplace, req.body.fathername, req.body.mothername, req.body.contactnumber, ddate, dtime], (err, results, fields) => {
-                                                    if (err) throw err;
-                                                    sponsors(eventinfoID.insertId);
-                                                    return res.redirect(`/guest`);
+                                                db.query(queryString7,[path,date,reqq.int_reqtypeID,"Submitted"],(err, results2, fields)=>{
+                                                    var queryString8 = `INSERT INTO tbl_requirementsinevents(int_requirementID,int_eventinfoID) VALUES (?,?)`
+                                                    db.query(queryString8,[results2.insertId,eventinfoID.insertId],(err, results, fields)=>{
+                                                        if (err) throw err;
+                                                        var queryString4 = `INSERT INTO tbl_baptism(int_eventinfoID, var_parentmarriageadd, var_fatherbplace, var_motherbplace, var_fathername, var_mothername, var_contactnum, date_desireddate, time_desiredtime) VALUES(?,?,?, ?,?,? ,?,?,?);`
+                                                        console.log(dtime)
+                                                        db.query(queryString4 , [eventinfoID.insertId, req.body.marriageaddress, req.body.fatherbirthplace, req.body.motherbirthplace, req.body.fathername, req.body.mothername, req.body.contactnumber, ddate,dtime], (err, results, fields) => {
+                                                            if (err) throw err;
+                                                            sponsors(eventinfoID.insertId);
+                                                            return res.redirect(`/guest`);
+                                                    })
                                                 })
                                             })
                                         });

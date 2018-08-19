@@ -314,33 +314,33 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 });            
             });
 
-            secretariatRouter.post('/maintenance-nonwedrequirements/delete', (req, res) => {
-                const queryString = `DELETE FROM tbl_requirementtype
-                WHERE int_reqtypeID= ${req.params.int_reqtypeID}`;
-                
-                db.query(queryString, (err, results, fields) => {        
-                    if (err) throw err;
-                    return res.redirect('/secretariat/maintenance-requirements');
-                    
-                });
-            });
-
-            secretariatRouter.post('/maintenance-nonwedrequirements/edit', (req, res) => {
-                var queryString= `select int_eventID from tbl_services where var_eventname = ?`
-                db.query(queryString,  [req.body.eventname], (err, results, fields) => {
-                    if (err) throw err;
-                        var eventid = results[0];
-                        console.log(eventid);
-                        const queryString1 = `UPDATE tbl_requirementtype SET int_eventID=?, var_reqname =?, var_reqdesc= ?
-                        WHERE int_reqtypeID= ${req.params.int_reqtypeID}`;
-                    
-                        db.query(queryString1,[eventid.int_eventID, req.body.reqname, req.body.reqdesc], (err, results, fields) => {        
-                            if (err) throw err;
-                            return res.redirect('/secretariat/maintenance-requirements');
-                        });    
-                });
-            });
+        secretariatRouter.post('/maintenance-nonwedrequirements/delete', (req, res) => {
+            const queryString = `DELETE FROM tbl_requirementtype
+            WHERE int_reqtypeID= ${req.params.int_reqtypeID}`;
             
+            db.query(queryString, (err, results, fields) => {        
+                if (err) throw err;
+                return res.redirect('/secretariat/maintenance-requirements');
+                
+            });
+        });
+
+        secretariatRouter.post('/maintenance-nonwedrequirements/edit', (req, res) => {
+            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
+            db.query(queryString,  [req.body.eventname], (err, results, fields) => {
+                if (err) throw err;
+                    var eventid = results[0];
+                    console.log(eventid);
+                    const queryString1 = `UPDATE tbl_requirementtype SET int_eventID=?, var_reqname =?, var_reqdesc= ?
+                    WHERE int_reqtypeID= ${req.params.int_reqtypeID}`;
+                
+                    db.query(queryString1,[eventid.int_eventID, req.body.reqname, req.body.reqdesc], (err, results, fields) => {        
+                        if (err) throw err;
+                        return res.redirect('/secretariat/maintenance-requirements');
+                    });    
+            });
+        });
+        
         
     //wedding requirements
         secretariatRouter.get('/maintenance-wedrequirements', (req, res)=>{
@@ -480,47 +480,50 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     });
     secretariatRouter.post('/transaction-documentrequest/update', (req, res)=>{
         console.log(req.body)
-        const queryString4 = `SELECT * from tbl_documentrequest where int_requestID=?`
-        db.query(queryString4,[req.body.docuid], (err, results1, fields) => {
-        
-            var queryString2 =`UPDATE tbl_requirementsdocument SET bool_reqstatus = ? 
-            WHERE int_requestID =?`
-            db.query(queryString2,[req.body.reqstatus,req.body.reqid], (err, results, fields) => {
-                console.log(req.body.reqstatus)
+        const queryString2 = `UPDATE tbl_requirementsdocument set bool_reqstatus=?
+        where int_requirementdocumentID = ?`
+        db.query(queryString2,[req.body.reqstatus,req.body.reqid], (err, results1, fields) => {
+            const queryString3 = `UPDATE tbl_payment set char_paymentstatus=?
+            where int_paymentID = ?`
+            db.query(queryString3,[req.body.paystatus,req.body.payid], (err, results1, fields) => { 
+                const queryString4 = `UPDATE tbl_documentrequest set char_docustatus=?
+                where int_requestID = ?`
                 if(req.body.reqstatus == "Approved"){
-                    const queryString3 = `UPDATE tbl_documentrequest SET char_docustatus =? where int_requestID=?`
-                    db.query(queryString3,["To be Released",req.body.docuid], (err, results, fields) => {
-                        var queryString2 =`UPDATE tbl_payment SET char_paymentstatus = ? 
-                        WHERE int_paymentID =?`
-                        db.query(queryString2,[req.body.paystatus,req.body.payid], (err, results, fields) => {
-                            if(req.body.paystatus == "Paid"){
-                                const queryString3 = `UPDATE tbl_documentrequest SET char_docustatus =? where int_requestID=?`
-                                db.query(queryString3,["Released",req.body.docuid], (err, results, fields) => {
-                                    if (err) console.log(err);
-                                    return res.redirect('/secretariat/transaction-documentrequest')
-                                })
-                            }
-                            if(req.body.paystatus == "Unpaid"){
-                                const queryString3 = `UPDATE tbl_documentrequest SET char_docustatus =? where int_requestID=?`
-                                db.query(queryString3,["To Be Released",req.body.docuid], (err, results, fields) => {
-                                    if (err) console.log(err);
-                                    return res.redirect('/secretariat/transaction-documentrequest')
-                                })
-                            }
-                        });  
-                    })
-                }
-                if(req.body.reqstatus == "Pending"){
-                    const queryString3 = `UPDATE tbl_documentrequest SET char_docustatus =? where int_requestID=?`
-                    db.query(queryString3,["Requested",req.body.docuid], (err, results, fields) => {
+                    if(req.body.paystatus == "Unpaid"){
+                        db.query(queryString4,["To be Released",req.body.docuid], (err, results1, fields) => { 
                         if (err) console.log(err);
-                        return res.redirect('/secretariat/transaction-documentrequest')
-                    })
+                        return res.redirect('/secretariat/transaction-documentrequest');
+                        });
+                    }
+                    else if(req.body.paystatus == "Paid"){
+                         db.query(queryString4,["Released",req.body.docuid], (err, results1, fields) => { 
+                         if (err) console.log(err);
+                         return res.redirect('/secretariat/transaction-documentrequest');
+                         });
+                    }
                 }
-                
+                else if(req.body.reqstatus == "Pending" ||req.body.reqstatus == "Incomplete"){
+                    db.query(queryString4,["Pending",req.body.docuid], (err, results1, fields) => {
+                        var queryString5 =`UPDATE tbl_payment SET char_paymentstatus =?
+                        WHERE int_paymentID = ?`
+                        db.query(queryString5,["Unpaid",req.body.payid], (err, results1, fields) => {
+                        if (err) console.log(err);
+                        return res.redirect('/secretariat/transaction-documentrequest');
+                        });
+                    });
+                }
+                else if(req.body.paystatus == "Paid"){
+                    db.query(queryString4,["Released",req.body.docuid], (err, results1, fields) => { 
+                    if (err) console.log(err);
+                    return res.redirect('/secretariat/transaction-documentrequest');
+                    });
+                }
                 
             });
         });
+
+
+        
     });
     secretariatRouter.get('/transaction-walkin', (req, res)=>{
         res.render('secretariat/views/transactions/walkin')
@@ -531,27 +534,26 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
-        join tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
-        
+        JOIN tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
+        JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
         where tbl_services.var_eventname ='Baptism'`
-
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
                 var regulars=results;
-                for(var i = 0; i < regulars.length; i++){
-                    
+                for(var i = 0; i < regulars.length; i++){   
                     regulars[i].date_birthday= moment(regulars[i].date_birthday).format('YYYY-MM-DD');
                     regulars[i].date_desireddate= moment(regulars[i].date_desireddate).format('YYYY-MM-DD');
                     regulars[i].time_desiredtime= moment(regulars[i].time_desiredtime, 'HH:mm:ss').format('hh:mm A'); 
-                }             
-            
+                }
                 var queryString3 =`SELECT * FROM tbl_eventinfo 
                     JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
                     JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
                     JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
                     JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
                     join tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
-                    
+                    JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                    JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
                     where tbl_services.var_eventname ='Special Baptism'`
 
                         db.query(queryString3, (err, results, fields) => {
