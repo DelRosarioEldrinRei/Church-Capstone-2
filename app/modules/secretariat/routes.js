@@ -438,7 +438,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID 
         join tbl_user on tbl_documentrequest.int_userID = tbl_user.int_userID`
         db.query(queryString1, (err, results, fields) => {
-            
             if (err) console.log(err);       
             var requests = results;
             // var arrays
@@ -466,13 +465,15 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         });
     });
     secretariatRouter.post('/transaction-documentrequest/update/query', (req, res)=>{
-        var queryString1 =`SELECT tbl_documentrequest.int_requestID,char_docustatus,tbl_payment.int_paymentID,char_paymentstatus,tbl_requirementsdocument.int_requirementdocumentID,bool_reqstatus,dbl_docuprice FROM tbl_documentrequest 
+        var queryString1 =`SELECT tbl_user.int_userID,tbl_documentrequest.int_requestID,char_docustatus,tbl_payment.int_paymentID,char_paymentstatus,tbl_requirementsdocument.int_requirementdocumentID,bool_reqstatus,dbl_docuprice FROM tbl_documentrequest 
         join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID
         join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
         join tbl_requirementsdocument on tbl_documentrequest.int_requestID = tbl_requirementsdocument.int_requestID
         join tbl_docureqtype on tbl_docureqtype.int_docureqtypeID = tbl_requirementsdocument.int_docureqtypeID
+        join tbl_user on tbl_user.int_userID = tbl_documentrequest.int_userID
         where tbl_documentrequest.int_requestID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
+            req.session.userID = results[0].int_userID
             if (err) console.log(err);
             res.send(results[0])
             console.log(results[0])
@@ -491,8 +492,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 if(req.body.reqstatus == "Approved"){
                     if(req.body.paystatus == "Unpaid"){
                         db.query(queryString4,["To be Released",req.body.docuid], (err, results1, fields) => { 
-                        if (err) console.log(err);
-                        return res.redirect('/secretariat/transaction-documentrequest');
+                            var queryString6 = `INSERT INTO tbl_notification(int_userID,var_notifdesc) VALUES(?,?)`
+                            db.query(queryString6,[req.session.userID,'Your Document Request is to ready to release'], (err, results1, fields) => {
+                            if (err) console.log(err);
+                            return res.redirect('/secretariat/transaction-documentrequest');
+                            })
                         });
                     }
                     else if(req.body.paystatus == "Paid"){

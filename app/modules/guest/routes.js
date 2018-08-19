@@ -220,6 +220,21 @@
             });
     
         });
+        //===============================================================================================//
+    // N O T I F I C A T I O N //
+    //===============================================================================================//
+    guestRouter.get('/notification', (req, res)=>{
+        var queryString1 =`SELECT * from tbl_notification 
+        WHERE int_userID =?`
+        db.query(queryString1, [req.session.user.int_userID], (err, results, fields) => {
+            if (err) console.log(err);
+            return res.render('guest/views/reservations/notification',{ notifications: results });
+        });
+
+    });
+
+
+
     // ---------------------------------------------------------------------------------------------------------
     // E  D  I  T    D  E  T  A  I  L  S 
     // ---------------------------------------------------------------------------------------------------------
