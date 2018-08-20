@@ -1,127 +1,85 @@
 extends ../../../../../templates/secretariat
 
 block prepend main
-    #wrap
-    //- #calendar
-    div(style='clear:both')
-    .content
-        .container-fluid
-            
-            .row
-                .col-lg-12.col-md-12
-                        .card
-                                .card-header.card-header-primary
-                                        h4.card-title Regular Baptism
-                                        
-                                .card-body.table-responsive
-                                        table.table.table-hover
-                                                thead.text-primary
-                                                        th ID
-                                                        th Name of the Child
-                                                        th Birthday
-                                                        th Req Status
-                                                        th Pymt Status
-                                                        th Approval Status
-                                                        th.text-center(style=" width:120px") Actions
-                                                tbody
-                                                        each regular in regulars
-                                                            tr
-                                                                td=regular.int_eventinfoID
-                                                                td=regular.var_lname + ", " + regular.var_fname
-                                                                td=regular.date_birthday
-                                                                td=regular.var_reqstatus
-                                                                td=regular.char_feestatus
-                                                                td=regular.char_approvalstatus
-                                                                td.td-actions.text-center
-                                                                    button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${regular.int_eventinfoID}`)
-                                                                        i.ti-user
-                                                                    | &nbsp;
-                                                                    button.btn.btn-primary.updateButton(type='button',rel='tooltip',value=`${regular.int_eventinfoID}`)
-                                                                        i.ti-pencil
-                                .card-footer.text-right
-                                    .col-md-7
-                                        <cite title="Source Title">Showing 6 of 25 entries</cite> 
-                                    .col-md-6.text-right
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination justify-content-center">
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                        .card
-                                .card-header.card-header-primary
-                                        h4.card-title Special Baptism
-                                        
-                                .card-body.table-responsive
-                                        table.table.table-hover
-                                                thead.text-primary
-                                                        th ID
-                                                        th Name of the Child
-                                                        th Birthday
-                                                        th Desired Schedule
-                                                        th Req Status
-                                                        th Pymt Status
-                                                        th Approval Status
-                                                        th.text-right(style=" width:120px") Actions
-                                                tbody
-                                                        each special in specials
-                                                            tr
-                                                                td=special.int_eventinfoID
-                                                                td=special.var_lname + ", " + special.var_fname
-                                                                td=special.date_birthday
-                                                                td=special.date_desireddate + ' ' + special.time_desiredtime
-                                                                td=special.var_reqstatus
-                                                                td=special.char_feestatus
-                                                                td=special.char_approvalstatus
-                                                                td.td-actions.text-center
-                                                                    button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${special.int_eventinfoID}`)
-                                                                        i.ti-user
-                                                                    | &nbsp;
-                                                                    button.btn.btn-primary.updateButton(type='button',rel='tooltip',value=`${special.int_eventinfoID}`)
-                                                                        i.ti-pencil
-                                                            
-                                .card-footer.text-right
-                                    .col-md-7
-                                        <cite title="Source Title">Showing 6 of 25 entries</cite> 
-                                    .col-md-6.text-right
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination justify-content-center">
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-            .row
-                .col-md-8
-                    <div class="card card-nav-tabs">
-                        <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                                //- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                                <footer class="blockquote-footer"><cite title="Source Title">Note:</cite> Deadline for sumbission of requirements will be on <u><cite><strong> June 20, 2018</u></cite></strong> </footer>
-                            </blockquote>
-                        </div>
-                    </div>
-                .col-md-4
-                    .card.card-chart
-                        .card-header.card-header-warning
-                            #websiteViewsChart.ct-chart
-                        .card-body
-                            h4.card-title Baptism Applications
-                            p.card-category Month of June
-                        .card-footer
-                            .stats
-                                i.material-icons access_time
-                                |  As of today
-            
-block addjs
-    script(src='js/forIndex.js')
-    
+	//- #wrap
+	//- //- #calendar
+	//- div(style='clear:both')
+	.content
+		.container-fluid
+			.row
+				.col-lg-12.col-md-12
+					// Tab panes
+					.tab-content
+						#nonwedding.tab-pane.active.mx-3
+							br
+							// Inner Nav tabs
+							ul.nav.nav-tabs
+								li.nav-item
+									a.nav-link.active(data-toggle='tab', href='#regularbaptism') Regular Baptism
+								li.nav-item
+									a.nav-link(data-toggle='tab', href='#specialbaptism') Special Bapitsm
+							// Tab panes
+							.tab-content
+								#regularbaptism.tab-pane.active
+									br
+									.card
+											.card-header.card-header-primary
+													h4.card-title Regular Baptism
+											.card-body.table-responsive
+													table.dataTable.table.table-hover
+															thead.text-primary
+																	th ID
+																	th Name of the Child
+																	th Birthday
+																	th Req Status
+																	th Pymt Status
+																	th Approval Status
+																	th.text-center(style=" width:120px") Actions
+															tbody
+																	each regular in regulars
+																		tr
+																			td=regular.int_eventinfoID
+																			td=regular.var_lname + ", " + regular.var_fname
+																			td=regular.date_birthday
+																			td=regular.var_reqstatus
+																			td=regular.char_feestatus
+																			td=regular.char_approvalstatus
+																			td.td-actions.text-center
+																				button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${regular.int_eventinfoID}`)
+																					i.ti-user
+																				| &nbsp;
+																				button.btn.btn-primary.updateButton(type='button',rel='tooltip',value=`${regular.int_eventinfoID}`)
+																					i.ti-pencil
+								#specialbaptism.tab-pane.fade
+									br
+									.card
+											.card-header.card-header-primary
+													h4.card-title Special Baptism
+													
+											.card-body.table-responsive
+													table.table.dataTable.table-hover
+															thead.text-primary
+																	th ID
+																	th Name of the Child
+																	th Birthday
+																	th Desired Schedule
+																	th Req Status
+																	th Pymt Status
+																	th Approval Status
+																	th.text-right(style=" width:120px") Actions
+															tbody
+																	each special in specials
+																		tr
+																			td=special.int_eventinfoID
+																			td=special.var_lname + ", " + special.var_fname
+																			td=special.date_birthday
+																			td=special.date_desireddate + ' ' + special.time_desiredtime
+																			td=special.var_reqstatus
+																			td=special.char_feestatus
+																			td=special.char_approvalstatus
+																			td.td-actions.text-center
+																				button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${special.int_eventinfoID}`)
+																					i.ti-user
+																				| &nbsp;
+																				button.btn.btn-primary.updateButton(type='button',rel='tooltip',value=`${special.int_eventinfoID}`)
+																					i.ti-pencil

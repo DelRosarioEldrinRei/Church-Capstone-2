@@ -104,6 +104,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         var queryString1 =`SELECT * FROM tbl_services where char_type = "Sacrament"`
         db.query(queryString1, (err, results1, fields) => {
             if (err) console.log(err)  
+            console.log(results1)
             var queryString2 =`SELECT * FROM tbl_services where char_type = "Special Service"`
             db.query(queryString2, (err, results2, fields) => {
                 if (err) console.log(err);      
