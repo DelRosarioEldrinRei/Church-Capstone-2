@@ -30,7 +30,7 @@ block prepend main
                                                                 td=regular.var_lname + ", " + regular.var_fname
                                                                 td=regular.date_birthday
                                                                 td=regular.var_reqstatus
-                                                                td=regular.char_feestatus
+                                                                td=regular.char_paymentstatus
                                                                 td=regular.char_approvalstatus
                                                                 td.td-actions.text-center
                                                                     button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${regular.int_eventinfoID}`)
@@ -76,7 +76,7 @@ block prepend main
                                                                 td=special.date_birthday
                                                                 td=special.date_desireddate + ' ' + special.time_desiredtime
                                                                 td=special.var_reqstatus
-                                                                td=special.char_feestatus
+                                                                td=special.char_paymentstatus
                                                                 td=special.char_approvalstatus
                                                                 td.td-actions.text-center
                                                                     button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${special.int_eventinfoID}`)

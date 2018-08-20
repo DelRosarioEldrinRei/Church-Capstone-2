@@ -541,6 +541,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         JOIN tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
         JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventapplication.int_paymentID
         where tbl_services.var_eventname ='Baptism'`
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
@@ -558,6 +559,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                     join tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
                     JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
                     JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
+                    JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventapplication.int_paymentID
                     where tbl_services.var_eventname ='Special Baptism'`
 
                         db.query(queryString3, (err, results, fields) => {

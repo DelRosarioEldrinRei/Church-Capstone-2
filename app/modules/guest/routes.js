@@ -74,7 +74,7 @@
                 else if(services.var_eventname== 'Marriage'){ return res.render('guest/views/forms/marriage',{user: req.session.user});}
                 else if(services.var_eventname== 'Confirmation'){ return res.render('guest/views/forms/confirmation',{user: req.session.user});}
                 else if(services.var_eventname== 'Document Request'){ return res.render('guest/views/forms/document',{user: req.session.user});}
-                else if(services.var_eventname== 'Facility Reservation'){ return res.render('guest/views/forms/facility',{user: req.session.user});}
+                else if(services.var_eventname== 'Facility Reservation'){ return res.render('guest/views/facilities/index',{user: req.session.user});}
                 else if(services.var_eventname== 'Anointing of the sick'){ return res.render('guest/views/forms/anointing',{user: req.session.user});}
                 else{ return res.redirect('/guest')}
             });
@@ -231,6 +231,9 @@
             return res.render('guest/views/reservations/notification',{ notifications: results });
         });
 
+    });
+    guestRouter.get('/voucher', (req, res)=>{
+        res.render('guest/views/voucher/facility');
     });
 
 

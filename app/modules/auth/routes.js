@@ -100,7 +100,12 @@ loginRouter.route('/')
                     console.log(req.session);
                     return res.redirect('/guest/document/form');
                 }
-                
+                else if(req.session.eventId == 15){
+                    delete user.var_password;
+                    req.session.user = user;
+                    console.log(req.session);
+                    return res.redirect('/guest/facilities');
+                }
                 else{
                     delete user.var_password;
                     req.session.user = user;
