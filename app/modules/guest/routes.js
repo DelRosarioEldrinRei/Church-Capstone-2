@@ -867,6 +867,9 @@
         guestRouter.get('/marriage/form', (req, res)=>{
             res.render('guest/views/forms/marriage',{user: req.session.user})
         });
+        guestRouter.get('/marriage1/form', (req, res)=>{
+            res.render('guest/views/forms/marriage1',{user: req.session.user})
+        });
         guestRouter.post('/marriage/form', (req, res) => {
     
             var queryString= `select int_eventID from tbl_services where var_eventname="Marriage";`  

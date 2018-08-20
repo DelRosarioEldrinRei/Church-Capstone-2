@@ -101,10 +101,10 @@ adminRouter.use(authMiddleware.adminAuth)
 //SERVICES
 //=======================================================
     adminRouter.get('/maintenance-services', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_services where char_type = "Sacrament" AND bool_isDeleted = 0`
+        var queryString1 =`SELECT * FROM tbl_services where char_type = "Sacrament"`
         db.query(queryString1, (err, results1, fields) => {
             if (err) console.log(err)  
-            var queryString2 =`SELECT * FROM tbl_services where char_type = "Special Service" AND bool_isDeleted = 0`
+            var queryString2 =`SELECT * FROM tbl_services where char_type = "Special Service"`
             db.query(queryString2, (err, results2, fields) => {
                 if (err) console.log(err);      
             return res.render('admin/views/maintenance/services',{ sacraments : results1, services:results2 });    

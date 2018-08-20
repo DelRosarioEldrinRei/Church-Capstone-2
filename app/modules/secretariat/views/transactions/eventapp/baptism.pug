@@ -1,6 +1,7 @@
 extends ../../../../../templates/secretariat
 
 block prepend main
+<<<<<<< HEAD
     #wrap
     //- #calendar
     div(style='clear:both')
@@ -125,3 +126,87 @@ block prepend main
 block addjs
     script(src='js/forIndex.js')
     
+=======
+	//- #wrap
+	//- //- #calendar
+	//- div(style='clear:both')
+	.content
+		.container-fluid
+			.row
+				.col-lg-12.col-md-12
+					// Tab panes
+					.tab-content
+						#nonwedding.tab-pane.active.mx-3
+							br
+							// Inner Nav tabs
+							ul.nav.nav-tabs
+								li.nav-item
+									a.nav-link.active(data-toggle='tab', href='#regularbaptism') Regular Baptism
+								li.nav-item
+									a.nav-link(data-toggle='tab', href='#specialbaptism') Special Bapitsm
+							// Tab panes
+							.tab-content
+								#regularbaptism.tab-pane.active
+									br
+									.card
+											.card-header.card-header-primary
+													h4.card-title Regular Baptism
+											.card-body.table-responsive
+													table.dataTable.table.table-hover
+															thead.text-primary
+																	th ID
+																	th Name of the Child
+																	th Birthday
+																	th Req Status
+																	th Pymt Status
+																	th Approval Status
+																	th.text-center(style=" width:120px") Actions
+															tbody
+																	each regular in regulars
+																		tr
+																			td=regular.int_eventinfoID
+																			td=regular.var_lname + ", " + regular.var_fname
+																			td=regular.date_birthday
+																			td=regular.var_reqstatus
+																			td=regular.char_feestatus
+																			td=regular.char_approvalstatus
+																			td.td-actions.text-center
+																				button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${regular.int_eventinfoID}`)
+																					i.ti-user
+																				| &nbsp;
+																				button.btn.btn-primary.updateButton(type='button',rel='tooltip',value=`${regular.int_eventinfoID}`)
+																					i.ti-pencil
+								#specialbaptism.tab-pane.fade
+									br
+									.card
+											.card-header.card-header-primary
+													h4.card-title Special Baptism
+													
+											.card-body.table-responsive
+													table.table.dataTable.table-hover
+															thead.text-primary
+																	th ID
+																	th Name of the Child
+																	th Birthday
+																	th Desired Schedule
+																	th Req Status
+																	th Pymt Status
+																	th Approval Status
+																	th.text-right(style=" width:120px") Actions
+															tbody
+																	each special in specials
+																		tr
+																			td=special.int_eventinfoID
+																			td=special.var_lname + ", " + special.var_fname
+																			td=special.date_birthday
+																			td=special.date_desireddate + ' ' + special.time_desiredtime
+																			td=special.var_reqstatus
+																			td=special.char_feestatus
+																			td=special.char_approvalstatus
+																			td.td-actions.text-center
+																				button.btn.btn-info.viewButton(type='button',rel='tooltip',value=`${special.int_eventinfoID}`)
+																					i.ti-user
+																				| &nbsp;
+																				button.btn.btn-primary.updateButton(type='button',rel='tooltip',value=`${special.int_eventinfoID}`)
+																					i.ti-pencil
+>>>>>>> b5dc6588afb0a36d823700a3a0d766b42816e404
