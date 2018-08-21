@@ -449,46 +449,84 @@ block prepend main
                             window.location='/guest/facilities'
                             //gawa pug
                             }
-                            //- else if(data.firstQuery.var_eventname == "Document Request"){
-                            //- $('#searchModal').modal('show');
-                            //- $('#searchButton').click(function(){
-                            //- $('#searchModal').modal('hide');
-                            //- var eventDate = moment($('#eventDate').val()).format('YYYY-MM-DD');
-                            //-     $.post('/guest/document/query',{
-                            //-     eventDate:eventDate,
-                            //-     firstName:$('#firstName').val(),
-                            //-     lastName:$('#lastName').val(),
-                            //-     documentType:$('#documenttype').val(),
-                            //-     }).done(data=>{
-                            //-         if(($('#lastName').val() == data.var_lname) && ($('#firstName').val() == data.var_fname) && (eventDate == data.date_approveddate)){
-                            //-         swal({
-                            //-             title:'Record found!',
-                            //-             text:'Please wait for 3 days for your request to be processed. We will send you an email once it is ready to be released. You may also be ',
-                            //-             type:'success',
-                            //-             showCancelButton: true,
-                            //-             confirmButtonColor: '#3085d6',
-                            //-             cancelButtonColor: '#d33',
-                            //-             confirmButtonText: 'Confirm'
-                            //-         }).then((result)=>{
-                            //-             if(result.value)
-                            //-             window.location='/guest/document/form'
-                            //-         })
-                            //-         }
-                            //-         else{
-                            //-             swal({
-                            //-                 title:'Sorry',
-                            //-                 text: 'Your transaction does not exist. Check the data you have entered and try again.',
-                            //-                 type:'warning',
-                            //-                 showCancelButton: true,
-                            //-                 confirmButtonColor: '#3085d6',
-                            //-                 cancelButtonColor: '#d33',
-                            //-                 confirmButtonText: 'Confirm'
-                            //-             })
+                            else if(data.firstQuery.var_eventname == "Document Request"){
+                            $('#searchModal').modal('show');
+                            $('#searchButton').click(function(){
+                            $('#searchModal').modal('hide');
+                            var eventDate = moment($('#eventDate').val()).format('YYYY-MM-DD');
+                                $.post('/guest/document/query',{
+                                eventDate:eventDate,
+                                firstName:$('#firstName').val(),
+                                lastName:$('#lastName').val(),
+                                documentType:$('#documenttype').val(),
+                                }).done(data=>{
+                                    if(($('#lastName').val() == data.var_lname) && ($('#firstName').val() == data.var_fname) && (eventDate == data.date_approveddate)){
+                                    var fullName = data.var_lname + ", " + data.var_fname
+                                    var birthDate =  moment(data.date_birthday).format('YYYY-MM-DD');
+                                    swal({
+                                        title:'Record found!',
+                                        html:`<h5>Confirm Record</h5>
+                                        <label>Name of the child: ${fullName}</label>
+                                        <label>Birth Date: ${birthDate}</label> 
+                                        <label>Name of Mother: ${data.var_mothername}</label>
+                                        <label>Name of Father: ${data.var_fathername}</label>`,
+                                        type:'question',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Confirm'
+                                    }).then((result)=>{
+                                        if(result.value){
+                                        $.post('/guest/document/queryDocument',{
+                                        firstName:$('#firstName').val(),
+                                        lastName:$('#lastName').val(),
+                                        documentType:$('#documenttype').val(),
+                                        }).done(data=>{
+                                            if(data){
+                                            swal({
+                                            title:'Warning',
+                                            text: 'This Transaction is on going, do you want to request more than 1 document? ',
+                                            type:'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Confirm'
+                                            }).then((result)=>{
+                                                if(result.value){
+                                                 window.location=`/guest/document/form?documentType=${$('#documenttype').val()}&lastName=${$('#lastName').val()}&firstName=${$('#firstName').val()}&eventDate=${eventDate}`
+                                                }
+                                            })
+
+                                            }
+                                            else{
+                                            window.location=`/guest/document/form?documentType=${$('#documenttype').val()}&lastName=${$('#lastName').val()}&firstName=${$('#firstName').val()}&eventDate=${eventDate}` 
+                                            }
+                                        })    
+
+
+
+
+
+                                       
+                                        }
+                                        
+                                    })
+                                    }
+                                    else{
+                                        swal({
+                                            title:'Sorry',
+                                            text: 'Your transaction does not exist. Check the data you have entered and try again.',
+                                            type:'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Confirm'
+                                        })
                                     
-                            //-         }
-                            //-     })
-                            //- })
-                            //- }
+                                    }
+                                })
+                            })
+                            }
                             else{
                             $('#headerAppend').append(`
                                 <label id="idshit" hidden>${data.firstQuery.int_eventID}</label>

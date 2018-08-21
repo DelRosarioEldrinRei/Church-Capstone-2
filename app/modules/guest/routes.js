@@ -983,15 +983,18 @@
         });
     
         guestRouter.get('/document/form', (req, res)=>{
-            res.render('guest/views/forms/document')
+            var results = req.query
+            console.log(results)
+            return res.render('guest/views/forms/document',{results:results});
         });
         guestRouter.post('/document/query', (req, res)=>{
-            var queryString =`SELECT tbl_document.var_documenttype,tbl_relation.var_fname,tbl_relation.var_lname,
+            var queryString =`SELECT tbl_baptism.var_fathername,tbl_baptism.var_mothername,tbl_relation.date_birthday,tbl_document.var_documenttype,tbl_relation.var_fname,tbl_relation.var_lname,
             tbl_eventinfo.date_approveddate
             FROM tbl_document
             JOIN tbl_documentsevents ON tbl_documentsevents.int_documentID = tbl_document.int_documentID
             JOIN tbl_eventinfo ON tbl_eventinfo.int_eventID = tbl_documentsevents.int_eventID
             JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             WHERE tbl_document.var_documenttype = ?
             AND tbl_relation.var_fname = ?
             AND tbl_relation.var_lname = ?
@@ -1010,7 +1013,18 @@
             }
             })
         });
-    
+        guestRouter.post('/document/queryDocument',(req,res)=>{
+        var queryString = `SELECT * FROM 
+        tbl_documentrequest JOIN tbl_document ON tbl_documentrequest.int_documentID = tbl_document.int_documentID
+        WHERE tbl_documentrequest.var_doclastname=?
+        AND tbl_documentrequest.var_docfirstname=?
+        AND tbl_document.var_documenttype =?
+        `
+            db.query(queryString,[req.body.lastName,req.body.firstName,req.body.documentType],(err,results,fields)=>{
+                if (err) throw err;
+                res.send(results[0])
+            })
+        })
         guestRouter.post('/document/form',upload.single('image'), (req, res) => {
         console.log(req.file)
             var queryString1 = `select int_documentID,dbl_docuprice from tbl_document where var_documenttype= ?`  

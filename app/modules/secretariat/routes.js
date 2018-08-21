@@ -495,8 +495,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                         db.query(queryString4,["To be Released",req.body.docuid], (err, results1, fields) => { 
                             var queryString6 = `INSERT INTO tbl_notification(int_userID,var_notifdesc) VALUES(?,?)`
                             db.query(queryString6,[req.session.userID,'Your Document Request is to ready to release'], (err, results1, fields) => {
-                            if (err) console.log(err);
-                            return res.redirect('/secretariat/transaction-documentrequest');
+                                if (err) console.log(err);
+                                return res.redirect('/secretariat/transaction-documentrequest');
                             })
                         });
                     }
