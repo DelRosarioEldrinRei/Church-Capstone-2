@@ -105,11 +105,11 @@ html(lang='en')
 								span.icon-menu
 								span.icon-menu
 								span.icon-menu
-							a.navbar-brand.pt-md-1.pl-md-5.pt-sm-0(href='')
+							a.navbar-brand.pt-md-1.pl-md-5.pt-sm-0(href='/guest')
 								img.rounded-circle.shadow(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem")
 						#main-navbar.collapse.navbar-collapse
 							ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix
-								li.nav-item: a.nav-link(href="/guest")
+								li.nav-item: a.nav-link(href="/guest/#headers")
 									| Home
 								li.nav-item: a.nav-link(href="/guest/#services")
 									| Services
@@ -266,6 +266,20 @@ html(lang='en')
 
 			$('.datepicker').datetimepicker({
 					format: 'YYYY-MM-DD',
+					icons: {
+						time: "fa fa-clock-o",
+						date: "fa fa-calendar",
+						up: "fa fa-chevron-up",
+						down: "fa fa-chevron-down",
+						previous: 'fa fa-chevron-left',
+						next: 'fa fa-chevron-right',
+						today: 'fa fa-screenshot',
+						clear: 'fa fa-trash',
+						close: 'fa fa-remove'
+				}
+			});
+
+			$('.dateandtimepicker').datetimepicker({
 					icons: {
 						time: "fa fa-clock-o",
 						date: "fa fa-calendar",
