@@ -526,9 +526,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 
             });
         });
-
-
-        
+   
     });
     secretariatRouter.get('/transaction-walkin', (req, res)=>{
         res.render('secretariat/views/transactions/walkin')
@@ -578,7 +576,20 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                             return res.render('secretariat/views/transactions/eventapp/baptism',{regulars:regulars, specials:specials});
         }); 
         }); 
-    }); 
+    });
+    secretariatRouter.post('/transaction-baptism/update/query', (req, res)=>{
+        var queryString1 =`SELECT tbl_relation.var_lname,tbl_relation.var_fname,tbl_relation.var_mname
+        ,tbl_relation.var_fathername,tbl_relation.mothername,tbl_baptism.date_desireddate,char_approvalstatus
+        ,tbl_eventapplication.char_approvalstatus
+        FROM
+        `
+        db.query(queryString1,[req.body.id], (err, results, fields) => {
+            req.session.userID = results[0].int_userID
+            if (err) console.log(err);
+            res.send(results[0])
+            console.log(results[0])
+        });
+    });
     secretariatRouter.get('/transaction-blessings', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID

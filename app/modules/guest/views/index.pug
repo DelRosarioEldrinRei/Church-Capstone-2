@@ -1,456 +1,527 @@
 extends ../../../templates/guests
 block prepend main
-	style.
-		#header-style-1 {
-			height:600px;
-			background-image: url(../img/wall.jpg) !important;
-		}
-		#counter > div > div > div > span > i {
-			color:white;
-		}
-	#headers
-		#header-style-1
-			.container
-				.header-caption
-					.row
-						.col-md-12.header-content
-							h3.header-title.animated.fadeInDown.invisible
-								span.text-primary Helium - 
-								| Bootstrap 4 UI Kit
-							h5.header-text.animated.fadeIn.invisible
-								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
-							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
-							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
-	#about.section-padding
-		.container
-			.row
-				.col-lg-3.col-md-6.col-xs-12
-					.about.block.text-center
-						img(src='/Helium/img/inquire.png', alt='')
-						h5
-							a(href='#') Inquire
-						p
-							| See the information, guidelines and requirements of the parish services.
-				.col-lg-3.col-md-6.col-xs-12
-					.about.block.text-center
-						img(src='/Helium/img/submit.png', alt='')
-						h5
-							a(href='#') Submit
-						p
-							| Apply and submit requirements to our website.
-				.col-lg-3.col-md-6.col-xs-12
-					.about.block.text-center
-						img(src='/Helium/img/visit.png', alt='')
-						h5
-							a(href='#') Visit
-						p
-							| Go and visit our parish.
-				.col-lg-3.col-md-6.col-xs-12
-					.about.block.text-center
-						img(src='/Helium/img/complete.png', alt='')
-						h5
-							a(href='#') Complete
-						p
-							| Complete and enjoy your reservation at our parish.
-	#services.section-padding
-		.container
-			.row
-				.col-md-12
-					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Services
-			.row
-				each event in events
-					.col-lg-4.col-md-6.col-xs-12
-						.featured-box-item
-							.featured-icon
-								i.fa.fa-bolt
-							.featured-content
-								h4
-									| #{event.var_eventname}
-								p
-									| #{event.var_eventdesc.substring(0, 100)}...
-								.learn-more
-										button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
-										// Modal
-										#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-											.modal-dialog.modal-lg(role='document')
-												.modal-content#each
-													.modal-header#headerAppend
-														button.close(type='button', data-dismiss='modal', aria-label='Close')
-															span.p-3(aria-hidden='true') ×
-													.modal-body#bodyAppend
-													.modal-body#reqAppend
-													.modal-footer
-														button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${event.int_eventID}`) Apply
-				.col-md-12.text-center
-					.learn-more
-						a.btn.std-btn.btn-common(href='/services') View All
-	//- section#document
-	//- 	.container
-	//- 		.row
-	//- 			.col-md-12
-	//- 				h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Document Request
-	//- 		.row
-	//- 			.col-md-4.col-sm-6.col-xs-12
-	//- 				.service-box
-	//- 					.service-icon
-	//- 						i.fa.fa-cogs
-	//- 					.service-content
-	//- 						h4
-	//- 							a(href='#' name='eventname')
-	//- 						p
-	//- 							| #{event.var_eventdesc.substring(0, 100)}...
-	//- 							.learn-more
-	//- 								button.btn.std-btn.btn-common(type='button', data-toggle='modal', data-target='#exampleModal') Inquire
-									
-			.col-md-12.text-center
-				.learn-more
-					a.btn.std-btn.btn-common(href='/guest/allservices') View All
-	section#portfolio.section-padding
-		.container
-			.row
-				.col-md-12
-					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Portfolio
-			.row
-				.col-lg-12.col-md-12
-					.controls.text-center.wow.fadeInUpQuick(data-wow-delay='.6s')
-						a.filter.btn.btn-common.active(data-filter='all')
-							| All
-						a.filter.btn.btn-common(data-filter='.branding')
-							| Prayer
-						a.filter.btn.btn-common(data-filter='.marketing')
-							| Sceneries
-						a.filter.btn.btn-common(data-filter='.planning')
-							| Peace
-						a.filter.btn.btn-common(data-filter='.research')
-							| Visits
-				#portfolio.row.wow.fadeInUpQuick(data-wow-delay='0.8s')
-					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning(style='display: inline-block;', data-bound='')
-						.portfolio-item
-							.portfolio-img
-								img(src='/imgchurch/1.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-					.col-lg-4.col-md-6.col-xs-12.mix.branding.planning(style='display: inline-block;', data-bound='')
-						.portfolio-item
-							.portfolio-img
-								img(src='/imgchurch/2.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-					.col-lg-4.col-md-6.col-xs-12.mix.branding.research(style='display: inline-block;', data-bound='')
-						.portfolio-item
-							.portfolio-img
-								img(src='/imgchurch/3.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-					.col-lg-4.col-md-6.col-xs-12.mix.marketing.research(style='display: inline-block;', data-bound='')
-						.portfolio-item
-							.portfolio-img
-								img(src='/imgchurch/4.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning(style='display: inline-block;', data-bound='')
-						.portfolio-item
-							.portfolio-img
-								img(src=src='/imgchurch/5.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-					.col-lg-4.col-md-6.col-xs-12.mix.planning.research(style='display: inline-block;', data-bound='')
-						.portfolio-item
-							.portfolio-img
-								img(src=src='/imgchurch/6.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-	#counter
-		.container
-			.row.count-to-sec
-				.col-lg-3.col-md-6.col-xs-12.count-one
-					span.icon
-						i.fa.fa-download  
-					h3.timer.count-value(data-to='561', data-speed='1000') 561
-					hr.width25-divider
-					small.count-title Downloads
-				.col-lg-3.col-md-6.col-xs-12.count-one
-					span.icon
-						i.fa.fa-user  
-					h3.timer.count-value(data-to='950', data-speed='1000') 950
-					hr.width25-divider
-					small.count-title Developers
-				.col-lg-3.col-md-6.col-xs-12.count-one
-					span.icon
-						i.fa.fa-desktop  
-					h3.timer.count-value(data-to='978', data-speed='1000') 978
-					hr.width25-divider
-					small.count-title Lines of code written
-				.col-lg-3.col-md-6.col-xs-12.count-one
-					span.icon
-						i.fa.fa-coffee  
-					h3.timer.count-value(data-to='1700', data-speed='1000') 1700
-					hr.width25-divider
-					small.count-title Cups of coffee consumed
-	#team.team-members-tow.section-padding.mx-5
-		.container
-			.row
-				.col-md-12
-					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Our Team
-		.row
-			.col-sm-6.col-md-3
-				// Team Item Starts
-				.team-item
-					figure.team-profile
-						img(src='img/team/2.jpg', alt='')
-						figcaption.our-team
-							.details
-								p.content-white
-									| "Cram Is Gold" swswswswswswswswswswssws
-									| "b a k a l a k o"
-								hr.small-divider.border-white
-								.social
-									a.facebook(href='#')
-										i.fa.fa-facebook
-									a.twitter(href='#')
-										i.fa.fa-twitter
-									a.google-plus(href='#')
-										i.fa.fa-instagram
-					.info
-						h2
-							| Joshua Rae Macaya
-						p
-							| Database Engineer/ Main Dev
-				// Team Item Ends
-			.col-sm-6.col-md-3
-				// Team Item Starts
-				.team-item
-					figure.team-profile
-						img(src='img/team/1.jpg', alt='')
-						figcaption.our-team
-							.details
-								p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-								hr.small-divider.border-white
-								.social
-									a.facebook(href='#')
-										i.fa.fa-facebook
-									a.twitter(href='#')
-										i.fa.fa-twitter
-									a.google-plus(href='#')
-										i.fa.fa-instagram
-					.info
-						h2
-							| Jonalyn Fe Ebrada
-						p
-							| Project Manager
-				// Team Item Starts
-			.col-sm-6.col-md-3
-				// Team Item Starts
-				.team-item
-					figure.team-profile
-						img(src='img/team/3.jpg', alt='')
-						figcaption.our-team
-							.details
-								p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-								hr.small-divider.border-white
-								.social
-									a.facebook(href='#')
-										i.fa.fa-facebook
-									a.twitter(href='#')
-										i.fa.fa-twitter
-									a.google-plus(href='#')
-										i.fa.fa-instagram
-					.info
-						h2
-							| Norme Ann Joyce Peñaverde
-						p
-							| Software Tester
-				// Team Item Ends
-			.col-sm-6.col-md-3
-				// Team Item Starts
-				.team-item
-					figure.team-profile
-						img(src='img/team/4.jpg', alt='')
-						figcaption.our-team
-							.details
-								p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-								hr.small-divider.border-white
-								.social
-									a.facebook(href='#')
-										i.fa.fa-facebook
-									a.twitter(href='#')
-										i.fa.fa-twitter
-									a.google-plus(href='#')
-										i.fa.fa-instagram
-					.info
-						h2
-							| Eldrin Rei Del Rosario
-						p
-							| Web Designer
-	section#contact.contact-form.section-padding
-		.container
-			.row
-				.col-md-12
-					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Contact Us
-			.row
-				.col-lg-8.col-md-6.col-xs-12
-					h3.title-head.text-left Get in touch
-					form.contact-form(data-toggle='validator', novalidate='true')
-						.row
-							.col-lg-4.col-md-12.col-xs-12
-								.form-group
-									i.contact-icon.fa.fa-user
-									input#name.form-control(type='text', placeholder='Full Name', required='', data-error='Please enter your name')
-									.help-block.with-errors
-							.col-lg-4.col-md-12.col-xs-12
-								.form-group
-									i.contact-icon.fa.fa-envelope-o
-									input#email.form-control(type='email', placeholder='Email', required='', data-error='Please enter your email')
-									.help-block.with-errors
-							.col-lg-4.col-md-12.col-xs-12
-								.form-group
-									i.contact-icon.fa.fa-pencil-square-o
-									input#subject.form-control(type='text', placeholder='Subject', required='', data-error='Please enter your Subject')
-									.help-block.with-errors
-							.col-lg-12.col-md-12.col-xs-12
-								textarea#message.form-control(rows='4', placeholder='Message', required='', data-error='Please enter your message')
-								.help-block.with-errors
-								button#form-submit.btn.btn-common.btn-form-submit.disabled(type='submit', style='pointer-events: all; cursor: pointer;') Send Message
-								#msgSubmit.h3.text-center.hidden
-								.clearfix
-				.col-lg-4.col-md-6.col-xs-12
-					h4.contact-info-title.text-left Contact Information
-					.contact-info
-						address
-							i.lni-map-marker.icons.cyan-color.contact-info-icon
-							| Phase 1 Urban, Payatas B Quezon City
-						.tel-info
-							a(href='tel:1800452308')
-								i.lni-mobile.icons.cyan-color.contact-info-icon
-								| (02) 500-0239
-							a(href='tel:+61(8)82343555')
-								i.lni-phone.icons.cyan-color.contact-info-icon
-								| +61 (8) 8234 3555
-						a(href='mailto:hello@spiritapp.com')
-							i.lni-envelope.icons.cyan-color.contact-info-icon
-							| inlpp@yahoo.com
-						a(href='#')
-							i.lni-tab.icons.cyan-color.contact-info-icon
-							| www.inlpp.com
-						ul.social-links
-							li
-								a.fa.fa-facebook(href='#')
-							li
-								a.fa.fa-twitter(href='#')
-							li
-								a.fa.fa-instagram(href='#')
-							li
-								a.fa.fa-linkedin(href='#')
-	block addjs
-		script.
-			$(document).ready(function(){
-				$('.inquireButton').click(function(){
-					var idNow = $(this).val();
-					console.log(idNow)
-						$.post('/guest/query',{id:idNow})
-							.done(data =>{
-							if(data.firstQuery.var_eventname == "Marriage"){
-							window.location='/guest/marriage/form'
-							//gawa pug
-							}
-							else if(data.firstQuery.var_eventname == "Facility Reservation"){
-							window.location='/guest/facilities'
-							//gawa pug
-							}
-							else{
-							$('#headerAppend').append(`
-								<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
-								<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
-								`)
-								$('#bodyAppend').append(`
-								<p><strong>Service Description</strong></p>
-								<p>${data.firstQuery.var_eventdesc}</p>
-							`)
-							for(i=0;i<data.secondQuery.length;i++){
-							$('#reqAppend').append(`
-								<p><strong>Requirements</strong></p>
-								<p>${data.secondQuery[i].var_reqname}</p>
-							`)
-							}
-							$('#inquireModal').modal('show');	
-							$('#inquireModal').on('hidden.bs.modal',function(){
-								$('#bodyAppend').empty()
-								$('#headerAppend').empty()
-								$('#reqAppend').empty()
+    style.
+        #header-style-1 {
+            height:600px;
+            background-image: url(../img/wall.jpg) !important;
+        }
+        #counter > div > div > div > span > i {
+            color:white;
+        }
+    #headers
+        #header-style-1
+            .container
+                .header-caption
+                    .row
+                        .col-md-12.header-content
+                            h3.header-title.animated.fadeInDown.invisible
+                                span.text-primary Helium - 
+                                | Bootstrap 4 UI Kit
+                            h5.header-text.animated.fadeIn.invisible
+                                | Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+                            //- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+                            //- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
+    #about.section-padding
+        .container
+            .row
+                .col-lg-3.col-md-6.col-xs-12
+                    .about.block.text-center
+                        img(src='/Helium/img/inquire.png', alt='')
+                        h5
+                            a(href='#') Inquire
+                        p
+                            | See the information, guidelines and requirements of the parish services.
+                .col-lg-3.col-md-6.col-xs-12
+                    .about.block.text-center
+                        img(src='/Helium/img/submit.png', alt='')
+                        h5
+                            a(href='#') Submit
+                        p
+                            | Apply and submit requirements to our website.
+                .col-lg-3.col-md-6.col-xs-12
+                    .about.block.text-center
+                        img(src='/Helium/img/visit.png', alt='')
+                        h5
+                            a(href='#') Visit
+                        p
+                            | Go and visit our parish.
+                .col-lg-3.col-md-6.col-xs-12
+                    .about.block.text-center
+                        img(src='/Helium/img/complete.png', alt='')
+                        h5
+                            a(href='#') Complete
+                        p
+                            | Complete and enjoy your reservation at our parish.
+    #services.section-padding
+        .container
+            .row
+                .col-md-12
+                    h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Services
+            .row
+                each event in events
+                    .col-lg-4.col-md-6.col-xs-12
+                        .featured-box-item
+                            .featured-icon
+                                i.fa.fa-bolt
+                            .featured-content
+                                h4
+                                    | #{event.var_eventname}
+                                p
+                                    | #{event.var_eventdesc.substring(0, 100)}...
+                                .learn-more
+                                        button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
+                    // Modal
+                    #inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                        .modal-dialog.modal-lg(role='document')
+                            .modal-content#each
+                                .modal-header#headerAppend
+                                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                        span.p-3(aria-hidden='true') ×
+                                .modal-body#bodyAppend
+                                .modal-body#reqAppend
+                                .modal-footer
+                                    button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+                                    button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${event.int_eventID}`) Apply
+                    #searchModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                        .modal-dialog.modal-lg(role='document')
+                            .modal-content
+                                .modal-header Input Details about the Person in the certificate 
+                                        span.p-3(aria-hidden='true') ×
+                                .modal-body
+                                    .row
+                                        .col-md-6
+                                            .form-group
+                                                h5.label-control Document
+                                                    br
+                                                    select#documenttype(type="text" name='documenttype')
+                                                        option Baptismal Certificate
+                                                        option Confirmation Certificate
+                                                        option First Communion Certificate
+                                    .row
+                                        .col-md-6
+                                            h5.label-control Event Date
+                                            input#eventDate.datepicker.form-control(type='date' name='birthday')
+                                    .row
+                                        .col-md-12
+                                            h5.label-control Person in the Certificate:
+                                    .row
+                                        .col-md-6.my-3
+                                            input#lastName.form-control(type='text' name='lastname' placeholder='Last Name')
+                                        .col-md-6.my-3
+                                            input#firstName.form-control(type='text' name='firstname' placeholder='First Name')
+                                .modal-body#reqAppend
+                                .modal-footer
+                                    button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
+                                    button.btn.std-btn.btn-common.btn-info.mb-0#searchButton(type='button') Search
+                .col-md-12.text-center
+                    .learn-more
+                        a.btn.std-btn.btn-common(href='/services') View All
+    //- section#document
+    //- 	.container
+    //- 		.row
+    //- 			.col-md-12
+    //- 				h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Document Request
+    //- 		.row
+    //- 			.col-md-4.col-sm-6.col-xs-12
+    //- 				.service-box
+    //- 					.service-icon
+    //- 						i.fa.fa-cogs
+    //- 					.service-content
+    //- 						h4
+    //- 							a(href='#' name='eventname')
+    //- 						p
+    //- 							| #{event.var_eventdesc.substring(0, 100)}...
+    //- 							.learn-more
+    //- 								button.btn.std-btn.btn-common(type='button', data-toggle='modal', data-target='#exampleModal') Inquire
+                                    
+            .col-md-12.text-center
+                .learn-more
+                    a.btn.std-btn.btn-common(href='/guest/allservices') View All
+    section#portfolio.section-padding
+        .container
+            .row
+                .col-md-12
+                    h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Portfolio
+            .row
+                .col-lg-12.col-md-12
+                    .controls.text-center.wow.fadeInUpQuick(data-wow-delay='.6s')
+                        a.filter.btn.btn-common.active(data-filter='all')
+                            | All
+                        a.filter.btn.btn-common(data-filter='.branding')
+                            | Prayer
+                        a.filter.btn.btn-common(data-filter='.marketing')
+                            | Sceneries
+                        a.filter.btn.btn-common(data-filter='.planning')
+                            | Peace
+                        a.filter.btn.btn-common(data-filter='.research')
+                            | Visits
+                #portfolio.row.wow.fadeInUpQuick(data-wow-delay='0.8s')
+                    .col-lg-4.col-md-6.col-xs-12.mix.marketing.planning(style='display: inline-block;', data-bound='')
+                        .portfolio-item
+                            .portfolio-img
+                                img(src='/imgchurch/1.jpg', alt='')
+                            .portfoli-content
+                                .sup-desc-wrap
+                                    .sup-desc-inner
+                                        .sup-link
+                                            a.left-link(href='#')
+                                                i.fa.fa-link
+                                            a.right-link(href='#')
+                                                i.fa.fa-heart
+                                        .sup-meta-wrap
+                                            a.sup-title(href='#')
+                                                h4 TITLE HERE
+                                            p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+                    .col-lg-4.col-md-6.col-xs-12.mix.branding.planning(style='display: inline-block;', data-bound='')
+                        .portfolio-item
+                            .portfolio-img
+                                img(src='/imgchurch/2.jpg', alt='')
+                            .portfoli-content
+                                .sup-desc-wrap
+                                    .sup-desc-inner
+                                        .sup-link
+                                            a.left-link(href='#')
+                                                i.fa.fa-link
+                                            a.right-link(href='#')
+                                                i.fa.fa-heart
+                                        .sup-meta-wrap
+                                            a.sup-title(href='#')
+                                                h4 TITLE HERE
+                                            p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+                    .col-lg-4.col-md-6.col-xs-12.mix.branding.research(style='display: inline-block;', data-bound='')
+                        .portfolio-item
+                            .portfolio-img
+                                img(src='/imgchurch/3.jpg', alt='')
+                            .portfoli-content
+                                .sup-desc-wrap
+                                    .sup-desc-inner
+                                        .sup-link
+                                            a.left-link(href='#')
+                                                i.fa.fa-link
+                                            a.right-link(href='#')
+                                                i.fa.fa-heart
+                                        .sup-meta-wrap
+                                            a.sup-title(href='#')
+                                                h4 TITLE HERE
+                                            p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+                    .col-lg-4.col-md-6.col-xs-12.mix.marketing.research(style='display: inline-block;', data-bound='')
+                        .portfolio-item
+                            .portfolio-img
+                                img(src='/imgchurch/4.jpg', alt='')
+                            .portfoli-content
+                                .sup-desc-wrap
+                                    .sup-desc-inner
+                                        .sup-link
+                                            a.left-link(href='#')
+                                                i.fa.fa-link
+                                            a.right-link(href='#')
+                                                i.fa.fa-heart
+                                        .sup-meta-wrap
+                                            a.sup-title(href='#')
+                                                h4 TITLE HERE
+                                            p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+                    .col-lg-4.col-md-6.col-xs-12.mix.marketing.planning(style='display: inline-block;', data-bound='')
+                        .portfolio-item
+                            .portfolio-img
+                                img(src=src='/imgchurch/5.jpg', alt='')
+                            .portfoli-content
+                                .sup-desc-wrap
+                                    .sup-desc-inner
+                                        .sup-link
+                                            a.left-link(href='#')
+                                                i.fa.fa-link
+                                            a.right-link(href='#')
+                                                i.fa.fa-heart
+                                        .sup-meta-wrap
+                                            a.sup-title(href='#')
+                                                h4 TITLE HERE
+                                            p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+                    .col-lg-4.col-md-6.col-xs-12.mix.planning.research(style='display: inline-block;', data-bound='')
+                        .portfolio-item
+                            .portfolio-img
+                                img(src=src='/imgchurch/6.jpg', alt='')
+                            .portfoli-content
+                                .sup-desc-wrap
+                                    .sup-desc-inner
+                                        .sup-link
+                                            a.left-link(href='#')
+                                                i.fa.fa-link
+                                            a.right-link(href='#')
+                                                i.fa.fa-heart
+                                        .sup-meta-wrap
+                                            a.sup-title(href='#')
+                                                h4 TITLE HERE
+                                            p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+    #counter
+        .container
+            .row.count-to-sec
+                .col-lg-3.col-md-6.col-xs-12.count-one
+                    span.icon
+                        i.fa.fa-download  
+                    h3.timer.count-value(data-to='561', data-speed='1000') 561
+                    hr.width25-divider
+                    small.count-title Downloads
+                .col-lg-3.col-md-6.col-xs-12.count-one
+                    span.icon
+                        i.fa.fa-user  
+                    h3.timer.count-value(data-to='950', data-speed='1000') 950
+                    hr.width25-divider
+                    small.count-title Developers
+                .col-lg-3.col-md-6.col-xs-12.count-one
+                    span.icon
+                        i.fa.fa-desktop  
+                    h3.timer.count-value(data-to='978', data-speed='1000') 978
+                    hr.width25-divider
+                    small.count-title Lines of code written
+                .col-lg-3.col-md-6.col-xs-12.count-one
+                    span.icon
+                        i.fa.fa-coffee  
+                    h3.timer.count-value(data-to='1700', data-speed='1000') 1700
+                    hr.width25-divider
+                    small.count-title Cups of coffee consumed
+    #team.team-members-tow.section-padding.mx-5
+        .container
+            .row
+                .col-md-12
+                    h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Our Team
+        .row
+            .col-sm-6.col-md-3
+                // Team Item Starts
+                .team-item
+                    figure.team-profile
+                        img(src='img/team/2.jpg', alt='')
+                        figcaption.our-team
+                            .details
+                                p.content-white
+                                    | "Cram Is Gold" swswswswswswswswswswssws
+                                    | "b a k a l a k o"
+                                hr.small-divider.border-white
+                                .social
+                                    a.facebook(href='#')
+                                        i.fa.fa-facebook
+                                    a.twitter(href='#')
+                                        i.fa.fa-twitter
+                                    a.google-plus(href='#')
+                                        i.fa.fa-instagram
+                    .info
+                        h2
+                            | Joshua Rae Macaya
+                        p
+                            | Database Engineer/ Main Dev
+                // Team Item Ends
+            .col-sm-6.col-md-3
+                // Team Item Starts
+                .team-item
+                    figure.team-profile
+                        img(src='img/team/1.jpg', alt='')
+                        figcaption.our-team
+                            .details
+                                p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                hr.small-divider.border-white
+                                .social
+                                    a.facebook(href='#')
+                                        i.fa.fa-facebook
+                                    a.twitter(href='#')
+                                        i.fa.fa-twitter
+                                    a.google-plus(href='#')
+                                        i.fa.fa-instagram
+                    .info
+                        h2
+                            | Jonalyn Fe Ebrada
+                        p
+                            | Project Manager
+                // Team Item Starts
+            .col-sm-6.col-md-3
+                // Team Item Starts
+                .team-item
+                    figure.team-profile
+                        img(src='img/team/3.jpg', alt='')
+                        figcaption.our-team
+                            .details
+                                p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                hr.small-divider.border-white
+                                .social
+                                    a.facebook(href='#')
+                                        i.fa.fa-facebook
+                                    a.twitter(href='#')
+                                        i.fa.fa-twitter
+                                    a.google-plus(href='#')
+                                        i.fa.fa-instagram
+                    .info
+                        h2
+                            | Norme Ann Joyce Peñaverde
+                        p
+                            | Software Tester
+                // Team Item Ends
+            .col-sm-6.col-md-3
+                // Team Item Starts
+                .team-item
+                    figure.team-profile
+                        img(src='img/team/4.jpg', alt='')
+                        figcaption.our-team
+                            .details
+                                p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                hr.small-divider.border-white
+                                .social
+                                    a.facebook(href='#')
+                                        i.fa.fa-facebook
+                                    a.twitter(href='#')
+                                        i.fa.fa-twitter
+                                    a.google-plus(href='#')
+                                        i.fa.fa-instagram
+                    .info
+                        h2
+                            | Eldrin Rei Del Rosario
+                        p
+                            | Web Designer
+    section#contact.contact-form.section-padding
+        .container
+            .row
+                .col-md-12
+                    h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Contact Us
+            .row
+                .col-lg-8.col-md-6.col-xs-12
+                    h3.title-head.text-left Get in touch
+                    form.contact-form(data-toggle='validator', novalidate='true')
+                        .row
+                            .col-lg-4.col-md-12.col-xs-12
+                                .form-group
+                                    i.contact-icon.fa.fa-user
+                                    input#name.form-control(type='text', placeholder='Full Name', required='', data-error='Please enter your name')
+                                    .help-block.with-errors
+                            .col-lg-4.col-md-12.col-xs-12
+                                .form-group
+                                    i.contact-icon.fa.fa-envelope-o
+                                    input#email.form-control(type='email', placeholder='Email', required='', data-error='Please enter your email')
+                                    .help-block.with-errors
+                            .col-lg-4.col-md-12.col-xs-12
+                                .form-group
+                                    i.contact-icon.fa.fa-pencil-square-o
+                                    input#subject.form-control(type='text', placeholder='Subject', required='', data-error='Please enter your Subject')
+                                    .help-block.with-errors
+                            .col-lg-12.col-md-12.col-xs-12
+                                textarea#message.form-control(rows='4', placeholder='Message', required='', data-error='Please enter your message')
+                                .help-block.with-errors
+                                button#form-submit.btn.btn-common.btn-form-submit.disabled(type='submit', style='pointer-events: all; cursor: pointer;') Send Message
+                                #msgSubmit.h3.text-center.hidden
+                                .clearfix
+                .col-lg-4.col-md-6.col-xs-12
+                    h4.contact-info-title.text-left Contact Information
+                    .contact-info
+                        address
+                            i.lni-map-marker.icons.cyan-color.contact-info-icon
+                            | Phase 1 Urban, Payatas B Quezon City
+                        .tel-info
+                            a(href='tel:1800452308')
+                                i.lni-mobile.icons.cyan-color.contact-info-icon
+                                | (02) 500-0239
+                            a(href='tel:+61(8)82343555')
+                                i.lni-phone.icons.cyan-color.contact-info-icon
+                                | +61 (8) 8234 3555
+                        a(href='mailto:hello@spiritapp.com')
+                            i.lni-envelope.icons.cyan-color.contact-info-icon
+                            | inlpp@yahoo.com
+                        a(href='#')
+                            i.lni-tab.icons.cyan-color.contact-info-icon
+                            | www.inlpp.com
+                        ul.social-links
+                            li
+                                a.fa.fa-facebook(href='#')
+                            li
+                                a.fa.fa-twitter(href='#')
+                            li
+                                a.fa.fa-instagram(href='#')
+                            li
+                                a.fa.fa-linkedin(href='#')
+    block addjs
+        script.
+            $(document).ready(function(){
+                $('.inquireButton').click(function(){
+                    var idNow = $(this).val();
+                    console.log(idNow)
+                        $.post('/guest/query',{id:idNow})
+                            .done(data =>{
+                            if(data.firstQuery.var_eventname == "Marriage"){
+                            window.location='/guest/marriage/form'
+                            //gawa pug
+                            }
+                            else if(data.firstQuery.var_eventname == "Facility Reservation"){
+                            window.location='/guest/facilities'
+                            //gawa pug
+                            }
+                            //- else if(data.firstQuery.var_eventname == "Document Request"){
+                            //- $('#searchModal').modal('show');
+                            //- $('#searchButton').click(function(){
+                            //- $('#searchModal').modal('hide');
+                            //- var eventDate = moment($('#eventDate').val()).format('YYYY-MM-DD');
+                            //-     $.post('/guest/document/query',{
+                            //-     eventDate:eventDate,
+                            //-     firstName:$('#firstName').val(),
+                            //-     lastName:$('#lastName').val(),
+                            //-     documentType:$('#documenttype').val(),
+                            //-     }).done(data=>{
+                            //-         if(($('#lastName').val() == data.var_lname) && ($('#firstName').val() == data.var_fname) && (eventDate == data.date_approveddate)){
+                            //-         swal({
+                            //-             title:'Record found!',
+                            //-             text:'Please wait for 3 days for your request to be processed. We will send you an email once it is ready to be released. You may also be ',
+                            //-             type:'success',
+                            //-             showCancelButton: true,
+                            //-             confirmButtonColor: '#3085d6',
+                            //-             cancelButtonColor: '#d33',
+                            //-             confirmButtonText: 'Confirm'
+                            //-         }).then((result)=>{
+                            //-             if(result.value)
+                            //-             window.location='/guest/document/form'
+                            //-         })
+                            //-         }
+                            //-         else{
+                            //-             swal({
+                            //-                 title:'Sorry',
+                            //-                 text: 'Your transaction does not exist. Check the data you have entered and try again.',
+                            //-                 type:'warning',
+                            //-                 showCancelButton: true,
+                            //-                 confirmButtonColor: '#3085d6',
+                            //-                 cancelButtonColor: '#d33',
+                            //-                 confirmButtonText: 'Confirm'
+                            //-             })
+                                    
+                            //-         }
+                            //-     })
+                            //- })
+                            //- }
+                            else{
+                            $('#headerAppend').append(`
+                                <label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
+                                <h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
+                                `)
+                                $('#bodyAppend').append(`
+                                <p><strong>Service Description</strong></p>
+                                <p>${data.firstQuery.var_eventdesc}</p>
+                            `)
+                            for(i=0;i<data.secondQuery.length;i++){
+                            $('#reqAppend').append(`
+                                <p><strong>Requirements</strong></p>
+                                <p>${data.secondQuery[i].var_reqname}</p>
+                            `)
+                            }
+                            $('#inquireModal').modal('show');	
+                            $('#inquireModal').on('hidden.bs.modal',function(){
+                                $('#bodyAppend').empty()
+                                $('#headerAppend').empty()
+                                $('#reqAppend').empty()
 
-							})
-							$('#cancelButton').css('display', 'block');
-							$('#proceedButton').css('display', 'block');
-								$('#proceedButton').click(function(){
-									$.post('/guest/query',{id:data.firstQuery.int_eventID}).done(data =>{
-										window.location='/guest/service'
-									})
-								})
+                            })
+                            $('#cancelButton').css('display', 'block');
+                            $('#proceedButton').css('display', 'block');
+                                $('#proceedButton').click(function(){
+                                    $.post('/guest/query',{id:data.firstQuery.int_eventID}).done(data =>{
+                                        window.location='/guest/service'
+                                    })
+                                })
 
-							}
-							})
-									
-				})
-			})
-			
+                            }
+                            })
+                                    
+                })
+            })
+            
