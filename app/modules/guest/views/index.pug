@@ -442,7 +442,7 @@ block prepend main
                         $.post('/guest/query',{id:idNow})
                             .done(data =>{
                             if(data.firstQuery.var_eventname == "Marriage"){
-                            window.location='/guest/marriage/form'
+                            window.location='/guest/marriagedetails'
                             //gawa pug
                             }
                             else if(data.firstQuery.var_eventname == "Facility Reservation"){

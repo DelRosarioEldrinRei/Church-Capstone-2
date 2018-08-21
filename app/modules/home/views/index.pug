@@ -411,7 +411,14 @@ block prepend main
 					console.log(idNow)
 						$.post('/index/query',{id:idNow})
 							.done(data =>{
-							
+							if(data.firstQuery.var_eventname == "Marriage"){
+									window.location='/index/marriagedetails'
+									//gawa pug
+									}
+									else if(data.firstQuery.var_eventname == "Facility Reservation"){
+									window.location='/index/facilities'
+									//gawa pug
+									}
 							$('#headerAppend').append(`
 								<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
 								<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>

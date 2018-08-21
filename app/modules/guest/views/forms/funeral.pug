@@ -129,18 +129,19 @@ block main
 								//- 	h6.label-control Death Certificate
 								//- 	input(type='file', name='deathCertificate' accept='image/*' required)
 					.row
-						.col-lg-6.col-md-12.px-lg-3.px-md-0.px-sm-0.mb-2
-							.row
-								.col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
-									h6.label-control Birth Certificate
-									input(type='file', name='birthCertificate' accept='image/*' required)
-								.col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
-									h6.label-control Death Certificate
-									input(type='file', name='deathCertificate' accept='image/*' required)
 						.col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
 							.form-group
 								h6.label-control Cause of Death:
 								textarea#exampleFormControlTextarea2.form-control(rows='3' name='details' placeholder="Please enter the cause of death")
+						
+						.col-md-6.px-lg-3.px-md-3.px-sm-0
+							.form-group
+								h6.label-control Birth Certificate
+								input#file-0b.file(type='file',accept='image/*',name="image")
+                                        
+								//- .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
+								//- 	h6.label-control Death Certificate
+								//- 	input(type='file', name='deathCertificate' accept='image/*' required)
 					.row
 						.col-md-12.my-5.text-center
 							.learn-more

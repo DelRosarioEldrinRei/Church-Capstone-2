@@ -106,6 +106,12 @@ loginRouter.route('/')
                     console.log(req.session);
                     return res.redirect('/guest/facilities');
                 }
+                else if(req.session.eventId == 10){
+                    delete user.var_password;
+                    req.session.user = user;
+                    console.log(req.session);
+                    return res.redirect('/guest/establishment/form');
+                }
                 else{
                     delete user.var_password;
                     req.session.user = user;
