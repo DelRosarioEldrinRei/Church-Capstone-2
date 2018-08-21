@@ -93,6 +93,7 @@ block main
                                         .learn-more.pull-right
                                             button.btn.btn-next(type='button') Next
 
+<<<<<<< HEAD
                                 // Form Step 1
                                 // Form Step 2
                                 fieldset
@@ -521,6 +522,438 @@ block main
                     .modal-footer
                         button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
                         button.btn.btn-submit#submit2Button(type='submit') Proceed
+=======
+							// Form Step 1
+							// Form Step 2
+							fieldset
+								h4
+									.d-none.d-sm-inline Groom's Form: 
+									span Step 2 - 5
+								.form-group
+									br
+									.container
+										h6.label-control Name
+										.row
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													input.form-control(type='text' placeholder="Last Name" name='lastname')
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
+												.form-group
+													input.form-control(type='text' placeholder="First Name" name='firstname')
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													input.form-control(type='text' placeholder="Middle Name" name='middlename')
+										.row
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Birthday
+													input.datepicker.form-control(type='date' name='birthday')
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
+												.form-group
+													h6.label-control Birthplace:
+													input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City")
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Nationality:
+													input.form-control(type='text' name='gnationality' placeholder="Ex. Filipino")
+										.row
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Father's Full Name:
+													input.form-control(type='text' name='gfathername' placeholder="Ex. Juan Dela Cruz")
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
+												.form-group
+													h6.label-control Father's Birthplace:
+													input.form-control(type='text' name='gfatherbplace' placeholder="Ex. Caloocan, Quezon City")
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group.text-lg-center.text-sm-left
+													h6.label-control Father's Religion
+													select(type="text" name='gfatherreligion')
+														option Catholic
+														option Non-Catholic
+														option Non-Christion
+														option No religion
+										.row
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Mother's Full Name:
+													input.form-control(type='text' name='gmothername' placeholder="Ex. Maria Dela Cruz")
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
+												.form-group
+													h6.label-control Mother's Birthplace:
+													input.form-control(type='text' name='gmotherbplace' placeholder="Ex. San Isidro, Quezon City")
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group.text-lg-center.text-sm-left
+													h6.label-control Mother's Religion
+													select(type="text" name='gmotherreligion')
+														option Catholic
+														option Non-Catholic
+														option Non-Christion
+														option No religion
+										.row
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.row.text-lg-center.text-sm-left
+													.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
+														.form-group
+															h6.label-control Civil Status
+															select(type="text" name='gcivilstatus')
+																option Single
+																option Married
+																option Divorced
+																option Widower
+													.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
+														.form-group
+															h6.label-control Religion
+															select(type="text" name='greligion')
+																option Catholic
+																option Non-Catholic
+																option Non-Christion
+																option No religion
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6(for='exampleFormControlTextarea1') Address:
+													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
+										.row
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Current Parish:
+													input.form-control(type='text' name='gcurrentparish' placeholder=" Ex. Ina ng Lupang Pangako Parish")
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Occupation:
+													input.form-control(type='text' name='goccupation' placeholder="Ex. Driver")
+										.row
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Valid ID
+													input(type='file')
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Birth Certificate
+													input(type='file')
+										.row
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Baptized?
+													.form-check
+														label.form-check-label
+															input.exampleRadios1.form-check-input(type="radio" name="gbaptized" value="1")
+															.dropdown-toggle.mr-3 Yes
+															span.circle
+																span.check
+														.textarea1.form-group
+															.form-group
+																label.label-control Parish where you were baptized:
+																input.form-control(type='text' name='gbapplace' placeholder=" Ex. Ina ng Lupang Pangako Parish")
+															.form-group
+																label.label-control Date when you were baptized:
+																input.datepicker2.form-control(type='date' name='gbapdate')
+																
+													.form-check
+														label.form-check-label
+															input.radioup.form-check-input(type="radio" name="gbaptized" value="0")
+															| No
+															span.circle
+																span.check
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Confirmed?
+													.form-check
+														label.form-check-label
+															input.exampleRadios2.form-check-input(type="radio" name="gconfirmed" value="1")
+															.dropdown-toggle.mr-3 Yes
+															span.circle
+																span.check
+														.textarea2.form-group
+															.form-group
+																label.label-control Parish Where You Were Confirmed:
+																input.form-control(type='text' name='gconplace' placeholder=" Ex. Ina ng Lupang Pangako Parish")
+															.form-group
+																label.label-control Date When You Were Confirmed:
+																input.datepicker2.form-control(type='date' name='gcondate')
+															
+													.form-check
+														label.form-check-label
+															input.radioup2.form-check-input(type="radio" name="gconfirmed" value="0" )
+															| No
+															span.circle
+																span.check
+								.learn-more.pull-right
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+									button.btn.btn-next(type='button') Next
+							// Form Step 2
+							// Form Step 3
+							fieldset
+								h4
+									.d-none.d-sm-inline Bride's Form : 
+									span Step 3 - 5
+								.form-group
+									br
+									.container
+										h6.label-control Name
+										.row
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													input.form-control(type='text' placeholder="Last Name" name='blastname')
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
+												.form-group
+													input.form-control(type='text' placeholder="First Name" name='bfirstname')
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													input.form-control(type='text' placeholder="Middle Name" name='bmiddlename')
+										.row
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Birthday
+													input.datepicker.form-control(type='date' name='bbirthday')
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
+												.form-group
+													h6.label-control Birthplace:
+													input.form-control(type='text' name='bbirthplace' placeholder="Ex. Payatas, Quezon City")
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Nationality:
+													input.form-control(type='text' name='bnationality' placeholder="Ex. Filipino")
+										.row
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Father's Full Name:
+													input.form-control(type='text' name='bfathername' placeholder="Ex. Juan Dela Cruz")
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
+												.form-group
+													h6.label-control Father's Birthplace:
+													input.form-control(type='text' name='bfatherbplace' placeholder="Ex. Caloocan, Quezon City")
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group.text-lg-center.text-sm-left
+													h6.label-control Father's Religion
+													select(type="text" name='bfatherreligion')
+														option Catholic
+														option Non-Catholic
+														option Non-Christion
+														option No religion
+										.row
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Mother's Full Name:
+													input.form-control(type='text' name='bmothername' placeholder="Ex. Maria Dela Cruz")
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
+												.form-group
+													h6.label-control Mother's Birthplace:
+													input.form-control(type='text' name='bmotherbplace' placeholder="Ex. San Isidro, Quezon City")
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group.text-lg-center.text-sm-left
+													h6.label-control Mother's Religion
+													select(type="text" name='bmotherreligion')
+														option Catholic
+														option Non-Catholic
+														option Non-Christion
+														option No religion
+										.row
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.row.text-lg-center.text-sm-left
+													.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
+														.form-group
+															h6.label-control Civil Status
+															select(type="text" name='bcivilstatus')
+																option Single
+																option Married
+																option Divorced
+																option Widower
+													.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
+														.form-group
+															h6.label-control Religion
+															select(type="text" name='breligion')
+																option Catholic
+																option Non-Catholic
+																option Non-Christion
+																option No religion
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.form-group
+													h6(for='exampleFormControlTextarea1') Address:
+													textarea#exampleFormControlTextarea1.form-control(rows='2' name='bddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
+										.row
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group.m-0
+													h6.label-control Are You 5months or Above Pregnant?
+													.form-check.ml-3
+														label.form-check-label
+															input.form-check-input(type="radio" name="boolpregnant" id="exampleRadios2" value="1")
+															| Yes
+															span.circle
+																span.check
+													.form-check.ml-3
+														label.form-check-label
+															input.form-check-input(type="radio" name="boolpregnant" id="exampleRadios2" value="0")
+															| No
+															span.circle
+																span.check
+											.col-md-4.p-lg-0.px-md-3.px-sm-0
+												.form-group
+													h6.label-control Current Parish:
+													input.form-control(type='text' name='bcurrentparish' placeholder="Ex. Ina ng Lupang Pangako Parish")
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h6.label-control Occupation:
+													input.form-control(type='text' name='boccupation' placeholder="Ex. Housewife")
+										.row
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Valid ID
+													input(type='file')
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Birth Certificate
+													input(type='file')
+										.row
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Baptized?
+													.ml-4
+														.form-check
+															label.form-check-label
+																input.exampleRadios1.form-check-input(type="radio" name="bbaptized" value="1")
+																.dropdown-toggle.mr-3 Yes
+																span.circle
+																	span.check
+															.textarea1.form-group
+																.form-group
+																	label.label-control Parish Where You Were Baptized:
+																	input.form-control(type='text' name='bbapplace')
+																.form-group
+																	label.label-control Date When You Were Baptized:
+																	input.datepicker2.form-control(type='date' name='bbapdate')
+																
+														.form-check
+															label.form-check-label
+																input.radioup.form-check-input(type="radio" name="bbaptized" value="0" )
+																| No
+																span.circle
+																	span.check
+											.col-md-6.px-lg-3.pr-md-3.px-sm-0
+												.form-group
+													h6.label-control Confirmed?
+													.ml-4
+														.form-check
+															label.form-check-label
+																input.exampleRadios2.form-check-input(type="radio" name="bconfirmed" value="1")
+																.dropdown-toggle.mr-3 Yes
+																span.circle
+																	span.check
+															.textarea2.form-group
+																.form-group
+																	label.label-control Parish where you were Confirmed:
+																	input.form-control(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
+																.form-group
+																	label.label-control Date when you were Confirmed:
+																	input.datepicker2.form-control(type='date' name='bcondate')
+																
+														.form-check
+															label.form-check-label
+																input.radioup2.form-check-input(type="radio" name="bconfirmed" value="0" )
+																| No
+																span.circle
+																	span.check
+								.learn-more.pull-right
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+									button.btn.btn-next(type='button') Next
+							// Form Step 3
+							// Form Step 4
+							fieldset
+								h4
+									.d-none.d-sm-inline Couple's Form: 
+									span Step 4 - 5
+									h6.label-control Living Together?
+									.row
+										.col-md-6.px-lg-3.px-md-0.px-sm-0
+											//- h2.main--header.font-italic For the couple
+											.form-group.m-0
+												.form-check
+													h6.form-check-label
+														input.form-check-input(type="radio" name="boollivingin" id="exampleRadios2" value="1")
+														| Yes
+														span.circle
+															span.check
+												.form-check
+													h6.form-check-label
+														input.form-check-input(type="radio" name="boollivingin" id="exampleRadios2" value="0")
+														| No
+														span.circle
+															span.check
+											.form-group.mt-3
+												h6.label-control Were the Couple Married Before?
+												.form-check
+													h6.form-check-label
+														input.exampleRadios3.form-check-input(type="radio" name="boolmarried" value="1")
+														.dropdown-toggle Yes
+														span.circle
+															span.check
+												.form-check
+													h6.form-check-label
+														input.radioup3.form-check-input(type="radio" name="boolmarried" value="0" )
+														| No
+														span.circle
+															span.check
+									.row
+										.col-lg-6.px-lg-3.px-md-0.px-sm-0
+											.textarea3.form-group
+												.form-group
+													h6.label-control Previous Wedding Date
+													input.datepicker.form-control(type='date' name='cprevweddingdate')
+												.form-group
+													h6.label-control Previous Wedding Place/Parish
+													input.datepicker.form-control(type='text' name='cprevweddingplace')
+								br
+								.learn-more.pull-right
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+									button.btn.btn-next(type='button') Next
+							// Form Step 4
+							// Form Step 5
+							fieldset
+								h4
+									.d-none.d-sm-inline Sponsors Information	
+									span Step 5 - 5
+									h6.label-control Principal Sponsors
+									.row#principalSponsor
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.form-group.m-0
+												input.form-control(type='text' name='sponsorname')
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.form-group.m-0
+												input.form-control.balance(type='text' name='sponsorname')
+										button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button")
+											i.fa.fa-plus
+									h6.label-control Secondary Sponsors
+									.row#additionalSponsor
+								br
+								.learn-more.pull-right
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+									button.btn(type='button' data-toggle='modal', data-target='#exampleModal') Proceed
+							#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' data-controls-modal="exampleModal")
+								.modal-dialog.modal-lg(role='document')
+									.modal-content 
+										.modal-header
+											button.close(type='button', data-dismiss='modal', aria-label='Close')
+												span.p-3(aria-hidden='true') ×
+											h5 Terms and Condition
+										.modal-body.text-left
+											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+											br
+											br
+											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+											| Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+											br
+											br
+											h5 Mode of Payment
+											select
+												option(value="") Full Payment
+												option(value="") Half Payment 
+										.modal-footer
+											button.btn.std-btn.btn-danger.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
+											button.btn.std-btn.btn-success.btn-info.mb-0#proceedButton(type='button' onclick="location.href='/guest/marriage1/form'") Agree
+							// Form Step 5
+						// Form Wizard
+>>>>>>> fa5fe7307f0dd745b4250d4515cfd778e94ecbda
 block addjs
     script.
         $('.textarea1').hide();

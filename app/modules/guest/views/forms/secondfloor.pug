@@ -22,30 +22,122 @@ block main
 							p Fill all form fields
 			.container
 				.row
-					.col-md-7.my-3
+					.col-md-6.my-3
 						#form-facility
 							#calendar
-					.col-md-5.my-3
+					.col-md-6.my-3
 						form(action="/guest/facilities/secondfloor/form" enctype="multipart/form-data" method='post')
 							input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 							.form-group
 								h6.label-control Event
-								input.form-control(type='text' name= 'event' placeholder="Ex. Bible Study")
+								input.form-control(type='text' name= 'event' placeholder="Ex. Seminar")
 							.form-group
-								h6.label-control Desired Date
-								input.datepicker.form-control(type='date' name='desireddate')
+								h6.label-control Event Description
+								textarea.form-control(type='text' row="2" placeholder="Event Description")
 							.form-group
-								h6.label-control Start Time
-								input.timepicker.form-control(type='text' name='starttime')
+								.row
+									.col-md-6
+										h6.label-control Start
+										input.dateandtimepicker.form-control(type='text' name='desireddate' placeholder="MM/DD/YYYY 00:00 AM/PM")
+									.col-md-6
+										h6.label-control End
+										input.dateandtimepicker.form-control(type='text' name='desireddate' placeholder="MM/DD/YYYY 00:00 AM/PM")
 							.form-group
-								h6.label-control End Time
-								input.timepicker.form-control(type='text' name='endtime')
+								h6.label-control Number of Attendees
+								input.form-control(type='number' name= 'event' placeholder="Max. 100")
+							.form-group
+								br
+								h6.label-control Do you want to borrow items from the parish?
+									.custom-control.custom-radio.mt-2
+										input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
+										label.custom-control-label(for='radio1') 
+											h6 Yes
+									.custom-control.custom-radio
+										input#radio2.custom-control-input(type='radio', name='baptismtype' value="Special")
+										label.custom-control-label(for='radio2') 
+											h6 No
+								#regular.mt-4
+									.form-group.ml-3
+										h6.label-control Check the items you want to borrow.
+										.row
+											.col-md-12.ml-4
+												.row
+													.col-md-3
+														input(type='checkbox') 
+														span  Tables
+														br
+														input(type='checkbox') 
+														span  Chairs
+														br
+														input(type='checkbox') 
+														span  Mic
+														br
+														input(type='checkbox') 
+														span  Speaker
+														br
+														input(type='checkbox') 
+														span  Electric Fan
+													.col-md-6
+														label.m-0 QTY
+														| &nbsp;
+														input(type="number" style="width:50px;")
+														br
+														label.m-0 QTY
+														| &nbsp;
+														input(type="number" style="width:50px;")
+														br
+														label.m-0 QTY
+														| &nbsp;
+														input(type="number" style="width:50px;")
+														br
+														label.m-0 QTY
+														| &nbsp;
+														input(type="number" style="width:50px;")
+														br
+														label.m-0 QTY
+														| &nbsp;
+														input(type="number" style="width:50px;")
 							.form-group
 								h6.label-control Valid ID
 								input(type='file' name='image' accept='image/*')
+							.form-group
+								input(type='checkbox')
+								label.custom-control-label
+									| &nbsp;
+									| I agree to the terms and condition.
 							.row
 								.col-md-12.text-center.learn-more
-									button.btn.btn-common(type='submit') Submit
+									button.btn.btn-common(type='button' data-toggle='modal', data-target='#exampleModal') Submit
+							#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' data-controls-modal="exampleModal")
+									.modal-dialog.modal-lg(role='document')
+										.modal-content 
+											.modal-header
+												button.close(type='button', data-dismiss='modal', aria-label='Close')
+													span.p-3(aria-hidden='true') ×
+												h5 Your reservation request has been submitted
+											.modal-body.text-left
+												| To complete the reservation process, You must pay 
+												strong ₱1500
+												|  at the office on or before 
+												strong August 27, 2018.
+												br
+												br
+												| Click here to download 
+												a(href="#" style="color: blue;") permit and payment voucher
+												//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+												//- br
+												//- br
+												//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+												//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+												br
+												br
+												//- h5 Mode of Payment
+												//- select
+												//- 	option(value="") Full Payment
+												//- 	option(value="") Half Payment 
+											.modal-footer
+												button.btn.std-btn.btn-danger.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
+												button.btn.std-btn.btn-success.btn-info.mb-0#proceedButton(type='button') Agree
 
 	#myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		.modal-dialog(role='document')
@@ -55,3 +147,31 @@ block main
 						span(aria-hidden='true') ×
 				.modal-body
 					#calendar1
+block addjs
+	script.
+		$('#textarea1').hide();
+		$('#textarea2').hide();
+		$('#radioup').click(function() {
+			$('#textarea1').slideUp();
+			$('#textarea2').slideUp();
+		});
+		$('#exampleRadios1').click(function() {
+			$('#textarea1').slideDown();
+			$('#textarea2').slideUp();
+		});
+		$('#exampleRadios3').click(function() {
+			$('#textarea1').slideUp();
+			$('#textarea2').slideDown();
+		});
+		
+		$('#regular').hide();
+		$('#special').hide();
+
+		$('#radio1').click(function() {
+			$('#regular').slideDown();
+			$('#special').slideUp();
+		});
+		$('#radio2').click(function() {
+			$('#special').slideDown();
+			$('#regular').slideUp();
+		});
