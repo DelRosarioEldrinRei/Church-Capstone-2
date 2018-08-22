@@ -4,7 +4,7 @@ block prepend main
 	div(style='clear:both')
 	.content
 		.container-fluid
-			
+
 			.row
 				.col-lg-12.col-md-12
 						.card
@@ -22,7 +22,7 @@ block prepend main
 														th Start
 														th End
 														th Venue
-														th.text-center(style=" width:11rem") Actions
+														th Actions
 												tbody
 														each specialevent in specialevents
 															tr
@@ -32,30 +32,13 @@ block prepend main
 																td=specialevent.time_eventend
 																td=specialevent.var_eventvenue
 																td.td-actions.text-center
-																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${specialevent.int_specialeventID}`)
-																		i.ti-close
-																	| &nbsp;
-																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${specialevent.int_specialeventID}`)
-																		i.ti-pencil
-																//- </td>								
-								//- .card-footer.text-right
-								//- 	.col-md-3
-								//- 	.col-md-6.text-right
-								//- 		<nav aria-label="Page navigation example">
-								//- 			<ul class="pagination justify-content-center">
-								//- 				<li class="page-item">
-								//- 					<a class="page-link" href="#" tabindex="-1">Previous</a>
-								//- 				</li>
-								//- 				<li class="page-item"><a class="page-link" href="#">1</a></li>
-								//- 				<li class="page-item">
-								//- 					<a class="page-link" href="#">Next</a>
-								//- 				</li>
-								//- 			</ul>
-								//- 		</nav>
-								//- 	.col-md-3.text-right
-										
-			
-	
+																	button.btn.btn-primary.actionButton(type='button' value=`${specialevent.int_specialeventID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.updateButton(href='#')
+																					i.ti-pencil(style="color:white;")
+																				a.deleteButton(href='#')
+																					i.ti-close(style="color:white;")
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
 			// Content
@@ -92,7 +75,7 @@ block prepend main
 									select.form-control(type="text" name='eventtype')
 										option Open for everyone
 										option Exclusive
-										
+
 						.row
 							.col-md-12.text-center.my-3
 								button.btn.btn-primary(type='submit') Add
@@ -103,14 +86,12 @@ block prepend main
 					p.heading.lead Edit Event
 					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
-				.modal-body#updateAppend                
+				.modal-body#updateAppend
 					.col-md-12.text-center.my-3
 				.modal-footer
 					button.btn.btn-primary#updateSubmitButton(type="button") Update
 block addjs
-	script(src='/js/forIndex.js')
 	script.
-		
 		$('.datetimepicker').datetimepicker({
 				icons: {
 					time: "fa fa-clock-o",
@@ -138,7 +119,7 @@ block addjs
 					close: 'fa fa-remove'
 			}
 		});
-		
+
 		$('.timepicker').datetimepicker({
 			icons: {
 				time: "fa fa-clock-o",
@@ -166,117 +147,116 @@ block addjs
 			}
 		})
 	script.
-		$(document).ready(function(){
-		$('.deleteButton').click(function(){
-			var idNow = $(this).val();
-			swal({
-				title: 'Are you sure?',
-				text: "You won't be able to revert this!",
-				type: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Confirm'
-				}).then((result) => {
-					if (result.value) {
-						$.post('/admin/maintenance-events/delete',{id1:idNow})
-						.done(data =>{
-							if(data){
-								swal({
-								title:'Success', 
-								text:'Special event deleted', 
-								icon:'success'
-								}).then(function(){
-									location.reload();
-								})
+		$(document).ready(function() {
+			$('.actionButton').click(function(){
+				var idNow = $(this).val();
+				console.log(idNow)
+				$('.deleteButton').click(function(){
+					swal({
+						title: 'Are you sure?',
+						text: "You won't be able to revert this!",
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Confirm'
+						}).then((result) => {
+							if (result.value) {
+								$.post('/admin/maintenance-events/delete',{id1:idNow})
+								.done(data =>{
+									if(data){
+										swal({
+										title:'Success',
+										text:'Special event deleted',
+										icon:'success'
+										}).then(function(){
+											location.reload();
+										})
+									}
+								});
 							}
-						});
-					}
-				})
-			})
-		})		
-				
-			
-		$('.updateButton').click(function(){
-			var idNow = $(this).val();
-			console.log(idNow)
-				$.post('/admin/maintenance-events/query',{id:idNow})
-			.done(data=>{
-				var start = moment(data.time_eventstart, 'YYYY-MM-DD h:mm a').format('YYYY-MM-DD HH:mm:ss');
-				var end = moment(data.time_eventend, 'YYYY-MM-DD h:mm a').format('YYYY-MM-DD HH:mm:ss');
-				$('#updateAppend').append(`
-				<div class="form-group">
-					<label class="label-control">Event Name</label>
-					<input type="text" id="eventname" value="${data.var_spceventname}" class="form-control">
-				</div>
-				<div class="form-group">
-					<label class="label-control">Event Description</label>
-					<input type="textarea" rows="2" id="eventdesc" value="${data.text_eventdesc}" class="form-control"></input>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label class="label-control">Start</label>
-							<input type="datetime" id="starttime" id="timepicker1" value="${start}" class="timepicker1
-							 form-control">
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group mt-1">
-						<label class="label-control">End</label>
-						<input type="datetime" id="endtime" value="${end}" class="timepicker1 form-control">
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="label-control">Venue</label>
-					<input type="text" id="venue" value="${data.var_eventvenue}"class="form-control">
-				</div>
-				<div class="form-group">
-					<label class="label-control">Event Type
-						<select type="text" id="eventtype" value="${data.char_eventtype}" class="form-control">
-						<option>Open for everyone</option>
-						<option>Exclusive</option>
-						</select>
-					</label>
-				</div>`)
-				$('#updateModal').modal('show')
-				$('#updateModal').on('hidden.bs.modal',function(){
-					$('#updateAppend').empty()
-				})
-				$('#cancelButton').click(function(){
-					$('#updateAppend').empty();
-				})
-				$(document).keyup(function(e) {
-				if (e.keyCode === 27) 
-					{
-					$('#updateModal').modal('hide');
-					$('#updateAppend').empty();
-					};
-				});
-				$('#updateSubmitButton').click(function(){
-					$.post('/admin/maintenance-events/edit',{
-					eventname:$('#eventname').val(),
-					eventdesc:$('#eventdesc').val(),
-					starttime:$('#starttime').val(),
-					endtime:$('#endtime').val(),
-					venue:$('#venue').val(),
-					eventtype:$('#eventtype').val(),
-					id1:idNow
+						})
 					})
+				$('.updateButton').click(function(){
+						$.post('/admin/maintenance-events/query',{id:idNow})
 					.done(data=>{
-						if(data){
-							swal({
-							title:'Success', 
-							text:'service updated', 
-							icon:'success'
-							}).then(function(){
-								location.reload();
-							})
+						var start = moment(data.time_eventstart, 'YYYY-MM-DD h:mm a').format('YYYY-MM-DD HH:mm:ss');
+						var end = moment(data.time_eventend, 'YYYY-MM-DD h:mm a').format('YYYY-MM-DD HH:mm:ss');
+						$('#updateAppend').append(`
+						<div class="form-group">
+							<label class="label-control">Event Name</label>
+							<input type="text" id="eventname" value="${data.var_spceventname}" class="form-control">
+						</div>
+						<div class="form-group">
+							<label class="label-control">Event Description</label>
+							<input type="textarea" rows="2" id="eventdesc" value="${data.text_eventdesc}" class="form-control"></input>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="label-control">Start</label>
+									<input type="datetime" id="starttime" id="timepicker1" value="${start}" class="timepicker1
+									form-control">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group mt-1">
+								<label class="label-control">End</label>
+								<input type="datetime" id="endtime" value="${end}" class="timepicker1 form-control">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="label-control">Venue</label>
+							<input type="text" id="venue" value="${data.var_eventvenue}"class="form-control">
+						</div>
+						<div class="form-group">
+							<label class="label-control">Event Type
+								<select type="text" id="eventtype" value="${data.char_eventtype}" class="form-control">
+								<option>Open for everyone</option>
+								<option>Exclusive</option>
+								</select>
+							</label>
+						</div>`)
+						$('#updateModal').modal('show')
+						$('#updateModal').on('hidden.bs.modal',function(){
+							$('#updateAppend').empty()
+						})
+						$('#cancelButton').click(function(){
+							$('#updateAppend').empty();
+						})
+						$(document).keyup(function(e) {
+						if (e.keyCode === 27)
+							{
 							$('#updateModal').modal('hide');
 							$('#updateAppend').empty();
-						}
+							};
+						});
+						$('#updateSubmitButton').click(function(){
+							$.post('/admin/maintenance-events/edit',{
+							eventname:$('#eventname').val(),
+							eventdesc:$('#eventdesc').val(),
+							starttime:$('#starttime').val(),
+							endtime:$('#endtime').val(),
+							venue:$('#venue').val(),
+							eventtype:$('#eventtype').val(),
+							id1:idNow
+							})
+							.done(data=>{
+								if(data){
+									swal({
+									title:'Success',
+									text:'service updated',
+									icon:'success'
+									}).then(function(){
+										location.reload();
+									})
+									$('#updateModal').modal('hide');
+									$('#updateAppend').empty();
+								}
+							})
+						})
 					})
 				})
-			})
-		})
+			});
+		});

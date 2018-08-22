@@ -62,11 +62,11 @@ a a:focus {
 
 .top-nav-collapse .navbar-nav .nav-link:hover {
   cursor: pointer;
-  color: #4c2508 !important;
+  color: #cb9c57 !important;
 }
 
 .top-nav-collapse .navbar-nav li.active a.nav-link {
-  color: #4c2508 !important;
+  color: #cb9c57 !important;
 }
 
 .indigo {
@@ -75,10 +75,11 @@ a a:focus {
 .navbar-brand img {
   width: 68%;
 }
+/* 
 .navbar-expand-lg .navbar-nav li a:hover,
 .navbar-expand-lg .navbar-nav li .active > a,
 .navbar-expand-lg .navbar-nav li a:focus {
-  color: #4c2508;
+  color: #cb9c57;
   outline: none;
 }
 
@@ -86,12 +87,12 @@ a a:focus {
 .navbar-expand-lg .navbar-nav .nav-link.active,
 .navbar-expand-lg .navbar-nav .nav-link.open,
 .navbar-expand-lg .navbar-nav .open > .nav-link {
-  color: #4c2508 !important;
+  color: #cb9c57 !important;
 }
 
 .navbar-expand-lg .navbar-nav .nav-link:focus,
 .navbar-expand-lg .navbar-nav .nav-link:hover {
-  color: #4c2508 !important;
+  color: #cb9c57 !important;
 }
 
 .navbar {
@@ -99,8 +100,8 @@ a a:focus {
 }
 
 .navbar li.active a.nav-link {
-  color: #4c2508;
-}
+  color: #cb9c57;
+} */
 
 .fadeInUpMenu {
   -webkit-animation-name: fadeInUpMenu;
