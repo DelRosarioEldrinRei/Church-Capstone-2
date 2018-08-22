@@ -495,8 +495,18 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                         db.query(queryString4,["To be Released",req.body.docuid], (err, results1, fields) => { 
                             var queryString6 = `INSERT INTO tbl_notification(int_userID,var_notifdesc) VALUES(?,?)`
                             db.query(queryString6,[req.session.userID,'Your Document Request is to ready to release'], (err, results1, fields) => {
+                                var queryString7 =`INSERT INTO tbl_voucher(int_notifID,int_requestID,date_issued,date_due)
+                                VALUES(?,?,?,?)`
+                                var datenow = new Date();
+                                var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+                                console.log(dateNow)
+                                var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
+                                var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
+                                console.log(dateDue1)
+                                db.query(queryString7,[results1.insertId,req.body.docuid,dateNow,dateDue1], (err, results1, fields) => {
                                 if (err) console.log(err);
                                 return res.redirect('/secretariat/transaction-documentrequest');
+                                })
                             })
                         });
                     }
