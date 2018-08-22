@@ -16,7 +16,7 @@ html
 			.shadow2 {
 				box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 			}
-				
+
 			.shadow3 {
 				box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 			}
@@ -28,6 +28,9 @@ html
 			}
 			.updateButton:hover {
 				background-color: #5bc0de !important;
+			}
+			.viewButton:hover {
+				background-color: #387ab6 !important;
 			}
 	body.app
 		// @TOC
@@ -73,13 +76,13 @@ html
 								span.icon-holder
 									i.c-blue-500.ti-home
 								span.title Dashboard
-					
+
 						li.nav-item
 							a.sidebar-link(href='#')
 								span.icon-holder
 									i.c-deep-orange-500.ti-calendar
 								span.title Calendar
-						
+
 						li.nav-item.dropdown
 							a.dropdown-toggle(href='javascript:void(0);')
 								span.icon-holder
@@ -96,8 +99,8 @@ html
 									a.sidebar-link(href='/admin/maintenance-facilities') Facilities
 								li
 									a.sidebar-link(href='/admin/maintenance-items') Facility Items
-								li
-									a.sidebar-link(href='/admin/maintenance-ministries') Ministries
+								//- li
+								//- 	a.sidebar-link(href='/admin/maintenance-ministries') Ministries
 								li.nav-item.dropdown
 									a.dropdown-toggle(href='javascript:void(0);')
 										span.icon-holder
@@ -139,7 +142,7 @@ html
 										li
 											a(href='#') Confirmation
 										li
-											a(href='#') Marriage	
+											a(href='#') Marriage
 								li
 									a(href='#') Facility Reservation
 						li.nav-item
@@ -157,7 +160,7 @@ html
 								span.icon-holder
 									i.c-pink-500.ti-palette
 								span.title Utilities
-						
+
 						//- li.nav-item.dropdown
 						//- 	a.dropdown-toggle(href='javascript:void(0);')
 						//- 		span.icon-holder
@@ -213,7 +216,7 @@ html
 														span
 															span.fw-500 John Doe
 															span.c-grey-600
-																| liked your 
+																| liked your
 																span.text-dark post
 														p.m-0
 															small.fsz-xs 5 mins ago
@@ -225,7 +228,7 @@ html
 														span
 															span.fw-500 Moo Doe
 															span.c-grey-600
-																| liked your 
+																| liked your
 																span.text-dark cover image
 														p.m-0
 															small.fsz-xs 7 mins ago
@@ -237,14 +240,14 @@ html
 														span
 															span.fw-500 Lee Doe
 															span.c-grey-600
-																| commented on your 
+																| commented on your
 																span.text-dark video
 														p.m-0
 															small.fsz-xs 10 mins ago
 									li.pX-20.pY-15.ta-c.bdT
 										span
 											a.c-grey-600.cH-blue.fsz-sm.td-n(href='')
-												| View All Notifications 
+												| View All Notifications
 												i.ti-angle-right.fsz-xs.mL-10
 							li.notifications.dropdown
 								span.counter.bgc-blue 3
@@ -298,7 +301,7 @@ html
 									li.pX-20.pY-15.ta-c.bdT
 										span
 											a.c-grey-600.cH-blue.fsz-sm.td-n(href='email.html')
-												| View All Email 
+												| View All Email
 												i.fs-xs.ti-angle-right.mL-10
 							li.dropdown
 								a.dropdown-toggle.no-after.peers.fxw-nw.ai-c.lh-1(href='', data-toggle='dropdown')
@@ -329,7 +332,7 @@ html
 				// ### $App Screen Footer ###
 				footer.bdT.ta-c.p-30.lh-0.fsz-sm.c-grey-600
 					span
-						| Copyright © 2017 Designed by 
+						| Copyright © 2017 Designed by
 						a(href='https://colorlib.com', target='_blank', title='Colorlib') Colorlib
 						| . All rights reserved.
 	script(src='/js/jquery.min.js')

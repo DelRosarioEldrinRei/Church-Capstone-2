@@ -48,52 +48,55 @@ block prepend main
                                                                                 button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
                                                                                     i.ti-settings
                                                                                         #toolbar-options.hidden
+                                                                                            a.viewButton(href='#')
+                                                                                                i.ti-new-window(style="color:white;")
                                                                                             a.updateButton(href='#')
                                                                                                 i.ti-pencil(style="color:white;")
                                 #specialbaptism.tab-pane.fade
                                     br
                                     .card
-                                            .card-header.card-header-primary
-                                                    h4.card-title Special Baptism
-                                                    
-                                            .card-body.table-responsive
-                                                    table.table.dataTable.table-hover
-                                                            thead.text-primary
-                                                                    th ID
-                                                                    th Name of the Child
-                                                                    th Birthday
-                                                                    th Desired Schedule
-                                                                    th Req Status
-                                                                    th Pymt Status
-                                                                    th Approval Status
-                                                                    th.text-right(style=" width:120px") Actions
-                                                            tbody
-                                                                    each special in specials
-                                                                        tr
-                                                                            td=special.int_eventinfoID
-                                                                            td=special.var_lname + ", " + special.var_fname
-                                                                            td=special.date_birthday
-                                                                            td=special.date_desireddate + ' ' + special.time_desiredtime
-                                                                            td=special.var_reqstatus
-                                                                            td=special.char_paymentstatus
-                                                                            td=special.char_approvalstatus
-                                                                            td.td-actions.text-center
-                                                                                button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
-                                                                                    i.ti-settings
-                                                                                        #toolbar-options.hidden
-                                                                                            a.updateButton(href='#')
-                                                                                                i.ti-pencil(style="color:white;")
+                                        .card-header.card-header-primary
+                                            h4.card-title Special Baptism
+                                        .card-body.table-responsive
+                                            table.table.dataTable.table-hover
+                                                thead.text-primary
+                                                    th ID
+                                                    th Name of the Child
+                                                    th Birthday
+                                                    th Desired Schedule
+                                                    th Req Status
+                                                    th Pymt Status
+                                                    th Approval Status
+                                                    th.text-right(style=" width:120px") Actions
+                                                tbody
+                                                    each special in specials
+                                                        tr
+                                                            td=special.int_eventinfoID
+                                                            td=special.var_lname + ", " + special.var_fname
+                                                            td=special.date_birthday
+                                                            td=special.date_desireddate + ' ' + special.time_desiredtime
+                                                            td=special.var_reqstatus
+                                                            td=special.char_paymentstatus
+                                                            td=special.char_approvalstatus
+                                                            td.td-actions.text-center
+                                                                button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+                                                                    i.ti-settings
+                                                                        #toolbar-options.hidden
+                                                                            a.viewButton(href='#')
+                                                                                i.ti-new-window(style="color:white;")
+                                                                            a.updateButton(href='#')
+                                                                                i.ti-pencil(style="color:white;")
     #updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
-            .modal-dialog.modal-lg(role="document")
-                .modal-content
-                    .modal-header
-                        h5.modal-title Update Event Application
-                        button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
-                    .modal-body#updateAppend
-                    .modal-footer
-                        button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                        button.btn.btn-primary#updateSubmitButton(type="button") Update	
+        .modal-dialog.modal-lg(role="document")
+            .modal-content
+                .modal-header
+                    h5.modal-title Update Event Application
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                .modal-body#updateAppend
+                .modal-footer
+                    button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                    button.btn.btn-primary#updateSubmitButton(type="button") Update
 block addjs
     script.
         $(document).ready(function(){
@@ -121,7 +124,7 @@ block addjs
                             console.log("NAALIS NA")
                             $('#updateAppend').empty()
                     })
-                    
+
                     $('#cancelButton').click(function(){
                             $('#updateAppend').empty();
                     })

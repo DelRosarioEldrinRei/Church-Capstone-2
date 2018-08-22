@@ -403,54 +403,54 @@ block prepend main
 								a.fa.fa-instagram(href='#')
 							li
 								a.fa.fa-linkedin(href='#')
-	block addjs
-		script.
-			$(document).ready(function(){
-				$('.inquireButton').click(function(){
-					var idNow = $(this).val();
-					console.log(idNow)
-						$.post('/index/query',{id:idNow})
-							.done(data =>{
-							if(data.firstQuery.var_eventname == "Marriage"){
-									window.location='/index/marriagedetails'
-									//gawa pug
-									}
-									else if(data.firstQuery.var_eventname == "Facility Reservation"){
-									window.location='/index/facilities'
-									//gawa pug
-									}
-							$('#headerAppend').append(`
-								<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
-								<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
-								`)
-								$('#bodyAppend').append(`
-								<p><strong>Service Description</strong></p>
-								<p>${data.firstQuery.var_eventdesc}</p>
-								<br>
-								<p><strong>Requirements</strong></p>
-								
+block addjs
+	script.
+		$(document).ready(function(){
+			$('.inquireButton').click(function(){
+				var idNow = $(this).val();
+				console.log(idNow)
+					$.post('/index/query',{id:idNow})
+						.done(data =>{
+						if(data.firstQuery.var_eventname == "Marriage"){
+								window.location='/index/marriagedetails'
+								//gawa pug
+								}
+								else if(data.firstQuery.var_eventname == "Facility Reservation"){
+								window.location='/index/facilities'
+								//gawa pug
+								}
+						$('#headerAppend').append(`
+							<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
+							<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
 							`)
-							for(i=0;i<data.secondQuery.length;i++){
-							$('#reqAppend').append(`
-								<p>${data.secondQuery[i].var_reqname}</p>
-							`)
-							}
-							$('#inquireModal').modal('show');	
-							$('#inquireModal').on('hidden.bs.modal',function(){
-								$('#bodyAppend').empty()
-								$('#headerAppend').empty()
-								$('#reqAppend').empty()
+							$('#bodyAppend').append(`
+							<p><strong>Service Description</strong></p>
+							<p>${data.firstQuery.var_eventdesc}</p>
+							<br>
+							<p><strong>Requirements</strong></p>
+							
+						`)
+						for(i=0;i<data.secondQuery.length;i++){
+						$('#reqAppend').append(`
+							<p>${data.secondQuery[i].var_reqname}</p>
+						`)
+						}
+						$('#inquireModal').modal('show');	
+						$('#inquireModal').on('hidden.bs.modal',function(){
+							$('#bodyAppend').empty()
+							$('#headerAppend').empty()
+							$('#reqAppend').empty()
 
-							})
-							$('#cancelButton').css('display', 'block');
-							$('#proceedButton').css('display', 'block');
-								$('#proceedButton').click(function(){
-									$.post('/login/query',{id:data.firstQuery.int_eventID}).done(data =>{
-										window.location=`/login? 
-										redirect="${$(this).val()}"`
-									})
+						})
+						$('#cancelButton').css('display', 'block');
+						$('#proceedButton').css('display', 'block');
+							$('#proceedButton').click(function(){
+								$.post('/login/query',{id:data.firstQuery.int_eventID}).done(data =>{
+									window.location=`/login? 
+									redirect="${$(this).val()}"`
 								})
 							})
-									
-				})
+						})
+								
 			})
+		})

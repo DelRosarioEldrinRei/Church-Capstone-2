@@ -221,7 +221,7 @@
             });
     
         });
-        //===============================================================================================//
+    //===============================================================================================//
     // N O T I F I C A T I O N //
     //===============================================================================================//
     guestRouter.get('/notification', (req, res)=>{
@@ -233,8 +233,26 @@
         });
 
     });
-    guestRouter.get('/voucher', (req, res)=>{
-        res.render('guest/views/voucher/facility');
+    //===============================================================================================//
+    // V O U C H E R //
+    //===============================================================================================//
+    guestRouter.get(`/voucherLink`, (req, res)=>{
+        var notifId = parseInt(req.query.notifId);
+        var queryString = `SELECT * from tbl_voucher 
+        JOIN tbl_notification ON tbl_voucher.int_notifID = tbl_notification.int_notifID
+        JOIN tbl_user ON tbl_user.int_userID = tbl_notification.int_userID
+        JOIN tbl_documentrequest ON tbl_documentrequest.int_requestID = tbl_voucher.int_requestID
+        JOIN tbl_document ON tbl_document.int_documentID = tbl_documentrequest.int_documentID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID
+        WHERE tbl_voucher.int_notifID = ?`
+        db.query(queryString,[notifId],(err,results,fields)=>{
+        console.log(results[0])
+        results[0].date_issued = moment(results[0].date_issued).format('MM/DD/YYYY')
+        results[0].date_due = moment(results[0].date_due).format('MM/DD/YYYY')
+        results[0].date_docurequested = moment(results[0].date_docurequested).format('MM/DD/YYYY')
+        results = results[0];
+        return res.render('guest/views/voucher/facility',{results:results});
+        })
     });
     // ---------------------------------------------------------------------------------------------------------
     // E  D  I  T    D  E  T  A  I  L  S 
@@ -1277,7 +1295,7 @@
                         var paymentID = results2.insertId;
                         var datenow= new Date();
                         var queryString3 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus,date_doceventdate,int_paymentID) VALUES(?,?,?,?,?,?,?,?,?)`;
-                            db.query(queryString3, [req.session.user.int_userID, documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Requested",req.body.eventDate,paymentID], (err, results3, fields) => {
+                            db.query(queryString3, [req.session.user.int_userID, documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Pending",req.body.eventDate,paymentID], (err, results3, fields) => {
                                 if (err) throw err;
                                 var requestID =results3.insertId;
                                 var path = '/img/req/'+req.file.filename;
