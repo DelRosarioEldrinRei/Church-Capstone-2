@@ -1,14 +1,9 @@
 extends ../../../../templates/admin
 block prepend main
 	#wrap
-	//- #calendar
 	div(style='clear:both')
 	.content
 		.container-fluid
-			//- <div class="alert alert-warning" role="alert">
-			//- 	| <cite>Note:</cite> Deadline for sumbission of requirements will be on <u><cite> June 20, 2018</u></cite>
-			//- </div>
-			
 			.row
 				.col-lg-12.col-md-12
 						.card
@@ -19,7 +14,7 @@ block prepend main
 										.col-md-6
 											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Requirement
 								.card-body.table-responsive
-										table.table.table-hover
+										table.table.table-hover.dataTable
 												thead.text-primary
 														th ID
 														th Requirement
@@ -37,25 +32,6 @@ block prepend main
 																	| &nbsp;
 																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${requirement.int_docureqtypeID}`)
 																		i.ti-pencil
-																
-														
-								.card-footer.text-right
-									.col-md-3
-										//- <cite title="Source Title">Showing 6 of 25 entries</cite> 
-									.col-md-6.text-right
-										<nav aria-label="Page navigation example">
-											<ul class="pagination justify-content-center">
-												<li class="page-item">
-													<a class="page-link" href="#" tabindex="-1">Previous</a>
-												</li>
-												<li class="page-item"><a class="page-link" href="#">1</a></li>
-												<li class="page-item">
-													<a class="page-link" href="#">Next</a>
-												</li>
-											</ul>
-										</nav>
-	
-
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
 			// Content
@@ -77,7 +53,6 @@ block prepend main
 						.row
 							.col-md-12.text-center.my-3
 								button.btn.btn-primary(type='submit') Add	
-		
 	#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
 			.modal-content
@@ -85,12 +60,11 @@ block prepend main
 					p.heading.lead Edit Requirement
 					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
-				.modal-body#updateAppend                
+				.modal-body#updateAppend
 					.col-md-12.text-center.my-3
 				.modal-footer
 					button.btn.btn-primary#updateSubmitButton(type="button") Update
 block addjs
-	script(src='/js/forIndex.js')
 	script.
 		$(document).ready(function() {
 		$('.deleteButton').click(function(){

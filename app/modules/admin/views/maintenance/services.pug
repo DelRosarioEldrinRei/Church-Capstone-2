@@ -1,7 +1,6 @@
 extends ../../../../templates/admin
 block prepend main
 	#wrap
-	//- #calendar
 	div(style='clear:both')
 	.content
 		.container-fluid
@@ -18,12 +17,6 @@ block prepend main
 									a.nav-link.active(data-toggle='tab', href='#sacrament') Sacrament
 								li.nav-item
 									a.nav-link(data-toggle='tab', href='#special') Special Service
-								//- li.nav-item
-								//- 	a.nav-link(data-toggle='tab', href='#') Events
-								//- li.nav-item
-								//- 	a.nav-link(data-toggle='tab', href='#') Baptism
-								//- li.nav-item
-								//- 	a.nav-link(data-toggle='tab', href='#') Confirmation
 							// Tab panes
 							.tab-content
 								#sacrament.tab-pane.active
@@ -49,11 +42,13 @@ block prepend main
 																			td=sacrament.var_eventname
 																			td=sacrament.char_status
 																			td.td-actions.text-center
-																				button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${sacrament.int_eventID}`)
-																					i.ti-close
-																				| &nbsp;
-																				button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${sacrament.int_eventID}`)
-																					i.ti-pencil
+																				button.btn.btn-primary.actionButton(type='button' value=`${sacrament.int_eventID}`)
+																					i.ti-settings
+																						#toolbar-options.hidden
+																							a.button.updateButton(href='#')
+																								i.ti-pencil(style="color:white;")
+																							a.button.deleteButton(href='#')
+																								i.ti-close(style="color:white;")
 								#special.tab-pane.fade
 									br
 									.card
@@ -75,11 +70,13 @@ block prepend main
 																		td=service.int_eventID
 																		td=service.var_eventname
 																		td.td-actions.text-center
-																			button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${service.int_eventID}`)
-																				i.ti-close
-																			| &nbsp;
-																			button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${service.int_eventID}`)
-																				i.ti-pencil
+																			button.btn.btn-primary.actionButton(type='button' value=`${service.int_eventID}`)
+																				i.ti-settings
+																					#toolbar-options.hidden
+																						a.updateButton(href='#')
+																							i.ti-pencil(style="color:white;")
+																						a.deleteButton(href='#')
+																							i.ti-close(style="color:white;")
 						#wedding.container.tab-pane.fade
 							br
 							h3 Menu 1
@@ -121,7 +118,7 @@ block prepend main
 					p.heading.lead Edit Event
 					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
-				.modal-body#updateAppend                
+				.modal-body#updateAppend
 					.col-md-12.text-center.my-3
 				.modal-footer
 					button.btn.btn-primary#updateSubmitButton(type="button") Update
@@ -138,122 +135,124 @@ block prepend main
 					button.btn.btn-outline.pull-left#cancelButton1(type='button', data-dismiss='modal') No
 					button.btn.btn-outline.pull-right#deleteSubmit1 Yes
 block addjs
-	script(src='/js/forIndex.js')
 	script.
 		$(document).ready(function() {
-		$('.deleteButton').click(function(){
-			var idNow = $(this).val();
-			swal({
-				title: 'Are you sure?',
-				text: "You won't be able to revert this!",
-				type: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Confirm'
-				}).then((result) => {
-					if (result.value) {
-						$.post('/admin/maintenance-services/delete',{id1:idNow})
-						.done(data =>{
+			var idNow = 0;
+			$('.actionButton').click(function(){
+				idNow = $(this).val();
+				console.log(idNow)
+			})
+			$('.updateButton').click(function(){
+				console.log(idNow)
+					$.post('/admin/maintenance-services/query',{id:idNow})
+				.done(data=>{
+					$('#updateAppend').append(`
+					<div class="form-group">
+						<label class="label-control">Service Name</label>
+						<input type="text"  id="eventname" value="${data.var_eventname}" class="form-control"/>
+					</div>
+					<div class="form-group">
+						<label class="label-control">Service Description</label>
+						<textarea id="eventdesc" class="form-control">${data.var_eventdesc}</textarea>
+					</div>
+					<div class="form-group">
+						<label class="label-control">Service Type</label>
+						<select id="eventtype" class="form-control">
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="label-control">Status</label>
+						<select id="status" class="form-control">
+						</select>
+					</div>
+					`)
+					$('#updateModal').modal('show')
+					$('#updateModal').on('hidden.bs.modal',function(){
+						console.log("NAALIS NA")
+						$('#updateAppend').empty()
+					})
+					$('#cancelButton').click(function(){
+						$('#updateAppend').empty();
+					})
+					if(data.char_type == "Sacrament"){
+						$('#eventtype').append(`
+						<option value="Special Service">Special Service</option>
+						<option value="Sacrament" selected="selected">Sacraments</option>
+						`)
+					}
+					else{
+						$('#eventtype').append(`
+						<option value="Special Service" selected="selected">Special Service</option>
+						<option value="Sacrament">Sacraments</option>
+						`)
+					}
+					if(data.char_status == "Enabled"){
+						$('#status').append(`
+						<option value="Enabled" selected="selected">Enabled</option>
+						<option value="Disabled" >Disabled</option>
+						`)
+					}
+					else if(data.char_status == "Disabled"){
+						$('#status').append(`
+						<option value="Enabled" >Enabled</option>
+						<option value="Disabled" selected="selected">Disabled</option>
+						`)
+					}
+					$(document).keyup(function(e) {
+					if (e.keyCode === 27)
+						{
+						$('#updateModal').modal('hide');
+						$('#updateAppend').empty();
+						};
+					});
+					$('#updateSubmitButton').click(function(){
+						$.post('/admin/maintenance-services/edit',{
+						eventname:$('#eventname').val(),
+						eventdesc:$('#eventdesc').val(),
+						eventtype:$('#eventtype').val(),
+						status:$('#status').val(),
+						id1:idNow
+						})
+						.done(data=>{
 							if(data){
 								swal({
-								title:'Success', 
-								text:'Service Deleted', 
+								title:'Success',
+								text:'service updated',
 								icon:'success'
 								}).then(function(){
 									location.reload();
 								})
+								$('#updateModal').modal('hide');
+								$('#updateAppend').empty();
 							}
 						});
-					}
-				})
-		});
-		$('.updateButton').click(function(){
-			var idNow = $(this).val();
-			console.log(idNow)
-				$.post('/admin/maintenance-services/query',{id:idNow})
-			.done(data=>{
-				$('#updateAppend').append(`
-				<div class="form-group">
-					<label class="label-control">Service Name</label>
-					<input type="text"  id="eventname" value="${data.var_eventname}" class="form-control"/>
-				</div>
-				<div class="form-group">
-					<label class="label-control">Service Description</label>
-					<textarea id="eventdesc" class="form-control">${data.var_eventdesc}</textarea>
-				</div>
-				<div class="form-group">
-					<label class="label-control">Service Type</label>
-					<select id="eventtype" class="form-control">
-					</select>
-				</div>
-				<div class="form-group">
-					<label class="label-control">Status</label>
-					<select id="status" class="form-control">
-					</select>
-				</div>
-				`)
-				$('#updateModal').modal('show')
-				if(data.char_type == "Sacrament"){
-					$('#eventtype').append(`
-					<option value="Special Service">Special Service</option>
-					<option value="Sacrament" selected="selected">Sacraments</option>
-					`)
-				}
-				else{
-					$('#eventtype').append(`
-					<option value="Special Service" selected="selected">Special Service</option>
-					<option value="Sacrament">Sacraments</option>
-					`)
-				}
-				if(data.char_status == "Enabled"){
-					$('#status').append(`
-					<option value="Enabled" selected="selected">Enabled</option>
-					<option value="Disabled" >Disabled</option>
-					`)
-				}
-				else if(data.char_status == "Disabled"){
-					$('#status').append(`
-					<option value="Enabled" >Enabled</option>
-					<option value="Disabled" selected="selected">Disabled</option>
-					`)
-				}
-				$('#cancelButton').click(function(){
-					$('#updateAppend').empty();
-				})
-				$('#updateModal').on('hidden.bs.modal',function(){
-					$('#updateAppend').empty()
-				})
-				$(document).keyup(function(e) {
-				if (e.keyCode === 27) 
-					{
-					$('#updateModal').modal('hide');
-					$('#updateAppend').empty();
-					};
+					});
 				});
-				$('#updateSubmitButton').click(function(){
-					$.post('/admin/maintenance-services/edit',{
-					eventname:$('#eventname').val(),
-					eventdesc:$('#eventdesc').val(),
-					eventtype:$('#eventtype').val(),
-					status:$('#status').val(),
-					id1:idNow
-					})
-					.done(data=>{
-						if(data){
-							swal({
-							title:'Success', 
-							text:'service updated', 
-							icon:'success'
-							}).then(function(){
-								location.reload();
-							})
-							$('#updateModal').modal('hide');
-							$('#updateAppend').empty();
+			});
+			$('.deleteButton').click(function(){
+				swal({
+					title: 'Are you sure?',
+					text: "You won't be able to revert this!",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Confirm'
+					}).then((result) => {
+						if (result.value) {
+							$.post('/admin/maintenance-services/delete',{id1:idNow})
+							.done(data =>{
+								if(data){
+									swal({
+									title:'Success',
+									text:'Service Deleted',
+									icon:'success'
+									}).then(function(){
+										location.reload();
+									})
+								}
+							});
 						}
 					})
-				})
-			})
-
-		})
+			});
 		});

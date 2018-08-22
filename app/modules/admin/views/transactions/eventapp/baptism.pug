@@ -17,10 +17,10 @@ block prepend main
 				.col-lg-12.col-md-12
 						.card
 								.card-header.card-header-primary
-										h4.card-title Regular Baptism
+										h4.card-title Regular Baptisms
 										
 								.card-body.table-responsive
-										table.table.table-hover
+										table.table.table-hover.dataTable
 												thead.text-primary
 														th ID
 														th Name of the Child
@@ -38,30 +38,17 @@ block prepend main
 																td=regular.char_reqstatus
 																td=regular.char_feestatus
 																td=regular.char_approvalstatus
-																<td class="td-actions text-right">
-																		a.button(rel="tooltip" class="btn btn-info" href=`/admin/transaction-baptism`)
-																				<i class="material-icons">open_in_new</i>
-																		a.button(rel="tooltip" class="btn btn-success" href=`/admin/transaction-baptism/edit/${regular.int_eventinfoID}`)
-																				<i class="material-icons">edit</i>
-																		//- a.button(rel="tooltip" class="btn btn-danger" href=`/admin/transaction-baptism/delete/${request.int_requestID}`)
-																		//- 		<i class="material-icons">close</i>
-																</td>	
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.addButton(href='#')
+																					i.ti-plus(style="color:white;")
+																				a.updateButton(href='#')
+																					i.ti-pencil(style="color:white;")
+																				a.deleteButton(href='#')
+																					i.ti-close(style="color:white;")	
 															
-								.card-footer.text-right
-									.col-md-7
-										<cite title="Source Title">Showing 6 of 25 entries</cite> 
-									.col-md-6.text-right
-										<nav aria-label="Page navigation example">
-											<ul class="pagination justify-content-center">
-												<li class="page-item">
-													<a class="page-link" href="#" tabindex="-1">Previous</a>
-												</li>
-												<li class="page-item"><a class="page-link" href="#">1</a></li>
-												<li class="page-item">
-													<a class="page-link" href="#">Next</a>
-												</li>
-											</ul>
-										</nav>
 						.card
 								.card-header.card-header-primary
 										h4.card-title Special Baptism
@@ -87,14 +74,16 @@ block prepend main
 																td=special.char_reqstatus
 																td=special.char_feestatus
 																td=special.char_approvalstatus
-																<td class="td-actions text-right">
-																		a.button(rel="tooltip" class="btn btn-info" href=`/admin/transaction-baptism`)
-																				<i class="material-icons">open_in_new</i>
-																		a.button(rel="tooltip" class="btn btn-success" href=`/admin/transaction-baptism/edit/${special.int_eventinfoID}`)
-																				<i class="material-icons">edit</i>
-																		//- a.button(rel="tooltip" class="btn btn-danger" href=`/admin/transaction-baptism/delete/${request.int_requestID}`)
-																		//- 		<i class="material-icons">close</i>
-																</td>	
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.addButton(href='#')
+																					i.ti-plus(style="color:white;")
+																				a.updateButton(href='#')
+																					i.ti-pencil(style="color:white;")
+																				a.deleteButton(href='#')
+																					i.ti-close(style="color:white;")	
 															
 								.card-footer.text-right
 									.col-md-7

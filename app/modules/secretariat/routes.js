@@ -588,13 +588,15 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         }); 
     });
     secretariatRouter.post('/transaction-baptism/update/query', (req, res)=>{
-        var queryString1 =`SELECT tbl_relation.var_lname,tbl_relation.var_fname,tbl_relation.var_mname
-        ,tbl_relation.var_fathername,tbl_relation.mothername,tbl_baptism.date_desireddate,char_approvalstatus
-        ,tbl_eventapplication.char_approvalstatus
-        FROM
-        `
+        var queryString1 =`SELECT * from tbl_eventinfo 
+        join tbl_eventapplication on tbl_eventinfo.int_eventinfoID = tbl_application.int_eventinfoID
+        join tbl_payment on tbl_application.int_paymentID = tbl_payment.int_paymentID
+        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
+        
+        where tbl_eventinfo.int_eventinfoID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
-            req.session.userID = results[0].int_userID
+            // req.session.userID = results[0].int_userID
             if (err) console.log(err);
             res.send(results[0])
             console.log(results[0])

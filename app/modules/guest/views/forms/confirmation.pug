@@ -137,18 +137,21 @@ block main
 													h6(for='exampleFormControlTextarea1') Family address:
 													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City")
 										.row
+                                            .col-md-4.px-lg-3.px-md-0.px-sm-0
+                                                .form-group
+                                                    h6.label-control Birth Certificate
+                                                    input#file-0b.file(type='file',accept='image/*',name="image")
+                                        
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
-													h6.label-control Birth Certificate
-													input#datepicker(type='file' name='image')
+                                                    h6.label-control Baptismal Certificate
+                                                    input#file-0b.file(type='file',accept='image/*',name="image")
+                                        
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
-													h6.label-control Baptismal Certificate
-													input#datepicker(type='file' name='image')
-											.col-md-4.px-lg-3.px-md-0.px-sm-0
-												.form-group
-													h6.label-control Valid ID
-													input#datepicker(type='file' name='image')
+                                                    h6.label-control Valid ID
+                                                    input#file-0b.file(type='file',accept='image/*',name="image")
+                                        
 										.learn-more.pull-right
 											button.btn.btn-next(type='button') Next
 
