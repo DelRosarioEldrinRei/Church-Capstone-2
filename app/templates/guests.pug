@@ -15,10 +15,10 @@ html(lang='en')
 		link(rel='stylesheet', href='/Helium/css/responsive.css')
 		link(rel='stylesheet', href='/css/modal-anim.css')
 		link(rel='stylesheet', href='/css/form-wizard.css')
-		link(rel='stylesheet' href='/css/fullcalendar.min.css')
+		link(rel='stylesheet', href='/css/fullcalendar.min.css')
 		link(rel='stylesheet', href='/css/loader.css')
-		link(rel="stylesheet" href="/css/fileinput-rtl.css")
-		link(rel="stylesheet" href="/css/fileinput-rtl.min.css")
+		link(rel='stylesheet', href='/css/dataTables.bootstrap4.min.css')
+		link(rel='stylesheet', href='/css/responsive.bootstrap4.min.css')
 		link(rel="stylesheet" href="/css/fileinput.css")
 		link(rel="stylesheet" href="/css/fileinput.min.css")
 		link(rel="stylesheet" href="/css/timedropper.min.css")
@@ -250,7 +250,10 @@ html(lang='en')
 		script(src="/js/calendar.js")
 		script(src="/js/fullcalendar.min.js")
 		script(src='/js/fileinput.js')
-		script(src='/js/fileinput.min.js')
+		script(src='/js/datatables.min.js')
+		script(src='/js/dataTables.bootstrap4.min.js')
+		script(src='/js/dataTables.responsive.min.js')
+		script(src='/js/responsive.bootstrap4.min.js')
 		script(src='/js/plugins/sortable.js')
 		script(src='/js/form-wizard.js')
 		script(src='/js/locales/fr.js')
@@ -335,6 +338,24 @@ html(lang='en')
 				$('html, body').animate({
 					scrollTop:$('.header-text').position().top},600);
 				return false;
+			});
+
+			$(document).ready(function() {
+				$('.dataTable').DataTable( {
+						responsive: {
+								details: {
+										display: $.fn.dataTable.Responsive.display.modal( {
+												header: function ( row ) {
+														var data = row.data();
+														return 'Details for '+data[0]+' '+data[1];
+												}
+										} ),
+										renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+												tableClass: 'table'
+										} )
+								}
+						}
+				});
 			});
 		block addjs
 			

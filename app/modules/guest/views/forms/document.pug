@@ -1,5 +1,9 @@
 extends ../../../../templates/guests
 block main
+	style.
+		#header-style-1 {
+			background-image: url(/imgchurch/docu1.jpg)
+		}
 	#headers
 		#header-style-1
 			.container
@@ -88,7 +92,7 @@ block main
 							success: function(data){
 								swal({
 									title:'Record found!',
-									text:'Please wait for 3 days for your request to be processed. We will send you an email once it is ready to be released. You may also be ',
+									text:'Please wait for 3 days for your request to be processed. We will notify you once your document is ready to be released. You will find your transaction in the My Account>Reservations.'
 									icon:'success',
 									buttons: {
 										Okay: 'okay'

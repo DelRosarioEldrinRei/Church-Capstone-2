@@ -654,8 +654,8 @@
                 '  {caption}\n' +
                 '<div class="input-group-btn input-group-append">\n' +
                 '      {remove}\n' +
-                '      {cancel}\n' +
-                '      {upload}\n' +
+                // '      {cancel}\n' +
+                // '      {upload}\n' +
                 '      {browse}\n' +
                 '    </div>\n' +
                 '</div>';
@@ -679,7 +679,7 @@
                 '</div>';
             //noinspection HtmlUnknownAttribute
             tBtnDefault = '<button type="{type}" tabindex="500" title="{title}" class="{css}" ' +
-                '{status}>{icon} {label}</button>';
+                '{status}>{icon} &nbsp;&nbsp; {label}</button>';
             //noinspection HtmlUnknownAttribute
             tBtnLink = '<a href="{href}" tabindex="500" title="{title}" class="{css}" {status}>{icon} {label}</a>';
             //noinspection HtmlUnknownAttribute
@@ -691,7 +691,7 @@
                 '    <div class="modal-header">\n' +
                 '      <h5 class="modal-title">{heading}</h5>\n' +
                 '      <span class="kv-zoom-title"></span>\n' +
-                '      <div class="kv-zoom-actions">{toggleheader}{fullscreen}{borderless}{close}</div>\n' +
+                '      <div class="kv-zoom-actions">{close}</div>\n' +
                 '    </div>\n' +
                 '    <div class="modal-body">\n' +
                 '      <div class="floating-buttons"></div>\n' +
@@ -906,8 +906,8 @@
                     downloadIcon: '<i class="glyphicon glyphicon-download"></i>',
                     downloadClass: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
                     downloadTitle: 'Download file',
-                    zoomIcon: '<i class="glyphicon glyphicon-zoom-in"></i>',
-                    zoomClass: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                    zoomIcon: '<i class="fa fa-eye" aria-hidden="true"></i>',
+                    // zoomClass: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
                     zoomTitle: 'View Details',
                     dragIcon: '<i class="glyphicon glyphicon-move"></i>',
                     dragClass: 'text-info',
@@ -4295,20 +4295,20 @@
         deleteExtraData: {},
         overwriteInitial: true,
         previewZoomButtonIcons: {
-            prev: '<i class="glyphicon glyphicon-triangle-left"></i>',
-            next: '<i class="glyphicon glyphicon-triangle-right"></i>',
-            toggleheader: '<i class="glyphicon glyphicon-resize-vertical"></i>',
-            fullscreen: '<i class="glyphicon glyphicon-fullscreen"></i>',
-            borderless: '<i class="glyphicon glyphicon-resize-full"></i>',
-            close: '<i class="glyphicon glyphicon-remove"></i>'
+            prev: '<i class="fa fa-caret-left" aria-hidden="true"></i>',
+            next: '<i class="fa fa-caret-right" aria-hidden="true"></i>',
+            toggleheader: '<i class="fa fa-arrows-v" aria-hidden="true"></i>',
+            fullscreen: '<i class="fa fa-window-maximize" aria-hidden="true"></i>',
+            borderless: '<i class="fa fa-external-link" aria-hidden="true"></i>',
+            close: '<i class="fa fa-window-close" aria-hidden="true"></i>'
         },
         previewZoomButtonClasses: {
-            prev: 'btn btn-navigate',
-            next: 'btn btn-navigate',
-            toggleheader: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
-            fullscreen: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
-            borderless: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
-            close: 'btn btn-sm btn-kv btn-default btn-outline-secondary'
+            // prev: 'btn btn-navigate',
+            // next: 'btn btn-navigate',
+            // toggleheader: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+            // fullscreen: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+            // borderless: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+            // close: 'btn btn-sm btn-kv btn-default btn-outline-secondary'
         },
         preferIconicPreview: false,
         preferIconicZoomPreview: false,
@@ -4319,19 +4319,19 @@
         defaultPreviewContent: null,
         customLayoutTags: {},
         customPreviewTags: {},
-        previewFileIcon: '<i class="glyphicon glyphicon-file"></i>',
+        previewFileIcon: '<i class="fa fa-file-image-o" aria-hidden="true"></i>',
         previewFileIconClass: 'file-other-icon',
         previewFileIconSettings: {},
         previewFileExtSettings: {},
         buttonLabelClass: 'hidden-xs',
-        browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>&nbsp;',
-        browseClass: 'btn btn-primary',
-        removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
-        removeClass: 'btn btn-default btn-secondary',
-        cancelIcon: '<i class="glyphicon glyphicon-ban-circle"></i>',
+        browseIcon: '<i class="fa fa-folder-open" aria-hidden="true"></i>&nbsp;',
+        browseClass: 'btn btn-custom std-btn btn-common m-0 btn-padding-16 border',
+        removeIcon: '<i class="fa fa-remove" aria-hidden="true"></i>',
+        removeClass: 'btn btn-custom std-btn btn-common m-0 btn-padding-16 border',
+        cancelIcon: '<i class="fa fa-ban" aria-hidden="true"></i>',
         cancelClass: 'btn btn-default btn-secondary',
-        uploadIcon: '<i class="glyphicon glyphicon-upload"></i>',
-        uploadClass: 'btn btn-default btn-secondary',
+        uploadIcon: '<i class="fa fa-upload" aria-hidden="true"></i>',
+        uploadClass: 'btn btn-custom std-btn btn-common m-0 pr-3 btn-padding-16 border',
         uploadUrl: null,
         uploadUrlThumb: null,
         uploadAsync: true,

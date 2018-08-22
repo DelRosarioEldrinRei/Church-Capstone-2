@@ -1,42 +1,59 @@
 extends ../../../../templates/guests
 block main
-	.profile-page
-		//- Heading Page
-		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/Nave.png');")
+	style.
+		#header-style-1 {
+			background-image: url(/imgchurch/bible1.jpg)
+		}
+		.btn-sm {
+			font-size: 12px;
+			min-width: 40px;
+			padding: 5px 11px;
+		}
+	#headers
+		#header-style-1
 			.container
-				.row
-					.col-md-9.main-header__textbox
-						h1.font-italic Reservations
+				.header-caption
+					.row
+						.col-md-12.header-content
+							h3.header-title.animated.fadeInDown.invisible
+								span.text-primary Helium - 
+								| Bootstrap 4 UI Kit
+							h5.header-text.animated.fadeIn.invisible
+								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
 		#raised-section.main.main-raised
-			.container
-				.row
-					.col-md-12
-						hr.mt-5.mx-5
-				.row
-					.col-md-12.my-3
-						h3.text-left.text-uppercase.guidelines--text Reservation Lists
-				.row
-					.col-md-12.my-3
-						table.table
-							thead
-								tr.text-center
-									th Name
-									th Status
-									th Actions
-							tbody
-								each reservation in reservations
-									tr.text-center
-										td=reservation.var_eventname
-										td=reservation.char_approvalstatus
-										td.td-actions
-											//- a(href=`/guest/reservation/${reservation.int_eventinfoID}` style= 'margin-left: 3px') VIEW
-											//- a(href=`/guest/reservation/${reservation.int_eventinfoID}/cancel` style= 'margin-left: 8px') CANCEL
-
-											button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
-												//- i.material-icons close
-											button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) Edit
-												//- i.material-icons edit
-					
+			section.form-box
+				.container
+					.row
+						.col-md-12.form-wizard
+							h3 Reservation List
+							p 
+					.row
+						.col-lg-12.col-md-12
+							.card
+								.card-header.card-header-primary
+									.row
+										.col-md-6
+											h4.card-title Requirements on Document Request
+										.col-md-6
+											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Requirement
+								.card-body.table-responsive
+									table.table.dataTable
+										thead
+											tr.text-center
+												th Name
+												th Status
+												th Actions
+										tbody
+											each reservation in reservations
+												tr.text-center
+													td=reservation.var_eventname
+													td=reservation.char_approvalstatus
+													td.td-actions
+														button.btn.btn-danger.btn-sm.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
+														| &nbsp;
+														button.btn.btn-success.btn-sm.updateButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) Edit
 	#conditionModal.modal.animated.fadeIn(tabindex='-1', role='dialog')
 		.modal-dialog.modal-login.modal-lg(role='document')
 			.modal-content
