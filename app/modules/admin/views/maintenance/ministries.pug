@@ -29,12 +29,12 @@ block prepend main
 																td=ministry.var_ministryname
 																td=ministry.var_ministrydesc
 																td.td-actions.text-center
-																	button.btn.btn-primary.actionButton(type='button')
+																	button.btn.btn-primary.actionButton(type='button' value=`${ministry.int_ministryID}`)
 																		i.ti-settings
 																			#toolbar-options.hidden
-																				a.updateButton(href='#' data-value=`${ministry.int_ministryID}`)
+																				a.updateButton(href='#')
 																					i.ti-pencil(style="color:white;")
-																				a.deleteButton(href='#' data-value=`${ministry.int_ministryID}`)
+																				a.deleteButton(href='#')
 																					i.ti-close(style="color:white;")
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
@@ -80,77 +80,86 @@ block prepend main
 block addjs
 	script.
 		$(document).ready(function() {
-		$('.deleteButton').click(function(){
-			i=$(this).data("value");
-			var idNow = i
-			console.log(idNow)
-			$('#modal-warning1').modal('show');
-			$('#deleteSubmit1').css('display', 'block');
-			$('#cancelButton1').css('display', 'block');
-				$('#deleteSubmit1').click(function(){
-					$.post('/admin/maintenance-ministries/delete',{id1:idNow})
-						.done(data =>{
-						if(data){
-							swal({
-							title:'Success', 
-							text:'service deleted', 
-							icon:'success'
-							}).then(function(){
-								location.reload();
-							})     
-							$('#modal-warning1').modal('hide');
-						}
-
-					});                        
-				});
-		});
-		$('.updateButton').click(function(){
-			var idNow = $(this).val();
-			console.log(idNow)
-				$.post('/admin/maintenance-ministries/query',{id:idNow})
-			.done(data=>{
-				$('#updateAppend').append(`
-				<div class="form-group">
-					<label class="label-control">Ministry Name</label>
-					<input type="text" id="ministryname" value="${data.var_ministryname}" class="form-control"/>
-				</div>
-				<div class="form-group">
-					<label class="label-control">Ministry Desctription</label>
-					<input type="text" id="ministrydesc" value="${data.var_ministrydesc}" class="form-control"/>
-				</div>
-				`)
-				$('#updateModal').modal('show')
-				$('#cancelButton').click(function(){
-					$('#updateAppend').empty();
-				})
-				$(document).keyup(function(e) {
-				if (e.keyCode === 27) 
-					{
-					$('#updateModal').modal('hide');
-					$('#updateAppend').empty();
-					};
-				});
-				$('#updateSubmitButton').click(function(){
-					$.post('/admin/maintenance-ministries/edit',{
-					ministryname:$('#ministryname').val(),
-					ministrydesc:$('#ministrydesc').val(),
-					id1:idNow
-					})
-					.done(data=>{
-						if(data){
-							swal({
-							title:'Success', 
-							text:'service updated', 
-							icon:'success'
-							}).then(function(){
-								location.reload();
-							})
-							$('#updateModal').modal('hide');
-							$('#updateAppend').empty();
-						}
-					})
-				})
+			var idNow;
+			$('.actionButton').click(function(){
+				idNow = $(this).val();
+				console.log(idNow)
 			});
-		});
+			$('.deleteButton').click(function(){
+				i=$(this).data("value");
+				var idNow = i
+				console.log(idNow)
+				$('#modal-warning1').modal('show');
+				$('#deleteSubmit1').css('display', 'block');
+				$('#cancelButton1').css('display', 'block');
+					$('#deleteSubmit1').click(function(){
+						$.post('/admin/maintenance-ministries/delete',{id1:idNow})
+							.done(data =>{
+							if(data){
+								swal({
+								title:'Success', 
+								text:'service deleted', 
+								icon:'success'
+								}).then(function(){
+									location.reload();
+								})     
+								$('#modal-warning1').modal('hide');
+							}
+
+						});                        
+					});
+			});
+			$('.updateButton').click(function(){
+				var idNow = $(this).val();
+				console.log(idNow)
+					$.post('/admin/maintenance-ministries/query',{id:idNow})
+				.done(data=>{
+					$('#updateAppend').append(`
+					<div class="form-group">
+						<label class="label-control">Ministry Name</label>
+						<input type="text" id="ministryname" value="${data.var_ministryname}" class="form-control"/>
+					</div>
+					<div class="form-group">
+						<label class="label-control">Ministry Desctription</label>
+						<input type="text" id="ministrydesc" value="${data.var_ministrydesc}" class="form-control"/>
+					</div>
+					`)
+					$('#updateModal').modal('show')
+					$('#updateModal').on('hidden.bs.modal',function(){
+						console.log("NAALIS NA")
+						$('#updateAppend').empty()
+					})
+					$('#cancelButton').click(function(){
+						$('#updateAppend').empty();
+					})
+					$(document).keyup(function(e) {
+					if (e.keyCode === 27) 
+						{
+						$('#updateModal').modal('hide');
+						$('#updateAppend').empty();
+						};
+					});
+					$('#updateSubmitButton').click(function(){
+						$.post('/admin/maintenance-ministries/edit',{
+						ministryname:$('#ministryname').val(),
+						ministrydesc:$('#ministrydesc').val(),
+						id1:idNow
+						})
+						.done(data=>{
+							if(data){
+								swal({
+								title:'Success', 
+								text:'service updated', 
+								icon:'success'
+								}).then(function(){
+									location.reload();
+								})
+								$('#updateModal').modal('hide');
+								$('#updateAppend').empty();
+							}
+						})
+					})
+				});
+			});
 		});
 	
