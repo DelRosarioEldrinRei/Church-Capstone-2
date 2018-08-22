@@ -610,7 +610,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
         
-        where tbl_services.var_eventname ='Anointings of the sick'`
+        where tbl_services.int_eventID =1`
 
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
@@ -625,13 +625,12 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 }             
             
                 var queryString3 =`SELECT * FROM tbl_eventinfo 
-                    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-                    JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
-                    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
-                    JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
-                    join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
-                    
-                    where tbl_services.var_eventname ='Funeral Service' OR tbl_services.var_eventname ='Funeral Mass'`
+                JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+                JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
+                JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+                join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
+                
+                where tbl_services.int_eventID =4`
 
                         db.query(queryString3, (err, results, fields) => {
                             if (err) console.log(err);

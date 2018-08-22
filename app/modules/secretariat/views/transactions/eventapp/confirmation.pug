@@ -35,22 +35,21 @@ block prepend main
                                                                     th Approval Status
                                                                     th.text-center(style=" width:11rem") Actions
                                                             tbody
-                                                                    each regular in regulars
-                                                                        tr
-                                                                            td=regular.int_eventinfoID
-                                                                            td=regular.var_lname + ", " + regular.var_fname
-                                                                            td=regular.date_birthday
-                                                                            td=regular.char_reqstatus
-                                                                            td=regular.char_feestatus
-                                                                            td=regular.char_approvalstatus
-                                                                            td.td-actions.text-center
-                                                                                    button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
-                                                                                            i.ti-settings
-                                                                                                    #toolbar-options.hidden
-                                                                                                            a.viewButton(href='#')
-                                                                                                                    i.ti-new-window(style="color:white;")
-                                                                                                            a.updateButton(href='#')
-                                                                                                                    i.ti-pencil(style="color:white;")
+                                                                tr
+                                                                        td="88"
+                                                                        td="Santos, Crisaldo"
+                                                                        td="1999-01-22"
+                                                                        td="Pending"
+                                                                        td="Unpaid"
+                                                                        td="Pending"
+                                                                        td.td-actions.text-center
+                                                                                button.btn.btn-primary.actionButton(type='button' )
+                                                                                        i.ti-settings
+                                                                                                #toolbar-options.hidden
+                                                                                                        a.viewButton(href='#')
+                                                                                                                i.ti-new-window(style="color:white;")
+                                                                                                        a.updateButton(href='#')
+                                                                                                                i.ti-pencil(style="color:white;")
                                 #specconfirmation.tab-pane.fade
                                     .card
                                             .card-header.card-header-primary
@@ -59,31 +58,102 @@ block prepend main
                                             .card-body.table-responsive
                                                     table.table.dataTable.table-hover
                                                             thead.text-primary
-                                                                    th ID
-                                                                    th Name of the Child
-                                                                    th Birthday
-                                                                    th Req Status
-                                                                    th Pymt Status
-                                                                    th Approval Status
-                                                                    th.text-right(style=" width:120px") Actions
+                                                                        th ID
+                                                                        th Name of the Child
+                                                                        th Birthday
+                                                                        th Req Status
+                                                                        th Pymt Status
+                                                                        th Approval Status
+                                                                        th.text-right(style=" width:120px") Actions
                                                             tbody
-                                                                    each special in specials
-                                                                        tr
-                                                                            td=special.int_eventinfoID
-                                                                            td=special.var_lname + ", " + special.var_fname
-                                                                            td=special.date_birthday
-                                                                            td=special.char_reqstatus
-                                                                            td=special.char_feestatus
-                                                                            td=special.char_approvalstatus
-                                                                            td.td-actions.text-center
-                                                                                    button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
-                                                                                            i.ti-settings
-                                                                                                    #toolbar-options.hidden
-                                                                                                            a.viewButton(href='#')
-                                                                                                                    i.ti-new-window(style="color:white;")
-                                                                                                            a.updateButton(href='#')
-                                                                                                                    i.ti-pencil(style="color:white;")
-
+                                                                tr
+                                                                        td="88"
+                                                                        td="Santos, Crisaldo"
+                                                                        td="1999-01-22"
+                                                                        td="Pending"
+                                                                        td="Unpaid"
+                                                                        td="Pending"
+                                                                        td.td-actions.text-center
+                                                                                button.btn.btn-primary.actionButton(type='button' )
+                                                                                        i.ti-settings
+                                                                                                #toolbar-options.hidden
+                                                                                                        a.viewButton(href='#')
+                                                                                                                i.ti-new-window(style="color:white;")
+                                                                                                        a.updateButton(href='#')
+                                                                                                                i.ti-pencil(style="color:white;")
+    #updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+        .modal-dialog.modal-lg(role="document")
+            .modal-content
+                .modal-header
+                    h5.modal-title Update Event Application
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                .modal-body
+                    col-md-4.p-lg-0
+                        .row
+                            .col-md-6
+                                .form-group
+                                    input#docuid(type='hidden', value='${data.int_requestID}')
+                                    input#docustatus(type='hidden', value='${data.char_docustatus}')
+                                    h6.label-control
+                                    strong  Current Application Status : 
+                                    |  Pending
+                        .row
+                            .col-md-6
+                                .form-group
+                                    input#reqid(type='hidden', value='${data.int_requirementdocumentID}')
+                                    h6.label-control
+                                    strong  Current Requirement Status : 
+                                    |  Submitted
+                                    br
+                                    select(type='text')
+                                        option(selected='selected') Pending
+                                        option Incomplete
+                                        option Approved
+                            .col-md-6
+                                .form-group
+                                    input#payid(type='hidden', value='${data.int_paymentID}')
+                                    h6.label-control
+                                    strong  Current Payment Status: 
+                                    |  Unpaid
+                                    br
+                                    select(type='text')
+                                        option(selected='selected') Paid
+                                        option Unpaid
+                                .form-group
+                                strong  Fee : 
+                                | P 300.00
+                .modal-footer
+                    button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                    button.btn.btn-primary#updateSubmitButton(type="button") Update
+    #viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+            .modal-dialog.modal-lg(role="document")
+                .modal-content
+                    .modal-header
+                        h5.modal-title Confirmation
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                    .modal-body
+                        .form-group.m-0
+                            label.label-control
+                                strong  Name of the Child: 
+                                |  Santos, Crisaldo
+                        .form-group
+                            label.label-control
+                                strong  Baptism Date: 
+                                |  08/18/2018
+                        .form-group
+                            label.label-control
+                                strong  Purpose: 
+                                |  Requirements for Confirmation
+                        .form-group
+                            label.label-control
+                                strong  Requirements: 
+                                |  Birth Certificate
+                        .form-group
+                            img#myImg.img-responsive(src='/img/req/download.jpg', style='max-height:250px;')
+                    .modal-footer
+                        button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 
 
 
