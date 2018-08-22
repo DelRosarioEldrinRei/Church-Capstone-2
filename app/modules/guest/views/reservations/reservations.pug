@@ -2,13 +2,31 @@ extends ../../../../templates/guests
 block main
 	style.
 		#header-style-1 {
-			background-image: url(/imgchurch/bible1.jpg)
+			background-image: url(/imgchurch/reservation.jpg)
 		}
 		.btn-sm {
 			font-size: 12px;
 			min-width: 40px;
 			padding: 5px 11px;
 		}
+		.form-control
+			{
+				display:block;
+				width:100%;
+				min-height:20px;
+				padding:.375rem .75rem;
+				font-size:.75rem;
+				line-height:1.5;
+				color:#495057;
+				background-color:#fff;
+				background-clip:padding-box;
+				border:1px solid #ced4da;
+				border-radius:.25rem;
+				transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out
+			}
+			.custom-select.custom-select-sm.form-control.form-control-sm {
+				margin:0;
+			}
 	#headers
 		#header-style-1
 			.container
@@ -30,30 +48,22 @@ block main
 							h3 Reservation List
 							p 
 					.row
-						.col-lg-12.col-md-12
-							.card
-								.card-header.card-header-primary
-									.row
-										.col-md-6
-											h4.card-title Requirements on Document Request
-										.col-md-6
-											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Requirement
-								.card-body.table-responsive
-									table.table.dataTable
-										thead
-											tr.text-center
-												th Name
-												th Status
-												th Actions
-										tbody
-											each reservation in reservations
-												tr.text-center
-													td=reservation.var_eventname
-													td=reservation.char_approvalstatus
-													td.td-actions
-														button.btn.btn-danger.btn-sm.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
-														| &nbsp;
-														button.btn.btn-success.btn-sm.updateButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) Edit
+						.col-lg-12.col-md-12.mb-60
+							table.table.dataTable
+								thead
+									tr.text-center
+										th Name
+										th Status
+										th Actions
+								tbody
+									each reservation in reservations
+										tr.text-center
+											td=reservation.var_eventname
+											td=reservation.char_approvalstatus
+											td.td-actions
+												button.btn.btn-danger.btn-sm.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
+												| &nbsp;
+												button.btn.btn-success.btn-sm.updateButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) Edit
 	#conditionModal.modal.animated.fadeIn(tabindex='-1', role='dialog')
 		.modal-dialog.modal-login.modal-lg(role='document')
 			.modal-content
