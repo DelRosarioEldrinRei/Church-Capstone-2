@@ -520,7 +520,7 @@ block main
                             option(value="") Half Payment 
                     .modal-footer
                         button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                        button.btn.btn-submit#submit2Button(type='submit') Proceed
+                        button.btn.btn-submit#submit2Button(type='submit' onclick="location.href='/guest/marriage1/form'") Proceed
 block addjs
     script.
         $('.textarea1').hide();
@@ -584,6 +584,7 @@ block addjs
         });
         $("#submit2Button").click(function(){
             $('#form').submit()
+            window.location.replace("/guest/marriage1/form")
         });
 
         //- var currentTab = 0; // Current tab is set to be the first tab (0)

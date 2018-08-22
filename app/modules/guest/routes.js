@@ -20,7 +20,7 @@
     //===============================================================================================//
         guestRouter.use(authMiddleware.guestAuth)
         guestRouter.get('/', (req, res)=>{
-            var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' or var_eventname = 'Establishment Blessing' `
+            var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' or var_eventname = 'Establishment Blessing' or var_eventname='Anointing of the sick'`
             db.query(queryString1, (err, results, fields) => {
               var events =results;
                 if (err) console.log(err);
@@ -919,8 +919,12 @@
         
            
         guestRouter.get('/marriage1/form', (req, res)=>{
-            res.render('guest/views/forms/marriage1',{user: req.session.user})
-        });
+            var wedSteps=`select * from tbl_weddingsteps`
+            db.query(wedSteps, (err, results, fields) => {
+                if (err) console.log(err);
+                var requirements= results;
+            return res.render('guest/views/forms/marriage1',{user: req.session.user})
+        });});
         guestRouter.post('/marriage/form', (req, res) => {
             console.log(req.body)
             var queryString= `select int_eventID from tbl_services where var_eventname="Marriage";`  

@@ -161,7 +161,6 @@ adminRouter.use(authMiddleware.adminAuth)
         });     
     });
 
-
     adminRouter.post('/maintenance-facilities/addfacility', (req, res) => {
     
         var queryString= `INSERT INTO tbl_facility(var_facilityname, var_facilitydesc,int_maxpax) VALUES(?,?,?);`  
@@ -169,7 +168,7 @@ adminRouter.use(authMiddleware.adminAuth)
                 if (err) throw err;
                     return res.redirect('/admin/maintenance-facilities');
             });            
-        });
+    });
     adminRouter.post('/maintenance-facilities/delete', (req, res) => {
         const queryString = `DELETE FROM tbl_facility WHERE int_facilityID= ?`;
         db.query(queryString,[req.body.id1], (err, results, fields) => {        

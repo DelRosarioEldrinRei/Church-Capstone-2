@@ -20,13 +20,14 @@ block main
 					.col-md-12.form-wizard
 						h3 Anointing Application
 						p Fill all form fields
-				form(action="/guest/anointing/form" enctype="multipart/form-data" method="post")
+				form(action="/guest/anointing/form" enctype="multipart/form-data" method="post" data-toggle='validator')
 					input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 					h5.label-control Name of the Ill:
 					.row
 						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group.pt-0
-								input.form-control(type='text' placeholder="Last Name" name='lastname')
+								input.form-control(type='text' placeholder="Last Name" name='lastname' , required='',data-error='Please enter your last name')
+								.help-block.with-errors
 						.col-md-4.p-lg-0.px-md-3.px-sm-0
 							.form-group.p-0
 								input.form-control(type='text' placeholder="First Name" name='firstname')
