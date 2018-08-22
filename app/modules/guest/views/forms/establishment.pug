@@ -52,7 +52,7 @@ block main
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																	.form-group
 																		h6.label-control Owner:
-																		input.form-control(type='text' value=	`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
+																		input.form-control(type='text' value=`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
 																	.form-group
 																		h6.label-control House/Establishment Location:
 																		textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location') #{user.var_useraddress}
@@ -62,23 +62,24 @@ block main
 																			input.form-control(type='text' value=`${user.var_usercontactnum}` name='contactnumber')
 																		.form-group
 																			h6.label-control Email:
-																			input.form-control.mb-2(type='Email' value=`${user.var_useremail}` name='email')
+																			input.form-control.mb-2(type='Email' value=`${user.var_useremail}` name='email' )
 													#other.form-group.pt-2
 														.row
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																.form-group
 																	h6.label-control Owner:
-																	input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1')
+																	input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1' pattern="[A-Za-z]{3,}" )
 																.form-group
 																	h6.label-control House/Establishment Location:
-																	textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location1')
+																	textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location1' pattern="^[a-zA-Z0-9,.- ]*${10,}")
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																.form-group
 																	h6.label-control Contact Number:
-																	input.form-control(type='text' name='contactnumber1' placeholder="Ex. 09324252345")
+																	input.form-control(type='text' name='contactnumber1' placeholder="XXXXXXXXXXX"  pattern="[0-9]{11}" )
 																.form-group
 																	h6.label-control Email:
-																	input.form-control.mb-2(type='Email' name='email1' placeholder="mark242@gmail.com")
+																	input.form-control.mb-2(type='Email' name='email1' placeholder="mark242@gmail.com" )
+																	//- pattern="/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/" email 
 														.row
 															.col-md-6
 															.col-md-6.px-lg-3.px-md-3.px-sm-0

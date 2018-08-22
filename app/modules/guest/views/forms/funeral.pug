@@ -27,20 +27,23 @@ block main
 					.row
 						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group.pt-0
-								input.form-control(type='text' placeholder="Last Name" name='lastname')
+								input.form-control(type='text' placeholder="Last Name" name='lastname' required='' pattern="[A-Za-z]{2,}" )
+								.help-block.with-errors
 						.col-md-4.p-lg-0.px-md-3.px-sm-0
 							.form-group.pt-0
-								input.form-control(type='text' placeholder="First Name" name='firstname')
+								input.form-control(type='text' placeholder="First Name" name='firstname' required='' pattern="[A-Za-z]{2,}" )
+								.help-block.with-errors
 						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group.pt-0
 								input.form-control(type='text' placeholder="Middle Name" name='middlename')
+								.help-block.with-errors
 					.row
 						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group.m-0
 								h6.label-control Gender:
 									.form-check.ml-3
 										label.form-check-label
-											input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Male")
+											input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Male" checked)
 											| Male
 											span.circle
 												span.check
@@ -53,16 +56,17 @@ block main
 						.col-md-4.p-lg-0.px-md-3.px-sm-0
 							.form-group
 								h6.label-control Birthday
-								input.datepicker.form-control(type='date' name='birthday')
+								input.datepicker.form-control(type='date' name='birthday' required='')
 						.col-md-4.px-lg-3.px-md-0.px-sm-0
-							.form-group
+							.form-group 
 								h6.label-control Birthplace:
-								input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City")
+								input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9.,-]{2,}" )
+								.help-block.with-errors
 					.row
 						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group
 								h6.label-control Relationship with the Deceased
-								select(type="text" name='relation')
+								select(type="text" name='relation' required)
 									option Spouse
 									option Parent
 									option Child
@@ -75,7 +79,7 @@ block main
 						.col-md-8.pl-lg-0.px-md-0.pl-md-3.px-sm-0
 							.form-group
 								h6(for='exampleFormControlTextarea1') Address:
-								textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
+								textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.-]{2,}" )
 						//- .col-md-4.p-lg-0.px-md-3.px-sm-0
 						//- 	.form-group
 						//- 		h6.label-control Desired Date
@@ -84,6 +88,7 @@ block main
 						//- 	.form-group
 						//- 		h6.label-control Desired Time
 						//- 		input.timepicker.form-control(type='text' name='desiredtime')
+						.help-block.with-errors
 					.row
 						.col-md-4.px-lg-3.px-md-0.px-sm-0
 							.form-group
@@ -122,6 +127,7 @@ block main
 									.form-group
 										h6.label-control Desired Time
 										input.timepicker.form-control(type='text' name='desiredtime')
+										//- .help-block.with-errors
 								//- .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-3
 								//- 	h6.label-control Birth Certificate
 								//- 	input(type='file', name='birthCertificate' accept='image/*' required)

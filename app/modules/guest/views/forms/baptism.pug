@@ -68,19 +68,22 @@ block main
                                         .row
                                             .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                 .form-group.pt-0
-                                                    input.form-control(type='text' placeholder="Last Name" name='lastname')
+                                                    input.form-control(type='text' placeholder="Last Name" name='lastname' required='' pattern="[A-Za-z]{2,}" )
+                                                    .help-block.with-errors
                                             .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                 .form-group.pt-0
-                                                    input.form-control(type='text' placeholder="First Name" name='firstname')
+                                                    input.form-control(type='text' placeholder="First Name" name='firstname' required='' pattern="[A-Za-z]{2,}" )
+                                                    .help-block.with-errors
                                             .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                 .form-group.pt-0
-                                                    input.form-control(type='text' placeholder="Middle Name" name='middlename')
+                                                    input.form-control(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z]{2,}" )
+                                                    .help-block.with-errors
                                         .row
                                             .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                 .form-group.m-0
                                                     h6.label-control Gender
                                                     .custom-control.custom-radio
-                                                        input#customRadio1.custom-control-input(type='radio', name='gender' value="Male")
+                                                        input#customRadio1.custom-control-input(type='radio', name='gender' value="Male" checked)
                                                         label.custom-control-label(for='customRadio1') 
                                                             | Male
                                                     .custom-control.custom-radio
@@ -91,34 +94,39 @@ block main
                                             .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Birthday
-                                                    input.datepicker.form-control(type='date' name='birthday')
+                                                    input.datepicker.form-control(type='date' name='birthday' required='')
                                             .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                 .form-group
                                                     h6.label-control Birthplace:
-                                                    input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City")
+                                                    input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9]{10,}" ) 
+                                                    .help-block.with-errors
                                         .row
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Father's Full Name:
-                                                    input.form-control(type='text' name='fathername' placeholder="Ex. Juan Dela Cruz")
+                                                    input.form-control(type='text' name='fathername' placeholder="Ex. Juan Dela Cruz" required='' pattern="[A-Za-z,]{2,}" )
+                                                    .help-block.with-errors
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Father's Birthplace:
-                                                    input.form-control(type='text' name='fatherbirthplace' placeholder="Ex. Caloocan, Quezon City")
+                                                    input.form-control(type='text' name='fatherbirthplace' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z,]{2,}" )
+                                                    .help-block.with-errors
                                         .row
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Mother's Full name:
-                                                    input.form-control(type='text' name='mothername' placeholder="Ex. Maria Dela Cruz")
+                                                    input.form-control(type='text' name='mothername' placeholder="Ex. Maria Dela Cruz" required='' pattern="[A-Za-z,]{2,}" )
+                                                    .help-block.with-errors
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Mother's Birthplace:
-                                                    input.form-control(type='text' name='motherbirthplace' placeholder="Ex. San Isidro, Quezon City")
+                                                    input.form-control(type='text' name='motherbirthplace' placeholder="Ex. San Isidro, Quezon City" required='' pattern="[A-Za-z0-9,.-]{10,}" )
+                                                    .help-block.with-errors
                                         .row
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Relationship with the Child
-                                                    select(type="text" name='relation')
+                                                    select(type="text" name='relation' required='')
                                                         option(selected="" value="" disabled) Choose...
                                                         option Parent
                                                         option Grandparent
@@ -126,16 +134,16 @@ block main
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Family's Contact number
-                                                    input#datepicker.form-control(type='text' name='contactnumber' placeholder="Ex. 09423523412")
+                                                    input#datepicker.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" required='' pattern="[0-9]{11}" )
                                         .row
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6(for='exampleFormControlTextarea1') Parents' Marriage Address:
-                                                    textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
+                                                    textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.-]{10,}" )
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6(for='exampleFormControlTextarea1') Family address:
-                                                    textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City")
+                                                    textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City" required='' pattern="[A-Za-z0-9.,-]10,}" )
                                         .row
                                             .col-md-6
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
@@ -170,7 +178,7 @@ block main
                                                 #regular.mt-4
                                                     .form-group
                                                         h6.label-control Regular Baptism Date
-                                                        input.datepicker1.RegularDesiredDate.form-control(type='date' name='regdesireddate')
+                                                        input.datepicker1.RegularDesiredDate.form-control(type='date' name='regdesireddate' )
                                                 #special
                                                     .row.mt-4
                                                         .col-md-6.px-lg-3.px-md-3.px-sm-0
@@ -198,10 +206,11 @@ block main
                                         .row#principalSponsor
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group.m-0
-                                                    input.form-control(type='text' name='sponsorname' placeholder="Enter Full Name")
+                                                    input.form-control(type='text' name='sponsorname' placeholder="Enter Full Name" required='' pattern="[A-Za-z,]{2,}" )
+                                                    .help-block.with-errors
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group.m-0
-                                                    input.form-control.balance(type='text' name='sponsorname' placeholder="Enter Full Name")
+                                                    input.form-control.balance(type='text' name='sponsorname' placeholder="Enter Full Name" required='' pattern="[A-Za-z,]{2,}" )
                                         button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button")
                                             i.fa.fa-plus
                                     h6.label-control Additional Sponsors
@@ -330,7 +339,7 @@ block addjs
         //add and delete side
 
         $("#addPrincipalSponsor").click(function(event){
-                var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
+                var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control' required /><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
                 $(principal).hide().appendTo("#principalSponsor").fadeIn(500);
         });
 
