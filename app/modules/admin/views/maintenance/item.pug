@@ -89,8 +89,6 @@ block addjs
 				console.log(idNow)
 				})
 				$('.addButton').click(function(){
-						i=$(this).data("value");
-						var idNow = i
 						$.post('/admin/maintenance-items/query',{id:idNow})
 						.done(data =>{
 						var totalItems = data.int_goodquantity + data.int_damagedquantity
@@ -122,8 +120,6 @@ block addjs
 						})
 				})
 				$('.deleteButton').click(function(){
-						i=$(this).data("value");
-						var idNow = i
 						swal({
 								title: 'Are you sure?',
 								text: "You won't be able to revert this!",
