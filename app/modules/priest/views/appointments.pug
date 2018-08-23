@@ -1,60 +1,124 @@
-extends ../../../templates/mastercoordinators
+extends ../../../templates/priest
 block main
-	.profile-page
-		//- Heading Page
-		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/Nave.jpeg');")
+	#raised-section.main.main-raised
+		section.form-box
 			.container
 				.row
-					.col-md-9.main-header__textbox
-						h1.font-italic Priest
-						h4
-							a.text-uppercase(href="/priest/Schedule") Officers
-								|  |  
-							a.text-uppercase(href="/priest/officers") Members
-		#raised-section.main.main-raised
-			.container
+					.col-md-12.form-wizard
+						h1.font-weight-bold Appointments
+						h4.font-weight-bold
 				.row
-					.col-md-12
-						hr.mt-5.mx-5
-				.row
-					.col-md-12.my-3
-						h3.text-center.text-uppercase.guidelines--text Apppointments
-				.row
-					.col-md-7.my-3
-						#form-facility
-							#calendar
-					.col-md-5.my-3.text-center
-						form(action="#" method='post')
-							input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
-							.form-group
-								label.label-control Event
-								input.form-control(type='text' name= 'event')
-							.form-group
-								label.label-control Desired Date
-								input.datepicker2.form-control(type='date' name='desireddate')
-							.form-group
-								label.label-control Start Time
-								input.timepicker.form-control(type='text' name='starttime')
-							.form-group
-								label.label-control End Time
-								input.timepicker.form-control(type='text' name='endtime')
-							.form-group.form-file-upload.form-file-multiple.p-0
-								input.inputFileHidden(type='file', multiple='')
-								.input-group
-									input.form-control.inputFileVisible(type='text', placeholder='Valid ID')
-									span.input-group-btn
-										button.btn.btn-fab.btn-round.btn-primary(type='button')
-											i.fa.fa-file(aria-hidden='true')
-							.row
-								.col-md-12.text-center.mb-5
-									//- button.btn.btn-primary.btn-valid Submit
-									button.btn.btn-primary(type='submit') Submit
-
-	#myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+					.table-responsive
+						table.table.text-center
+							thead
+								tr
+									th #
+									th Name
+									th Section
+									th Batch
+									th Schedule
+									th Actions
+							tbody
+								tr.text-center
+									td 1
+									td Andrew Mike
+									td Develop
+									td 2013
+									td € 99,225
+									td.td-actions
+										button(type="button" data-toggle="modal" data-target="#exampleModal").btn.btn-primary.btn-sm
+											| View
+										| &nbsp;
+										button.confirmButton(type="button").btn.btn-success.btn-sm
+											| Confirm
+								tr
+									td.text-center 2
+									td John Doe
+									td Design
+									td 2012
+									td € 89,241
+									td.td-actions
+										button(type="button" data-toggle="modal" data-target="#exampleModal").btn.btn-primary.btn-sm
+											| View
+										| &nbsp;
+										button.confirmButton(type="button").btn.btn-success.btn-sm
+											| Confirm
+	#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		.modal-dialog(role='document')
 			.modal-content
 				.modal-header
+					h5#exampleModalLabel.modal-title Event Description
 					button.close(type='button', data-dismiss='modal', aria-label='Close')
 						span(aria-hidden='true') ×
 				.modal-body
-					#calendar1
+					label.h5 Name: &nbsp;
+					label Juan Dela Cruz
+					br
+					label.h5 Venue: &nbsp;
+					label Payatas B. Molave Basketball Court 
+					br
+					label.h5 Schedule: &nbsp;
+					label September 10, 2018
+				.modal-footer
+					button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+block addjs
+	script.
+		$(document).ready(function() {
+			$('.confirmButton').click(function(){
+				swal({
+					title: 'Can you attend this event?',
+					//- text: "Please choose",
+					type: 'info',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, delete it!'
+				}).then((result) => {
+					if (result.value) {
+						swal(
+							'Deleted!',
+							'Your file has been deleted.',
+							'success'
+						)
+					}
+				})
+			})
+		});
+	//- 			.row
+	//- 				.col-md-7.my-3
+	//- 					#form-facility
+	//- 						#calendar
+	//- 				.col-md-5.my-3.text-center
+	//- 					form(action="#" method='post')
+	//- 						input.form-control(type='hidden' name='userID')
+	//- 						.form-group
+	//- 							label.label-control Event
+	//- 							input.form-control(type='text' name= 'event')
+	//- 						.form-group
+	//- 							label.label-control Desired Date
+	//- 							input.datepicker2.form-control(type='date' name='desireddate')
+	//- 						.form-group
+	//- 							label.label-control Start Time
+	//- 							input.timepicker.form-control(type='text' name='starttime')
+	//- 						.form-group
+	//- 							label.label-control End Time
+	//- 							input.timepicker.form-control(type='text' name='endtime')
+	//- 						.form-group.form-file-upload.form-file-multiple.p-0
+	//- 							input.inputFileHidden(type='file', multiple='')
+	//- 							.input-group
+	//- 								input.form-control.inputFileVisible(type='text', placeholder='Valid ID')
+	//- 								span.input-group-btn
+	//- 									button.btn.btn-fab.btn-round.btn-primary(type='button')
+	//- 										i.fa.fa-file(aria-hidden='true')
+	//- 						.row
+	//- 							.col-md-12.text-center.mb-5
+	//- 								//- button.btn.btn-primary.btn-valid Submit
+	//- 								button.btn.btn-primary(type='submit') Submit
+	//- #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+	//- 	.modal-dialog(role='document')
+	//- 		.modal-content
+	//- 			.modal-header
+	//- 				button.close(type='button', data-dismiss='modal', aria-label='Close')
+	//- 					span(aria-hidden='true') ×
+	//- 			.modal-body
+	//- 				#calendar1
