@@ -918,7 +918,7 @@
         if (err) console.log(err);
         var steps= results;
         console.log(steps)
-        var queryString2 =`select * from tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname='Marriage')`
+        var queryString2 =`select * from tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname='Marriage' and char_reqtype= 'Default')`
         db.query(queryString2, (err, results, fields) => {
             if (err) console.log(err);
             var requirements= results;
