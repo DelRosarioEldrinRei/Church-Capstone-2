@@ -937,12 +937,8 @@
         
            
         guestRouter.get('/marriage1/form', (req, res)=>{
-            var wedSteps=`select * from tbl_weddingsteps`
-            db.query(wedSteps, (err, results, fields) => {
-                if (err) console.log(err);
-                var requirements= results;
-            return res.render('guest/views/forms/marriage1',{user: req.session.user})
-        });});
+            res.render('guest/views/forms/marriage1',{user: req.session.user})
+        });
         guestRouter.post('/marriage/form', (req, res) => {
             console.log(req.body)
             var queryString= `select int_eventID from tbl_services where var_eventname="Marriage";`  

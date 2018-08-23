@@ -35,21 +35,22 @@ block prepend main
                                                                     th Approval Status
                                                                     th.text-center(style=" width:11rem") Actions
                                                             tbody
-                                                                    each anointing in anointings
-                                                                        tr
-                                                                            td=anointing.int_eventinfoID
-                                                                            td="Santos, Crisaldo"
-                                                                            td=anointing.var_blessingdetails
-                                                                            td=anointing.date_desireddate1 + ' 9:00 AM' 
-                                                                            td=anointing.char_approvalstatus
-                                                                            td.td-actions.text-center
-                                                                                    button.btn.btn-primary.actionButton(type='button' value=`${anointing.int_eventinfoID}`)
-                                                                                            i.ti-settings
-                                                                                                    #toolbar-options.hidden
-                                                                                                            a.viewButton(href='#')
-                                                                                                                    i.ti-new-window(style="color:white;")
-                                                                                                            a.updateButton(href='#')
-                                                                                                                    i.ti-pencil(style="color:white;")
+                                                                each anointing in anointings
+                                                                    tr
+                                                                        td=anointing.int_eventinfoID
+                                                                        td=anointing.var_owner
+                                                                        td=anointing.var_estloc
+                                                                        td=anointing.date_desireddate1
+                                                                        td=anointing.char_approvalstatus
+                                                                        td.td-actions.text-center
+                                                                                button.btn.btn-primary.actionButton(type='button' value=`${anointing.int_eventinfoID}`)
+                                                                                        i.ti-settings
+                                                                                                #toolbar-options.hidden
+                                                                                                        a.viewButton(href='#')
+                                                                                                                i.ti-new-window(style="color:white;")
+                                                                                                        a.updateButton(href='#')
+                                                                                                                i.ti-pencil(style="color:white;")                //- tr
+                                                                 
                                 #funeral.tab-pane.fade
                                     .card
                                             .card-header.card-header-primary
@@ -64,20 +65,22 @@ block prepend main
                                                                     th Approval Status
                                                                     th.text-center(style=" width:120px") Actions
                                                             tbody
+                                                                each funeral in funerals
                                                                     tr
-                                                                        td="87"
-                                                                        td="Santos, Crisaldo"
-                                                                        td="House"
-                                                                        td="08/23/2018" + ' 10:00 AM'
-                                                                        td="Pending"
+                                                                        td=funeral.int_eventinfoID
+                                                                        td=funeral.var_owner
+                                                                        td=funeral.var_estloc
+                                                                        td=funeral.date_desireddate1
+                                                                        td=funeral.char_approvalstatus
                                                                         td.td-actions.text-center
-                                                                                button.btn.btn-primary.actionButton(type='button')
+                                                                                button.btn.btn-primary.actionButton(type='button' value=`${funeral.int_eventinfoID}`)
                                                                                         i.ti-settings
                                                                                                 #toolbar-options.hidden
                                                                                                         a.viewButton(href='#')
                                                                                                                 i.ti-new-window(style="color:white;")
                                                                                                         a.updateButton(href='#')
-                                                                                                                i.ti-pencil(style="color:white;")
+                                                                                                                i.ti-pencil(style="color:white;")                //- tr
+                                                                
                                 #establishment.tab-pane.fade
                                     .card
                                         .card-header.card-header-primary
@@ -96,10 +99,10 @@ block prepend main
                                                             each establishment in establishments
                                                                 tr
                                                                     td=establishment.int_eventinfoID
-                                                                    td="Santos, Crisaldo"
+                                                                    td=establishment.var_owner
                                                                     td=establishment.var_estloc
-                                                                    td=establishment.date_desireddate1 + ' ' + establishment.time_desiredtime1
-                                                                    td="Pending"
+                                                                    td=establishment.date_desireddate1
+                                                                    td=establishment.char_approvalstatus
                                                                     td.td-actions.text-center
                                                                             button.btn.btn-primary.actionButton(type='button' value=`${establishment.int_eventinfoID}`)
                                                                                     i.ti-settings
@@ -164,17 +167,17 @@ block prepend main
                         .form-group.m-0
                             label.label-control
                                 strong  Name of the Applicant: 
-                                |  Santos, Crisaldo
+                                |  Ebrada, Joan Fe D.
                         .form-group
                             label.label-control
                                 strong  Blessing Date: 
-                                |  08/23/2018 9:00 AM
+                                |  08/30/2018 11:00 AM
                         .form-group
                             label.label-control
                                 strong  Requirements: 
                                 |  Birth Certificate
                         .form-group
-                            img#myImg.img-responsive(src='/img/req/download.jpg', style='max-height:250px;')
+                            img#myImg.img-responsive(src='/img/req/birthcert.jpg', style='max-height:250px;')
                     .modal-footer
                         button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 block addjs
