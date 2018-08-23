@@ -489,10 +489,10 @@ block main
                                         .row#principalSponsor
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group.m-0
-                                                    input.form-control(type='text' name='sponsorname')
+                                                    input.form-control(type='text' name='sponsorname' placeholder="Enter Full Name")
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group.m-0
-                                                    input.form-control.balance(type='text' name='sponsorname')
+                                                    input.form-control.balance(type='text' name='sponsorname' placeholder="Enter Full Name")
                                             button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button")
                                                 i.fa.fa-plus
                                         h6.label-control Secondary Sponsors
@@ -523,7 +523,7 @@ block main
                             option(value="") Half Payment 
                     .modal-footer
                         button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                        button.btn.btn-submit#submit2Button(type='submit' onclick="location.href='/guest/marriage1/form'") Proceed
+                        button.btn.btn-submit#submit2Button(type='submit') Proceed
 block addjs
     script.
         $('.textarea1').hide();
@@ -587,7 +587,7 @@ block addjs
         });
         $("#submit2Button").click(function(){
             $('#form').submit()
-            window.location.replace("/guest/marriage1/form")
+            //- window.location.replace("/guest/marriage1/form")
         });
 
         //- var currentTab = 0; // Current tab is set to be the first tab (0)
