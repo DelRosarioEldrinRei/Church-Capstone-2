@@ -58,7 +58,7 @@ block main
 																		input.form-control(type='text' value=`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
 																	.form-group
 																		h6.label-control House/Establishment Location:
-																		textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location') #{user.var_useraddress}
+																		textarea.form-control(placeholder="Please Enter Complete Address" rows="1" name='location') #{user.var_useraddress}
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																		.form-group
 																			h6.label-control Contact Number:
@@ -74,7 +74,7 @@ block main
 																	input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1' pattern="[A-Za-z]{3,}" )
 																.form-group
 																	h6.label-control House/Establishment Location:
-																	textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location1' pattern="^[a-zA-Z0-9,.- ]*${10,}")
+																	textarea.form-control(placeholder="Please Enter Complete Address" rows="1" name='location1' pattern="^[a-zA-Z0-9,.- ]*${10,}")
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																.form-group
 																	h6.label-control Contact Number:
@@ -84,13 +84,11 @@ block main
 																	input.form-control.mb-2(type='Email' name='email1' placeholder="mark242@gmail.com" )
 																	//- pattern="/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/" email 
 														.row
-															.col-md-6
-															.col-md-6.px-lg-3.px-md-3.px-sm-0
-																	.form-group
-																			h6.label-control Birth Certificate
-																			input#file-0b.file(type='file',accept='image/*',name="image")
-													
-											.row.mt-3
+															.col-md-8.px-lg-3.px-md-3.px-sm-0.mx-auto
+																.form-group
+																		h6.label-control Birth Certificate
+																		input#file-0b.file(type='file',accept='image/*',name="image")
+											.row
 												.col-md-6.px-lg-3.px-md-3.px-sm-0
 													.form-group
 														h6.label-control Desired Date
