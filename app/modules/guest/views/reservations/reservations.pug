@@ -1,241 +1,241 @@
 extends ../../../../templates/guests
 block main
-    style.
-        #header-style-1 {
-            background-image: url(/imgchurch/bible1.jpg)
-        }
-        .btn-sm {
-            font-size: 12px;
-            min-width: 40px;
-            padding: 5px 11px;
-        }
-    #headers
-        #header-style-1
-            .container
-                .header-caption
-                    .row
-                        .col-md-12.header-content
-                            h3.header-title.animated.fadeInDown.invisible
-                                span.text-primary Helium - 
-                                | Bootstrap 4 UI Kit
-                            h5.header-text.animated.fadeIn.invisible
-                                | Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
-                            //- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
-                            //- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
-        #raised-section.main.main-raised
-            section.form-box
-                .container
-                    .row
-                        .col-md-12.form-wizard
-                            h3 Reservation List
-                            p 
-                    .row
-                        .col-lg-12.col-md-12
-                            .card
-                                .card-header.card-header-primary
-                                    .row
-                                        .col-md-6
-                                            h4.card-title Requirements on Document Request
-                                        .col-md-6
-                                            a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Requirement
-                                .card-body.table-responsive
-                                    table.table.dataTable
-                                        thead
-                                            tr.text-center
-                                                th Name
-                                                th Status
-                                                th Actions
-                                        tbody
-                                            each reservation in reservations
-                                                tr.text-center
-                                                    td=reservation.var_eventname
-                                                    td=reservation.char_approvalstatus
-                                                    td.td-actions
-                                                        button.btn.btn-danger.btn-sm.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
-                                                        | &nbsp;
-                                                        button.btn.btn-success.btn-sm.updateButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) Edit
-    #conditionModal.modal.animated.fadeIn(tabindex='-1', role='dialog')
-        .modal-dialog.modal-login.modal-lg(role='document')
-            .modal-content
-                .card.card-signup.card-plain
-                    .modal-header
-                        //- .card-header.card-header-warning.text-center
-                        //- 	button.close(type='button', data-dismiss='modal', aria-hidden='true')
-                        //- 		i.material-icons clear
-                        //- 	h3.main-header__modal.text-white SIGNUP
-                            
-                    .modal-body
-                            //- <div class="card card-nav-tabs">
-                            //- <div class="card-header card-header-warning">
-                            //- 	Featured
-                            //- </div>
-                            <div class="card-body">
-                                <h4 class="card-title">Special title treatment</h4>
-                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                
-                            </div>
-                            </div>
-                    .modal-footer.justify-content-center
-                        .row
-                            .col-md-12
-                                a#anchorRegisterSubmit.btn-design(href="#") Submit
-    #updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
-        .modal-dialog.modal-lg(role="document")
-            .modal-content
-                .modal-header
-                    h5.modal-title Update Event Application
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        span(aria-hidden='true') ×
-                .modal-body
-                    col-md-4.p-lg-0
-                        .row
-                            .col-md-6
-                                .form-group
-                                    input#docuid(type='hidden', value='${data.int_requestID}')
-                                    input#docustatus(type='hidden', value='${data.char_docustatus}')
-                                    h6.label-control
-                                    strong  Current Application Status : 
-                                    |  Pending
-                        .row
-                            .col-md-6
-                                .form-group
-                                    input#reqid(type='hidden', value='${data.int_requirementdocumentID}')
-                                    h6.label-control
-                                    strong  Current Requirement Status : 
-                                    |  Submitted
-                                    br
-                                    select(type='text')
-                                        option(selected='selected') Pending
-                                        option Incomplete
-                                        option Approved
-                            .col-md-6
-                                .form-group
-                                    input#payid(type='hidden', value='${data.int_paymentID}')
-                                    h6.label-control
-                                    strong  Current Payment Status: 
-                                    |  Unpaid
-                                    br
-                                    select(type='text')
-                                        option(selected='selected') Paid
-                                        option Unpaid
-                                .form-group
-                                strong  Fee : 
-                                | P 300.00
-                .modal-footer
-                    button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                    button.btn.btn-primary#updateSubmitButton(type="button") Update
+		style.
+				#header-style-1 {
+						background-image: url(/imgchurch/bible1.jpg)
+				}
+				.btn-sm {
+						font-size: 12px;
+						min-width: 40px;
+						padding: 5px 11px;
+				}
+		#headers
+				#header-style-1
+						.container
+								.header-caption
+										.row
+												.col-md-12.header-content
+														h3.header-title.animated.fadeInDown.invisible
+																span.text-primary Helium - 
+																| Bootstrap 4 UI Kit
+														h5.header-text.animated.fadeIn.invisible
+																| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+														//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+														//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
+				#raised-section.main.main-raised
+						section.form-box
+								.container
+										.row
+												.col-md-12.form-wizard
+														h3 Reservation List
+														p 
+										.row
+												.col-lg-12.col-md-12
+														.card
+																.card-header.card-header-primary
+																		.row
+																				.col-md-6
+																						h4.card-title Requirements on Document Request
+																				.col-md-6
+																						a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Requirement
+																.card-body.table-responsive
+																		table.table.dataTable
+																				thead
+																						tr.text-center
+																								th Name
+																								th Status
+																								th Actions
+																				tbody
+																						each reservation in reservations
+																								tr.text-center
+																										td=reservation.var_eventname
+																										td=reservation.char_approvalstatus
+																										td.td-actions
+																												button.btn.btn-danger.btn-sm.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
+																												| &nbsp;
+																												button.btn.btn-success.btn-sm.updateButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) Edit
+		#conditionModal.modal.animated.fadeIn(tabindex='-1', role='dialog')
+				.modal-dialog.modal-login.modal-lg(role='document')
+						.modal-content
+								.card.card-signup.card-plain
+										.modal-header
+												//- .card-header.card-header-warning.text-center
+												//- 	button.close(type='button', data-dismiss='modal', aria-hidden='true')
+												//- 		i.material-icons clear
+												//- 	h3.main-header__modal.text-white SIGNUP
+														
+										.modal-body
+														//- <div class="card card-nav-tabs">
+														//- <div class="card-header card-header-warning">
+														//- 	Featured
+														//- </div>
+														<div class="card-body">
+																<h4 class="card-title">Special title treatment</h4>
+																<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+																
+														</div>
+														</div>
+										.modal-footer.justify-content-center
+												.row
+														.col-md-12
+																a#anchorRegisterSubmit.btn-design(href="#") Submit
+		#updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+				.modal-dialog.modal-lg(role="document")
+						.modal-content
+								.modal-header
+										h5.modal-title Update Event Application
+										button.close(type='button', data-dismiss='modal', aria-label='Close')
+												span(aria-hidden='true') ×
+								.modal-body
+										col-md-4.p-lg-0
+												.row
+														.col-md-6
+																.form-group
+																		input#docuid(type='hidden', value='${data.int_requestID}')
+																		input#docustatus(type='hidden', value='${data.char_docustatus}')
+																		h6.label-control
+																		strong  Current Application Status : 
+																		|  Pending
+												.row
+														.col-md-6
+																.form-group
+																		input#reqid(type='hidden', value='${data.int_requirementdocumentID}')
+																		h6.label-control
+																		strong  Current Requirement Status : 
+																		|  Submitted
+																		br
+																		select(type='text')
+																				option(selected='selected') Pending
+																				option Incomplete
+																				option Approved
+														.col-md-6
+																.form-group
+																		input#payid(type='hidden', value='${data.int_paymentID}')
+																		h6.label-control
+																		strong  Current Payment Status: 
+																		|  Unpaid
+																		br
+																		select(type='text')
+																				option(selected='selected') Paid
+																				option Unpaid
+																.form-group
+																strong  Fee : 
+																| P 300.00
+								.modal-footer
+										button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+										button.btn.btn-primary#updateSubmitButton(type="button") Update
 block addjs
-    script.
-        $(document).ready(function() {
-            $('.updateButton').click(function(){
-                $('#updateModal').modal('show')
-            })
-            $('.deleteButton').click(function(){
-                swal({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Confirm'
-                    }).then((result) => {
-                        swal({
-                            title:'Success',
-                            text:'Special event deleted',
-                            icon:'success'
-                            }).then(function(){
-                                location.reload();
-                            })
-                    })
-            })
-        });
-	style.
-		#header-style-1 {
-			background-image: url(/imgchurch/reservation.jpg)
-		}
-		.btn-sm {
-			font-size: 12px;
-			min-width: 40px;
-			padding: 5px 11px;
-		}
-		.form-control
-			{
-				display:block;
-				width:100%;
-				min-height:20px;
-				padding:.375rem .75rem;
-				font-size:.75rem;
-				line-height:1.5;
-				color:#495057;
-				background-color:#fff;
-				background-clip:padding-box;
-				border:1px solid #ced4da;
-				border-radius:.25rem;
-				transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out
+		script.
+				$(document).ready(function() {
+						$('.updateButton').click(function(){
+								$('#updateModal').modal('show')
+						})
+						$('.deleteButton').click(function(){
+								swal({
+										title: 'Are you sure?',
+										text: "You won't be able to revert this!",
+										type: 'warning',
+										showCancelButton: true,
+										confirmButtonColor: '#3085d6',
+										cancelButtonColor: '#d33',
+										confirmButtonText: 'Confirm'
+										}).then((result) => {
+												swal({
+														title:'Success',
+														text:'Special event deleted',
+														icon:'success'
+														}).then(function(){
+																location.reload();
+														})
+										})
+						})
+				});
+		style.
+			#header-style-1 {
+				background-image: url(/imgchurch/reservation.jpg)
 			}
-			.custom-select.custom-select-sm.form-control.form-control-sm {
-				margin:0;
+			.btn-sm {
+				font-size: 12px;
+				min-width: 40px;
+				padding: 5px 11px;
 			}
-	#headers
-		#header-style-1
-			.container
-				.header-caption
-					.row
-						.col-md-12.header-content
-							h3.header-title.animated.fadeInDown.invisible
-								span.text-primary Helium - 
-								| Bootstrap 4 UI Kit
-							h5.header-text.animated.fadeIn.invisible
-								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
-							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
-							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
-		#raised-section.main.main-raised
-			section.form-box
+			.form-control
+				{
+					display:block;
+					width:100%;
+					min-height:20px;
+					padding:.375rem .75rem;
+					font-size:.75rem;
+					line-height:1.5;
+					color:#495057;
+					background-color:#fff;
+					background-clip:padding-box;
+					border:1px solid #ced4da;
+					border-radius:.25rem;
+					transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out
+				}
+				.custom-select.custom-select-sm.form-control.form-control-sm {
+					margin:0;
+				}
+		#headers
+			#header-style-1
 				.container
-					.row
-						.col-md-12.form-wizard
-							h3 Reservation List
-							p 
-					.row
-						.col-lg-12.col-md-12.mb-60
-							table.table.dataTable
-								thead
-									tr.text-center
-										th Name
-										th Status
-										th Actions
-								tbody
-									each reservation in reservations
-										tr.text-center
-											td=reservation.var_eventname
-											td=reservation.char_approvalstatus
-											td.td-actions
-												button.btn.btn-danger.btn-sm.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
-												| &nbsp;
-												button.btn.btn-success.btn-sm.updateButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) Edit
-	#conditionModal.modal.animated.fadeIn(tabindex='-1', role='dialog')
-		.modal-dialog.modal-login.modal-lg(role='document')
-			.modal-content
-				.card.card-signup.card-plain
-					.modal-header
-						//- .card-header.card-header-warning.text-center
-						//- 	button.close(type='button', data-dismiss='modal', aria-hidden='true')
-						//- 		i.material-icons clear
-						//- 	h3.main-header__modal.text-white SIGNUP
-							
-					.modal-body
-							//- <div class="card card-nav-tabs">
-							//- <div class="card-header card-header-warning">
-							//- 	Featured
-							//- </div>
-							<div class="card-body">
-								<h4 class="card-title">Special title treatment</h4>
-								<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-								
-							</div>
-							</div>
-					.modal-footer.justify-content-center
+					.header-caption
 						.row
-							.col-md-12
-								a#anchorRegisterSubmit.btn-design(href="#") Submit
+							.col-md-12.header-content
+								h3.header-title.animated.fadeInDown.invisible
+									span.text-primary Helium - 
+									| Bootstrap 4 UI Kit
+								h5.header-text.animated.fadeIn.invisible
+									| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+								//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+								//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
+			#raised-section.main.main-raised
+				section.form-box
+					.container
+						.row
+							.col-md-12.form-wizard
+								h3 Reservation List
+								p 
+						.row
+							.col-lg-12.col-md-12.mb-60
+								table.table.dataTable
+									thead
+										tr.text-center
+											th Name
+											th Status
+											th Actions
+									tbody
+										each reservation in reservations
+											tr.text-center
+												td=reservation.var_eventname
+												td=reservation.char_approvalstatus
+												td.td-actions
+													button.btn.btn-danger.btn-sm.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
+													| &nbsp;
+													button.btn.btn-success.btn-sm.updateButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) Edit
+		#conditionModal.modal.animated.fadeIn(tabindex='-1', role='dialog')
+			.modal-dialog.modal-login.modal-lg(role='document')
+				.modal-content
+					.card.card-signup.card-plain
+						.modal-header
+							//- .card-header.card-header-warning.text-center
+							//- 	button.close(type='button', data-dismiss='modal', aria-hidden='true')
+							//- 		i.material-icons clear
+							//- 	h3.main-header__modal.text-white SIGNUP
+								
+						.modal-body
+								//- <div class="card card-nav-tabs">
+								//- <div class="card-header card-header-warning">
+								//- 	Featured
+								//- </div>
+								<div class="card-body">
+									<h4 class="card-title">Special title treatment</h4>
+									<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+									
+								</div>
+								</div>
+						.modal-footer.justify-content-center
+							.row
+								.col-md-12
+									a#anchorRegisterSubmit.btn-design(href="#") Submit
