@@ -28,7 +28,7 @@ block prepend main
 																	th Groom
 																	th Bride
 																	th Desired Schedule
-																	th Type
+																	//- th Payment Status
 																	th Approval Status
 																	th.text-center(style=" width:11rem") Actions
 															tbody
@@ -38,7 +38,7 @@ block prepend main
 																			td=marriage.var_lname + ", " + marriage.var_fname
 																			td=marriage.var_blname + ", " + marriage.var_bfname
 																			td=marriage.date_desireddate + ' ' + marriage.time_desiredtime
-																			td=marriage.char_weddingtype
+																			//- td=marriage.char_weddingtype
 																			td=marriage.char_approvalstatus
 																			td.td-actions.text-center
 																					button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)

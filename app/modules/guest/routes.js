@@ -937,7 +937,7 @@
     
        
     guestRouter.get('/marriage1/form', (req, res)=>{
-        var wedSteps=`select * from tbl_weddingsteps`
+        var wedSteps=`select * from tbl_wedsteps`
         db.query(wedSteps, (err, results, fields) => {
             if (err) console.log(err);
             var requirements= results;
@@ -956,8 +956,14 @@
                 db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID], (err, results, fields) => {
                     if (err) throw err;
                     var eventinfoID= results;
-                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus) VALUES(?,?)`;        
-                    db.query(queryString2,[eventinfoID.insertId, "Pending"], (err, results, fields) => {
+                    
+                    var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
+                    db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
+                        if (err) throw err;
+                        var paymentid= results;
+
+                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus) VALUES(?,?,?)`;        
+                    db.query(queryString2,[eventinfoID.insertId, "Pending", paymentid.insertId], (err, results, fields) => {
                         if (err) throw err;
                         var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?);`
                                 db.query(queryString3, [eventinfoID.insertId, req.body.lastname, req.body.firstname, req.body.middlename,'Male', req.body.address, req.body.birthday, req.body.birthplace], (err, results, fields) => {
@@ -992,7 +998,7 @@
                                                 return res.redirect(`/guest/marriage1/form `);
                                             });
                                         }      
-                            });});});});});});
+                            });});});});});});});
         
         function sponsors(eventinfoID){
             var i;
