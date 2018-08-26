@@ -1,8 +1,20 @@
 extends ../../../../templates/guests
 block main
 	style.
+		@media screen and (max-width: 576px) {
+			.col-md-4, .col-md-6, .col-md-9 {
+					padding-left: 0;
+					padding-right: 0;
+			}
+			.form-wizard-step {
+					padding-bottom: 10px !important;
+			}
+		}
 		#header-style-1 {
 			background-image: url(/imgchurch/bible1.jpg)
+		}
+		.form-wizard-tolal-steps-3 .form-wizard-step {
+			width: 49.33%;
 		}
 	#headers
 		#header-style-1
@@ -22,116 +34,157 @@ block main
 			.container
 				.row
 					.col-md-12.form-wizard
-						h3 Anointing Application
-						p Fill all form fields
-				form(action="/guest/anointing/form" enctype="multipart/form-data" method="post" data-toggle='validator')
-					input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
-					h5.label-control Name of the Ill:
-					.row
-						.col-md-4.px-lg-3.px-md-0.px-sm-0
-							.form-group.pt-0
-								input.form-control(type='text' placeholder="Last Name" name='lastname', required='' pattern="[A-Za-z]{2,}" )
-								.help-block.with-errors
-						.col-md-4.p-lg-0.px-md-3.px-sm-0
-							.form-group.p-0
-								input.form-control(type='text' placeholder="First Name" name='firstname'  required='' pattern="[A-Za-z]{3,}" )
-						.col-md-4.px-lg-3.px-md-0.px-sm-0
-							.form-group.pt-0
-								input.form-control(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z]{3,}" )
-					.row
-						.col-md-4.px-lg-3.px-md-0.px-sm-0
-							.form-group.m-0
-								h5.label-control Gender
-							.custom-control.custom-radio
-								input#customRadio1.custom-control-input(type='radio', name='gender' value="Male"  checked)
-								label.custom-control-label(for='customRadio1') 
-									label Male
-							.custom-control.custom-radio
-								input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
-								label.custom-control-label(for='customRadio2') 
-									label Female
-						.col-md-4.p-lg-0.px-md-3.px-sm-0
-							.form-group
-								h5.label-control Birthday
-								input.datepicker.form-control(type='date' name='birthday'  required='', data-error='Please enter your birthday')
-						.col-md-4.px-lg-3.px-md-0.px-sm-0
-							.form-group
-								h5.label-control Birthplace:
-								input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-0-9]{3,}" )
-					.row
-						.col-md-4.px-lg-3.px-md-0.px-sm-0
-							.form-group
-								h5.label-control Relationship with the Ill:
-								select(type="text" name='relation'  required='')
-									option(selected="" value="" disabled) Choose...
-									option Spouse
-									option Parent
-									option Child
-									option Grandparent
-									option Grandchild
-									option Aunt/Uncle
-									option Nephew/Niece
-									option BF/GF
-									option Friend
-						.col-md-8
-							.row
-								.col-md-6.p-lg-0.px-md-3.px-sm-0
-									.form-group
-										h5.label-control Desired Date
-										input.datepicker.form-control(type='date' name='desireddate1'  required='', data-error='Please enter your desired date')
-								.col-md-6.px-lg-3.px-md-0.px-sm-0
-									.form-group
-										h5.label-control Desired Time
-										input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
-					.row
-						
-						.col-md-6.px-lg-3.px-md-3.px-sm-0
-							.form-group
-								h5(for='exampleFormControlTextarea1') Address:
-								textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" )
-						 
-						.col-md-6.px-lg-3.px-md-3.px-sm-0
-							.form-group
-								h5(for='exampleFormControlTextarea1') Details:
-								textarea#exampleFormControlTextarea1.form-control(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" )
-							
-					.row
-						.col-md-6.px-lg-3.px-md-3.px-sm-0
-							.form-group
-								h5.label-control Place where the blessing will happen:
-								.ml-4
-									.form-check
-										label.form-check-label
-											input#radioup.form-check-input(type="radio" name="venue" value="sameaddress" checked)
-											| Same as his/her address
-											span.circle
-												span.check
-									.form-check
-										label.form-check-label
-											input#exampleRadios1.form-check-input(type="radio" name="venue" value="hospital" pattern="[A-Za-z]{2,}" )
-											.dropdown-toggle.mr-2 Hospital/Center
-											span.circle
-												span.check
-										#textarea1.form-group
-											textarea.form-control(placeholder="Please enter the room number, the hospital name & address" rows="3" name='hospitalname' pattern="[A-Za-z0-9]{3,}" )
-									.form-check
-										label.form-check-label
-											input#exampleRadios3.form-check-input(type="radio" name="venue" value="other")
-											.dropdown-toggle.mr-3 Other
-											span.circle
-												span.check
-										#textarea2.form-group
-											textarea.form-control(placeholder="Please enter complete address" rows="3" name='othervenue' pattern="[A-Za-z0-9]{3,}" )
-						
-						.col-md-6.px-lg-3.px-md-3.px-sm-0
-							.form-group
-									h6.label-control Birth Certificate
-									input#file-0b.file(type='file',accept='image/*',name="image")
-					.row
-						.col-md-12.my-5.text-center
-							.learn-more
-								button.btn.std-btn.btn-common#submit(type='submit') Submit
-							//- a.btn-design.btn-valid(href="/guest/events") Cancel
+						form(action="/guest/anointing/form" enctype="multipart/form-data" method="post" data-toggle='validator')
+							h3 Anointing Application
+							p Fill all form fields
+							.form-wizard-steps.form-wizard-tolal-steps-3
+								.form-wizard-progress
+										.form-wizard-progress-line(data-now-value='12.25' data-number-of-steps='3' style='width: 12.25%;')
+								// Step 1
+								.form-wizard-step.active
+										.form-wizard-step-icon
+												i.fa.fa-user(aria-hidden='true')
+										p.d-none.d-sm-block Schedule Date
+								// Step 1
+								// Step 2
+								.form-wizard-step
+										.form-wizard-step-icon
+												i.fa.fa-location-arrow(aria-hidden='true')
+										p.d-none.d-sm-block Anointing Details
+								// Step 2
+							// Form Step 1
+							fieldset
+								h4
+									.d-none.d-sm-inline Schedule Date: 
+									span Step 1 - 2
+									h6.label-control.text-lg-center.text-sm-left Desired Date
+									.row
+										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
+											.form-group
+												input.datepicker.form-control(type='date' name='desireddate')
+									.row
+										.col-md-12.text-lg-center.text-sm-left
+											.form-group
+												h6.label-control Desired Time
+													br
+													select.ml-lg-2.mt-lg-2(type="text" name='desiredtime')
+														option 10:00AM
+														option 11:00AM
+														option 1:00PM
+														option 2:00PM
+									.learn-more.pull-right
+												button.btn.btn-next(type='button') Next
+							// Form Step 1
+							// Form Step 2
+							fieldset
+								h4
+									.d-none.d-sm-inline Anointing Details:
+									span Step 2 - 2
+									input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+									h5.label-control Name of the Ill:
+									.row
+										.col-md-4.px-lg-3.px-md-0.px-sm-0
+											.form-group.pt-0
+												input.form-control(type='text' placeholder="Last Name" name='lastname', required='' pattern="[A-Za-z]{2,}" )
+												.help-block.with-errors
+										.col-md-4.p-lg-0.px-md-3.px-sm-0
+											.form-group.p-0
+												input.form-control(type='text' placeholder="First Name" name='firstname'  required='' pattern="[A-Za-z]{3,}" )
+										.col-md-4.px-lg-3.px-md-0.px-sm-0
+											.form-group.pt-0
+												input.form-control(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z]{3,}" )
+									.row
+										.col-md-4.px-lg-3.px-md-0.px-sm-0
+											.form-group.m-0
+												h5.label-control Gender
+											.custom-control.custom-radio
+												input#customRadio1.custom-control-input(type='radio', name='gender' value="Male"  checked)
+												label.custom-control-label(for='customRadio1') 
+													label Male
+											.custom-control.custom-radio
+												input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
+												label.custom-control-label(for='customRadio2') 
+													label Female
+										.col-md-4.p-lg-0.px-md-3.px-sm-0
+											.form-group
+												h5.label-control Birthday
+												input.datepicker.form-control(type='date' name='birthday'  required='', data-error='Please enter your birthday')
+										.col-md-4.px-lg-3.px-md-0.px-sm-0
+											.form-group
+												h5.label-control Birthplace:
+												input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-0-9]{3,}" )
+									.row
+										.col-md-4.px-lg-3.px-md-0.px-sm-0
+											.form-group
+												h5.label-control Relationship with the Ill:
+												select(type="text" name='relation'  required='')
+													option(selected="" value="" disabled) Choose...
+													option Spouse
+													option Parent
+													option Child
+													option Grandparent
+													option Grandchild
+													option Aunt/Uncle
+													option Nephew/Niece
+													option BF/GF
+													option Friend
+										.col-md-8
+											.row
+												.col-md-6.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h5.label-control Desired Date
+														input.datepicker.form-control(type='date' name='desireddate1'  required='', data-error='Please enter your desired date')
+												.col-md-6.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h5.label-control Desired Time
+														input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
+									.row
+										
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.form-group
+												h5(for='exampleFormControlTextarea1') Address:
+												textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" )
+										
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.form-group
+												h5(for='exampleFormControlTextarea1') Details:
+												textarea#exampleFormControlTextarea1.form-control(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" )
+											
+									.row
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.form-group
+												h5.label-control Place where the blessing will happen:
+												.ml-4
+													.form-check
+														label.form-check-label
+															input#radioup.form-check-input(type="radio" name="venue" value="sameaddress" checked)
+															| Same as his/her address
+															span.circle
+																span.check
+													.form-check
+														label.form-check-label
+															input#exampleRadios1.form-check-input(type="radio" name="venue" value="hospital" pattern="[A-Za-z]{2,}" )
+															.dropdown-toggle.mr-2 Hospital/Center
+															span.circle
+																span.check
+														#textarea1.form-group
+															textarea.form-control(placeholder="Please enter the room number, the hospital name & address" rows="3" name='hospitalname' pattern="[A-Za-z0-9]{3,}" )
+													.form-check
+														label.form-check-label
+															input#exampleRadios3.form-check-input(type="radio" name="venue" value="other")
+															.dropdown-toggle.mr-3 Other
+															span.circle
+																span.check
+														#textarea2.form-group
+															textarea.form-control(placeholder="Please enter complete address" rows="3" name='othervenue' pattern="[A-Za-z0-9]{3,}" )
+										
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.form-group
+													h6.label-control Birth Certificate
+													input#file-0b.file(type='file',accept='image/*',name="image")
+								.learn-more.pull-right
+									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+									button.btn.btn-submit(type='submit') Submit
 block addjs
 	script.
 		$('#textarea1').hide();

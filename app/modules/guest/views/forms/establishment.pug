@@ -6,9 +6,18 @@ block main
 				padding-left: 0;
 				padding-right: 0;
 			}
+			.form-wizard-step {
+					padding-bottom: 10px !important;
+			}
 		}
 		#header-style-1 {
 			background-image: url(/imgchurch/ceiling2.jpg)
+		}
+		.form-wizard-tolal-steps-3 .form-wizard-step {
+			width: 49.33%;
+		}
+		#other > div:nth-child(2) > div > div > div > div.file-preview > div > div.file-drop-zone-title {
+			font-size: 1rem;
 		}
 	#headers
 		#header-style-1
@@ -32,8 +41,49 @@ block main
 							form(role='form' action="/guest/establishment/form"   enctype="multipart/form-data" method="post")
 								h3 Establishment Blessing Form
 								p.mb-4 Fill all form fields
+								.form-wizard-steps.form-wizard-tolal-steps-3
+									.form-wizard-progress
+											.form-wizard-progress-line(data-now-value='12.25' data-number-of-steps='3' style='width: 12.25%;')
+									// Step 1
+									.form-wizard-step.active
+											.form-wizard-step-icon
+													i.fa.fa-user(aria-hidden='true')
+											p.d-none.d-sm-block Schedule Date
+									// Step 1
+									// Step 2
+									.form-wizard-step
+											.form-wizard-step-icon
+													i.fa.fa-location-arrow(aria-hidden='true')
+											p.d-none.d-sm-block Blessing Details
+									// Step 2
+								// Form Step 1
 								fieldset
-									
+									h4
+										.d-none.d-sm-inline Schedule Date: 
+										span Step 1 - 2
+										h6.label-control.text-lg-center.text-sm-left Desired Date
+										.row
+											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
+												.form-group
+													input.datepicker.form-control(type='date' name='desireddate')
+										.row
+											.col-md-12.text-lg-center.text-sm-left
+												.form-group
+													h6.label-control Desired Time
+														br
+														select.ml-lg-2.mt-lg-2(type="text" name='desiredtime')
+															option 10:00AM
+															option 11:00AM
+															option 1:00PM
+															option 2:00PM
+										.learn-more.pull-right
+													button.btn.btn-next(type='button') Next
+								// Form Step 1
+								// Form Step 2
+								fieldset
+									h4
+										.d-none.d-sm-inline Blessing Details:
+										span Step 2 - 2
 										input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 										.container
 											.row
@@ -97,13 +147,10 @@ block main
 													.form-group.mt-1
 														h6.label-control Desired Time
 														input.timepicker.form-control(type='text' name='desiredtime1')
-											.row
-												.col-md-12.my-5.text-center
-													.learn-more
-														button.btn.std-btn.btn-common#submit(type='submit') Submit
-														// Form Step 2
-													// Form Wizard
-
+									.learn-more.pull-right
+										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+										button.btn.btn-submit(type='submit') Submit
+								// Form Step 2
 block addjs
 	script.
 		//- $('#ourhome').hide();
