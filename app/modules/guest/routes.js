@@ -20,16 +20,10 @@
     //===============================================================================================//
         guestRouter.use(authMiddleware.guestAuth)
         guestRouter.get('/', (req, res)=>{
-            var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' or var_eventname = 'Establishment Blessing' or var_eventname='Anointing of the sick'`
-            db.query(queryString1, (err, results, fields) => {
-              var events =results;
-                if (err) console.log(err);
-                return res.render('guest/views/index',{ events : events });
-            });
-        });
-        
-        guestRouter.get('/', (req, res)=>{
-            var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' or var_eventname = 'Establishment Blessing' or var_eventname = 'Anointing of the sick'`
+            var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' 
+            or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' 
+            or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' 
+            or var_eventname = 'Establishment Blessing' or var_eventname='Anointing of the sick'`
             db.query(queryString1, (err, results, fields) => {
               var events =results;
                 if (err) console.log(err);
@@ -122,8 +116,6 @@
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
                 var details = results[0];
-                
-    
                 if(details.var_eventname == 'Anointing of the sick' || details.var_eventname == 'Funeral Service' || details.var_eventname =='Funeral Mass'){
                     var queryString2 =`SELECT * from tbl_relation 
                     join tbl_blessing on tbl_relation.int_eventinfoID = tbl_blessing.int_eventinfoID 
@@ -133,43 +125,39 @@
                         var moredetails = results[0];
                         console.log(details, moredetails)
                         var bday = moment(moredetails.date_birthday).format('MM-DD-YYYY');
-                        var desireddate1= moment(moredetails.date_desireddate1).format('MM-DD-YYYY');
+                        var desireddate1= moment(moredetails.date_desireddate).format('MM-DD-YYYY');
                         var desireddate2= moment(moredetails.date_desireddate2).format('MM-DD-YYYY');
-                        var desiredtime1= moment(moredetails.time_desiredtime1, 'HH:mm:ss').format('hh:mm A');
                         var desiredtime2= moment.utc(moredetails.time_desiredtime2, 'HH:mm:ss').format('hh:mm A');
                         moredetails.date_birthday=bday;
-                        moredetails.date_desireddate1=desireddate1;
+                        moredetails.date_desireddate=desireddate1;
                         moredetails.date_desireddate2=desireddate2;
-                        moredetails.time_desiredtime1=desiredtime1;
+                        moredetails.time_desiredtime=desiredtime1;
                         moredetails.time_desiredtime2=desiredtime2;
                         res.render('guest/views/reservations/anointingdetails',{ details : details, moredetails:moredetails, user: req.session.user});
                     });
                 }
-                
                 if(details.var_eventname == 'Establishment Blessing'){
                     var queryString4 =`select * from tbl_houseblessing where int_eventinfoID = ${req.params.int_eventinfoID}`
                     db.query(queryString4, (err, results, fields) => {
                         if (err) console.log(err);
                         var moredetails = results[0];
                         console.log(details, moredetails)
-                        var desireddate3= moment(moredetails.date_desireddate1).format('MM-DD-YYYY');
+                        var desireddate3= moment(moredetails.date_desireddate).format('MM-DD-YYYY');
                         var desireddate4= moment(moredetails.date_desireddate2).format('MM-DD-YYYY');
-                        var desiredtime3= moment(moredetails.time_desiredtime1, 'HH:mm:ss').format('hh:mm A');
+                        var desiredtime3= moment(moredetails.time_desiredtime, 'HH:mm:ss').format('hh:mm A');
                         var desiredtime4= moment.utc(moredetails.time_desiredtime2, 'HH:mm:ss').format('hh:mm A');
-                        moredetails.date_desireddate1=desireddate3;
+                        moredetails.date_desireddate=desireddate3;
                         moredetails.date_desireddate2=desireddate4;
-                        moredetails.time_desiredtime1=desiredtime3;
+                        moredetails.time_desiredtime=desiredtime3;
                         moredetails.time_desiredtime2=desiredtime4;
                         res.render('guest/views/reservations/establishmentdetails',{ details : details, moredetails:moredetails, user: req.session.user});
                     });
                 }
-                // ey fix this
                 if(details.var_eventname == 'Baptism' || details.var_eventname =='Confirmation' || details.var_eventname == 'RCIA'){
                     var queryString3 =`SELECT * from tbl_relation 
                     join tbl_baptism on tbl_relation.int_eventinfoID = tbl_baptism.int_eventinfoID
                     join tbl_sponsors on tbl_relation.int_eventinfoID = tbl_sponsors.int_eventinfoID 
                     where tbl_relation.int_eventinfoID = ${req.params.int_eventinfoID}`
-    
                     db.query(queryString3, (err, results, fields) => {
                         if (err) console.log(err);
                         var moredetails = results[0];                
@@ -182,9 +170,7 @@
                         console.log(details, moredetails)
                         res.render('guest/views/reservations/baptismdetails',{ details : details, moredetails:moredetails, user: req.session.user});                
                     });
-    
-                        }
-                        
+                }        
                 if(details.var_eventname == 'Marriage'){
                     var queryString3 =`SELECT * from tbl_relation 
                     join tbl_wedgroom on tbl_relation.int_eventinfoID = tbl_wedgroom.int_eventinfoID
@@ -215,11 +201,7 @@
                         res.render('guest/views/reservations/marriagedetails',{ details : details, moredetails:moredetails, user: req.session.user});
                     });       
                 }
-                
-    
-    
             });
-    
         });
     //===============================================================================================//
     // N O T I F I C A T I O N //
@@ -258,6 +240,7 @@
     // E  D  I  T    D  E  T  A  I  L  S 
     // ---------------------------------------------------------------------------------------------------------
         guestRouter.get('/reservation/:int_eventinfoID/edit', (req, res)=>{
+            
             var queryString1 =`SELECT * FROM tbl_eventinfo 
             JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
             JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
@@ -265,29 +248,25 @@
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
                 var details = results[0];        
-    
+                
+                
                 if(details.var_eventname == 'Anointing of the sick'){
                     var queryString2 =`SELECT * from tbl_relation 
                     join tbl_blessing on tbl_relation.int_eventinfoID = tbl_blessing.int_eventinfoID 
-                    where tbl_relation.int_eventinfoID = ${req.params.int_eventinfoID}`
-                    db.query(queryString2, (err, results, fields) => {
-                        if (err) console.log(err);
+                    where tbl_relation.int_eventinfoID = ?`
+                    db.query(queryString2, [details.int_eventinfoID],(err, results, fields) => {
+                        // if (err) console.log(err);
                         var moredetails = results[0];
                         console.log(details, moredetails)
                         var bday = moment(moredetails.date_birthday).format('YYYY-MM-DD');
-                        var desireddate1= moment(moredetails.date_desireddate1).format('YYYY-MM-DD');
-                        var desireddate2= moment(moredetails.date_desireddate2).format('YYYY-MM-DD');
-                        var desiredtime1= moment(moredetails.time_desiredtime1, 'HH:mm:ss').format('hh:mm A');
-                        var desiredtime2= moment.utc(moredetails.time_desiredtime2, 'HH:mm:ss').format('hh:mm A');
+                        var desireddate= moment(moredetails.date_desireddate).format('YYYY-MM-DD');
+                        var desiredtime= moment(moredetails.time_desiredtime, 'HH:mm:ss').format('hh:mm A');
                         moredetails.date_birthday=bday;
-                        moredetails.date_desireddate1=desireddate1;
-                        moredetails.date_desireddate2=desireddate2;
-                        moredetails.time_desiredtime1=desiredtime1;
-                        moredetails.time_desiredtime2=desiredtime2;
-                        res.render('guest/views/reservations/editanointingdetails',{ details : details, moredetails:moredetails, user: req.session.user});
+                        moredetails.date_desireddate=desireddate;
+                        moredetails.time_desiredtime=desiredtime;
+                        return res.render('guest/views/reservations/editanointingdetails',{ details : details, moredetails:moredetails, user: req.session.user});
                     });
                 }
-    
                 if(details.var_eventname == 'Funeral Mass' ||details.var_eventname == 'Funeral Service' ){
                     var queryString2 =`SELECT * from tbl_relation 
                     join tbl_blessing on tbl_relation.int_eventinfoID = tbl_blessing.int_eventinfoID 
@@ -297,20 +276,16 @@
                         var moredetails = results[0];
                         console.log(details, moredetails)
                         var bday = moment(moredetails.date_birthday).format('YYYY-MM-DD');
-                        var desireddate1= moment(moredetails.date_desireddate1).format('YYYY-MM-DD');
-                        var desireddate2= moment(moredetails.date_desireddate2).format('YYYY-MM-DD');
-                        var desiredtime1= moment(moredetails.time_desiredtime1, 'HH:mm:ss').format('hh:mm A');
+                        var desireddate1= moment(moredetails.date_desireddate).format('YYYY-MM-DD');
                         var desiredtime2= moment.utc(moredetails.time_desiredtime2, 'HH:mm:ss').format('hh:mm A');
                         moredetails.date_birthday=bday;
-                        moredetails.date_desireddate1=desireddate1;
+                        moredetails.date_desireddate=desireddate1;
                         moredetails.date_desireddate2=desireddate2;
-                        moredetails.time_desiredtime1=desiredtime1;
+                        moredetails.time_desiredtime=desiredtime1;
                         moredetails.time_desiredtime2=desiredtime2;
                         res.render('guest/views/reservations/editfuneraldetails',{ details : details, moredetails:moredetails, user: req.session.user});
                     });
                 }
-    
-                
                 if(details.var_eventname == 'Baptism' || details.var_eventname == 'Confirmation' ||details.var_eventname == 'RCIA' ){
                     var queryString2 =`SELECT * from tbl_relation 
                     join tbl_blessing on tbl_relation.int_eventinfoID = tbl_blessing.int_eventinfoID 
@@ -322,19 +297,16 @@
                         var moredetails = results[0];
                         console.log(details, moredetails)
                         var bday = moment(moredetails.date_birthday).format('YYYY-MM-DD');
-                        var desireddate1= moment(moredetails.date_desireddate1).format('YYYY-MM-DD');
-                        var desireddate2= moment(moredetails.date_desireddate2).format('YYYY-MM-DD');
-                        var desiredtime1= moment(moredetails.time_desiredtime1, 'HH:mm:ss').format('hh:mm A');
+                        var desireddate1= moment(moredetails.date_desireddate).format('YYYY-MM-DD');
                         var desiredtime2= moment.utc(moredetails.time_desiredtime2, 'HH:mm:ss').format('hh:mm A');
                         moredetails.date_birthday=bday;
-                        moredetails.date_desireddate1=desireddate1;
+                        moredetails.date_desireddate=desireddate1;
                         moredetails.date_desireddate2=desireddate2;
-                        moredetails.time_desiredtime1=desiredtime1;
+                        moredetails.time_desiredtime=desiredtime1;
                         moredetails.time_desiredtime2=desiredtime2;
                         res.render('guest/views/reservations/editbaptismdetails',{ details : details, moredetails:moredetails, user: req.session.user});
                     });
                 }
-                
                 if(details.var_eventname == 'Marriage'){
                     var queryString3 =`SELECT * from tbl_relation 
                     join tbl_wedgroom on tbl_relation.int_eventinfoID = tbl_wedgroom.int_eventinfoID
@@ -365,24 +337,23 @@
                         res.render('guest/views/reservations/editmarriagedetails',{ details : details, moredetails:moredetails, user: req.session.user});
                     });       
                 }
-                
                 if(details.var_eventname == 'Establishment Blessing'){
                     var queryString4 =`select * from tbl_houseblessing where int_eventinfoID = ${req.params.int_eventinfoID}`
                     db.query(queryString4, (err, results, fields) => {
                         if (err) console.log(err);
                         var moredetails = results[0];
                         console.log(details, moredetails)
-                        var desireddate3= moment(moredetails.date_desireddate1).format('YYYY-MM-DD');
+                        var desireddate3= moment(moredetails.date_desireddate).format('YYYY-MM-DD');
                         var desireddate4= moment(moredetails.date_desireddate2).format('YYYY-MM-DD');
-                        var desiredtime3= moment(moredetails.time_desiredtime1, 'HH:mm:ss').format('hh:mm A');
+                        var desiredtime3= moment(moredetails.time_desiredtime, 'HH:mm:ss').format('hh:mm A');
                         var desiredtime4= moment.utc(moredetails.time_desiredtime2, 'HH:mm:ss').format('hh:mm A');
-                        moredetails.date_desireddate1=desireddate3;
+                        moredetails.date_desireddate=desireddate3;
                         moredetails.date_desireddate2=desireddate4;
-                        moredetails.time_desiredtime1=desiredtime3;
+                        moredetails.time_desiredtime=desiredtime3;
                         moredetails.time_desiredtime2=desiredtime4;
                         res.render('guest/views/reservations/establishmentdetails',{ details : details, moredetails:moredetails, user: req.session.user});
                     });
-                }
+                }   
             });
         });
         guestRouter.post('/reservation/:int_eventinfoID/edit', (req, res) => {
@@ -409,7 +380,7 @@
                 const queryString1 = `UPDATE tbl_blessing SET        
                     var_blessingvenue = ${venue},
                     var_blessingdetails = "${req.body.details}",
-                    date_desireddate1 = "${req.body.desireddate1}",
+                    date_desireddate = "${req.body.desireddate1}",
                     date_desireddate2 = "${req.body.desireddate2}",
                     date_desiredtime1 = "${req.body.desiredtime1}",
                     date_desiredtime2 = "${req.body.desiredtime2}"
@@ -430,17 +401,12 @@
         guestRouter.get('/events', (req, res)=>{
             res.render('guest/views/events/index')
         });
-    //==============================================================
-    // E V E N T S  I N F O
-    //==============================================================
         guestRouter.get('/marriageinfo', (req, res)=>{
             res.render('guest/views/events/marriage')
         });
-    
     //==============================================================
     //E V E N T S  F O R M S                                      
     //==============================================================
-    
     //==============================================================
     // A N O I N T I N G
     //==============================================================
@@ -448,7 +414,7 @@
             res.render('guest/views/forms/anointing',{user: req.session.user})
         });
         guestRouter.post('/anointing/form', upload.single('image'),(req, res) => {
-            var queryString= `select int_eventID from tbl_services where var_eventname="Anointing of the sick";`  
+            var queryString= `select int_eventID from tbl_services where var_eventname="Anointing of the sick"`
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     console.log(results);
@@ -456,7 +422,7 @@
                     // var eventID = results[0];
                     console.log(req.session.user);
                     
-                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
+                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`
                     db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
                         if (err) throw err;
                         var eventinfoID= results;
@@ -473,7 +439,8 @@
                                 if (err) throw err;
                                 var queryString4 =`INSERT INTO tbl_blessing(int_eventinfoID, var_blessingvenue, var_blessingdetails, date_desireddate, time_desiredtime) VALUES (?,?,?,?,?)`
                                 db.query(queryString4, [eventinfoID.insertId, venue, req.body.details, req.body.desireddate1, desiredtime1], (err, results, fields) => {
-                                    
+                                    if (err) throw err;
+                                            // var reqq = results[0];
                                     var requirementQuery = `select int_reqtypeID from tbl_requirementtype where int_eventID = ?`
                                         db.query(requirementQuery, [eventID.int_eventID], (err, results, fields) => {
                                             if (err) throw err;
@@ -525,7 +492,7 @@
         
         if (req.body.baptismtype == 'Regular'){
             var desireddate= moment(req.body.regdesireddate, 'YYYY/MM/DD').format('YYYY-MM-DD');
-            var queryString= `select int_eventID from tbl_services where var_eventname="Baptism";`  
+            var queryString= `select int_eventID from tbl_services where var_eventname="Baptism"`
             db.query(queryString, (err, results, fields) => {
                 if (err) throw err;
                 var eventID = results[0];
@@ -543,9 +510,9 @@
         if (req.body.baptismtype == 'Special'){
             console.log(req.body)
             var desireddate= moment(req.body.spcdesireddate, 'YYYY/MM/DD').format('YYYY-MM-DD');
-            var desiredtime= moment(req.body.desiredtime,'HH:mm').format('HH:mm:ss');
+            var desiredtime= moment(req.body.desiredtime,'HH:mm').format("HH:mm:ss")
             
-            var queryString= `select int_eventID from tbl_services where var_eventname="Special Baptism";`  
+            var queryString= `select int_eventID from tbl_services where var_eventname="Special Baptism";`
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     // console.log(results);
@@ -639,19 +606,19 @@
             
             if (req.body.baptismtype == 'Regular'){
                 var desireddate= moment(req.body.regdesireddate, 'YYYY/MM/DD').format('YYYY-MM-DD');
-                var queryString= `select int_eventID from tbl_services where var_eventname="Confirmation";`  
+                var queryString= `select int_eventID from tbl_services where var_eventname="Confirmation"`
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     var eventID = results[0];
                 
                     var defaulttimeQuery =`select time_defaulttime from tbl_defaulttime where int_eventID= ?`
-                    db.query(defaulttimeQuery,[eventID.int_eventID], (err, results, fields) => {
-                        if (err) throw err;
-                        var desired = results[0];
-                        var desiredtime=desired.time_defaulttime;
-                        console.log(desiredtime)
-                        queries(eventID.int_eventID, desiredtime, desireddate);
-                    });
+                        db.query(defaulttimeQuery,[eventID.int_eventID], (err, results, fields) => {
+                            if (err) throw err;
+                            var desired = results[0];
+                            var desiredtime=desired.time_defaulttime;
+                            console.log(desiredtime)
+                            queries(eventID.int_eventID, desiredtime, desireddate);
+                        });
                 });
             }            
     
@@ -747,14 +714,14 @@
     
         guestRouter.post('/establishment/form',upload.single('image'), (req, res) => {
             
-            var queryString= `select int_eventID from tbl_services where var_eventname="Establishment Blessing";`  
+            var queryString= `select int_eventID from tbl_services where var_eventname="Establishment Blessing"`
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     console.log(results);
                     var eventID = results[0];
                     console.log(req.session.user);
                     
-                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
+                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?);`
                     db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
                         if (err) throw err;
                         var eventinfoID= results;
@@ -770,7 +737,7 @@
                                 });
                             }
                             if(req.body.establishment=='other'){
-                                
+                                        
                                 var path = '/img/req/'+req.file.filename;
                                 var nowDate = new Date(); 
                                 var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
@@ -785,21 +752,21 @@
                                         var reqevent=`INSERT INTO tbl_requirementsinevents(int_requirementID, int_eventinfoID) values (?,?)`
                                         db.query(reqevent,[requirementID.insertId, eventinfoID.insertId],(err, results, fields)=>{    
                                         
-                                        var queryString3 = `INSERT INTO tbl_houseblessing(int_eventinfoID, var_owner, var_estloc, var_ownercontactnum, var_owneremailadd, date_desireddate, time_desiredtime) VALUES(?,?,?,?,?,?,?);`
-                                        db.query(queryString3, [eventinfoID.insertId, req.body.owner1, req.body.location1, req.body.contactnumber1, req.body.email1, req.body.desireddate1, req.body.desiredtime1], (err, results, fields) => {
-                                            if (err) throw err;                        
-                                                return res.redirect(`/guest`);                            
+                                            var queryString3 = `INSERT INTO tbl_houseblessing(int_eventinfoID, var_owner, var_estloc, var_ownercontactnum, var_owneremailadd, date_desireddate, time_desiredtime) VALUES(?,?,?,?,?,?,?);`
+                                            db.query(queryString3, [eventinfoID.insertId, req.body.owner1, req.body.location1, req.body.contactnumber1, req.body.email1, req.body.desireddate1, req.body.desiredtime1], (err, results, fields) => {
+                                                if (err) throw err;                        
+                                                    return res.redirect(`/guest`);                            
+                                            });
                                         });
-                                    });
                                     });
                                 });    
                             }
 
-                });            
-            }); 
+                        });            
+                    }); 
     
-        }); 
-    });
+                }); 
+        });
     //==============================================================
     // F U N E R A L  B L E S S I N G
     //==============================================================
@@ -810,7 +777,7 @@
         guestRouter.post('/funeral/form',upload.single('image'),(req, res) => {
             if (req.body.venue== 'sameaddress'){
                 var venue = req.body.address;
-                var queryString= `select int_eventID from tbl_services where var_eventname="Funeral Service";`  
+                var queryString= `select int_eventID from tbl_services where var_eventname="Funeral Service"`
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     var eventID = results[0];
@@ -828,7 +795,7 @@
     
             if(req.body.venue =='INLPP'){
                 var venue = 'Ina ng Lupang Pangako Parish';
-                var queryString5= `select int_eventID from tbl_services where var_eventname="Funeral Mass";`  
+                var queryString5= `select int_eventID from tbl_services where var_eventname="Funeral Mass";`
                 db.query(queryString5, (err, results, fields) => {
                     if (err) throw err;
                     var eventID = results[0];
@@ -856,7 +823,7 @@
             }
             if(req.body.venue == 'other'){
                 var venue = req.body.othervenue;
-                var queryString6= `select int_eventID from tbl_services where var_eventname="Funeral Service";`  
+                var queryString6= `select int_eventID from tbl_services where var_eventname="Funeral Service";`
                 db.query(queryString6, (err, results, fields) => {
                     if (err) throw err;
                     var eventID = results[0];
@@ -878,8 +845,8 @@
                           var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_relation, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?,?);`
                             db.query(queryString3, [eventinfoid, req.body.relation, req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.birthday, req.body.birthplace], (err, results, fields) => {
                                 if (err) throw err;
-                                var queryString4 =`INSERT INTO tbl_blessing(int_eventinfoID, var_blessingvenue, var_blessingdetails, date_desireddate1, date_desireddate2, time_desiredtime1, time_desiredtime2) VALUES (?,?,?,?,?,?,?)`
-                                db.query(queryString4, [eventinfoid, venue, req.body.details, req.body.desireddate1, req.body.desireddate2, req.body.desiredtime1, req.body.desiredtime2], (err, results, fields) => {
+                                var queryString4 =`INSERT INTO tbl_blessing(int_eventinfoID, var_blessingvenue, var_blessingdetails, date_desireddate, time_desiredtime) VALUES (?,?,?,?,?)`
+                                db.query(queryString4, [eventinfoid, venue, req.body.details, req.body.desireddate1, req.body.desiredtime1], (err, results, fields) => {
                                     var pathBirthc = '/img/' + req.file.filename;
                                     var nowDate = new Date(); 
                                     var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate();
@@ -945,7 +912,7 @@
     });});
     guestRouter.post('/marriage/form', (req, res) => {
         console.log(req.body)
-        var queryString= `select int_eventID from tbl_services where var_eventname="Marriage";`  
+        var queryString= `select int_eventID from tbl_services where var_eventname="Marriage";`
             db.query(queryString, (err, results, fields) => {
                 if (err) throw err;
                 console.log(results);
@@ -1213,7 +1180,7 @@
     
         guestRouter.post('/facilities/secondfloor/form',upload.single('image'), (req, res) => {
         
-            var queryString= `select int_facilityID from tbl_facility where var_facilityname="Bro. Roqueto 2nd floor";`  
+            var queryString= `select int_facilityID from tbl_facility where var_facilityname="Bro. Roqueto 2nd floor";`
                 db.query(queryString, (err, results, fields) => {
                     if (err) throw err;
                     console.log(results);
@@ -1283,10 +1250,10 @@
                     if (err) throw err;
                     res.send(results[0])
                 })
-            })
+        })
         guestRouter.post('/document/form',upload.single('image'), (req, res) => {
         console.log(req.file)
-            var queryString1 = `select int_documentID,dbl_docuprice from tbl_document where var_documenttype= ?`  
+            var queryString1 = `select int_documentID,dbl_docuprice from tbl_document where var_documenttype= ?`
                 db.query(queryString1,[req.body.documenttype], (err, results1, fields) => {
                     if (err) throw err;
                     var documentID =results1[0].int_documentID;
@@ -1315,6 +1282,6 @@
                             });    
                         });            
                         
-                    });
+        });
     //===============================================================================================================
     exports.guest = guestRouter;    

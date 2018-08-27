@@ -113,15 +113,15 @@ block main
                                         .row
                                             .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                 .form-group.pt-0
-                                                    input.form-control(type='text' placeholder="Last Name" name='lastname' required='' pattern="[A-Za-z]{2,}" )
+                                                    input.form-control(type='text' placeholder="Last Name" name='lastname' required='' pattern="[A-Za-z ]{2,}" )
                                                     .help-block.with-errors
                                             .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                 .form-group.pt-0
-                                                    input.form-control(type='text' placeholder="First Name" name='firstname' required='' pattern="[A-Za-z]{2,}" )
+                                                    input.form-control(type='text' placeholder="First Name" name='firstname' required='' pattern="[A-Za-z ]{2,}" )
                                                     .help-block.with-errors
                                             .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                 .form-group.pt-0
-                                                    input.form-control(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z]{2,}" )
+                                                    input.form-control(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z ]{2,}" )
                                                     .help-block.with-errors
                                         .row
                                             .col-md-4.px-lg-3.px-md-0.px-sm-0
@@ -143,29 +143,29 @@ block main
                                             .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                 .form-group
                                                     h6.label-control Birthplace:
-                                                    input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9]{10,}" ) 
+                                                    input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9 ]{10,}" ) 
                                                     .help-block.with-errors
                                         .row
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Father's Full Name:
-                                                    input.form-control(type='text' name='fathername' placeholder="Ex. Juan Dela Cruz" required='' pattern="[A-Za-z,]{2,}" )
+                                                    input.form-control(type='text' name='fathername' placeholder="Ex. Juan Dela Cruz" required='' pattern="[A-Za-z, ]{2,}" )
                                                     .help-block.with-errors
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Father's Birthplace:
-                                                    input.form-control(type='text' name='fatherbirthplace' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z,]{2,}" )
+                                                    input.form-control(type='text' name='fatherbirthplace' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z, ]{2,}" )
                                                     .help-block.with-errors
                                         .row
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Mother's Full name:
-                                                    input.form-control(type='text' name='mothername' placeholder="Ex. Maria Dela Cruz" required='' pattern="[A-Za-z,]{2,}" )
+                                                    input.form-control(type='text' name='mothername' placeholder="Ex. Maria Dela Cruz" required='' pattern="[A-Za-z, ]{2,}" )
                                                     .help-block.with-errors
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6.label-control Mother's Birthplace:
-                                                    input.form-control(type='text' name='motherbirthplace' placeholder="Ex. San Isidro, Quezon City" required='' pattern="[A-Za-z0-9,.-]{10,}" )
+                                                    input.form-control(type='text' name='motherbirthplace' placeholder="Ex. San Isidro, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{10,}" )
                                                     .help-block.with-errors
                                         .row
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
@@ -184,11 +184,11 @@ block main
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6(for='exampleFormControlTextarea1') Parents' Marriage Address:
-                                                    textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.-]{10,}" )
+                                                    textarea#exampleFormControlTextarea1.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,. -]{10,}" )
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group
                                                     h6(for='exampleFormControlTextarea1') Family address:
-                                                    textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City" required='' pattern="[A-Za-z0-9.,-]10,}" )
+                                                    textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City" required='' pattern="[A-Za-z0-9., -]10,}" )
                                         .row
                                             .col-md-7.px-lg-3.px-md-3.px-sm-0.mx-auto
                                                 .form-group
@@ -208,11 +208,11 @@ block main
                                         .row#principalSponsor
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group.m-0
-                                                    input.form-control(type='text' name='sponsorname' placeholder="Enter Full Name" required='' pattern="[A-Za-z,]{2,}" )
+                                                    input.form-control(type='text' name='sponsorname' placeholder="Enter Full Name" required='' pattern="[A-Za-z, ]{2,}" )
                                                     .help-block.with-errors
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group.m-0
-                                                    input.form-control.balance(type='text' name='sponsorname' placeholder="Enter Full Name" required='' pattern="[A-Za-z,]{2,}" )
+                                                    input.form-control.balance(type='text' name='sponsorname' placeholder="Enter Full Name" required='' pattern="[A-Za-z, ]{2,}" )
                                         button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button")
                                             i.fa.fa-plus
                                     h6.label-control Additional Sponsors

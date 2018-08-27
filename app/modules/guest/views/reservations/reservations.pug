@@ -63,7 +63,7 @@ block main
 											td.td-actions
 												button.btn.btn-danger.btn-sm.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
 												| &nbsp;
-												button.btn.btn-success.btn-sm.updateButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) Edit
+												a.btn-success.btn-sm.updateButton(type='button',rel='tooltip', href = `/guest/reservation/${reservation.int_eventinfoID}/edit`) Edit
 	#conditionModal.modal.animated.fadeIn(tabindex='-1', role='dialog')
 		.modal-dialog.modal-login.modal-lg(role='document')
 			.modal-content

@@ -1,4 +1,4 @@
-extends ../../../../templates/masterguests
+extends ../../../../templates/guests
 block main
 	.profile-page
 		//- Heading Page
@@ -12,97 +12,117 @@ block main
 								| Guidelines | Requirements
 		#raised-section.main.main-raised
 			.container
-				.row
-					.col-md-12
-						hr.mt-5.mx-5
-				.row
-					.col-md-12.my-3
-						h3.text-center.text-uppercase.guidelines--text Request Form
-				form(action=`/guest/reservation/${details.int_eventinfoID}/edit` method="post")
-					input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
-					input.form-control(type='hidden' name='eventname' value=`${details.var_eventname }`)
 					.row
-						.col-md-6.my-3
-							.form-group
-								label.label-control Name of the sick:
+						.col-md-12
+							hr.mt-5.mx-5
+					.row
+						.col-md-12.my-3
+							h3.text-center.text-uppercase.guidelines--text Request Form
+							form(action=`/guest/reservation/${details.int_eventinfoID}/edit` method="post")
+								input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+								input.form-control(type='hidden' name='eventname' value=`${details.var_eventname }`)
+								h5.label-control Name of the Ill:
 								.row
-									.col-md-4
+									.col-md-4.px-lg-3.px-md-0.px-sm-0
 										.form-group.pt-0
-											input.form-control(type='text'  name='lastname' value= `${moredetails.var_lname}`)
-									.col-md-4.p-0
+											input.form-control(type='text' placeholder="Last Name" name='lastname', required='' pattern="[A-Za-z ]{2,}" data-error='Please enter lastname' value=`${user.var_lname}`)
+											.help-block.with-errors
+									.col-md-4.p-lg-0.px-md-3.px-sm-0
 										.form-group.p-0
-											input.form-control(type='text' name='firstname' value= `${moredetails.var_fname}`)
-									.col-md-4
+											input.form-control(type='text' placeholder="First Name" name='firstname'  required='' pattern="[A-Za-z ]{3,}" data-error='Please enter firstname')
+									.col-md-4.px-lg-3.px-md-0.px-sm-0
 										.form-group.pt-0
-											input.form-control(type='text' name='middlename' value= `${moredetails.var_mname}`)
-							.form-group.m-0
-								label.label-control Gender:
-									.form-check.ml-3
-										label.form-check-label
-											input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Male")
-											| Male
-											span.circle
-												span.check
-										label.form-check-label.ml-3
-											input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Female")
-											| Female
-											span.circle
-												span.check
-							.form-group
-								label.label-control Birthday
-								input.datepicker.form-control(type='date' name='birthday' value= `${moredetails.date_birthday}`)
-							.form-group
-								label.label-control Birthplace:
-								input.form-control(type='text' name='birthplace' value= `${moredetails.var_birthplace}`)
-							.form-group
-								label.label-control Address:
-								input.form-control(type='text' name='address' value= `${moredetails.var_address}`)
-							
-						.col-md-6.my-3
-							.form-group
-								label.label-control Relationship with the Sick
-									select.selectpicker.form-control(type="text" name='relation' value= `${moredetails.var_relation}`)
-										option Spouse
-										option Parent
-										option Child
-										option Grandparent
-										option Grandchild
-										option Aunt/Uncle
-										option Nephew/Niece
-										option BF/GF
-										option Friend
-							.form-group
-								label.label-control Place where the blessing will happen:
-								.ml-4
-									.form-check
-										label.form-check-label
-											input#radioup.form-check-input(type="radio" name="venue" value="sameaddress" checked)
-											| Same as his/her address
-											span.circle
-												span.check
-									.form-check
-										label.form-check-label
-											input#exampleRadios1.form-check-input(type="radio" name="venue" value="hospital")
-											.dropdown-toggle.mr-3 Hospital/Center
-											span.circle
-												span.check
-										#textarea1.form-group
-											textarea.form-control(placeholder="Please enter the room number, the hospital name & address" rows="3" name='hospitalname')
-									.form-check
-										label.form-check-label
-											input#exampleRadios3.form-check-input(type="radio" name="venue" value="other")
-											.dropdown-toggle.mr-3 Other
-											span.circle
-												span.check
-										#textarea2.form-group
-											textarea.form-control(placeholder="Please enter complete address" rows="2" name='othervenue')
-							.form-group
-								label.label-control Address:
-								input.form-control(type='text' name='details' value= `${moredetails.var_blessingdetails}`)
-							
-					.row
-						.col-md-12.my-5.text-center
-							button.btn.btn-primary(type='submit') Submit
+											input.form-control(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z ]{3,}" )
+								.row
+									.col-md-4.px-lg-3.px-md-0.px-sm-0
+										.form-group.m-0
+											h5.label-control Gender
+										.custom-control.custom-radio
+											input#customRadio1.custom-control-input(type='radio', name='gender' value="Male"  checked)
+											label.custom-control-label(for='customRadio1') 
+												label Male
+										.custom-control.custom-radio
+											input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
+											label.custom-control-label(for='customRadio2') 
+												label Female
+									.col-md-4.p-lg-0.px-md-3.px-sm-0
+										.form-group
+											h5.label-control Birthday
+											input.datepicker.form-control(type='date' name='birthday'  required='', data-error='Please enter your birthday')
+									.col-md-4.px-lg-3.px-md-0.px-sm-0
+										.form-group
+											h5.label-control Birthplace:
+											input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9 ]{3,}"  data-error='Please enter birthplace')
+								.row
+									.col-md-4.px-lg-3.px-md-0.px-sm-0
+										.form-group
+											h5.label-control Relationship with the Ill:
+											select(type="text" name='relation'  required='')
+												option(selected="" value="" disabled) Choose...
+												option Spouse
+												option Parent
+												option Child
+												option Grandparent
+												option Grandchild
+												option Aunt/Uncle
+												option Nephew/Niece
+												option BF/GF
+												option Friend
+									.col-md-8
+										.row
+											.col-md-6.p-lg-0.px-md-3.px-sm-0
+												.form-group
+													h5.label-control Desired Date
+													input.datepicker.form-control(type='date' name='desireddate1'  required='', data-error='Please enter your desired date')
+											.col-md-6.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													h5.label-control Desired Time
+													input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
+								.row
+									
+									.col-md-6.px-lg-3.px-md-3.px-sm-0
+										.form-group
+											h5(for='exampleFormControlTextarea1') Address:
+											textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" data-error='Please enter complete address')
+									
+									.col-md-6.px-lg-3.px-md-3.px-sm-0
+										.form-group
+											h5(for='exampleFormControlTextarea1') Details:
+											textarea#exampleFormControlTextarea1.form-control(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
+								.row
+									.col-md-6.px-lg-3.px-md-3.px-sm-0
+										.form-group
+											h5.label-control Place where the blessing will happen:
+											.ml-4
+												.form-check
+													label.form-check-label
+														input#radioup.form-check-input(type="radio" name="venue" value="sameaddress" checked)
+														| Same as his/her address
+														span.circle
+															span.check
+												.form-check
+													label.form-check-label
+														input#exampleRadios1.form-check-input(type="radio" name="venue" value="hospital" pattern="[A-Za-z0-9 ]{2,}" )
+														.dropdown-toggle.mr-2 Hospital/Center
+														span.circle
+															span.check
+													#textarea1.form-group
+														textarea.form-control(placeholder="Please enter the room number, the hospital name & address" rows="3" name='hospitalname' pattern="[A-Za-z0-9 ]{3,}" )
+												.form-check
+													label.form-check-label
+														input#exampleRadios3.form-check-input(type="radio" name="venue" value="other")
+														.dropdown-toggle.mr-3 Other
+														span.circle
+															span.check
+													#textarea2.form-group
+														textarea.form-control(placeholder="Please enter complete address" rows="3" name='othervenue' pattern="[A-Za-z0-9 ]{3,}" )
+										
+								//- .row
+							.learn-more.pull-right
+								button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+								button.btn.btn-submit(type='submit') Submit
+					//- 	.col-md-12.my-5.text-center
+					//- 		button.btn.btn-primary(type='submit') Submit
 							//- a.btn-design.btn-valid(href="/guest/events") Cancel
 block addjs
 	script.

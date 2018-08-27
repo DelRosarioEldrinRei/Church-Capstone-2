@@ -56,23 +56,18 @@ block main
 								// Form Step 1
 								fieldset
 									h4
-										.d-none.d-sm-inline Schedule Date: 
+										.d-none.d-sm-inline Appointment
 										span Step 1 - 2
 										h6.label-control.text-lg-center.text-sm-left Desired Date
 										.row
 											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 												.form-group
-													input.datepicker.form-control(type='date' name='desireddate')
+													input.datepicker.form-control(type='date' name='desireddate1')
 										.row
-											.col-md-12.text-lg-center.text-sm-left
+											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 												.form-group
-													h6.label-control Desired Time
-														br
-														select.ml-lg-2.mt-lg-2(type="text" name='desiredtime')
-															option 10:00AM
-															option 11:00AM
-															option 1:00PM
-															option 2:00PM
+													h5.label-control Desired Time
+													input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
 										.learn-more.pull-right
 													button.btn.btn-next(type='button') Next
 								// Form Step 1
@@ -86,11 +81,11 @@ block main
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.pt-0
-													input.form-control(type='text' placeholder="Last Name" name='lastname' required='' pattern="[A-Za-z]{2,}" )
+													input.form-control(type='text' placeholder="Last Name" name='lastname' required='' pattern="[A-Za-z ]{2,}" )
 													.help-block.with-errors
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group.pt-0
-													input.form-control(type='text' placeholder="First Name" name='firstname' required='' pattern="[A-Za-z]{2,}" )
+													input.form-control(type='text' placeholder="First Name" name='firstname' required='' pattern="[A-Za-z ]{2,}" )
 													.help-block.with-errors
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.pt-0
@@ -119,7 +114,7 @@ block main
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Birthplace:
-													input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9.,-]{2,}" )
+													input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9.,- ]{2,}" )
 													.help-block.with-errors
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
@@ -138,7 +133,7 @@ block main
 											.col-md-8.pl-lg-0.px-md-0.pl-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Address:
-													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.-]{2,}" )
+													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
 											//- .col-md-4.p-lg-0.px-md-3.px-sm-0
 											//- 	.form-group
 											//- 		h6.label-control Desired Date
@@ -148,8 +143,35 @@ block main
 											//- 		h6.label-control Desired Time
 											//- 		input.timepicker.form-control(type='text' name='desiredtime')
 											.help-block.with-errors
+										
+											//- .col-md-8.px-lg-3.px-md-3.px-sm-0
+											//- 	.row
+											//- 		.col-md-12.px-lg-0.px-md-0.px-sm-0
+											//- 	.row
+											//- 		.col-md-6.p-lg-0.px-md-3.px-sm-0
+											//- 			.form-group
+											//- 				h6.label-control Desired Date
+											//- 				input.datepicker.FBlessingDesiredDate.form-control(type='date' name='desireddate')
+											//- 		.col-md-6.pl-lg-3.px-md-0.px-sm-0
+											//- 			.form-group
+											//- 				h6.label-control Desired Time
+											//- 				input.timepicker.form-control(type='text' name='desiredtime')
+															//- .help-block.with-errors
+													//- .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-3
+													//- 	h6.label-control Birth Certificate
+													//- 	input(type='file', name='birthCertificate' accept='image/*' required)
+													//- .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-3.mb-2
+													//- 	h6.label-control Death Certificate
+													//- 	input(type='file', name='deathCertificate' accept='image/*' required)
 										.row
-											.col-md-4.px-lg-3.px-md-0.px-sm-0
+											//- .col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
+											.col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
+												#textarea2.form-group
+													h6.label-control Enter Complete Address
+													textarea.form-control(placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" rows="2" name='othervenue')
+												.form-group
+													h6.label-control Cause of Death:
+													textarea#exampleFormControlTextarea2.form-control(rows='3' name='details' placeholder="Please enter the cause of death")
 												.form-group
 													label.label-control Place where the will happen:
 													.ml-4
@@ -171,34 +193,7 @@ block main
 																.dropdown-toggle.mr-3 Other
 																span.circle
 																	span.check
-											.col-md-8.px-lg-3.px-md-3.px-sm-0
-												.row
-													.col-md-12.px-lg-0.px-md-0.px-sm-0
-												.row
-													.col-md-6.p-lg-0.px-md-3.px-sm-0
-														.form-group
-															h6.label-control Desired Date
-															input.datepicker.FBlessingDesiredDate.form-control(type='date' name='desireddate')
-													.col-md-6.pl-lg-3.px-md-0.px-sm-0
-														.form-group
-															h6.label-control Desired Time
-															input.timepicker.form-control(type='text' name='desiredtime')
-															//- .help-block.with-errors
-													//- .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-3
-													//- 	h6.label-control Birth Certificate
-													//- 	input(type='file', name='birthCertificate' accept='image/*' required)
-													//- .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-3.mb-2
-													//- 	h6.label-control Death Certificate
-													//- 	input(type='file', name='deathCertificate' accept='image/*' required)
-										.row
-											//- .col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
-											.col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
-												#textarea2.form-group
-													h6.label-control Enter Complete Address
-													textarea.form-control(placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" rows="2" name='othervenue')
-												.form-group
-													h6.label-control Cause of Death:
-													textarea#exampleFormControlTextarea2.form-control(rows='3' name='details' placeholder="Please enter the cause of death")
+
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Birth Certificate

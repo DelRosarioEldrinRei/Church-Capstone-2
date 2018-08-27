@@ -55,23 +55,18 @@ block main
 							// Form Step 1
 							fieldset
 								h4
-									.d-none.d-sm-inline Schedule Date: 
+									.d-none.d-sm-inline Appointment 
 									span Step 1 - 2
 									h6.label-control.text-lg-center.text-sm-left Desired Date
 									.row
 										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
-												input.datepicker.form-control(type='date' name='desireddate')
+												input.datepicker.form-control(type='date' name='desireddate1')
 									.row
-										.col-md-12.text-lg-center.text-sm-left
+										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
-												h6.label-control Desired Time
-													br
-													select.ml-lg-2.mt-lg-2(type="text" name='desiredtime')
-														option 10:00AM
-														option 11:00AM
-														option 1:00PM
-														option 2:00PM
+												h5.label-control Desired Time
+												input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
 									.learn-more.pull-right
 												button.btn.btn-next(type='button') Next
 							// Form Step 1
@@ -85,14 +80,14 @@ block main
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.pt-0
-												input.form-control(type='text' placeholder="Last Name" name='lastname', required='' pattern="[A-Za-z]{2,}" )
+												input.form-control(type='text' placeholder="Last Name" name='lastname', required='' pattern="[A-Za-z ]{2,}" data-error='Please enter lastname')
 												.help-block.with-errors
 										.col-md-4.p-lg-0.px-md-3.px-sm-0
 											.form-group.p-0
-												input.form-control(type='text' placeholder="First Name" name='firstname'  required='' pattern="[A-Za-z]{3,}" )
+												input.form-control(type='text' placeholder="First Name" name='firstname'  required='' pattern="[A-Za-z ]{3,}" data-error='Please enter firstname')
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.pt-0
-												input.form-control(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z]{3,}" )
+												input.form-control(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z ]{3,}" )
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.m-0
@@ -112,7 +107,7 @@ block main
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
 												h5.label-control Birthplace:
-												input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-0-9]{3,}" )
+												input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9 ]{3,}"  data-error='Please enter birthplace')
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
@@ -128,28 +123,27 @@ block main
 													option Nephew/Niece
 													option BF/GF
 													option Friend
-										.col-md-8
-											.row
-												.col-md-6.p-lg-0.px-md-3.px-sm-0
-													.form-group
-														h5.label-control Desired Date
-														input.datepicker.form-control(type='date' name='desireddate1'  required='', data-error='Please enter your desired date')
-												.col-md-6.px-lg-3.px-md-0.px-sm-0
-													.form-group
-														h5.label-control Desired Time
-														input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
+										//- .col-md-8
+										//- 	.row
+										//- 		.col-md-6.p-lg-0.px-md-3.px-sm-0
+										//- 			.form-group
+										//- 				h5.label-control Desired Date
+										//- 				input.datepicker.form-control(type='date' name='desireddate1'  required='', data-error='Please enter your desired date')
+										//- 		.col-md-6.px-lg-3.px-md-0.px-sm-0
+										//- 			.form-group
+										//- 				h5.label-control Desired Time
+										//- 				input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
 									.row
 										
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
 												h5(for='exampleFormControlTextarea1') Address:
-												textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" )
+												textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" data-error='Please enter complete address')
 										
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
 												h5(for='exampleFormControlTextarea1') Details:
-												textarea#exampleFormControlTextarea1.form-control(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" )
-											
+												textarea#exampleFormControlTextarea1.form-control(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
 									.row
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
@@ -163,12 +157,12 @@ block main
 																span.check
 													.form-check
 														label.form-check-label
-															input#exampleRadios1.form-check-input(type="radio" name="venue" value="hospital" pattern="[A-Za-z]{2,}" )
+															input#exampleRadios1.form-check-input(type="radio" name="venue" value="hospital" pattern="[A-Za-z0-9 ]{2,}" )
 															.dropdown-toggle.mr-2 Hospital/Center
 															span.circle
 																span.check
 														#textarea1.form-group
-															textarea.form-control(placeholder="Please enter the room number, the hospital name & address" rows="3" name='hospitalname' pattern="[A-Za-z0-9]{3,}" )
+															textarea.form-control(placeholder="Please enter the room number, the hospital name & address" rows="3" name='hospitalname' pattern="[A-Za-z0-9 ]{3,}" )
 													.form-check
 														label.form-check-label
 															input#exampleRadios3.form-check-input(type="radio" name="venue" value="other")
@@ -176,7 +170,7 @@ block main
 															span.circle
 																span.check
 														#textarea2.form-group
-															textarea.form-control(placeholder="Please enter complete address" rows="3" name='othervenue' pattern="[A-Za-z0-9]{3,}" )
+															textarea.form-control(placeholder="Please enter complete address" rows="3" name='othervenue' pattern="[A-Za-z0-9 ]{3,}" )
 										
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
