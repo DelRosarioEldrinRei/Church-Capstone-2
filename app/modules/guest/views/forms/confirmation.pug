@@ -42,14 +42,14 @@ block main
 								// Step 1
 								.form-wizard-step.active
 									.form-wizard-step-icon
-										i.fa.fa-user(aria-hidden='true')
-									p.d-none.d-sm-block Personal Information
+										i.fa.fa-location-arrow(aria-hidden='true')
+									p.d-none.d-sm-block Confirmation Details
 								// Step 1
 								// Step 2
 								.form-wizard-step
 									.form-wizard-step-icon
-										i.fa.fa-location-arrow(aria-hidden='true')
-									p.d-none.d-sm-block Confirmation Details
+										i.fa.fa-user(aria-hidden='true')
+									p.d-none.d-sm-block Personal Information
 								// Step 2
 								// Step 3
 								.form-wizard-step
@@ -61,8 +61,52 @@ block main
 							// Form Step 1
 							fieldset
 								h4
+									.d-none.d-sm-inline Confirmation Details: 
+									span Step 2 - 3
+									.container
+										.row
+											.col-md-3.px-lg-3.px-md-0.px-sm-0
+												.form-group
+													br
+													h6.label-control Confirmation Type & Date:
+														.custom-control.custom-radio.mt-2
+															input#radio1.custom-control-input(type='radio', name='confirmationtype' value="Regular")
+															label.custom-control-label(for='radio1') 
+																h6 Regular
+														.custom-control.custom-radio
+															input#radio2.custom-control-input(type='radio', name='confirmationtype' value="Special")
+															label.custom-control-label(for='radio2') 
+																h6 Special
+										.row
+											.col-md-9.px-lg-3.px-md-3.px-sm-0
+												#regular.mt-4
+													.form-group
+														h6.label-control Regular Confirmation Date
+														input.datepicker1.RegularDesiredDate.form-control(type='date' name='regdesireddate')
+												#special
+													.row.mt-4
+														.col-md-6.px-lg-3.px-md-3.px-sm-0
+															.form-group
+																h6.label-control Special Confirmation Date
+																	input.datepicker.SpecialDesiredDate.form-control(type='date' name='spcdesireddate')
+														.col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
+															.form-group
+																h6.label-control Special Confirmation Time
+																	br
+																	select(type="text" name='desiredtime')
+																		option(selected="" value="" disabled) Choose...
+																		option 10:00AM
+																		option 11:00AM
+																		option 1:00PM
+																		option 2:00PM
+								.learn-more.pull-right
+									button.btn.btn-next(type='button') Next
+							// Form Step 1
+							// Form Step 2
+							fieldset
+								h4
 									.d-none.d-sm-inline Personal Information: 
-									span Step 1 - 3
+									span Step 2 - 3
 								.form-group
 									br
 									input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
@@ -140,69 +184,22 @@ block main
 													h6(for='exampleFormControlTextarea1') Family address:
 													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City")
 										.row
-                                            .col-md-4.px-lg-3.px-md-0.px-sm-0
-                                                .form-group
-                                                    h6.label-control Birth Certificate
-                                                    input#file-0b.file(type='file',accept='image/*',name="image")
-                                        
+											.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+															h6.label-control Birth Certificate
+															input#file-0b.file(type='file',accept='image/*',name="image")
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
-                                                    h6.label-control Baptismal Certificate
-                                                    input#file-0b.file(type='file',accept='image/*',name="image")
-                                        
+													h6.label-control Baptismal Certificate
+													input#file-0b.file(type='file',accept='image/*',name="image")
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
-                                                    h6.label-control Valid ID
-                                                    input#file-0b.file(type='file',accept='image/*',name="image")
-                                        
+													h6.label-control Valid ID
+													input#file-0b.file(type='file',accept='image/*',name="image")
 										.learn-more.pull-right
+											button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 											button.btn.btn-next(type='button') Next
 
-							// Form Step 1
-							// Form Step 2
-							fieldset
-								h4
-									.d-none.d-sm-inline Confirmation Details: 
-									span Step 2 - 3
-									.container
-										.row
-											.col-md-3.px-lg-3.px-md-0.px-sm-0
-												.form-group
-													br
-													h6.label-control Confirmation Type & Date:
-														.custom-control.custom-radio.mt-2
-															input#radio1.custom-control-input(type='radio', name='confirmationtype' value="Regular")
-															label.custom-control-label(for='radio1') 
-																h6 Regular
-														.custom-control.custom-radio
-															input#radio2.custom-control-input(type='radio', name='confirmationtype' value="Special")
-															label.custom-control-label(for='radio2') 
-																h6 Special
-										.row
-											.col-md-9.px-lg-3.px-md-3.px-sm-0
-												#regular.mt-4
-													.form-group
-														h6.label-control Regular Confirmation Date
-														input.datepicker1.RegularDesiredDate.form-control(type='date' name='regdesireddate')
-												#special
-													.row.mt-4
-														.col-md-6.px-lg-3.px-md-3.px-sm-0
-															.form-group
-																h6.label-control Special Confirmation Date
-																	input.datepicker.SpecialDesiredDate.form-control(type='date' name='spcdesireddate')
-														.col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
-															.form-group
-																h6.label-control Special Confirmation Time
-																	br
-																	select(type="text" name='desiredtime')
-																		option(selected="" value="" disabled) Choose...
-																		option 10:00AM
-																		option 11:00AM
-																		option 1:00PM
-																		option 2:00PM
-								.learn-more.pull-right
-									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-									button.btn.btn-next(type='button') Next
 							// Form Step 2
 							// Form Step 3
 							fieldset

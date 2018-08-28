@@ -3864,7 +3864,7 @@ a:focus:not([href]):not([tabindex]), a:hover:not([href]):not([tabindex]) {
 }
 
 .portfoli-content:before {
-  background-color: RGBA(235, 88, 111, 0.7);
+  background-color: #4c2508c4;
   top: 15px;
   left: 15px;
   bottom: 15px;

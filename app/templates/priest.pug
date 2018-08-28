@@ -9,8 +9,9 @@ html(lang='en')
 		link(rel="stylesheet", href="/css/bootstrap4.1.min.css")
 		link(rel='stylesheet' href='/css/fullcalendar.min.css')
 		link(rel='stylesheet', href='/Helium/css/font-awesome.min.css')
-		link(rel='stylesheet', href='/css/modal-anim.css')
+		//- link(rel='stylesheet', href='/css/modal-anim.css')
 		link(rel='stylesheet', href='/css/loader.css')
+		link(rel='stylesheet', href='/css/form-wizard.css')
 		link(rel="stylesheet" href="/css/timedropper.min.css")
 		link(rel="stylesheet" href="/css/bootstrap-datetimepicker-solo.css")
 		link(rel='stylesheet', href='/css/dataTables.bootstrap4.min.css')
@@ -33,21 +34,21 @@ html(lang='en')
 		header
 			nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.py-0
 				.container
-					a.navbar-brand(href="/coordinator")
-						img.rounded-circle.shadow(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem")
+					a.navbar-brand(href="/priest")
+						img.rounded-circle.shadow.p-0(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem")
 					button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
 						span.navbar-toggler-icon
 					#navbarNav.collapse.navbar-collapse
 						ul.navbar-nav.ml-auto
-							li.nav-item.active: a.nav-link(href="/catechist")
+							li.nav-item: a.nav-link(href="/priest")
 								| Home
 							//- li.nav-item: a.nav-link(href="#")
 							//- 	| Profile
-							li.nav-item: a.nav-link(href="/catechist/schedule")
-								| Schedule
-							li.nav-item: a.nav-link(href="/catechist/sections")
-								| Sections	
-							li.nav-item: a.nav-link(href="#")
+							li.nav-item: a.nav-link(href="/priest/appointments")
+								| Appointments
+							li.nav-item: a.nav-link(href="/priest/schedule")
+								| Schedule	
+							li.nav-item: a.nav-link(href="/priest/notification")
 								| Notification	
 							li.dropdown.nav-item
 								a.dropdown-toggle.nav-link(href="#" data-toggle="dropdown")
@@ -59,8 +60,6 @@ html(lang='en')
 										| &nbsp; Messages
 									a.dropdown-item(href="#")
 										| &nbsp; Notification
-									//- a.dropdown-item(href="/guest/reservation")
-									//- 	| &nbsp; Reservations
 									.container
 										hr
 									a.dropdown-item(href="/logout")
@@ -72,17 +71,34 @@ html(lang='en')
 		script(src="/js/popper.min.js")
 		script(src="/js/bootstrap4.1.min.js")
 		script(src='/js/loader.js')
-
+		script(src='/js/form-wizard.js')
 		script(src="/js/moment.min.js")
 		script(src="/js/fullcalendar.min.js")
 		script(src="/js/sweetalert2.all.min.js")
 		script(src="/js/calendar.js")
 		script(src='/js/datatables.min.js')
+		script(src='/js/sweetalert2.all.min.js')
+		script(src="/js/bootstrap-datetimepicker.min.js")
 		script(src='/js/dataTables.bootstrap4.min.js')
 		script(src='/js/dataTables.responsive.min.js')
 		script(src='/js/responsive.bootstrap4.min.js')
+		block addjs
 		script.
 			$(document).ready(function() {
+				$('.datepicker').datetimepicker({
+					format: 'YYYY-MM-DD',
+					icons: {
+						time: "fa fa-clock-o",
+						date: "fa fa-calendar",
+						up: "fa fa-chevron-up",
+						down: "fa fa-chevron-down",
+						previous: 'fa fa-chevron-left',
+						next: 'fa fa-chevron-right',
+						today: 'fa fa-screenshot',
+						clear: 'fa fa-trash',
+						close: 'fa fa-remove'
+					}
+				});
 				$('.table').DataTable( {
 						responsive: {
 								details: {

@@ -1,5 +1,6 @@
 extends ../../../../templates/guests
 block main
+<<<<<<< HEAD
     style.
         #header-style-1 {
             background-image: url(/imgchurch/bible1.jpg)
@@ -239,3 +240,111 @@ block addjs
                         .row
                             .col-md-12
                                 a#anchorRegisterSubmit.btn-design(href="#") Submit
+=======
+	style.
+		#header-style-1 {
+			background-image: url(/imgchurch/reservation.jpg)
+		}
+		.btn-sm {
+			font-size: 12px;
+			min-width: 40px;
+			padding: 5px 11px;
+		}
+		.form-control
+			{
+				display:block;
+				width:100%;
+				min-height:20px;
+				padding:.375rem .75rem;
+				font-size:.75rem;
+				line-height:1.5;
+				color:#495057;
+				background-color:#fff;
+				background-clip:padding-box;
+				border:1px solid #ced4da;
+				border-radius:.25rem;
+				transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out
+			}
+			.custom-select.custom-select-sm.form-control.form-control-sm {
+				margin:0;
+			}
+	#headers
+		#header-style-1
+			.container
+				.header-caption
+					.row
+						.col-md-12.header-content
+							h3.header-title.animated.fadeInDown.invisible
+								span.text-primary Helium - 
+								| Bootstrap 4 UI Kit
+							h5.header-text.animated.fadeIn.invisible
+								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
+		#raised-section.main.main-raised
+			section.form-box
+				.container
+					.row
+						.col-md-12.form-wizard
+							h3 Reservation List
+							p 
+					.row
+						.col-lg-12.col-md-12.mb-60
+							table.table.dataTable
+								thead
+									tr.text-center
+										th Name
+										th Status
+										th Actions
+								tbody
+									each reservation in reservations
+										tr.text-center
+											td=reservation.var_eventname
+											td=reservation.char_approvalstatus
+											td.td-actions
+												button.btn.btn-danger.btn-sm.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
+												| &nbsp;
+												a.btn-success.btn-sm.updateButton(type='button',rel='tooltip', href = `/guest/reservation/${reservation.int_eventinfoID}/edit`) Edit
+	#conditionModal.modal.animated.fadeIn(tabindex='-1', role='dialog')
+		.modal-dialog.modal-login.modal-lg(role='document')
+			.modal-content
+				.card.card-signup.card-plain
+					.modal-header
+					.modal-body
+							//- <div class="card card-nav-tabs">
+							//- <div class="card-header card-header-warning">
+							//- 	Featured
+							//- </div>
+							<div class="card-body">
+								<h4 class="card-title">Special title treatment</h4>
+								<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+							</div>
+							</div>
+					.modal-footer.justify-content-center
+						.row
+							.col-md-12
+								a#anchorRegisterSubmit.btn-design(href="#") Submit
+block addjs
+	script.
+		$(document).ready(function() {
+			$('.deleteButton').click(function(){
+				swal({
+					title: 'Are you sure you want to cancel the event?',
+					text: "You won't be able to revert this!",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, cancel it!'
+				}).then((result) => {
+					if (result.value) {
+						swal(
+							'Cancelled!',
+							'Your transaction has been cancelled.',
+							'success'
+						)
+					}
+				})
+			})
+		});
+>>>>>>> 3ec155bd4f87516f4fbf52a2799e081d7dc6c2cf

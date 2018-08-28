@@ -22,9 +22,9 @@ block main
 							p Fill all form fields
 			.container
 				.row
-					.col-md-6.my-3
-						#form-facility
-							#calendar
+					.col-md-3.fixed-top(style="margin-top: 4rem; ")
+						#draggable.p-2.rounded.shadow2(style="background-color:white; cursor:pointer; width:21rem; height: 21rem; left: 60rem; top:1rem;")
+							#calendar(style="width:100%;")
 					.col-md-6.my-3
 						form(action="/guest/facilities/secondfloor/form" enctype="multipart/form-data" method='post')
 							input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
@@ -97,9 +97,11 @@ block main
 														label.m-0 QTY
 														| &nbsp;
 														input(type="number" style="width:50px;")
-							.form-group
-								h6.label-control Valid ID
-								input(type='file' name='image' accept='image/*')
+								.row
+									.col-md-12.px-lg-3.px-md-3.px-sm-0.mx-auto
+										.form-group
+												h6.label-control Birth Certificate
+												input#file-0b.file(type='file',accept='image/*',name="image")
 							.form-group
 								input(type='checkbox')
 								label.custom-control-label
@@ -149,6 +151,7 @@ block main
 					#calendar1
 block addjs
 	script.
+		$( "#draggable" ).draggable().resizable();
 		$('#textarea1').hide();
 		$('#textarea2').hide();
 		$('#radioup').click(function() {

@@ -196,133 +196,133 @@ block main
 				.items
 					input#item1(type='checkbox', checked='' disabled)
 					label.information(for='item1') Reservation
-					input#item2(type='checkbox', checked='' disabled)
+					input#item2(type='checkbox' checked='' disabled)
 					label.information1(for='item2') Application Request
-					input#item3(type='checkbox' disabled)
+					input#item3(type='checkbox' checked='' disabled)
 					label.information2(for='item3') Payment
-					input#item4(type='checkbox' disabled)
+					input#item4(type='checkbox' checked='' disabled)
 					label.information3(for='item4') Cannonical Interview
-					input#item5(type='checkbox' disabled)
+					input#item5(type='checkbox' checked='' disabled)
 					label.information4(for='item5') Submission of Requirements
-					input#item6(type='checkbox' disabled)
+					input#item6(type='checkbox')
 					label.information5(	='item6') Issue of Marriage Banns
-					input#item7(type='checkbox' disabled)
+					input#item7(type='checkbox')
 					label.information6(for='item7') Pre - Cana
 					h2.done(aria-hidden='true') Done
 					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Reservation
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details1.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Application Request
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details2.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Payment
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details3.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Cannonical Interview
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details4.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Submission of Requirements
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details5.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Issue of Marriage Bans
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details6.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Pre - Cana
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-block addjs
-	script.
-		$(document).ready(function() {
-			$('.information').click(function() {
-				$('.information_details').toggleClass("animated fadeInDown faster display_off")
-			});
-			$('.information1').click(function() {
-				$('.information_details1').toggleClass("animated fadeInDown faster display_off")
-			});
-			$('.information2').click(function() {
-				$('.information_details2').toggleClass("animated fadeInDown faster display_off")
-			});
-			$('.information3').click(function() {
-				$('.information_details3').toggleClass("animated fadeInDown faster display_off")
-			});
-			$('.information4').click(function() {
-				$('.information_details4').toggleClass("animated fadeInDown faster display_off")
-			});
-			$('.information5').click(function() {
-				$('.information_details5').toggleClass("animated fadeInDown faster display_off")
-			});
-			$('.information6').click(function() {
-				$('.information_details6').toggleClass("animated fadeInDown faster display_off")
-			});
-		});
+//- 		.col-md-6.col-sm-12.information_details.display_off
+//- 			.custom_container_details
+//- 				h1 Information:
+//- 				.items.pb-0
+//- 					h2.done1(aria-hidden='true') Reservation
+//- 						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
+//- 				.items.pt-0
+//- 					input#item8(type='checkbox', checked='')
+//- 					label(for='item8') Reservation
+//- 					input#item9(type='checkbox', checked='')
+//- 					label(for='item9') Application Request
+//- 					h2.done(aria-hidden='true') Done
+//- 					h2.undone(aria-hidden='true') Not Done
+//- 		.col-md-6.col-sm-12.information_details1.display_off
+//- 			.custom_container_details
+//- 				h1 Information:
+//- 				.items.pb-0
+//- 					h2.done1(aria-hidden='true') Application Request
+//- 						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
+//- 				.items.pt-0
+//- 					input#item8(type='checkbox', checked='')
+//- 					label(for='item8') Reservation
+//- 					input#item9(type='checkbox', checked='')
+//- 					label(for='item9') Application Request
+//- 					h2.done(aria-hidden='true') Done
+//- 					h2.undone(aria-hidden='true') Not Done
+//- 		.col-md-6.col-sm-12.information_details2.display_off
+//- 			.custom_container_details
+//- 				h1 Information:
+//- 				.items.pb-0
+//- 					h2.done1(aria-hidden='true') Payment
+//- 						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
+//- 				.items.pt-0
+//- 					input#item8(type='checkbox', checked='')
+//- 					label(for='item8') Reservation
+//- 					input#item9(type='checkbox', checked='')
+//- 					label(for='item9') Application Request
+//- 					h2.done(aria-hidden='true') Done
+//- 					h2.undone(aria-hidden='true') Not Done
+//- 		.col-md-6.col-sm-12.information_details3.display_off
+//- 			.custom_container_details
+//- 				h1 Information:
+//- 				.items.pb-0
+//- 					h2.done1(aria-hidden='true') Cannonical Interview
+//- 						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
+//- 				.items.pt-0
+//- 					input#item8(type='checkbox', checked='')
+//- 					label(for='item8') Reservation
+//- 					input#item9(type='checkbox', checked='')
+//- 					label(for='item9') Application Request
+//- 					h2.done(aria-hidden='true') Done
+//- 					h2.undone(aria-hidden='true') Not Done
+//- 		.col-md-6.col-sm-12.information_details4.display_off
+//- 			.custom_container_details
+//- 				h1 Information:
+//- 				.items.pb-0
+//- 					h2.done1(aria-hidden='true') Submission of Requirements
+//- 						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
+//- 				.items.pt-0
+//- 					input#item8(type='checkbox', checked='')
+//- 					label(for='item8') Reservation
+//- 					input#item9(type='checkbox', checked='')
+//- 					label(for='item9') Application Request
+//- 					h2.done(aria-hidden='true') Done
+//- 					h2.undone(aria-hidden='true') Not Done
+//- 		.col-md-6.col-sm-12.information_details5.display_off
+//- 			.custom_container_details
+//- 				h1 Information:
+//- 				.items.pb-0
+//- 					h2.done1(aria-hidden='true') Issue of Marriage Bans
+//- 						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
+//- 				.items.pt-0
+//- 					input#item8(type='checkbox', checked='')
+//- 					label(for='item8') Reservation
+//- 					input#item9(type='checkbox', checked='')
+//- 					label(for='item9') Application Request
+//- 					h2.done(aria-hidden='true') Done
+//- 					h2.undone(aria-hidden='true') Not Done
+//- 		.col-md-6.col-sm-12.information_details6.display_off
+//- 			.custom_container_details
+//- 				h1 Information:
+//- 				.items.pb-0
+//- 					h2.done1(aria-hidden='true') Pre - Cana
+//- 						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
+//- 				.items.pt-0
+//- 					input#item8(type='checkbox', checked='')
+//- 					label(for='item8') Reservation
+//- 					input#item9(type='checkbox', checked='')
+//- 					label(for='item9') Application Request
+//- 					h2.done(aria-hidden='true') Done
+//- 					h2.undone(aria-hidden='true') Not Done
+//- block addjs
+//- 	script.
+//- 		$(document).ready(function() {
+//- 			$('.information').click(function() {
+//- 				$('.information_details').toggleClass("animated fadeInDown faster display_off")
+//- 			});
+//- 			$('.information1').click(function() {
+//- 				$('.information_details1').toggleClass("animated fadeInDown faster display_off")
+//- 			});
+//- 			$('.information2').click(function() {
+//- 				$('.information_details2').toggleClass("animated fadeInDown faster display_off")
+//- 			});
+//- 			$('.information3').click(function() {
+//- 				$('.information_details3').toggleClass("animated fadeInDown faster display_off")
+//- 			});
+//- 			$('.information4').click(function() {
+//- 				$('.information_details4').toggleClass("animated fadeInDown faster display_off")
+//- 			});
+//- 			$('.information5').click(function() {
+//- 				$('.information_details5').toggleClass("animated fadeInDown faster display_off")
+//- 			});
+//- 			$('.information6').click(function() {
+//- 				$('.information_details6').toggleClass("animated fadeInDown faster display_off")
+//- 			});
+//- 		});

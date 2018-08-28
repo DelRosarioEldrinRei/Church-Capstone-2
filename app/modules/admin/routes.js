@@ -21,10 +21,8 @@ adminRouter.use(authMiddleware.adminAuth)
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
-                
-            return res.render('admin/views/index',{ application : application, reservation : reservation, request : request});
+            return res.render('admin/views/index',{ application:application,reservation:reservation,request:request});
         }); }); });
-
     });
     adminRouter.get('/details', (req, res)=>{
         res.render('admin/views/ref/details')

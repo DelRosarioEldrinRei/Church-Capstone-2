@@ -85,14 +85,16 @@ block prepend main
                     #searchModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                         .modal-dialog.modal-lg(role='document')
                             .modal-content
-                                .modal-header Input Details about the Person in the certificate
+                                .modal-header
+                                    h5 Input Details about the Person in the certificate
+                                    button.close(type='button', data-dismiss='modal', aria-label='Close')
                                         span.p-3(aria-hidden='true') ×
                                 .modal-body
                                     .row
                                         .col-md-6
                                             .form-group
                                                 h5.label-control Document
-                                                    br
+                                                label
                                                     select#documenttype(type="text" name='documenttype')
                                                         option Baptismal Certificate
                                                         option Confirmation Certificate
@@ -115,7 +117,7 @@ block prepend main
                                     button.btn.std-btn.btn-common.btn-info.mb-0#searchButton(type='button') Search
                 .col-md-12.text-center
                     .learn-more
-                        a.btn.std-btn.btn-common(href='/services') View All
+                        a.btn.std-btn.btn-common(href='/guest/services') View All
     //- section#document
     //- 	.container
     //- 		.row

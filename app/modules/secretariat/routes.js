@@ -626,11 +626,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
         
-        where tbl_services.int_eventID =1`
+        where tbl_services.var_eventname = 'Anointing of the sick'`
 
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
-                var anointings=results;
+                var anointings=results; 
                 for(var i = 0; i < anointings.length; i++){
                     
                     anointings[i].date_birthday= moment(anointings[i].date_birthday).format('MM/DD/YYYY');
@@ -646,7 +646,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
                 join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
                 
-                where tbl_services.int_eventID =4`
+                where tbl_services.var_eventname = 'Funeral Service'`
 
                         db.query(queryString3, (err, results, fields) => {
                             if (err) console.log(err);
@@ -663,6 +663,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
                     var queryString4 =`SELECT * FROM tbl_eventinfo 
                     JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+                    
                     JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
                     JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
                     join tbl_houseblessing on tbl_eventinfo.int_eventinfoID = tbl_houseblessing.int_eventinfoID
@@ -735,7 +736,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     secretariatRouter.get('/transaction-marriage', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-        JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
+        JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID
+         
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         JOIN tbl_wedbride on tbl_eventinfo.int_eventinfoID = tbl_wedbride.int_eventinfoID

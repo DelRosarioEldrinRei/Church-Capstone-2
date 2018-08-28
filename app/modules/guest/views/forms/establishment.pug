@@ -6,9 +6,18 @@ block main
 				padding-left: 0;
 				padding-right: 0;
 			}
+			.form-wizard-step {
+					padding-bottom: 10px !important;
+			}
 		}
 		#header-style-1 {
 			background-image: url(/imgchurch/ceiling2.jpg)
+		}
+		.form-wizard-tolal-steps-3 .form-wizard-step {
+			width: 49.33%;
+		}
+		#other > div:nth-child(2) > div > div > div > div.file-preview > div > div.file-drop-zone-title {
+			font-size: 1rem;
 		}
 	#headers
 		#header-style-1
@@ -32,8 +41,45 @@ block main
 							form(role='form' action="/guest/establishment/form"   enctype="multipart/form-data" method="post")
 								h3 Establishment Blessing Form
 								p.mb-4 Fill all form fields
+								.form-wizard-steps.form-wizard-tolal-steps-3
+									.form-wizard-progress
+											.form-wizard-progress-line(data-now-value='12.25' data-number-of-steps='3' style='width: 12.25%;')
+									// Step 1
+									.form-wizard-step.active
+											.form-wizard-step-icon
+													i.fa.fa-user(aria-hidden='true')
+											p.d-none.d-sm-block Schedule Date
+									// Step 1
+									// Step 2
+									.form-wizard-step
+											.form-wizard-step-icon
+													i.fa.fa-location-arrow(aria-hidden='true')
+											p.d-none.d-sm-block Blessing Details
+									// Step 2
+								// Form Step 1
 								fieldset
+									h4
+										.d-none.d-sm-inline Appointment
+										span Step 1 - 2
+										h6.label-control.text-lg-center.text-sm-left Desired Date
+										.row
+											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
+												.form-group
+													input.datepicker.form-control(type='date' name='desireddate1')
+										.row
+											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
+												.form-group
+													h5.label-control Desired Time
+													input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
+										.learn-more.pull-right
+													button.btn.btn-next(type='button') Next
 									
+								// Form Step 1
+								// Form Step 2
+								fieldset
+									h4
+										.d-none.d-sm-inline Blessing Details:
+										span Step 2 - 2
 										input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 										.container
 											.row
@@ -58,7 +104,7 @@ block main
 																		input.form-control(type='text' value=`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
 																	.form-group
 																		h6.label-control House/Establishment Location:
-																		textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location') #{user.var_useraddress}
+																		textarea.form-control(placeholder="Please Enter Complete Address" rows="1" name='location') #{user.var_useraddress}
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																		.form-group
 																			h6.label-control Contact Number:
@@ -71,10 +117,10 @@ block main
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																.form-group
 																	h6.label-control Owner:
-																	input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1' pattern="[A-Za-z]{3,}" )
+																	input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1' pattern="[A-Za-z ]{3,}" )
 																.form-group
 																	h6.label-control House/Establishment Location:
-																	textarea.form-control(placeholder="Please Enter Complete Address" rows="4" name='location1' pattern="^[a-zA-Z0-9,.- ]*${10,}")
+																	textarea.form-control(placeholder="Please Enter Complete Address" rows="1" name='location1' pattern="^[a-zA-Z0-9,.- ]*${10,}")
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																.form-group
 																	h6.label-control Contact Number:
@@ -84,28 +130,23 @@ block main
 																	input.form-control.mb-2(type='Email' name='email1' placeholder="mark242@gmail.com" )
 																	//- pattern="/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/" email 
 														.row
-															.col-md-6
-															.col-md-6.px-lg-3.px-md-3.px-sm-0
-																	.form-group
-																			h6.label-control Birth Certificate
-																			input#file-0b.file(type='file',accept='image/*',name="image")
-													
-											.row.mt-3
-												.col-md-6.px-lg-3.px-md-3.px-sm-0
-													.form-group
-														h6.label-control Desired Date
-														input.datepicker.form-control(type='date' name='desireddate1')
-												.col-md-6.px-lg-3.px-md-3.px-sm-0
-													.form-group.mt-1
-														h6.label-control Desired Time
-														input.timepicker.form-control(type='text' name='desiredtime1')
-											.row
-												.col-md-12.my-5.text-center
-													.learn-more
-														button.btn.std-btn.btn-common#submit(type='submit') Submit
-														// Form Step 2
-													// Form Wizard
-
+															.col-md-8.px-lg-3.px-md-3.px-sm-0.mx-auto
+																.form-group
+																		h6.label-control Birth Certificate
+																		input#file-0b.file(type='file',accept='image/*',name="image")
+											//- .row
+											//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
+											//- 		.form-group
+											//- 			h6.label-control Desired Date
+											//- 			input.datepicker.form-control(type='date' name='desireddate1')
+											//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
+											//- 		.form-group.mt-1
+											//- 			h6.label-control Desired Time
+											//- 			input.timepicker.form-control(type='text' name='desiredtime1')
+									.learn-more.pull-right
+										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+										button.btn.btn-submit(type='submit') Submit
+								// Form Step 2
 block addjs
 	script.
 		//- $('#ourhome').hide();
