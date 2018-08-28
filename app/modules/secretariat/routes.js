@@ -10,20 +10,16 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 //===============================================================================================//
     secretariatRouter.get('/', (req, res)=>{
         var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo`
-        var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
         var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);
             var application = results[0];
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var reservation = results[0];
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
                 
             return res.render('secretariat/views/index',{ application : application, reservation : reservation, request : request});
-        }); }); });
+        }); }); 
 
     });
     secretariatRouter.get('/details', (req, res)=>{
@@ -587,21 +583,41 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         }); 
         }); 
     });
-    secretariatRouter.post('/transaction-baptism/update/query', (req, res)=>{
+    secretariatRouter.post('/transaction-baptism/query', (req, res)=>{
         var queryString1 =`SELECT * from tbl_eventinfo 
-        join tbl_eventapplication on tbl_eventinfo.int_eventinfoID = tbl_application.int_eventinfoID
-        join tbl_payment on tbl_application.int_paymentID = tbl_payment.int_paymentID
+        JOIN tbl_eventapplication on tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
-        
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_requirementtype ON tbl_requirementtype.int_eventID = tbl_services.int_eventID
+        JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
         where tbl_eventinfo.int_eventinfoID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
-            // req.session.userID = results[0].int_userID
             if (err) console.log(err);
             res.send(results[0])
             console.log(results[0])
         });
     });
+    secretariatRouter.post('/transaction-baptism/query/update', (req, res)=>{
+        var queryString1 =`SELECT * from tbl_eventinfo 
+        JOIN tbl_eventapplication ON tbl_eventapplication.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventapplication.int_paymentID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_requirementtype ON tbl_requirementtype.int_eventID = tbl_services.int_eventID
+        JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_requirements ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
+        WHERE tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString1,[req.body.id], (err, results, fields) => {
+            if (err) console.log(err);
+            res.send(results[0])
+            console.log(results[0])
+        });
+    });
+
+    
+    
     secretariatRouter.get('/transaction-blessings', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
