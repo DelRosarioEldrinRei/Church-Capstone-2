@@ -119,10 +119,6 @@ block addjs
                 idNow = $(this).val();
                 console.log(idNow)
             })
-            $('.updateButton').click(function(){
-                $('#updateModal').modal('show')
-
-            })
             $('.viewButton').click(function(){
                 console.log(idNow)
                 $.post('/secretariat/transaction-baptism/query',{id:idNow}).done(data =>{
@@ -222,14 +218,18 @@ block addjs
                     if(data.var_reqstatus == "Submitted"){
                     $('#reqstatus').append(`
                     <option selected="selected">Submitted</option>
-                    <option>Aprroved</option>
+                    <option>Approved</option>
                     `)
                     }
                     else if(data.var_reqstatus == "Approved"){
                     $('#reqstatus').append(`
                     <option>Submitted</option>
-                    <option selected="selected">Aprroved</option>
+                    <option selected="selected">Approved</option>
                     `)
+                    }
+                    if(data.var_reqstatus == "Approved" && data.char_paymentstatus == "Paid"){
+                        document.getElementById("paystatus").disabled=true;
+                        document.getElementById("reqstatus").disabled=true;
                     }
                     $('#updateSubmitButton').click(function(){
                         swal({
@@ -242,7 +242,10 @@ block addjs
                         confirmButtonText: 'Confirm'
                         }).then((result)=>{
                         if(result.value){
+                        data.time_desiredtime = moment(data.time_desiredtime,'HH:mm:ss').format('HH:mm:ss')
                         $.post('/secretariat/transaction-baptism/update',{
+                        dateRequested:data.date_desireddate,
+                        timeRequested:data.time_desiredtime,
                         eventstatus:$('#eventstatus').val(),
                         eventid:$('#eventid').val(),
                         reqid:$('#reqid').val(),
