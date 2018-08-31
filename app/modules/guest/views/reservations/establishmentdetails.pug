@@ -1,69 +1,45 @@
 extends ../../../../templates/guests
 block main
 	.profile-page
-		//- Heading Page
 		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/Nave.jpeg');")
-			.container
-				.row
-					.col-md-9.main-header__textbox
-						h1.font-italic Establishment Blessing
-						a(href="/guest/reservation")
-							p.text-uppercase.card-desc
-								| Reservations
 		#raised-section.main.main-raised
 			.container
-				.row
-					.col-md-12
-						hr.mt-5.mx-5
-				.row
-					.col-md-12.my-3
-						h3.text-center.text-uppercase.guidelines--text Request Details
-				form(action="/guest/establishment/form" method="post")
-				
-					input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 					.row
-						.col-md-8.mx-auto.my-auto
-							.form-group
-								label.label-control Place where the will happen:
-								.ml-4
-									.form-check
-										.form-group.mt-2
-											label.label-control Owner:
-											input.form-control(type='text' value=	`${moredetails.var_owner}` name='owner')
-										.form-group
-											label.label-control House/Establishment Location:
-											input.form-control(value=`${moredetails.var_estloc}` rows="3" name='location')
-										.form-group
-											label.label-control Contact Number:
-											input.form-control(type='text' value=`${moredetails.var_ownercontactnum}` name='contactnumber')
-										.form-group
-											label.label-control Email:
-											input.form-control(type='Email' value=`${moredetails.var_owneremailadd}` name='email')
-					.row
-						.col-md-4
-							.form-group
-								label.label-control Desired Date
-								input.datepicker2.form-control(type='text' name='desireddate1' value=`${moredetails.date_desireddate1}`)
-						.col-md-4
-							.form-group.mt-1
-								label.label-control Desired Time
-								input.timepicker.form-control(type='text' name='desiredtime1' value=`${moredetails.time_desiredtime1}`)
-					.row
-						.col-md-4
-							.form-group
-								label.label-control Alternative Date
-								input.datepickerEstBlessingDesiredDate.form-control(type='text' name='desireddate2' value=`${moredetails.date_desireddate2}`)
-						.col-md-4
-							.form-group.mt-1
-								label.label-control Alternative Time
-								input.timepicker.form-control(type='text' name='desiredtime2' value=`${moredetails.time_desiredtime2}`)
+						.col-md-12.my-3
+							h3.text-center.text-uppercase.guidelines--text House Blessing Details
+							form(action=`/guest/reservation/${details.int_eventinfoID}/edit` method="post")
+									
+									input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+									input.form-control(type='hidden' name='eventname' value=`${details.var_eventname }`)
+									fieldset
+											h4
+											.row
+													.col-md-6.px-lg-3.px-md-3.px-sm-0
+															.form-group
+																	h6.label-control Owner
+																	input.form-control(type='text' name='owner' placeholder="Ex. Juan Dela Cruz" required='' pattern="[A-Za-z, ]{2,}" value=`${moredetails.var_owner}` )
+																	.help-block.with-errors
+													.col-md-6.px-lg-3.px-md-3.px-sm-0
+															.form-group
+																	h6.label-control Establishment Location
+																	input.form-control(type='text' name='location' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z,.- ]{2,}" value=`${moredetails.var_estloc}` )
+																	.help-block.with-errors
+											
+											.row
+													.col-md-6.px-lg-3.px-md-3.px-sm-0
+															.form-group
+																	h6.label-control Contact Number
+																	input.form-control(type='text' name='contactnumber' placeholder="Ex. Juan Dela Cruz" required='' pattern="[0-9, ]{11}" value=`${moredetails.var_ownercontactnum}` )
+																	.help-block.with-errors
+													.col-md-6.px-lg-3.px-md-3.px-sm-0
+															.form-group
+																	h6.label-control Email
+																	input.form-control(type='text' name='email'  required='' value=`${moredetails.var_owneremailadd}` )
+																	.help-block.with-errors
+											//- .learn-more.pull-right
+											//- 	//- button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+											//- 	button.btn.btn-submit(type='submit') Submit
 								
-						.row
-							.col-md-12.my-5.text-center
-								//- a.btn-design.mx-2(href="#") Submit
-								button.btn.btn-primary(type='submit') Submit
-							//- a.btn-design.btn-valid(href="/guest/events") Cancel
-
 block addjs
 	script.
 		//- $('#ourhome').hide();
