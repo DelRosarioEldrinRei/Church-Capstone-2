@@ -82,13 +82,13 @@ block main
                                                 #regular.mt-4
                                                     .form-group
                                                         h6.label-control Regular Baptism Date
-                                                        input.datepicker1.RegularDesiredDate.form-control(type='date' name='regdesireddate' )
+                                                        input.regularBaptism.RegularDesiredDate.form-control(type='date' name='regdesireddate' )
                                                 #special
                                                     .row.mt-4
                                                         .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                             .form-group
                                                                 h6.label-control Special Baptism Date
-                                                                    input.datepicker.SpecialDesiredDate.form-control(type='date' name='spcdesireddate')
+                                                                    input.specialBaptism.SpecialDesiredDate.form-control(type='date' name='spcdesireddate')
                                                         .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-0
                                                             .form-group
                                                                 h6.label-control Special Baptism Time
@@ -372,4 +372,45 @@ block addjs
                 $(this).remove();
             });
             event.stopPropagation();
+        });
+
+        // for Regular Baptism Date
+        let startDate = moment().add(13, 'days')
+        let endDate = moment().add(91, 'days')
+
+        $('.regularBaptism').datetimepicker({
+            format: 'YYYY-MM-DD',
+            minDate: startDate,
+            maxDate: endDate,
+            daysOfWeekDisabled: [1,2,3,4,5,6],
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+            },
+        });
+
+        // for Special Baptism Date
+        $('.specialBaptism').datetimepicker({
+            format: 'YYYY-MM-DD',
+            minDate: startDate,
+            maxDate: endDate,
+            daysOfWeekDisabled: [0,1],
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+            },
         });

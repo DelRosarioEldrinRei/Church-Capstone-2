@@ -62,12 +62,12 @@ block main
 										.row
 											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 												.form-group
-													input.datepicker.form-control(type='date' name='desireddate1')
+													input.funeral.form-control(type='date' name='desireddate1')
 										.row
 											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 												.form-group
 													h5.label-control Desired Time
-													input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
+													input.desiredTime.form-control(type='text' name='desiredtime1' placeholder="Input Time"  required='', data-error='Please enter your desired time')
 										.learn-more.pull-right
 													button.btn.btn-next(type='button') Next
 								// Form Step 1
@@ -110,7 +110,7 @@ block main
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Birthday
-													input.datepicker.form-control(type='date' name='birthday' required='')
+													input.birthday.form-control(type='date' name='birthday' required='')
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Birthplace:
@@ -166,10 +166,6 @@ block main
 										.row
 											//- .col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
 											.col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
-												#textarea2.form-group
-													h6.label-control Enter Complete Address
-													textarea.form-control(placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" rows="2" name='othervenue')
-													.help-block.with-errors
 												.form-group
 													h6.label-control Cause of Death:
 													textarea#exampleFormControlTextarea2.form-control(rows='3' name='details' placeholder="Please enter the cause of death")
@@ -195,6 +191,10 @@ block main
 																.dropdown-toggle.mr-3 Other
 																span.circle
 																	span.check
+															#textarea2.form-group
+																h6.label-control Enter Complete Address
+																textarea.form-control(placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" rows="2" name='othervenue')
+																.help-block.with-errors
 
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
@@ -223,3 +223,24 @@ block addjs
 			$('#textarea1').slideUp();
 			$('#textarea2').slideDown();
 		});
+
+			//for funeral blessing
+			let startDate = moment().add(2, 'days')
+			let endDate = moment().add(8, 'days')
+
+			$('.funeral').datetimepicker({
+				format: 'YYYY-MM-DD',
+				minDate: startDate,
+				maxDate: endDate,
+				icons: {
+						time: "fa fa-clock-o",
+						date: "fa fa-calendar",
+						up: "fa fa-chevron-up",
+						down: "fa fa-chevron-down",
+						previous: 'fa fa-chevron-left',
+						next: 'fa fa-chevron-right',
+						today: 'fa fa-screenshot',
+						clear: 'fa fa-trash',
+						close: 'fa fa-remove',
+				},
+			});

@@ -82,7 +82,7 @@ block main
                                         .row
                                             .col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
                                                 .form-group
-                                                    input.datepicker.form-control(type='date' name='desireddate')
+                                                    input.marriage.form-control(type='date' name='desireddate')
                                         .row
                                             .col-md-12.text-lg-center.text-sm-left
                                                 .form-group
@@ -122,7 +122,7 @@ block main
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Birthday
-                                                        input.datepicker.form-control(type='date' name='birthday')
+                                                        input.birthday.form-control(type='date' name='birthday')
                                                         .help-block.with-errors
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
@@ -220,7 +220,7 @@ block main
                                                             .textarea1.form-group
                                                                 .form-group
                                                                     label.label-control Parish where you were baptized:
-                                                                    input.form-control(type='text' name='gbapplace' placeholder=" Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z., ]{2,}" )
+                                                                    input.form-control(type='text' name='gbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z., ]{2,}" )
                                                                 .form-group
                                                                     label.label-control Date when you were baptized:
                                                                     input.datepicker2.form-control(type='date' name='gbapdate')
@@ -293,7 +293,7 @@ block main
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Birthday
-                                                        input.datepicker.form-control(type='date' name='bbirthday')
+                                                        input.birthday.form-control(type='date' name='bbirthday')
                                                         .help-block.with-errors
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
@@ -371,7 +371,7 @@ block main
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group.m-0
                                                         h6.label-control Are You 5months or Above Pregnant?
-                                                        .form-check.ml-3s
+                                                        .form-check.ml-3
                                                             label.form-check-label
                                                                 input.form-check-input(type="radio" name="boolpregnant" id="exampleRadios2" value="1")
                                                                 | Yes
@@ -405,7 +405,7 @@ block main
                                                                 .textarea1.form-group
                                                                     .form-group
                                                                         label.label-control Parish Where You Were Baptized:
-                                                                        input.form-control(type='text' name='bbapplace')
+                                                                        input.form-control(type='text' name='bbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
                                                                     .form-group
                                                                         label.label-control Date When You Were Baptized:
                                                                         input.datepicker2.form-control(type='date' name='bbapdate')
@@ -494,10 +494,10 @@ block main
                                                 .textarea3.form-group
                                                     .form-group
                                                         h6.label-control Previous Wedding Date
-                                                        input.datepicker.form-control(type='date' name='cprevweddingdate')
+                                                        input.birthday.form-control(type='date' name='cprevweddingdate')
                                                     .form-group
                                                         h6.label-control Previous Wedding Place/Parish
-                                                        input.datepicker.form-control(type='text' name='cprevweddingplace')
+                                                        input.datepicker.form-control(type='text' name='cprevweddingplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
                                     br
                                     .learn-more.pull-right
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
@@ -617,6 +617,27 @@ block addjs
         $("#submit2Button").click(function(){
             $('#form').submit()
             //- window.location.replace("/guest/marriage1/form")
+        });
+
+        // for Regular Baptism Date
+        let startDate = moment().add(119, 'days')
+        let endDate = moment().add(366, 'days')
+
+        $('.marriage').datetimepicker({
+            format: 'YYYY-MM-DD',
+            minDate: startDate,
+            maxDate: endDate,
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+            },
         });
 
         //- var currentTab = 0; // Current tab is set to be the first tab (0)

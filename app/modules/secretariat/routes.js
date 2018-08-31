@@ -18,11 +18,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                     if (err) console.log(err);
                     var request = results[0];
                 
-<<<<<<< HEAD
-            return res.render('secretariat/views/index',{ application : application, request : request});
-=======
             return res.render('secretariat/views/index',{ application : application,  request : request});
->>>>>>> 7371e5fc34b8b68fe31ea03f4f44f3ff1edf15ec
         }); }); 
 
     });
