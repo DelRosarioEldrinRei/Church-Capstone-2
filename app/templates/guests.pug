@@ -338,6 +338,71 @@ html(lang='en')
 				}
 			})
 
+			// for Birthday
+			let birthdayDate = moment();
+			$('.birthday').datetimepicker({
+				format: 'YYYY-MM-DD',
+				maxDate: birthdayDate,
+				useCurrent: false,
+				viewMode: 'years',
+				icons: {
+						time: "fa fa-clock-o",
+						date: "fa fa-calendar",
+						up: "fa fa-chevron-up",
+						down: "fa fa-chevron-down",
+						previous: 'fa fa-chevron-left',
+						next: 'fa fa-chevron-right',
+						today: 'fa fa-screenshot',
+						clear: 'fa fa-trash',
+						close: 'fa fa-remove',
+				},
+			});
+
+			 let startTime = moment().hour(8)
+			 let endTime = moment().hour(21)
+
+			$('.desiredTime').datetimepicker({
+				format: 'LT',
+				minDate: startTime,
+				maxDate: endTime,
+				useCurrent: "hour",
+				stepping: 30,
+				icons: {
+					time: "fa fa-clock-o",
+					date: "fa fa-calendar",
+					up: "fa fa-chevron-up",
+					down: "fa fa-chevron-down",
+					previous: 'fa fa-chevron-left',
+					next: 'fa fa-chevron-right',
+					today: 'fa fa-screenshot',
+					clear: 'fa fa-trash',
+					close: 'fa fa-remove'
+				}
+			});
+
+
+			//for funeral blessing
+			//- let startDatee = moment().add(2, 'days').calendar();
+			//- let endDatee = moment().add(1, 'w').calendar();
+
+			//- $('.funeral').datetimepicker({
+			//- 	format: 'YYYY-MM-DD',
+			//- 	minDate: startDatee,
+			//- 	maxDate: endDatee,
+			//- 	daysOfWeekDisabled: [1,2,3,4,5,6],
+			//- 	icons: {
+			//- 			time: "fa fa-clock-o",
+			//- 			date: "fa fa-calendar",
+			//- 			up: "fa fa-chevron-up",
+			//- 			down: "fa fa-chevron-down",
+			//- 			previous: 'fa fa-chevron-left',
+			//- 			next: 'fa fa-chevron-right',
+			//- 			today: 'fa fa-screenshot',
+			//- 			clear: 'fa fa-trash',
+			//- 			close: 'fa fa-remove',
+			//- 	},
+			//- });
+
 			$('.btn-next, .btn-previous').on('click',function(event){
 				event.preventDefault();
 				$('html, body').animate({

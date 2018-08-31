@@ -57,16 +57,16 @@ block main
 								h4
 									.d-none.d-sm-inline Appointment 
 									span Step 1 - 2
-									h6.label-control.text-lg-center.text-sm-left Desired Date
+									h5.label-control.text-lg-center.text-sm-left Desired Date
 									.row
 										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
-												input.datepicker.form-control(type='date' name='desireddate1')
+												input.desiredDate.form-control(type='date' name='desireddate1')
 									.row
 										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
 												h5.label-control Desired Time
-												input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
+												input.desiredTime.form-control(type='text' name='desiredtime1' placeholder="Input Time"  required='', data-error='Please enter your desired time')
 									.learn-more.pull-right
 												button.btn.btn-next(type='button') Next
 							// Form Step 1
@@ -105,7 +105,7 @@ block main
 										.col-md-4.p-lg-0.px-md-3.px-sm-0
 											.form-group
 												h5.label-control Birthday
-												input.datepicker.form-control(type='date' name='birthday'  required='', data-error='Please enter your birthday')
+												input.birthday.form-control(type='date' name='birthday'  required='', data-error='Please enter your birthday')
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
 												h5.label-control Birthplace:
@@ -147,7 +147,7 @@ block main
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
 												h5(for='exampleFormControlTextarea1') Details:
-												textarea#exampleFormControlTextarea1.form-control(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
+												textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
 												.help-block.with-errors
 									.row
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
@@ -199,4 +199,24 @@ block addjs
 		$('#exampleRadios3').click(function() {
 			$('#textarea1').slideUp();
 			$('#textarea2').slideDown();
+		});
+
+		let startDate = moment().add(2, 'days')
+		let endDate = moment().add(15, 'days')
+
+		$('.desiredDate').datetimepicker({
+			format: 'YYYY-MM-DD',
+			minDate: startDate,
+			maxDate: endDate,
+			icons: {
+					time: "fa fa-clock-o",
+					date: "fa fa-calendar",
+					up: "fa fa-chevron-up",
+					down: "fa fa-chevron-down",
+					previous: 'fa fa-chevron-left',
+					next: 'fa fa-chevron-right',
+					today: 'fa fa-screenshot',
+					clear: 'fa fa-trash',
+					close: 'fa fa-remove',
+			},
 		});

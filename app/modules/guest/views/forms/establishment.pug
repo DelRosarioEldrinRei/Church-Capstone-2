@@ -19,6 +19,13 @@ block main
 		#other > div:nth-child(2) > div > div > div > div.file-preview > div > div.file-drop-zone-title {
 			font-size: 1rem;
 		}
+		.h4 {
+			font-size: 20px;
+			font-weight: 300;
+			font-family: "Montserrat", sans-serif;
+			color: #4c2508;
+			line-height: 26px;
+		}
 	#headers
 		#header-style-1
 			.container
@@ -61,25 +68,25 @@ block main
 									h4
 										.d-none.d-sm-inline Appointment
 										span Step 1 - 2
-										h6.label-control.text-lg-center.text-sm-left Desired Date
-										.row
-											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
-												.form-group
-													input.datepicker.form-control(type='date' name='desireddate1')
-										.row
-											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
-												.form-group
-													h5.label-control Desired Time
-													input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
-										.learn-more.pull-right
-													button.btn.btn-next(type='button') Next
+									h6.label-control.text-lg-center.text-sm-left Desired Date
+									.row
+										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
+											.form-group
+												input.establishment.form-control(type='date' name='desireddate1')
+									.row
+										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
+											.form-group
+												h5.label-control Desired Time
+												input.desiredTime.form-control(type='text' name='desiredtime1' placeholder="Input Time"  required='', data-error='Please enter your desired time')
+									.learn-more.pull-right
+												button.btn.btn-next(type='button') Next
 									
 								// Form Step 1
 								// Form Step 2
 								fieldset
-									h4
-										.d-none.d-sm-inline Blessing Details:
-										span Step 2 - 2
+									.div
+										.d-none.d-sm-inline.h4 Blessing Details:
+										span.pull-right.h4 Step 2 - 2
 										input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
 										.container
 											.row
@@ -96,22 +103,21 @@ block main
 																label.custom-control-label(for='otherradio') 
 																	h6 Other
 												.col-md-9.px-lg-3.px-md-3.px-sm-0
-													#ourhome.form-group.pt-2
-														.row
-															.col-md-6.px-lg-3.px-md-3.px-sm-0
-																	.form-group
-																		h6.label-control Owner:
-																		input.form-control(type='text' value=`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
-																	.form-group
-																		h6.label-control House/Establishment Location:
-																		textarea.form-control(placeholder="Please Enter Complete Address" rows="1" name='location') #{user.var_useraddress}
-															.col-md-6.px-lg-3.px-md-3.px-sm-0
-																		.form-group
-																			h6.label-control Contact Number:
-																			input.form-control(type='text' value=`${user.var_usercontactnum}` name='contactnumber')
-																		.form-group
-																			h6.label-control Email:
-																			input.form-control.mb-2(type='Email' value=`${user.var_useremail}` name='email' )
+													#ourhome.row.pt-2
+														.col-md-6.px-lg-3.px-md-3.px-sm-0
+															.form-group
+																h6.label-control Owner:
+																input.form-control(type='text' value=`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner' )
+															.form-group
+																h6.label-control House/Establishment Location:
+																textarea.form-control(placeholder="Please Enter Complete Address" rows="1" name='location') #{user.var_useraddress}
+														.col-md-6.px-lg-3.px-md-3.px-sm-0
+															.form-group
+																h6.label-control Contact Number:
+																input.form-control(type='text' value=`${user.var_usercontactnum}` name='contactnumber')
+															.form-group
+																h6.label-control Email:
+																input.form-control.mb-2(type='Email' value=`${user.var_useremail}` name='email' )
 													#other.form-group.pt-2
 														.row
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
@@ -163,4 +169,24 @@ block addjs
 		$('#otherradio').click(function() {
 			$('#ourhome').slideUp();
 			$('#other').slideDown();
+		});
+
+		let startDate = moment().add(6, 'days')
+		let endDate = moment().add(31, 'days')
+
+		$('.establishment').datetimepicker({
+			format: 'YYYY-MM-DD',
+			minDate: startDate,
+			maxDate: endDate,
+			icons: {
+					time: "fa fa-clock-o",
+					date: "fa fa-calendar",
+					up: "fa fa-chevron-up",
+					down: "fa fa-chevron-down",
+					previous: 'fa fa-chevron-left',
+					next: 'fa fa-chevron-right',
+					today: 'fa fa-screenshot',
+					clear: 'fa fa-trash',
+					close: 'fa fa-remove',
+			},
 		});
