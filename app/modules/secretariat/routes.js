@@ -404,6 +404,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         join tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
+        JOIN tbl_payment on tbl_payment.int_paymentID = tbl_eventapplication.int_paymentID
         
         where tbl_services.var_eventname ='Confirmation'`
 
@@ -411,7 +412,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 if (err) console.log(err);
                 var regulars=results;
                 for(var i = 0; i < regulars.length; i++){
-                    
                     regulars[i].date_birthday= moment(regulars[i].date_birthday).format('MM/DD/YYYY');
                     regulars[i].date_desireddate= moment(regulars[i].date_desireddate).format('MM/DD/YYYY');
                     regulars[i].time_desiredtime= moment(regulars[i].time_desiredtime, 'HH:mm:ss').format('hh:mm A'); 
@@ -427,7 +427,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                     where tbl_services.var_eventname ='Special Confirmation'`
 
                         db.query(queryString3, (err, results, fields) => {
-                            if (err) console.log(err);
+
+                            
                             var specials = results;                
                             for(var i = 0; i < specials.length; i++){
                                 
@@ -435,10 +436,13 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                 specials[i].date_desireddate= moment(specials[i].date_desireddate).format('MM/DD/YYYY');
                                 specials[i].time_desiredtime= moment(specials[i].time_desiredtime, 'HH:mm:ss').format('hh:mm A');
                                 
-                            }   
+                            }
+                                if (err) console.log(err);
+                                return res.render('secretariat/views/transactions/eventapp/confirmation',{regulars:regulars, specials:specials});
+                        
                                 // console.log('results' + results[i])
-
-                            return res.render('secretariat/views/transactions/eventapp/confirmation',{regulars:regulars, specials:specials});
+                            
+                            
             }); 
         }); 
     });

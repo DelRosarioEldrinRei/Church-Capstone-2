@@ -35,21 +35,22 @@ block prepend main
                                                                     th Approval Status
                                                                     th.text-center(style=" width:11rem") Actions
                                                             tbody
-                                                                tr
-                                                                        td="88"
-                                                                        td="Santos, Crisaldo"
-                                                                        td="1999-01-22"
-                                                                        td="Pending"
-                                                                        td="Unpaid"
-                                                                        td="Pending"
-                                                                        td.td-actions.text-center
-                                                                                button.btn.btn-primary.actionButton(type='button' )
-                                                                                        i.ti-settings
-                                                                                                #toolbar-options.hidden
-                                                                                                        a.viewButton(href='#')
-                                                                                                                i.ti-new-window(style="color:white;")
-                                                                                                        a.updateButton(href='#')
-                                                                                                                i.ti-pencil(style="color:white;")
+                                                                    each regular in regulars
+                                                                        tr
+                                                                            td=regular.int_eventinfoID
+                                                                            td=regular.var_lname + ", " + regular.var_fname
+                                                                            td=regular.date_birthday
+                                                                            td=regular.var_reqstatus
+                                                                            td=regular.char_paymentstatus
+                                                                            td=regular.char_approvalstatus
+                                                                            td.td-actions.text-center
+                                                                                button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+                                                                                    i.ti-settings
+                                                                                        #toolbar-options.hidden
+                                                                                            a.viewButton(href='#')
+                                                                                                i.ti-new-window(style="color:white;")
+                                                                                            a.updateButton(href='#')
+                                                                                                i.ti-pencil(style="color:white;")
                                 #specconfirmation.tab-pane.fade
                                     .card
                                             .card-header.card-header-primary
@@ -66,21 +67,24 @@ block prepend main
                                                                         th Approval Status
                                                                         th.text-right(style=" width:120px") Actions
                                                             tbody
-                                                                tr
-                                                                        td="88"
-                                                                        td="Santos, Crisaldo"
-                                                                        td="1999-01-22"
-                                                                        td="Pending"
-                                                                        td="Unpaid"
-                                                                        td="Pending"
-                                                                        td.td-actions.text-center
-                                                                                button.btn.btn-primary.actionButton(type='button' )
-                                                                                        i.ti-settings
-                                                                                                #toolbar-options.hidden
-                                                                                                        a.viewButton(href='#')
-                                                                                                                i.ti-new-window(style="color:white;")
-                                                                                                        a.updateButton(href='#')
-                                                                                                                i.ti-pencil(style="color:white;")
+                                                                    each special in specials
+                                                                        tr
+                                                                            td=special.int_eventinfoID
+                                                                            td=special.var_lname + ", " + special.var_fname
+                                                                            td=special.date_birthday
+                                                                            td=special.var_reqstatus
+                                                                        each requirement in requirements
+                                                                            td=requirement
+                                                                            td=special.char_approvalstatus
+                                                                            td.td-actions.text-center
+                                                                                button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+                                                                                    i.ti-settings
+                                                                                        #toolbar-options.hidden
+                                                                                            a.viewButton(href='#')
+                                                                                                i.ti-new-window(style="color:white;")
+                                                                                            a.updateButton(href='#')
+                                                                                                i.ti-pencil(style="color:white;")
+
     #updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
         .modal-dialog.modal-lg(role="document")
             .modal-content
@@ -106,8 +110,11 @@ block addjs
     script.
         $(document).ready(function() {
             $('.actionButton').click(function(){
+            idNow = $(this).val();
+            console.log(idNow)
             })
             $('.updateButton').click(function(){
+
                 $('#updateModal').modal('show')
             })
             $('.viewButton').click(function(){
