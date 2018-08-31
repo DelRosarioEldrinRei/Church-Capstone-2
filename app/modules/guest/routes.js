@@ -415,7 +415,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     db.query(queryString2,[eventinfoID.insertId, "Pending"], (err, results, fields) => {
                         if (err) throw err;
                         
-                        var desiredtime1= moment(req.body.desiredtime1).format('HH:mm:ss');
+                        var desiredtime1= moment(req.body.desiredtime1, 'h:mm a').format('HH:mm:ss');
                         var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_relation, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?,?);`
                         db.query(queryString3, [eventinfoID.insertId, req.body.relation, req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.birthday, req.body.birthplace], (err, results, fields) => {
                             if (err) throw err;
@@ -493,7 +493,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
         console.log(req.body)
         var desireddate= moment(req.body.spcdesireddate, 'YYYY/MM/DD').format('YYYY-MM-DD');
         // var desiredtime= moment(req.body.desiredtime,'HH:mm').format("HH:mm:ss")
-        var desiredtime= moment(req.body.desiredtime).format('HH:mm:ss');
+        var desiredtime= moment(req.body.desiredtime, 'h:mm a').format('HH:mm:ss');
         var queryString= `select int_eventID from tbl_services where var_eventname="Special Baptism";`
             db.query(queryString, (err, results, fields) => {
                 if (err) throw err;
@@ -505,8 +505,8 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
         }
         
         function queries(eventid, dtime, ddate){    
-            console.log(desireddate)
-            console.log(desiredtime)
+            console.log(dtime)
+            console.log(ddate)
             var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
                 db.query(queryString1, [req.body.userID, eventid], (err, results, fields) => {
                     if (err) throw err;
@@ -606,7 +606,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
 
         if (req.body.baptismtype == 'Special'){
             var desireddate= moment(req.body.spcdesireddate, 'YYYY/MM/DD').format('YYYY-MM-DD');
-            var desiredtime= moment(req.body.desiredtime).format('HH:mm:ss');
+            var desiredtime= moment(req.body.desiredtime, 'h:mm a').format('HH:mm:ss');
             
             var queryString= `select int_eventID from tbl_services where var_eventname="Special Confirmation";`
                 db.query(queryString, (err, results, fields) => {
@@ -713,7 +713,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                         if (err) throw err;
                         
                         if(req.body.establishment=='ourhome'){
-                            var desiredtime= moment(req.body.desiredtime1, 'hh:mm A').format('HH:mm:ss');
+                            var desiredtime= moment(req.body.desiredtime1, 'h:mm a').format('HH:mm:ss');
                             var queryString3 = `INSERT INTO tbl_houseblessing(int_eventinfoID, var_owner, var_estloc, var_ownercontactnum, var_owneremailadd, date_desireddate, time_desiredtime) VALUES(?,?,?,?,?,?,?);`
                             db.query(queryString3, [eventinfoID.insertId, req.body.owner, req.body.location, req.body.contactnumber, req.body.email, req.body.desireddate1, desiredtime], (err, results, fields) => {
                                 if (err) throw err;                         
@@ -721,7 +721,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                             });
                         }
                         if(req.body.establishment=='other'){
-                            var desiredtime1= moment(req.body.desiredtime1, 'hh:mm A').format('HH:mm:ss');
+                            var desiredtime1= moment(req.body.desiredtime1, 'h:mm a').format('HH:mm:ss');
                             var path = '/img/req/'+req.file.filename;
                             var nowDate = new Date(); 
                             var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
@@ -819,7 +819,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     db.query(queryString2,[eventinfoID.insertId, "Pending"], (err, results, fields) => {
                         if (err) throw err;
 
-                queries(venue, eventID, eventinfo.insertId);
+                queries(venue, eventID, eventinfoID.insertId);
             });});});
         }
 
