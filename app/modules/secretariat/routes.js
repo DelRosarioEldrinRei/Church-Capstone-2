@@ -18,418 +18,38 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                     if (err) console.log(err);
                     var request = results[0];
                 
-            return res.render('secretariat/views/index',{ application : application, reservation : reservation, request : request});
+<<<<<<< HEAD
+            return res.render('secretariat/views/index',{ application : application, request : request});
+=======
+            return res.render('secretariat/views/index',{ application : application,  request : request});
+>>>>>>> 7371e5fc34b8b68fe31ea03f4f44f3ff1edf15ec
         }); }); 
 
     });
     secretariatRouter.get('/details', (req, res)=>{
         res.render('secretariat/views/ref/details')
     });
-//===============================================================================================//
-// M A I N T E N A N C E //
-//===============================================================================================//
-//EVENTS
-//=======================================================
-    secretariatRouter.get('/maintenance-events', (req, res)=>{    
-        var queryString2 =`SELECT * FROM tbl_specialevent`
-        db.query(queryString2, (err, results, fields) => {
-            if (err) console.log(err);
-            for(var i = 0; i < results.length; i++){
-
-                results[i].time_eventstart= moment(results[i].time_eventstart).format('MM/DD/YYYY h:mm a');
-                results[i].time_eventend= moment(results[i].time_eventend).format('MM/DD/YYYY h:mm a');
-            }
-            return res.render('secretariat/views/maintenance/events',{specialevents: results });
-        });     
-    });
-
-        secretariatRouter.post('/maintenance-events/add', (req, res) => {
-        var start= moment(req.body.start, 'MM/DD/YYYY h:mm a').format('YYYY-MM-DD HH:mm:ss');
-        var end= moment(req.body.end, 'MM/DD/YYYY h:mm a').format('YYYY-MM-DD HH:mm:ss');
-        
-        var queryString4 = `INSERT INTO tbl_specialevent(int_userID, var_spceventname, text_eventdesc, time_eventstart, time_eventend, var_eventvenue, char_eventtype, var_approvalstatus ) VALUES(?,?, ?,?, ?,?, ?,?)`
-            db.query(queryString4, [req.session.secretariat.int_userID, req.body.spceventname, req.body.eventdesc, start, end, req.body.venue, req.body.eventtype, "Approved"], (err, results, fields) => {         
-                if (err) throw err;
-                    return res.redirect('/secretariat/maintenance-events');
-            });   
-
-        });
-
-    secretariatRouter.post('/maintenance-events/delete', (req, res) => {
-        const queryString = `DELETE FROM tbl_specialevent WHERE int_specialeventID= ?`;
-        db.query(queryString,[req.body.id1], (err, results, fields) => {        
-            if (err) throw err;
-            console.log(req.body.id1)
-            return res.redirect('/secretariat/maintenance-events');
-        });
-    });
-
-
-    // secretariatRouter.post('/maintenance-events/cancel/:int_specialeventID', (req, res) => {
-    //     const queryString = `UPDATE tbl_specialevent SET var_approvalstatus = "Cancelled"
-    //     WHERE int_specialeventID= ${req.params.int_specialeventID}`; 
-        
-    //     db.query(queryString, (err, results, fields) => {        
-    //         if (err) throw err;
-    //         return res.redirect('/secretariat/maintenance-events');
-            
-    //     });
-    // });
-    secretariatRouter.post('/maintenance-events/query', (req, res) => {
-        const queryString = `select * from tbl_specialevent WHERE int_specialeventID = ?`;
-        db.query(queryString,[req.body.id], (err, results, fields) => {        
-        if (err) throw err;
-        res.send(results[0])
-        console.log(results[0])
-        });
-    });
-    secretariatRouter.post('/maintenance-events/edit', (req, res) => {
-        console.log(req.body)
-        var start= moment(req.body.starttime, 'YYYY-MM-DD h:mm a').format('YYYY-MM-DD HH:mm:ss');
-        var end= moment(req.body.endtime, 'YYYY-MM-DD h:mm a').format('YYYY-MM-DD HH:mm:ss');
-        const queryString = `UPDATE tbl_specialevent SET  var_spceventname=?, text_eventdesc=?, time_eventstart=?, time_eventend=?, var_eventvenue=?, char_eventtype=? WHERE int_specialeventID=?`;
-        db.query(queryString,[req.body.eventname,req.body.eventdesc,start,end,req.body.venue,req.body.eventtype,req.body.id1], (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/secretariat/maintenance-events');   
-        })
-    })
-//=======================================================
-//SERVICES
-//=======================================================
-    secretariatRouter.get('/maintenance-services', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_services where char_type = "Sacrament"`
-        db.query(queryString1, (err, results1, fields) => {
-            if (err) console.log(err)  
-            console.log(results1)
-            var queryString2 =`SELECT * FROM tbl_services where char_type = "Special Service"`
-            db.query(queryString2, (err, results2, fields) => {
-                if (err) console.log(err);      
-            return res.render('secretariat/views/maintenance/services',{ sacraments : results1, services:results2 });    
-        }); });
-    });
-
-    secretariatRouter.post('/maintenance-services/add', (req, res) => {
-        var queryString= `INSERT INTO tbl_event(
-            var_eventname,
-            var_eventdesc, 
-            char_type
-            ) VALUES(?,?,?);`  
-            db.query(queryString, [req.body.eventname,req.body.eventdesc,req.body.event_type], (err, results, fields) => {
-                if (err) throw err;
-                    return res.redirect('/secretariat/maintenance-services');
-            });            
-        });
-
-        
-    secretariatRouter.post('/maintenance-services/delete', (req, res) => {
-        const queryString = `DELETE FROM tbl_services WHERE int_eventID=?`;
-        db.query(queryString,[req.body.id1], (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/secretariat/maintenance-services');
-        });
-    });
-
-
-    secretariatRouter.post('/maintenance-services/edit', (req, res) => {
-        const queryString = `UPDATE tbl_services SET var_eventname = ?,var_eventdesc = ?, char_type = ? WHERE int_eventID= ?`; 
-        db.query(queryString,[req.body.eventname,req.body.eventdesc,req.body.eventtype,req.body.id1], (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/secretariat/maintenance-services');
-        });
-    });
-    secretariatRouter.post('/maintenance-services/query', (req, res) => {
-        var queryString = `SELECT * FROM tbl_services 
-        WHERE int_eventID = ?`;
-        db.query(queryString,[req.body.id], (err, results, fields) => {        
-            if (err) throw err;
-            res.send(results[0])
-            console.log(results[0])   
-        });
-    });
-//=======================================================
-//FACILITY
-//=======================================================
-    secretariatRouter.get('/maintenance-facilities', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_facility`
-        db.query(queryString1, (err, results, fields) => {
-            if (err) console.log(err);       
-            return res.render('secretariat/views/maintenance/facilities',{ facilities : results });
-        });     
-    });
-
-
-    secretariatRouter.post('/maintenance-facilities/addfacility', (req, res) => {
-    
-        var queryString= `INSERT INTO tbl_facility(var_facilityname, var_facilitydesc) VALUES(?,?);`  
-            db.query(queryString,  [req.body.facilityname, req.body.facilitydesc], (err, results, fields) => {
-                if (err) throw err;
-                    return res.redirect('/secretariat/maintenance-facilities');
-            });            
-        });
-    secretariatRouter.post('/maintenance-facilities/delete', (req, res) => {
-        const queryString = `DELETE FROM tbl_facility WHERE int_facilityID= ?`;
-        db.query(queryString,[req.body.id1], (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/secretariat/maintenance-facilities');
-            
-        });
-    });
-
-    secretariatRouter.post('/maintenance-facilities/query', (req, res) => {
-        const queryString = `SELECT * FROM tbl_facility WHERE int_facilityID = ?`;
-        db.query(queryString,[req.body.id], (err, results, fields) => {        
-            if (err) throw err;
-            res.send(results[0])
-            console.log(results[0])
-        });
-    });
-
-    secretariatRouter.post('/maintenance-facilities/edit', (req, res) => {
-        const queryString = `UPDATE tbl_facility SET var_facilityname =?, var_facilitydesc= ?
-        WHERE int_facilityID= ?`;
-        db.query(queryString,[req.body.facilityname, req.body.facilitydesc,req.body.id], (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/secretariat/maintenance-facilities');
-            
-        });
-    });
-//=======================================================
-//MINISTRIES/ORG
-//=======================================================
-    secretariatRouter.get('/maintenance-ministries', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_ministry`
-        db.query(queryString1, (err, results, fields) => {
-            if (err) console.log(err);       
-            return res.render('secretariat/views/maintenance/ministries',{ ministries : results });
-        });     
-    });
-
-
-    secretariatRouter.post('/maintenance-ministries/addministry', (req, res) => {
-    
-        var queryString= `INSERT INTO tbl_ministry(var_ministryname,var_ministrydesc) VALUES(?,?);`  
-            db.query(queryString,  [req.body.ministryname,req.body.ministrydesc], (err, results, fields) => {
-                if (err) throw err;
-                    return res.redirect('/secretariat/maintenance-ministries');
-            });            
-        });
-    secretariatRouter.post('/maintenance-ministries/delete', (req, res) => {
-        const queryString = `DELETE FROM tbl_ministry
-        WHERE int_ministryID= ?`;
-        
-        db.query(queryString,[req.body.id1], (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/secretariat/maintenance-ministries');
-            
-        });
-    });
-
-    secretariatRouter.post('/maintenance-ministries/query', (req, res) => {
-        
-        var queryString = `SELECT * FROM tbl_ministry 
-        WHERE int_ministryID = ?`;
-        db.query(queryString,[req.body.id], (err, results, fields) => {        
-            if (err) throw err;
-            res.send(results[0])
-            console.log(results[0])
-        });
-    });
-
-    secretariatRouter.post('/maintenance-ministries/edit', (req, res) => {
-        const queryString = `UPDATE tbl_ministry SET var_ministryname =?,var_ministrydesc=?
-        WHERE int_ministryID= ?`;
-        
-        db.query(queryString,[req.body.ministryname,req.body.ministrydesc,req.body.id1], (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/secretariat/maintenance-ministries');
-            
-        });
-    });
-//=======================================================
-//REQUIREMENTS 
-//=======================================================
-    
-    //non-wedding requirements
-        secretariatRouter.get('/maintenance-nonwedrequirements', (req, res)=>{
-            var queryString1 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Anointing of the sick")`
-            var queryString2 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Baptism")`
-            var queryString3 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Confirmation")`
-            var queryString4 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Funeral Mass=" or var_eventname= "Funeral Service" )`
-            // var queryString5 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage")`
-            var queryString6 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Establishment Blessing")`
-            var queryString8 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="First Communion")`
-            var queryString9 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Facility Reservation")`
-            var queryString10 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Document Request")`
-            var queryString11 =`SELECT var_eventname FROM tbl_services ORDER BY var_eventname`
-            db.query(queryString1, (err, results, fields) => {
-                if (err) console.log(err); 
-                var anointings = results;
-                db.query(queryString2, (err, results, fields) => {
-                    if (err) console.log(err); 
-                    var baptisms = results;
-                    db.query(queryString3, (err, results, fields) => {
-                        if (err) console.log(err); 
-                        var confirmations = results;
-                        db.query(queryString4, (err, results, fields) => {
-                            if (err) console.log(err); 
-                            var funerals = results;
-                            // db.query(queryString5, (err, results, fields) => {
-                            //     if (err) console.log(err); 
-                            //     var marriages = results;
-                                db.query(queryString6, (err, results, fields) => {
-                                    if (err) console.log(err);
-                                    var establishments = results; 
-                                        db.query(queryString8, (err, results, fields) => {
-                                            if (err) console.log(err);
-                                            var eucharists = results;       
-                                            db.query(queryString9, (err, results, fields) => {
-                                                if (err) console.log(err);
-                                                var reservations = results;       
-                                                db.query(queryString10, (err, results, fields) => {
-                                                    if (err) console.log(err);
-                                                    var requests = results; 
-                                                    db.query(queryString11, (err, results, fields) => {
-                                                        if (err) console.log(err);
-                                                        var services = results;       
-                                                        console.log(services)
-                return res.render('secretariat/views/maintenance/nonwedrequirements',{ anointings : anointings,baptisms : baptisms,confirmations : confirmations,funerals : funerals, establishments : establishments,eucharists : eucharists,reservations : reservations,requests: requests, services:services});
-            }); }); }); }); }); }); }); }); }); 
-            // });     
-        });
-        
-        secretariatRouter.post('/maintenance-nonwedrequirements/add', (req, res) => {
-            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
-            db.query(queryString, [req.body.eventname], (err, results, fields) => {
-                if (err) throw err;
-                    var eventid = results[0];
-                    console.log(eventid)
-                    var queryString1= `INSERT INTO tbl_requirementtype(int_eventID, var_reqname, var_reqdesc) VALUES(?,?,?);`  
-                    db.query(queryString1,  [eventid.int_eventID, req.body.reqname, req.body.reqdesc], (err, results, fields) => {
-                        if (err) throw err;
-                        return res.redirect('/secretariat/maintenance-nonwedrequirements');
-                    });
-                });            
-            });
-
-        secretariatRouter.post('/maintenance-nonwedrequirements/delete', (req, res) => {
-            const queryString = `DELETE FROM tbl_requirementtype
-            WHERE int_reqtypeID= ${req.params.int_reqtypeID}`;
-            
-            db.query(queryString, (err, results, fields) => {        
-                if (err) throw err;
-                return res.redirect('/secretariat/maintenance-requirements');
-                
-            });
-        });
-
-        secretariatRouter.post('/maintenance-nonwedrequirements/edit', (req, res) => {
-            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
-            db.query(queryString,  [req.body.eventname], (err, results, fields) => {
-                if (err) throw err;
-                    var eventid = results[0];
-                    console.log(eventid);
-                    const queryString1 = `UPDATE tbl_requirementtype SET int_eventID=?, var_reqname =?, var_reqdesc= ?
-                    WHERE int_reqtypeID= ${req.params.int_reqtypeID}`;
-                
-                    db.query(queryString1,[eventid.int_eventID, req.body.reqname, req.body.reqdesc], (err, results, fields) => {        
-                        if (err) throw err;
-                        return res.redirect('/secretariat/maintenance-requirements');
-                    });    
-            });
-        });
-        
-        
-    //wedding requirements
-        secretariatRouter.get('/maintenance-wedrequirements', (req, res)=>{
-            var queryString5 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage") AND char_reqtype = "Civil"`
-                db.query(queryString5, (err, results, fields) => {
-                    if (err) console.log(err); 
-                    var civils = results;
-                    var queryString6 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage") AND char_reqtype = "Church"`
-                        db.query(queryString6, (err, results, fields) => {
-                            if (err) console.log(err); 
-                            var churches = results;
-                            var queryString7 =`SELECT * FROM tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname ="Marriage") AND char_reqtype = "Chancery"`
-                            db.query(queryString7, (err, results, fields) => {
-                                if (err) console.log(err); 
-                                var chanceries = results;
-                return res.render('secretariat/views/maintenance/wedrequirements',{ civils : civils, churches: churches, chanceries: chanceries});
-            }); 
-            });     
-        });     
-        });
-
-        secretariatRouter.post('/maintenance-wedrequirements/add', (req, res) => {
-            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
-            db.query(queryString, ["Marriage"], (err, results, fields) => {
-                if (err) throw err;
-                    var eventid = results[0];
-                    console.log(eventid)
-                    var queryString1= `INSERT INTO tbl_requirementtype(int_eventID, var_reqname, var_reqdesc, char_reqmode, var_case, char_reqtype) VALUES(?,?,?,?,?,?);`  
-                    db.query(queryString1,  [eventid.int_eventID, req.body.reqname, req.body.reqdesc, req.body.reqmode, req.body.case,  req.body.reqtype ], (err, results, fields) => {
-                        if (err) throw err;
-                        return res.redirect('/secretariat/maintenance-wedrequirements');
-                    });
-                });            
-        });
-
-        secretariatRouter.post('/maintenance-wedrequirements/delete', (req, res) => {
-            const queryString = `DELETE FROM tbl_requirementtype
-            WHERE int_reqtypeID= ?`;
-            
-            db.query(queryString,[req.body.id1], (err, results, fields) => {        
-                if (err) throw err;
-                return res.redirect('/secretariat/maintenance-wedrequirements');
-                
-            });
-        });
-        
-        secretariatRouter.post('/maintenance-wedrequirements/query', (req, res) => {
-
-            const queryString = `select * from tbl_requirementtype WHERE int_reqtypeID = ?`;
-            db.query(queryString,[req.body.id2], (err, results, fields) => {        
-            if (err) throw err;
-            res.send(results[0])
-            console.log(results[0])
-            });
-        });
-        
-        secretariatRouter.post('/maintenance-wedrequirements/edit', (req, res) => {
-            var queryString= `select int_eventID from tbl_services where var_eventname = ?`
-            db.query(queryString,  [req.body.eventname], (err, results, fields) => {
-                if (err) throw err;
-                    var eventid = results[0];
-                    console.log(eventid);
-                    const queryString1 = `UPDATE tbl_requirementtype SET int_eventID=?, var_reqname =?, var_reqdesc= ?
-                    WHERE int_reqtypeID=?`;
-                
-                    db.query(queryString1,[eventid.int_eventID, req.body.reqname, req.body.reqdesc,req.body.id1], (err, results, fields) => {        
-                        if (err) throw err;
-                        return res.redirect('/secretariat/maintenance-wedrequirements');
-                    });    
-            });
-        });
 
 //===============================================================================================//
 // T R A N S A C T I O N S //
 //===============================================================================================//
-    secretariatRouter.get('/transaction-facilityreservation', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_facilityreservation 
-        join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
-        join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID`
-        db.query(queryString1, (err, results, fields) => {
-            var reservations = results;
-            for(var i = 0; i < reservations.length; i++){
+    // secretariatRouter.get('/transaction-facilityreservation', (req, res)=>{
+    //     var queryString1 =`SELECT * FROM tbl_facilityreservation 
+    //     join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
+    //     join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID`
+    //     db.query(queryString1, (err, results, fields) => {
+    //         var reservations = results;
+    //         for(var i = 0; i < reservations.length; i++){
 
-                reservations[i].date_reservedate= moment(reservations[i].date_reservedate).format('MM/DD/YYYY');
-                reservations[i].time_reservestart= moment(reservations[i].time_reservestart, 'HH:mm:ss').format('h:mm a');
-                reservations[i].time_reserveend= moment(reservations[i].time_reserveend, 'HH:mm:ss').format('h:mm a');
-            }
-            if (err) console.log(err);       
-            return res.render('secretariat/views/transactions/facilityres',{ reservations : reservations });
-        });     
+    //             reservations[i].date_reservedate= moment(reservations[i].date_reservedate).format('MM/DD/YYYY');
+    //             reservations[i].time_reservestart= moment(reservations[i].time_reservestart, 'HH:mm:ss').format('h:mm a');
+    //             reservations[i].time_reserveend= moment(reservations[i].time_reserveend, 'HH:mm:ss').format('h:mm a');
+    //         }
+    //         if (err) console.log(err);       
+    //         return res.render('secretariat/views/transactions/facilityres',{ reservations : reservations });
+    //     });     
         
-    });
+    // });
     secretariatRouter.get('/transaction-documentrequest', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_documentrequest 
         join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID 
@@ -605,6 +225,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         JOIN tbl_eventapplication ON tbl_eventapplication.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventapplication.int_paymentID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_requirementtype ON tbl_requirementtype.int_eventID = tbl_services.int_eventID
         JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_requirements ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
@@ -615,6 +236,38 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             console.log(results[0])
         });
     });
+    secretariatRouter.post('/transaction-baptism/update',(req,res)=>{
+        var queryString1 = `UPDATE tbl_requirements SET var_reqstatus = ? 
+        WHERE int_requirementID = ?`
+        db.query(queryString1,[req.body.reqstatus,req.body.reqid],(err,results,fields) =>{
+            var queryString2 = `UPDATE tbl_payment SET char_paymentstatus =?
+            WHERE int_paymentID = ?`
+            db.query(queryString2,[req.body.paystatus,req.body.payid],(err,results,fields) =>{
+                if(req.body.reqstatus == "Approved" && req.body.paystatus == "Paid"){
+                    var queryString3 = `UPDATE tbl_eventapplication SET char_approvalstatus =?
+                    WHERE int_eventinfoID = ?`
+                    db.query(queryString3,["Approved",req.body.eventid],(err,results,fields) =>{
+                        var queryString4 = `UPDATE tbl_eventinfo SET date_approveddate =?,
+                        time_approvedstart = ?, time_approvedend =?
+                        WHERE int_eventinfoID = ?`
+                        // var timeRequestedStart = moment(req.body.timeRequested).format('HH:mm:ss')
+                        console.log(req.body.timeRequested)
+                        console.log(moment(req.body.timeRequested,'HH:mm:ss').add(1,'h').format('HH:mm:ss'))
+                        var timeRequestedEnd = moment(req.body.timeRequested,'HH:mm:ss').add(1,'h').format('HH:mm:ss')
+                        var dateRequested = moment(req.body.dateRequested).format('YYYY-MM-DD')
+                        db.query(queryString4,[dateRequested,req.body.timeRequested,timeRequestedEnd,req.body.eventid],(err,results,fields) =>{
+                            if(err) throw err
+                            return res.redirect('/secretariat/transaction-baptism')
+                        })
+                    }) 
+                }
+                else{
+                    if(err) throw err
+                    return res.redirect('/secretariat/transaction-baptism')
+                }
+            })
+        })
+    })
 
     
     
@@ -625,7 +278,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
-        
         where tbl_services.var_eventname = 'Anointing of the sick'`
 
             db.query(queryString1, (err, results, fields) => {
@@ -634,10 +286,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 for(var i = 0; i < anointings.length; i++){
                     
                     anointings[i].date_birthday= moment(anointings[i].date_birthday).format('MM/DD/YYYY');
-                    anointings[i].date_desireddate1= moment(anointings[i].date_desireddate1).format('MM/DD/YYYY');
-                    anointings[i].time_desiredtime1= moment(anointings[i].time_desiredtime1,'HH:mm:ss').format('hh:mm A'); 
-                    anointings[i].date_desireddate2= moment(anointings[i].date_desireddate2).format('MM/DD/YYYY');
-                    anointings[i].time_desiredtime2= moment(anointings[i].time_desiredtime2,'HH:mm:ss').format('hh:mm A'); 
+                    anointings[i].date_desireddate= moment(anointings[i].date_desireddate).format('MM/DD/YYYY');
+                    anointings[i].time_desiredtime= moment(anointings[i].time_desiredtime,'HH:mm:ss').format('hh:mm A'); 
                 }             
             
                 var queryString3 =`SELECT * FROM tbl_eventinfo 
@@ -645,7 +295,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
                 JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
                 join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
-                
+                JOIN tbl_eventapplication on tbl_eventapplication.int_eventinfoID = tbl_eventinfo.int_eventinfoID
                 where tbl_services.var_eventname = 'Funeral Service'`
 
                         db.query(queryString3, (err, results, fields) => {
@@ -654,10 +304,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                             for(var i = 0; i < funerals.length; i++){
                                 
                                 funerals[i].date_birthday= moment(funerals[i].date_birthday).format('MM/DD/YYYY');
-                                funerals[i].date_desireddate1= moment(funerals[i].date_desireddate1).format('MM/DD/YYYY');
-                                funerals[i].time_desiredtime1= moment(funerals[i].time_desiredtime1, 'HH:mm:ss').format('hh:mm A');
-                                funerals[i].date_desireddate2= moment(funerals[i].date_desireddate2).format('MM/DD/YYYY');
-                                funerals[i].time_desiredtime2= moment(funerals[i].time_desiredtime2, 'HH:mm:ss').format('hh:mm A');
+                                funerals[i].date_desireddate= moment(funerals[i].date_desireddate).format('MM/DD/YYYY');
+                                funerals[i].time_desiredtime= moment(funerals[i].time_desiredtime, 'HH:mm:ss').format('hh:mm A');
                                 
                             }   
 
@@ -688,6 +336,71 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         });  
         }); 
     });
+    secretariatRouter.post('/transaction-blessings/query', (req, res)=>{
+        var queryString1 =`SELECT * from tbl_eventinfo 
+        JOIN tbl_eventapplication on tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID
+        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_blessing ON tbl_blessing.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_requirementtype ON tbl_requirementtype.int_eventID = tbl_services.int_eventID
+        JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
+        where tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString1,[req.body.id], (err, results, fields) => {
+            if (err) console.log(err);
+            res.send(results[0])
+            console.log(results[0])
+        });
+    });
+    secretariatRouter.post('/transaction-blessings/query/update', (req, res)=>{
+        var queryString1 =`SELECT * from tbl_eventinfo 
+        JOIN tbl_eventapplication ON tbl_eventapplication.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventapplication.int_paymentID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_blessing ON tbl_blessing.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_requirementtype ON tbl_requirementtype.int_eventID = tbl_services.int_eventID
+        JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_requirements ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
+        WHERE tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString1,[req.body.id], (err, results, fields) => {
+            if (err) console.log(err);
+            res.send(results[0])
+            console.log(results[0])
+        });
+    });
+    secretariatRouter.post('/transaction-blessings/update',(req,res)=>{
+        var queryString1 = `UPDATE tbl_requirements SET var_reqstatus = ? 
+        WHERE int_requirementID = ?`
+        db.query(queryString1,[req.body.reqstatus,req.body.reqid],(err,results,fields) =>{
+            var queryString2 = `UPDATE tbl_payment SET char_paymentstatus =?
+            WHERE int_paymentID = ?`
+            db.query(queryString2,[req.body.paystatus,req.body.payid],(err,results,fields) =>{
+                if(req.body.reqstatus == "Approved" && req.body.paystatus == "Paid"){
+                    var queryString3 = `UPDATE tbl_eventapplication SET char_approvalstatus =?
+                    WHERE int_eventinfoID = ?`
+                    db.query(queryString3,["Approved",req.body.eventid],(err,results,fields) =>{
+                        var queryString4 = `UPDATE tbl_eventinfo SET date_approveddate =?,
+                        time_approvedstart = ?, time_approvedend =?
+                        WHERE int_eventinfoID = ?`
+                        // var timeRequestedStart = moment(req.body.timeRequested).format('HH:mm:ss')
+                        console.log(req.body.timeRequested)
+                        console.log(moment(req.body.timeRequested,'HH:mm:ss').add(1,'h').format('HH:mm:ss'))
+                        var timeRequestedEnd = moment(req.body.timeRequested,'HH:mm:ss').add(1,'h').format('HH:mm:ss')
+                        var dateRequested = moment(req.body.dateRequested).format('YYYY-MM-DD')
+                        db.query(queryString4,[dateRequested,req.body.timeRequested,timeRequestedEnd,req.body.eventid],(err,results,fields) =>{
+                            if(err) throw err
+                            return res.redirect('/secretariat/transaction-blessings')
+                        })
+                    }) 
+                }
+                else{
+                    if(err) throw err
+                    return res.redirect('/secretariat/transaction-blessings')
+                }
+            })
+        })
+    })
     secretariatRouter.get('/transaction-confirmation', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID

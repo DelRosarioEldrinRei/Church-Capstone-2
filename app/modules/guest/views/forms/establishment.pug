@@ -118,16 +118,20 @@ block main
 																.form-group
 																	h6.label-control Owner:
 																	input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1' pattern="[A-Za-z ]{3,}" )
+																	.help-block.with-errors
 																.form-group
 																	h6.label-control House/Establishment Location:
 																	textarea.form-control(placeholder="Please Enter Complete Address" rows="1" name='location1' pattern="^[a-zA-Z0-9,.- ]*${10,}")
+																	.help-block.with-errors
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																.form-group
 																	h6.label-control Contact Number:
 																	input.form-control(type='text' name='contactnumber1' placeholder="XXXXXXXXXXX"  pattern="[0-9]{11}" )
+																	.help-block.with-errors
 																.form-group
 																	h6.label-control Email:
 																	input.form-control.mb-2(type='Email' name='email1' placeholder="mark242@gmail.com" )
+																	.help-block.with-errors
 																	//- pattern="/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/" email 
 														.row
 															.col-md-8.px-lg-3.px-md-3.px-sm-0.mx-auto
