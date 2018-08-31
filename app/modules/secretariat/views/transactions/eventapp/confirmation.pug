@@ -1,5 +1,42 @@
 extends ../../../../../templates/secretariat
 block prepend main
+    style.
+        body > div.mfp-wrap.mfp-close-btn-in.mfp-auto-cursor.mfp-with-zoom.mfp-ready > div {
+            z-index: 9999 !important;
+        }
+
+        .mfp-with-zoom .mfp-container,
+        .mfp-with-zoom.mfp-bg {
+        opacity: 0;
+        -webkit-backface-visibility: hidden;
+        /* ideally, transition speed should match zoom duration */
+        -webkit-transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -o-transition: all 0.3s ease-out;
+        transition: all 0.3s ease-out;
+        z-index: 99999;
+        }
+
+        .mfp-image, .mfp-container, .mfp-ready, .mfp-image-holder, .mfp-content, .mfp-preloader, .mfp-figure {
+            z-index: 99999;
+        }
+
+        .mfp-with-zoom.mfp-ready .mfp-container {
+            opacity: 1;
+        }
+        .mfp-with-zoom.mfp-ready.mfp-bg {
+            opacity: 0.8;
+        }
+
+        .mfp-with-zoom.mfp-removing .mfp-container,
+        .mfp-with-zoom.mfp-removing.mfp-bg {
+        opacity: 0;
+        }
+
+        .size {
+            width: 100px;
+            height: 100px;
+        }
     #wrap
     //- #calendar
     div(style='clear:both')
@@ -127,7 +164,7 @@ block prepend main
                     button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
                     button.btn.btn-primary#updateSubmitButton(type="button") Update
     #viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
-            .modal-dialog.modal-lg(role="document")
+            .modal-dialog.modal-lg(role="document" style="z-index: 9998;")
                 .modal-content
                     .modal-header
                         h5.modal-title Confirmation
@@ -152,6 +189,21 @@ block prepend main
                                 |  Birth Certificate
                         .form-group
                             img#myImg.img-responsive(src='/img/req/download.jpg', style='max-height:250px;')
+                        .form-group
+                            .gallery
+                                //- a(href='/img/jona.jpg') Open image 1 (gallery #1)
+                                //- a(href='/img/eldrin.jpg') Open image 2 (gallery #1)
+                                //- a(href='/img/norme.jpg') Open image 1 (gallery #2)
+                                //- a(href='/img/rae.jpg') Open image 2 (gallery #2)
+                                a.image-link(href='/img/jona.jpg' title="mama mo")
+                                    img.size(src='/img/jona.jpg')
+                                a.image-link(href='/img/eldrin.jpg')
+                                    img.size(src='/img/eldrin.jpg')
+                                a.image-link(href='/img/norme.jpg')
+                                    img.size(src='/img/norme.jpg')
+                                a.image-link(href='/img/rae.jpg')
+                                    img.size(src='/img/rae.jpg')
+
                     .modal-footer
                         button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 
