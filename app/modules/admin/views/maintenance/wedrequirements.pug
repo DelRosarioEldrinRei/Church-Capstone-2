@@ -39,12 +39,14 @@ block prepend main
 																td=church.var_reqname
 																td=church.var_reqdesc
 																td=church.var_case
-																<td class="td-actions text-right">
-																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${church.int_reqtypeID}`)
-																		i.ti-close
-																	button.btn.btn-success.updateButton(type='button',rel='tooltip', value=`${church.int_reqtypeID}`)
-																		i.ti-pencil
-																</td>			
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${church.int_reqtypeID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.updateButton(href='#')
+																					i.ti-pencil(style="color:white;")
+																				a.deleteButton(href='#')
+																					i.ti-close(style="color:white;")	
 						.card
 								.card-header.card-header-primary
 										h4.card-title Civil Requirements

@@ -27,11 +27,13 @@ block prepend main
 																td=requirement.var_reqname
 																td=requirement.var_reqdesc
 																td.td-actions.text-center
-																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${requirement.int_docureqtypeID}`)
-																		i.ti-close
-																	| &nbsp;
-																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${requirement.int_docureqtypeID}`)
-																		i.ti-pencil
+																	button.btn.btn-primary.actionButton(type='button' value=`${requirement.int_docureqtypeID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.updateButton(href='#')
+																					i.ti-pencil(style="color:white;")
+																				a.deleteButton(href='#')
+																					i.ti-close(style="color:white;")
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
 			// Content
@@ -67,8 +69,12 @@ block prepend main
 block addjs
 	script.
 		$(document).ready(function() {
+			var idNow = 0;
+			$('.actionButton').click(function(){
+				idNow = $(this).val();
+				console.log(idNow)
+			})
 		$('.deleteButton').click(function(){
-			var idNow = $(this).val();
 			swal({
 				title: 'Are you sure?',
 				text: "You won't be able to revert this!",
