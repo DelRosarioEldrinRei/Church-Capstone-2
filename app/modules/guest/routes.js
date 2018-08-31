@@ -938,7 +938,6 @@ guestRouter.post('/marriage/form', (req, res) => {
                                             if (err) throw err;                                                    
                                             sponsors(eventinfoID.insertId);
                                             //hard coded list of requirements for renewal of vows
-                                            
                                             defaultReq(eventinfoID.insertId);
                                             sponsors(eventinfoID.insertId);
                                             return res.redirect(`/guest/marriage1/form`);

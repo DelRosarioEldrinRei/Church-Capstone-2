@@ -88,41 +88,7 @@ block prepend main
                     h5.modal-title Update Event Application
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                         span(aria-hidden='true') ×
-                .modal-body
-                    col-md-4.p-lg-0
-                        .row
-                            .col-md-6
-                                .form-group
-                                    input#docuid(type='hidden', value='${data.int_requestID}')
-                                    input#docustatus(type='hidden', value='${data.char_docustatus}')
-                                    h6.label-control
-                                    strong  Current Application Status : 
-                                    |  Pending
-                        .row
-                            .col-md-6
-                                .form-group
-                                    input#reqid(type='hidden', value='${data.int_requirementdocumentID}')
-                                    h6.label-control
-                                    strong  Current Requirement Status : 
-                                    |  Submitted
-                                    br
-                                    select(type='text')
-                                        option(selected='selected') Pending
-                                        option Incomplete
-                                        option Approved
-                            .col-md-6
-                                .form-group
-                                    input#payid(type='hidden', value='${data.int_paymentID}')
-                                    h6.label-control
-                                    strong  Current Payment Status: 
-                                    |  Unpaid
-                                    br
-                                    select(type='text')
-                                        option(selected='selected') Paid
-                                        option Unpaid
-                                .form-group
-                                strong  Fee : 
-                                | P 300.00
+                .modal-body#updateBodyAppend
                 .modal-footer
                     button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
                     button.btn.btn-primary#updateSubmitButton(type="button") Update
@@ -133,30 +99,9 @@ block prepend main
                         h5.modal-title Confirmation
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span(aria-hidden='true') ×
-                    .modal-body
-                        .form-group.m-0
-                            label.label-control
-                                strong  Name of the Child: 
-                                |  Santos, Crisaldo
-                        .form-group
-                            label.label-control
-                                strong  Baptism Date: 
-                                |  08/18/2018
-                        .form-group
-                            label.label-control
-                                strong  Purpose: 
-                                |  Requirements for Confirmation
-                        .form-group
-                            label.label-control
-                                strong  Requirements: 
-                                |  Birth Certificate
-                        .form-group
-                            img#myImg.img-responsive(src='/img/req/download.jpg', style='max-height:250px;')
+                    .modal-body#viewBodyAppend
                     .modal-footer
                         button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-
-
-
 block addjs
     script.
         $(document).ready(function() {
