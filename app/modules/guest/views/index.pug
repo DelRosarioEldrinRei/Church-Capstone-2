@@ -115,9 +115,9 @@ block prepend main
                                 .modal-footer
                                     button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
                                     button.btn.std-btn.btn-common.btn-info.mb-0#searchButton(type='button') Search
-                .col-md-12.text-center
-                    .learn-more
-                        a.btn.std-btn.btn-common(href='/guest/services') View All
+                //- .col-md-12.text-center
+                //-     .learn-more
+                //-         a.btn.std-btn.btn-common(href='/guest/services') View All
     //- section#document
     //- 	.container
     //- 		.row
@@ -504,11 +504,6 @@ block addjs
                                         window.location=`/guest/document/form?documentType=${$('#documenttype').val()}&lastName=${$('#lastName').val()}&firstName=${$('#firstName').val()}&eventDate=${eventDate}`
                                         }
                                     })
-
-
-
-
-
 
                                     }
 

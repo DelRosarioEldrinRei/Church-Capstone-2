@@ -584,4 +584,40 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         
     });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    secretariatRouter.get('/newpriestaccount', (req, res)=>{
+        res.render('secretariat/views/createaccount');
+        
+        
+    });
+
+
+    secretariatRouter.post('/newpriestaccount', (req, res)=>{
+        var queryString = `INSERT INTO tbl_user(var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype) VALUES(?,?,?,?,?,?,?,?,?,?)`;
+        db.query(queryString, [req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.contactnumber, req.body.username, req.body.email, req.body.createpassword, "Priest"], (err, results, fields) => {
+            if (err) throw err;
+            
+            res.redirect('/secretariat?createAccountSuccess');
+        });
+ 
+        
+    });
+
+
+    
 exports.secretariat = secretariatRouter;

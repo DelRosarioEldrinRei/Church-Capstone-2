@@ -18,22 +18,11 @@ priestRouter.get('/schedule', (req, res)=>{
 });
 priestRouter.get('/appointments', (req, res)=>{
   
-        // var queryString1 =`SELECT * FROM tbl_eventinfo 
-        // JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
-        // JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
-        // WHERE tbl_eventapplication.char_approvalstatus = 'Approved'`
-        // db.query(queryString1, (err, results, fields) => {
-        //     if (err) console.log(err);
-        //     var details = results[0];
-        //     console.log('labas ng for')
-           
-        //     // showAppointments(details)
-        //     return res.render('priest/views/appointments',{ details : details });
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-        WHERE tbl_eventinfo.int_userID = ?`
-        db.query(queryString1, [11], (err, results, fields) => {
+        WHERE tbl_eventapplication.char_approvalstatus =?`
+        db.query(queryString1, ['Approved'], (err, results, fields) => {
             if (err) console.log(err);
         
             return res.render('priest/views/schedule',{ reservations : results });
