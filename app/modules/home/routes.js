@@ -5,7 +5,7 @@ var db = require('../../lib/database')();
 
 indexRouter.use(authMiddleware.noAuthed)
 indexRouter.get('/', (req, res) => {
-  var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' or var_eventname = 'Establishment Blessing'  or var_eventname = 'Anointing of the sick'`
+  var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' or var_eventname = 'Establishment Blessing'  or var_eventname = 'Anointing of the sick' or var_eventname='Confirmation'`
   db.query(queryString1, (err, results, fields) => {
     var events =results;
       if (err) console.log(err);

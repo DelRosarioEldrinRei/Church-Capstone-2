@@ -109,7 +109,7 @@ block main
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
 												h5.label-control Birthplace:
-												input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9 ]{3,}"  data-error='Please enter birthplace')
+												input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9,.- ]{3,}"  data-error='Please enter birthplace')
 												.help-block.with-errors
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
@@ -142,13 +142,15 @@ block main
 											.form-group
 												h5(for='exampleFormControlTextarea1') Address:
 												textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" data-error='Please enter complete address')
-												.help-block.with-errors
+												label
+													.help-block.with-errors
 										
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
 												h5(for='exampleFormControlTextarea1') Details:
 												textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
-												.help-block.with-errors
+												label
+													.help-block.with-errors
 									.row
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group

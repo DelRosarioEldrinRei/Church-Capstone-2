@@ -23,7 +23,7 @@ var upload = multer({ storage: storage})
         var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' 
         or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' 
         or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' 
-        or var_eventname = 'Establishment Blessing' or var_eventname='Anointing of the sick'`
+        or var_eventname = 'Establishment Blessing' or var_eventname='Anointing of the sick' or var_eventname='Confirmation'`
         db.query(queryString1, (err, results, fields) => {
           var events =results;
             if (err) console.log(err);
@@ -36,10 +36,15 @@ var upload = multer({ storage: storage})
         db.query(queryString1,[req.body.id], (err, results1, fields) => {
             req.session.eventId = req.body.id
             var queryString2 =`select var_reqname from tbl_requirementtype where int_eventID = ?`
-        
-        db.query(queryString2,[req.body.id], (err, results2, fields) => {
-        if (err) console.log(err);
-        res.send({firstQuery:results1[0],secondQuery:results2});
+            db.query(queryString2,[req.body.id], (err, results2, fields) => {
+                var queryString3 =`select double_fee from tbl_utilities where int_eventID = ?`
+                db.query(queryString3,[req.body.id], (err, results3, fields) => {
+                    if(results3.double_fee =='undefined'){
+                        results3.double_fee = "No payment needed"
+                        if (err) console.log(err);
+                    }
+                    res.send({firstQuery:results1[0],secondQuery:results2,thirdQuery:results3});
+        });
         });
         });
     
@@ -297,7 +302,6 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                 join tbl_wedgroom on tbl_relation.int_eventinfoID = tbl_wedgroom.int_eventinfoID
                 join tbl_wedbride on tbl_relation.int_eventinfoID = tbl_wedbride.int_eventinfoID
                 join tbl_wedcouple on tbl_relation.int_eventinfoID = tbl_wedcouple.int_eventinfoID
-                join tbl_sponsors on tbl_relation.int_eventinfoID = tbl_sponsors.int_eventinfoID 
                 where tbl_relation.int_eventinfoID = ?`
                 db.query(queryString3, [details.int_eventinfoID], (err, results, fields) => {
                     if (err) console.log(err);
