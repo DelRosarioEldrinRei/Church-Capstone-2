@@ -35,7 +35,7 @@ block main
             .container
                 .row
                     .col-md-12.form-wizard
-                        form#form(action="/guest/marriage/form" method="post")
+                        form#form(action="/guest/marriage/form" method="post" enctype="multipart/form-data")
                                 h3 Marriage Application Request
                                 p Fill all form field to go next step
                                 // Form progress
@@ -258,11 +258,11 @@ block main
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Valid ID
-                                                        input#file-0b.file(type='file',accept='image/*')
+                                                        input#file-0b.file(type='file',accept='image/*' name="validIDGroom")
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Birth Certificate
-                                                        input#file-0b.file(type='file',accept='image/*')
+                                                        input#file-0b.file(type='file',accept='image/*' name="birthCertGroom")
                                     .learn-more.pull-right
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
                                         button.btn.btn-next(type='button') Next
@@ -398,11 +398,11 @@ block main
                                                         .ml-4
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.exampleRadios1.form-check-input(type="radio" name="bbaptized" value="1")
+                                                                    input.exampleRadios4.form-check-input(type="radio" name="bbaptized" value="1")
                                                                     .dropdown-toggle.mr-3 Yes
                                                                     span.circle
                                                                         span.check
-                                                                .textarea1.form-group
+                                                                .textarea4.form-group
                                                                     .form-group
                                                                         label.label-control Parish Where You Were Baptized:
                                                                         input.form-control(type='text' name='bbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
@@ -412,7 +412,7 @@ block main
                                                                     
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.radioup.form-check-input(type="radio" name="bbaptized" value="0" )
+                                                                    input.radioup4.form-check-input(type="radio" name="bbaptized" value="0" )
                                                                     | No
                                                                     span.circle
                                                                         span.check
@@ -422,11 +422,11 @@ block main
                                                         .ml-4
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.exampleRadios2.form-check-input(type="radio" name="bconfirmed" value="1")
+                                                                    input.exampleRadios5.form-check-input(type="radio" name="bconfirmed" value="1")
                                                                     .dropdown-toggle.mr-3 Yes
                                                                     span.circle
                                                                         span.check
-                                                                .textarea2.form-group
+                                                                .textarea5.form-group
                                                                     .form-group
                                                                         label.label-control Parish where you were Confirmed:
                                                                         input.form-control(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z.,- ]{2,}" )
@@ -436,7 +436,7 @@ block main
                                                                     
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.radioup2.form-check-input(type="radio" name="bconfirmed" value="0" )
+                                                                    input.radioup5.form-check-input(type="radio" name="bconfirmed" value="0" )
                                                                     | No
                                                                     span.circle
                                                                         span.check
@@ -444,11 +444,11 @@ block main
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Valid ID
-                                                        input#file-0b.file(type='file',accept='image/*')
+                                                        input#file-0b.file(type='file',accept='image/*' name="validIDBride")
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Birth Certificate
-                                                        input#file-0b.file(type='file',accept='image/*')
+                                                        input#file-0b.file(type='file',accept='image/*' name="birthCertBride")
                                     .learn-more.pull-right
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
                                         button.btn.btn-next(type='button') Next
@@ -577,6 +577,22 @@ block addjs
         });
         $('.exampleRadios3').click(function() {
             $('.textarea3').slideDown();
+        });
+
+        $('.textarea4').hide();
+        $('.radioup4').click(function() {
+            $('.textarea4').slideUp();
+        });
+        $('.exampleRadios4').click(function() {
+            $('.textarea4').slideDown();
+        });
+
+        $('.textarea5').hide();
+        $('.radioup5').click(function() {
+            $('.textarea5').slideUp();
+        });
+        $('.exampleRadios5').click(function() {
+            $('.textarea5').slideDown();
         });
 
                 //add and delete side

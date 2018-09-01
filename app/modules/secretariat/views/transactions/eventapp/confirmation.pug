@@ -203,6 +203,7 @@ block addjs
                     `)
                     }
                     for(i=0;i<data.requirements.length;i++){
+                    
                     if(data.requirements[i].var_reqstatus != "Approved"){
                     $(`#reqAppend`).append(`
                       <input type="checkbox"  class="checkbox" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  
@@ -210,7 +211,7 @@ block addjs
                     }
                     else if(data.requirements[i].var_reqstatus == "Approved"){
                        $(`#reqAppend`).append(`
-                      <input type="checkbox"  checked="" class="checkbox" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  
+                      <input type="checkbox" disabled=true checked="" class="checkbox" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  
                     `) 
                     }
                     }
