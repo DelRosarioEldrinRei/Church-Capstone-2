@@ -193,15 +193,15 @@ block main
 																					.col-md-4.px-lg-3.px-md-0.px-sm-0
 																							.form-group
 																									h6.label-control Birth Certificate
-																									input#file-0b.file(type='file',accept='image/*',name="image")
+																									input#file-0b.file(type='file',accept='image/*',name="birthCert")
 																					.col-md-4.px-lg-3.px-md-0.px-sm-0
 																						.form-group
 																							h6.label-control Baptismal Certificate
-																							input#file-0b.file(type='file',accept='image/*',name="image")
+																							input#file-0b.file(type='file',accept='image/*',name="baptCert")
 																					.col-md-4.px-lg-3.px-md-0.px-sm-0
 																						.form-group
 																							h6.label-control Valid ID
-																							input#file-0b.file(type='file',accept='image/*',name="image")
+																							input#file-0b.file(type='file',accept='image/*',name="validID")
 																				.learn-more.pull-right
 																					button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 																					button.btn.btn-next(type='button') Next
@@ -228,7 +228,7 @@ block main
 																br
 																.learn-more.pull-right
 																		button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-																		button.btn.btn-submit#submit1Button(type='button') Submit
+																		button.btn.btn-submit#submit1Button(type='Submit') Submit
 		#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 						.modal-dialog.modal-lg(role="document")
 								.modal-content
@@ -340,12 +340,12 @@ block addjs
 						$('#special').slideDown();
 						$('#regular').slideUp();
 				});
-				$('#submit1Button').click(function() {
-						$('#viewModal').modal('show');
-				});
-				$('#submit2Button').click(function() {
-						$('#form').submit()
-				});
+				 $('#submit1Button').click(function() {
+				 		$('#form').submit()
+				 });
+				 $('#submit2Button').click(function() {
+				 		$('#form').submit()
+				 });
 				//add and delete side
 
 				$("#addPrincipalSponsor").click(function(event){
