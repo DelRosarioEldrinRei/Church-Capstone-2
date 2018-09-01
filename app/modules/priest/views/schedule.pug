@@ -3,13 +3,13 @@ block main
 	.profile-page
 		//- Heading Page
 		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/Nave.jpeg');")
-			.container
-				.row
-					.col-md-9.main-header__textbox
-						h1.font-italic Music Ministry 
-						a(href="#")
-							p.text-uppercase.card-desc
-								| Schedule
+			//- .container
+			//- 	.row
+			//- 		.col-md-9.main-header__textbox
+			//- 			h1.font-italic Music Ministry 
+			//- 			a(href="#")
+			//- 				p.text-uppercase.card-desc
+			//- 					| Schedule
 		#raised-section.main.main-raised
 			.container
 				.row
@@ -22,11 +22,21 @@ block main
 					.col-md-12
 						#form-facility
 							#calendar
-					//- .col-md-5.my-3.text-center
-
-					//- 		.form-group
-					//- 			label.label-control Event
-					//- 			input.form-control(type='text' name= 'event')
+					.col-md-5.my-3
+							each schedule in schedules
+								.form-group
+									h6.d-inline.label-control Event ID:
+									|  &nbsp; #{schedule.int_scheduleID}
+								.form-group
+									h6.d-inline.label-control Venue
+									|  &nbsp; #{schedule.var_venue}
+								.form-group
+									h6.d-inline.label-control Date
+									|  &nbsp; #{schedule.date_schedule}
+								.form-group
+									h6.d-inline.label-control Time
+									|  &nbsp; #{schedule.time_schedend}
+						
 					//- 		.form-group
 					//- 			label.label-control Desired Date
 					//- 			input.datepicker2.form-control(type='date' name='desireddate')

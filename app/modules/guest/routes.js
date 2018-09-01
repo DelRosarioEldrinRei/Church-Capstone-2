@@ -31,7 +31,7 @@ var upload = multer({ storage: storage})
         });
     });
     guestRouter.post('/query', (req, res) => {
-        
+
         var queryString1 =`SELECT * FROM tbl_services where int_eventID = ? `
         db.query(queryString1,[req.body.id], (err, results1, fields) => {
             req.session.eventId = req.body.id
@@ -192,25 +192,29 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                 });
             }        
             if(details.var_eventname == 'Marriage'){
-                var queryString3 =`SELECT * from tbl_relation 
-                join tbl_wedgroom on tbl_relation.int_eventinfoID = tbl_wedgroom.int_eventinfoID
-                join tbl_wedbride on tbl_relation.int_eventinfoID = tbl_wedbride.int_eventinfoID
-                join tbl_wedcouple on tbl_relation.int_eventinfoID = tbl_wedcouple.int_eventinfoID
-                join tbl_sponsors on tbl_relation.int_eventinfoID = tbl_sponsors.int_eventinfoID 
-                where tbl_relation.int_eventinfoID = ${req.params.int_eventinfoID}`
-                db.query(queryString3, (err, results, fields) => {
-                    if (err) console.log(err);
-                    var moredetails = results[0];                
-                    moredetails.date_birthday = moment(moredetails.date_birthday).format('YYYY-MM-DD');
-                    moredetails.date_bbirthday = moment(moredetails.date_bbirthday).format('YYYY-MM-DD');
-                    moredetails.date_gbapdate = moment(moredetails.date_gbapdate).format('YYYY-MM-DD');
-                    moredetails.date_gcondate = moment(moredetails.date_gcondate).format('YYYY-MM-DD');
-                    moredetails.date_bbapdate = moment(moredetails.date_bbapdate).format('YYYY-MM-DD');
-                    moredetails.date_bcondate = moment(moredetails.date_bcondate).format('YYYY-MM-DD');
-                    moredetails.date_desireddate = moment(moredetails.date_desireddate).format('YYYY-MM-DD');   
-                    moredetails.time_desiredtime= moment(moredetails.time_desiredtime, 'HH:mm:ss').format('hh:mm A');
-                    console.log(details, moredetails)
-                    res.render('guest/views/reservations/marriagedetails',{ details : details, moredetails:moredetails, user: req.session.user});
+                // D O N T  D E L E T E 
+                // var queryString3 =`SELECT * from tbl_relation 
+                // join tbl_wedgroom on tbl_relation.int_eventinfoID = tbl_wedgroom.int_eventinfoID
+                // join tbl_wedbride on tbl_relation.int_eventinfoID = tbl_wedbride.int_eventinfoID
+                // join tbl_wedcouple on tbl_relation.int_eventinfoID = tbl_wedcouple.int_eventinfoID
+                // join tbl_sponsors on tbl_relation.int_eventinfoID = tbl_sponsors.int_eventinfoID 
+                // where tbl_relation.int_eventinfoID = ${req.params.int_eventinfoID}`
+                // db.query(queryString3, (err, results, fields) => {
+                //     if (err) console.log(err);
+                //     var moredetails = results[0];                
+                //     moredetails.date_birthday = moment(moredetails.date_birthday).format('YYYY-MM-DD');
+                //     moredetails.date_bbirthday = moment(moredetails.date_bbirthday).format('YYYY-MM-DD');
+                //     moredetails.date_gbapdate = moment(moredetails.date_gbapdate).format('YYYY-MM-DD');
+                //     moredetails.date_gcondate = moment(moredetails.date_gcondate).format('YYYY-MM-DD');
+                //     moredetails.date_bbapdate = moment(moredetails.date_bbapdate).format('YYYY-MM-DD');
+                //     moredetails.date_bcondate = moment(moredetails.date_bcondate).format('YYYY-MM-DD');
+                //     moredetails.date_desireddate = moment(moredetails.date_desireddate).format('YYYY-MM-DD');   
+                //     moredetails.time_desiredtime= moment(moredetails.time_desiredtime, 'HH:mm:ss').format('hh:mm A');
+                //     console.log(details, moredetails)
+                var wedSteps=`select * from tbl_wedsteps`
+                db.query(wedSteps, (err, results, fields) => {
+               
+                    res.render('guest/views/forms/marriage1',{ wedSteps: wedSteps, user: req.session.user});
                 });       
             }
         });
