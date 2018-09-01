@@ -58,15 +58,19 @@ block main
 									.d-none.d-sm-inline Appointment 
 									span Step 1 - 2
 									h5.label-control.text-lg-center.text-sm-left Desired Date
+										.text-danger.d-inline  *
 									.row
 										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
-												input.desiredDate.form-control(type='date' name='desireddate1')
+												input.desiredDate.form-control(type='date' name='desireddate1' data-error='Please enter date' required)
+												.help-block.with-errors
 									.row
 										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
 												h5.label-control Desired Time
+													.text-danger.d-inline  *
 												input.desiredTime.form-control(type='text' name='desiredtime1' placeholder="Input Time"  required='', data-error='Please enter your desired time')
+												.help-block.with-errors
 									.learn-more.pull-right
 												button.btn.btn-next(type='button') Next
 							// Form Step 1
@@ -80,11 +84,11 @@ block main
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.pt-0
-												input.form-control(type='text' placeholder="Last Name" name='lastname', required='' pattern="[A-Za-z ]{2,}" data-error='Please enter lastname')
+												input.form-control(type='text' placeholder="Last Name *" name='lastname', required='' pattern="[A-Za-z ]{2,}" data-error='Please enter lastname')
 												.help-block.with-errors
 										.col-md-4.p-lg-0.px-md-3.px-sm-0
 											.form-group.p-0
-												input.form-control(type='text' placeholder="First Name" name='firstname'  required='' pattern="[A-Za-z ]{3,}" data-error='Please enter firstname')
+												input.form-control(type='text' placeholder="First Name *" name='firstname'  required='' pattern="[A-Za-z ]{3,}" data-error='Please enter firstname')
 												.help-block.with-errors
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.pt-0
@@ -94,6 +98,7 @@ block main
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.m-0
 												h5.label-control Gender
+													.text-danger.d-inline  *
 											.custom-control.custom-radio
 												input#customRadio1.custom-control-input(type='radio', name='gender' value="Male"  checked)
 												label.custom-control-label(for='customRadio1') 
@@ -105,17 +110,21 @@ block main
 										.col-md-4.p-lg-0.px-md-3.px-sm-0
 											.form-group
 												h5.label-control Birthday
+													.text-danger.d-inline  *
 												input.birthday.form-control(type='date' name='birthday'  required='', data-error='Please enter your birthday')
+												.help-block.with-errors
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
 												h5.label-control Birthplace:
+													.text-danger.d-inline  *
 												input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9,.- ]{3,}"  data-error='Please enter birthplace')
 												.help-block.with-errors
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
-												h5.label-control Relationship with the Ill:
-												select(type="text" name='relation'  required='')
+												h5.label-control Relationship with the Ill
+													.text-danger.d-inline  *
+												select(type="text" name='relation'  required=''  data-error='Please choose an option')
 													option(selected="" value="" disabled) Choose...
 													option Spouse
 													option Parent
@@ -126,6 +135,7 @@ block main
 													option Nephew/Niece
 													option BF/GF
 													option Friend
+												.help-block.with-errors(style="margin-top:2rem!important;")
 										//- .col-md-8
 										//- 	.row
 										//- 		.col-md-6.p-lg-0.px-md-3.px-sm-0
@@ -140,21 +150,24 @@ block main
 										
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
-												h5(for='exampleFormControlTextarea1') Address:
+												h5(for='exampleFormControlTextarea1') Address
+													.text-danger.d-inline  *
 												textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" data-error='Please enter complete address')
 												label
 													.help-block.with-errors
 										
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
-												h5(for='exampleFormControlTextarea1') Details:
+												h5(for='exampleFormControlTextarea1') Details
+													.text-danger.d-inline  *
 												textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
 												label
 													.help-block.with-errors
 									.row
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
-												h5.label-control Place where the blessing will happen:
+												h5.label-control Place where the blessing will happen
+													.text-danger.d-inline  *
 												.ml-4
 													.form-check
 														label.form-check-label
@@ -182,7 +195,10 @@ block main
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
 													h6.label-control Birth Certificate
-													input#file-0b.file(type='file',accept='image/*',name="image")
+														.text-danger.d-inline  *
+													input#file-0b.file(type='file',accept='image/*',name="image" required data-error='Please upload your birth certificate')
+													label
+														.help-block.with-errors
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									button.btn.btn-submit(type='submit') Submit

@@ -398,11 +398,11 @@ block main
                                                         .ml-4
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.exampleRadios1.form-check-input(type="radio" name="bbaptized" value="1")
+                                                                    input.exampleRadios4.form-check-input(type="radio" name="bbaptized" value="1")
                                                                     .dropdown-toggle.mr-3 Yes
                                                                     span.circle
                                                                         span.check
-                                                                .textarea1.form-group
+                                                                .textarea4.form-group
                                                                     .form-group
                                                                         label.label-control Parish Where You Were Baptized:
                                                                         input.form-control(type='text' name='bbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
@@ -412,7 +412,7 @@ block main
                                                                     
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.radioup.form-check-input(type="radio" name="bbaptized" value="0" )
+                                                                    input.radioup4.form-check-input(type="radio" name="bbaptized" value="0" )
                                                                     | No
                                                                     span.circle
                                                                         span.check
@@ -422,11 +422,11 @@ block main
                                                         .ml-4
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.exampleRadios2.form-check-input(type="radio" name="bconfirmed" value="1")
+                                                                    input.exampleRadios5.form-check-input(type="radio" name="bconfirmed" value="1")
                                                                     .dropdown-toggle.mr-3 Yes
                                                                     span.circle
                                                                         span.check
-                                                                .textarea2.form-group
+                                                                .textarea5.form-group
                                                                     .form-group
                                                                         label.label-control Parish where you were Confirmed:
                                                                         input.form-control(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z.,- ]{2,}" )
@@ -436,7 +436,7 @@ block main
                                                                     
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.radioup2.form-check-input(type="radio" name="bconfirmed" value="0" )
+                                                                    input.radioup5.form-check-input(type="radio" name="bconfirmed" value="0" )
                                                                     | No
                                                                     span.circle
                                                                         span.check
@@ -577,6 +577,22 @@ block addjs
         });
         $('.exampleRadios3').click(function() {
             $('.textarea3').slideDown();
+        });
+
+        $('.textarea4').hide();
+        $('.radioup4').click(function() {
+            $('.textarea4').slideUp();
+        });
+        $('.exampleRadios4').click(function() {
+            $('.textarea4').slideDown();
+        });
+
+        $('.textarea5').hide();
+        $('.radioup5').click(function() {
+            $('.textarea5').slideUp();
+        });
+        $('.exampleRadios5').click(function() {
+            $('.textarea5').slideDown();
         });
 
                 //add and delete side
