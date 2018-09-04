@@ -1,4 +1,4 @@
-extends ../../../../templates/guests
+extends ../../../../../templates/guests
 block main
 	.profile-page
 		//- Heading Page
@@ -61,18 +61,18 @@ block main
 									.col-md-8.px-lg-0.px-md-3.px-sm-0
 										.form-group
 											h5(for='exampleFormControlTextarea1') Address:
-											input.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9 ]{3,}" data-error='Please enter complete address'  value=`${moredetails.var_address}`)
+											input.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" data-error='Please enter complete address'  value=`${moredetails.var_address}`)
 											.col-md-8
 								.row
 									.col-md-6.px-lg-3.px-md-3.px-sm-0
 										.form-group
 											h5(for='exampleFormControlTextarea1') Details:
-											input.form-control(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z0-9 ]{3,}" data-error='Please enter anointing details'  value=`${moredetails.var_blessingdetails}`)
+											input.form-control(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details'  value=`${moredetails.var_blessingdetails}`)
 											.help-block.with-errors
 									.col-md-6.px-lg-3.px-md-3.px-sm-0
 										.form-group
 											h5.label-control Place where the blessing will happen:
-											input.form-control(rows='2' name='venue' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z0-9 ]{3,}" data-error='Please enter blessing venue'  value=`${moredetails.var_blessingvenue}`)
+											input.form-control(rows='2' name='venue' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter blessing venue'  value=`${moredetails.var_blessingvenue}`)
 											.help-block.with-errors
 										//- .row
 										//- 	.col-md-6.px-lg-3.px-md-0.px-sm-0
@@ -84,9 +84,9 @@ block main
 										//- 			h5.label-control Desired Time
 										//- 			input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time' value=`${moredetails.time_desiredtime}`)
 											
-								.learn-more.pull-right
-									//- button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-									button.btn.btn-submit(type='submit') Submit
+								//- .learn-more.pull-right
+								//- 	button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+								//- 	button.btn.btn-submit(type='submit') Submit
 					//- 	.col-md-12.my-5.text-center
 					//- 		button.btn.btn-primary(type='submit') Submit
 							//- a.btn-design.btn-valid(href="/guest/events") Cancel

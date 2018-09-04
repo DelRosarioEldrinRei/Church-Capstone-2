@@ -1,4 +1,4 @@
-extends ../../../../templates/guests
+extends ../../../../../templates/guests
 block main
 		style.
 				@media screen and (max-width: 576px) {
@@ -30,7 +30,7 @@ block main
 			//- 												h5.header-text.animated.fadeIn.invisible
 			//- 														| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
 			//- 												a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
-															a.page-scroll.btn.btn-lg.btn-success.animated.fadeInUp.invisible(href="#") Explore
+			//- 												a.page-scroll.btn.btn-lg.btn-success.animated.fadeInUp.invisible(href="#") Explore
 		#raised-section.main.main-raised
 				section.form-box
 						.container
@@ -42,7 +42,7 @@ block main
 																input.form-control(type='hidden' name='eventname' value=`${details.var_eventname }`)
 																
 																h3 Marriage Application Details
-																//- p Edit the fields you want to edit then go to the next page
+																p Edit the fields you want to edit then go to the next page
 																// Form progress
 																//- .form-wizard-steps.form-wizard-tolal-steps-3
 																//- 		.form-wizard-progress
@@ -105,7 +105,7 @@ block main
 																fieldset
 																		h4
 																				.d-none.d-sm-inline Groom's Form: 
-																				span Form 1 - 2
+																				span Step 1 - 3
 																		.form-group
 																				br
 																				.container
@@ -268,7 +268,7 @@ block main
 																fieldset
 																		h4
 																				.d-none.d-sm-inline Bride's Form : 
-																				span Form 2 - 2
+																				span Step 2 - 3
 																		.form-group
 																				br
 																				.container
@@ -473,10 +473,10 @@ block main
 																					//- 										.form-group
 																					//- 												h6.label-control Previous Wedding Place/Parish
 																					//- 												input.datepicker.form-control(type='text' name='cprevweddingplace')
-																		//- br
-																		//- .learn-more.pull-right
-																		//- 		button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-																		//- 		button.btn.btn-submit(type='submit') Submit
+																		br
+																		.learn-more.pull-right
+																				button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+																				button.btn.btn-submit(type='submit') Submit
 																// Form Step 4
 																// Form Step 5\
 																//- fieldset

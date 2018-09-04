@@ -159,69 +159,45 @@ html
 					.info
 						h2 INA NG LUPANG PANGAKO PARISH
 						p
-							| sample@yahoo.com
+							| churcheventapp@gmail.com
 							br
 							| 289-335-6503
 					// End Info
 					.title
-						h1 Voucher #1069
-						p
-							| Issued: March 21, 2018
+						h1="Voucher ID" + `${results.int_voucherID}` + `${results.int_userID}` + `${results.int_requestID}`
+						p="Issued: " + `${results.date_issued}`
 							br
-							| Payment Due: March 24, 2018
+							p="Payment Due: " + `${results.date_due}`
 					// End Title
 				// End InvoiceTop
 				#invoice-mid
 					.clientlogo
 					.info
-						h2 Jonalyn Fe Ebrada
-						p
-							| jonalynfe@gmail.com
+						h2=`${results.var_userfname}` + " " + `${results.var_userlname}`
+						p=`${results.var_useremail}`
 							br
-							| 555-555-5555
-							br
+							p=	`${results.var_usercontactnum}`
 					#project
 						h2 Reservation Description
-						p
-							| You've reserved 2nd Floor on April 2, 2018 8am - 12pm
-				// End Invoice Mid
+						br
+						p="You've Requested " +`${results.var_documenttype}` + "on " +`${results.date_docurequested}`
 				#invoice-bot
 					#table
 						table
 							tr.tabletitle
 								td.item
-									h2 Item Description
-								td.Hours
-									h2 Hours
+									h2 Document Name
 								td.Rate
 									h2 Rate
 								td.subtotal
-									h2 Sub-total
+									h2 total
 							tr.service
 								td.tableitem
-									p.itemtext 2nd Floor
+									p.itemtext=`${results.var_documenttype}`
 								td.tableitem
-									p.itemtext 4
+									p.itemtext=`${results.dbl_amount}`
 								td.tableitem
-									p.itemtext ₱1200
-								td.tableitem
-									p.itemtext ₱1200.00
-							tr.service
-								td.tableitem
-									p.itemtext Extension of Time/hr
-								td.tableitem
-									p.itemtext 2
-								td.tableitem
-									p.itemtext ₱300
-								td.tableitem
-									p.itemtext ₱600.00
-							tr.tabletitle
-								td
-								td
-								td.Rate
-									h2 Total
-								td.payment
-									h2 ₱1800.00
+									p.itemtext=`${results.dbl_amount}`
 					// End Table
 					//- form(action='https://www.paypal.com/cgi-bin/webscr', method='post', target='_top')
 					//- 	input(type='hidden', name='cmd', value='_s-xclick')

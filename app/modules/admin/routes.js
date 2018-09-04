@@ -701,4 +701,14 @@ adminRouter.use(authMiddleware.adminAuth)
         
     });
 
+    adminRouter.use(function (err, req, res, next) {
+        console.error(err.stack)
+        res.status(500)
+        return res.render('admin/views/error/505', {title: '505: Something broke!'});
+      })
+    adminRouter.use(function(req, res, next) {
+        res.status(404)
+        return res.render('admin/views/error/404', {title: '404: File Not Found'});
+    });
+
 exports.admin = adminRouter;

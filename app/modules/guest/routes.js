@@ -19,6 +19,10 @@ var upload = multer({ storage: storage})
 // I N D E X //
 //===============================================================================================//
     guestRouter.use(authMiddleware.guestAuth)
+    
+    // guestRouter.use(function (req, res, next) {
+    //     res.status(404).send("Sorry can't find that!")
+    //   })
     guestRouter.get('/', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' 
         or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' 
@@ -70,7 +74,7 @@ var upload = multer({ storage: storage})
                 });
             ;}
             else if(services.var_eventname== 'Funeral Service'){ return res.render('guest/views/forms/funeral',{user: req.session.user})}
-            else if(services.var_eventname== 'Marriage'){ return res.render('guest/views/forms/marriage',{user: req.session.user});}
+            else if(services.var_eventname== 'Marriage'){ return res.render('guest/views/marriage/marriage',{user: req.session.user});}
             else if(services.var_eventname== 'Confirmation'){ return res.render('guest/views/forms/confirmation',{user: req.session.user});}
             else if(services.var_eventname== 'Document Request'){ return res.render('guest/views/forms/document',{user: req.session.user});}
             else if(services.var_eventname== 'Facility Reservation'){ return res.render('guest/views/facilities/index',{user: req.session.user});}
@@ -96,7 +100,7 @@ var upload = multer({ storage: storage})
     guestRouter.get('/parishservices', (req, res)=>{res.render('guest/views/parishservices') });
     guestRouter.get('/weddingorg', (req, res)=>{res.render('guest/views/forms/weddingorg') });
     guestRouter.get('/weddingorg/items', (req, res)=>{res.render('guest/views/forms/weddingorg1') });
-    guestRouter.get('/voucher', (req, res)=>{res.render('guest/views/voucher/facility') });
+    
 
 //===============================================================================================//
 // N O T I F I C A T I O N //
@@ -128,7 +132,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
     results[0].date_due = moment(results[0].date_due).format('MM/DD/YYYY')
     results[0].date_docurequested = moment(results[0].date_docurequested).format('MM/DD/YYYY')
     results = results[0];
-    return res.render('guest/views/voucher/facility',{results:results});
+    return res.render('guest/views/voucher',{results:results});
     })
 });
 //===============================================================================================//
@@ -164,7 +168,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     console.log(details, moredetails)
                     moredetails.date_birthday = moment(moredetails.date_birthday).format('YYYY-MM-DD');
                     
-                    res.render('guest/views/reservations/anointingdetails',{ details : details, moredetails:moredetails, user: req.session.user});
+                    res.render('guest/views/reservations/info/blessingdetails',{ details : details, moredetails:moredetails, user: req.session.user});
                 });
             }
             if(details.var_eventname == 'Establishment Blessing'){
@@ -173,7 +177,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     if (err) console.log(err);
                     var moredetails = results[0];
                     console.log(details, moredetails)
-                    res.render('guest/views/reservations/establishmentdetails',{ details : details, moredetails:moredetails, user: req.session.user});
+                    res.render('guest/views/reservations/info/establishmentdetails',{ details : details, moredetails:moredetails, user: req.session.user});
                 });
             }
             if(details.var_eventname == 'Baptism' || details.var_eventname =='Confirmation' || details.var_eventname == 'RCIA'){
@@ -188,7 +192,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     moredetails.date_desireddate= moment(moredetails.date_desireddate).format('YYYY-MM-DD');   
                     moredetails.time_desiredtime= moment(moredetails.time_desiredtime, 'HH:mm:ss').format('hh:mm A');
                     console.log(details, moredetails)
-                    res.render('guest/views/reservations/baptismdetails',{ details : details, moredetails:moredetails, user: req.session.user});                
+                    res.render('guest/views/reservations/info/baptismdetails',{ details : details, moredetails:moredetails, user: req.session.user});                
                 });
             }        
             if(details.var_eventname == 'Marriage'){
@@ -214,7 +218,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                 var wedSteps=`select * from tbl_wedsteps`
                 db.query(wedSteps, (err, results, fields) => {
                
-                    res.render('guest/views/forms/marriage1',{ wedSteps: wedSteps, user: req.session.user});
+                    res.render('guest/views/marriage/marriage1',{ wedSteps: wedSteps, user: req.session.user});
                 });       
             }
         });
@@ -264,7 +268,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     moredetails.date_desireddate= moment(moredetails.date_desireddate).format('YYYY-MM-DD');
                     moredetails.time_desiredtime= moment(moredetails.time_desiredtime, 'HH:mm:ss').format('hh:mm A');
                     
-                    return res.render('guest/views/reservations/editanointingdetails',{ details : details, moredetails:moredetails, user: req.session.user});
+                    return res.render('guest/views/reservations/edit/editanointingdetails',{ details : details, moredetails:moredetails, user: req.session.user});
                 });
             }
             if(details.var_eventname == 'Funeral Mass' ||details.var_eventname == 'Funeral Service' ){
@@ -278,7 +282,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     moredetails.date_birthday = moment(moredetails.date_birthday).format('YYYY-MM-DD');
                     moredetails.date_desireddate= moment(moredetails.date_desireddate).format('YYYY-MM-DD');
                     moredetails.time_desiredtime= moment.utc(moredetails.time_desiredtime2, 'HH:mm:ss').format('hh:mm A');
-                    res.render('guest/views/reservations/editfuneraldetails',{ details : details, moredetails:moredetails, user: req.session.user});
+                    res.render('guest/views/reservations/edit/editfuneraldetails',{ details : details, moredetails:moredetails, user: req.session.user});
                 });
             }
             if(details.var_eventname == 'Baptism' || details.var_eventname == 'Confirmation' ||details.var_eventname == 'Special Baptism'||details.var_eventname == 'Special Confirmation' ){
@@ -298,7 +302,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     moredetails.date_desireddate=desireddate1;
                     // moredetails.time_desiredtime=desiredtime1;
 
-                    res.render('guest/views/reservations/editbaptismdetails',{ details : details, moredetails:moredetails, user: req.session.user});
+                    res.render('guest/views/reservations/edit/editbaptismdetails',{ details : details, moredetails:moredetails, user: req.session.user});
                 });
             }
             if(details.var_eventname == 'Marriage'){
@@ -319,7 +323,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     moredetails.date_bcondate = moment(moredetails.date_bcondate).format('YYYY-MM-DD');
                     moredetails.date_desireddate= moment(moredetails.date_desireddate).format('YYYY-MM-DD');   
                     moredetails.time_desiredtime= moment(moredetails.time_desiredtime, 'HH:mm:ss').format('hh:mm A');
-                    res.render('guest/views/reservations/editmarriagedetails',{ details : details, moredetails:moredetails, user: req.session.user});
+                    res.render('guest/views/reservations/edit/editmarriagedetails',{ details : details, moredetails:moredetails, user: req.session.user});
                 });       
             }
             if(details.var_eventname == 'Establishment Blessing'){
@@ -335,7 +339,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     // moredetails.date_desireddate2=desireddate4;
                     // moredetails.time_desiredtime=desiredtime3;
                     // moredetails.time_desiredtime2=desiredtime4;
-                    res.render('guest/views/reservations/editestablishmentdetails',{ details : details, moredetails:moredetails, user: req.session.user});
+                    res.render('guest/views/reservations/edit/editestablishmentdetails',{ details : details, moredetails:moredetails, user: req.session.user});
                 });
             }   
         });
@@ -545,8 +549,8 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     if(req.body.venue == 'sameaddress') var venue= req.body.address;
                     if(req.body.venue == 'hospital') var venue= req.body.hospitalname;
                     if(req.body.venue == 'other') var venue= req.body.othervenue;
-                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus) VALUES(?,?)`;        
-                    db.query(queryString2,[eventinfoID.insertId, "Pending"], (err, results, fields) => {
+                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, var_reqstatus) VALUES(?,?,?)`;  
+                    db.query(queryString2,[eventinfoID.insertId, "Pending", "Complete"], (err, results, fields) => {
                         if (err) throw err;
                         
                         var desiredtime1= moment(req.body.desiredtime1, 'h:mm a').format('HH:mm:ss');
@@ -644,7 +648,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
             var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
                 db.query(queryString1, [req.body.userID, eventid], (err, results3, fields) => {
                     if (err) throw err;
-                    var eventinfoID= results;       
+                    var eventinfoID= results3;       
                         
                     var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
                     db.query(paymentQuery,[eventid], (err, results, fields) => {
@@ -656,8 +660,8 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                             if (err) throw err;
                             var paymentid= results;
 
-                            var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID) VALUES(?,?,?)`;        
-                            db.query(queryString2,[eventinfoID.insertId, "Pending", paymentid.insertId], (err, results, fields) => {
+                            var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID, var_reqstatus) VALUES(?,?,?,?)`;        
+                            db.query(queryString2,[eventinfoID.insertId, "Pending", paymentid.insertId, "Complete"], (err, results, fields) => {
                                 if (err) throw err;
         
                                 var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_relation, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?,?);`
@@ -685,7 +689,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
 
                                                         if (err) throw err;
                                                         sponsors(eventinfoID.insertId);
-                                                        // return res.redirect(`/guest`);
+                                                        return res.redirect(`/guest`);
                                                 })
                                             })
                                         })
@@ -849,8 +853,8 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                     if (err) throw err;
                     var eventinfoID= results;
                     
-                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus) VALUES(?,?)`;        
-                    db.query(queryString2,[eventinfoID.insertId, "Pending"], (err, results, fields) => {
+                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, var_reqstatus) VALUES(?,?,?)`;        
+                    db.query(queryString2,[eventinfoID.insertId, "Pending", "Complete"], (err, results, fields) => {
                         if (err) throw err;
                         
                         if(req.body.establishment=='ourhome'){
@@ -910,8 +914,8 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                 db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
                     if (err) throw err;
                     var eventinfoID= results;
-                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus) VALUES(?,?)`;        
-                    db.query(queryString2,[eventinfoID.insertId, "Pending"], (err, results, fields) => {
+                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, var_reqstatus) VALUES(?,?,?)`;        
+                    db.query(queryString2,[eventinfoID.insertId, "Pending", "Complete"], (err, results, fields) => {
                         if (err) throw err;
 
                 queries(venue, eventID, eventinfoID.insertId);
@@ -939,8 +943,8 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                             if (err) throw err;
                             var paymentid= results;
 
-                            var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID) VALUES(?,?,?)`;        
-                            db.query(queryString2,[eventinfoID.insertId, "Pending", paymentid.insertId], (err, results, fields) => {
+                            var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID, var_reqstatus) VALUES(?,?,?,?)`;        
+                            db.query(queryString2,[eventinfoID.insertId, "Pending", paymentid.insertId, "Complete"], (err, results, fields) => {
                                 if (err) throw err;
         
                 queries(venue, eventID, eventinfoID.insertId);
@@ -956,8 +960,8 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                 db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
                     if (err) throw err;
                     var eventinfoID= results;
-                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus) VALUES(?,?)`;        
-                    db.query(queryString2,[eventinfoID.insertId, "Pending"], (err, results, fields) => {
+                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, var_reqstatus) VALUES(?,?,?)`;        
+                    db.query(queryString2,[eventinfoID.insertId, "Pending", "Complete"], (err, results, fields) => {
                         if (err) throw err;
 
                 queries(venue, eventID, eventinfoID.insertId);
@@ -1008,7 +1012,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
 // M A R R I A G E
 //============================================================== 
 guestRouter.get('/marriage/form', (req, res)=>{
-    res.render('guest/views/forms/marriage',{user: req.session.user})
+    res.render('guest/views/marriage/marriage',{user: req.session.user})
 });
 guestRouter.get('/marriagedetails', (req, res)=>{                
     var queryString1 =`SELECT * FROM tbl_wedsteps`
@@ -1030,17 +1034,10 @@ guestRouter.get('/marriagedetails', (req, res)=>{
         
     
 
-        return res.render('guest/views/forms/marriagedetails', {steps: steps, requirements: requirements, description:desc, events: events});
+        return res.render('guest/views/marriage/marriagedetails', {steps: steps, requirements: requirements, description:desc, events: events});
      }); }); }); });});
 
    
-guestRouter.get('/marriage1/form', (req, res)=>{
-    var wedSteps=`select * from tbl_wedsteps`
-    db.query(wedSteps, (err, results, fields) => {
-        if (err) console.log(err);
-        var requirements= results;
-    return res.render('guest/views/forms/marriage1',{user: req.session.user})
-});});
 var imageUpload1 = upload.fields([{name:'validIDGroom',maxCount:1},{name:'birthCertGroom',maxCount:1},{name:'validIDBride',maxCount:1},{name:'birthCertBride',maxCount:1}])
 guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
     console.log(req.body)
@@ -1067,7 +1064,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                     if (err) throw err;
                     var paymentid= results;
 
-                var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID,var_reqstatus) VALUES(?,?,?,?);`     
+                var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID,var_reqstatus) VALUES(?,?,?,?)`
                 db.query(queryString2,[eventinfoID.insertId, "Pending", paymentid.insertId,"Incomplete"], (err, results, fields) => {
                     if (err) throw err;
                     var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?);`
@@ -1085,7 +1082,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                                             requirementUpload(eventinfoID.insertId,req.files['birthCertGroom'][0].filename,req.files['validIDGroom'][0].filename,req.files['birthCertBride'][0].filename,req.files['validIDBride'][0].filename);
                                             defaultReq(eventinfoID.insertId);
                                             sponsors(eventinfoID.insertId);
-                                            return res.redirect(`/guest/marriage1/form`);
+                                            return res.redirect(`/guest`);
                                         });
                                     }
                                 if(req.body.boolmarried == 0){
@@ -1095,7 +1092,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                                             requirementUpload(eventinfoID.insertId,req.files['birthCertGroom'][0].filename,req.files['validIDGroom'][0].filename,req.files['birthCertBride'][0].filename,req.files['validIDBride'][0].filename);
                                             defaultReq(eventinfoID.insertId);
                                             sponsors(eventinfoID.insertId);
-                                            return res.redirect(`/guest/marriage1/form `);
+                                            return res.redirect(`/guest`);
                                         });
                                     }      
                                 });});});});});});
@@ -1393,6 +1390,14 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
         }
     }
 });    
+
+guestRouter.get('/marriage1/form', (req, res)=>{
+    var wedSteps=`select * from tbl_wedsteps`
+    db.query(wedSteps, (err, results, fields) => {
+        if (err) console.log(err);
+        var requirements= results;
+    return res.render('guest/views/marriage/marriage1',{user: req.session.user})
+});});
 //===============================================================================================//
 // F A C I L I T I E S 
 //===============================================================================================//
@@ -1405,7 +1410,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
     });
 
     guestRouter.get('/facilities/secondfloor/form', (req, res)=>{
-        res.render('guest/views/forms/secondfloor',{user: req.session.user})
+        res.render('guest/views/facilities/form',{user: req.session.user})
     });
 
     guestRouter.post('/facilities/secondfloor/form',upload.single('image'), (req, res) => {
@@ -1512,6 +1517,15 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                         });    
                     });            
                     
+    });
+    guestRouter.use(function (err, req, res, next) {
+        console.error(err.stack)
+        res.status(500)
+        return res.render('guest/views/error/505', {title: '505: Something broke!'});
+      })
+    guestRouter.use(function(req, res, next) {
+        res.status(404)
+        return res.render('guest/views/error/404', {title: '404: File Not Found'});
     });
 //===============================================================================================================
 exports.guest = guestRouter;    
