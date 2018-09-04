@@ -1,20 +1,16 @@
-doctype html
-html(lang='en')
+doctype
+html
 	head
-		meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+		meta(charset='utf-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-		title INLPP
+		title Catechist
 		link(rel='shortcut icon', href='/imgchurch/favicon.ico', type='image/x-icon')
 		link(rel='icon', href='/imgchurch/favicon.ico', type='image/x-icon')
-		link(rel="stylesheet", href="/css/bootstrap4.1.min.css")
-		link(rel='stylesheet' href='/css/fullcalendar.min.css')
-		link(rel='stylesheet', href='/Helium/css/font-awesome.min.css')
-		link(rel='stylesheet', href='/css/modal-anim.css')
-		link(rel='stylesheet', href='/css/loader.css')
-		link(rel="stylesheet" href="/css/timedropper.min.css")
+		link(href='/css/loader.css', rel='stylesheet')
+		link(href='/catechist/style.css', rel='stylesheet')
+		link(rel="stylesheet" href="/css/bootstrap-material-datetimepicker.css")
 		link(rel="stylesheet" href="/css/bootstrap-datetimepicker-solo.css")
-		link(rel='stylesheet', href='/css/dataTables.bootstrap4.min.css')
-		link(rel='stylesheet', href='/css/responsive.bootstrap4.min.css')
+		link(rel="stylesheet" href="/css/jquery.toolbar.css")
 		style.
 			.shadow {
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
@@ -22,131 +18,344 @@ html(lang='en')
 			.shadow2 {
 				box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 			}
-				
+
 			.shadow3 {
 				box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 			}
-	body
+			.addButton:hover {
+				background-color: #5cb85c !important;
+			}
+			.deleteButton:hover {
+				background-color: #c9302c !important;
+			}
+			.updateButton:hover {
+				background-color: #5bc0de !important;
+			}
+			.viewButton:hover {
+				background-color: #387ab6 !important;
+			}
+	body.app
+		// @TOC
+		// ===================================================
+		//
+			+ @Page Loader
+			+ @App Content
+			- #Left Sidebar
+			> $Sidebar Header
+			> $Sidebar Menu
+			- #Main
+			> $Topbar
+			> $App Screen Content
+		// @Page Loader
+		// ===================================================
 		#loader
 			.spinner
-		#wrapper
-		header
-			nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-				.container
-					a.navbar-brand(href="/catechist")
-						img.rounded-circle.shadow(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem")
-					button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
-						span.navbar-toggler-icon
-					#navbarNav.collapse.navbar-collapse
-						ul.navbar-nav.ml-auto
-							//- li.nav-item: a.nav-link(href="/guest/reservation")
-							//- 	| Reservations
-							//- li.nav-item: a.nav-link(href="/guest/schedule" rel="tooltip" title="")
-							//- 	| Schedule
-							//- li.nav-item: a.nav-link(href="/services" rel="tooltip" title="" data-original-title="See our services here")
-							//- 	| Services
-							//- li.nav-item: a.nav-link(href="#" rel="tooltip" title="" data-original-title="Read our articles")
-							//- 	i.fa.fa-comments(aria-hidden="true") 
-							//- 	| Blog
-							//- li.nav-item: a.nav-link(href="#" rel="tooltip" title="" data-original-title="Email Us Now!")
-							//- 	i.fa.fa-envelope-o(aria-hidden="true") 
-							//- 	| Contact
-							//- li.dropdown.nav-item
-							//- 	a.dropdown-toggle.nav-link(href="#" data-toggle="dropdown")
-							//- 		| Sacrament
-							//- 	.dropdown-menu.dropdown-with-icons
-							//- 		a.dropdown-item(href="/guest/baptism")
-							//- 			i.fa.fa-twitter(aria-hidden="true")
-							//- 			| &nbsp; Baptism
-							//- 		a.dropdown-item(href="/guest/confirmation")
-							//- 			i.fa.fa-facebook-square(aria-hidden="true")
-							//- 			| &nbsp; Confirmation
-							//- 		a.dropdown-item(href="#")
-							//- 			i.fa.fa-instagram(aria-hidden="true")
-							//- 			| &nbsp; Eucharist
-							//- 		a.dropdown-item(href="/guest/marriage")
-							//- 			i.fa.fa-instagram(aria-hidden="true")
-							//- 			| &nbsp; Marriage
-							//- 		a.dropdown-item(href="/guest/anointing")
-							//- 			i.fa.fa-instagram(aria-hidden="true")
-							//- 			| &nbsp; Anointing
-							//- 		a.dropdown-item(href="/guest/funeral")
-							//- 			i.fa.fa-instagram(aria-hidden="true")
-							//- 			| &nbsp; Funeral Blessing
-							//- 		a.dropdown-item(href="#")
-							//- 			i.fa.fa-instagram(aria-hidden="true")
-							//- 			| &nbsp; Confession
-							//- li.nav-item: a.nav-link(href="#" rel="tooltip" title="")
-								| Events
-							li.nav-item.active: a.nav-link(href="/catechist")
-								| Home
-							//- li.nav-item: a.nav-link(href="#")
-							//- 	| Profile
-							li.nav-item: a.nav-link(href="/catechist/schedule")
-								| Schedule
-							li.nav-item: a.nav-link(href="/catechist/sections")
-								| Sections	
-							li.nav-item: a.nav-link(href="#")
-								| Notification	
-							li.dropdown.nav-item
-								a.dropdown-toggle.nav-link(href="#" data-toggle="dropdown")
-									| My Account
-								.dropdown-menu.dropdown-with-icons
-									a.dropdown-item(href="/catechist/profile")
-										| &nbsp; My Profile
-									a.dropdown-item(href="#")
-										| &nbsp; Messages
-									a.dropdown-item(href="#")
-										| &nbsp; Notification
-									//- a.dropdown-item(href="/guest/reservation")
-									//- 	| &nbsp; Reservations
-									.container
-										hr
-									a.dropdown-item(href="/logout")
-										| &nbsp; Sign-out
-							//- li.dropdown.nav-item
-							//- 	a.nav-link(href="#" data-toggle="dropdown")
-							//- 		| Notifications	
-							//- li.nav-item
-							//- 	a.nav-link(href='/logout')
-							//- 		span.no-icon Log out
-							//- li.nav-item: a.nav-link(href="/login" rel="tooltip" title="" data-original-title="Login Now")
-							//- 	| Login
-							//- li.nav-item: a.nav-link(href="/signup" rel="tooltip" title="" data-original-title="Signup Now")
-							//- 	| Sign Up
+		// @App Content
+		// ===================================================
+		div#wrapper
+			// #Left Sidebar ====================
+			.sidebar
+				.sidebar-inner
+					// ### $Sidebar Header ###
+					.sidebar-logo
+						.peers.ai-c.fxw-nw
+							.peer.peer-greed
+								a.sidebar-link.td-n(href='index.html')
+									.peers.ai-c.fxw-nw
+										.peer
+											.logo.text-center.mt-3
+												img.rounded-circle.shadow(src='/Helium/img/INLPP.png', alt='' style="width: 4rem")
+										.peer.peer-greed
+											h5.lh-1.mB-0.logo-text Admin
+							.peer
+								.mobile-toggle.sidebar-toggle
+									a.td-n(href='')
+										i.ti-arrow-circle-left
+					// ### $Sidebar Menu ###
+					ul.sidebar-menu.scrollable.pos-r
+						li.nav-item.mT-30.active
+							a.sidebar-link(href='/catechist')
+								span.icon-holder
+									i.c-blue-500.ti-home
+								span.title Dashboard
 
+						li.nav-item
+							a.sidebar-link(href='/catechist/calendar')
+								span.icon-holder
+									i.c-deep-orange-500.ti-calendar
+								span.title Calendar
 
-		block main
-		script(src="/js/jquery.min.js")
-		script(src="/js/popper.min.js")
-		script(src="/js/bootstrap4.1.min.js")
-		script(src='/js/loader.js')
+						li.nav-item.dropdown
+							a.dropdown-toggle(href='javascript:void(0);')
+								span.icon-holder
+									i.c-orange-500.ti-layout-list-thumb
+								span.title Maintenance
+								span.arrow
+									i.ti-angle-right
+							ul.dropdown-menu
+								li
+									a.sidebar-link(href='/admin/maintenance-services') Services
+								li
+									a.sidebar-link(href='/admin/maintenance-events') Events
+								//- li
+								//- 	a.sidebar-link(href='/admin/maintenance-facilities') Facilities
+								//- li
+								//- 	a.sidebar-link(href='/admin/maintenance-items') Facility Items
+								//- li
+								//- 	a.sidebar-link(href='/admin/maintenance-ministries') Ministries
+								li.nav-item.dropdown
+									a.dropdown-toggle(href='javascript:void(0);')
+										span.icon-holder
+										span.title Requirements
+										span.arrow
+											i.ti-angle-right
+									ul.dropdown-menu
+										li
+											a.sidebar-link(href='/admin/maintenance-service-requirements') Service
+										li
+											a.sidebar-link(href='/admin/maintenance-document-requirements') Document Request
+										//- li
+										//- 	a.sidebar-link(href='/admin/maintenance-facility-requirements') Facility Reservation
+								//- li
+								//- 	a.sidebar-link(href='#') Marriage Steps
+								//- li
+								//- 	a.sidebar-link(href='#') Marriage Cases
+						li.nav-item.dropdown
+							a.dropdown-toggle(href='javascript:void(0);')
+								span.icon-holder
+									i.c-purple-500.ti-map
+								span.title Transactions
+								span.arrow
+									i.ti-angle-right
+							ul.dropdown-menu
+								li
+									a(href='#hehe') Document Request
+								li.nav-item.dropdown
+									a.dropdown-toggle(href='javascript:void(0);')
+										span.icon-holder
+										span.title Event Application
+										span.arrow
+											i.ti-angle-right
+									ul.dropdown-menu
+										li
+											a(href='#') Baptism
+										li
+											a(href='#') Blessing
+										li
+											a(href='#') Confirmation
+										li
+											a(href='#') Marriage
+								//- li
+								//- 	a(href='#') Facility Reservation
+						li.nav-item
+							a.sidebar-link(href='forms.html')
+								span.icon-holder
+									i.c-light-blue-500.ti-pencil
+								span.title Reports
+						li.nav-item.dropdown
+							a.sidebar-link(href='ui.html')
+								span.icon-holder
+									i.c-pink-500.ti-palette
+								span.title Queries
+						li.nav-item.dropdown
+							a.sidebar-link(href='ui.html')
+								span.icon-holder
+									i.c-pink-500.ti-palette
+								span.title Utilities
 
-		script(src="/js/moment.min.js")
-		script(src="/js/fullcalendar.min.js")
-		script(src="/js/sweetalert2.all.min.js")
-		script(src="/js/calendar.js")
-		script(src='/js/datatables.min.js')
-		script(src='/js/dataTables.bootstrap4.min.js')
-		script(src='/js/dataTables.responsive.min.js')
-		script(src='/js/responsive.bootstrap4.min.js')
-		script.
-			$(document).ready(function() {
-				$('.table').DataTable( {
-						responsive: {
-								details: {
-										display: $.fn.dataTable.Responsive.display.modal( {
-												header: function ( row ) {
-														var data = row.data();
-														return 'Details for '+data[0]+' '+data[1];
-												}
-										} ),
-										renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
-												tableClass: 'table'
-										} )
-								}
-						}
-				} );
-			});
-
-
+						//- li.nav-item.dropdown
+						//- 	a.dropdown-toggle(href='javascript:void(0);')
+						//- 		span.icon-holder
+						//- 			i.c-teal-500.ti-view-list-alt
+						//- 		span.title Multiple Levels
+						//- 		span.arrow
+						//- 			i.ti-angle-right
+						//- 	ul.dropdown-menu
+						//- 		li.nav-item.dropdown
+						//- 			a(href='javascript:void(0);')
+						//- 				span Menu Item
+						//- 		li.nav-item.dropdown
+						//- 			a(href='javascript:void(0);')
+						//- 				span Menu Item
+						//- 				span.arrow
+						//- 					i.ti-angle-right
+						//- 			ul.dropdown-menu
+						//- 				li
+						//- 					a(href='javascript:void(0);') Menu Item
+						//- 				li
+						//- 					a(href='javascript:void(0);') Menu Item
+			// #Main ============================
+			.page-container
+				// ### $Topbar ###
+				.header.navbar
+					.header-container
+						ul.nav-left
+							li
+								a#sidebar-toggle.sidebar-toggle(href='javascript:void(0);')
+									i.ti-menu
+							li.search-box
+								a.search-toggle.no-pdd-right(href='javascript:void(0);')
+									i.search-icon.ti-search.pdd-right-10
+									i.search-icon-close.ti-close.pdd-right-10
+							li.search-input
+								input.form-control(type='text', placeholder='Search...')
+						ul.nav-right
+							li.notifications.dropdown
+								span.counter.bgc-red 3
+								a.dropdown-toggle.no-after(href='', data-toggle='dropdown')
+									i.ti-bell
+								ul.dropdown-menu
+									li.pX-20.pY-15.bdB
+										i.ti-bell.pR-10
+										span.fsz-sm.fw-600.c-grey-900 Notifications
+									li
+										ul.ovY-a.pos-r.scrollable.lis-n.p-0.m-0.fsz-sm
+											li
+												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
+													.peer.mR-15
+														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/1.jpg', alt='')
+													.peer.peer-greed
+														span
+															span.fw-500 John Doe
+															span.c-grey-600
+																| liked your
+																span.text-dark post
+														p.m-0
+															small.fsz-xs 5 mins ago
+											li
+												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
+													.peer.mR-15
+														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/2.jpg', alt='')
+													.peer.peer-greed
+														span
+															span.fw-500 Moo Doe
+															span.c-grey-600
+																| liked your
+																span.text-dark cover image
+														p.m-0
+															small.fsz-xs 7 mins ago
+											li
+												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
+													.peer.mR-15
+														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/3.jpg', alt='')
+													.peer.peer-greed
+														span
+															span.fw-500 Lee Doe
+															span.c-grey-600
+																| commented on your
+																span.text-dark video
+														p.m-0
+															small.fsz-xs 10 mins ago
+									li.pX-20.pY-15.ta-c.bdT
+										span
+											a.c-grey-600.cH-blue.fsz-sm.td-n(href='')
+												| View All Notifications
+												i.ti-angle-right.fsz-xs.mL-10
+							li.notifications.dropdown
+								span.counter.bgc-blue 3
+								a.dropdown-toggle.no-after(href='', data-toggle='dropdown')
+									i.ti-email
+								ul.dropdown-menu
+									li.pX-20.pY-15.bdB
+										i.ti-email.pR-10
+										span.fsz-sm.fw-600.c-grey-900 Emails
+									li
+										ul.ovY-a.pos-r.scrollable.lis-n.p-0.m-0.fsz-sm
+											li
+												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
+													.peer.mR-15
+														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/1.jpg', alt='')
+													.peer.peer-greed
+														div
+															.peers.jc-sb.fxw-nw.mB-5
+																.peer
+																	p.fw-500.mB-0 John Doe
+																.peer
+																	small.fsz-xs 5 mins ago
+															span.c-grey-600.fsz-sm
+																| Want to create your own customized data generator for your app...
+											li
+												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
+													.peer.mR-15
+														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/2.jpg', alt='')
+													.peer.peer-greed
+														div
+															.peers.jc-sb.fxw-nw.mB-5
+																.peer
+																	p.fw-500.mB-0 Moo Doe
+																.peer
+																	small.fsz-xs 15 mins ago
+															span.c-grey-600.fsz-sm
+																| Want to create your own customized data generator for your app...
+											li
+												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
+													.peer.mR-15
+														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/3.jpg', alt='')
+													.peer.peer-greed
+														div
+															.peers.jc-sb.fxw-nw.mB-5
+																.peer
+																	p.fw-500.mB-0 Lee Doe
+																.peer
+																	small.fsz-xs 25 mins ago
+															span.c-grey-600.fsz-sm
+																| Want to create your own customized data generator for your app...
+									li.pX-20.pY-15.ta-c.bdT
+										span
+											a.c-grey-600.cH-blue.fsz-sm.td-n(href='email.html')
+												| View All Email
+												i.fs-xs.ti-angle-right.mL-10
+							li.dropdown
+								a.dropdown-toggle.no-after.peers.fxw-nw.ai-c.lh-1(href='', data-toggle='dropdown')
+									.peer.mR-10
+										img.w-2r.bdrs-50p(src='https://randomuser.me/api/portraits/men/10.jpg', alt='')
+									.peer
+										span.fsz-sm.c-grey-900 John Doe
+								ul.dropdown-menu.fsz-sm
+									li
+										a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='')
+											i.ti-settings.mR-10
+											span Setting
+									li
+										a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='')
+											i.ti-user.mR-10
+											span Profile
+									li
+										a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='email.html')
+											i.ti-email.mR-10
+											span Messages
+									li.divider(role='separator')
+									li
+										a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='/logout')
+											i.ti-power-off.mR-10
+											span Logout
+				// ### $App Screen Content ###
+				main.main-content.bgc-grey-100
+					#mainContent
+						block main
+				// ### $App Screen Footer ###
+				footer.bdT.ta-c.p-30.lh-0.fsz-sm.c-grey-600
+					span
+						| Copyright © 2017 Designed by
+						a(href='https://colorlib.com', target='_blank', title='Colorlib') Colorlib
+						| . All rights reserved.
+	script(src='/js/jquery.min.js')
+	script(src='/js/loader.js')
+	script(src='/catechist/vendor.js')
+	script(src='/catechist/bundle.js')
+	script(src='/js/moment.min.js')
+	script(src='/js/pdfmake.js')
+	script(src='/js/jquery.toolbar.min.js')
+	script(src='/js/vfs_fonts.js')
+	script(src='/js/sweetalert2.all.min.js')
+	script(src="/js/bootstrap-datetimepicker.min.js")
+	script(src="/js/bootstrap-material-datetimepicker.js")
+	script.
+		$('.actionButton').toolbar({
+			content: '#toolbar-options',
+			position: 'top',
+			//- style: 'primary',
+			event: 'click',
+			hideOnClick: true
+		});
+	block addjs
