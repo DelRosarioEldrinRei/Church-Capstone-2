@@ -320,13 +320,15 @@ html
 										a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='')
 											i.ti-user.mR-10
 											span Profile
-									//- li
-									//- 	a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='email.html')
-									//- 		i.ti-email.mR-10
-									//- 		span Messages
-							li.nav-item
-								a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='/logout')
-									i.ti-power-off.mR-10
+									li
+										a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='email.html')
+											i.ti-email.mR-10
+											span Messages
+									li.divider(role='separator')
+									li
+										a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700(href='/logout')
+											i.ti-power-off.mR-10
+											span Logout
 				// ### $App Screen Content ###
 				main.main-content.bgc-grey-100
 					#mainContent
@@ -342,7 +344,6 @@ html
 	script(src='/admin/vendor.js')
 	script(src='/admin/bundle.js')
 	script(src='/js/moment.min.js')
-	script(src='/Helium/js/bootstrap.min.js')
 	script(src='/js/pdfmake.js')
 	script(src='/js/jquery.toolbar.min.js')
 	script(src='/js/vfs_fonts.js')

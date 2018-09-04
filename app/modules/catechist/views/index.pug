@@ -1,54 +1,14 @@
 extends ../../../templates/catechist
-block main
-	#guide
-		.container
-			.row
-				.col-md-8.my-3.mx-5
-					h3.text-uppercase.guidelines--text Students
-			.row
-				.table-responsive
-					table.table.text-center
-						thead
-							tr
-								th #
-								th Name
-								th Section
-								th Batch
-								th Schedule
-								th Actions
-						tbody
-							tr.text-center
-								td 1
-								td Andrew Mike
-								td Develop
-								td 2013
-								td € 99,225
-								td.td-actions
-									button.btn.btn-info.btn-fab.btn-fab-mini
-										i.fa.fa-user
-									| &nbsp;
-									button.btn.btn-success.btn-fab.btn-fab-mini
-										i.fa.fa-edit
-									| &nbsp;
-									button.btn.btn-danger.btn-fab.btn-fab-mini
-										i.fa.fa-close
-							tr
-								td.text-center 2
-								td John Doe
-								td Design
-								td 2012
-								td € 89,241
-								td.td-actions
-									button.btn.btn-info.btn-fab.btn-fab-mini
-										i.fa.fa-user
-									| &nbsp;
-									button.btn.btn-success.btn-fab.btn-fab-mini
-										i.fa.fa-edit
-									| &nbsp;
-									button.btn.btn-danger.btn-fab.btn-fab-mini
-										i.fa.fa-close
-	br
-	.container
-		.row
-			.col-md-12
-				#calendar
+block prepend main
+//-   button.btn.example(type="button") HI
+//- block addjs
+//-   script.
+//-     $('.example').click(function(){
+//-       swal({
+//-         title:'Success', 
+//-         text:'Requirement information updated', 
+//-         icon:'success'
+//-       }).then(function(){
+//-         location.reload();
+//-       })
+//-     });

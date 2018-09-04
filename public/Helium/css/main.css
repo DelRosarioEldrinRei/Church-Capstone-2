@@ -770,7 +770,7 @@ footer .menu li a:hover {
 }
 
 .btn:hover {
-  background: transparent;
+  /* background: transparent; */
   cursor: pointer;
 }
 
