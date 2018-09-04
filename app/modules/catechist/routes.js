@@ -11,6 +11,10 @@ catechistRouter.get('/', (req, res)=>{
     res.render('catechist/views/index')
 });
 
+catechistRouter.get('/calendar', (req, res)=>{
+    res.render('catechist/views/calendar')
+});
+
 
 
 //===============================================================================================//
