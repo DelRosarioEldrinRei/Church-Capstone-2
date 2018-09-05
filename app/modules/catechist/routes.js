@@ -8,12 +8,28 @@ catechistRouter.use(authMiddleware.catechistAuth)
 // I N D E X //
 //===============================================================================================//
 catechistRouter.get('/', (req, res)=>{
-    res.render('catechist/views/index')
+    var queryString2= `SELECT var_eventname from tbl_services`
+    db.query(queryString2, (err, results, fields) => {
+        var services = results;
+        if (err) throw err
+    return res.render('catechist/views/index',{catechist: req.session.catechist, services: services})
+    });
 });
 
 catechistRouter.get('/calendar', (req, res)=>{
-    res.render('catechist/views/calendar')
+    
+    var queryString2= `SELECT var_eventname from tbl_services`
+    db.query(queryString2, (err, results, fields) => {
+        var services = results;
+        if (err) throw err
+    return res.render('catechist/views/calendar',{catechist: req.session.catechist, services: services})
+    });
+    
 });
+
+
+
+
 
 
 catechistRouter.use(function (err, req, res, next) {

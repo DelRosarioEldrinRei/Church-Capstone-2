@@ -34,6 +34,11 @@ var upload = multer({ storage: storage})
             return res.render('guest/views/index',{ events : events });
         });
     });
+    
+    guestRouter.get('/profile', (req, res)=>{
+        res.render('guest/views/profile/profile',{user: req.session.user});
+        });
+
     guestRouter.post('/query', (req, res) => {
 
         var queryString1 =`SELECT * FROM tbl_services where int_eventID = ? `

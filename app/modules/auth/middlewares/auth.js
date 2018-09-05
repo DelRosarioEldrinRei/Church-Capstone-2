@@ -53,6 +53,19 @@ exports.catechistAuth = (req, res, next) => {
 }
 
 exports.noAuthedcatechist = (req, res, next) => {
+    if (req.session && req.session.catechist && Object.keys(req.session.catechist).length > 0) return res.redirect('/coorcatechist');
+    return next();
+}
+
+//coordinator-catechist
+
+
+exports.coorcatechistAuth = (req, res, next) => {
+    if (req.session && req.session.catechist && Object.keys(req.session.catechist).length > 0) return next();
+    return res.redirect('/index?unauthorized');
+}
+
+exports.noAuthedcoorcatechist = (req, res, next) => {
     if (req.session && req.session.catechist && Object.keys(req.session.catechist).length > 0) return res.redirect('/catechist');
     return next();
 }

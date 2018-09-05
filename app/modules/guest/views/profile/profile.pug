@@ -1,0 +1,69 @@
+extends ../../../../templates/guests
+block main
+	.profile-page
+		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/Nave.jpeg');")
+		#raised-section.main.main-raised
+			.container
+					.row
+						.col-md-12.my-3
+							h3.text-center.text-uppercase.guidelines--text House Blessing Details
+							form(action=`` method="post")
+									
+									input.form-control(type='hidden' name='catechistID' value=`${user.int_userID}`)
+									
+									fieldset
+											h4
+											h5.label-control Name
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group.pt-0
+														input.form-control(type='text' placeholder="Last Name" name='lastname', required='' pattern="[A-Za-z ]{2,}" data-error='Please enter lastname' value=`${user.var_userlname}`)
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group.p-0
+														input.form-control(type='text' placeholder="First Name" name='firstname'  required='' pattern="[A-Za-z ]{3,}" data-error='Please enter firstname'  value=`${user.var_userfname}`)
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group.pt-0
+														input.form-control(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z ]{3,}"  value=`${user.var_usermname}`)
+														.help-block.with-errors
+											//- .row
+											//- 		.col-md-6.px-lg-3.px-md-3.px-sm-0
+											//- 				.form-group
+											//- 						h6.label-control Owner
+											//- 						input.form-control(type='text' name='owner' placeholder="Ex. Juan Dela Cruz" required='' pattern="[A-Za-z, ]{2,}" value=`${user.var_owner}` )
+											//- 						.help-block.with-errors
+											//- 		.col-md-6.px-lg-3.px-md-3.px-sm-0
+											//- 				.form-group
+											//- 						h6.label-control Establishment Location
+											//- 						input.form-control(type='text' name='location' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z,.- ]{2,}" value=`${user.var_estloc}` )
+											//- 						.help-block.with-errors
+											
+											//- .row
+											//- 		.col-md-6.px-lg-3.px-md-3.px-sm-0
+											//- 				.form-group
+											//- 						h6.label-control Contact Number
+											//- 						input.form-control(type='text' name='contactnumber' placeholder="Ex. Juan Dela Cruz" required='' pattern="[0-9, ]{11}" value=`${user.var_ownercontactnum}` )
+											//- 						.help-block.with-errors
+											//- 		.col-md-6.px-lg-3.px-md-3.px-sm-0
+											//- 				.form-group
+											//- 						h6.label-control Email
+											//- 						input.form-control(type='text' name='email'  required='' value=`${user.var_owneremailadd}` )
+											//- 						.help-block.with-errors
+											//- .learn-more.pull-right
+											//- 	//- button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+											//- 	button.btn.btn-submit(type='submit') Submit
+								
+block addjs
+	script.
+		//- $('#ourhome').hide();
+		$('#other').hide();
+
+		$('#ourhomeradio').click(function() {
+			$('#ourhome').slideDown();
+			$('#other').slideUp();
+		});
+		$('#otherradio').click(function() {
+			$('#ourhome').slideUp();
+			$('#other').slideDown();
+		});
