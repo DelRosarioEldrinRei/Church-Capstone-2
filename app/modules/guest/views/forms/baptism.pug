@@ -13,6 +13,9 @@ block main
         #header-style-1 {
             background-image: url(/imgchurch/bible2.png)
         }
+        .fc-content {
+            font-family: sans-serif !important;
+        }
     #headers
         #header-style-1
             .container
@@ -60,36 +63,35 @@ block main
                             fieldset
                                 h4
                                     .d-none.d-sm-inline.pull-left Baptism Details: 
-                                        br
-                                        span Step 1 - 3
-                                            .container
-                                                .row
-                                                    .col-md-3.px-lg-3.px-md-0.px-sm-0
-                                                        .form-group
-                                                            br
-                                                            h6.label-control Baptism Type & Date:
-                                                                .custom-control.custom-radio.mt-2
-                                                                    input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
-                                                                    label.custom-control-label(for='radio1') 
-                                                                        h6 Regular
-                                                                .custom-control.custom-radio
-                                                                    input#radio2.custom-control-input(type='radio', name='baptismtype' value="Special")
-                                                                    label.custom-control-label(for='radio2') 
-                                                                        h6 Special
-                                                .row
-                                                    .col-md-9.px-lg-3.px-md-3.px-sm-0
-                                                        #regular.mt-4
-                                                            .form-group
-                                                                h6.label-control Regular Baptism Date
-                                                                    .container
-                                                                        #calendarRegular
-                                                        #special.mt-4
-                                                            .form-group
-                                                                h6.label-control Special Baptism Date
-                                                                    .container
-                                                                        #calendarSpecial
-                                                .learn-more.pull-right
-                                                    button.btn.btn-next(type='button') Next
+                                    span Step 1 - 3
+                                .form-group
+                                    br
+                                    h6.label-control.ml-3.mb-0 Baptism Type & Date:
+                                    .container
+                                        .row
+                                            .col-md-3.px-lg-3.px-md-0.px-sm-0
+                                                .form-group
+                                                    .custom-control.custom-radio.mt-2
+                                                        input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
+                                                        label.custom-control-label(for='radio1') 
+                                                            h6 Regular
+                                                    .custom-control.custom-radio
+                                                        input#radio2.custom-control-input(type='radio', name='baptismtype' value="Special")
+                                                        label.custom-control-label(for='radio2') 
+                                                            h6 Special
+                                            .col-md-9.px-lg-3.px-md-3.px-sm-0
+                                                #regular
+                                                    .form-group
+                                                        h6.label-control Regular Baptism Date
+                                                            .container
+                                                                #calendarRegular
+                                                #special
+                                                    .form-group
+                                                        h6.label-control Special Baptism Date
+                                                            .container
+                                                                #calendarSpecial
+                                        .learn-more.pull-right
+                                            button.btn.btn-next(type='button') Next
                             // Form Step 1
                             // Form Step 2
                             fieldset
