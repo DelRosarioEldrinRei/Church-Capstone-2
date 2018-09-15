@@ -591,6 +591,15 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
 //==============================================================
 // B A P T I S M
 //==============================================================
+
+    guestRouter.get('/baptism/query', (req, res)=>{
+        var queryString = `SELECT * FROM tbl_eventinfo`
+            db.query(queryString,(err,results,fields) =>{
+                res.send(results)
+                console.log(results)
+            })
+    })
+
     guestRouter.get('/baptism/form', (req, res)=>{
         var queryString1= `SELECT int_agemax, int_agemin, double_fee FROM tbl_utilities where int_eventID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
         db.query(queryString1, (err, results1, fields) => {

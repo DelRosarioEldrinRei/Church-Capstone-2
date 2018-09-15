@@ -1,5 +1,5 @@
-var coordinatorRouter = express.Router();
 var express = require('express');
+var coordinatorRouter = express.Router();
 var moment = require('moment');
 var authMiddleware = require('../auth/middlewares/auth');
 var db = require('../../lib/database')();
