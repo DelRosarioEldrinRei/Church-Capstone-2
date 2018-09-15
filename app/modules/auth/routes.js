@@ -38,38 +38,40 @@ loginRouter.route('/')
                 req.session.admin = user;
                 console.log(req.session);
                 return res.redirect('/admin');
-                
             }
             if(user.char_usertype == "Secretariat"){
                 delete user.var_password;
                 req.session.secretariat = user;
                 console.log(req.session);
                 return res.redirect('/secretariat');
-                
             }
             if(user.char_usertype == "Coordinator"){
                 delete user.var_password;
                 req.session.coordinator = user;
                 console.log(req.session);
                 return res.redirect('/coordinator');
-                
             }
             if(user.char_usertype == "Catechist"){
                 delete user.var_password;
                 req.session.catechist = user;
                 console.log(req.session);
                 return res.redirect('/catechist');
-                
+            }
+            if(user.char_usertype == "CoordinatorCatechist"){
+                delete user.var_password;
+                req.session.catechist = user;
+                console.log(req.session);
+                return res.redirect('/coorcatechist');
             }
             if(user.char_usertype == "Priest"){
                 delete user.var_password;
                 req.session.priest = user;
                 console.log(req.session);
                 return res.redirect('/priest');
-                
             }
 
             if(user.char_usertype=="Guest"){         
+                
                 if(req.session.eventId == 3){
                 delete user.var_password;
                 req.session.user = user;

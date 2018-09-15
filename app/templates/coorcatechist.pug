@@ -74,30 +74,31 @@ html
 					// ### $Sidebar Menu ###
 					ul.sidebar-menu.scrollable.pos-r
 						li.nav-item.mT-30.active
-							a.sidebar-link(href='/catechist')
+							a.sidebar-link(href='/coorcatechist')
 								span.icon-holder
 									i.c-blue-500.ti-home
 								span.title Dashboard
 
 						li.nav-item
-							a.sidebar-link(href='/catechist/calendar')
+							a.sidebar-link(href='/coorcatechist/calendar')
 								span.icon-holder
 									i.c-deep-orange-500.ti-calendar
 								span.title Calendar
-
-						li.nav-item.dropdown
-							a.dropdown-toggle(href='javascript:void(0);')
-								span.icon-holder
-									i.c-orange-500.ti-layout-list-thumb
-								span.title Maintenance
-								span.arrow
-									i.ti-angle-right
-							ul.dropdown-menu
-								each service in services
-									li
-										a.sidebar-link(href='')
-										| #{service.var_eventname}
-								//- li
+						each school in schools
+							li.nav-item.dropdown
+								a.dropdown-toggle(href='javascript:void(0);')
+									span.icon-holder
+										i.c-orange-500.ti-layout-list-thumb
+									span.title
+										| #{school.var_schoolname}
+									span.arrow
+										i.ti-angle-right
+								ul.dropdown-menu
+									each section in sections
+										li
+											a.sidebar-link(href='')
+											| #{section.var_sectionname}
+									//- li
 								//- 	a.sidebar-link(href='') Events
 								//- li.nav-item.dropdown
 								//- 	a.dropdown-toggle(href='javascript:void(0);')
