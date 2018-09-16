@@ -212,7 +212,7 @@ block main
                                 br
                                 .learn-more.pull-right
                                     button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-                                    button.btn.btn-submit#submit1Button(type='button') Submit
+                                    button.btn.btn-submit#submitButton(type='button') Submit
     #viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
             .modal-dialog.modal-lg(role="document")
                 .modal-content
@@ -271,11 +271,9 @@ block addjs
             $('#special').slideDown();
             $('#regular').slideUp();
         });
-        $('#submit1Button').click(function() {
+        $('#submitButton').click(function() {
             $('#viewModal').modal('show');
-        });
-        $('#submit2Button').click(function() {
-            $('#form').submit()
+            
         });
         $("#addPrincipalSponsor").click(function(event){
                 var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control' required /><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
@@ -335,7 +333,7 @@ block addjs
         var timeStart;
         var timeEnd2;
         var dateNow1 = new Date()
-        var date = dateNow1.getFullYear()+'-'+(dateNow1.getMonth()+1)+'-'+dateNow1.getDate();
+        var dateNow2 = dateNow1.getFullYear()+'-'+(dateNow1.getMonth()+1)+'-'+dateNow1.getDate();
 
         $.get('/guest/baptism/query').done(data=>{
             for(i=0;i<data.length;i++){
@@ -369,7 +367,7 @@ block addjs
             minTime:'8:00:00',
             maxTime:'17:00:00',
             validRange: {
-                start: date
+                start: dateNow2
             },
             dayClick: function(date, jsEvent, view) {
                 if(view.name == 'agendaDay'){
