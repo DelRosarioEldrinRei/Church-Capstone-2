@@ -1,5 +1,51 @@
 extends ../../../../templates/guests
 block main
+	style.
+		@media screen and (max-width: 576px) {
+			.col-md-4, .col-md-6, .col-md-9 {
+					padding-left: 0;
+					padding-right: 0;
+			}
+			.form-wizard-step {
+					padding-bottom: 10px !important;
+			}
+		}
+		#header-style-1 {
+			background-image: url(/imgchurch/bible1.jpg)
+		}
+		.form-wizard-tolal-steps-3 .form-wizard-step {
+			width: 49.33%;
+		}
+		#other > div:nth-child(2) > div > div > div > div.file-preview > div > div.file-drop-zone-title {
+			font-size: 1rem;
+		}
+		.h4 {
+			font-size: 20px;
+			font-weight: 300;
+			font-family: "Montserrat", sans-serif;
+			color: #4c2508;
+			line-height: 26px;
+		}
+		.spandecor {cursor:pointer; }
+		.minus, .plus{
+			width:30px;
+			height:20px;
+			background:#f2f2f2;
+			border-radius:4px;
+			border:1px solid #ddd;
+			display: inline-block;
+			vertical-align: middle;
+			text-align: center;
+		}
+		.plusminus{
+			height:30px;
+			width: 30px;
+			text-align: center;
+			border:1px solid #ddd;
+			border-radius:4px;
+			display: inline-block;
+			vertical-align: middle;
+		}
 	#headers
 		#header-style-1
 			.container
@@ -18,128 +64,211 @@ block main
 				.container
 					.row
 						.col-md-12.form-wizard
-							h3 Reservation Form
-							p Fill all form fields
-			.container
-				.row
-					.col-md-3.fixed-top(style="margin-top: 4rem; ")
-						#draggable.p-2.rounded.shadow2(style="background-color:white; cursor:pointer; width:21rem; height: 21rem; left: 60rem; top:1rem;")
-							#calendar(style="width:100%;")
-					.col-md-6.my-3
-						form(action="/guest/facilities/secondfloor/form" enctype="multipart/form-data" method='post')
-							input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
-							.form-group
-								h6.label-control Event
-								input.form-control(type='text' name= 'event' placeholder="Ex. Seminar")
-							.form-group
-								h6.label-control Event Description
-								textarea.form-control(type='text' row="2" placeholder="Event Description")
-							.form-group
-								.row
-									.col-md-6
-										h6.label-control Start
-										input.dateandtimepicker.form-control(type='text' name='desireddate' placeholder="MM/DD/YYYY 00:00 AM/PM")
-									.col-md-6
-										h6.label-control End
-										input.dateandtimepicker.form-control(type='text' name='desireddate' placeholder="MM/DD/YYYY 00:00 AM/PM")
-							.form-group
-								h6.label-control Number of Attendees
-								input.form-control(type='number' name= 'event' placeholder="Max. 100")
-							.form-group
-								br
-								h6.label-control Do you want to borrow items from the parish?
-									.custom-control.custom-radio.mt-2
-										input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
-										label.custom-control-label(for='radio1') 
-											h6 Yes
-									.custom-control.custom-radio
-										input#radio2.custom-control-input(type='radio', name='baptismtype' value="Special")
-										label.custom-control-label(for='radio2') 
-											h6 No
-								#regular.mt-4
-									.form-group.ml-3
-										h6.label-control Check the items you want to borrow.
+							form(action="/guest/facilities/secondfloor/form" enctype="multipart/form-data" method='post')
+								h3 Second Floor Application
+								p Fill all form fields
+								.form-wizard-steps.form-wizard-tolal-steps-3
+									.form-wizard-progress
+											.form-wizard-progress-line(data-now-value='12.25' data-number-of-steps='3' style='width: 12.25%;')
+									// Step 1
+									.form-wizard-step.active
+											.form-wizard-step-icon
+													i.fa.fa-user(aria-hidden='true')
+											p.d-none.d-sm-block Schedule Date
+									// Step 1
+									// Step 2
+									.form-wizard-step
+											.form-wizard-step-icon
+													i.fa.fa-location-arrow(aria-hidden='true')
+											p.d-none.d-sm-block Reservation Details
+									// Step 2
+								// Form Step 1
+								fieldset
+									h4
+										.d-none.d-sm-inline Schedule Date 
+										span Step 1 - 2
+										h5.label-control.ml-3 Choose a day to continue:
 										.row
-											.col-md-12.ml-4
-												.row
-													.col-md-3
-														input(type='checkbox') 
-														span  Tables
-														br
-														input(type='checkbox') 
-														span  Chairs
-														br
-														input(type='checkbox') 
-														span  Mic
-														br
-														input(type='checkbox') 
-														span  Speaker
-														br
-														input(type='checkbox') 
-														span  Electric Fan
-													.col-md-6
-														label.m-0 QTY
-														| &nbsp;
-														input(type="number" style="width:50px;")
-														br
-														label.m-0 QTY
-														| &nbsp;
-														input(type="number" style="width:50px;")
-														br
-														label.m-0 QTY
-														| &nbsp;
-														input(type="number" style="width:50px;")
-														br
-														label.m-0 QTY
-														| &nbsp;
-														input(type="number" style="width:50px;")
-														br
-														label.m-0 QTY
-														| &nbsp;
-														input(type="number" style="width:50px;")
-								.row
-									.col-md-12.px-lg-3.px-md-3.px-sm-0.mx-auto
-										.form-group
-												h6.label-control Birth Certificate
-												input#file-0b.file(type='file',accept='image/*',name="image")
-							.form-group
-								input(type='checkbox')
-								label.custom-control-label
-									| &nbsp;
-									| I agree to the terms and condition.
-							.row
-								.col-md-12.text-center.learn-more
-									button.btn.btn-common(type='button' data-toggle='modal', data-target='#exampleModal') Submit
-							#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' data-controls-modal="exampleModal")
-									.modal-dialog.modal-lg(role='document')
-										.modal-content 
-											.modal-header
-												button.close(type='button', data-dismiss='modal', aria-label='Close')
-													span.p-3(aria-hidden='true') ×
-												h5 Your reservation request has been submitted
-											.modal-body.text-left
-												| To complete the reservation process, You must pay 
-												strong ₱1500
-												|  at the office on or before 
-												strong August 27, 2018.
-												br
-												br
-												| Click here to download 
-												a(href="#" style="color: blue;") permit and payment voucher
-												//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
-												//- br
-												//- br
-												//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
-												//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
-												br
-												br
-												//- h5 Mode of Payment
-												//- select
-												//- 	option(value="") Full Payment
-												//- 	option(value="") Half Payment 
-											.modal-footer
-												button.btn.std-btn.btn-danger.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
-												button.btn.std-btn.btn-success.btn-info.mb-0#proceedButton(type='button') Agree
+											.col-md-10.mx-auto
+												.container
+													#calendarRegular
+										.learn-more.pull-right
+													button.btn.btn-next(type='button') Next
+								// Form Step 1
+								// Form Step 2
+								fieldset
+									.div
+										.d-none.d-sm-inline.h4 Reservation Details
+										span.pull-right.h4 Step 2 - 2
+										h6.label-control.mt-2 Date & Time Details:
+										.row
+											.col-md-6.my-1
+												.card
+													.card-block.bg-white.shadow(style="min-height: 140px;")
+														.container.mt-3
+															h5.label-control.d-inline(style="font-size:20px; ") Date Chosen: 
+															span(style="font-size:17px") 2004/00/00
+															br
+														.container.mt-3
+															h5.label-control.d-inline(style="font-size:20px; ") Time Chosen: 
+															span(style="font-size:17px") 00:00 - 00:00
+												h6.label-control.mt-2 Reservation Form:
+												.card
+													.card-block.shadow.bg-white
+														input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+														.form-group
+															h6.label-control Event
+															input.form-control(type='text' name= 'event' placeholder="Ex. Seminar")
+														.form-group
+															h6.label-control Event Description
+															textarea.form-control(type='text' row="2" placeholder="Event Description")
+														.form-group
+															.row
+																.col-md-6
+																	h6.label-control Start
+																	input.dateandtimepicker.form-control(type='text' name='desireddate' placeholder="MM/DD/YYYY 00:00 AM/PM")
+																.col-md-6
+																	h6.label-control End
+																	input.dateandtimepicker.form-control(type='text' name='desireddate' placeholder="MM/DD/YYYY 00:00 AM/PM")
+														.form-group
+															h6.label-control Number of Attendees
+															input.form-control(type='number' name= 'event' placeholder="Max. 100")
+														.form-group
+															h6.label-control Birth Certificate
+															input#file-0b.file(type='file',accept='image/*',name="image")
+														.form-group
+															input(type='checkbox')
+															h6.d-inline
+																| &nbsp;
+																| I agree to the terms and condition.
+											.col-md-6.my-1
+												.card
+														.card-block.bg-white.shadow
+															input(type="checkbox", name="")
+															.div.label-control.d-inline.h4  Rent Items
+																.card
+																	.card-block.bg-white.p-0.py-2
+																		.row
+																			.col-md-6
+																				p.label-control.text-center.h4 Item
+																			.col-md-6
+																				p.label-control.text-center.h4.mb-0 QTY
+																		.row.my-3
+																			.col-md-6
+																				p.label-control.h4.ml-5.pl-4.mb-0 1. Chair
+																			.col-md-6
+																				.div.text-center
+																					span.spandecor.minus -
+																					input.plusminus.mx-1(type='text', value='1')
+																					span.spandecor.plus +
+																		.row.my-3
+																			.col-md-6
+																				p.label-control.h4.ml-5.pl-4.mb-0 2. Mic
+																			.col-md-6
+																				.div.text-center
+																					span.spandecor.minus -
+																					input.plusminus.mx-1(type='text', value='1')
+																					span.spandecor.plus +
+																		.row.my-3
+																			.col-md-6
+																				p.label-control.h4.ml-5.pl-4.mb-0 3. Table
+																			.col-md-6
+																				.div.text-center
+																					span.spandecor.minus -
+																					input.plusminus.mx-1(type='text', value='1')
+																					span.spandecor.plus +
+																		.row.my-3
+																			.col-md-6
+																				p.label-control.h4.ml-5.pl-4.mb-0 4. Speaker
+																			.col-md-6
+																				.div.text-center
+																					span.spandecor.minus -
+																					input.plusminus.mx-1(type='text', value='1')
+																					span.spandecor.plus +
+																		.row.my-3
+																			.col-md-6
+																				p.label-control.h4.ml-5.pl-4.mb-0 5. Cellphone
+																			.col-md-6
+																				.div.text-center
+																					span.spandecor.minus -
+																					input.plusminus.mx-1(type='text', value='1')
+																					span.spandecor.plus +
+																		.row.my-3
+																			.col-md-6
+																				p.label-control.h4.ml-5.pl-4.mb-0 6. Movies
+																			.col-md-6
+																				.div.text-center
+																					span.spandecor.minus -
+																					input.plusminus.mx-1(type='text', value='1')
+																					span.spandecor.plus +
+																		.row.my-3
+																			.col-md-6
+																				p.label-control.h4.ml-5.pl-4.mb-0 7. Flowerhorn
+																			.col-md-6
+																				.div.text-center
+																					span.spandecor.minus -
+																					input.plusminus.mx-1(type='text', value='1')
+																					span.spandecor.plus +
+																		.row.my-3
+																			.col-md-6
+																				p.label-control.h4.ml-5.pl-4.mb-0 8. Goldfish
+																			.col-md-6
+																				.div.text-center
+																					span.spandecor.minus -
+																					input.plusminus.mx-1(type='text', value='1')
+																					span.spandecor.plus +
+																		.row.my-3
+																			.col-md-6
+																				p.label-control.h4.ml-5.pl-4.mb-0 9. Aquarium
+																			.col-md-6
+																				.div.text-center
+																					span.spandecor.minus -
+																					input.plusminus.mx-1(type='text', value='1')
+																					span.spandecor.plus +
+																		.row.my-3
+																			.col-md-6
+																				p.label-control.h4.ml-5.pl-4.mb-0 10. Planter
+																			.col-md-6
+																				.div.text-center
+																					span.spandecor.minus -
+																					input.plusminus.mx-1(type='text', value='1')
+																					span.spandecor.plus +
+										.learn-more.pull-right
+											button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+											button.btn.btn-submit(type='submit') Submit
+										//- .row
+										//- 	.col-md-12.text-center.learn-more
+										//- 		button.btn.btn-common(type='button' data-toggle='modal', data-target='#exampleModal') Submit
+										#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' data-controls-modal="exampleModal")
+												.modal-dialog.modal-lg(role='document')
+													.modal-content 
+														.modal-header
+															button.close(type='button', data-dismiss='modal', aria-label='Close')
+																span.p-3(aria-hidden='true') ×
+															h5 Your reservation request has been submitted
+														.modal-body.text-left
+															| To complete the reservation process, You must pay 
+															strong ₱1500
+															|  at the office on or before 
+															strong August 27, 2018.
+															br
+															br
+															| Click here to download 
+															a(href="#" style="color: blue;") permit and payment voucher
+															//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+															//- br
+															//- br
+															//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+															//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
+															br
+															br
+															//- h5 Mode of Payment
+															//- select
+															//- 	option(value="") Full Payment
+															//- 	option(value="") Half Payment 
+														.modal-footer
+															button.btn.std-btn.btn-danger.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
+															button.btn.std-btn.btn-success.btn-info.mb-0#proceedButton(type='button') Agree
 
 	#myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		.modal-dialog(role='document')
@@ -151,7 +280,6 @@ block main
 					#calendar1
 block addjs
 	script.
-		$( "#draggable" ).draggable().resizable();
 		$('#textarea1').hide();
 		$('#textarea2').hide();
 		$('#radioup').click(function() {
@@ -177,4 +305,56 @@ block addjs
 		$('#radio2').click(function() {
 			$('#special').slideDown();
 			$('#regular').slideUp();
+		});
+		var calendar =  $('#calendarRegular').fullCalendar({
+		header: {
+				left: 'title',
+				center: 'agendaDay,month',
+				right: 'prev,next today'
+		},
+		editable: false,
+		firstDay: 0,
+		selectable: true,
+		defaultView: 'month',
+		allDaySlot: false,
+		selectHelper: true,
+		businessHours:[ 
+			{
+				start: '10:00',
+				end: '15:00',
+				dow: [0, 1, 2, 3, 4, 5, 6]
+			}
+		],
+		//- selectConstraint:{
+		//- 	start: '10:00', 
+		//- 	end: '15:00', 
+		//- },	
+		dayClick: function(date, jsEvent, view) {
+			if(view.name == 'agendaDay'){
+					eventDate = date.format('YYYY-MM-DD')
+					timeStart = date.format('hh:mm a')
+					timeEnd1 = date.add(1,'hour').format('YYYY-MM-DD hh:mm a')
+					timeEnd2 = moment(timeEnd1).format('hh:mm a')
+					console.log(eventDate)
+					console.log(timeStart)
+					console.log(timeEnd2)
+			}
+		},
+		});
+
+		$(document).ready(function() {
+			$('.minus').click(function () {
+				var $input = $(this).parent().find('input');
+				var count = parseInt($input.val()) - 1;
+				count = count < 1 ? 1 : count;
+				$input.val(count);
+				$input.change();
+				return false;
+			});
+			$('.plus').click(function () {
+				var $input = $(this).parent().find('input');
+				$input.val(parseInt($input.val()) + 1);
+				$input.change();
+				return false;
+			});
 		});

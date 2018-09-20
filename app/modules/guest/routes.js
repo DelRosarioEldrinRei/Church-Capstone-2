@@ -20,9 +20,6 @@ var upload = multer({ storage: storage})
 //===============================================================================================//
     guestRouter.use(authMiddleware.guestAuth)
     
-    // guestRouter.use(function (req, res, next) {
-    //     res.status(404).send("Sorry can't find that!")
-    //   })
     guestRouter.get('/', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' 
         or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' 
@@ -38,7 +35,15 @@ var upload = multer({ storage: storage})
     guestRouter.get('/profile', (req, res)=>{
         res.render('guest/views/profile/profile',{user: req.session.user});
         });
-
+    guestRouter.post('/profile/query', (req, res) => {
+        const queryString = `SELECT * from tbl_user WHERE int_userID = ?`;
+        console.log(req.body.id)
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
+            if (err) console.log(err);
+            res.send(results[0])
+            console.log(results)
+            });
+    });
     guestRouter.post('/query', (req, res) => {
 
         var queryString1 =`SELECT * FROM tbl_services where int_eventID = ? `
@@ -89,15 +94,6 @@ var upload = multer({ storage: storage})
         });
     });
 
-    // guestRouter.get('/allservices',(req,res)=>{
-    //     var queryString1 =`SELECT * FROM tbl_services where char_status = 'Enabled' and var_eventname <> 'First Communion'or var_eventname <> 'Funeral Service order by char_type' `
-    //     db.query(queryString1, (err, results, fields) => {
-    //       var events =results;
-    //         if (err) console.log(err);
-    //         return res.render('guest/views/index',{ events : events });
-    //     });
-
-    // })
     guestRouter.get('/schedule', (req, res)=>{res.render('guest/views/schedule2') });
     guestRouter.get('/entourage', (req, res)=>{res.render('guest/views/entourage') });
     guestRouter.get('/parishevents', (req, res)=>{res.render('guest/views/parishevents1') });
