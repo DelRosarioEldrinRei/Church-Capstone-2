@@ -145,7 +145,6 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
 //===============================================================================================//
     guestRouter.get('/reservation', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
-        JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID 
         WHERE tbl_eventinfo.int_userID = ?`
         db.query(queryString1, [req.session.user.int_userID], (err, results, fields) => {
@@ -156,8 +155,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
 
     });
     guestRouter.get('/reservation/:int_eventinfoID', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_eventinfo 
-        JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
+        var queryString1 =`SELECT * FROM tbl_eventinfo
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         WHERE tbl_eventinfo.int_eventinfoID = ${req.params.int_eventinfoID}`
         db.query(queryString1, (err, results, fields) => {
@@ -231,7 +229,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
     guestRouter.post('/reservation/queryCancel', (req,res)=>{
         var success =0
         var notsuccess =1
-        var queryString1 =`UPDATE tbl_eventapplication SET char_approvalstatus ='Cancelled' where int_eventinfoID = ${req.body.id}`
+        var queryString1 =`UPDATE tbl_eventinfo SET char_approvalstatus ='Cancelled' where int_eventinfoID = ${req.body.id}`
         db.query(queryString1, (err, results, fields) => {
             console.log(queryString1)
             console.log(err)
@@ -252,8 +250,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
 // ---------------------------------------------------------------------------------------------------------
     guestRouter.get('/reservation/:int_eventinfoID/edit', (req, res)=>{
         
-        var queryString1 =`SELECT * FROM tbl_eventinfo 
-        JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
+        var queryString1 =`SELECT * FROM tbl_eventinfo
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         WHERE tbl_eventinfo.int_eventinfoID = ${req.params.int_eventinfoID}`
         db.query(queryString1, (err, results, fields) => {
@@ -547,15 +544,13 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                 // var eventID = results[0];
                 console.log(req.session.user);
                 
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`
-                db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID,char_approvalstatus) VALUES(?,?,?)`
+                db.query(queryString1, [req.body.userID, eventID.int_eventID,"Pending"], (err, results, fields) => {
                     if (err) throw err;
                     var eventinfoID= results;
                     if(req.body.venue == 'sameaddress') var venue= req.body.address;
                     if(req.body.venue == 'hospital') var venue= req.body.hospitalname;
                     if(req.body.venue == 'other') var venue= req.body.othervenue;
-                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, var_reqstatus) VALUES(?,?,?)`;  
-                    db.query(queryString2,[eventinfoID.insertId, "Pending", "Complete"], (err, results, fields) => {
                         if (err) throw err;
                         
                         var desiredtime1= moment(req.body.desiredtime1, 'h:mm a').format('HH:mm:ss');
@@ -587,7 +582,6 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                                 });
                             });
                         });
-                    });
                 });    
             });            
             
@@ -659,25 +653,19 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
         function queries(eventid, dtime, ddate){    
             console.log(dtime)
             console.log(ddate)
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                db.query(queryString1, [req.body.userID, eventid], (err, results3, fields) => {
+             
+    var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
+    db.query(paymentQuery,[eventid], (err, results, fields) => {
+        if (err) throw err;
+        var amount= results[0];
+        var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
+            db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
+                if (err) throw err;
+                var paymentid= results;
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID,char_approvalstatus,int_paymentID) VALUES(?,?,?)`;
+                db.query(queryString1, [req.body.userID, eventid,"Pending",paymentid.insertId], (err, results3, fields) => {
                     if (err) throw err;
-                    var eventinfoID= results3;       
-                        
-                    var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
-                    db.query(paymentQuery,[eventid], (err, results, fields) => {
-                        if (err) throw err;
-                        var amount= results[0];
-                        
-                        var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
-                        db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
-                            if (err) throw err;
-                            var paymentid= results;
-
-                            var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID, var_reqstatus) VALUES(?,?,?,?)`;        
-                            db.query(queryString2,[eventinfoID.insertId, "Pending", paymentid.insertId, "Complete"], (err, results, fields) => {
-                                if (err) throw err;
-        
+                    var eventinfoID= results3;
                                 var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_relation, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?,?);`
                                 db.query(queryString3, [eventinfoID.insertId, req.body.relation, req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.birthday, req.body.birthplace], (err, results, fields) => {
                                     if (err) throw err;
@@ -712,7 +700,6 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                             });
                         });
                     });
-                });    
                 
         }
         function sponsors(eventinfoID){
@@ -783,31 +770,22 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
             function queries(eventid, dtime, ddate){
                 console.log(dtime)
                 console.log(ddate)
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                db.query(queryString1, [req.body.userID, eventid], (err, results, fields) => {
+                var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
+                db.query(paymentQuery,[eventid], (err, results, fields) => {
                     if (err) throw err;
-                    var eventinfoID= results;       
-                        
-                    var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
-                    db.query(paymentQuery,[eventid], (err, results, fields) => {
+                    var amount= results[0];
+                    
+                    var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
+                    db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
                         if (err) throw err;
-                        var amount= results[0];
-                        
-                        var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
-                        db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
-                            if (err) throw err;
-                            var paymentid= results;
-                            var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID,var_reqstatus) VALUES(?,?,?,?)`;        
-                            db.query(queryString2,[eventinfoID.insertId, "Pending", paymentid.insertId,"Incomplete"], (err, results, fields) => {
+                        var paymentid= results;
+                        var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID,char_approvalstatus, int_paymentID) VALUES(?,?,?,?)`;
+                            db.query(queryString1, [req.body.userID, eventid,"Pending", paymentid.insertId], (err, results, fields) => {
                                 if (err) throw err;
-        
+                                var eventinfoID= results;       
                                 var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_relation, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?,?);`
                                 db.query(queryString3, [eventinfoID.insertId, req.body.relation, req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.birthday, req.body.birthplace], (err, results, fields) => {
                                     if (err) throw err;
-
-                                    //select req id
-            
-
                                             var pathBirthc = '/img/req/'+req.files['birthCert'][0].filename;
                                             var nowDate = new Date();
                                             var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate();
@@ -832,7 +810,6 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                                     });      
                                 });
                             });
-                        });
                     });    
                 });        
             }
@@ -862,14 +839,10 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                 var eventID = results[0];
                 console.log(req.session.user);
                 
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?);`
-                db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID,char_approvalstatus) VALUES(?,?,?);`
+                db.query(queryString1, [req.body.userID, eventID.int_eventID,"Pending"], (err, results, fields) => {
                     if (err) throw err;
                     var eventinfoID= results;
-                    
-                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, var_reqstatus) VALUES(?,?,?)`;        
-                    db.query(queryString2,[eventinfoID.insertId, "Pending", "Complete"], (err, results, fields) => {
-                        if (err) throw err;
                         
                         if(req.body.establishment=='ourhome'){
                             var desiredtime= moment(req.body.desiredtime1, 'h:mm a').format('HH:mm:ss');
@@ -903,9 +876,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                                     });
                                 });
                             });    
-                        }
-
-                    });            
+                        }      
                 }); 
 
             }); 
@@ -924,16 +895,12 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
             db.query(queryString, (err, results, fields) => {
                 if (err) throw err;
                 var eventID = results[0];
-                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
+                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID,char_approvalstatus) VALUES(?,?,?)`;
+                db.query(queryString1, [req.body.userID, eventID.int_eventID,"Pending"], (err, results, fields) => {
                     if (err) throw err;
                     var eventinfoID= results;
-                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, var_reqstatus) VALUES(?,?,?)`;        
-                    db.query(queryString2,[eventinfoID.insertId, "Pending", "Complete"], (err, results, fields) => {
-                        if (err) throw err;
 
-                queries(venue, eventID, eventinfoID.insertId);
-            });});});
+                queries(venue, eventID, eventinfoID.insertId);;});});
         }
 
         if(req.body.venue =='INLPP'){
@@ -941,28 +908,22 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
             var queryString5= `select int_eventID from tbl_services where var_eventname="Funeral Mass";`
             db.query(queryString5, (err, results, fields) => {
                 if (err) throw err;
-                var eventID = results[0];
-                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
+                var eventID = results[0];  
+                var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
+                db.query(paymentQuery,[eventID.int_eventID], (err, results, fields) => {
                     if (err) throw err;
-                    var eventinfoID= results;       
-                        
-                    var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
-                    db.query(paymentQuery,[eventID.int_eventID], (err, results, fields) => {
+                    var amount= results[0];
+                    var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
+                    db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
                         if (err) throw err;
-                        var amount= results[0];
-                        
-                        var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
-                        db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
-                            if (err) throw err;
-                            var paymentid= results;
-
-                            var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID, var_reqstatus) VALUES(?,?,?,?)`;        
-                            db.query(queryString2,[eventinfoID.insertId, "Pending", paymentid.insertId, "Complete"], (err, results, fields) => {
-                                if (err) throw err;
+                        var paymentid= results;
+                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID,char_approvalstatus, int_paymentID) VALUES(?,?,?,?)`;
+                db.query(queryString1, [req.body.userID, eventID.int_eventID,"Pending", paymentid.insertId], (err, results, fields) => {
+                    if (err) throw err;
+                    var eventinfoID= results;
         
                 queries(venue, eventID, eventinfoID.insertId);
-            });});});});});    
+            ;});});});});    
         }
         if(req.body.venue == 'other'){
             var venue = req.body.othervenue;
@@ -970,16 +931,13 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
             db.query(queryString6, (err, results, fields) => {
                 if (err) throw err;
                 var eventID = results[0];
-                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-                db.query(queryString1, [req.body.userID, eventID.int_eventID], (err, results, fields) => {
+                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID,char_approvalstatus) VALUES(?,?,?)`;
+                db.query(queryString1, [req.body.userID, eventID.int_eventID,"Pending"], (err, results, fields) => {
                     if (err) throw err;
                     var eventinfoID= results;
-                    var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, var_reqstatus) VALUES(?,?,?)`;        
-                    db.query(queryString2,[eventinfoID.insertId, "Pending", "Complete"], (err, results, fields) => {
-                        if (err) throw err;
 
                 queries(venue, eventID, eventinfoID.insertId);
-            });});});
+            });});
         }
 
         function queries(venue,eventid, eventinfoid){
@@ -1063,24 +1021,19 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
             var eventID = results[0];
             console.log(req.session.user);
             var desiredtime1= moment(req.body.desiredtime, 'hh:mm A').format('HH:mm:ss');
-        var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID) VALUES(?,?)`;
-            db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID], (err, results, fields) => {
+            var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
+            db.query(paymentQuery,[eventID.int_eventID], (err, results, fields) => {
+                if (err) throw err;
+                var amount= results[0];
+            
+            var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
+            db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
+                if (err) throw err;
+                var paymentid= results;
+        var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, char_approvalstatus, int_paymentID) VALUES(?,?,?,?)`;
+            db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID,"Pending", paymentid.insertId], (err, results, fields) => {
                 if (err) throw err;
                 var eventinfoID= results;
-                    
-                var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
-                db.query(paymentQuery,[eventID.int_eventID], (err, results, fields) => {
-                    if (err) throw err;
-                    var amount= results[0];
-                
-                var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
-                db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
-                    if (err) throw err;
-                    var paymentid= results;
-
-                var queryString2 = `INSERT INTO tbl_eventapplication(int_eventinfoID, char_approvalstatus, int_paymentID,var_reqstatus) VALUES(?,?,?,?)`
-                db.query(queryString2,[eventinfoID.insertId, "Pending", paymentid.insertId,"Incomplete"], (err, results, fields) => {
-                    if (err) throw err;
                     var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?);`
                             db.query(queryString3, [eventinfoID.insertId, req.body.lastname, req.body.firstname, req.body.middlename,'Male', req.body.address, req.body.birthday, req.body.birthplace], (err, results, fields) => {
                                 if (err) throw err;
@@ -1109,7 +1062,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                                             return res.redirect(`/guest`);
                                         });
                                     }      
-                                });});});});});});
+                                });});});});});
     function groombapconChecking(eventinfoID){
         if(req.body.gbaptized == 1){
             if(req.body.gconfirmed==1){

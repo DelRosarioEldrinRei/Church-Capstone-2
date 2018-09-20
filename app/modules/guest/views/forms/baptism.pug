@@ -91,7 +91,7 @@ block main
                                                             .container
                                                                 #calendarSpecial
                                         .learn-more.pull-right
-                                            button.btn.btn-next(type='button') Next
+                                            button#nextButton1.btn.btn-next(type='button') Next
                             // Form Step 1
                             // Form Step 2
                             fieldset
@@ -266,10 +266,18 @@ block addjs
         $('#special').hide();
 
         $('#radio1').click(function() {
+            eventDate = '';
+            timeStart ='';
+            timeEnd2 ='';
+            $("#calendarRegular").fullCalendar('removeEvents',[1])
             $('#regular').slideDown();
             $('#special').slideUp();
         });
         $('#radio2').click(function() {
+            eventDate = '';
+            timeStart ='';
+            timeEnd2 ='';
+            $("#calendarSpecial").fullCalendar('removeEvents',[1])
             $('#special').slideDown();
             $('#regular').slideUp();
         });
@@ -330,23 +338,24 @@ block addjs
                 close: 'fa fa-remove',
             },
         });
-    script.
         var eventDate;
         var timeStart;
         var timeEnd2;
-        var dateNow1 = new Date()
-        var dateNow2 = dateNow1.getFullYear()+'-'+(dateNow1.getMonth()+1)+'-'+dateNow1.getDate();
+        var dateNow = new Date()
+        var dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(7,'days').format('YYYY-MM-DD')
 
         $.get('/guest/baptism/query').done(data=>{
             for(i=0;i<data.length;i++){
-            var dateEvent = moment(data[i].date_approvedstart).format('MM/DD/YYYY');
+            var dateEvent = moment(data[i].date_approveddate).format('MM/DD/YYYY');
+            data[i].time_approvedend = moment(data[i].time_approvedend).add(1,'hour').format('hh:mm a');
             console.log(dateEvent)
                 $('#calendarSpecial').fullCalendar('renderEvent', {
                 title: 'OCCUPIED EVENT',
                 start: `${dateEvent} ${data[i].time_approvedstart}`,
                 end: `${dateEvent} ${data[i].time_approvedend}`,
                 allDay: false,
-                color:'#00ff00'
+                color:'#4c2508',
+                textColor: "white",
                 });
                 console.log('MGA RESERVED')
                 console.log(dateEvent)
@@ -408,7 +417,7 @@ block addjs
                                 allDay: false,
                                 id:1,
                                 overlap: false,
-                                draggable:true
+                                droppable:true
                             });
                             return value
                             })
@@ -448,6 +457,54 @@ block addjs
             selectable: true,
             defaultView: 'month',
             allDaySlot: false,
-            selectHelper: true,
-            });
+            validRange: {
+                start: dateNow2,
+            },
+            businessHours: { dow: [0] },
+            selectConstraint: "businessHours",
+            select: function(date, jsEvent, view) {
+                eventDate = date.format('YYYY-MM-DD')
+                swal({
+                        title: 'You have selected this date, are you sure?',
+                        html: `Date: ${eventDate}  <br>`,
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonClass: 'btn btn-success',
+                        cancelButtonClass: 'btn btn-danger',
+                        buttonsStyling: true,   
+                    }).then((value) => {
+                        if (value.value) {
+                            $("#calendarRegular").fullCalendar('removeEvents',[1])
+                            
+                            swal(
+                                'Sucess!',
+                                'Event Date has been set.',
+                                'success'
+                            ).then((value)=>{
+                            console.log('DESIRED TIME')
+                            $('#calendarRegular').fullCalendar('renderEvent', {
+                                title: 'YOUR DESIRED TIME',
+                                start: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} 11:00 am`,
+                                end: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} 12:00pm`,
+                                allDay: false,
+                                id:1,
+                                overlap: false,
+                                droppable:true
+                            });
+                            return value
+                            })
+                        } else if (
+                            value.dismiss === swal.DismissReason.cancel
+                        ) {
+                            eventDate = '';
+                            timeStart = '';
+                            timeEnd2 = '';
+                            console.log(eventDate)
+                            console.log(timeStart)
+                            console.log(timeEnd2)
+                        }
+                    })
+            }
+        });
         
