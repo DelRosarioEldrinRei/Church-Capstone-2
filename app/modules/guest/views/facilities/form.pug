@@ -46,6 +46,14 @@ block main
 			display: inline-block;
 			vertical-align: middle;
 		}
+		.cover {
+			filter: blur(5px);
+			//- pointer-events: none;
+		}
+		.coverContent {
+			position: relative;
+			z-index: -1
+		}
 	#headers
 		#header-style-1
 			.container
@@ -91,7 +99,8 @@ block main
 										.row
 											.col-md-10.mx-auto
 												.container
-													#calendarRegular
+													h5
+														#calendarRegular
 										.learn-more.pull-right
 													button.btn.btn-next(type='button') Next
 								// Form Step 1
@@ -144,95 +153,96 @@ block main
 											.col-md-6.my-1
 												.card
 														.card-block.bg-white.shadow
-															input(type="checkbox", name="")
+															input.rentcheckbox(type="checkbox", name="")
 															.div.label-control.d-inline.h4  Rent Items
 																.card
-																	.card-block.bg-white.p-0.py-2
-																		.row
-																			.col-md-6
-																				p.label-control.text-center.h4 Item
-																			.col-md-6
-																				p.label-control.text-center.h4.mb-0 QTY
-																		.row.my-3
-																			.col-md-6
-																				p.label-control.h4.ml-5.pl-4.mb-0 1. Chair
-																			.col-md-6
-																				.div.text-center
-																					span.spandecor.minus -
-																					input.plusminus.mx-1(type='text', value='1')
-																					span.spandecor.plus +
-																		.row.my-3
-																			.col-md-6
-																				p.label-control.h4.ml-5.pl-4.mb-0 2. Mic
-																			.col-md-6
-																				.div.text-center
-																					span.spandecor.minus -
-																					input.plusminus.mx-1(type='text', value='1')
-																					span.spandecor.plus +
-																		.row.my-3
-																			.col-md-6
-																				p.label-control.h4.ml-5.pl-4.mb-0 3. Table
-																			.col-md-6
-																				.div.text-center
-																					span.spandecor.minus -
-																					input.plusminus.mx-1(type='text', value='1')
-																					span.spandecor.plus +
-																		.row.my-3
-																			.col-md-6
-																				p.label-control.h4.ml-5.pl-4.mb-0 4. Speaker
-																			.col-md-6
-																				.div.text-center
-																					span.spandecor.minus -
-																					input.plusminus.mx-1(type='text', value='1')
-																					span.spandecor.plus +
-																		.row.my-3
-																			.col-md-6
-																				p.label-control.h4.ml-5.pl-4.mb-0 5. Cellphone
-																			.col-md-6
-																				.div.text-center
-																					span.spandecor.minus -
-																					input.plusminus.mx-1(type='text', value='1')
-																					span.spandecor.plus +
-																		.row.my-3
-																			.col-md-6
-																				p.label-control.h4.ml-5.pl-4.mb-0 6. Movies
-																			.col-md-6
-																				.div.text-center
-																					span.spandecor.minus -
-																					input.plusminus.mx-1(type='text', value='1')
-																					span.spandecor.plus +
-																		.row.my-3
-																			.col-md-6
-																				p.label-control.h4.ml-5.pl-4.mb-0 7. Flowerhorn
-																			.col-md-6
-																				.div.text-center
-																					span.spandecor.minus -
-																					input.plusminus.mx-1(type='text', value='1')
-																					span.spandecor.plus +
-																		.row.my-3
-																			.col-md-6
-																				p.label-control.h4.ml-5.pl-4.mb-0 8. Goldfish
-																			.col-md-6
-																				.div.text-center
-																					span.spandecor.minus -
-																					input.plusminus.mx-1(type='text', value='1')
-																					span.spandecor.plus +
-																		.row.my-3
-																			.col-md-6
-																				p.label-control.h4.ml-5.pl-4.mb-0 9. Aquarium
-																			.col-md-6
-																				.div.text-center
-																					span.spandecor.minus -
-																					input.plusminus.mx-1(type='text', value='1')
-																					span.spandecor.plus +
-																		.row.my-3
-																			.col-md-6
-																				p.label-control.h4.ml-5.pl-4.mb-0 10. Planter
-																			.col-md-6
-																				.div.text-center
-																					span.spandecor.minus -
-																					input.plusminus.mx-1(type='text', value='1')
-																					span.spandecor.plus +
+																	#cover.card-block.p-0.py-2.cover
+																		#content.card-block.bg-white.p-0.py-2.coverContent
+																			.row
+																				.col-md-6
+																					p.label-control.text-center.h4 Item
+																				.col-md-6
+																					p.label-control.text-center.h4.mb-0 QTY
+																			.row.my-3
+																				.col-md-6
+																					p.label-control.h4.ml-5.pl-4.mb-0 1. Chair
+																				.col-md-6
+																					.div.text-center
+																						span.spandecor.minus -
+																						input.plusminus.mx-1(type='text', value='1')
+																						span.spandecor.plus +
+																			.row.my-3
+																				.col-md-6
+																					p.label-control.h4.ml-5.pl-4.mb-0 2. Mic
+																				.col-md-6
+																					.div.text-center
+																						span.spandecor.minus -
+																						input.plusminus.mx-1(type='text', value='1')
+																						span.spandecor.plus +
+																			.row.my-3
+																				.col-md-6
+																					p.label-control.h4.ml-5.pl-4.mb-0 3. Table
+																				.col-md-6
+																					.div.text-center
+																						span.spandecor.minus -
+																						input.plusminus.mx-1(type='text', value='1')
+																						span.spandecor.plus +
+																			.row.my-3
+																				.col-md-6
+																					p.label-control.h4.ml-5.pl-4.mb-0 4. Speaker
+																				.col-md-6
+																					.div.text-center
+																						span.spandecor.minus -
+																						input.plusminus.mx-1(type='text', value='1')
+																						span.spandecor.plus +
+																			.row.my-3
+																				.col-md-6
+																					p.label-control.h4.ml-5.pl-4.mb-0 5. Cellphone
+																				.col-md-6
+																					.div.text-center
+																						span.spandecor.minus -
+																						input.plusminus.mx-1(type='text', value='1')
+																						span.spandecor.plus +
+																			.row.my-3
+																				.col-md-6
+																					p.label-control.h4.ml-5.pl-4.mb-0 6. Movies
+																				.col-md-6
+																					.div.text-center
+																						span.spandecor.minus -
+																						input.plusminus.mx-1(type='text', value='1')
+																						span.spandecor.plus +
+																			.row.my-3
+																				.col-md-6
+																					p.label-control.h4.ml-5.pl-4.mb-0 7. Flowerhorn
+																				.col-md-6
+																					.div.text-center
+																						span.spandecor.minus -
+																						input.plusminus.mx-1(type='text', value='1')
+																						span.spandecor.plus +
+																			.row.my-3
+																				.col-md-6
+																					p.label-control.h4.ml-5.pl-4.mb-0 8. Goldfish
+																				.col-md-6
+																					.div.text-center
+																						span.spandecor.minus -
+																						input.plusminus.mx-1(type='text', value='1')
+																						span.spandecor.plus +
+																			.row.my-3
+																				.col-md-6
+																					p.label-control.h4.ml-5.pl-4.mb-0 9. Aquarium
+																				.col-md-6
+																					.div.text-center
+																						span.spandecor.minus -
+																						input.plusminus.mx-1(type='text', value='1')
+																						span.spandecor.plus +
+																			.row.my-3
+																				.col-md-6
+																					p.label-control.h4.ml-5.pl-4.mb-0 10. Planter
+																				.col-md-6
+																					.div.text-center
+																						span.spandecor.minus -
+																						input.plusminus.mx-1(type='text', value='1')
+																						span.spandecor.plus +
 										.learn-more.pull-right
 											button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 											button.btn.btn-submit(type='submit') Submit
@@ -357,4 +367,16 @@ block addjs
 				$input.change();
 				return false;
 			});
+		});
+
+		$(".rentcheckbox").click(function(){
+			if($(this).prop("checked") == true){
+				$("#cover").toggleClass("cover")
+				$("#content").toggleClass("coverContent")
+			}
+			else if($(this).prop("checked") == false){
+				$("#cover").toggleClass("cover")
+				$("#content").toggleClass("coverContent")
+				$(".plusminus").val("1");
+			}
 		});
