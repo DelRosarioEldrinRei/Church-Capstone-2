@@ -34,8 +34,8 @@ block main
 				.container
 					.row
 						.col-md-12.form-wizard
-							// Form Wizard
-							form(action="/guest/funeral/form" enctype="multipart/form-data" method="post" data-toggle='validator')
+								// Form Wizard
+								//- form(action="/guest/funeral/form" enctype="multipart/form-data" method="post" data-toggle='validator')
 								h3 Funeral Blessing Form
 								p.mb-2 Fill all form fields
 								.form-wizard-steps.form-wizard-tolal-steps-3
@@ -63,14 +63,14 @@ block main
 										.row
 											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 												.form-group
-													input.funeral.form-control(type='date' name='desireddate1' required data-error='Please enter your desired date')
+													input.funeral.form-control#desireddate1(type='date' name='desireddate1' required data-error='Please enter your desired date')
 													.help-block.with-errors
 										.row
 											.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 												.form-group
 													h5.label-control Desired Time
 														.text-danger.d-inline  *
-													input.desiredTime.form-control(type='text' name='desiredtime1' placeholder="Input Time"  required='', data-error='Please enter your desired time')
+													input.desiredTime.form-control#desiredtime1(type='text' name='desiredtime1' placeholder="Input Time"  required='', data-error='Please enter your desired time')
 													.help-block.with-errors
 										.learn-more.pull-right
 													button#next.btn.btn-next(type='button') Next
@@ -80,20 +80,20 @@ block main
 									h4
 										.d-none.d-sm-inline Blessing Details:
 										span Step 2 - 2
-										input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+										input.form-control#userID(type='hidden' name='userID' value=`${user.int_userID}`)
 										h6.label-control Name of the deceased
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.pt-0
-													input.form-control(type='text' placeholder="Last Name *" name='lastname' required='' pattern="[A-Za-z ]{2,}" data-error='Please enter your last name')
+													input.form-control#lastname(type='text' placeholder="Last Name *" name='lastname' required='' pattern="[A-Za-z ]{2,}" data-error='Please enter your last name')
 													.help-block.with-errors
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group.pt-0
-													input.form-control(type='text' placeholder="First Name *" name='firstname' required='' pattern="[A-Za-z ]{2,}" data-error='Please enter your first name')
+													input.form-control#firstname(type='text' placeholder="First Name *" name='firstname' required='' pattern="[A-Za-z ]{2,}" data-error='Please enter your first name')
 													.help-block.with-errors
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.pt-0
-													input.form-control(type='text' placeholder="Middle Name" name='middlename')
+													input.form-control#middlename(type='text' placeholder="Middle Name" name='middlename')
 													.help-block.with-errors
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
@@ -102,13 +102,13 @@ block main
 														.text-danger.d-inline  *
 														.form-check.ml-3
 															label.form-check-label
-																input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Male" checked)
+																input.form-check-input#male(type="radio" name="gender" value="Male" checked)
 																| Male
 																span.circle
 																	span.check
 														.form-check
 															label.form-check-label.ml-3
-																input.form-check-input(type="radio" name="gender" id="exampleRadios2" value="Female")
+																input.form-check-input#female(type="radio" name="gender" value="Female")
 																| Female
 																span.circle
 																	span.check
@@ -116,20 +116,20 @@ block main
 												.form-group
 													h6.label-control Birthday
 														.text-danger.d-inline  *
-													input.birthday.form-control(type='date' name='birthday' required='' data-error='Please enter your birthday')
+													input.birthday.form-control#birthday(type='date' name='birthday' required='' data-error='Please enter your birthday')
 													.help-block.with-errors
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Birthplace
 														.text-danger.d-inline  *
-													input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9.,- ]{2,}" data-error='Please enter your birthplace')
+													input.form-control#birthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9.,- ]{2,}" data-error='Please enter your birthplace')
 													.help-block.with-errors
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Relationship with the Deceased
 														.text-danger.d-inline  *
-													select(type="text" name='relation' required=''  data-error='Please choose an option')
+													select#relation(type="text" name='relation' required=''  data-error='Please choose an option')
 														option(selected="" value="" disabled) Choose..
 														option Aunt/Uncle
 														option BF/GF
@@ -144,45 +144,17 @@ block main
 													.help-block.with-errors(style="margin-top:2rem!important;")
 											.col-md-8.pl-lg-0.px-md-0.pl-md-3.px-sm-0
 												.form-group
-													h6(for='exampleFormControlTextarea1') Address
+													h6(for='address') Address
 														.text-danger.d-inline  *
-													textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" data-error='Please choose your address')
+													textarea#address.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" data-error='Please choose your address')
 													.help-block.with-errors
-											//- .col-md-4.p-lg-0.px-md-3.px-sm-0
-											//- 	.form-group
-											//- 		h6.label-control Desired Date
-											//- 		input.datepicker.FBlessingDesiredDate.form-control(type='date' name='desireddate')
-											//- .col-md-4.px-lg-3.px-md-0.px-sm-0
-											//- 	.form-group
-											//- 		h6.label-control Desired Time
-											//- 		input.timepicker.form-control(type='text' name='desiredtime')
-
-											//- .col-md-8.px-lg-3.px-md-3.px-sm-0
-											//- 	.row
-											//- 		.col-md-12.px-lg-0.px-md-0.px-sm-0
-											//- 	.row
-											//- 		.col-md-6.p-lg-0.px-md-3.px-sm-0
-											//- 			.form-group
-											//- 				h6.label-control Desired Date
-											//- 				input.datepicker.FBlessingDesiredDate.form-control(type='date' name='desireddate')
-											//- 		.col-md-6.pl-lg-3.px-md-0.px-sm-0
-											//- 			.form-group
-											//- 				h6.label-control Desired Time
-											//- 				input.timepicker.form-control(type='text' name='desiredtime')
-															//- .help-block.with-errors
-													//- .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-3
-													//- 	h6.label-control Birth Certificate
-													//- 	input(type='file', name='birthCertificate' accept='image/*' required)
-													//- .col-md-6.mt-2.px-lg-3.px-md-3.px-sm-3.mb-2
-													//- 	h6.label-control Death Certificate
-													//- 	input(type='file', name='deathCertificate' accept='image/*' required)
 										.row
 											//- .col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
 											.col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Cause of Death
 														.text-danger.d-inline  *
-													textarea#exampleFormControlTextarea2.form-control(rows='3' name='details' placeholder="Please enter the cause of death" required data-error='Please specify cause of death')
+													textarea#details.form-control(rows='3' name='details' placeholder="Please enter the cause of death" required data-error='Please specify cause of death')
 													.help-block.with-errors
 												.form-group
 													label.label-control Place where the will happen
@@ -190,25 +162,25 @@ block main
 													.ml-4
 														.form-check
 															label.form-check-label
-																input.form-check-input(type="radio" name="venue" id="exampleRadios1" value="sameaddress" checked)
+																input.exampleRadios1.form-check-input#blessingloc1(type="radio" name="venue" value="sameaddress" checked)
 																| Same as his/her address
 																span.circle
 																	span.check
 														.form-check
 															label.form-check-label
-																input#radioup.form-check-input(type="radio" name="venue" value="INLPP")
+																input.radioup.form-check-input#blessingloc2(type="radio" name="venue" value="INLPP")
 																| INLPP
 																span.circle
 																	span.check
 														.form-check
 															label.form-check-label
-																input#exampleRadios3.form-check-input(type="radio" name="venue" value="other")
+																input.exampleRadios3.form-check-input#blessingloc3(type="radio" name="venue" value="other")
 																.dropdown-toggle.mr-3 Other
 																span.circle
 																	span.check
 															#textarea2.form-group
 																h6.label-control Enter Complete Address
-																textarea.form-control(placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" rows="2" name='othervenue')
+																textarea.form-control#othervenue(placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" rows="2" name='othervenue')
 																.help-block.with-errors
 
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
@@ -223,20 +195,85 @@ block main
 													//- 	input(type='file', name='deathCertificate' accept='image/*' required)
 									.learn-more.pull-right
 										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-										button.btn.btn-submit(type='submit') Submit
+										button.btn.btn-submit#submitButton(type='submit'  value= `${user.int_userID}`) Submit
 block addjs
 	script.
+		$(document).ready(function(){
+				$('#submitButton').click(function(){
+						var idNow = $(this).val();
+						console.log(idNow)
+						$.post('/guest/funeral/query',{
+							firstname: $('#firstname').val(),id:idNow
+						}).done(data=>{
+							if($('#male').prop("checked")){
+								gender= $('#male').val()
+							}
+							if($('#female').prop("checked")){
+								gender= $('#female').val()
+							}
+							if($('#blessingloc1').prop("checked")){
+								venue= $('#address').val(),
+								blessloc='1'
+							}
+							if($("#blessingloc2").prop("checked")){
+								venue= 'Ina ng Lupang Pangako',
+								blessloc='2'
+							}
+							if($("#blessingloc3").prop("checked")){
+								venue= $('#othervenue').val(),
+								blessloc='1'
+							}
+								var formData= new FormData();
+								formData.append('desireddate1', $('#desireddate1').val()),
+								formData.append('desiredtime1', $('#desiredtime1').val()),
+								formData.append('userID', $('#userID').val()),
+								formData.append('lastname', $('#lastname').val()),
+								formData.append('firstname', $('#firstname').val()),
+								formData.append('middlename', $('#middlename').val()),
+								formData.append('gender', gender),
+								formData.append('venue', venue),
+								formData.append('blessloc', blessloc),
+								formData.append('birthday', $('#birthday').val()),
+								formData.append('birthplace', $('#birthplace').val()),
+								formData.append('address', $('#address').val()),
+								formData.append('details', $('#details').val()),
+								formData.append('relation', $('#relation').val()),
+								formData.append('image', $('#file-0b')[0].files[0]);
+							$.ajax({
+								type: 'POST',
+								url: '/guest/funeral/form',
+								data: formData,
+								processData:false,
+								contentType:false,
+								success: function(data){
+									swal({
+										title: "Success",
+										text: 'Your request has been submitted; however, the time is still tentative. We will notify you once the scheduled time is changed. Thank you and God bless.',
+										icon: 'success',
+										buttons:{
+											Okay:'okay'
+										}
+									}).then((value)=>{
+										window.location='/guest'
+									})
+								}
+
+							})
+
+						})
+							
+					})		
 		$('#textarea1').hide();
 		$('#textarea2').hide();
-		$('#radioup').click(function() {
+		$('.radioup').click(function() {
 			$('#textarea1').slideUp();
 			$('#textarea2').slideUp();
 		});
-		$('#exampleRadios1').click(function() {
+		$('.exampleRadios1').click(function() {
 			$('#textarea1').slideDown();
 			$('#textarea2').slideUp();
 		});
-		$('#exampleRadios3').click(function() {
+		$('.exampleRadios3').click(function() {
 			$('#textarea1').slideUp();
 			$('#textarea2').slideDown();
 		});
@@ -260,6 +297,7 @@ block addjs
 						clear: 'fa fa-trash',
 						close: 'fa fa-remove',
 				},
+			});
 			});
 			//- console.log($('.funeral').val());
 			//- console.log($('.desiredTime').val());

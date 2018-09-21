@@ -34,7 +34,7 @@ block main
 			.container
 				.row
 					.col-md-12.form-wizard
-						form(action="/guest/anointing/form" enctype="multipart/form-data" method="post" data-toggle='validator')
+							//- form(action="/guest/anointing/form" enctype="multipart/form-data" method="post" data-toggle='validator')
 							h3 Anointing Application
 							p Fill all form fields
 							.form-wizard-steps.form-wizard-tolal-steps-3
@@ -62,14 +62,14 @@ block main
 									.row
 										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
-												input.desiredDate.form-control(type='date' name='desireddate1' data-error='Please enter date' required)
+												input.desiredDate.form-control#desireddate1(type='date' name='desireddate1' data-error='Please enter date' required)
 												.help-block.with-errors
 									.row
 										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
 												h5.label-control Desired Time
 													.text-danger.d-inline  *
-												input.desiredTime.form-control(type='text' name='desiredtime1' placeholder="Input Time"  required='', data-error='Please enter your desired time')
+												input.desiredTime.form-control#desiredtime1(type='text' name='desiredtime1' placeholder="Input Time"  required='', data-error='Please enter your desired time')
 												.help-block.with-errors
 									.learn-more.pull-right
 												button.btn.btn-next(type='button') Next
@@ -79,20 +79,20 @@ block main
 								h4
 									.d-none.d-sm-inline Anointing Details:
 									span Step 2 - 2
-									input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+									input.form-control#userID(type='hidden' name='userID' value=`${user.int_userID}`)
 									h5.label-control Name of the Ill:
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.pt-0
-												input.form-control(type='text' placeholder="Last Name *" name='lastname', required='' pattern="[A-Za-z ]{2,}" data-error='Please enter lastname')
+												input.form-control#lastname(type='text' placeholder="Last Name *" name='lastname', required='' pattern="[A-Za-z ]{2,}" data-error='Please enter lastname')
 												.help-block.with-errors
 										.col-md-4.p-lg-0.px-md-3.px-sm-0
 											.form-group.p-0
-												input.form-control(type='text' placeholder="First Name *" name='firstname'  required='' pattern="[A-Za-z ]{3,}" data-error='Please enter firstname')
+												input.form-control#firstname(type='text' placeholder="First Name *" name='firstname'  required='' pattern="[A-Za-z ]{3,}" data-error='Please enter firstname')
 												.help-block.with-errors
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.pt-0
-												input.form-control(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z ]{3,}" )
+												input.form-control#middlename(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z ]{3,}" )
 												.help-block.with-errors
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
@@ -111,20 +111,20 @@ block main
 											.form-group
 												h5.label-control Birthday
 													.text-danger.d-inline  *
-												input.birthday.form-control(type='date' name='birthday'  required='', data-error='Please enter your birthday')
+												input.birthday.form-control#birthday(type='date' name='birthday'  required='', data-error='Please enter your birthday')
 												.help-block.with-errors
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
 												h5.label-control Birthplace:
 													.text-danger.d-inline  *
-												input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9,.- ]{3,}"  data-error='Please enter birthplace')
+												input.form-control#birthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9 ]{3,}"  data-error='Please enter birthplace')
 												.help-block.with-errors
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
 												h5.label-control Relationship with the Ill
 													.text-danger.d-inline  *
-												select(type="text" name='relation'  required=''  data-error='Please choose an option')
+												select#relation(type="text" name='relation'  required=''  data-error='Please choose an option')
 													option(selected="" value="" disabled) Choose...
 													option Aunt/Uncle
 													option Child
@@ -137,31 +137,22 @@ block main
 													option Sibling
 													option Spouse
 												.help-block.with-errors(style="margin-top:2rem!important;")
-										//- .col-md-8
-										//- 	.row
-										//- 		.col-md-6.p-lg-0.px-md-3.px-sm-0
-										//- 			.form-group
-										//- 				h5.label-control Desired Date
-										//- 				input.datepicker.form-control(type='date' name='desireddate1'  required='', data-error='Please enter your desired date')
-										//- 		.col-md-6.px-lg-3.px-md-0.px-sm-0
-										//- 			.form-group
-										//- 				h5.label-control Desired Time
-										//- 				input.timepicker.form-control(type='text' name='desiredtime1'  required='', data-error='Please enter your desired time')
+										
 									.row
 										
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
-												h5(for='exampleFormControlTextarea1') Address
+												h5(for='address') Address
 													.text-danger.d-inline  *
-												textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" data-error='Please enter complete address')
+												textarea#address.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" data-error='Please enter complete address')
 												label
 													.help-block.with-errors
 										
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
-												h5(for='exampleFormControlTextarea1') Details
+												h5(for='details') Details
 													.text-danger.d-inline  *
-												textarea#exampleFormControlTextarea1.form-control.mb-0(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
+												textarea#details.form-control.mb-0(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
 												label
 													.help-block.with-errors
 									.row
@@ -172,7 +163,7 @@ block main
 												.ml-4
 													.form-check
 														label.form-check-label
-															input#radioup.form-check-input(type="radio" name="venue" value="sameaddress" checked)
+															input#sameaddress.form-check-input(type="radio" name="venue" value="sameaddress" checked)
 															| Same as his/her address
 															span.circle
 																span.check
@@ -183,7 +174,7 @@ block main
 															span.circle
 																span.check
 														#textarea1.form-group
-															textarea.form-control(placeholder="Please enter the room number, the hospital name & address" rows="3" name='hospitalname' pattern="[A-Za-z0-9 ]{3,}" )
+															textarea.form-control#hospitalname(placeholder="Please enter the room number, the hospital name & address" rows="3" name='hospitalname' pattern="[A-Za-z0-9 ]{3,}" )
 													.form-check
 														label.form-check-label
 															input#exampleRadios3.form-check-input(type="radio" name="venue" value="other")
@@ -191,7 +182,7 @@ block main
 															span.circle
 																span.check
 														#textarea2.form-group
-															textarea.form-control(placeholder="Please enter complete address" rows="3" name='othervenue' pattern="[A-Za-z0-9 ]{3,}" )
+															textarea.form-control#othervenue(placeholder="Please enter complete address" rows="3" name='othervenue' pattern="[A-Za-z0-9 ]{3,}" )
 										
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
@@ -202,12 +193,75 @@ block main
 														.help-block.with-errors
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-									button.btn.btn-submit(type='submit') Submit
+									button.btn.btn-submit#submitButton(type='button' value= `${user.int_userID}` ) Submit
 block addjs
-	script.
+	script(type='text/javascript').
+		
+		$(document).ready(function(){
+			$('#submitButton').click(function(){
+					var idNow = $(this).val();
+					console.log(idNow)
+					$.post('/guest/anointing/query',{
+						firstname: $('#firstname').val(),id:idNow
+					}).done(data=>{
+						if($('#customRadio1').prop("checked")){
+							gender= $('#customRadio1').val()
+						}
+						if($('#customRadio2').prop("checked")){
+							gender= $('#customRadio2').val()
+						}
+						if($('#sameaddress').prop("checked")){
+							venue= data.firstQuery.var_useraddress
+						}
+						if($("#exampleRadios1").prop("checked")){
+							venue= $('#hospitalname').val()
+						}
+						if($("#exampleRadios3").prop("checked")){
+							venue= $('#othervenue').val()
+						}
+							var formData= new FormData();
+							formData.append('desireddate1', $('#desireddate1').val()),
+							formData.append('desiredtime1', $('#desiredtime1').val()),
+							formData.append('userID', $('#userID').val()),
+							formData.append('lastname', $('#lastname').val()),
+							formData.append('firstname', $('#firstname').val()),
+							formData.append('middlename', $('#middlename').val()),
+							formData.append('gender', gender),
+							formData.append('venue', venue),
+							formData.append('birthday', $('#birthday').val()),
+							formData.append('birthplace', $('#birthplace').val()),
+							formData.append('address', $('#address').val()),
+							formData.append('details', $('#details').val()),
+							formData.append('relation', $('#relation').val()),
+							formData.append('image', $('#file-0b')[0].files[0]);
+						$.ajax({
+							type: 'POST',
+							url: '/guest/anointing/form',
+							data: formData,
+							processData:false,
+							contentType:false,
+							success: function(data){
+								swal({
+									title: "Success",
+									text: 'Your request has been submitted; however, the time is still tentative. We will notify you once the scheduled time is changed. Thank you and God bless.',
+									icon: 'success',
+									buttons:{
+										Okay:'okay'
+									}
+								}).then((value)=>{
+									window.location='/guest'
+								})
+							}
+
+						})
+
+					})
+						
+				})		
+
 		$('#textarea1').hide();
 		$('#textarea2').hide();
-		$('#radioup').click(function() {
+		$('#sameaddress').click(function() {
 			$('#textarea1').slideUp();
 			$('#textarea2').slideUp();
 		});
@@ -238,4 +292,5 @@ block addjs
 					clear: 'fa fa-trash',
 					close: 'fa fa-remove',
 			},
-		});
+		});	
+				})
