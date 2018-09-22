@@ -5,18 +5,34 @@ var db = require('../../lib/database')();
 
 indexRouter.use(authMiddleware.noAuthed)
 indexRouter.get('/', (req, res) => {
-  var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage' or var_eventname = 'Facility Reservation' or var_eventname = 'Document Request' or var_eventname = 'Establishment Blessing'  or var_eventname = 'Anointing of the sick' or var_eventname='Confirmation'`
+  var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage'  or var_eventname = 'Anointing of the sick'`
   db.query(queryString1, (err, results, fields) => {
     var events =results;
-      if (err) console.log(err);
-      return res.render('home/views/index',{ events : events });
+    var queryString1 =`SELECT * FROM tbl_serviceutilities`
+      db.query(queryString1, (err, results, fields) => {
+        var services =results;
+        if (err) console.log(err);
+        return res.render('home/views/index',{ events : events, services: services });
   });
+});
 
 })
 indexRouter.post('/query', (req, res) => {
   var queryString1 =`SELECT * FROM tbl_services where int_eventID = ? `
   db.query(queryString1,[req.body.id], (err, results1, fields) => {
     var queryString2 =`select var_reqname from tbl_requirementtype where int_eventID = ?`
+    
+  db.query(queryString2,[req.body.id], (err, results2, fields) => {
+    if (err) console.log(err);
+    res.send({firstQuery:results1[0],secondQuery:results2});
+    });
+  })
+})
+
+indexRouter.post('/queryservice', (req, res) => {
+  var queryString1 =`SELECT * FROM tbl_serviceutilities where int_serviceutilitiesID = ? `
+  db.query(queryString1,[req.body.id], (err, results1, fields) => {
+    var queryString2 =`select var_reqname from tbl_servicereqtype where int_serviceutilitiesID = ?`
     
   db.query(queryString2,[req.body.id], (err, results2, fields) => {
     if (err) console.log(err);
@@ -57,12 +73,17 @@ indexRouter.get('/schedule', (req, res) => {
 
   res.render('home/views/schedule', req.query);
 });
+indexRouter.get('/facilities', (req, res) => {
+
+  res.render('home/views/facilities', req.query);
+});
 
 indexRouter.get('/services', (req, res) => {
-  var queryString1 =`SELECT * FROM tbl_services `
-  db.query(queryString1, (err, results, fields) => {
+  var queryString1 =`SELECT * FROM tbl_services where var_eventname = "Anointing of the sick" or var_eventname = "Funeral Service" or var_eventname = "Baptism" var_eventname = "Marriage" order by char_type`
+  db.query(queryString1, (err, results1, fields) => {
+    
     if (err) console.log(err);
-    res.render('home/views/services',{ events : results });
+    res.render('home/views/services',{ events : results1 });
   });
 });
 

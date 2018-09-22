@@ -35,7 +35,7 @@ block main
             .container
                 .row
                     .col-md-12.form-wizard
-                        form#form(action="/guest/marriage/form" method="post" enctype="multipart/form-data")
+                                //- form#form(action="/guest/marriage/form" method="post" enctype="multipart/form-data")
                                 h3 Marriage Application Request
                                 p Fill all form field to go next step
                                 // Form progress
@@ -82,13 +82,13 @@ block main
                                         .row
                                             .col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
                                                 .form-group
-                                                    input.marriage.form-control(type='date' name='desireddate')
+                                                    input.marriage.form-control#desiredtime1(type='date' name='desireddate')
                                         .row
                                             .col-md-12.text-lg-center.text-sm-left
                                                 .form-group
                                                     h6.label-control Desired Time
                                                         br
-                                                        select.ml-lg-2.mt-lg-2(type="text" name='desiredtime')
+                                                        select#desiredtime1.ml-lg-2.mt-lg-2(type="text" name='desiredtime')
                                                             option 10:00AM
                                                             option 11:00AM
                                                             option 1:00PM
@@ -112,43 +112,43 @@ block main
                                                         .help-block.with-errors
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
-                                                        input.form-control(type='text' placeholder="First Name" name='firstname' required='' pattern="[A-Za-z ]{2,}" )
+                                                        input.form-control#firstname(type='text' placeholder="First Name" name='firstname' required='' pattern="[A-Za-z ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
-                                                        input.form-control(type='text' placeholder="Middle Name" name='middlename' required='' pattern="[A-Za-z ]{2,}" )
+                                                        input.form-control#middlename(type='text' placeholder="Middle Name" name='middlename' required='' pattern="[A-Za-z ]{2,}" )
                                                         .help-block.with-errors
                                             .row
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Birthday
-                                                        input.birthday.form-control(type='date' name='birthday')
+                                                        input.birthday.form-control#birthday(type='date' name='birthday')
                                                         .help-block.with-errors
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Birthplace:
-                                                        input.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
+                                                        input.form-control#birthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Nationality:
-                                                        input.form-control(type='text' name='gnationality' value='Filipino')
+                                                        input.form-control#gnationality(type='text' name='gnationality' value='Filipino')
                                                         .help-block.with-errors
                                             .row
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Father's Full Name:
-                                                        input.form-control(type='text' name='gfathername' placeholder="Ex. Juan Dela Cruz" required='' pattern="[A-Za-z, ]{2,}" )
+                                                        input.form-control#gfathername(type='text' name='gfathername' placeholder="Ex. Juan Dela Cruz" required='' pattern="[A-Za-z, ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Father's Birthplace:
-                                                        input.form-control(type='text' name='gfatherbplace' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
+                                                        input.form-control#gfatherbplace(type='text' name='gfatherbplace' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group.text-lg-center.text-sm-left
                                                         h6.label-control Father's Religion
-                                                        select(type="text" name='gfatherreligion')
+                                                        select#gfatherreligion(type="text" name='gfatherreligion')
                                                             option Catholic
                                                             option Non-Catholic
                                                             option Non-Christion
@@ -157,17 +157,17 @@ block main
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Mother's Full Name:
-                                                        input.form-control(type='text' name='gmothername' placeholder="Ex. Maria Dela Cruz" required='' pattern="[A-Za-z, ]{2,}" )
+                                                        input.form-control#gmothername(type='text' name='gmothername' placeholder="Ex. Maria Dela Cruz" required='' pattern="[A-Za-z, ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Mother's Birthplace:
-                                                        input.form-control(type='text' name='gmotherbplace' placeholder="Ex. San Isidro, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
+                                                        input.form-control#gmotherbplace(type='text' name='gmotherbplace' placeholder="Ex. San Isidro, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group.text-lg-center.text-sm-left
                                                         h6.label-control Mother's Religion
-                                                        select(type="text" name='gmotherreligion')
+                                                        select#gmotherreligion(type="text" name='gmotherreligion')
                                                             option Catholic
                                                             option Non-Catholic
                                                             option Non-Christion
@@ -178,7 +178,7 @@ block main
                                                         .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
                                                             .form-group
                                                                 h6.label-control Civil Status
-                                                                select(type="text" name='gcivilstatus')
+                                                                select#gcivilstatus(type="text" name='gcivilstatus')
                                                                     option Single
                                                                     option Married
                                                                     option Divorced
@@ -186,7 +186,7 @@ block main
                                                         .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
                                                             .form-group
                                                                 h6.label-control Religion
-                                                                select(type="text" name='greligion')
+                                                                select#greligion(type="text" name='greligion')
                                                                     option Catholic
                                                                     option Non-Catholic
                                                                     option Non-Christion
@@ -194,18 +194,18 @@ block main
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
                                                         h6(for='exampleFormControlTextarea1') Address:
-                                                        textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
+                                                        textarea#address.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                             .row
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Current Parish:
-                                                        input.form-control(type='text' name='gcurrentparish' placeholder=" Ex. Ina ng Lupang Pangako Parish")
+                                                        input.form-control#gcurrentparish(type='text' name='gcurrentparish' placeholder=" Ex. Ina ng Lupang Pangako Parish")
                                                         .help-block.with-errors
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Occupation:
-                                                        input.form-control(type='text' name='goccupation' placeholder="Ex. Driver")
+                                                        input.form-control#goccupation(type='text' name='goccupation' placeholder="Ex. Driver")
                                                         .help-block.with-errors
                                             .row
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
@@ -213,21 +213,21 @@ block main
                                                         h6.label-control Baptized?
                                                         .form-check
                                                             label.form-check-label
-                                                                input.exampleRadios1.form-check-input(type="radio" name="gbaptized" value="1")
+                                                                input.exampleRadios1.form-check-input#gbaptized1(type="radio" name="gbaptized1" value="1")
                                                                 .dropdown-toggle.mr-3 Yes
                                                                 span.circle
                                                                     span.check
                                                             .textarea1.form-group
                                                                 .form-group
                                                                     label.label-control Parish where you were baptized:
-                                                                    input.form-control(type='text' name='gbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z., ]{2,}" )
+                                                                    input.form-control#gbapplace(type='text' name='gbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z., ]{2,}" )
                                                                 .form-group
                                                                     label.label-control Date when you were baptized:
-                                                                    input.datepicker2.form-control(type='date' name='gbapdate')
+                                                                    input.datepicker2.form-control#gbapdate(type='date' name='gbapdate')
                                                                     
                                                         .form-check
                                                             label.form-check-label
-                                                                input.radioup.form-check-input(type="radio" name="gbaptized" value="0")
+                                                                input.radioup.form-check-input#gbaptized0(type="radio" name="gbaptized0" value="0")
                                                                 | No
                                                                 span.circle
                                                                     span.check
@@ -236,21 +236,21 @@ block main
                                                         h6.label-control Confirmed?
                                                         .form-check
                                                             label.form-check-label
-                                                                input.exampleRadios2.form-check-input(type="radio" name="gconfirmed" value="1")
+                                                                input.exampleRadios2.form-check-input#gconfirmed1(type="radio" name="gconfirmed1" value="1")
                                                                 .dropdown-toggle.mr-3 Yes
                                                                 span.circle
                                                                     span.check
                                                             .textarea2.form-group
                                                                 .form-group
                                                                     label.label-control Parish Where You Were Confirmed:
-                                                                    input.form-control(type='text' name='gconplace' placeholder=" Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z., ]{2,}" )
+                                                                    input.form-control#gconplace(type='text' name='gconplace' placeholder=" Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z., ]{2,}" )
                                                                 .form-group
                                                                     label.label-control Date When You Were Confirmed:
-                                                                    input.datepicker2.form-control(type='date' name='gcondate')
+                                                                    input.datepicker2.form-control#gcondate(type='date' name='gcondate')
                                                                 
                                                         .form-check
                                                             label.form-check-label
-                                                                input.radioup2.form-check-input(type="radio" name="gconfirmed" value="0" )
+                                                                input.radioup2.form-check-input#gconfirmed0(type="radio" name="gconfirmed0" value="0" )
                                                                 | No
                                                                 span.circle
                                                                     span.check
@@ -279,47 +279,47 @@ block main
                                             .row
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
-                                                        input.form-control(type='text' placeholder="Last Name" name='blastname' required='' pattern="[A-Za-z ]{2,}" )
+                                                        input.form-control#blastname(type='text' placeholder="Last Name" name='blastname' required='' pattern="[A-Za-z ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
-                                                        input.form-control(type='text' placeholder="First Name" name='bfirstname' required='' pattern="[A-Za-z ]{2,}" )
+                                                        input.form-control#bfirstname(type='text' placeholder="First Name" name='bfirstname' required='' pattern="[A-Za-z ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
-                                                        input.form-control(type='text' placeholder="Middle Name" name='bmiddlename' required='' pattern="[A-Za-z ]{2,}" )
+                                                        input.form-control#bmiddlename(type='text' placeholder="Middle Name" name='bmiddlename' required='' pattern="[A-Za-z ]{2,}" )
                                                         .help-block.with-errors
                                             .row
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Birthday
-                                                        input.birthday.form-control(type='date' name='bbirthday')
+                                                        input.birthday.form-control#bbirthday(type='date' name='bbirthday')
                                                         .help-block.with-errors
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Birthplace:
-                                                        input.form-control(type='text' name='bbirthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
+                                                        input.form-control#bbirthplace(type='text' name='bbirthplace' placeholder="Ex. Payatas, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Nationality:
-                                                        input.form-control(type='text' name='bnationality' value='Filipino')
+                                                        input.form-control#bnationality(type='text' name='bnationality' value='Filipino')
                                                         .help-block.with-errors
                                             .row
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Father's Full Name:
-                                                        input.form-control(type='text' name='bfathername' placeholder="Ex. Juan Dela Cruz" required='' pattern="[A-Za-z., ]{2,}" )
+                                                        input.form-control#bfathername(type='text' name='bfathername' placeholder="Ex. Juan Dela Cruz" required='' pattern="[A-Za-z., ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Father's Birthplace:
-                                                        input.form-control(type'text' name='bfatherbplace' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z0-9.,- ]{2,}" )
+                                                        input.form-control#bfatherbplace(type'text' name='bfatherbplace' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z0-9.,- ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group.text-lg-center.text-sm-left
                                                         h6.label-control Father's Religion
-                                                        select(type="text" name='bfatherreligion')
+                                                        select#bfatherreligion(type="text" name='bfatherreligion')
                                                             option Catholic
                                                             option Non-Catholic
                                                             option Non-Christion
@@ -328,17 +328,17 @@ block main
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Mother's Full Name:
-                                                        input.form-control(type='text' name='bmothername' placeholder="Ex. Maria Dela Cruz" required='' pattern="[A-Za-z ]{2,}" )
+                                                        input.form-control#bmothername(type='text' name='bmothername' placeholder="Ex. Maria Dela Cruz" required='' pattern="[A-Za-z ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Mother's Birthplace:
-                                                        input.form-control(type'text' name='bmotherbplace' placeholder="Ex. San Isidro, Quezon City" required='' pattern="[A-Za-z.,- ]{2,}" )
+                                                        input.form-control#bmotherbplace(type'text' name='bmotherbplace' placeholder="Ex. San Isidro, Quezon City" required='' pattern="[A-Za-z.,- ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group.text-lg-center.text-sm-left
                                                         h6.label-control Mother's Religion
-                                                        select(type="text" name='bmotherreligion')
+                                                        select#bmotherreligion(type="text" name='bmotherreligion')
                                                             option Catholic
                                                             option Non-Catholic
                                                             option Non-Christion
@@ -349,7 +349,7 @@ block main
                                                         .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
                                                             .form-group
                                                                 h6.label-control Civil Status
-                                                                select(type="text" name='bcivilstatus')
+                                                                select#bcivilstatus(type="text" name='bcivilstatus')
                                                                     option Single
                                                                     option Married
                                                                     option Divorced
@@ -357,15 +357,15 @@ block main
                                                         .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
                                                             .form-group
                                                                 h6.label-control Religion
-                                                                select(type="text" name='breligion')
+                                                                select#breligion(type="text" name='breligion')
                                                                     option Catholic
                                                                     option Non-Catholic
                                                                     option Non-Christion
                                                                     option No religion
                                                 .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                     .form-group
-                                                        h6(for='exampleFormControlTextarea1') Address:
-                                                        textarea#exampleFormControlTextarea1.form-control(rows='2' name='baddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
+                                                        h6(for='badress') Address:
+                                                        textarea#badress.form-control(rows='2' name='baddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                             .row
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
@@ -373,24 +373,24 @@ block main
                                                         h6.label-control Are You 5months or Above Pregnant?
                                                         .form-check.ml-3
                                                             label.form-check-label
-                                                                input.form-check-input(type="radio" name="boolpregnant" id="exampleRadios2" value="1")
+                                                                input.form-check-input#boolpregnant1(type="radio" name="boolpregnant1" value="1")
                                                                 | Yes
                                                                 span.circle
                                                                     span.check
                                                         .form-check.ml-3
                                                             label.form-check-label
-                                                                input.form-check-input(type="radio" name="boolpregnant" id="exampleRadios2" value="0")
+                                                                input.form-check-input#boolpregnant0(type="radio" name="boolpregnant" value="0")
                                                                 | No
                                                                 span.circle
                                                                     span.check
                                                 .col-md-4.p-lg-0.px-md-3.px-sm-0
                                                     .form-group
                                                         h6.label-control Current Parish:
-                                                        input.form-control(type='text' name='bcurrentparish' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z.-, ]{2,}" )
+                                                        input.form-control#bcurrentparish(type='text' name='bcurrentparish' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z.-, ]{2,}" )
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Occupation:
-                                                        input.form-control(type='text' name='boccupation' placeholder="Ex. Teacher")
+                                                        input.form-control#boccupation(type='text' name='boccupation' placeholder="Ex. Teacher")
                                             .row
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
@@ -398,21 +398,21 @@ block main
                                                         .ml-4
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.exampleRadios4.form-check-input(type="radio" name="bbaptized" value="1")
+                                                                    input.exampleRadios4.form-check-input#bbaptized1(type="radio" name="bbaptized1" value="1")
                                                                     .dropdown-toggle.mr-3 Yes
                                                                     span.circle
                                                                         span.check
                                                                 .textarea4.form-group
                                                                     .form-group
                                                                         label.label-control Parish Where You Were Baptized:
-                                                                        input.form-control(type='text' name='bbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
+                                                                        input.form-control#bbaptplace(type='text' name='bbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
                                                                     .form-group
                                                                         label.label-control Date When You Were Baptized:
-                                                                        input.datepicker2.form-control(type='date' name='bbapdate')
+                                                                        input.datepicker2.form-control#bbapdate(type='date' name='bbapdate')
                                                                     
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.radioup4.form-check-input(type="radio" name="bbaptized" value="0" )
+                                                                    input.radioup4.form-check-input#bbaptized0(type="radio" name="bbaptized" value="0" )
                                                                     | No
                                                                     span.circle
                                                                         span.check
@@ -422,21 +422,21 @@ block main
                                                         .ml-4
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.exampleRadios5.form-check-input(type="radio" name="bconfirmed" value="1")
+                                                                    input.exampleRadios5.form-check-input#bconfirmed1(type="radio" name="bconfirmed" value="1")
                                                                     .dropdown-toggle.mr-3 Yes
                                                                     span.circle
                                                                         span.check
                                                                 .textarea5.form-group
                                                                     .form-group
                                                                         label.label-control Parish where you were Confirmed:
-                                                                        input.form-control(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z.,- ]{2,}" )
+                                                                        input.form-control#bconplace(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z.,- ]{2,}" )
                                                                     .form-group
                                                                         label.label-control Date when you were Confirmed:
-                                                                        input.datepicker2.form-control(type='date' name='bcondate')
+                                                                        input.datepicker2.form-control#bcondate(type='date' name='bcondate')
                                                                     
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.radioup5.form-check-input(type="radio" name="bconfirmed" value="0" )
+                                                                    input.radioup5.form-check-input#bconfirmed0(type="radio" name="bconfirmed" value="0" )
                                                                     | No
                                                                     span.circle
                                                                         span.check
@@ -465,13 +465,13 @@ block main
                                                 .form-group.m-0
                                                     .form-check
                                                         h6.form-check-label
-                                                            input.form-check-input(type="radio" name="boollivingin" id="exampleRadios2" value="1")
+                                                            input.form-check-input#boollivingin1(type="radio" name="boollivingin" value="1")
                                                             | Yes
                                                             span.circle
                                                                 span.check
                                                     .form-check
                                                         h6.form-check-label
-                                                            input.form-check-input(type="radio" name="boollivingin" id="exampleRadios2" value="0")
+                                                            input.form-check-input#boollivingin0(type="radio" name="boollivingin" value="0")
                                                             | No
                                                             span.circle
                                                                 span.check
@@ -479,13 +479,13 @@ block main
                                                     h6.label-control Were the Couple Married Before?
                                                     .form-check
                                                         h6.form-check-label
-                                                            input.exampleRadios3.form-check-input(type="radio" name="boolmarried" value="1")
+                                                            input.exampleRadios3.form-check-input#boolmarried1(type="radio" name="boolmarried" value="1")
                                                             .dropdown-toggle Yes
                                                             span.circle
                                                                 span.check
                                                     .form-check
                                                         h6.form-check-label
-                                                            input.radioup3.form-check-input(type="radio" name="boolmarried" value="0" )
+                                                            input.radioup3.form-check-input#boolmarried0(type="radio" name="boolmarried" value="0" )
                                                             | No
                                                             span.circle
                                                                 span.check
@@ -494,10 +494,10 @@ block main
                                                 .textarea3.form-group
                                                     .form-group
                                                         h6.label-control Previous Wedding Date
-                                                        input.birthday.form-control(type='date' name='cprevweddingdate')
+                                                        input.birthday.form-control#cprevweddingdate(type='date' name='cprevweddingdate')
                                                     .form-group
                                                         h6.label-control Previous Wedding Place/Parish
-                                                        input.datepicker.form-control(type='text' name='cprevweddingplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
+                                                        input.datepicker.form-control#cprevweddingplace(type='text' name='cprevweddingplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
                                     br
                                     .learn-more.pull-right
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
@@ -512,10 +512,10 @@ block main
                                         .row#principalSponsor
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group.m-0
-                                                    input.form-control(type='text' name='sponsorname' placeholder="Enter Full Name" required='' pattern="[A-Za-z ]{2,}" )
+                                                    input.form-control#sponsorname(type='text' name='sponsorname' placeholder="Enter Full Name" required='' pattern="[A-Za-z ]{2,}" )
                                             .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                 .form-group.m-0
-                                                    input.form-control.balance(type='text' name='sponsorname' placeholder="Enter Full Name" required='' pattern="[A-Za-z ]{2,}" )
+                                                    input.form-control.balance#sponsorname(type='text' name='sponsorname' placeholder="Enter Full Name" required='' pattern="[A-Za-z ]{2,}" )
                                             button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button")
                                                 i.fa.fa-plus
                                         h6.label-control Secondary Sponsors
@@ -523,7 +523,11 @@ block main
                                     br
                                     .learn-more.pull-right
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-                                        button.btn#proceedButton(type='button') Proceed
+                                        button.btn#submitButton(type='button') Proceed
+
+
+
+
         #exampleModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
             .modal-dialog.modal-lg(role="document")
                 .modal-content
@@ -555,6 +559,109 @@ block main
                         // Form Wizard
 block addjs
     script.
+        $(document).ready(function(){
+			$('#submitButton').click(function(){
+					var idNow = $(this).val();
+					console.log(idNow)
+					$.post('/guest/anointing/query',{
+						firstname: $('#firstname').val(),id:idNow
+					}).done(data=>{
+						
+						if($('#sameaddress').prop("checked")){
+							venue= data.firstQuery.var_useraddress
+						}
+						
+							var formData= new FormData();
+							formData.append('desireddate1', $('#desireddate1').val()),
+							formData.append('desiredtime1', $('#desiredtime1').val()),
+							formData.append('userID', $('#userID').val()),
+							formData.append('lastname', $('#lastname').val()),
+							formData.append('firstname', $('#firstname').val()),
+							formData.append('middlename', $('#middlename').val()),
+							formData.append('gender', "Male"),
+							formData.append('address', $('#address').val()),
+							formData.append('birthday', $('#birthday').val()),
+							formData.append('birthplace', $('#birthplace').val()),
+                            formData.append('gnationality', $('#gnationality').val()),
+                            formData.append('gcivilstatus', $('#gcivilstatus').val()),
+                            formData.append('goccupation', $('#goccupation').val()),
+                            formData.append('gfathername', $('#gfathername').val()),
+                            formData.append('gfatherbplace', $('#gfatherbplace').val()),
+                            formData.append('gfatherreligion', $('#gfatherreligion').val()),
+                            formData.append('gmothername', $('#gmothername').val()),
+                            formData.append('gmotherbplace', $('#gmotherbplace').val()),
+                            formData.append('gmotherreligion', $('#gmotherreligion').val()),
+                            formData.append('gcurrentparish', $('#gcurrentparish').val()),
+							formData.append('gbaptized1', $('#gbaptized1').val()),
+                            formData.append('gbaptized0', $('#gbaptized0').val()),
+                            formData.append('gbapdate', $('#gbapdate').val()),
+                            formData.append('gbapplace', $('#gbapplace').val()),
+                            formData.append('gconfirmed1', $('#gconfirmed1').val()),
+                            formData.append('gconfirmed0', $('#gconfirmed0').val()),
+                            formData.append('gcondate', $('#gcondate').val()),
+                            formData.append('gconplace', $('#gconplace').val()),
+
+                            formData.append('blastname', $('#blastname').val()),
+							formData.append('bfirstname', $('#bfirstname').val()),
+							formData.append('bmiddlename', $('#bmiddlename').val()),
+							formData.append('bgender', "Female"),
+							formData.append('baddress', $('#baddress').val()),
+							formData.append('bbirthday', $('#bbirthday').val()),
+							formData.append('bbirthplace', $('#bbirthplace').val()),
+                            formData.append('bnationality', $('#bnationality').val()),
+                            formData.append('bcivilstatus', $('#bcivilstatus').val()),
+                            formData.append('boccupation', $('#boccupation').val()),
+                            formData.append('bfathername', $('#bfathername').val()),
+                            formData.append('bfatherbplace', $('#bfatherbplace').val()),
+                            formData.append('bfatherreligion', $('#bfatherreligion').val()),
+                            formData.append('bmothername', $('#bmothername').val()),
+                            formData.append('bmotherbplace', $('#bmotherbplace').val()),
+                            formData.append('bmotherreligion', $('#bmotherreligion').val()),
+                            formData.append('bcurrentparish', $('#bcurrentparish').val()),
+							formData.append('bbaptized1', $('#bbaptized1').val()),
+                            formData.append('bbaptized0', $('#bbaptized0').val()),
+                            formData.append('bbapdate', $('#bbapdate').val()),
+                            formData.append('bbapplace', $('#bbapplace').val()),
+                            formData.append('bconfirmed1', $('#bconfirmed1').val()),
+                            formData.append('bconfirmed0', $('#bconfirmed0').val()),
+                            formData.append('bcondate', $('#bcondate').val()),
+                            formData.append('bconplace', $('#bconplace').val()),
+                            formData.append('boolpregnant1', $('#boolpregnant1').val()),
+                            formData.append('boolpregnant0', $('#boolpregnant0').val()),
+                            formData.append('boollivingin1', $('#boollivingin1').val()),
+                            formData.append('boollivingin0', $('#boollivingin0').val()),
+                            formData.append('boolmarried1', $('#boolmarried1').val()),
+                            formData.append('boolmarried0', $('#boolmarried0').val()),
+                            formData.append('cprevweddingdate', $('#cprevweddingdate').val()),
+                            formData.append('cprevweddingplace', $('#cprevweddingplace').val()),
+                            
+
+
+							formData.append('image', $('#file-0b')[0].files[0]);
+						$.ajax({
+							type: 'POST',
+							url: '/guest/marriage/form',
+							data: formData,
+							processData:false,
+							contentType:false,
+							success: function(data){
+								swal({
+									title: "Success",
+									text: 'Your request has been submitted; however, the time is still tentative. We will notify you once the scheduled time is changed. Thank you and God bless.',
+									icon: 'success',
+									buttons:{
+										Okay:'okay'
+									}
+								}).then((value)=>{
+									window.location='/guest'
+								})
+							}
+
+						})
+
+					})
+						
+				})		
         $('.textarea1').hide();
         $('.radioup').click(function() {
             $('.textarea1').slideUp();
@@ -598,7 +705,7 @@ block addjs
                 //add and delete side
 
         $("#addPrincipalSponsor").click(function(event){
-                var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
+                var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control' id= 'sponsorname'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
                 $(principal).hide().appendTo("#principalSponsor").fadeIn(500);
         });
 
@@ -613,7 +720,7 @@ block addjs
             var item2 = `
                 <div class="col-md-6 px-lg-3 px-md-3 px-sm-0 mt-3">
                     <div class="input-group m-0">
-                        <input class="form-control" type="text" name="sponsorname" placeholder="Enter Full Name"/>
+                        <input class="form-control" type="text" name="sponsorname" id='sponsorname' placeholder="Enter Full Name"/>
                         <div class="input-group-prepend"><span class="btnDelete p-1 input-group-text rounded"><i class="fa fa-trash"></i></span></div>
                     </div>
                 </div>`

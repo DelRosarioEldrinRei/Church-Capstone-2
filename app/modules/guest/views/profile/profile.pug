@@ -94,8 +94,8 @@ block main
 							p.card-text.text-secondary Bacon ipsum dolor amet sirloin ball tip rump andouille burgdoggen, shoulder meatball shank doner shor, dolor amet sirloin ball dolor a sinta
 				.col-md-9
 					#name-content
-						h1#name.text-white.mb-0 Eldrin Rei Del Rosario
-						h6#location.text-white Marulas, Valenzuela City
+						h1#name.text-white.mb-0=user.var_lname + ", " + user.var_fname
+						h6#location.text-white= "@" + user.var_username
 						#change-cover.float-right.small-buttons-inner.mtb-50
 							.download
 								button.btn.std-btn.btn-sm.btn-white(type='button')
@@ -116,74 +116,58 @@ block main
 							#nav-tabContent.tab-content.bg-white.mb-4
 								#nav-home.tab-pane.fade.active.show(role='tabpanel', aria-labelledby='nav-home-tab', aria-expanded='true')
 									.row
-										.col-md-6
+										.col-md-12
 											h3 Personal Information
 											.container
 												table(style="width:100%;")
-													tr
-														td.p-2 Username:
-														td eldrinrei
+													//- tr
+													//- 	td.p-2 Username:
+													//- 	td=user.var_username
 													tr
 														td.p-2 First Name:
-														td Eldrin Rei
+														td=user.var_userfname
 													tr
 														td.p-2 Middle Name:
-														td Pablo
+														td=user.var_usermname
 													tr
 														td.p-2 Last Name:
-														td Del Rosario
-													tr
-														td.p-2 Date of Birth:
-														td 11/22/1998
-													tr
-														td.p-2 Birthplace:
-														td Valenzuela City
+														td=user.var_userlname
+													//- tr
+													//- 	td.p-2 Date of Birth:
+													//- 	td=user.date_userbirthday
+													//- tr
+													//- 	td.p-2 Birthplace:
+													//- 	td=user
 													tr
 														td.p-2 Gender:
-														td Male
+														td=user.char_usergender
 													tr
 														td.p-2 Address:
-														td Marulas, Valenzuela City
+														td=user.var_useraddress
 													tr
 														td.p-2 Email:
-														td eldrinrei@gmail.com
+														td=user.var_username
 													tr
 														td.p-2 Contact Number:
-														td 09392856856
-										.col-md-6
-											h3.invisible Personal Information
+														td=user.var_usercontactnum
+										.col-md-8
 											.container
-												table(style="width:100%;")
-													tr
-														td.p-2 Occupation
-														td N/A
-													tr
-														td.p-2 Civil Status:
-														td Single
-													tr
-														td.p-2 Religion:
-														td Catholic
-													tr
-														td.p-2 Nationality:
-														td Filipino
-													tr
-														td.p-2 Mother's Name:
-														td Narcitas Del Rosario
-													tr
-														td.p-2 Mother's Religion:
-														td Catholic
-													tr
-														td.p-2 Father's name:
-														td Enrique Del Rosario
-													tr
-														td.p-2 Father's Religion:
-														td Catholic
-													tr
-														td.p-2 Current Parish:
-														td None
-													tr
-														td.p-2 Time of Birth:
-														td 5:00 PM
+												.row
+													button.btn.btn-info.changePassword(type='button',rel='tooltip',value=`${user.int_userID}`)
+												.row
+													a.editProfile(value=`${user.int_userID}`) Edit Profile
+														//- td=user.var_usercontactnum
+										//- .col-md-6
+										//- 	h3.invisible Personal Information
+										//- 	.container
+										//- 		table(style="width:100%;")
+										//- 			tr
+										//- 				td.p-2 Username
+										//- 				td=user
+										//- 			tr
+										//- 				td.p-2 Civil Status:
+										//- 				td=user
+													
 									//- p
 									//- 	| Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
 								#nav-profile.tab-pane.fade(role='tabpanel', aria-labelledby='nav-profile-tab', aria-expanded='false')
@@ -194,70 +178,36 @@ block main
 												table(style="width:100%;")
 													tr
 														td.p-2 Username:
-														td eldrinrei
+														td=user
 													tr
 														td.p-2 First Name:
-														td Eldrin Rei
+														td=user
 													tr
 														td.p-2 Middle Name:
-														td Pablo
+														td=user
 													tr
 														td.p-2 Last Name:
-														td Del Rosario
+														td=user
 													tr
 														td.p-2 Date of Birth:
-														td 11/22/1998
+														td=user
 													tr
 														td.p-2 Birthplace:
-														td Valenzuela City
+														td=user
 													tr
 														td.p-2 Gender:
-														td Male
+														td=user
 													tr
 														td.p-2 Address:
-														td Marulas, Valenzuela City
+														td=user
 													tr
 														td.p-2 Email:
-														td eldrinrei@gmail.com
+														td=user
 													tr
 														td.p-2 Contact Number:
-														td 09392856856
-										.col-md-6
-											h3.invisible Personal Information
-											.container
-												table(style="width:100%;")
-													tr
-														td.p-2 Occupation
-														td N/A
-													tr
-														td.p-2 Civil Status:
-														td Single
-													tr
-														td.p-2 Religion:
-														td Catholic
-													tr
-														td.p-2 Nationality:
-														td Filipino
-													tr
-														td.p-2 Mother's Name:
-														td Narcitas Del Rosario
-													tr
-														td.p-2 Mother's Religion:
-														td Catholic
-													tr
-														td.p-2 Father's name:
-														td Enrique Del Rosario
-													tr
-														td.p-2 Father's Religion:
-														td Catholic
-													tr
-														td.p-2 Current Parish:
-														td None
-													tr
-														td.p-2 Time of Birth:
-														td 5:00 PM
-									//- p
-									//- 	| Nulla est ullamco ut irure incididunt nulla Lorem Lorem minim irure officia enim reprehenderit. Magna duis labore cillum sint adipisicing exercitation ipsum. Nostrud ut anim non exercitation velit laboris fugiat cupidatat. Commodo esse dolore fugiat sint velit ullamco magna consequat voluptate minim amet aliquip ipsum aute laboris nisi. Labore labore veniam irure irure ipsum pariatur mollit magna in cupidatat dolore magna irure esse tempor ad mollit. Dolore commodo nulla minim amet ipsum officia consectetur amet ullamco voluptate nisi commodo ea sit eu.
+														td=user
+										
+									
 								#nav-dropdown1.tab-pane.fade(role='tabpanel', aria-labelledby='nav-dropdown1-tab')
 									p
 										| Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.
@@ -265,3 +215,61 @@ block main
 									p
 										| Proident incididunt esse qui ea nisi ullamco aliquip nostrud velit sint duis. Aute culpa aute cillum sit consectetur mollit minim non reprehenderit tempor. Occaecat amet consectetur aute esse ad ullamco ad commodo mollit reprehenderit esse in consequat. Mollit minim do consectetur pariatur irure non id ea dolore occaecat adipisicing consectetur est aute magna non.
 
+block addjs
+	script.
+		$(document).ready(function() {
+			
+			$('.changePassword').click(function(){
+				var id= $(this).val()
+				console.log('ito yung id bro')
+				console.log(id)
+					$.post('/guest/profile/query',{id:id}).done(data=>{
+					$('#updateAppend').append(`
+					<div class="form-group">
+						<label class="label-control">Current Password</label>
+						<input type="text" id="currpass" class="form-control" value="${data.var_password}"/>
+					</div>
+					<div class="form-group">
+						<label class="label-control">New Password</label>
+						<input type='text' id="newpass" class="form-control">
+					</div>
+					</div>
+					`)
+					$('#updateModal').modal('show')
+					$('#updateModal').on('hidden.bs.modal',function(){
+						$('#updateAppend').empty()
+					})
+					$('#cancelButton').click(function(){
+						$('#updateAppend').empty();
+					})
+					$(document).keyup(function(e) {
+					if (e.keyCode === 27) 
+						{
+						$('#updateModal').modal('hide');
+						$('#updateAppend').empty();
+						};
+					});
+					$('#updateSubmitButton').click(function(){
+						$.post('/admin/maintenance-document-requirements/edit',{
+						reqname:$('#reqname').val(),
+						reqdesc:$('#reqdesc').val(),
+						id:idNow
+						})
+						.done(data=>{
+							if(data){
+								swal({
+								title:'Success', 
+								text:'Requirement information updated', 
+								icon:'success'
+								}).then(function(){
+									location.reload();
+								})
+								$('#updateModal').modal('hide');
+								$('#updateAppend').empty();
+							}
+						})
+					})
+				})
+				})
+		
+		});

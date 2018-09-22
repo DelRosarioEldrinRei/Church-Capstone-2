@@ -44,8 +44,8 @@ block main
 				.container
 					.row
 						.col-md-12.form-wizard
-							// Form Wizard
-							form(role='form' action="/guest/establishment/form"   enctype="multipart/form-data" method="post" data-toggle='validator')
+								// Form Wizard
+								//- form(role='form' action="/guest/establishment/form"   enctype="multipart/form-data" method="post" data-toggle='validator')
 								h3 Establishment Blessing Form
 								p.mb-4 Fill all form fields
 								.form-wizard-steps.form-wizard-tolal-steps-3
@@ -73,14 +73,14 @@ block main
 									.row
 										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
-												input.establishment.form-control(type='date' name='desireddate1' data-error='Please enter date' required)
+												input.establishment.form-control#desireddate1(type='date' name='desireddate1' data-error='Please enter date' required)
 												.help-block.with-errors
 									.row
 										.col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
 											.form-group
 												h5.label-control Desired Time
 													.text-danger.d-inline  *
-												input.desiredEstTime.form-control(type='text' name='desiredtime1' placeholder="Input Time"  required='', data-error='Please enter your desired time')
+												input.desiredEstTime.form-control#desiredtime1(type='text' name='desiredtime1' placeholder="Input Time"  required='', data-error='Please enter your desired time')
 												.help-block.with-errors
 									.learn-more.pull-right
 												button.btn.btn-next(type='button') Next
@@ -91,7 +91,7 @@ block main
 									.div
 										.d-none.d-sm-inline.h4 Blessing Details:
 										span.pull-right.h4 Step 2 - 2
-										input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+										input.form-control#userID(type='hidden' name='userID' value=`${user.int_userID}`)
 										.container
 											.row
 												.col-md-3.px-lg-3.px-md-0.px-sm-0
@@ -111,40 +111,40 @@ block main
 														.col-md-6.px-lg-3.px-md-3.px-sm-0
 															.form-group
 																h6.label-control Owner:
-																input.form-control(type='text' value=`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner'  readonly)
+																input.form-control#owner(type='text' value=`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner'  readonly)
 															.form-group
 																h6.label-control House/Establishment Location:
-																textarea.form-control(placeholder="Please Enter Complete Address" rows="1" name='location' readonly) #{user.var_useraddress}
+																textarea.form-control#locations(placeholder="Please Enter Complete Address" rows="1" name='location' readonly) #{user.var_useraddress}
 														.col-md-6.px-lg-3.px-md-3.px-sm-0
 															.form-group
 																h6.label-control Contact Number:
-																input.form-control(type='text' value=`${user.var_usercontactnum}` name='contactnumber' readonly)
+																input.form-control#contactnumber(type='text' value=`${user.var_usercontactnum}` name='contactnumber' readonly)
 															.form-group
 																h6.label-control Email:
-																input.form-control.mb-2(type='Email' value=`${user.var_useremail}` name='email'  readonly)
+																input.form-control.mb-2#email(type='Email' value=`${user.var_useremail}` name='email'  readonly)
 													#other.form-group.pt-2
 														.row
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																.form-group
 																	h6.label-control Owner
 																		.text-danger.d-inline  *
-																	input.form-control(type='text' placeholder="Enter Name of Owner" name='owner1' pattern="[A-Za-z ]{3,}" oninvalid="setCustomValidity('Enter Valid Name of Owner')" onchange="try{setCustomValidity('')}catch(e){}")
+																	input.form-control#owner1(type='text' placeholder="Enter Name of Owner" name='owner1' pattern="[A-Za-z ]{3,}" oninvalid="setCustomValidity('Enter Valid Name of Owner')" onchange="try{setCustomValidity('')}catch(e){}")
 																	.help-block.with-errors
 																.form-group
 																	h6.label-control House/Establishment Location
 																		.text-danger.d-inline  *
-																	textarea.form-control(placeholder="Please Enter Complete Address" rows="1" name='location1' pattern="^[a-zA-Z0-9,.- ]*${10,}" oninvalid="setCustomValidity('Enter Valid Address')" onchange="try{setCustomValidity('')}catch(e){}")
+																	textarea.form-control#locations1(placeholder="Please Enter Complete Address" rows="1" name='location1' pattern="^[a-zA-Z0-9,.- ]*${10,}" oninvalid="setCustomValidity('Enter Valid Address')" onchange="try{setCustomValidity('')}catch(e){}")
 																	.help-block.with-errors
 															.col-md-6.px-lg-3.px-md-3.px-sm-0
 																.form-group
 																	h6.label-control Contact Number
 																		.text-danger.d-inline  *
-																	input.form-control(type='text' name='contactnumber1' placeholder="XXXXXXXXXXX"  pattern="[0-9]{11}" title="Input numbers only" oninvalid="setCustomValidity('Please input numbers only.')" onchange="try{setCustomValidity('')}catch(e){}")
+																	input.form-control#contactnumber1(type='text' name='contactnumber1' placeholder="XXXXXXXXXXX"  pattern="[0-9]{11}" title="Input numbers only" oninvalid="setCustomValidity('Please input numbers only.')" onchange="try{setCustomValidity('')}catch(e){}")
 																	.help-block.with-errors
 																.form-group 
 																	h6.label-control Email
 																		.text-danger.d-inline  *
-																	input.form-control.mb-2(type='Email' name='email1' placeholder="mark242@gmail.com" )
+																	input.form-control.mb-2#email1(type='Email' name='email1' placeholder="mark242@gmail.com" )
 																	.help-block.with-errors
 																	//- pattern="/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/" email 
 														.row
@@ -164,11 +164,71 @@ block main
 											//- 			input.timepicker.form-control(type='text' name='desiredtime1')
 									.learn-more.pull-right
 										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-										button.btn.btn-submit(type='submit') Submit
+										button.btn.btn-submit#submitButton(type='submit' value= `${user.int_userID}`) Submit
 								// Form Step 2
 block addjs
 	script.
-		//- $('#ourhome').hide();
+		$(document).ready(function(){
+			$('#submitButton').click(function(){
+					var idNow = $(this).val();
+					console.log(idNow)
+					$.post('/guest/establishment/query',{
+						firstname: $('#firstname').val(),id:idNow,
+					}).done(data=>{
+						if($('#ourhomeradio').prop("checked")){
+							owner= $('#owner').val(),
+							locations= $('#locations').val(),
+							contactnumber= $('#contactnumber').val(),
+							email= $('#email').val(),
+							blessloc= '1'
+
+						}
+						if($('#otherradio').prop("checked")){
+							owner= $('#owner1').val(),
+							locations= $('#locations1').val(),
+							contactnumber= $('#contactnumber1').val(),
+							email= $('#email1').val(),
+							blessloc= '2'
+						}
+						
+					
+							var formData= new FormData();
+							formData.append('desireddate1', $('#desireddate1').val()),
+							formData.append('desiredtime1', $('#desiredtime1').val()),
+							formData.append('userID', $('#userID').val()),
+							formData.append('image', $('#file-0b')[0].files[0]),
+							formData.append('owner', owner),
+							formData.append('locations',locations),
+							formData.append('contactnumber',contactnumber),
+							formData.append('email',email),
+							formData.append('blessloc',blessloc),
+							
+							
+						$.ajax({
+							type: 'POST',
+							url: '/guest/establishment/form',
+							data: formData,
+							processData:false,
+							contentType:false,
+							success: function(data){
+								swal({
+									title: "Success",
+									text: 'Your request has been submitted; however, the time is still tentative. We will notify you once the scheduled time is changed. Thank you and God bless',
+									icon: 'success',
+									buttons:{
+										Okay:'okay'
+									}
+								}).then((value)=>{
+									window.location='/guest'
+								})
+							}
+
+						})
+
+					})
+						
+				})		
+
 		$('#other').hide();
 
 		$('#ourhomeradio').click(function() {
@@ -220,4 +280,5 @@ block addjs
 					clear: 'fa fa-trash',
 					close: 'fa fa-remove'
 				}
+			});
 			});

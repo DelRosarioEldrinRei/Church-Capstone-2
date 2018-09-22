@@ -82,31 +82,35 @@ block prepend main
 													.modal-footer
 														button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
 														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${event.int_eventID}`) Apply
-				//- .col-md-12.text-center
-				//- 	.learn-more
-				//- 		a.btn.std-btn.btn-common(href='/services') View All
-	//- section#document
-	//- 	.container
-	//- 		.row
-	//- 			.col-md-12
-	//- 				h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Document Request
-	//- 		.row
-	//- 			.col-md-4.col-sm-6.col-xs-12
-	//- 				.service-box
-	//- 					.service-icon
-	//- 						i.fa.fa-cogs
-	//- 					.service-content
-	//- 						h4
-	//- 							a(href='#' name='eventname')
-	//- 						p
-	//- 							| #{event.var_eventdesc.substring(0, 100)}...
-	//- 							.learn-more
-	//- 								button.btn.std-btn.btn-common(type='button', data-toggle='modal', data-target='#exampleModal') Inquire
+		.container
+			.row
+				.col-md-12
+					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Special Services
+			.row
+				each service in services
+					.col-lg-4.col-md-6.col-xs-12
+						.featured-box-item
+							.featured-icon
+								i.fa.fa-bolt
+							.featured-content
+								h4
+									| #{service.var_servicename}
+								
+								.learn-more
+										button.btn.std-btn.btn-common.serviceButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${service.int_serviceutilitiesID}`) Inquire
+										// Modal
+										#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+											.modal-dialog.modal-lg(role='document')
+												.modal-content#each
+													.modal-header#headerAppend
+														button.close(type='button', data-dismiss='modal', aria-label='Close')
+															span.p-3(aria-hidden='true') ×
+													.modal-body#bodyAppend
+													.modal-body#reqAppend
+													.modal-footer
+														button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${service.int_utilitiesID}`) Apply
 									
-														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button') Apply
-			.col-md-12.text-center
-				.learn-more
-					a.btn.std-btn.btn-common(href='/guest/allservices') View All
 	section#portfolio.section-padding
 		.container
 			.row
@@ -412,13 +416,12 @@ block addjs
 					$.post('/index/query',{id:idNow})
 						.done(data =>{
 						if(data.firstQuery.var_eventname == "Marriage"){
-								window.location='/index/marriagedetails'
-								//gawa pug
-								}
-								else if(data.firstQuery.var_eventname == "Facility Reservation"){
-								window.location='/index/facilities'
-								//gawa pug
-								}
+							window.location='/index/marriagedetails'
+						}
+								//- else if(data.firstQuery.var_eventname == "Facility Reservation"){
+								//- window.location='/index/facilities'
+								//- }
+								
 						$('#headerAppend').append(`
 							<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
 							<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
@@ -452,5 +455,50 @@ block addjs
 							})
 						})
 								
+			})
+			$('.serviceButton').click(function(){
+				var idNow = $(this).val();
+				console.log(idNow)
+					$.post('/index/queryservice',{id:idNow})
+						.done(data =>{
+						if(data.firstQuery.var_servicename == "Facility Reservation"){
+							window.location='/index/facilities'
+						}
+						else if(data.firstQuery.var_servicename == "Document Request"){
+						window.location='/index'
+						}		
+
+						$('#headerAppend').append(`
+							<label id="idshit" hidden>${data.firstQuery.int_serviceutilitiesID}</label>
+							<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_servicename}</h5>
+							`)
+							$('#bodyAppend').append(`
+							<p><strong>Service Description</strong></p>
+							<p>${data.firstQuery.var_servicedesc}</p>
+							<br>
+							
+						`)
+						for(i=0;i<data.secondQuery.length;i++){
+						$('#reqAppend').append(`
+							<p><strong>Requirements</strong></p>
+							<p>${data.secondQuery[i].var_reqname}</p>
+						`)
+						}
+						$('#inquireModal').modal('show');	
+						$('#inquireModal').on('hidden.bs.modal',function(){
+							$('#bodyAppend').empty()
+							$('#headerAppend').empty()
+							$('#reqAppend').empty()
+
+						})
+						$('#cancelButton').css('display', 'block');
+						$('#proceedButton').css('display', 'block');
+							$('#proceedButton').click(function(){
+								$.post('/login/queryservice',{id:data.firstQuery.int_serviceutilitiesID}).done(data =>{
+									window.location=`/login? 
+									redirect="${$(this).val()}"`
+								})
+							})
+						})
 			})
 		})

@@ -1,4 +1,4 @@
-extends ../../../../templates/guests
+extends ../../../templates/home
 block main
 	#headers
 		#header-style-1
@@ -22,7 +22,7 @@ block main
 							p Choose a facility to reserve
 			.container
 				.row
-					.col-md-4
+					.col-md-6
 						.card-2.shadow2
 							.image
 								img(src='/img/facility/facility_1.jpg')
@@ -64,13 +64,13 @@ block main
 							.card-footer.p-0
 								.extra.p-3
 									.learn-more.text-center
-										a.btn.btn-common.ml-auto.mx-auto(href="/guest/facilities/secondfloor/form") Inquire
+										a.btn.btn-common.ml-auto.mx-auto#proceedButton( value=15) Inquire
 									span.right
 										| ₱300/hr
 								//- span
 								//- 	i.fa.fa-user
 								//- 	|                   75 Friends
-					.col-md-4
+					.col-md-6
 						.card-2.shadow2
 							.image
 								img(src='/img/facility/facility_2.jpg')
@@ -112,9 +112,18 @@ block main
 							.card-footer.p-0
 								.extra.p-3
 									.learn-more.text-center
-										a.btn.btn-common.ml-auto.mx-auto(href="#") Inquire
+										a.btn.btn-common.ml-auto.mx-auto#proceedButton( value=15) Inquire
 									span.right
 										| ₱300/hr
-								//- span
-								//- 	i.fa.fa-user
-								//- 	|                   75 Friends
+block addjs
+	script.
+		$(document).ready(function(){
+
+			$('#proceedButton').css('display', 'block');
+				$('#proceedButton').click(function(){
+					$.post('/login/query',{id:15}).done(data =>{
+						window.location=`/login? 
+						redirect="${$(this).val()}"`
+					})
+				})
+			})

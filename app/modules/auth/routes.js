@@ -11,6 +11,12 @@ loginRouter.route('/query')
         req.session.eventId = req.body.id
         res.render('auth/views/login');
     })
+loginRouter.route('/queryservice')
+    .post(authMiddleware.noAuthed, (req, res) => {
+        console.log(req.body.id)
+        req.session.serviceId = req.body.id
+        res.render('auth/views/login');
+    })
 loginRouter.route('/')  
     .get(authMiddleware.noAuthed, (req, res) => {
         if(req.query){
@@ -106,9 +112,9 @@ loginRouter.route('/')
                     delete user.var_password;
                     req.session.user = user;
                     console.log(req.session);
-                    return res.redirect('/guest/facilities');
+                    return res.redirect('/guest/facilities/form');
                 }
-                else if(req.session.eventId == 10){
+                else if(req.session.serviceId == 3){
                     delete user.var_password;
                     req.session.user = user;
                     console.log(req.session);
