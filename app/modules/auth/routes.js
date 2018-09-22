@@ -22,15 +22,15 @@ loginRouter.route('/')
     })
     .post((req, res) => {
         console.log('POST LOGIN');
-        console.log(req.session)
         var db = require('../../lib/database')();
         db.query(`SELECT * FROM tbl_user WHERE var_username="${req.body.user_username}"`, (err, results, fields) => {
         
             if (err) throw err;
             if (results.length === 0) return res.redirect('/login?incorrect');
-
-            var user = results[0];
             
+            var user = results[0];
+            req.session.userID = user.int_userID
+            console.log(req.session.userID)
             if (user.var_password !== req.body.user_password) return res.redirect('/login?incorrect');
             
             if(user.char_usertype == "Admin"){
@@ -75,7 +75,7 @@ loginRouter.route('/')
                 if(req.session.eventId == 3){
                 delete user.var_password;
                 req.session.user = user;
-                console.log(req.session);
+                console.log(req.session.user);
                 return res.redirect('/guest/baptism/form');
                 }
                 else if(req.session.eventId == 4){

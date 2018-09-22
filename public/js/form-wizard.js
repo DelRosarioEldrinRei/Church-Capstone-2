@@ -31,7 +31,7 @@ jQuery(document).ready(function() {
     });
     
     // next step
-    $('.form-wizard .btn-next').on('click', function() {
+    $(document).on('click','.form-wizard .btn-next', function() {
     	var parent_fieldset = $(this).parents('fieldset');
     	var next_step = true;
     	// navigation steps / progress steps

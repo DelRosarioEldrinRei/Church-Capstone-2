@@ -405,7 +405,7 @@ html(lang='en')
 			//- 	},
 			//- });
 
-			$('.btn-next, .btn-previous').on('click',function(event){
+			$(document).on('click','.btn-next, .btn-previous',function(event){
 				event.preventDefault();
 				$('html, body').animate({
 					scrollTop:$('.header-text').position().top},600);
