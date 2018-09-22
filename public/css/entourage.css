@@ -9,6 +9,10 @@
   -o-box-shadow: 0 0 10px  rgba(0,0,0,0.6);
 }
 
+#header-style-1 {
+  background-image: url(/img/entourage.jpg)
+}
+
 /* select button */
 select {
   padding: 3.5%;
