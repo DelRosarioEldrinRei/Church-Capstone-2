@@ -95,7 +95,7 @@ var upload = multer({ storage: storage})
     });
 
     guestRouter.get('/schedule', (req, res)=>{res.render('guest/views/schedule2') });
-    guestRouter.get('/entourage', (req, res)=>{res.render('guest/views/entourage') });
+    guestRouter.get('/entourage', (req, res)=>{res.render('guest/views/marriage/entourage') });
     guestRouter.get('/parishevents', (req, res)=>{res.render('guest/views/parishevents1') });
     guestRouter.get('/parishevents/details', (req, res)=>{res.render('guest/views/parishdetails') });
     guestRouter.get('/parishservices', (req, res)=>{res.render('guest/views/parishservices') });
