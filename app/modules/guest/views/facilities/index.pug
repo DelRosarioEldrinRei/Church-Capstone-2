@@ -64,7 +64,7 @@ block main
 							.card-footer.p-0
 								.extra.p-3
 									.learn-more.text-center
-										a.btn.btn-common.ml-auto.mx-auto(href="/guest/facility/form") Inquire
+										a.btn.btn-common.ml-auto.mx-auto#submitButton( type = 'button' value ='1') Inquire
 									span.right
 										| ₱300/hr
 								//- span
@@ -112,9 +112,24 @@ block main
 							.card-footer.p-0
 								.extra.p-3
 									.learn-more.text-center
-										a.btn.btn-common.ml-auto.mx-auto(href="#") Inquire
+										a.btn.btn-common.ml-auto.mx-auto#submitButton( type = 'button' value ='2') Inquire
 									span.right
 										| ₱300/hr
-								//- span
-								//- 	i.fa.fa-user
-								//- 	|                   75 Friends
+block addjs
+	script(type='text/javascript').
+		
+		$(document).ready(function(){
+			$('#submitButton').click(function(){
+					var idNow = $(this).val();
+					console.log(idNow)
+					$.post('/guest/facilities/query',{
+						id:idNow
+					}).done(data=>{
+						window.location=`/guest/facilities/form?redirect="${$(this).val()}"`
+							
+
+					})
+						
+				})		
+
+				})

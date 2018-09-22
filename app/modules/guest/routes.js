@@ -1091,7 +1091,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                 if (err) console.log(err);
                 var paymentid= results;
         var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID , date_eventdate, time_eventstart, char_approvalstatus, int_paymentID) VALUES(?,?,?,?,? ,?)`;
-            db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID, req.body.desireddate, desiredtime1,"Pending", paymentid.insertId], (err, results, fields) => {
+            db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID, req.body.desireddate1, desiredtime1,"Pending", paymentid.insertId], (err, results, fields) => {
                 if (err) console.log(err);
                 var eventinfoID= results;
                     var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?);`
@@ -1109,29 +1109,32 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                                             requirementUpload(eventinfoID.insertId,req.files['birthCertGroom'][0].filename,req.files['validIDGroom'][0].filename,req.files['birthCertBride'][0].filename,req.files['validIDBride'][0].filename);
                                             defaultReq(eventinfoID.insertId);
                                             sponsors(eventinfoID.insertId);
-                                            if (err){
-                                                console.log(err)
-                                                res.send({alertDesc:notsuccess})
-                                            }
-                                            else{
-                                                res.send({alertDesc:success})
-                                            }
+                                            // if (err){
+                                            //     console.log(err)
+                                            //     res.send({alertDesc:notsuccess})
+                                            // }
+                                            // else{
+                                            //     res.send({alertDesc:success})
+                                            // }
+
+                                            return res.redirect(`/guest`);
                                         });
                                     }
                                 if(req.body.boolmarried == 0){
-                                    var queryString4 = `INSERT INTO tbl_wedcouple(int_eventinfoID, bool_livingin, bool_married, date_desireddate, time_desiredtime) VALUES(?,?,?,?,?);`
-                                        db.query(queryString4 , [eventinfoID.insertId, req.body.boollivingin, req.body.boolmarried, req.body.desireddate, desiredtime1], (err, results, fields) => {
+                                    var queryString4 = `INSERT INTO tbl_wedcouple(int_eventinfoID, bool_livingin, bool_married) VALUES(?,?,?);`
+                                        db.query(queryString4 , [eventinfoID.insertId, req.body.boollivingin, req.body.boolmarried], (err, results, fields) => {
                                             if (err) console.log(err);
                                             requirementUpload(eventinfoID.insertId,req.files['birthCertGroom'][0].filename,req.files['validIDGroom'][0].filename,req.files['birthCertBride'][0].filename,req.files['validIDBride'][0].filename);
                                             defaultReq(eventinfoID.insertId);
                                             sponsors(eventinfoID.insertId);
-                                            if (err){
-                                                console.log(err)
-                                                res.send({alertDesc:notsuccess})
-                                            }
-                                            else{
-                                                res.send({alertDesc:success})
-                                            }
+                                            // if (err){
+                                            //     console.log(err)
+                                            //     res.send({alertDesc:notsuccess})
+                                            // }
+                                            // else{
+                                            //     res.send({alertDesc:success})
+                                            // }
+                                            return res.redirect(`/guest`);
                                         });
                                     }      
                                 });});});});});
@@ -1397,38 +1400,79 @@ guestRouter.get('/marriage1/form', (req, res)=>{
 // F A C I L I T I E S 
 //===============================================================================================//
     guestRouter.get('/facilities', (req, res)=>{
-        res.render('guest/views/facilities/index')
-    });
-
-    guestRouter.get('/facilities/secondfloor', (req, res)=>{
-        res.render('guest/views/facilities/secondfloor')
-    });
-
-    guestRouter.get('/facilities/form', (req, res)=>{
-        res.render('guest/views/facilities/form',{user: req.session.user})
-    });
-
-    guestRouter.post('/facilities/form',upload.single('image'), (req, res) => {
-    
-        var queryString= `select int_facilityID from tbl_facility where var_facilityname="Bro. Roqueto 2nd floor";`
+        var queryString= `select * from tbl_facility`
             db.query(queryString, (err, results, fields) => {
                 if (err) console.log(err);
-                console.log(results);
-                req.session.user.facilityID =results[0];
-                console.log(req.session.user);
-                
-            var queryString1 = `INSERT INTO tbl_facilityreservation(int_userID, int_facilityID, var_event, date_reservedate,time_reservestart, time_reserveend, char_reservestatus) VALUES(?,?,?,?,?,?,?)`;
-                db.query(queryString1, [req.session.user.int_userID, req.session.user.facilityID.int_facilityID, req.body.event, req.body.desireddate, req.body.starttime, req.body.endtime, 'Pending'], (err, results, fields) => {
-                    var path = '/img/req/'+req.file.filename;
-                    var nowDate = new Date(); 
-                    var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
-                    var queryString7 = `INSERT INTO tbl_requirements(int_reservationID,var_reqpath,datetime_reqreceived,int_reqtypeID) VALUES (?,?,?,?);`
-                    db.query(queryString7,[req.session.user.facilityID.int_facilityID,path,date,4],(err, results, fields)=>{    
-                    if (err) console.log(err);
-                    return res.redirect(`/guest`);
-                    });
-                });    
-            });            
+                var facilities =results;
+        res.render('guest/views/facilities/index',{user: req.session.user, facilities:facilities})
+    });
+    });
+    guestRouter.post('/facility/query2', (req, res) => {
+        var queryString1 =`SELECT * FROM tbl_facility where int_facilityID = ?`
+        db.query(queryString1,[req.body.id], (err, results1, fields) => {
+            res.send({firstQuery:results1[0]});
+  
+      
+    });
+        })
+
+    guestRouter.post('/facilities/query', (req, res)=>{
+        console.log(req.body.id)
+        var queryString1 =`SELECT * FROM tbl_facility where int_facilityID = ?`
+        db.query(queryString1,[req.body.id], (err, results1, fields) => {
+            res.send({firstQuery:results1[0]});
+        
+        });  });
+
+    guestRouter.get('/facilities/form', (req, res)=>{
+        var queryString= `select * from tbl_items`
+            db.query(queryString, (err, results, fields) => {
+                if (err) console.log(err);
+                var items =results;
+                var queryString1= `select * from tbl_facility where int_facilityID = ?`
+                    db.query(queryString1, [req.session.user.facilityid],(err, results, fields) => {
+                        if (err) console.log(err);
+                        // console.log()
+                        var facilitydetails =results;
+        res.render('guest/views/facilities/form',{user: req.session.user, items:items, facilitydetails:facilitydetails})
+    });
+});
+});
+
+    guestRouter.post('/facilities/form',upload.single('image'), (req, res) => {
+        var success =0
+        var notsuccess =1
+        var queryString= `select int_serviceutilitiesID from tbl_serviceutilities where var_servicename="House/Business Blessing"`
+        db.query(queryString, (err, results, fields) => {
+            if (err) console.log(err);
+            console.log(results);
+            var serviceID = results[0];
+            
+            var path = '/img/req/'+req.file.filename;
+            var nowDate = new Date(); 
+            var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+            console.log(date)
+            var requirementQuery = `select int_servicereqtypeID from tbl_servicereqtype where int_serviceutilitiesID = ?`
+            db.query(requirementQuery, [serviceID.int_serviceutilitiesID], (err, results, fields) => {
+                if (err) console.log(err);
+                var reqq = results[0];
+                var queryString1 = `INSERT INTO tbl_facilityreservation(int_userID, int_facilityID, var_event, var_eventdesc, int_attendees, datetime_reservestart,datetime_reserveend, char_reservestatus) VALUES(?,?,?,? ,?,?,?,?)`;
+                    db.query(queryString1, [req.body.userID, req.body.facilityID, req.body.eventname, req.body.eventdesc, req.body.attendees,  req.body.reservestart, req.body.reserveend, 'Pending'], (err, results, fields) => {
+                        var reservationID = results;
+                        console.log(err)
+                    var queryString7 = `INSERT INTO tbl_requirementsfacilities(int_reservationID, int_servicereqtypeID, var_reqpath, datetime_reqreceived, char_reqstatus) VALUES (?,?,?,?,?);`
+                    db.query(queryString7,[reservationID.insertId,reqq.int_servicereqtypeID,path,date,'Submitted'],(err, results, fields)=>{
+                        
+                            if (err) console.log(err);                        
+                            if (err){
+                                console.log(err)
+                                res.send({alertDesc:notsuccess})
+                            }
+                            else{
+                                res.send({alertDesc:success})
+                            }
+                    
+                        });});});});
         });
     // });
 //===============================================================================================//
