@@ -17,7 +17,7 @@ block prepend main
 														
 														.form-group
 															label.h6 Service Name:
-															input.form-control#parishname(type='text' name='parishname'  value= `${services.var_eventname}`)
+															input.form-control#servicename(type='text' name='parishname'  value= `${services.var_eventname}`)
 														//- .form-group
 														//- 	label.h6(for='exampleFormControlTextarea1') Address:
 														//- 	input.form-control#parishlocation(rows='1' name='address' placeholder="Enter the parish complete address"  value= `${services.var_clientlocation}`)
@@ -26,44 +26,44 @@ block prepend main
 															.form-group.col-md-4.m-0
 																.form-group
 																	label.h6 Minimum Reservation Day
-																	input.form-control#telephonenumber(type='text' value= `${services.int_reservationmindays}`)
+																	input.form-control#int_reservationmindays(type='text' value= `${services.int_reservationmindays}`)
 																.form-group
 																	label.h6 Maximum Reservation Days
-																	input.form-control#mobilenumber(type='text' value= `${services.int_reservationmaxdays}`)
+																	input.form-control#int_reservationmaxdays(type='text' value= `${services.int_reservationmaxdays}`)
 																
 															
 																.form-group
 																	label.h6 Requirement Submission Days 
-																	input.form-control#emailaddress(type='email' value= `${services.int_requirementsdays}`)
+																	input.form-control#int_requirementsdays(type='email' value= `${services.int_requirementsdays}`)
 														
 
 														
 															.form-group.col-md-4.m-0
 																.form-group
 																	label.h6 Duration
-																	input.form-control#telephonenumber(type='text' value= `${services.time_duration}`)
+																	input.form-control#time_duration(type='text' value= `${services.time_duration}`)
 																
 																.form-row
 																	.form-group.col-md-6.m-0
 																		label.h6 From
 																		.form-group
-																			input.form-control#mobilenumber(type='text' value= `${services.time_availablestart}`)
+																			input.form-control#time_availablestart(type='text' value= `${services.time_availablestart}`)
 																	.form-group.col-md-6.m-0
 																		label.h6 To
 																		.form-group
-																			input.form-control#telephonenumber(type='text' value= `${services.time_availableend}`)
+																			input.form-control#time_availableend(type='text' value= `${services.time_availableend}`)
 																.form-group
 																	label.h6 Default time
-																	input.form-control#mobilenumber(type='text' value= `${services.time_defaulttime}`)
+																	input.form-control#time_defaulttime(type='text' value= `${services.time_defaulttime}`)
 
 
 															.form-group.col-md-4.m-0
 																	.form-group
 																		label.h6 Minimum Age
-																		input.form-control#telephonenumber(type='text' value= `${services.int_agemin}`)
+																		input.form-control#int_agemin(type='text' value= `${services.int_agemin}`)
 																	.form-group
 																		label.h6 Maximum Age
-																		input.form-control#mobilenumber(type='text' value= `${services.int_agemax}`)
+																		input.form-control#int_agemax(type='text' value= `${services.int_agemax}`)
 
 
 
@@ -73,28 +73,28 @@ block prepend main
 																
 																	.form-group
 																		label.h6 Fee
-																		input.form-control#telephonenumber(type='text' value= `${services.double_fee}`)
+																		input.form-control#double_fee(type='text' value= `${services.double_fee}`)
 																
 																	.form-group
 																		label.h6 Additional Rate
-																		input.form-control#mobilenumber(type='text' value= `${services.double_addrate}`)
+																		input.form-control#double_addrate(type='text' value= `${services.double_addrate}`)
 															.form-group.col-md-4.m-0
 																	.form-group
 																		label.h6 Downpayment Days
-																		input.form-control#telephonenumber(type='text' value= `${services.int_downpaymentdays}`)
+																		input.form-control#int_downpaymentdays(type='text' value= `${services.int_downpaymentdays}`)
 																
 																	.form-group
 																		label.h6 Full Payment Days
-																		input.form-control#mobilenumber(type='text' value= `${services.int_fullpaymentdays}`)
+																		input.form-control#int_downpaymentdays(type='text' value= `${services.int_downpaymentdays}`)
 																	
 															//-check box for refunable
 															.form-group.col-md-4.m-0
 																.form-group
 																	label.h6 Refund Days 
-																	input.form-control#emailaddress(type='email' value= `${services.int_refundpercentdays}`)
+																	input.form-control#int_downpaymentdays(type='email' value= `${services.int_downpaymentdays}`)
 																.form-group
 																	label.h6 Refund Percent
-																	input.form-control#mobilenumber(type='text' value= `${services.int_reservationmaxdays}`)
+																	input.form-control#int_downpaymentdays(type='text' value= `${services.int_downpaymentdays}`)
 																
 															//- .form-group
 															//- 	h6.c-grey-900 Office hours
@@ -109,7 +109,7 @@ block prepend main
 															//- 				.text-danger.d-inline *
 															//- 			input.timpicker1.form-control#officeclose(type='text' name='officeclose' placeholder="Close" ='' value= `${services.var_officeclose}`)
 															//- 			.invalid-feedback Please provide a valid email address
-														button.btn.btn-primary.mt-3#submitButton(type='submit' value=`${services.clintID}`) Save Changes
+														button.btn.btn-primary.mt-3#submitButton(type='submit' value=`${services.int_utilitiesID}`) Save Changes
 
 
 													
@@ -137,15 +137,29 @@ block addjs
 						confirmButtonText: 'Yes'
 					}).then((result) => {
 						if (result.value) {
-							$.post('/admin/utilities-services-info',{
-							clientID:$('#clientID').val(),
-							parishname:$('#parishname').val(),
-							parishlocation:$('#parishlocation').val(),
-							telephonenumber:$('#telephonenumber').val(),
-							mobilenumber:$('#mobilenumber').val(),
-							emailaddress:$('#emailaddress').val(),
-							officeopen:$('#officeopen').val(),
-							officeclose:$('#officeclose').val()
+							$.post('/admin/utilities-services/viewdetails',{
+
+							int_utilitiesID:$('#int_utilitiesID').val(),
+							int_eventID:$('#int_eventID').val(),
+							intserviceutilitiesID:$('#intserviceutilitiesID').val(),
+							int_reservationmaxdays:$('#int_reservationmaxdays').val(),
+							int_reservationmindays:$('#mobilenumber').val(),
+							int_requirementsdays:$('#int_requirementsdays').val(),
+							time_duration:$('#time_duration').val(),
+							var_availabledays:$('#var_availabledays').val(),
+							time_availablestart:$('#time_availablestart').val(),
+							time_availableend:$('#time_availableend').val(),
+							boolwithpayment:$('#boolwithpayment').val(),
+							double_fee:$('#double_fee').val(),
+							double_addrate:$('#double_addrate').val(),
+							int_downpaymentdays:$('#int_downpaymentdays').val(),
+							int_fullpaymentdays:$('#int_fullpaymentdays').val(),
+							bool_refundable:$('#bool_refundable').val(),
+							int_refundpercent:$('#int_refundpercent').val(),
+							bool_withageconstraints:$('#bool_withageconstraints').val(),
+							int_agemin:$('#int_agemin').val(),
+							int_agemax:$('#int_agemax').val(),
+							char_servicestatus:$('#char_servicestatus').val()
 						}).done(function(data){
 							if(data.alertDesc==0){
 								swal(
@@ -166,19 +180,7 @@ block addjs
 						}
 						})
 				})
-				$('.timepicker1').datetimepicker({
-				icons: {
-					time: "fa fa-clock-o",
-					date: "fa fa-calendar",
-					up: "fa fa-chevron-up",
-					down: "fa fa-chevron-down",
-					previous: 'fa fa-chevron-left',
-					next: 'fa fa-chevron-right',
-					today: 'fa fa-screenshot',
-					clear: 'fa fa-trash',
-					close: 'fa fa-remove'
-				}
-			})
+				
 		
 		})		
 

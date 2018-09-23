@@ -726,10 +726,8 @@ adminRouter.post('/utilities-services/query', (req, res)=>{
             db.query(queryString1,[req.body.id], (err, results, fields) => {
                 res.send(results);
             }); 
-        
-   
-});
 
+});
 
 adminRouter.get('/utilities-services/viewdetails/:int_utilitiesID', (req, res)=>{
     var queryString1 =`SELECT * FROM tbl_utilities
@@ -743,6 +741,40 @@ adminRouter.get('/utilities-services/viewdetails/:int_utilitiesID', (req, res)=>
     }); 
 });
 
+
+adminRouter.post('/utilities-services/viewdetails', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_utilities
+    join tbl_services on tbl_services.int_eventID where tbl_utilities.int_utilitiesID=?`
+    db.query(queryString1,[req.params.int_utilitiesID], (err, results, fields) => {
+        if (err) throw(err);       
+        var services = results[0];
+        console.log(results[0])
+        console.log(req.params.int_utilitiesID)
+        return res.render('admin/views/utilities/services/editservice',{ services : services });
+    }); 
+});
+
+
+adminRouter.post('/utilities-specialservices/changestatus', (req, res)=>{
+    var success =0
+    var notsuccess =1
+    
+    var queryString1 = `UPDATE tbl_utilities SET        
+            char_servicestatus = "${req.body.emailaddress}"
+            where int_clientID= ${req.body.clientID};`;
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var clients = results[0];
+        if (err){
+            console.log(err)
+            res.send({alertDesc:notsuccess})
+        }
+        else{
+            res.send({alertDesc:success})
+        }
+    }); 
+    
+});
 
 //=======================================================
 //C L I E N T ' S  I N F O
