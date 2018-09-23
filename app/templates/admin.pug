@@ -97,10 +97,10 @@ html
 									a.sidebar-link(href='/admin/maintenance-services') Services
 								li
 									a.sidebar-link(href='/admin/maintenance-events') Events
-								//- li
-								//- 	a.sidebar-link(href='/admin/maintenance-facilities') Facilities
-								//- li
-								//- 	a.sidebar-link(href='/admin/maintenance-items') Facility Items
+								li
+									a.sidebar-link(href='/admin/maintenance-facilities') Facilities
+								li
+									a.sidebar-link(href='/admin/maintenance-items') Facility Items
 								//- li
 								//- 	a.sidebar-link(href='/admin/maintenance-ministries') Ministries
 								li.nav-item.dropdown
@@ -114,8 +114,8 @@ html
 											a.sidebar-link(href='/admin/maintenance-service-requirements') Service
 										li
 											a.sidebar-link(href='/admin/maintenance-document-requirements') Document Request
-										//- li
-										//- 	a.sidebar-link(href='/admin/maintenance-facility-requirements') Facility Reservation
+										li
+											a.sidebar-link(href='/admin/maintenance-facility-requirements') Facility Reservation
 								//- li
 								//- 	a.sidebar-link(href='#') Marriage Steps
 								//- li
@@ -145,8 +145,8 @@ html
 											a(href='#') Confirmation
 										li
 											a(href='#') Marriage
-								//- li
-								//- 	a(href='#') Facility Reservation
+								li
+									a(href='#') Facility Reservation
 						li.nav-item
 							a.sidebar-link(href='forms.html')
 								span.icon-holder
@@ -157,33 +157,77 @@ html
 								span.icon-holder
 									i.c-pink-500.ti-palette
 								span.title Queries
+								
 						li.nav-item.dropdown
-							a.sidebar-link(href='ui.html')
+							//- a.dropdown-toggle(href='/admin/utilities')
+							a.dropdown-toggle(href='javascript:void(0);')
 								span.icon-holder
-									i.c-pink-500.ti-palette
+									i.c-orange-500.ti-layout-list-thumb
 								span.title Utilities
+								span.arrow
+									i.ti-angle-right
+							ul.dropdown-menu
+								
+								li
+									a.sidebar-link(href='/admin/utilities-clients-info') Client's Info
+								li
+									a.sidebar-link(href='/admin/utilities-services') Services
+								li
+									a.sidebar-link(href='/admin/utilities-specialservices') Special Services
+								
+							//- 	li.nav-item.dropdown
+							//- 		a.dropdown-toggle(href='javascript:void(0);')
+							//- 			span.icon-holder
+							//- 			span.title Services
+							//- 			span.arrow
+							//- 				i.ti-angle-right
+							//- 		ul.dropdown-menu
+							//- 			li.nav-item.dropdown
+							//- 				a.dropdown-toggle(href='javascript:void(0);')
+							//- 					span.icon-holder
+							//- 					span.title Baptism
+							//- 					span.arrow
+							//- 						i.ti-angle-right
+							//- 				ul.dropdown-menu
+							//- 					li
+							//- 						a.sidebar-link(href='/admin/utilities-services/baptism/regularbaptism') Regular Baptism
+							//- 					li
+							//- 						a.sidebar-link(href='/admin/utilities-services/baptism/specialbaptism') Special Baptism
+							//- 					li
+							//- 						a.sidebar-link(href='/admin/utilities-services/baptism/regularconfirmation') Regular Confirmation
+							//- 					li
+							//- 						a.sidebar-link(href='/admin/utilities-services/baptism/specialconfirmation') Special Confirmation
+							//- 			li.nav-item.dropdown
+							//- 				a.dropdown-toggle(href='javascript:void(0);')
+							//- 					span.icon-holder
+							//- 					span.title Blessing
+							//- 					span.arrow
+							//- 						i.ti-angle-right
+							//- 				ul.dropdown-menu
+							//- 					li
+							//- 						a.sidebar-link(href='/admin/utilities-services/blessing/anointing') Anointing of the sick
+							//- 					li
+							//- 						a.sidebar-link(href='/admin/utilities-services/blessing/funeralmass') Funeral Mass
+							//- 					li
+							//- 						a.sidebar-link(href='/admin/utilities-services/blessing/funeralservice') Funeral Service
+												
 
-						//- li.nav-item.dropdown
-						//- 	a.dropdown-toggle(href='javascript:void(0);')
-						//- 		span.icon-holder
-						//- 			i.c-teal-500.ti-view-list-alt
-						//- 		span.title Multiple Levels
-						//- 		span.arrow
-						//- 			i.ti-angle-right
-						//- 	ul.dropdown-menu
-						//- 		li.nav-item.dropdown
-						//- 			a(href='javascript:void(0);')
-						//- 				span Menu Item
-						//- 		li.nav-item.dropdown
-						//- 			a(href='javascript:void(0);')
-						//- 				span Menu Item
-						//- 				span.arrow
-						//- 					i.ti-angle-right
-						//- 			ul.dropdown-menu
-						//- 				li
-						//- 					a(href='javascript:void(0);') Menu Item
-						//- 				li
-						//- 					a(href='javascript:void(0);') Menu Item
+							//- 			li
+							//- 				a.sidebar-link(href='/admin/utilities-services/marriage') Marriage
+							//- 	li.nav-item.dropdown
+							//- 		a.dropdown-toggle(href='javascript:void(0);')
+							//- 			span.icon-holder
+							//- 			span.title Special Services
+							//- 			span.arrow
+							//- 				i.ti-angle-right
+							//- 		ul.dropdown-menu
+							//- 			li
+							//- 				a.sidebar-link(href='/admin/utilities-specialservices/documentrequest') Document Request
+							//- 			li
+							//- 				a.sidebar-link(href='/admin/utilities-specialservices/houseblessing') Establishment Blessing
+							//- 			li
+							//- 				a.sidebar-link(href='/admin/utilities-specialservices/facilityreservation') Facility Reservation
+
 			// #Main ============================
 			.page-container
 				// ### $Topbar ###
@@ -344,6 +388,7 @@ html
 	script(src='/admin/vendor.js')
 	script(src='/admin/bundle.js')
 	script(src='/js/moment.min.js')
+	script(src="/js/bootstrap-datetimepicker.min.js")
 	script(src='/js/pdfmake.js')
 	script(src='/js/jquery.toolbar.min.js')
 	script(src='/js/vfs_fonts.js')

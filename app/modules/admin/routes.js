@@ -44,19 +44,17 @@ adminRouter.use(authMiddleware.adminAuth)
             return res.render('admin/views/maintenance/events',{specialevents: results });
         });     
     });
+    adminRouter.post('/maintenance-events/add', (req, res) => {
+    var start= moment(req.body.start, 'MM/DD/YYYY h:mm a').format('YYYY-MM-DD HH:mm:ss');
+    var end= moment(req.body.end, 'MM/DD/YYYY h:mm a').format('YYYY-MM-DD HH:mm:ss');
+    
+    var queryString4 = `INSERT INTO tbl_specialevent(int_userID, var_spceventname, text_eventdesc, time_eventstart, time_eventend, var_eventvenue, char_eventtype, var_approvalstatus ) VALUES(?,?, ?,?, ?,?, ?,?)`
+        db.query(queryString4, [req.session.admin.int_userID, req.body.spceventname, req.body.eventdesc, start, end, req.body.venue, req.body.eventtype, "Approved"], (err, results, fields) => {         
+            if (err) throw err;
+                return res.redirect('/admin/maintenance-events');
+        });   
 
-        adminRouter.post('/maintenance-events/add', (req, res) => {
-        var start= moment(req.body.start, 'MM/DD/YYYY h:mm a').format('YYYY-MM-DD HH:mm:ss');
-        var end= moment(req.body.end, 'MM/DD/YYYY h:mm a').format('YYYY-MM-DD HH:mm:ss');
-        
-        var queryString4 = `INSERT INTO tbl_specialevent(int_userID, var_spceventname, text_eventdesc, time_eventstart, time_eventend, var_eventvenue, char_eventtype, var_approvalstatus ) VALUES(?,?, ?,?, ?,?, ?,?)`
-            db.query(queryString4, [req.session.admin.int_userID, req.body.spceventname, req.body.eventdesc, start, end, req.body.venue, req.body.eventtype, "Approved"], (err, results, fields) => {         
-                if (err) throw err;
-                    return res.redirect('/admin/maintenance-events');
-            });   
-
-        });
-
+    });
     adminRouter.post('/maintenance-events/delete', (req, res) => {
         const queryString = `DELETE FROM tbl_specialevent WHERE int_specialeventID= ?`;
         db.query(queryString,[req.body.id1], (err, results, fields) => {        
@@ -65,18 +63,6 @@ adminRouter.use(authMiddleware.adminAuth)
             return res.redirect('/admin/maintenance-events');
         });
     });
-
-
-    // adminRouter.post('/maintenance-events/cancel/:int_specialeventID', (req, res) => {
-    //     const queryString = `UPDATE tbl_specialevent SET var_approvalstatus = "Cancelled"
-    //     WHERE int_specialeventID= ${req.params.int_specialeventID}`; 
-        
-    //     db.query(queryString, (err, results, fields) => {        
-    //         if (err) throw err;
-    //         return res.redirect('/admin/maintenance-events');
-            
-    //     });
-    // });
     adminRouter.post('/maintenance-events/query', (req, res) => {
         const queryString = `select * from tbl_specialevent WHERE int_specialeventID = ?`;
         db.query(queryString,[req.body.id], (err, results, fields) => {        
@@ -108,7 +94,6 @@ adminRouter.use(authMiddleware.adminAuth)
             return res.render('admin/views/maintenance/services',{ sacraments : results1, services:results2 });    
         }); });
     });
-
     adminRouter.post('/maintenance-services/add', (req, res) => {
         var queryString= `INSERT INTO tbl_services(
             var_eventname,
@@ -121,8 +106,6 @@ adminRouter.use(authMiddleware.adminAuth)
                     return res.redirect('/admin/maintenance-services');
             });            
         });
-
-        
     adminRouter.post('/maintenance-services/delete', (req, res) => {
         const queryString = `UPDATE tbl_services SET bool_isDeleted = 1`;
         db.query(queryString, (err, results, fields) => {        
@@ -130,8 +113,6 @@ adminRouter.use(authMiddleware.adminAuth)
             return res.redirect('/admin/maintenance-services');
         });
     });
-
-
     adminRouter.post('/maintenance-services/edit', (req, res) => {
         const queryString = `UPDATE tbl_services SET var_eventname = ?,var_eventdesc = ?, char_type = ?, char_status =? WHERE int_eventID= ?`; 
         db.query(queryString,[req.body.eventname,req.body.eventdesc,req.body.eventtype,req.body.status,req.body.id1], (err, results, fields) => {        
@@ -158,7 +139,6 @@ adminRouter.use(authMiddleware.adminAuth)
             return res.render('admin/views/maintenance/facilities',{ facilities : results });
         });     
     });
-
     adminRouter.post('/maintenance-facilities/addfacility', (req, res) => {
     
         var queryString= `INSERT INTO tbl_facility(var_facilityname, var_facilitydesc,int_maxpax) VALUES(?,?,?);`  
@@ -175,7 +155,6 @@ adminRouter.use(authMiddleware.adminAuth)
             
         });
     });
-
     adminRouter.post('/maintenance-facilities/query', (req, res) => {
         const queryString = `SELECT * FROM tbl_facility WHERE int_facilityID = ?`;
         db.query(queryString,[req.body.id], (err, results, fields) => {        
@@ -184,7 +163,6 @@ adminRouter.use(authMiddleware.adminAuth)
             console.log(results[0])
         });
     });
-
     adminRouter.post('/maintenance-facilities/edit', (req, res) => {
         const queryString = `UPDATE tbl_facility SET var_facilityname =?, var_facilitydesc= ?,int_maxpax=?
         WHERE int_facilityID= ?`;
@@ -204,8 +182,6 @@ adminRouter.use(authMiddleware.adminAuth)
             return res.render('admin/views/maintenance/ministries',{ ministries : results });
         });     
     });
-
-
     adminRouter.post('/maintenance-ministries/addministry', (req, res) => {
     
         var queryString= `INSERT INTO tbl_ministry(var_ministryname,var_ministrydesc) VALUES(?,?);`  
@@ -213,7 +189,7 @@ adminRouter.use(authMiddleware.adminAuth)
                 if (err) throw err;
                     return res.redirect('/admin/maintenance-ministries');
             });            
-        });
+    });
     adminRouter.post('/maintenance-ministries/delete', (req, res) => {
         const queryString = `DELETE FROM tbl_ministry
         WHERE int_ministryID= ?`;
@@ -224,7 +200,6 @@ adminRouter.use(authMiddleware.adminAuth)
             
         });
     });
-
     adminRouter.post('/maintenance-ministries/query', (req, res) => {
         
         var queryString = `SELECT * FROM tbl_ministry 
@@ -235,7 +210,6 @@ adminRouter.use(authMiddleware.adminAuth)
             console.log(results[0])
         });
     });
-
     adminRouter.post('/maintenance-ministries/edit', (req, res) => {
         const queryString = `UPDATE tbl_ministry SET var_ministryname =?,var_ministrydesc=?
         WHERE int_ministryID= ?`;
@@ -701,6 +675,125 @@ adminRouter.use(authMiddleware.adminAuth)
         
     });
 
+//===============================================================================================//
+// U T I L I T I E S //
+//===============================================================================================//
+adminRouter.post('/utilities-services/query', (req, res) => {
+    var queryString1 =`SELECT * FROM tbl_utilities join tbl_services on tbl_utilities.int_eventID= tbl_services.int_eventID where tbl_utilities.int_utilitiesID = ?`    
+    db.query(queryString1,[req.body.id], (err, results1, fields) => {
+        res.send({firstQuery:results1[0]});
+    }); 
+})
+adminRouter.get('/utilities-services', (req, res)=>{
+    var queryString2 =`SELECT * FROM tbl_utilities join tbl_services where tbl_utilities.int_eventID= tbl_services.int_eventID and tbl_utilities.int_eventID is not null`    
+        db.query(queryString2, (err, results, fields) => {
+            if (err) console.log(err);       
+            var services= results
+            // console.log(results)
+            for(var i = 0; i < services.length; i++){
+                services[i].time_availablestart= moment(services[i].time_availablestart,'HH:mm:ss').format('hh:mm A'); 
+                services[i].time_availableend= moment(services[i].time_availableend,'HH:mm:ss').format('hh:mm A'); 
+            }
+        return res.render('admin/views/utilities/services/index',{ services : services});
+    }); 
+}); 
+
+
+adminRouter.get('/utilities-specialservices', (req, res)=>{
+    
+    var queryString2 =`SELECT * FROM tbl_utilities join tbl_serviceutilities where tbl_utilities.int_serviceutilitiesID= tbl_serviceutilities.int_serviceutilitiesID and tbl_utilities.int_serviceutilitiesID is not null`
+        db.query(queryString2, (err, results, fields) => {
+            if (err) console.log(err);       
+            var services= results
+            // console.log(results)
+            for(var i = 0; i < services.length; i++){
+                    services[i].time_availablestart= moment(services[i].time_availablestart,'HH:mm:ss').format('hh:mm A'); 
+                    services[i].time_availableend= moment(services[i].time_availableend,'HH:mm:ss').format('hh:mm A'); 
+            }
+        return res.render('admin/views/utilities/specialservices/index',{ services : services});
+    }); 
+}); 
+//===============================================================================================//
+//S E R V I C E S 
+//=======================================================
+
+adminRouter.post('/utilities-services/query', (req, res)=>{
+        console.log(req.body.id)
+        console.log(req.body.id)
+        
+        var queryString1 =`SELECT * FROM tbl_utilities join tbl_services on 
+        tbl_services.int_eventID where tbl_utilities.int_utilitiesID=?`    
+            db.query(queryString1,[req.body.id], (err, results, fields) => {
+                res.send(results);
+            }); 
+        
+   
+});
+
+
+adminRouter.get('/utilities-services/viewdetails/:int_utilitiesID', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_utilities
+    join tbl_services on tbl_services.int_eventID where tbl_utilities.int_utilitiesID=?`
+    db.query(queryString1,[req.params.int_utilitiesID], (err, results, fields) => {
+        if (err) throw(err);       
+        var services = results[0];
+        console.log(results[0])
+        console.log(req.params.int_utilitiesID)
+        return res.render('admin/views/utilities/services/editservice',{ services : services });
+    }); 
+});
+
+
+//=======================================================
+//C L I E N T ' S  I N F O
+//=======================================================
+adminRouter.get('/utilities-clients-info', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_utilities_client`
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var clients = results[0];
+        return res.render('admin/views/utilities/client',{ clients : clients });
+    }); 
+});
+
+adminRouter.post('/utilities-clients-info/query', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_utilities_client where int_clientID =?`
+    db.query(queryString1,[req.body.id], (err, results1, fields) => {
+        res.send({firstQuery:results1[0]});
+    });
+});
+
+adminRouter.post('/utilities-clients-info', (req, res)=>{
+    var success =0
+    var notsuccess =1
+    
+    var queryString1 = `UPDATE tbl_utilities_client SET        
+            var_clientname = "${req.body.parishname}",
+            var_clientlocation = "${req.body.parishlocation}",
+            var_clienttelephone = "${req.body.telephonenumber}",
+            var_clientmobile = "${req.body.mobilenumber}",
+            var_clientemail = "${req.body.emailaddress}"
+            where int_clientID= ${req.body.clientID};`;
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var clients = results[0];
+        if (err){
+            console.log(err)
+            res.send({alertDesc:notsuccess})
+        }
+        else{
+            res.send({alertDesc:success})
+        }
+    }); 
+    
+});
+
+
+
+
+
+
+//===============================================================================================//
     adminRouter.use(function (err, req, res, next) {
         console.error(err.stack)
         res.status(500)

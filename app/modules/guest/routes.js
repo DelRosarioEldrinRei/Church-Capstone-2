@@ -24,7 +24,7 @@ var upload = multer({ storage: storage})
         var queryString1 =`SELECT * FROM tbl_services where var_eventname = 'Baptism' or var_eventname = 'Funeral Service' or var_eventname = 'Marriage'  or var_eventname = 'Anointing of the sick'`
         db.query(queryString1, (err, results, fields) => {
           var events =results;
-          var queryString1 =`SELECT * FROM tbl_serviceutilities`
+          var queryString1 =`SELECT * FROM tbl_utilities join tbl_serviceutilities where tbl_utilities.int_serviceutilitiesID= tbl_serviceutilities.int_serviceutilitiesID and tbl_utilities.char_servicestatus = 'Enabled'`
             db.query(queryString1, (err, results, fields) => {
                 var services =results;
                 if (err) console.log(err);
