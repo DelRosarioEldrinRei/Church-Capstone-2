@@ -716,7 +716,7 @@ if (req.body.baptismtype == 'Special'){
         function queries(eventid, dtime, ddate){    
             console.log(dtime)
             console.log(ddate)
-             
+        }
     var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
     db.query(paymentQuery,[eventid], (err, results, fields) => {
         if (err) throw err;
@@ -776,7 +776,6 @@ if (req.body.baptismtype == 'Special'){
                             });      
                         });
                     });
-            
     }
     function sponsors(eventinfoID){
         var i;
@@ -791,7 +790,7 @@ if (req.body.baptismtype == 'Special'){
             });
         }
     }
-};
+});
 
 //==============================================================
 //  C O N F I R M A T I O N
