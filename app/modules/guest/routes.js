@@ -136,6 +136,23 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
     return res.render('guest/views/voucher',{results:results});
     })
 });
+guestRouter.get(`/voucherEvents`, (req, res)=>{
+    var queryString = `SELECT * from tbl_voucher 
+    JOIN tbl_notification ON tbl_voucher.int_notifID = tbl_notification.int_notifID
+    JOIN tbl_user ON tbl_user.int_userID = tbl_notification.int_userID
+    JOIN tbl_documentrequest ON tbl_documentrequest.int_requestID = tbl_voucher.int_requestID
+    JOIN tbl_document ON tbl_document.int_documentID = tbl_documentrequest.int_documentID
+    JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID
+    WHERE tbl_voucher.int_notifID = ?`
+    db.query(queryString,[notifId],(err,results,fields)=>{
+    console.log(results[0])
+    results[0].date_issued = moment(results[0].date_issued).format('MM/DD/YYYY')
+    results[0].date_due = moment(results[0].date_due).format('MM/DD/YYYY')
+    results[0].date_docurequested = moment(results[0].date_docurequested).format('MM/DD/YYYY')
+    results = results[0];
+    return res.render('guest/views/voucher',{results:results});
+    })
+});
 //===============================================================================================//
 // R E S E R V A T I O N //
 //===============================================================================================//
@@ -599,14 +616,13 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
         var queryString1= `SELECT int_agemax, int_agemin, double_fee FROM tbl_utilities where int_eventID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
         db.query(queryString1, (err, results1, fields) => {
             var queryString2= `SELECT time_availabletime FROM tbl_utilities_availabletime where int_serviceID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
-            db.query(queryString2, (err, results2, fields) => {
-                for(i=0;i<results2.length;i++){
-                results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
-                }
+            // db.query(queryString2, (err, results2, fields) => {
+            //     for(i=0;i<results2.length;i++){
+            //     results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
+            //     }
                 if (err) throw err;
-            console.log(results2);
-        return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1,times:results2})
-            });    
+        return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1})
+            // });    
         });
     });
 
@@ -614,19 +630,19 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
     console.log(req.body)
     if (req.body.baptismtype == 'Regular'){
         var desireddate= moment(req.body.eventDate, 'YYYY/MM/DD').format('YYYY-MM-DD');
+        var desiredtime= moment(req.body.timeStart, 'hh:mm a').format('hh:mm:ss');
         var queryString= `select int_eventID from tbl_services where var_eventname="Baptism"`
         db.query(queryString, (err, results, fields) => {
             if (err) throw err;
             var eventID = results[0];
-        
-            var defaulttimeQuery =`select time_defaulttime from tbl_defaulttime where int_eventID= ?`
-            db.query(defaulttimeQuery,[eventID.int_eventID], (err, results, fields) => {
+            console.log(eventID)
+            // var defaulttimeQuery =`select time_defaulttime from tbl_defaulttime where int_eventID= ?`
+            // db.query(defaulttimeQuery,[eventID.int_eventID], (err, results, fields) => {
                 if (err) throw err;
-                var desired = results[0];
-                var desiredtime=desired.time_defaulttime;
                 console.log(desiredtime)
+                console.log(desireddate)
                 queries(eventID.int_eventID, desiredtime, desireddate);
-            });
+            // });
         });
         }
     if (req.body.baptismtype == 'Special'){
@@ -639,6 +655,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                 if (err) throw err;
                 // console.log(results);
                 var eventID = results[0];
+                console.log(eventID)
                 // console.log(req.session.user);
                 queries(eventID.int_eventID, desiredtime, desireddate);
             });
@@ -656,8 +673,8 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
             db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
                 if (err) throw err;
                 var paymentid= results;
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID,char_approvalstatus,int_paymentID) VALUES(?,?,?,?)`;
-                db.query(queryString1, [req.session.user.int_userID, eventid,"Pending",paymentid.insertId], (err, results3, fields) => {
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID,char_approvalstatus,int_paymentID,date_eventdate,time_eventstart) VALUES(?,?, ?,?,?,?)`;
+                db.query(queryString1, [req.session.user.int_userID, eventid,"Pending",paymentid.insertId,ddate,dtime], (err, results3, fields) => {
                     if (err) throw err;
                     var eventinfoID= results3;
                                 var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_relation, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?,?);`
@@ -673,20 +690,32 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
                                         var path = '/img/req/'+req.file.filename;
                                         var nowDate = new Date(); 
                                         var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
-                                        var queryString7 = `INSERT INTO tbl_requirements(var_reqpath,date_reqreceived,int_reqtypeID, var_reqstatus,datetime_received) VALUES (?,?,?,?,?);`
-                                            db.query(queryString7,[path,date,reqq.int_reqtypeID,"Submitted",nowDate],(err, results, fields)=>{
-                                                var requirement = results
+                                        var queryString7 = `INSERT INTO tbl_requirements(var_reqpath,int_reqtypeID, var_reqstatus,datetime_reqreceived) VALUES (?,?,?,?);`
+                                            db.query(queryString7,[path,reqq.int_reqtypeID,"Submitted",nowDate],(err, requirement, fields)=>{
                                                 console.log(requirement)
                                                 var queryString8 = `INSERT INTO tbl_requirementsinevents(int_requirementID,int_eventinfoID) VALUES (?,?)`
                                                 db.query(queryString8,[requirement.insertId,eventinfoID.insertId],(err, results, fields)=>{
                                                     if (err) throw err;
-                                                    var queryString4 = `INSERT INTO tbl_baptism(int_eventinfoID, var_parentmarriageadd, var_fatherbplace, var_motherbplace, var_fathername, var_mothername, var_contactnum, date_desireddate, time_desiredtime) VALUES(?,?,?, ?,?,? ,?,?,?);`
+                                                    var queryString4 = `INSERT INTO tbl_baptism(int_eventinfoID, var_parentmarriageadd, var_fatherbplace, var_motherbplace, var_fathername, var_mothername, var_contactnum) VALUES(?,?,?, ?,?,? ,?);`
                                                     console.log(dtime)
-                                                    db.query(queryString4 , [eventinfoID.insertId, req.body.marriageaddress, req.body.fatherbirthplace, req.body.motherbirthplace, req.body.fathername, req.body.mothername, req.body.contactnumber, ddate,dtime], (err, results, fields) => {
-                                                        var queryString9 = `INSERT INTO tbl_voucherevents(int_eventID,date_issued,date_due)`
-
-                                                        if (err) throw err;
-                                                        sponsors(eventinfoID.insertId);
+                                                    db.query(queryString4 , [eventinfoID.insertId, req.body.marriageaddress, req.body.fatherbirthplace, req.body.motherbirthplace, req.body.fathername, req.body.mothername, req.body.contactnumber], (err, results, fields) => {
+                                                        var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due) VALUES(?,?,?)`
+                                                        var datenow = new Date();
+                                                        var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+                                                        console.log(dateNow)
+                                                        console.log(eventinfoID.insertId)
+                                                        var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
+                                                        var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
+                                                        console.log(dateDue1)
+                                                        db.query(queryString9,[eventinfoID.insertId,dateNow,dateDue1],(err,results,fields)=>{
+                                                            if (err) throw err;
+                                                            sponsors(eventinfoID.insertId);
+                                                            var queryString10 = `SELECT * FROM tbl_voucherevents where int_eventinfoID =?`
+                                                            db.query(queryString10,[eventinfoID.insertId],(err,results,fields)=>{
+                                                                if (err) throw err;
+                                                                res.send(results[0])
+                                                            })
+                                                        })
                                                 })
                                             })
                                         })
@@ -1531,7 +1560,8 @@ guestRouter.get('/marriage1/form', (req, res)=>{
                             var nowDate = new Date(); 
                             var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate(); 
                             var queryString7 = `INSERT INTO tbl_requirementsdocument(int_requestID,var_reqpath,date_reqreceived,int_docureqtypeID,bool_reqstatus) VALUES (?,?,?,?,?);`
-                            db.query(queryString7,[requestID,path,date,1,"Pending"],(err, results, fields)=>{     
+                            db.query(queryString7,[requestID,path,date,1,"Pending"],(err, results, fields)=>{
+                                
                                 if (err) throw err;
                                     return res.redirect(`/guest`);
                                 })

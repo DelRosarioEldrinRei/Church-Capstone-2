@@ -59,10 +59,10 @@ block main
 						.row
 							.col-md-12
 								a#anchorRegisterSubmit.btn-design(href="#") Submit
-//- block addjs	
-//- 	script.
-//- 		$(document).ready(function(){
-//- 			$('.voucherLink').click(function(){
-//- 				window.open(`/guest/voucher?notifId=${$(this).attr('value')}`)
-//- 			})
-//- 		})
+	block addjs	
+		script.
+			$(document).ready(function(){
+				$('.voucherLink').click(function(){
+					window.open(`/guest/voucher?notifId=${$(this).attr('value')}`)
+				})
+			})
