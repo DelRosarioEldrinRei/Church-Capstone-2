@@ -657,9 +657,8 @@ guestRouter.get(`/voucherEvents`, (req, res)=>{
             // });    
         });
     });
-});
 
-guestRouter.post('/baptism/form',upload.single('image'), (req, res) => {
+        guestRouter.post('/baptism/form',upload.single('image'), (req, res) => {
 console.log(req.body)
 if (req.body.baptismtype == 'Regular'){
     var desireddate= moment(req.body.eventDate, 'YYYY/MM/DD').format('YYYY-MM-DD');
@@ -777,7 +776,6 @@ if (req.body.baptismtype == 'Special'){
                             });      
                         });
                     });
-                });
             
     }
     function sponsors(eventinfoID){
@@ -793,7 +791,7 @@ if (req.body.baptismtype == 'Special'){
             });
         }
     }
-});
+};
 
 //==============================================================
 //  C O N F I R M A T I O N
@@ -1619,13 +1617,4 @@ guestRouter.get('/marriage1/form', (req, res)=>{
         res.status(404)
         return res.render('guest/views/error/404', {title: '404: File Not Found'});
     });
-//===============================================================================================================
-exports.guest = guestRouter;  
-
-
-
-
-
-//edn jona
-
-
+exports.guest = guestRouter;
