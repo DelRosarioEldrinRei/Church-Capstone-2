@@ -156,13 +156,12 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     secretariatRouter.get('/transaction-baptism', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-        JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         JOIN tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
         JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
-        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventapplication.int_paymentID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
         where tbl_services.var_eventname ='Baptism'`
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
@@ -173,18 +172,18 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                     regulars[i].time_desiredtime= moment(regulars[i].time_desiredtime, 'HH:mm:ss').format('hh:mm A'); 
                 }
                 var queryString3 =`SELECT * FROM tbl_eventinfo 
-                    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-                    JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
+                    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID 
                     JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
                     JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
                     join tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
                     JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
                     JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
-                    JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventapplication.int_paymentID
+                    JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
                     where tbl_services.var_eventname ='Special Baptism'`
 
                         db.query(queryString3, (err, results, fields) => {
                             if (err) console.log(err);
+                            console.log(results)
                             var specials = results;                
                             for(var i = 0; i < specials.length; i++){
                                 
@@ -201,7 +200,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     });
     secretariatRouter.post('/transaction-baptism/query', (req, res)=>{
         var queryString1 =`SELECT * from tbl_eventinfo 
-        JOIN tbl_eventapplication on tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
         JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
@@ -218,8 +216,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     });
     secretariatRouter.post('/transaction-baptism/query/update', (req, res)=>{
         var queryString1 =`SELECT * from tbl_eventinfo 
-        JOIN tbl_eventapplication ON tbl_eventapplication.int_eventinfoID = tbl_eventinfo.int_eventinfoID
-        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventapplication.int_paymentID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
         JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_requirementtype ON tbl_requirementtype.int_eventID = tbl_services.int_eventID
@@ -240,18 +237,17 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             WHERE int_paymentID = ?`
             db.query(queryString2,[req.body.paystatus,req.body.payid],(err,results,fields) =>{
                 if(req.body.reqstatus == "Approved" && req.body.paystatus == "Paid"){
-                    var queryString3 = `UPDATE tbl_eventapplication SET char_approvalstatus =?
+                    var queryString3 = `UPDATE tbl_eventinfo SET char_approvalstatus =?
                     WHERE int_eventinfoID = ?`
                     db.query(queryString3,["Approved",req.body.eventid],(err,results,fields) =>{
-                        var queryString4 = `UPDATE tbl_eventinfo SET date_approveddate =?,
-                        time_approvedstart = ?, time_approvedend =?
+                        var queryString4 = `UPDATE tbl_eventinfo SET date_eventdate =?,
+                        time_eventstart = ?
                         WHERE int_eventinfoID = ?`
                         // var timeRequestedStart = moment(req.body.timeRequested).format('HH:mm:ss')
                         console.log(req.body.timeRequested)
-                        console.log(moment(req.body.timeRequested,'HH:mm:ss').add(1,'h').format('HH:mm:ss'))
                         var timeRequestedEnd = moment(req.body.timeRequested,'HH:mm:ss').add(1,'h').format('HH:mm:ss')
                         var dateRequested = moment(req.body.dateRequested).format('YYYY-MM-DD')
-                        db.query(queryString4,[dateRequested,req.body.timeRequested,timeRequestedEnd,req.body.eventid],(err,results,fields) =>{
+                        db.query(queryString4,[dateRequested,req.body.timeRequested,req.body.eventid],(err,results,fields) =>{
                             if(err) throw err
                             return res.redirect('/secretariat/transaction-baptism')
                         })

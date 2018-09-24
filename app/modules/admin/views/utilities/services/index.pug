@@ -1,0 +1,113 @@
+extends ../../../../../templates/admin
+block prepend main
+	#wrap
+	div(style='clear:both')
+	.content
+		.container-fluid
+
+			.row
+				.col-lg-12.col-md-12
+						.card
+								.card-header.card-header-primary
+									//- .row
+									//- 	.col-md-12
+									h4.card-title Services
+										//- .col-md-6
+										//- 	a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Event
+								.card-body.table-responsive
+										table.dataTable.table.table-hover.dt-responsive
+												thead.text-primary
+														//- th ID
+														th Service Name
+														th Available Time
+														//- th Available Days
+														th Age Constraint
+														th Paid Service
+														th Refundable
+														th Actions
+												tbody
+														each service in services
+															tr
+																//- td=service.int_utilitiesID
+																td=service.var_eventname
+																td=service.time_availablestart +" - " + service.time_availableend
+																if(service.bool_withageconstraints=='1')
+																	if(service.int_agemax==null)
+																		td=service.int_agemin + " and above"
+																	
+																	else
+																		td=service.int_agemin + " - " + service.int_agemax
+																	
+																
+																else if(service.bool_withageconstraints=='0')
+																	td="None"
+																
+																if(service.bool_withpayment=='1')
+																	if(service.bool_refundable=='1')
+																		td="Yes"
+																		td="Yes"
+																	if(service.bool_refundable=='0')
+																		td='Yes'
+																		td='No'
+																
+																else if(service.bool_withpayment=='0')
+																	td="No"
+																	td="No"
+																
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${service.int_utilitiesID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.updateButton(href='#' value=`${service.int_utilitiesID}`)
+																					i.ti-pencil(style="color:white;")
+																				//- a.deleteButton(href='#')
+																				//- 	i.ti-close(style="color:white;")
+	
+block addjs
+	
+	script.
+		$(document).ready(function() {
+			var idNow = 0;
+			$('.actionButton').click(function(){
+				idNow = $(this).val();
+				console.log('where are we?')
+				console.log(idNow)
+			});
+			$('.deleteButton').click(function(){
+				swal({
+					title: 'Are you sure you want to save changes?',
+					text: "",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Confirm'
+					}).then((result) => {
+						if (result.value) {
+							$.post('/admin/utilities-services/changestatus',{id1:idNow})
+							.done(data =>{
+								if(data){
+									swal({
+									title:'Success',
+									text:'Special event deleted',
+									icon:'success'
+									}).then(function(){
+										location.reload();
+									})
+								}
+							});
+						}
+					})
+				})
+			$('.updateButton').click(function(){
+				
+				console.log('nasa update button us')
+				console.log(idNow)
+				$.post('/admin/utilities-services/query',{id:idNow})
+				.done(data =>{
+					console.log(data.firstQuery.int_utilitiesID)
+					window.location=`/admin/utilities-services/viewdetails/${data.firstQuery.int_utilitiesID}`
+					});
+				
+		});
+		});

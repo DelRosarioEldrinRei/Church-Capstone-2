@@ -112,6 +112,7 @@ block prepend main
             span(aria-hidden='true') ×
         img.modal-content1#imgReq
 block addjs
+    
     script.
         $(document).ready(function(){
             var idNow;
@@ -244,8 +245,8 @@ block addjs
                         if(result.value){
                         data.time_desiredtime = moment(data.time_desiredtime,'HH:mm:ss').format('HH:mm:ss')
                         $.post('/secretariat/transaction-baptism/update',{
-                        dateRequested:data.date_desireddate,
-                        timeRequested:data.time_desiredtime,
+                        dateRequested:data.date_eventdate,
+                        timeRequested:data.time_eventstart,
                         eventstatus:$('#eventstatus').val(),
                         eventid:$('#eventid').val(),
                         reqid:$('#reqid').val(),

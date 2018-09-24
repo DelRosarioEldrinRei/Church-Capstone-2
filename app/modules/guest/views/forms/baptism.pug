@@ -405,13 +405,16 @@ block addjs
 		console.log(eventDate)
 		$.get('/guest/baptism/query').done(data=>{
 			for(i=0;i<data.length;i++){
-			var dateEvent = moment(data[i].date_approveddate).format('MM/DD/YYYY');
-			data[i].time_approvedend = moment(data[i].time_approvedend).add(1,'hour').format('hh:mm a');
+			var dateEvent = moment(data[i].date_eventdate).format('MM/DD/YYYY');
+			data[i].time_eventstart = moment(data[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
+			var time_end = moment(data[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+			console.log(time_end)
 			console.log(dateEvent)
+			console.log(data[i].time_eventstart)
 				$('#calendarSpecial').fullCalendar('renderEvent', {
 				title: 'OCCUPIED EVENT',
-				start: `${dateEvent} ${data[i].time_approvedstart}`,
-				end: `${dateEvent} ${data[i].time_approvedend}`,
+				start: `${dateEvent} ${data[i].time_eventstart}`,
+				end: `${dateEvent} ${time_end}`,
 				allDay: false,
 				color:'#4c2508',
 				textColor: "white",
