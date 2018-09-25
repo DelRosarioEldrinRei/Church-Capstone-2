@@ -1,9 +1,18 @@
 extends ../../../../../templates/secretariat
 
 block prepend main
-    //- #wrap
-    //- //- #calendar
-    //- div(style='clear:both')
+    style.
+        .tableModal {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        }
+
+        .tdModal{
+            border: 2px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+        }
     .content
         .container-fluid
             .row
@@ -22,7 +31,7 @@ block prepend main
                             .tab-content
                                 #regularbaptism.tab-pane.active
                                     br
-                                    .card
+                                    .card.shadow
                                             .card-header.card-header-primary
                                                     h4.card-title Regular Baptism
                                             .card-body.table-responsive
@@ -41,9 +50,22 @@ block prepend main
                                                                             td=regular.int_eventinfoID
                                                                             td=regular.var_lname + ", " + regular.var_fname
                                                                             td=regular.date_birthday
-                                                                            td=regular.var_reqstatus
-                                                                            td=regular.char_paymentstatus
-                                                                            td=regular.char_approvalstatus
+                                                                            td
+                                                                                if regular.var_reqstatus == "Approved"
+                                                                                    span.badge.badge-pill.bgc-green-100.c-green-700 #{regular.var_reqstatus}
+                                                                                else
+                                                                                    span.badge.badge-pill.bgc-blue-100.c-blue-700 #{regular.var_reqstatus}
+
+                                                                            td
+                                                                                if regular.char_paymentstatus == "Paid"
+                                                                                    span.badge.badge-pill.bgc-green-100.c-green-700 #{regular.char_paymentstatus}
+                                                                                else
+                                                                                    span.badge.badge-pill.bgc-amber-100.c-amber-700 #{regular.char_paymentstatus}
+                                                                            td
+                                                                                if regular.char_approvalstatus == "Approved"
+                                                                                    span.badge.badge-pill.bgc-green-100.c-green-700 #{regular.char_approvalstatus}
+                                                                                else
+                                                                                    span.badge.badge-pill.bgc-amber-100.c-amber-700 #{regular.char_approvalstatus}
                                                                             td.td-actions.text-center
                                                                                 button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
                                                                                     i.ti-settings
@@ -54,7 +76,7 @@ block prepend main
                                                                                                 i.ti-pencil(style="color:white;")
                                 #specialbaptism.tab-pane.fade
                                     br
-                                    .card
+                                    .card.shadow
                                         .card-header.card-header-primary
                                             h4.card-title Special Baptism
                                         .card-body.table-responsive
@@ -75,9 +97,21 @@ block prepend main
                                                             td=special.var_lname + ", " + special.var_fname
                                                             td=special.date_birthday
                                                             td=special.date_desireddate + ' ' + special.time_desiredtime
-                                                            td=special.var_reqstatus
-                                                            td=special.char_paymentstatus
-                                                            td=special.char_approvalstatus
+                                                            td
+                                                                if special.var_reqstatus == "Approved"
+                                                                    span.badge.badge-pill.bgc-green-100.c-green-700 #{special.var_reqstatus}
+                                                                else
+                                                                    span.badge.badge-pill.bgc-blue-100.c-blue-700 #{special.var_reqstatus}
+                                                            td
+                                                                if special.char_paymentstatus == "Paid"
+                                                                    span.badge.badge-pill.bgc-green-100.c-green-700 #{special.char_paymentstatus}
+                                                                else
+                                                                    span.badge.badge-pill.bgc-amber-100.c-amber-700 #{special.char_paymentstatus}
+                                                            td
+                                                                if special.char_approvalstatus == "Approved"
+                                                                    span.badge.badge-pill.bgc-green-100.c-green-700 #{special.char_approvalstatus}
+                                                                else
+                                                                    span.badge.badge-pill.bgc-amber-100.c-amber-700 #{special.char_approvalstatus}
                                                             td.td-actions.text-center
                                                                 button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
                                                                     i.ti-settings
@@ -101,12 +135,12 @@ block prepend main
             .modal-dialog.modal-lg(role="document")
                 .modal-content
                     .modal-header
-                        h5.modal-title Baptism
+                        h4.modal-title View Baptism
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span(aria-hidden='true') ×
                     .modal-body#viewBodyAppend
-                    .modal-footer
-                        button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                    //- .modal-footer
+                    //-     button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
     #myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
         button.close(type='button', data-dismiss='modal', aria-label='Close')
             span(aria-hidden='true') ×
@@ -127,29 +161,22 @@ block addjs
                     var timeRequested = moment(data.time_desiredtime,'HH:mm:ss').format('hh:mm A')
                     var age = moment().diff(data.date_birthday,'years');
                     $('#viewBodyAppend').append(`
-                    <div class="form-group">
-                        <label class="label-control"><strong> Name of the Child: </strong> ${data.var_mname}, ${data.var_fname}</label>
-                    </div>
-                    <div class="form-group">
-                        <label class="label-control"> <strong> Desired Date: </strong> ${dateRequested}</label>
-                    </div>
-                    <div class="form-group">
-                        <label class=" label-control"> <strong> Desired Time:  </strong> ${timeRequested}</label>
-                    </div>
-                    <div class="form-group">
-                        <label class=" label-control"> <strong> Father's Name:  </strong> ${data.var_fathername}</label>
-                    </div>
-                    <div class="form-group">
-                        <label class=" label-control"> <strong> Mother's Name:  </strong> ${data.var_mothername}</label>
-                    </div>
-                    <div class="form-group">
-                        <label class=" label-control"> <strong> Age:  </strong> ${age}</label>
-                    </div>
-                    <div class="form-group">
-                            <label class="label-control"> <strong> Requirements: </strong> ${data.var_reqname}</label>
-                    </div>
-                    <div class="form-group">
-                        <img id="myImg" class="img-responsive" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px;">
+                    <table class="tableModal">
+                        <tr>
+                            <td class="tdModal h5"><strong> Desired Date: </strong> ${dateRequested}</td>
+                            <td class="tdModal h5"><strong> Desired Time:  </strong> ${timeRequested}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdModal h5"><strong> Name of the Child: </strong> ${data.var_lname}, ${data.var_fname}</td>
+                            <td class="tdModal h5"><strong> Age:  </strong> ${age}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdModal h5"><strong> Father's Name:  </strong> ${data.var_fathername}</td>
+                            <td class="tdModal h5"><strong> Mother's Name:  </strong> ${data.var_mothername}</td>
+                    </table>
+                    <h5 class=" ml-2 mt-2"><strong>Requirements: </strong> ${data.var_reqname} (Image)</h5> 
+                    <div class="form-group" style="margin: 1rem;">
+                        <img id="myImg shadow2" class="img-responsive" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                     </div>
                     `)
                     $('#viewModal').modal('show')
