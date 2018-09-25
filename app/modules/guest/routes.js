@@ -679,7 +679,6 @@ if (req.body.baptismtype == 'Regular'){
     }
 if (req.body.baptismtype == 'Special'){
     console.log(req.body)
-    if (req.body.baptismtype == 'Regular'){
         var desireddate= moment(req.body.eventDate, 'YYYY/MM/DD').format('YYYY-MM-DD');
         var desiredtime= moment(req.body.timeStart, 'hh:mm a').format('hh:mm:ss');
         var queryString= `select int_eventID from tbl_services where var_eventname="Baptism"`
@@ -696,12 +695,12 @@ if (req.body.baptismtype == 'Special'){
                 queries(eventID.int_eventID, desiredtime, desireddate);
             // });
         });
-        }
+    }
     if (req.body.baptismtype == 'Special'){
         console.log(req.body)
         var desireddate= moment(req.body.eventDate, 'YYYY/MM/DD').format('YYYY-MM-DD');
         // var desiredtime= moment(req.body.desiredtime,'HH:mm').format("HH:mm:ss")
-        var desiredtime= moment(req.body.timeStart, 'h:mm a').format('HH:mm:ss');
+        var desiredtime= moment(req.body.timeStart, 'hh:mm a').format('HH:mm:ss');
         var queryString= `select int_eventID from tbl_services where var_eventname="Special Baptism";`
             db.query(queryString, (err, results, fields) => {
                 if (err) throw err;
@@ -716,7 +715,7 @@ if (req.body.baptismtype == 'Special'){
         function queries(eventid, dtime, ddate){    
             console.log(dtime)
             console.log(ddate)
-        }
+        
     var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
     db.query(paymentQuery,[eventid], (err, results, fields) => {
         if (err) throw err;
