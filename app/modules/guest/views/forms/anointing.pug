@@ -33,7 +33,7 @@ block main
 		section.form-box
 			.container
 				.row
-					.col-md-12.form-wizard
+					.col-md-12.form-wizard.shadow3
 							//- form(action="/guest/anointing/form" enctype="multipart/form-data" method="post" data-toggle='validator')
 							h3 Anointing Application
 							p Fill all form fields
@@ -96,31 +96,6 @@ block main
 												.help-block.with-errors
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
-											.form-group.m-0
-												h5.label-control Gender
-													.text-danger.d-inline  *
-											.custom-control.custom-radio
-												input#customRadio1.custom-control-input(type='radio', name='gender' value="Male"  checked)
-												label.custom-control-label(for='customRadio1') 
-													label Male
-											.custom-control.custom-radio
-												input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
-												label.custom-control-label(for='customRadio2') 
-													label Female
-										.col-md-4.p-lg-0.px-md-3.px-sm-0
-											.form-group
-												h5.label-control Birthday
-													.text-danger.d-inline  *
-												input.birthday.form-control#birthday(type='date' name='birthday'  required='', data-error='Please enter your birthday')
-												.help-block.with-errors
-										.col-md-4.px-lg-3.px-md-0.px-sm-0
-											.form-group
-												h5.label-control Birthplace:
-													.text-danger.d-inline  *
-												input.form-control#birthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9 ]{3,}"  data-error='Please enter birthplace')
-												.help-block.with-errors
-									.row
-										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
 												h5.label-control Relationship with the Ill
 													.text-danger.d-inline  *
@@ -137,19 +112,58 @@ block main
 													option Sibling
 													option Spouse
 												.help-block.with-errors(style="margin-top:2rem!important;")
-										
-									.row
-										
-										.col-md-6.px-lg-3.px-md-3.px-sm-0
+										.col-md-4.p-lg-0.px-md-3.px-sm-0
 											.form-group
+												h5.label-control Birthday
+													.text-danger.d-inline  *
+												input.birthday.form-control#birthday(type='date' name='birthday'  required='', data-error='Please enter your birthday')
+												.help-block.with-errors
+										.col-md-4.px-lg-3.px-md-0.px-sm-0
+											.form-group
+												h5.label-control Birthplace:
+													.text-danger.d-inline  *
+												input.form-control#birthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9 ]{3,}"  data-error='Please enter birthplace')
+												.help-block.with-errors
+									//- .row
+									//- 	.col-md-4.px-lg-3.px-md-0.px-sm-0
+									//- 		.form-group
+									//- 			h5.label-control Relationship with the Ill
+									//- 				.text-danger.d-inline  *
+									//- 			select#relation(type="text" name='relation'  required=''  data-error='Please choose an option')
+									//- 				option(selected="" value="" disabled) Choose...
+									//- 				option Aunt/Uncle
+									//- 				option Child
+									//- 				option BF/GF
+									//- 				option Friend
+									//- 				option Grandchild
+									//- 				option Grandparent
+									//- 				option Nephew/Niece
+									//- 				option Parent
+									//- 				option Sibling
+									//- 				option Spouse
+									//- 			.help-block.with-errors(style="margin-top:2rem!important;")
+									.row
+										.col-md-4.px-lg-3.px-md-3.px-sm-0
+											.form-group.m-0.p-0
+												h5.label-control Gender
+													.text-danger.d-inline  *
+												.custom-control.custom-radio
+													input#customRadio1.custom-control-input(type='radio', name='gender' value="Male"  checked)
+													label.custom-control-label(for='customRadio1') 
+														label Male
+												.custom-control.custom-radio
+													input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
+													label.custom-control-label(for='customRadio2') 
+														label Female
+										.col-md-4.px-lg-0.px-md-3.px-sm-0
+											.form-group.p-0
 												h5(for='address') Address
 													.text-danger.d-inline  *
 												textarea#address.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" data-error='Please enter complete address')
 												label
 													.help-block.with-errors
-										
-										.col-md-6.px-lg-3.px-md-3.px-sm-0
-											.form-group
+										.col-md-4.px-lg-3.px-md-3.px-sm-0
+											.form-group.p-0
 												h5(for='details') Details
 													.text-danger.d-inline  *
 												textarea#details.form-control.mb-0(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
