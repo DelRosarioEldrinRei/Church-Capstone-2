@@ -717,21 +717,6 @@ adminRouter.get('/utilities-specialservices', (req, res)=>{
 //S E R V I C E S 
 //=======================================================
 
-adminRouter.post('/utilities-services/query', (req, res)=>{
-        console.log("==========================================")
-        console.log("Query (req.body.id): "+ req.body.id)
-        console.log("==========================================")
-        
-        var queryString1 =`SELECT * FROM tbl_utilities join tbl_services on 
-        tbl_services.int_eventID = tbl_utilities.int_eventid where tbl_utilities.int_utilitiesID=?`    
-            db.query(queryString1,[req.body.id], (err, results, fields) => {
-                res.send(results);
-
-                // return res.redirect(`/admin/utilities-services/viewdetails/${req.body.id}`)
-            }); 
-
-});
-
 adminRouter.get('/utilities-services/viewdetails', (req, res)=>{
     console.log("==========================================")
     console.log("View details (req.query.id): "+req.query.id) 
@@ -745,13 +730,62 @@ adminRouter.get('/utilities-services/viewdetails', (req, res)=>{
         console.log("==========================================")
         console.log("Results set: "+JSON.stringify(services))
         console.log("==========================================")
+        
+        var days = services.var_availabledays.split(',');
+        console.log(days)
+        var sun=0; var mon=0; var tues=0; var wed=0; var thurs=0; var fri=0; var sat=0;
+        for(i=0; i<days.length; i++){
+            if(days[i]==0){sun=1;}
+            if(days[i]==1){mon=1;}
+            if(days[i]==2){tues=1;}
+            if(days[i]==3){wed=1;}
+            if(days[i]==4){thurs=1;}
+            if(days[i]==5){fri=1;}
+            if(days[i]==6){sat=1;}
+        }
 
         services.time_duration= moment(services.time_duration,'HH:mm:ss').format('hh:mm'); 
         services.time_defaulttime= moment(services.time_defaulttime,'HH:mm:ss').format('hh:mm A'); 
         services.time_availablestart= moment(services.time_availablestart,'HH:mm:ss').format('hh:mm A'); 
         services.time_availableend= moment(services.time_availableend,'HH:mm:ss').format('hh:mm A'); 
 
-        return res.render('admin/views/utilities/services/editservice',{ services : services });
+        return res.render('admin/views/utilities/services/editservice',{ services : services, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun});
+    }); 
+});
+
+adminRouter.get('/utilities-specialservices/viewdetails', (req, res)=>{
+    console.log("==========================================")
+    console.log("View details (req.query.id): "+req.query.id) 
+    console.log("==========================================")
+    var utilitiesID = parseInt(req.query.id)
+    var queryString1 =`SELECT * FROM tbl_utilities join tbl_serviceutilities on 
+    tbl_serviceutilities.int_serviceutilitiesID=tbl_utilities.int_serviceutilitiesID where tbl_utilities.int_utilitiesID=?`
+    db.query(queryString1,[utilitiesID], (err, results, fields) => {
+        if (err) console.log(err);       
+        var services = results[0];
+        console.log("==========================================")
+        console.log("Results set: "+JSON.stringify(services))
+        console.log("==========================================")
+        var sun=0; var mon=0; var tues=0; var wed=0; var thurs=0; var fri=0; var sat=0;
+        if(services.var_availabledays!=null){
+            var days = services.var_availabledays.split(',');
+            console.log(days)
+            for(i=0; i<days.length; i++){
+                if(days[i]==0){sun=1;}
+                if(days[i]==1){mon=1;}
+                if(days[i]==2){tues=1;}
+                if(days[i]==3){wed=1;}
+                if(days[i]==4){thurs=1;}
+                if(days[i]==5){fri=1;}
+                if(days[i]==6){sat=1;}
+            }
+        }
+        if(services.time_duration!=null) services.time_duration= moment(services.time_duration,'HH:mm:ss').format('hh:mm'); 
+        if(services.time_defaulttime!=null)services.time_defaulttime= moment(services.time_defaulttime,'HH:mm:ss').format('hh:mm A'); 
+        if(services.time_availablestart!=null)services.time_availablestart= moment(services.time_availablestart,'HH:mm:ss').format('hh:mm A'); 
+        if(services.time_availableend!=null)services.time_availableend= moment(services.time_availableend,'HH:mm:ss').format('hh:mm A'); 
+
+        return res.render('admin/views/utilities/specialservices/editspecialservice',{ services : services, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun});
     }); 
 });
 

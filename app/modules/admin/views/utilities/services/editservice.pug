@@ -11,6 +11,7 @@ block prepend main
 										.bgc-white.p-20.bd
 													h4.c-grey-900=services.var_eventname
 													input.form-control#int_eventID(type='hidden' name='clientID' value=`${services.int_eventID}`)
+													input.form-control#int_serviceutilitiesID(type='hidden' name='clientID' value=null)
 													input.form-control#int_utilitiesID(type='hidden' name='utilitiesID' value=`${services.int_utilitiesID}`)
 
 													//-delete this kung id kailangan XD
@@ -62,7 +63,7 @@ block prepend main
 															.form-row
 																.form-group.col-md-12.m-0.text-right
 																		label.h5 Service Status: &nbsp;
-																		span.badge.badge-pill.bgc-green-100.c-green-700.h5 #{services.char_servicestatus}
+																		span.badge.badge-pill.bgc-green-100.c-green-700.h3 #{services.char_servicestatus}
 																		//- h5(style='color:green')=services.char_servicestatus
 															.form-row
 																.col-md-12.ml-3
@@ -72,31 +73,59 @@ block prepend main
 																			.col-md-6
 																				.form-check.my-4
 																					label.form-check-label
+																					if(mon==0)
 																						input.form-check-input(type='checkbox')
+																						|  Monday
+																					if(mon==1)
+																						input.form-check-input(type='checkbox' checked)
 																						|  Monday
 																				.form-check.my-4
 																					label.form-check-label
+																					if(tues==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Tuesday
+																					if(tues==0)
 																						input.form-check-input(type='checkbox')
 																						|  Tuesday
 																				.form-check.my-4
 																					label.form-check-label
+																					if(wed==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Wednesday
+																					if(wed==0)
 																						input.form-check-input(type='checkbox')
 																						|  Wednesday
 																				.form-check.my-4
 																					label.form-check-label
+																					if(wed==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Thursday
+																					if(wed==0)
 																						input.form-check-input(type='checkbox')
 																						|  Thursday
 																				.form-check.my-4
 																					label.form-check-label
+																					if(fri==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Friday
+																					if(fri==0)
 																						input.form-check-input(type='checkbox')
 																						|  Friday
 																			.col-md-6
 																				.form-check.my-4
 																					label.form-check-label
+																					if(sat==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Saturday
+																					if(sat==0)
 																						input.form-check-input(type='checkbox')
 																						|  Saturday
 																				.form-check.my-4
 																					label.form-check-label
+																					if(sun==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Sunday
+																					if(sun==0)
 																						input.form-check-input(type='checkbox')
 																						|  Sunday
 													.form-row
@@ -137,8 +166,9 @@ block prepend main
 
 															if(services.bool_withpayment=='0')
 																.form-group.pl-3
-																	input.form-check-input.paymentDetails(type='checkbox' value='0')
-																	h6 Payment Details
+																		input.form-check-input.paymentDetails(type='checkbox')
+																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+
 
 																.form-row
 																	.form-group.col-md-6.m-0
@@ -159,10 +189,10 @@ block prepend main
 																			input.form-control#int_fullpaymentdays(type='number' disabled)
 
 															if(services.bool_withpayment=='1')
-																.form-row
-																	.form-group
-																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+																
+																.form-group.pl-3
 																		input.form-check-input.paymentDetails(type='checkbox' checked value='1')
+																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
 
 																.form-row
 																	.form-group.col-md-6.m-0
@@ -192,7 +222,7 @@ block prepend main
 																			input.form-check-input.refundDetails(type='checkbox' value='0')
 																		if(services.bool_withpayment=='0')
 																			input.form-check-input.refundDetails(type='checkbox' value='0' disabled)
-																		h6 Refund Details
+																		h6 Refund Details &nbsp; &nbsp; &nbsp;
 																.form-row
 																	.form-group.col-md-12.m-0
 																		.form-group
@@ -204,9 +234,9 @@ block prepend main
 
 															if(services.bool_refundable=='1')
 																.form-row
-																	.form-group.col-md-12.m-0
-																		label.h6 Refund Details &nbsp; &nbsp; &nbsp;
+																	.form-group.pl-3
 																		input.form-check-input.refundDetails(type='checkbox' value='1' checked)
+																		h6 Refund Details &nbsp; &nbsp; &nbsp;
 
 																.form-row
 																	.form-group.col-md-12.m-0
@@ -250,13 +280,13 @@ block addjs
 					$("#int_fullpaymentdays").prop('disabled', true);
 					$(".refundDetails").prop('checked', false);
 					$(".refundDetails").prop('disabled', true);
-					$(".refundDetails").val()='0';
+					//- $(".refundDetails").val()='0';
 					$(".paymentDetails").val()='0';
 					$("#int_refundpercentdays").prop('disabled', true);
 					$("#double_refundpercent").prop('disabled', true);
 				}
 				else if($(this).prop("checked") == true){
-					$(".paymentDetails").val()='1';
+					//- $(".paymentDetails").val()='1';
 					$("#double_fee").prop('disabled', false);
 					$("#double_addrate").prop('disabled', false);
 					$("#int_downpaymentdays").prop('disabled', false);

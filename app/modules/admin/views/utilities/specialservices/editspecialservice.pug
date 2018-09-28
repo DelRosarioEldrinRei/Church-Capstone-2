@@ -1,0 +1,404 @@
+extends ../../../../../templates/admin
+
+block prepend main
+		//- #wrap
+		//- //- #calendar
+		//- div(style='clear:both')
+		.content
+				.container-fluid
+						.row
+								.col-lg-11.col-md-12.mx-auto
+										.bgc-white.p-20.bd
+													h4.c-grey-900=services.var_eventname
+													input.form-control#int_eventID(type='hidden' name='clientID' value=`${services.int_eventID}`)
+													input.form-control#int_serviceutilitiesID(type='hidden' name='clientID' value=null)
+													input.form-control#int_utilitiesID(type='hidden' name='utilitiesID' value=`${services.int_utilitiesID}`)
+
+													//-delete this kung id kailangan XD
+													input.form-control#bool_withageconstraints(type='hidden'  value=`${services.bool_withageconstraints}`)
+													input.form-control#bool_withpayment(type='hidden'  value=`${services.bool_withpayment}`)
+													input.form-control#bool_refundable(type='hidden'  value=`${services.bool_refundable}`)
+													.form-row
+														.form-group.col-md-8.m-0
+															.form-row
+																.form-group.col-md-12.m-0
+																	.form-group
+																		label.h6 Service Name:
+																		input.form-control#servicename(type='text' name='parishname'  value= `${services.var_servicename}`)
+
+															.form-row
+																.form-group.col-md-6.m-0
+																	.form-group
+																		label.h6 Minimum Reservation Day
+																		input.form-control#int_reservationmindays(type='number' value= `${services.int_reservationmindays}`)
+																	.form-group
+																		label.h6 Maximum Reservation Days
+																		input.form-control#int_reservationmaxdays(type='number' value= `${services.int_reservationmaxdays}`)
+
+
+																	.form-group
+																		label.h6 Requirement Submission Days
+																		input.form-control#int_requirementsdays(type='number' value= `${services.int_requirementsdays}`)
+
+
+
+																.form-group.col-md-6.m-0
+																	.form-group
+																		label.h6 Duration
+																		input.form-control#time_duration(type='text' value= `${services.time_duration}`)
+
+																	.form-row
+																		.form-group.col-md-6.m-0
+																			label.h6 From
+																			.form-group
+																				input.form-control#time_availablestart(type='text' value= `${services.time_availablestart}`)
+																		.form-group.col-md-6.m-0
+																			label.h6 To
+																			.form-group
+																				input.form-control#time_availableend(type='text' value= `${services.time_availableend}`)
+																	.form-group
+																		label.h6 Default time
+																		input.form-control#time_defaulttime(type='text' value= `${services.time_defaulttime}`)
+														.form-group.col-md-4.m-0
+															.form-row
+																.form-group.col-md-12.m-0.text-right
+																		label.h5 Service Status: &nbsp;
+																		span.badge.badge-pill.bgc-green-100.c-green-700.h3 #{services.char_servicestatus}
+																		//- h5(style='color:green')=services.char_servicestatus
+															.form-row
+																.col-md-12.ml-3
+																	.container.mt-3.h6
+																		label.h5.m-0 Days of the week
+																		.form-row
+																			.col-md-6
+																				.form-check.my-4
+																					label.form-check-label
+																					if(mon==0)
+																						input.form-check-input(type='checkbox')
+																						|  Monday
+																					if(mon==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Monday
+																				.form-check.my-4
+																					label.form-check-label
+																					if(tues==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Tuesday
+																					if(tues==0)
+																						input.form-check-input(type='checkbox')
+																						|  Tuesday
+																				.form-check.my-4
+																					label.form-check-label
+																					if(wed==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Wednesday
+																					if(wed==0)
+																						input.form-check-input(type='checkbox')
+																						|  Wednesday
+																				.form-check.my-4
+																					label.form-check-label
+																					if(wed==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Thursday
+																					if(wed==0)
+																						input.form-check-input(type='checkbox')
+																						|  Thursday
+																				.form-check.my-4
+																					label.form-check-label
+																					if(fri==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Friday
+																					if(fri==0)
+																						input.form-check-input(type='checkbox')
+																						|  Friday
+																			.col-md-6
+																				.form-check.my-4
+																					label.form-check-label
+																					if(sat==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Saturday
+																					if(sat==0)
+																						input.form-check-input(type='checkbox')
+																						|  Saturday
+																				.form-check.my-4
+																					label.form-check-label
+																					if(sun==1)
+																						input.form-check-input(type='checkbox' checked)
+																						|  Sunday
+																					if(sun==0)
+																						input.form-check-input(type='checkbox')
+																						|  Sunday
+													.form-row
+														.form-group.col-md-8.m-0
+															if(services.bool_withageconstraints=='0')
+																.form-group.pl-3
+																	input.form-check-input.ageConstraint(type='checkbox' value='0')
+																	h6 Age Constraints
+																.form-row
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Minimum Age
+																			input.form-control#int_agemin(type='number' disabled)
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Maximum Age
+																			input.form-control#int_agemax(type='number' disabled)
+
+
+															if(services.bool_withageconstraints=='1')
+																.form-group.pl-3
+																	input.form-check-input.ageConstraint(type='checkbox' value='1' checked)
+																	h6 Age Constraints
+																.form-row
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Minimum Age
+																			input.form-control#int_agemin(type='number' value= `${services.int_agemin}`)
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Maximum Age
+																			input.form-control#int_agemax(type='number' value= `${services.int_agemax}`)
+
+
+
+													.form-row
+														.form-group.col-md-8.m-0
+
+															if(services.bool_withpayment=='0')
+																.form-group.pl-3
+																		input.form-check-input.paymentDetails(type='checkbox')
+																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+
+
+																.form-row
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Fee
+																			input.form-control#double_fee(type='number' disabled)
+
+																		.form-group
+																			label.h6 Additional Rate
+																			input.form-control#double_addrate(type='number' disabled)
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Downpayment Days
+																			input.form-control#int_downpaymentdays(type='number' disabled)
+
+																		.form-group
+																			label.h6 Full Payment Days
+																			input.form-control#int_fullpaymentdays(type='number' disabled)
+
+															if(services.bool_withpayment=='1')
+																
+																.form-group.pl-3
+																		input.form-check-input.paymentDetails(type='checkbox' checked value='1')
+																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+
+																.form-row
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Fee
+																			input.form-control#double_fee(type='number' value= `${services.double_fee}`)
+
+																		.form-group
+																			label.h6 Additional Rate
+																			input.form-control#double_addrate(type='number' value= `${services.double_addrate}`)
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Downpayment Days
+																			input.form-control#int_downpaymentdays(type='number' value= `${services.int_downpaymentdays}`)
+
+																		.form-group
+																			label.h6 Full Payment Days
+																			input.form-control#int_fullpaymentdays(type='number' value= `${services.int_fullpaymentdays}`)
+
+
+
+														.form-group.col-md-4.m-0
+															if(services.bool_refundable=='0')
+																.form-row
+																	.form-group.pl-3
+																		if(services.bool_withpayment=='1')
+																			input.form-check-input.refundDetails(type='checkbox' value='0')
+																		if(services.bool_withpayment=='0')
+																			input.form-check-input.refundDetails(type='checkbox' value='0' disabled)
+																		h6 Refund Details &nbsp; &nbsp; &nbsp;
+																.form-row
+																	.form-group.col-md-12.m-0
+																		.form-group
+																			label.h6 Refund Days
+																			input.form-control#int_refundpercentdays(type='number' disabled)
+																		.form-group
+																			label.h6 Refund Percent
+																			input.form-control#double_refundpercent(type='number' disabled)
+
+															if(services.bool_refundable=='1')
+																.form-row
+																	.form-group.pl-3
+																		input.form-check-input.refundDetails(type='checkbox' value='1' checked)
+																		h6 Refund Details &nbsp; &nbsp; &nbsp;
+
+																.form-row
+																	.form-group.col-md-12.m-0
+																		.form-group
+																			label.h6 Refund Days
+																			input.form-control#int_refundpercentdays(type='number' value= `${services.int_refundpercentdays}`)
+																		.form-group
+																			label.h6 Refund Percent
+																			input.form-control#double_refundpercent(type='number' value= `${services.double_refundpercent}`)
+
+														button.btn.btn-primary.mt-3#submitButton(type='submit' value=`${services.int_utilitiesID}`) Save Changes
+
+
+
+		script(type='text/javascript', src='/js/jquery.min.js')
+		script(type='text/javascript', src='/admin/vendor.js')
+		script(type='text/javascript', src='/admin/bundle.js')
+		script(type='text/javascript', src='/js/loader.js')
+block addjs
+	script(type='text/javascript').
+
+		$(document).ready(function(){
+			$(".ageConstraint").click(function(){
+				if($(this).prop("checked") == false){
+					$("#int_agemin").prop('disabled', true);
+					$("#int_agemax").prop('disabled', true);
+					$(".ageConstraint").val()=='0';
+				}
+				else if($(this).prop("checked") == true){
+					$("#int_agemin").prop('disabled', false);
+					$("#int_agemax").prop('disabled', false);
+					$(".ageConstraint").val()=='1';
+				}
+			});
+
+			$(".paymentDetails").click(function(){
+				if($(this).prop("checked") == false){
+					$("#double_fee").prop('disabled', true);
+					$("#double_addrate").prop('disabled', true);
+					$("#int_downpaymentdays").prop('disabled', true);
+					$("#int_fullpaymentdays").prop('disabled', true);
+					$(".refundDetails").prop('checked', false);
+					$(".refundDetails").prop('disabled', true);
+					//- $(".refundDetails").val()='0';
+					$(".paymentDetails").val()='0';
+					$("#int_refundpercentdays").prop('disabled', true);
+					$("#double_refundpercent").prop('disabled', true);
+				}
+				else if($(this).prop("checked") == true){
+					//- $(".paymentDetails").val()='1';
+					$("#double_fee").prop('disabled', false);
+					$("#double_addrate").prop('disabled', false);
+					$("#int_downpaymentdays").prop('disabled', false);
+					$("#int_fullpaymentdays").prop('disabled', false);
+					$(".refundDetails").prop('checked', false);
+					$(".refundDetails").prop('disabled', false);
+
+				}
+			});
+
+			$(".refundDetails").click(function(){
+				if($(this).prop("checked") == false){
+					$("#int_refundpercentdays").prop('disabled', true);
+					$("#double_refundpercent").prop('disabled', true);
+					$(".refundDetails").val()='0';
+				}
+				else if($(this).prop("checked") == true){
+					$("#int_refundpercentdays").prop('disabled', false);
+					$("#double_refundpercent").prop('disabled', false);
+					$(".refundDetails").val()='1';
+				}
+			});
+
+
+			$('#submitButton').click(function(){
+					var idNow = $(this).val();
+					swal({
+						title: 'Are you sure you want to save changes?',
+						//- text: "You are about to change the client's information",
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Yes'
+					}).then((result) => {
+						if (result.value) {
+							//- if( $('#customRadio1').val())
+
+							if($("#ageConstraint").prop("checked") == true){
+								//- $('#bool_withageconstraints').val()='1';
+							}
+							if($("#ageConstraint").prop("checked") == false){
+								$('#bool_withageconstraints').val()='0';
+								//- $('#int_agemin').val() = null;
+								//- $('#int_agemin').val() = null;
+							}
+							if($("#paymentDetails").prop("checked") == true){
+								$('#bool_withpayment').val()='1';
+							}
+							if($("#paymentDetails").prop("checked") == false){
+								$('#bool_withpayment').val()='0';
+								//- $('#double_fee').val()=null;
+								//- $('#double_addrate').val()=null;
+								//- $('#int_downpaymentdays').val()=null;
+								//- $('#int_fullpaymentdays').val() =null;
+							}
+							if($("#refundDetails").prop("checked") == true){
+								$('#bool_refundable').val()=='1'
+							}
+							if($("#refundDetails").prop("checked") == false){
+								//- $('#int_refundpercentdays').val()== null
+								//- $('#double_refundpercent').val()=null;
+								$('#bool_refundable').val()=='0';
+							}
+
+							$.post('/admin/utilities-services/viewdetails',{
+
+							int_utilitiesID:$('#int_utilitiesID').val(),
+							int_eventID:$('#int_eventID').val(),
+							int_reservationmaxdays:$('#int_reservationmaxdays').val(),
+							int_reservationmindays:$('#int_reservationmindays').val(),
+							int_requirementsdays:$('#int_requirementsdays').val(),
+							time_duration:$('#time_duration').val(),
+							var_availabledays:$('#var_availabledays').val(),
+							time_availablestart:$('#time_availablestart').val(),
+							time_availableend:$('#time_availableend').val(),
+
+							bool_withpayment:$('.paymentDetails').val(),
+							double_fee:$('#double_fee').val(),
+							double_addrate:$('#double_addrate').val(),
+							int_downpaymentdays:$('#int_downpaymentdays').val(),
+							int_fullpaymentdays:$('#int_fullpaymentdays').val(),
+
+							bool_refundable:$('.refundDetails').val(),
+							double_refundpercent:$('#double_refundpercent').val(),
+							int_refundpercentdays:$('#int_refundpercentdays').val(),
+
+							bool_withageconstraints:$('.ageConstraint').val(),
+							int_agemin:$('#int_agemin').val(),
+							int_agemax:$('#int_agemax').val(),
+							char_servicestatus:'Enabled'
+						}).done(function(data){
+							if(data.alertDesc==0){
+								swal(
+									'Changes saved!',
+									'success'
+								).then(function(){
+									location.reload()
+								})
+							}
+							else{
+								swal({
+									title: 'Error!',
+									text: '',
+									icon: 'error'
+								})
+							}
+						})
+						}
+						})
+				})
+
+		})
+
+
