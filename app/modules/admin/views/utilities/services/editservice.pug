@@ -17,172 +17,183 @@ block prepend main
 													input.form-control#bool_withageconstraints(type='hidden'  value=`${services.bool_withageconstraints}`)
 													input.form-control#bool_withpayment(type='hidden'  value=`${services.bool_withpayment}`)
 													input.form-control#bool_refundable(type='hidden'  value=`${services.bool_refundable}`)
-												
-													.form-group
-														
-														.form-group
-															label.h6 Service Name:
-															input.form-control#servicename(type='text' name='parishname'  value= `${services.var_eventname}`)
-														
-														.form-row
-															.form-group.col-md-4.m-0
-																.form-group
-																	label.h6 Minimum Reservation Day
-																	input.form-control#int_reservationmindays(type='number' value= `${services.int_reservationmindays}`)
-																.form-group
-																	label.h6 Maximum Reservation Days
-																	input.form-control#int_reservationmaxdays(type='number' value= `${services.int_reservationmaxdays}`)
-																
+													.form-row
+														.form-group.col-md-8.m-0
+															.form-row
+																.form-group.col-md-12.m-0
+																	.form-group
+																		label.h6 Service Name:
+																		input.form-control#servicename(type='text' name='parishname'  value= `${services.var_eventname}`)
 															
-																.form-group
-																	label.h6 Requirement Submission Days 
-																	input.form-control#int_requirementsdays(type='number' value= `${services.int_requirementsdays}`)
-														
-
-														
-															.form-group.col-md-4.m-0
-																.form-group
-																	label.h6 Duration
-																	input.form-control#time_duration(type='text' value= `${services.time_duration}`)
+															.form-row
+																.form-group.col-md-6.m-0
+																	.form-group
+																		label.h6 Minimum Reservation Day
+																		input.form-control#int_reservationmindays(type='number' value= `${services.int_reservationmindays}`)
+																	.form-group
+																		label.h6 Maximum Reservation Days
+																		input.form-control#int_reservationmaxdays(type='number' value= `${services.int_reservationmaxdays}`)
+																	
 																
+																	.form-group
+																		label.h6 Requirement Submission Days 
+																		input.form-control#int_requirementsdays(type='number' value= `${services.int_requirementsdays}`)
+															
+
+															
+																.form-group.col-md-6.m-0
+																	.form-group
+																		label.h6 Duration
+																		input.form-control#time_duration(type='text' value= `${services.time_duration}`)
+																	
+																	.form-row
+																		.form-group.col-md-6.m-0
+																			label.h6 From
+																			.form-group
+																				input.form-control#time_availablestart(type='text' value= `${services.time_availablestart}`)
+																		.form-group.col-md-6.m-0
+																			label.h6 To
+																			.form-group
+																				input.form-control#time_availableend(type='text' value= `${services.time_availableend}`)
+																	.form-group
+																		label.h6 Default time
+																		input.form-control#time_defaulttime(type='text' value= `${services.time_defaulttime}`)
+														.form-group.col-md-4.m-0
+															.form-row
+																.form-group.col-md-12.m-0.text-right
+																		label.h6 Service Status
+																		h5(style='color:green')=services.char_servicestatus
+															.form-row
+																//-hereeee dito yung days
+																//-o monday
+																//-0 tuesday
+																//- so on
+															
+																		
+													.form-row
+														.form-group.col-md-8.m-0
+															if(services.bool_withageconstraints=='0')
+																.form-row
+																	.form-group
+																		label.h6 Age Constraints &nbsp; &nbsp; &nbsp;
+																		input.form-check-input.ageConstraint(type='checkbox' value='0')
+																		
 																.form-row
 																	.form-group.col-md-6.m-0
-																		label.h6 From
 																		.form-group
-																			input.form-control#time_availablestart(type='text' value= `${services.time_availablestart}`)
+																			label.h6 Minimum Age
+																			input.form-control#int_agemin(type='number' disabled)
+																			
 																	.form-group.col-md-6.m-0
-																		label.h6 To
 																		.form-group
-																			input.form-control#time_availableend(type='text' value= `${services.time_availableend}`)
-																.form-group
-																	label.h6 Default time
-																	input.form-control#time_defaulttime(type='text' value= `${services.time_defaulttime}`)
-
-														.form-row
-															.form-group.col-md-8.m-0
-																if(services.bool_withageconstraints=='0')
-																	.form-row
-																		.form-group
-																			label.h6 Age Constraints &nbsp; &nbsp; &nbsp;
-																			input.form-check-input.ageConstraint(type='checkbox' value='0')
+																			label.h6 Maximum Age
+																			input.form-control#int_agemax(type='number' disabled)
 																			
-																	.form-row
-																		.form-group.col-md-6.m-0
-																			.form-group
-																				label.h6 Minimum Age
-																				input.form-control#int_agemin(type='number' disabled)
-																				
-																		.form-group.col-md-6.m-0
-																			.form-group
-																				label.h6 Maximum Age
-																				input.form-control#int_agemax(type='number' disabled)
-																				
-																				
-																if(services.bool_withageconstraints=='1')
-																	.form-row
-																		.form-group
-																			label.h6 Age Constraints &nbsp; &nbsp; &nbsp;
-																			input.form-check-input.ageConstraint(type='checkbox' value='1' checked)
 																			
-																	.form-row
-																		.form-group.col-md-6.m-0
-																			.form-group
-																				label.h6 Minimum Age		
-																				input.form-control#int_agemin(type='number' value= `${services.int_agemin}`)
-																		.form-group.col-md-6.m-0
-																			.form-group
-																				label.h6 Maximum Age
-																				input.form-control#int_agemax(type='number' value= `${services.int_agemax}`)
+															if(services.bool_withageconstraints=='1')
+																.form-row
+																	.form-group
+																		label.h6 Age Constraints &nbsp; &nbsp; &nbsp;
+																		input.form-check-input.ageConstraint(type='checkbox' value='1' checked)
+																		
+																.form-row
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Minimum Age		
+																			input.form-control#int_agemin(type='number' value= `${services.int_agemin}`)
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Maximum Age
+																			input.form-control#int_agemax(type='number' value= `${services.int_agemax}`)
 																	
 														
 
-														.form-row
-															.form-group.col-md-8.m-0
-															
-																if(services.bool_withpayment=='0')
-																	.form-row
-																		.form-group
-																			label.h6 Payment Details &nbsp; &nbsp; &nbsp;
-																			input.form-check-input.paymentDetails(type='checkbox' value='0')
-																			
-																	.form-row
-																		.form-group.col-md-6.m-0
-																			.form-group
-																				label.h6 Fee
-																				input.form-control#double_fee(type='number' disabled)
-																		
-																			.form-group
-																				label.h6 Additional Rate
-																				input.form-control#double_addrate(type='number' disabled)
-																		.form-group.col-md-6.m-0
-																			.form-group
-																				label.h6 Downpayment Days
-																				input.form-control#int_downpaymentdays(type='number' disabled)
-																		
-																			.form-group 
-																				label.h6 Full Payment Days
-																				input.form-control#int_fullpaymentdays(type='number' disabled)
-																	
-																if(services.bool_withpayment=='1')
-																	.form-row
-																		.form-group
-																			label.h6 Payment Details &nbsp; &nbsp; &nbsp;
-																			input.form-check-input.paymentDetails(type='checkbox' checked value='1')
-																			
-																	.form-row
-																		.form-group.col-md-6.m-0
-																			.form-group
-																				label.h6 Fee
-																				input.form-control#double_fee(type='number' value= `${services.double_fee}`)
-																		
-																			.form-group
-																				label.h6 Additional Rate
-																				input.form-control#double_addrate(type='number' value= `${services.double_addrate}`)
-																		.form-group.col-md-6.m-0
-																			.form-group
-																				label.h6 Downpayment Days
-																				input.form-control#int_downpaymentdays(type='number' value= `${services.int_downpaymentdays}`)
-																		
-																			.form-group 
-																				label.h6 Full Payment Days
-																				input.form-control#int_fullpaymentdays(type='number' value= `${services.int_fullpaymentdays}`)
-																	
+													.form-row
+														.form-group.col-md-8.m-0
 														
-																	
-															.form-group.col-md-4.m-0
-																if(services.bool_refundable=='0')
-																	.form-row
+															if(services.bool_withpayment=='0')
+																.form-row
+																	.form-group
+																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+																		input.form-check-input.paymentDetails(type='checkbox' value='0')
+																		
+																.form-row
+																	.form-group.col-md-6.m-0
 																		.form-group
-																			label.h6 Refund Details &nbsp; &nbsp; &nbsp;
-																			if(services.bool_withpayment=='1')
-																				input.form-check-input.refundDetails(type='checkbox' value='0')
-																			if(services.bool_withpayment=='0')
-																				input.form-check-input.refundDetails(type='checkbox' value='0' disabled)
-																	.form-row
-																		.form-group.col-md-12.m-0
-																			.form-group
-																				label.h6 Refund Days 
-																				input.form-control#int_refundpercentdays(type='number' disabled)
-																			.form-group
-																				label.h6 Refund Percent
-																				input.form-control#double_refundpercent(type='number' disabled)
-														
-																if(services.bool_refundable=='1')
-																	.form-row
-																		.form-group.col-md-12.m-0
-																			label.h6 Refund Details &nbsp; &nbsp; &nbsp;
-																			input.form-check-input.refundDetails(type='checkbox' value='1' checked)
-																			
-																	.form-row
-																		.form-group.col-md-12.m-0
-																			.form-group
-																				label.h6 Refund Days 
-																				input.form-control#int_refundpercentdays(type='number' value= `${services.int_refundpercentdays}`)
-																			.form-group
-																				label.h6 Refund Percent
-																				input.form-control#double_refundpercent(type='number' value= `${services.double_refundpercent}`)
-
-															
+																			label.h6 Fee
+																			input.form-control#double_fee(type='number' disabled)
+																	
+																		.form-group
+																			label.h6 Additional Rate
+																			input.form-control#double_addrate(type='number' disabled)
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Downpayment Days
+																			input.form-control#int_downpaymentdays(type='number' disabled)
+																	
+																		.form-group 
+																			label.h6 Full Payment Days
+																			input.form-control#int_fullpaymentdays(type='number' disabled)
+																
+															if(services.bool_withpayment=='1')
+																.form-row
+																	.form-group
+																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+																		input.form-check-input.paymentDetails(type='checkbox' checked value='1')
+																		
+																.form-row
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Fee
+																			input.form-control#double_fee(type='number' value= `${services.double_fee}`)
+																	
+																		.form-group
+																			label.h6 Additional Rate
+																			input.form-control#double_addrate(type='number' value= `${services.double_addrate}`)
+																	.form-group.col-md-6.m-0
+																		.form-group
+																			label.h6 Downpayment Days
+																			input.form-control#int_downpaymentdays(type='number' value= `${services.int_downpaymentdays}`)
+																	
+																		.form-group 
+																			label.h6 Full Payment Days
+																			input.form-control#int_fullpaymentdays(type='number' value= `${services.int_fullpaymentdays}`)
+																
+													
+																
+														.form-group.col-md-4.m-0
+															if(services.bool_refundable=='0')
+																.form-row
+																	.form-group
+																		label.h6 Refund Details &nbsp; &nbsp; &nbsp;
+																		if(services.bool_withpayment=='1')
+																			input.form-check-input.refundDetails(type='checkbox' value='0')
+																		if(services.bool_withpayment=='0')
+																			input.form-check-input.refundDetails(type='checkbox' value='0' disabled)
+																.form-row
+																	.form-group.col-md-12.m-0
+																		.form-group
+																			label.h6 Refund Days 
+																			input.form-control#int_refundpercentdays(type='number' disabled)
+																		.form-group
+																			label.h6 Refund Percent
+																			input.form-control#double_refundpercent(type='number' disabled)
+													
+															if(services.bool_refundable=='1')
+																.form-row
+																	.form-group.col-md-12.m-0
+																		label.h6 Refund Details &nbsp; &nbsp; &nbsp;
+																		input.form-check-input.refundDetails(type='checkbox' value='1' checked)
+																		
+																.form-row
+																	.form-group.col-md-12.m-0
+																		.form-group
+																			label.h6 Refund Days 
+																			input.form-control#int_refundpercentdays(type='number' value= `${services.int_refundpercentdays}`)
+																		.form-group
+																			label.h6 Refund Percent
+																			input.form-control#double_refundpercent(type='number' value= `${services.double_refundpercent}`)
+													
 														button.btn.btn-primary.mt-3#submitButton(type='submit' value=`${services.int_utilitiesID}`) Save Changes
 														
 
