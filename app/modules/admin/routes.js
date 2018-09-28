@@ -757,23 +757,24 @@ adminRouter.get('/utilities-services/viewdetails', (req, res)=>{
 
 
 adminRouter.post('/utilities-services/viewdetails', (req, res)=>{
-    var queryString1 = `UPDATE tbl_utilities_client SET        
-
-            intserviceutilitiesID='${req.body.intserviceutilitiesID}',
+    var success =0
+    var notsuccess =1
+    console.log(req.body)
+    console.log(req.body.int_utilitiesID);  
+    var queryString1 = `UPDATE tbl_utilities SET        
             int_reservationmaxdays='${req.body.int_reservationmaxdays}',
-            int_reservationmindays='${req.body.mobilenumber}',
+            int_reservationmindays='${req.body.int_reservationmindays}',
             int_requirementsdays='${req.body.int_requirementsdays}',
             time_duration='${req.body.time_duration}',
-            var_availabledays='${req.body.var_availabledays}',
             time_availablestart='${req.body.time_availablestart}',
             time_availableend='${req.body.time_availableend}',
-            boolwithpayment='${req.body.boolwithpayment}',
+            bool_withpayment='${req.body.bool_withpayment}',
             double_fee='${req.body.double_fee}',
             double_addrate='${req.body.double_addrate}',
             int_downpaymentdays='${req.body.int_downpaymentdays}',
             int_fullpaymentdays='${req.body.int_fullpaymentdays}',
             bool_refundable='${req.body.bool_refundable}',
-            int_refundpercent='${req.body.int_refundpercent}',
+            double_refundpercent='${req.body.double_refundpercent}',
             bool_withageconstraints='${req.body.bool_withageconstraints}',
             int_agemin='${req.body.int_agemin}',
             int_agemax='${req.body.int_agemax}',
@@ -783,13 +784,14 @@ adminRouter.post('/utilities-services/viewdetails', (req, res)=>{
 
     db.query(queryString1, [req.body.int_utilitiesID], (err, results, fields) => {
         if (err) console.log(err);       
-        var clients = results[0];
+        
         if (err){
             console.log(err)
             res.send({alertDesc:notsuccess})
         }
         else{
             res.send({alertDesc:success})
+            console.log(results)
         }
     }); 
 });

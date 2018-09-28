@@ -10,8 +10,13 @@ block prepend main
 								.col-lg-11.col-md-12.mx-auto
 										.bgc-white.p-20.bd
 													h4.c-grey-900=services.var_eventname
-													input.form-control#clientID(type='hidden' name='clientID' value=`${services.int_eventID}`)
-													input.form-control#utilitiesID(type='hidden' name='utilitiesID' value=`${services.int_utilitiesID}`)
+													input.form-control#int_eventID(type='hidden' name='clientID' value=`${services.int_eventID}`)
+													input.form-control#int_utilitiesID(type='hidden' name='utilitiesID' value=`${services.int_utilitiesID}`)
+													
+													//-delete this kung id kailangan XD
+													input.form-control#bool_withageconstraints(type='hidden'  value=`${services.bool_withageconstraints}`)
+													input.form-control#bool_withpayment(type='hidden'  value=`${services.bool_withpayment}`)
+													input.form-control#bool_refundable(type='hidden'  value=`${services.bool_refundable}`)
 												
 													.form-group
 														
@@ -54,86 +59,132 @@ block prepend main
 																	input.form-control#time_defaulttime(type='text' value= `${services.time_defaulttime}`)
 
 														.form-row
-															.form-group.col-md-2.m-0
+															.form-group.col-md-8.m-0
 																if(services.bool_withageconstraints=='0')
-																	.form-group
-																		label.h6 Age Constraints &nbsp; &nbsp; &nbsp;
-																		input.form-check-input.ageConstraint(type='checkbox' value=`${services.bool_withageconstraints}`)
-																
+																	.form-row
+																		.form-group
+																			label.h6 Age Constraints &nbsp; &nbsp; &nbsp;
+																			input.form-check-input.ageConstraint(type='checkbox' value='0')
+																			
+																	.form-row
+																		.form-group.col-md-6.m-0
+																			.form-group
+																				label.h6 Minimum Age
+																				input.form-control#int_agemin(type='number' disabled)
+																				
+																		.form-group.col-md-6.m-0
+																			.form-group
+																				label.h6 Maximum Age
+																				input.form-control#int_agemax(type='number' disabled)
+																				
+																				
 																if(services.bool_withageconstraints=='1')
-																	.form-group
-																		label.h6 Age Constraints &nbsp; &nbsp; &nbsp;
-																		input.form-check-input.ageConstraint(type='checkbox'  value=`${services.bool_withageconstraints}` checked)
+																	.form-row
+																		.form-group
+																			label.h6 Age Constraints &nbsp; &nbsp; &nbsp;
+																			input.form-check-input.ageConstraint(type='checkbox' value='1' checked)
+																			
+																	.form-row
+																		.form-group.col-md-6.m-0
+																			.form-group
+																				label.h6 Minimum Age		
+																				input.form-control#int_agemin(type='number' value= `${services.int_agemin}`)
+																		.form-group.col-md-6.m-0
+																			.form-group
+																				label.h6 Maximum Age
+																				input.form-control#int_agemax(type='number' value= `${services.int_agemax}`)
+																	
 														
-														.form-row
-															.form-group.col-md-4.m-0
-																.form-group
-																	label.h6 Minimum Age
-																	if(services.int_agemin==null )
-																		input.form-control#int_agemin(type='number')
-																	else
-																		input.form-control#int_agemin(type='number' value= `${services.int_agemin}`)
-															.form-group.col-md-4.m-0
-																.form-group
-																	label.h6 Maximum Age
-																	if(services.int_agemax==null )
-																		input.form-control#int_agemax(type='number')
-																	else if(services.int_agemax==0) 
-																		input.form-control#int_agemax(type='number')
-																	else
-																		input.form-control#int_agemax(type='number' value= `${services.int_agemax}`)
-
 
 														.form-row
-															.form-group.col-md-4.m-0
+															.form-group.col-md-8.m-0
+															
 																if(services.bool_withpayment=='0')
-																	.form-group
-																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
-																		input.form-check-input.paymentDetails(type='checkbox' )
-
+																	.form-row
+																		.form-group
+																			label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+																			input.form-check-input.paymentDetails(type='checkbox' value='0')
+																			
+																	.form-row
+																		.form-group.col-md-6.m-0
+																			.form-group
+																				label.h6 Fee
+																				input.form-control#double_fee(type='number' disabled)
+																		
+																			.form-group
+																				label.h6 Additional Rate
+																				input.form-control#double_addrate(type='number' disabled)
+																		.form-group.col-md-6.m-0
+																			.form-group
+																				label.h6 Downpayment Days
+																				input.form-control#int_downpaymentdays(type='number' disabled)
+																		
+																			.form-group 
+																				label.h6 Full Payment Days
+																				input.form-control#int_fullpaymentdays(type='number' disabled)
+																	
 																if(services.bool_withpayment=='1')
-																	.form-group
-																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
-																		input.form-check-input.paymentDetails(type='checkbox' checked)
-															.form-group.col-md-4.m-0
+																	.form-row
+																		.form-group
+																			label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+																			input.form-check-input.paymentDetails(type='checkbox' checked value='1')
+																			
+																	.form-row
+																		.form-group.col-md-6.m-0
+																			.form-group
+																				label.h6 Fee
+																				input.form-control#double_fee(type='number' value= `${services.double_fee}`)
+																		
+																			.form-group
+																				label.h6 Additional Rate
+																				input.form-control#double_addrate(type='number' value= `${services.double_addrate}`)
+																		.form-group.col-md-6.m-0
+																			.form-group
+																				label.h6 Downpayment Days
+																				input.form-control#int_downpaymentdays(type='number' value= `${services.int_downpaymentdays}`)
+																		
+																			.form-group 
+																				label.h6 Full Payment Days
+																				input.form-control#int_fullpaymentdays(type='number' value= `${services.int_fullpaymentdays}`)
+																	
+														
 																	
 															.form-group.col-md-4.m-0
-																if(services.bool_withpayment=='0')
-																	.form-group
-																		label.h6 Refund Details &nbsp; &nbsp; &nbsp;
-																		input.form-check-input.refundDetails(type='checkbox')
-																if(services.bool_withpayment=='1')
-																	.form-group
-																		label.h6 Refund Details &nbsp; &nbsp; &nbsp;
-																		input.form-check-input.refundDetails(type='checkbox' checked)
-														.form-row
-															.form-group.col-md-4.m-0
-																	.form-group
-																		label.h6 Fee
-																		input.form-control#double_fee(type='number' value= `${services.double_fee}`)
-																
-																	.form-group
-																		label.h6 Additional Rate
-																		input.form-control#double_addrate(type='number' value= `${services.double_addrate}`)
-															.form-group.col-md-4.m-0
-																	.form-group
-																		label.h6 Downpayment Days
-																		input.form-control#int_downpaymentdays(type='number' value= `${services.int_downpaymentdays}`)
-																
-																	.form-group
-																		label.h6 Full Payment Days
-																		input.form-control#int_fullpaymentdays(type='number' value= `${services.int_fullpaymentdays}`)
-																	
-															//-check box for refunable
-															.form-group.col-md-4.m-0
-																.form-group
-																	label.h6 Refund Days 
-																	input.form-control#int_refundpercentdays(type='number' value= `${services.int_refundpercentdays}`)
-																.form-group
-																	label.h6 Refund Percent
-																	input.form-control#double_refundpercent(type='number' value= `${services.double_refundpercent}`)
+																if(services.bool_refundable=='0')
+																	.form-row
+																		.form-group
+																			label.h6 Refund Details &nbsp; &nbsp; &nbsp;
+																			if(services.bool_withpayment=='1')
+																				input.form-check-input.refundDetails(type='checkbox' value='0')
+																			if(services.bool_withpayment=='0')
+																				input.form-check-input.refundDetails(type='checkbox' value='0' disabled)
+																	.form-row
+																		.form-group.col-md-12.m-0
+																			.form-group
+																				label.h6 Refund Days 
+																				input.form-control#int_refundpercentdays(type='number' disabled)
+																			.form-group
+																				label.h6 Refund Percent
+																				input.form-control#double_refundpercent(type='number' disabled)
 														
+																if(services.bool_refundable=='1')
+																	.form-row
+																		.form-group.col-md-12.m-0
+																			label.h6 Refund Details &nbsp; &nbsp; &nbsp;
+																			input.form-check-input.refundDetails(type='checkbox' value='1' checked)
+																			
+																	.form-row
+																		.form-group.col-md-12.m-0
+																			.form-group
+																				label.h6 Refund Days 
+																				input.form-control#int_refundpercentdays(type='number' value= `${services.int_refundpercentdays}`)
+																			.form-group
+																				label.h6 Refund Percent
+																				input.form-control#double_refundpercent(type='number' value= `${services.double_refundpercent}`)
+
+															
 														button.btn.btn-primary.mt-3#submitButton(type='submit' value=`${services.int_utilitiesID}`) Save Changes
+														
 
 													
 		script(type='text/javascript', src='/js/jquery.min.js')
@@ -148,35 +199,15 @@ block addjs
 				if($(this).prop("checked") == false){
 					$("#int_agemin").prop('disabled', true);
 					$("#int_agemax").prop('disabled', true);
+					$(".ageConstraint").val()=='0';
 				}
 				else if($(this).prop("checked") == true){
 					$("#int_agemin").prop('disabled', false);
 					$("#int_agemax").prop('disabled', false);
+					$(".ageConstraint").val()=='1';
 				}
 			});
-			//trial
-			//- $("#ageConstraint").load(function() {
-			//- 	if(services.bool_withageconstraints == '0'){
-			//- 		$("#int_agemin").prop('disabled', true);
-			//- 		$("#int_agemax").prop('disabled', true);
-			//- 	}
-			//- 	else if($(this).prop("checked") == true){
-			//- 		$("#int_agemin").prop('disabled', false);
-			//- 		$("#int_agemax").prop('disabled', false);
-			//- 	}
-			//- });
-
 			
-			$(".ageConstraint").click(function(){
-				if($(this).prop("checked") == false){
-					$("#int_agemin").prop('disabled', true);
-					$("#int_agemax").prop('disabled', true);
-				}
-				else if($(this).prop("checked") == true){
-					$("#int_agemin").prop('disabled', false);
-					$("#int_agemax").prop('disabled', false);
-				}
-			});
 			$(".paymentDetails").click(function(){
 				if($(this).prop("checked") == false){
 					$("#double_fee").prop('disabled', true);
@@ -185,10 +216,13 @@ block addjs
 					$("#int_fullpaymentdays").prop('disabled', true);
 					$(".refundDetails").prop('checked', false);
 					$(".refundDetails").prop('disabled', true);
+					$(".refundDetails").val()='0';
+					$(".paymentDetails").val()='0';
 					$("#int_refundpercentdays").prop('disabled', true);
 					$("#double_refundpercent").prop('disabled', true);
 				}
 				else if($(this).prop("checked") == true){
+					$(".paymentDetails").val()='1';
 					$("#double_fee").prop('disabled', false);
 					$("#double_addrate").prop('disabled', false);
 					$("#int_downpaymentdays").prop('disabled', false);
@@ -198,16 +232,21 @@ block addjs
 					
 				}
 			});
+
 			$(".refundDetails").click(function(){
 				if($(this).prop("checked") == false){
 					$("#int_refundpercentdays").prop('disabled', true);
 					$("#double_refundpercent").prop('disabled', true);
+					$(".refundDetails").val()='0';
 				}
 				else if($(this).prop("checked") == true){
 					$("#int_refundpercentdays").prop('disabled', false);
 					$("#double_refundpercent").prop('disabled', false);
+					$(".refundDetails").val()='1';
 				}
 			});
+		
+			
 			$('#submitButton').click(function(){
 					var idNow = $(this).val();
 					swal({
@@ -220,29 +259,61 @@ block addjs
 						confirmButtonText: 'Yes'
 					}).then((result) => {
 						if (result.value) {
+							//- if( $('#customRadio1').val())	
+
+							if($("#ageConstraint").prop("checked") == true){
+								//- $('#bool_withageconstraints').val()='1';
+							}
+							if($("#ageConstraint").prop("checked") == false){
+								$('#bool_withageconstraints').val()='0';
+								//- $('#int_agemin').val() = null;
+								//- $('#int_agemin').val() = null;
+							}
+							if($("#paymentDetails").prop("checked") == true){
+								$('#bool_withpayment').val()='1';
+							}
+							if($("#paymentDetails").prop("checked") == false){
+								$('#bool_withpayment').val()='0';
+								//- $('#double_fee').val()=null;
+								//- $('#double_addrate').val()=null;
+								//- $('#int_downpaymentdays').val()=null;
+								//- $('#int_fullpaymentdays').val() =null;
+							}
+							if($("#refundDetails").prop("checked") == true){
+								$('#bool_refundable').val()=='1'
+							}
+							if($("#refundDetails").prop("checked") == false){
+								//- $('#int_refundpercentdays').val()== null
+								//- $('#double_refundpercent').val()=null;
+								$('#bool_refundable').val()=='0';
+							}
+									
 							$.post('/admin/utilities-services/viewdetails',{
 
 							int_utilitiesID:$('#int_utilitiesID').val(),
 							int_eventID:$('#int_eventID').val(),
-							intserviceutilitiesID:$('#intserviceutilitiesID').val(),
 							int_reservationmaxdays:$('#int_reservationmaxdays').val(),
-							int_reservationmindays:$('#mobilenumber').val(),
+							int_reservationmindays:$('#int_reservationmindays').val(),
 							int_requirementsdays:$('#int_requirementsdays').val(),
 							time_duration:$('#time_duration').val(),
 							var_availabledays:$('#var_availabledays').val(),
 							time_availablestart:$('#time_availablestart').val(),
 							time_availableend:$('#time_availableend').val(),
-							boolwithpayment:$('#boolwithpayment').val(),
+
+							bool_withpayment:$('.paymentDetails').val(),
 							double_fee:$('#double_fee').val(),
 							double_addrate:$('#double_addrate').val(),
 							int_downpaymentdays:$('#int_downpaymentdays').val(),
 							int_fullpaymentdays:$('#int_fullpaymentdays').val(),
-							bool_refundable:$('#bool_refundable').val(),
-							int_refundpercent:$('#int_refundpercent').val(),
-							bool_withageconstraints:$('#bool_withageconstraints').val(),
+
+							bool_refundable:$('.refundDetails').val(),
+							double_refundpercent:$('#double_refundpercent').val(),
+							int_refundpercentdays:$('#int_refundpercentdays').val(),
+
+							bool_withageconstraints:$('.ageConstraint').val(),
 							int_agemin:$('#int_agemin').val(),
 							int_agemax:$('#int_agemax').val(),
-							char_servicestatus:$('#char_servicestatus').val()
+							char_servicestatus:'Enabled'
 						}).done(function(data){
 							if(data.alertDesc==0){
 								swal(
@@ -263,8 +334,7 @@ block addjs
 						}
 						})
 				})
-				
-		
+			
 		})		
 
 	
