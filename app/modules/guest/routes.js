@@ -159,10 +159,8 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
     return res.render('guest/views/voucher',{results:results});
     })
 });
-guestRouter.get(`/voucherEvents`, (req, res)=>{
-    console.log(req.query.int_voucherID)
-    var voucherId = parseInt(req.query.int_voucherID)
-    console.log(voucherId)
+guestRouter.post(`/voucherEvents`, (req, res)=>{
+    console.log(req.body.voucherId)
     var queryString = `select *  from tbl_voucherevents 
     JOIN tbl_user ON tbl_user.int_userID = tbl_voucherevents.int_userID
     JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_voucherevents.int_eventinfoID

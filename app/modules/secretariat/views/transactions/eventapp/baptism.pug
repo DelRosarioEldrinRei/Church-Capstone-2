@@ -28,7 +28,6 @@ block prepend main
                                             .card-body.table-responsive
                                                     table#shit.table.table-hover
                                                             thead.text-primary
-                                                                    th ID
                                                                     th Name of the Child
                                                                     th Birthday
                                                                     th Req Status
@@ -38,7 +37,6 @@ block prepend main
                                                             tbody
                                                                     each regular in regulars
                                                                         tr
-                                                                            td=regular.int_eventinfoID
                                                                             td=regular.var_lname + ", " + regular.var_fname
                                                                             td=regular.date_birthday
                                                                             td=regular.var_reqstatus
