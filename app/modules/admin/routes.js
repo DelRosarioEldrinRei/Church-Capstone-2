@@ -130,6 +130,86 @@ adminRouter.use(authMiddleware.adminAuth)
         });
     });
 //=======================================================
+//PRIESTS
+//=======================================================
+adminRouter.get('/maintenance-priests', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_user where char_usertype = "Priest"`
+    db.query(queryString1, (err, results1, fields) => {
+        if (err) console.log(err)  
+         
+        return res.render('admin/views/maintenance/priest',{ priests : results1});    
+    }); 
+});
+adminRouter.post('/maintenance-priests/add', (req, res) => {
+    var queryString= `INSERT INTO tbl_user(
+        var_userlname,
+        var_userfname,
+        var_usermname,
+        char_usergender,
+        var_useraddress,
+        var_usercontactnum,
+        var_username,
+        var_useremail,
+        var_password,
+        char_usertype,
+        var_userstatus
+        
+        ) VALUES(?,?,?,?,?, ?,?,?,?,?,?);`  
+        db.query(queryString, [req.body.var_userlname,
+            req.body.var_userfname,
+            req.body.var_usermname,
+            "Male",
+            req.body.var_useraddress,
+            req.body.var_usercontactnum,
+            req.body.var_username,
+            req.body.var_useremail,
+            req.body.var_password,
+            "Priest",
+            "Active"], (err, results, fields) => {
+            if (err) throw err;
+                return res.redirect('/admin/maintenance-priests');
+        });            
+});
+adminRouter.post('/maintenance-services/delete', (req, res) => {
+    const queryString = `UPDATE tbl_services SET bool_isDeleted = 1`;
+    db.query(queryString, (err, results, fields) => {        
+        if (err) throw err;
+        return res.redirect('/admin/maintenance-priests');
+    });
+});
+adminRouter.post('/maintenance-priests/edit', (req, res) => {
+    const queryString = `UPDATE tbl_user SET
+    var_userlname = ?,
+    var_userfname = ?,
+    var_usermname = ?,
+    var_usercontactnum = ?,
+    var_useremail = ?,
+    var_useraddress = ?,
+    var_username = ?,
+    var_password = ?
+    WHERE int_userID= ?`; 
+    db.query(queryString,[req.body.var_userlname,
+        req.body.var_userfname,
+        req.body.var_usermname,
+        req.body.var_usercontactnum,
+        req.body.var_useremail,
+        req.body.var_useraddress,
+        req.body.var_username,
+        req.body.var_password,req.body.id1], (err, results, fields) => {        
+        if (err) throw err;
+        return res.redirect('/admin/maintenance-priests');
+    });
+});
+adminRouter.post('/maintenance-priests/query', (req, res) => {
+    var queryString = `SELECT * FROM tbl_user 
+    WHERE int_userID = ?`;
+    db.query(queryString,[req.body.id], (err, results, fields) => {        
+        if (err) throw err;
+        res.send(results[0])
+        console.log(results[0])   
+    });
+});
+//=======================================================
 //FACILITY
 //=======================================================
     adminRouter.get('/maintenance-facilities', (req, res)=>{
