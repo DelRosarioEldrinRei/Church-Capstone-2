@@ -141,68 +141,29 @@ adminRouter.get('/maintenance-priests', (req, res)=>{
     }); 
 });
 adminRouter.post('/maintenance-priests/add', (req, res) => {
-    var queryString= `INSERT INTO tbl_user(
-        var_userlname,
-        var_userfname,
-        var_usermname,
-        char_usergender,
-        var_useraddress,
-        var_usercontactnum,
-        var_username,
-        var_useremail,
-        var_password,
-        char_usertype,
-        var_userstatus
-        
-        ) VALUES(?,?,?,?,?, ?,?,?,?,?,?);`  
-        db.query(queryString, [req.body.var_userlname,
-            req.body.var_userfname,
-            req.body.var_usermname,
-            "Male",
-            req.body.var_useraddress,
-            req.body.var_usercontactnum,
-            req.body.var_username,
-            req.body.var_useremail,
-            req.body.var_password,
-            "Priest",
-            "Active"], (err, results, fields) => {
+    var queryString= `INSERT INTO tbl_user( var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype, var_userstatus)
+     VALUES(?,?,?,?,?, ?,?,?,?,?,?);`  
+        db.query(queryString, [req.body.var_userlname, req.body.var_userfname, req.body.var_usermname, "Male", req.body.var_useraddress, req.body.var_usercontactnum, req.body.var_username, req.body.var_useremail, req.body.var_password, "Priest", "Active"], (err, results, fields) => {
             if (err) throw err;
                 return res.redirect('/admin/maintenance-priests');
         });            
 });
-adminRouter.post('/maintenance-services/delete', (req, res) => {
-    const queryString = `UPDATE tbl_services SET bool_isDeleted = 1`;
+adminRouter.post('/maintenance-priest/status', (req, res) => {
+    const queryString = `UPDATE tbl_user SET var_userstatus = Transfered`;
     db.query(queryString, (err, results, fields) => {        
         if (err) throw err;
         return res.redirect('/admin/maintenance-priests');
     });
 });
 adminRouter.post('/maintenance-priests/edit', (req, res) => {
-    const queryString = `UPDATE tbl_user SET
-    var_userlname = ?,
-    var_userfname = ?,
-    var_usermname = ?,
-    var_usercontactnum = ?,
-    var_useremail = ?,
-    var_useraddress = ?,
-    var_username = ?,
-    var_password = ?
-    WHERE int_userID= ?`; 
-    db.query(queryString,[req.body.var_userlname,
-        req.body.var_userfname,
-        req.body.var_usermname,
-        req.body.var_usercontactnum,
-        req.body.var_useremail,
-        req.body.var_useraddress,
-        req.body.var_username,
-        req.body.var_password,req.body.id1], (err, results, fields) => {        
+    const queryString = `UPDATE tbl_user SET var_userlname = ?, var_userfname = ?, var_usermname = ?, var_usercontactnum = ?, var_useremail = ?, var_useraddress = ?, var_username = ?, var_password = ? WHERE int_userID= ?`; 
+    db.query(queryString,[req.body.var_userlname, req.body.var_userfname, req.body.var_usermname, req.body.var_usercontactnum, req.body.var_useremail, req.body.var_useraddress, req.body.var_username, req.body.var_password,req.body.id1], (err, results, fields) => {        
         if (err) throw err;
         return res.redirect('/admin/maintenance-priests');
     });
 });
 adminRouter.post('/maintenance-priests/query', (req, res) => {
-    var queryString = `SELECT * FROM tbl_user 
-    WHERE int_userID = ?`;
+    var queryString = `SELECT * FROM tbl_user WHERE int_userID = ?`;
     db.query(queryString,[req.body.id], (err, results, fields) => {        
         if (err) throw err;
         res.send(results[0])
@@ -777,8 +738,6 @@ adminRouter.get('/utilities-services', (req, res)=>{
         return res.render('admin/views/utilities/services/index',{ services : services});
     }); 
 }); 
-
-
 adminRouter.get('/utilities-specialservices', (req, res)=>{
     
     var queryString2 =`SELECT * FROM tbl_utilities join tbl_serviceutilities on tbl_utilities.int_serviceutilitiesID= tbl_serviceutilities.int_serviceutilitiesID where tbl_utilities.int_serviceutilitiesID is not null`
@@ -875,6 +834,17 @@ adminRouter.post('/utilities-services/viewdetails', (req, res)=>{
     var notsuccess =1
     console.log(req.body)
     console.log(req.body.int_utilitiesID);  
+    var availabledays=[];
+    if(req.body.sun==1){availabledays.push(0)}
+    if(req.body.mon==1){availabledays.push(1)}
+    if(req.body.tues==1){availabledays.push(2)}
+    if(req.body.wed==1){availabledays.push(3)}
+    if(req.body.thurs==1){availabledays.push(4)}
+    if(req.body.fri==1){availabledays.push(5)}
+    if(req.body.sat==1){availabledays.push(6)}
+    console.log(availabledays)
+    var days = availabledays.toString();
+    console.log(days)
     var queryString1 = `UPDATE tbl_utilities SET        
             int_reservationmaxdays='${req.body.int_reservationmaxdays}',
             int_reservationmindays='${req.body.int_reservationmindays}',
@@ -892,13 +862,14 @@ adminRouter.post('/utilities-services/viewdetails', (req, res)=>{
             bool_withageconstraints='${req.body.bool_withageconstraints}',
             int_agemin='${req.body.int_agemin}',
             int_agemax='${req.body.int_agemax}',
+            var_availabledays='${days}',
             char_servicestatus='${req.body.char_servicestatus}'
             
-            where int_utilitiesID= ?;`
+            where int_utilitiesID= ?`;
 
     db.query(queryString1, [req.body.int_utilitiesID], (err, results, fields) => {
         if (err) console.log(err);       
-        
+        console.log(availabledays)
         if (err){
             console.log(err)
             res.send({alertDesc:notsuccess})
@@ -914,13 +885,13 @@ adminRouter.post('/utilities-services/viewdetails', (req, res)=>{
 adminRouter.post('/utilities-specialservices/changestatus', (req, res)=>{
     var success =0
     var notsuccess =1
-    
+    console.log(req.body.id1)
     var queryString1 = `UPDATE tbl_utilities SET        
-            char_servicestatus = "${req.body.emailaddress}"
-            where int_clientID= ${req.body.clientID};`;
+            char_servicestatus = "${req.body.servicestatus}"
+            where int_utilitiesID= ${req.body.id1};`;
     db.query(queryString1, (err, results, fields) => {
         if (err) console.log(err);       
-        var clients = results[0];
+        
         if (err){
             console.log(err)
             res.send({alertDesc:notsuccess})

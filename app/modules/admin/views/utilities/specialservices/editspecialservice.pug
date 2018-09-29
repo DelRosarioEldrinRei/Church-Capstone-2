@@ -18,13 +18,20 @@ block prepend main
 													input.form-control#bool_withageconstraints(type='hidden'  value=`${services.bool_withageconstraints}`)
 													input.form-control#bool_withpayment(type='hidden'  value=`${services.bool_withpayment}`)
 													input.form-control#bool_refundable(type='hidden'  value=`${services.bool_refundable}`)
+													input.form-control#mon_val(type='hidden'  value=`${mon}`)
+													input.form-control#tues_val(type='hidden'  value=`${tues}`)
+													input.form-control#wed_val(type='hidden'  value=`${wed}`)
+													input.form-control#thurs_val(type='hidden'  value=`${thurs}`)
+													input.form-control#fri_val(type='hidden'  value=`${fri}`)
+													input.form-control#sat_val(type='hidden'  value=`${sat}`)
+													input.form-control#sun_val(type='hidden'  value=`${sun}`)
 													.form-row
 														.form-group.col-md-8.m-0
 															.form-row
 																.form-group.col-md-12.m-0
 																	.form-group
 																		label.h6 Service Name:
-																		input.form-control#servicename(type='text' name='parishname'  value= `${services.var_servicename}`)
+																		input.form-control#servicename(type='text' name='parishname'  value= `${services.var_eventname}`)
 
 															.form-row
 																.form-group.col-md-6.m-0
@@ -74,59 +81,59 @@ block prepend main
 																				.form-check.my-4
 																					label.form-check-label
 																					if(mon==0)
-																						input.form-check-input(type='checkbox')
+																						input.form-check-input#mon(type='checkbox')
 																						|  Monday
 																					if(mon==1)
-																						input.form-check-input(type='checkbox' checked)
+																						input.form-check-input#mon(type='checkbox' checked)
 																						|  Monday
 																				.form-check.my-4
 																					label.form-check-label
 																					if(tues==1)
-																						input.form-check-input(type='checkbox' checked)
+																						input.form-check-input#tues(type='checkbox' checked)
 																						|  Tuesday
 																					if(tues==0)
-																						input.form-check-input(type='checkbox')
+																						input.form-check-input#tues(type='checkbox')
 																						|  Tuesday
 																				.form-check.my-4
 																					label.form-check-label
 																					if(wed==1)
-																						input.form-check-input(type='checkbox' checked)
+																						input.form-check-input#wed(type='checkbox' checked)
 																						|  Wednesday
 																					if(wed==0)
-																						input.form-check-input(type='checkbox')
+																						input.form-check-input#wed(type='checkbox')
 																						|  Wednesday
 																				.form-check.my-4
 																					label.form-check-label
-																					if(wed==1)
-																						input.form-check-input(type='checkbox' checked)
+																					if(thurs==1)
+																						input.form-check-input#thurs(type='checkbox' checked)
 																						|  Thursday
-																					if(wed==0)
-																						input.form-check-input(type='checkbox')
+																					if(thurs==0)
+																						input.form-check-input#thurs(type='checkbox')
 																						|  Thursday
 																				.form-check.my-4
 																					label.form-check-label
 																					if(fri==1)
-																						input.form-check-input(type='checkbox' checked)
+																						input.form-check-input#fri(type='checkbox' checked)
 																						|  Friday
 																					if(fri==0)
-																						input.form-check-input(type='checkbox')
+																						input.form-check-input#fri(type='checkbox')
 																						|  Friday
 																			.col-md-6
 																				.form-check.my-4
 																					label.form-check-label
 																					if(sat==1)
-																						input.form-check-input(type='checkbox' checked)
+																						input.form-check-input#sat(type='checkbox' checked)
 																						|  Saturday
 																					if(sat==0)
-																						input.form-check-input(type='checkbox')
+																						input.form-check-input#sat(type='checkbox')
 																						|  Saturday
 																				.form-check.my-4
 																					label.form-check-label
 																					if(sun==1)
-																						input.form-check-input(type='checkbox' checked)
+																						input.form-check-input#sun(type='checkbox' checked)
 																						|  Sunday
 																					if(sun==0)
-																						input.form-check-input(type='checkbox')
+																						input.form-check-input#sun(type='checkbox')
 																						|  Sunday
 													.form-row
 														.form-group.col-md-8.m-0
@@ -313,6 +320,7 @@ block addjs
 
 			$('#submitButton').click(function(){
 					var idNow = $(this).val();
+					console.log()
 					swal({
 						title: 'Are you sure you want to save changes?',
 						//- text: "You are about to change the client's information",
@@ -325,33 +333,46 @@ block addjs
 						if (result.value) {
 							//- if( $('#customRadio1').val())
 
-							if($("#ageConstraint").prop("checked") == true){
-								//- $('#bool_withageconstraints').val()='1';
+							if($(".ageConstraint").prop("checked") == true){
+								$('#bool_withageconstraints').val(1);
 							}
-							if($("#ageConstraint").prop("checked") == false){
-								$('#bool_withageconstraints').val()='0';
-								//- $('#int_agemin').val() = null;
-								//- $('#int_agemin').val() = null;
+							if($(".ageConstraint").prop("checked") == false){
+								$('#bool_withageconstraints').val(0);
+								$('#int_agemin').val(null);
+								$('#int_agemin').val(null);
 							}
-							if($("#paymentDetails").prop("checked") == true){
-								$('#bool_withpayment').val()='1';
+							if($(".paymentDetails").prop("checked") == true){
+								$('#bool_withpayment').val(1);
 							}
-							if($("#paymentDetails").prop("checked") == false){
-								$('#bool_withpayment').val()='0';
-								//- $('#double_fee').val()=null;
-								//- $('#double_addrate').val()=null;
-								//- $('#int_downpaymentdays').val()=null;
-								//- $('#int_fullpaymentdays').val() =null;
+							if($(".paymentDetails").prop("checked") == false){
+								$('#bool_withpayment').val(0);
+								$('#double_fee').val(null)
+								$('#double_addrate').val(null)
+								$('#int_downpaymentdays').val(null)
+								$('#int_fullpaymentdays').val(null)
 							}
-							if($("#refundDetails").prop("checked") == true){
-								$('#bool_refundable').val()=='1'
+							if($(".refundDetails").prop("checked") == true){
+								$('#bool_refundable').val(1)
 							}
-							if($("#refundDetails").prop("checked") == false){
-								//- $('#int_refundpercentdays').val()== null
-								//- $('#double_refundpercent').val()=null;
-								$('#bool_refundable').val()=='0';
+							if($(".refundDetails").prop("checked") == false){
+								$('#int_refundpercentdays').val(null)
+								$('#double_refundpercent').val(null)
+								$('#bool_refundable').val(0);
 							}
-
+							if($("#mon").prop("checked") == true){$('#mon_val').val(1)}
+							if($("#mon").prop("checked") == false){$('#mon_val').val(0)}
+							if($("#tues").prop("checked") == true){$('#tues_val').val(1)}
+							if($("#tues").prop("checked") == false){$('#tues_val').val(0)}
+							if($("#wed").prop("checked") == true){$('#wed_val').val(1)}
+							if($("#wed").prop("checked") == false){$('#wed_val').val(0)}
+							if($("#thurs").prop("checked") == true){$('#thurs_val').val(1)}
+							if($("#thurs").prop("checked") == false){$('#thurs_val').val(0)}
+							if($("#fri").prop("checked") == true){$('#fri_val').val(1)}
+							if($("#fri").prop("checked") == false){$('#fri_val').val(0)}
+							if($("#sat").prop("checked") == true){$('#sat_val').val(1)}
+							if($("#sat").prop("checked") == false){$('#sat_val').val(0)}
+							if($("#sun").prop("checked") == true){$('#sun_val').val(1)}
+							if($("#sun").prop("checked") == false){$('#sun_val').val(0)}
 							$.post('/admin/utilities-services/viewdetails',{
 
 							int_utilitiesID:$('#int_utilitiesID').val(),
@@ -364,19 +385,27 @@ block addjs
 							time_availablestart:$('#time_availablestart').val(),
 							time_availableend:$('#time_availableend').val(),
 
-							bool_withpayment:$('.paymentDetails').val(),
+							bool_withpayment:$('#bool_withpayment').val(),
 							double_fee:$('#double_fee').val(),
 							double_addrate:$('#double_addrate').val(),
 							int_downpaymentdays:$('#int_downpaymentdays').val(),
 							int_fullpaymentdays:$('#int_fullpaymentdays').val(),
 
-							bool_refundable:$('.refundDetails').val(),
+							bool_refundable:$('#bool_refundable').val(),
 							double_refundpercent:$('#double_refundpercent').val(),
 							int_refundpercentdays:$('#int_refundpercentdays').val(),
 
-							bool_withageconstraints:$('.ageConstraint').val(),
+							bool_withageconstraints:$('#bool_withageconstraints').val(),
 							int_agemin:$('#int_agemin').val(),
 							int_agemax:$('#int_agemax').val(),
+							mon:$('#mon_val').val(),
+							tues:$('#tues_val').val(),
+							wed:$('#wed_val').val(),
+							thurs:$('#thurs_val').val(),
+							fri:$('#fri_val').val(),
+							sat:$('#sat_val').val(),
+							sun:$('#sun_val').val(),
+
 							char_servicestatus:'Enabled'
 						}).done(function(data){
 							if(data.alertDesc==0){
