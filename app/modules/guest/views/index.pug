@@ -514,7 +514,7 @@ block addjs
 														lastName:$('#lastName').val(),
 														documentType:$('#documenttype').val(),
 														}).done(data=>{
-																if(($('#lastName').val() == data.var_lname) && ($('#firstName').val() == data.var_fname) && (eventDate == data.date_approveddate)){
+																if(($('#lastName').val() == data.var_lname) && ($('#firstName').val() == data.var_fname) && (eventDate == data.date_eventdate)){
 																var fullName = data.var_lname + ", " + data.var_fname
 																var birthDate =  moment(data.date_birthday).format('YYYY-MM-DD');
 																swal({

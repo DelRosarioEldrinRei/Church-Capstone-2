@@ -26,7 +26,7 @@ block prepend main
                                             .card-header.card-header-primary
                                                     h4.card-title Regular Baptism
                                             .card-body.table-responsive
-                                                    table.dataTable.table.table-hover
+                                                    table#shit.table.table-hover
                                                             thead.text-primary
                                                                     th ID
                                                                     th Name of the Child
@@ -116,19 +116,31 @@ block addjs
     script.
         $(document).ready(function(){
             var idNow;
-            $('.actionButton').click(function(){
+            $('#shit').dataTable({
+                fnDrawCallback: function(){
+                    $('.actionButton').toolbar({
+                        content: '#toolbar-options',
+                        position: 'top',
+                        //- style: 'primary',
+                        event: 'click',
+                        hideOnClick: true
+                    });
+                }
+            })
+            $(document).on('click', '.actionButton', function(){
+                
                 idNow = $(this).val();
                 console.log(idNow)
             })
-            $('.viewButton').click(function(){
+            $(document).on('click', '.viewButton', function(){
                 console.log(idNow)
                 $.post('/secretariat/transaction-baptism/query',{id:idNow}).done(data =>{
-                    var dateRequested = moment(data.date_desireddate).format('MM/DD/YYYY')
-                    var timeRequested = moment(data.time_desiredtime,'HH:mm:ss').format('hh:mm A')
+                    var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
+                    var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
                     var age = moment().diff(data.date_birthday,'years');
                     $('#viewBodyAppend').append(`
                     <div class="form-group">
-                        <label class="label-control"><strong> Name of the Child: </strong> ${data.var_mname}, ${data.var_fname}</label>
+                        <label class="label-control"><strong> Name of the Child: </strong> ${data.var_lname}, ${data.var_fname}</label>
                     </div>
                     <div class="form-group">
                         <label class="label-control"> <strong> Desired Date: </strong> ${dateRequested}</label>
@@ -163,7 +175,7 @@ block addjs
 
                 })
             })
-            $('.updateButton').click(function(){
+            $(document).on('click', '.updateButton', function(){
                 console.log(idNow)
                 $.post('/secretariat/transaction-baptism/query/update',{id:idNow}).done(data =>{
                     $('#updateBodyAppend').append(`

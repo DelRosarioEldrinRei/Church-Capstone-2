@@ -224,7 +224,7 @@ block addjs
                         <div class="col-md-6">
                             <div class="form-group">
                             <input id="reqid" type="hidden" value="${data.int_requirementdocumentID}"></input>
-                            <h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.bool_reqstatus}</h6>
+                            <h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.char_reqstatus}</h6>
                             <select id="reqstatus" type="text">
                             </select>
                             </div>
@@ -243,7 +243,7 @@ block addjs
                         </div>
                         </div>
                     `)
-                    if(data.bool_reqstatus == "Pending"){
+                    if(data.char_reqstatus == "Pending"){
                     document.getElementById("paystatus").disabled=true;
                     $('#reqstatus').append(`
                     <option selected="selected">Pending</option>
@@ -263,7 +263,7 @@ block addjs
                     `)
                     }
                     }
-                    else if(data.bool_reqstatus == "Approved"){
+                    else if(data.char_reqstatus == "Approved"){
                     document.getElementById("paystatus").disabled=false;
                     $('#reqstatus').append(`
                     <option>Pending</option>
@@ -283,7 +283,7 @@ block addjs
                     `)
                     }
                     }
-                    else if(data.bool_reqstatus == "Incomplete"){
+                    else if(data.char_reqstatus == "Incomplete"){
                     document.getElementById("paystatus").disabled=true;
                     $('#reqstatus').append(`
                     <option>Pending</option>

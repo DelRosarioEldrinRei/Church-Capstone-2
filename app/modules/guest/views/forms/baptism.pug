@@ -225,23 +225,14 @@ block main
 					.modal-body
 						.col-md-12.px-lg-3.px-md-3.px-sm-0
 							.form-group.m-0
-								p Your application request has been submitted. To complete the application process, you must pay on or before the deadline.
-						.col-md-6.px-lg-3.px-md-3.px-sm-0
-							.form-group.m-0#deadline
-						.col-md-6.px-lg-3.px-md-3.px-sm-0
-							.form-group.m-0
-								label.label-control Application Fee: 
-								| P300.00
+								p Your application request has been submitted
 						.col-md-6.px-lg-3.px-md-3.px-sm-0
 							.form-group.m-0
 								label.label-control Voucher
-									a(href=`/guest/voucherEvents` style= 'margin-left: 3px; color: red' target="_blank" ) Click here to save and print voucher
+									p Please Print the Voucher and pay until before the due date
+									button.btn.std-btn#voucherButton Click to view and downlad
 					.modal-footer
-						button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-						button.btn.std-btn.btn-common.btn-info.mb-0#submit2Button(type='submit') Apply
-						//- button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-						//- button.btn.btn-submit#submitButton(type='submit') Proceed
-							// Form Step 3
+						button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal' disabled='true') Close
 						// Form Wizard
 block addjs
 	script.
@@ -356,11 +347,38 @@ block addjs
 							success: function(data){
 								console.log(formData)
 								$('#viewModal').modal('show');
-								$('#deadline').append(`<label class="label-control">Date Issued: ${data.date_issued}</label>`)
+								//- $('#voucherButton').click(function(){
+								//- 	console.log(data.int_voucherID)
+								//- 	window.location=`/guest/voucherEvents?
+								//- 	int_voucherID=${data.int_voucherID}`
+									
+								//- })
+								console.log(data.int_voucherID)
+								$(document).on(	'click', '#voucherButton', function(){
+
+									$(document).off('click', '#voucherButton')
+									$.post('/guest/voucherEvents',{voucherId:data.int_voucherID}).done(data=>{
+									console.log(data)
+									function toDataURL(url, callback) {
+										var xhr = new XMLHttpRequest();
+										xhr.onload = function() {
+											var reader = new FileReader();
+											reader.onloadend = function() {
+											callback(reader.result);
+											}
+											reader.readAsDataURL(xhr.response);
+										};
+										xhr.open('GET', url);
+										xhr.responseType = 'blob';
+										xhr.send();
+									}
+									toDataURL('/imgchurch/document/voucherTemplate.png', function(dataUrl) {
+										
+
+									})
+								})
+								})
 							}
-					})
-					$('#deadline').on('hidden.bs.modal',function(){
-						$('#deadline').empty()
 					})
 			}
 			$('#viewModal').modal('show');
@@ -475,7 +493,7 @@ block addjs
 							).then((value)=>{
 							console.log('DESIRED TIME')
 							$('#calendarSpecial').fullCalendar('renderEvent', {
-								title: 'YOUR DESIRED TIME',
+								title: 'DESIRED TIME',
 								start: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeStart}`,
 								end: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeEnd2}`,
 								allDay: false,

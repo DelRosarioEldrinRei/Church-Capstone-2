@@ -69,13 +69,6 @@ block main
 				$("#file-0b").fileinput();
 				$('#submit').click(function(){
 				var eventDate = moment($('#eventDate').val()).format('YYYY-MM-DD');
-					$.post('/guest/document/query',{
-					eventDate:eventDate,
-					firstName:$('#firstName').val(),
-					lastName:$('#lastName').val(),
-					documentType:$('#documenttype').val(),
-					}).done(data=>{
-						if(($('#lastName').val() == data.var_lname) && ($('#firstName').val() == data.var_fname) && (eventDate == data.date_approveddate)){
 						var formData = new FormData();
 						formData.append('documenttype', $('#documenttype').val())
 						formData.append('image', $('#file-0b')[0].files[0]);
@@ -83,6 +76,16 @@ block main
 						formData.append('firstname', $('#firstName').val())
 						formData.append('eventDate', $('#eventDate').val())
 						formData.append('purpose', $('#purpose').val())
+						swal({
+						title:'Are You Sure?', 
+						text:'You want to update the Status of the Request?', 
+						type:'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Confirm'
+						}).then((result)=>{
+						if(result.value){
 						$.ajax({
 							type:'POST',
 							url:'/guest/document/form',
@@ -91,8 +94,8 @@ block main
 							contentType:false,
 							success: function(data){
 								swal({
-									title:'Record found!',
-									text:'Please wait for 3 days for your request to be processed. We will notify you once your document is ready to be released. You will find your transaction in the My Account>Reservations.'
+									title:'Submitted!',
+									text:'Please wait for 3 days for your request to be processed. We will notify you once your document is ready to be released. You will find your transaction in the My Account>Reservations.',
 									icon:'success',
 									buttons: {
 										Okay: 'okay'
@@ -102,20 +105,7 @@ block main
 								})
 							}
 						})
-						
-						else{
-								swal({
-									title:'Sorry',
-									text: 'Your transaction does not exist. Check the data you have entered and try again.',
-									icon:'warning',
-									buttons: {
-										Okay: 'okay'
-									}
-								}).then((value)=>{
-									window.location='/guest/document/form'
-								})
-							
 						}
-					})
+						})
 					})
 			})
