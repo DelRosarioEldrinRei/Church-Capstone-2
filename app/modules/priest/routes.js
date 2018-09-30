@@ -11,14 +11,13 @@ priestRouter.use(authMiddleware.priestAuth)
 //===============================================================================================//
 priestRouter.get('/', (req, res)=>{
     var queryString1 =`SELECT * FROM tbl_eventinfo 
-    JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
     JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    WHERE tbl_eventapplication.char_approvalstatus = ? and tbl_services.var_eventname <> ? `
-    db.query(queryString1, ["Approved", 'Document Request'], (err, results, fields) => {
+    WHERE tbl_eventinfo.char_approvalstatus = ? AND tbl_services.var_eventname = ? `
+    db.query(queryString1,["Approved","Baptism"], (err, results, fields) => {
         if (err) console.log(err);
         details=results;
         for(var i = 0; i < details.length; i++){
-            details[i].date_approveddate = moment(details.date_approveddate).format('YYYY-MM-DD');
+            details[i].date_eventdate = moment(details.date_eventdate).format('YYYY-MM-DD');
             
         }
         return res.render('priest/views/appointments',{ details : details});
@@ -80,8 +79,8 @@ priestRouter.post('/queryConfirmAppointment', (req,res)=>{
                 console.log(scheduleInfo)
                 console.log(err)
                 var scheduleInsert= `insert into tbl_schedule (int_userID, int_eventinfoID, var_venue, time_schedend, date_schedule ) values(?,?,?,?,?)`
-                db.query(scheduleInsert, [req.session.priest.int_userID, eventID.int_eventinfoID, 'INLPP', scheduleInfo.time_desiredtime, scheduleInfo.date_desireddate ], (err, results, fields) => {
-                    var updateStatus= `UPDATE tbl_eventapplication SET char_approvalstatus = 'Confirmed' where int_eventinfoID= ?;`;
+                db.query(scheduleInsert, [req.session.priest.int_userID, eventID.int_eventinfoID, 'INLPP', scheduleInfo.time_eventstart, scheduleInfo.date_eventdate ], (err, results, fields) => {
+                    var updateStatus= `UPDATE tbl_eventinfo SET char_approvalstatus = 'Approved' where int_eventinfoID= ?;`;
                     db.query(updateStatus, [eventID.int_eventinfoID],(err, results, fields) => {
                 
                     if (err){
@@ -124,15 +123,14 @@ priestRouter.post('/queryConfirmAppointment', (req,res)=>{
 });
 
 priestRouter.get('/appointments', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_eventinfo 
-    JOIN tbl_eventapplication ON tbl_eventinfo.int_eventinfoID = tbl_eventapplication.int_eventinfoID 
+    var queryString1 =`SELECT * FROM tbl_eventinfo
     JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    WHERE tbl_eventapplication.char_approvalstatus = ? and tbl_services.var_eventname <> ? `
+    WHERE tbl_eventinfo.char_approvalstatus = ? and tbl_services.var_eventname  ? `
     db.query(queryString1, ["Approved", 'Document Request'], (err, results, fields) => {
         if (err) console.log(err);
         details=results;
         for(var i = 0; i < details.length; i++){
-            details[i].date_approveddate = moment(details.date_approveddate).format('YYYY-MM-DD');
+            details[i].date_eventdate = moment(details.date_eventdate).format('YYYY-MM-DD');
             
         }
         return res.render('priest/views/appointments',{ details : details});
