@@ -103,9 +103,10 @@ block addjs
 				
 				console.log('Update Button: '+ idNow)
 				console.log(idNow +'id to oh')
-				//- $.get(`/admin/utilities-services/viewdetails/${idNow}`)
-				//- .done(data =>{
-				//- 	console.log(data.firstQuery.int_utilitiesID+'dito tayo sa ajax')
+					$.post('/admin/utilities-services/viewdetails/query',{
+						firstname: $('#firstname').val(),id:idNow
+					}).done(data=>{
+						})
 					window.location=`/admin/utilities-services/viewdetails?id=${idNow}`
 					//- });
 				

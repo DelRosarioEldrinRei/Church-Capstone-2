@@ -1456,37 +1456,37 @@ guestRouter.get('/marriage1/form', (req, res)=>{
     });
     });
     guestRouter.post('/facility/query2', (req, res) => {
+        console.log(req.body.id)
         var queryString1 =`SELECT * FROM tbl_facility where int_facilityID = ?`
         db.query(queryString1,[req.body.id], (err, results1, fields) => {
+            console.log(results1)
             res.send({firstQuery:results1[0]});
-  
-      
-    });
-        })
-
+        });
+    })
     guestRouter.post('/facilities/query', (req, res)=>{
         console.log(req.body.id)
         var queryString1 =`SELECT * FROM tbl_facility where int_facilityID = ?`
         db.query(queryString1,[req.body.id], (err, results1, fields) => {
             res.send({firstQuery:results1[0]});
         
-        });  });
-
+    });
+    });
     guestRouter.get('/facilities/form', (req, res)=>{
         var queryString= `select * from tbl_items`
             db.query(queryString, (err, results, fields) => {
                 if (err) console.log(err);
                 var items =results;
                 var queryString1= `select * from tbl_facility where int_facilityID = ?`
-                    db.query(queryString1, [req.session.user.facilityid],(err, results, fields) => {
+                    db.query(queryString1, [req.query.id],(err, results, fields) => {
                         if (err) console.log(err);
-                        // console.log()
+                        // console.log(results+ "results")
+                        console.log("Results set: "+JSON.stringify(results))
                         var facilitydetails =results;
+                        console.log(facilitydetails +"Facility details")
         res.render('guest/views/facilities/form',{user: req.session.user, items:items, facilitydetails:facilitydetails})
     });
 });
-});
-
+    });
     guestRouter.post('/facilities/form',upload.single('image'), (req, res) => {
         var success =0
         var notsuccess =1
@@ -1508,9 +1508,11 @@ guestRouter.get('/marriage1/form', (req, res)=>{
                     db.query(queryString1, [req.body.userID, req.body.facilityID, req.body.eventname, req.body.eventdesc, req.body.attendees,  req.body.reservestart, req.body.reserveend, 'Pending'], (err, results, fields) => {
                         var reservationID = results;
                         console.log(err)
-                    var queryString7 = `INSERT INTO tbl_requirementsfacilities(int_reservationID, int_servicereqtypeID, var_reqpath, datetime_reqreceived, char_reqstatus) VALUES (?,?,?,?,?);`
-                    db.query(queryString7,[reservationID.insertId,reqq.int_servicereqtypeID,path,date,'Submitted'],(err, results, fields)=>{
+                        var queryString7 = `INSERT INTO tbl_requirementsfacility(int_reservationID, int_servicereqtypeID, var_reqpath, datetime_reqreceived, var_reqstatus) VALUES (?,?,?,?,?);`
+                        db.query(queryString7,[reservationID.insertId,reqq.int_servicereqtypeID,path,date,'Submitted'],(err, results, fields)=>{
                         
+                        
+
                             if (err) console.log(err);                        
                             if (err){
                                 console.log(err)
@@ -1521,8 +1523,7 @@ guestRouter.get('/marriage1/form', (req, res)=>{
                             }
                     
                         });});});});
-        });
-    // });
+    });
 //===============================================================================================//
 // D O C U M E N T  
 //===============================================================================================//

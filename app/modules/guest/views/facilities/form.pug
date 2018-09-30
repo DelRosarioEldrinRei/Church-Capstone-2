@@ -101,8 +101,8 @@ block main
 												.container
 													h5
 														#calendarRegular
-										.learn-more.pull-right
 													button.btn.btn-next(type='button') Next
+										.learn-more.pull-right
 								// Form Step 1
 								// Form Step 2
 								fieldset
@@ -176,49 +176,9 @@ block main
 																			
 										.learn-more.pull-right
 											button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-											button.btn.btn-submit#submitButton(type='submit') Submit
-										//- .row
-										//- 	.col-md-12.text-center.learn-more
-										//- 		button.btn.btn-common(type='button' data-toggle='modal', data-target='#exampleModal') Submit
-										#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' data-controls-modal="exampleModal")
-												.modal-dialog.modal-lg(role='document')
-													.modal-content 
-														.modal-header
-															button.close(type='button', data-dismiss='modal', aria-label='Close')
-																span.p-3(aria-hidden='true') ×
-															h5 Your reservation request has been submitted
-														.modal-body.text-left
-															| To complete the reservation process, You must pay 
-															strong ₱1500
-															|  at the office on or before 
-															strong August 27, 2018.
-															br
-															br
-															| Click here to download 
-															a(href="#" style="color: blue;") permit and payment voucher
-															//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
-															//- br
-															//- br
-															//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
-															//- | Lorem ipsum dolor sit, amet consectetur adipisicing elit. At repellendus tenetur voluptatum impedit distinctio, iste doloribus praesentium rem maxime illum doloremque adipisci fugit provident labore assumenda enim officiis vitae perspiciatis.
-															br
-															br
-															//- h5 Mode of Payment
-															//- select
-															//- 	option(value="") Full Payment
-															//- 	option(value="") Half Payment 
-														.modal-footer
-															button.btn.std-btn.btn-danger.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
-															button.btn.std-btn.btn-success.btn-info.mb-0#submitButton(type='button' value=`${facilitydetails.int_facilityID}`) Agree
-
-	#myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-		.modal-dialog(role='document')
-			.modal-content
-				.modal-header
-					button.close(type='button', data-dismiss='modal', aria-label='Close')
-						span(aria-hidden='true') ×
-				.modal-body
-					#calendar1
+											button.btn.btn-submit#submitButton(type='submit'  value=facilitydetails.int_facilityID) Submit
+										
+					//- #calendar1
 block addjs
 	script.
 
@@ -286,12 +246,14 @@ block addjs
 
 		$(document).ready(function() {
 			$('#submitButton').click(function(){
-					var idNow = $(this).val();
+					var idNow = 1;
+					//- var idNow = $(this).val();
 					console.log(idNow)
 					$.post('/guest/facility/query2',{
 						id:idNow
 					}).done(data=>{
 						facilityID= data.firstQuery.int_facilityID;
+						console.log(data.firstQuery)
 							var formData= new FormData();
 							formData.append('reservestart', "2018-10-10 15:00:00"),
 							formData.append('reserveend', "2018-10-10 11:00:00"),

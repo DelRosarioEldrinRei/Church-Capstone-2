@@ -24,6 +24,7 @@ block main
 				.row
 					.col-md-6
 						.card-2.shadow2
+							each facility in facilities
 							.image
 								img(src='/img/facility/facility_1.jpg')
 							.card-block
@@ -35,11 +36,9 @@ block main
 										.col-md-4
 											span
 												strong Rate: 
-											
 										.col-md-8
 											.row
 												span
-												|      ₱1200 for the first 4hrs.
 											.row
 												span
 												|      +₱300/additional hour
@@ -47,7 +46,6 @@ block main
 										.col-md-4
 											span
 												strong Ideal For: 
-											
 										.col-md-8
 											.row
 												span
@@ -56,7 +54,6 @@ block main
 										.col-md-4
 											span
 												strong Size:
-											
 										.col-md-8
 											.row
 												span
@@ -65,58 +62,13 @@ block main
 								.extra.p-3
 									.learn-more.text-center
 										//- a.btn.btn-common.ml-auto.mx-auto#submitButton(type = 'button' value ='1') Inquire
-										a.btn.btn-common.ml-auto.mx-auto#submitButton(value ='1') Inquire
+										a.btn.btn-common.ml-auto.mx-auto#submitButton(value =`1`) Inquire
 									span.right
 										| ₱300/hr
 								//- span
 								//- 	i.fa.fa-user
 								//- 	|                   75 Friends
-					.col-md-6
-						.card-2.shadow2
-							.image
-								img(src='/img/facility/facility_2.jpg')
-							.card-block
-								h3.card-title Multi-purpose Room
-								.meta
-									a Highly Recommended
-								.description
-									.row
-										.col-md-4
-											span
-												strong Rate: 
-											
-										.col-md-8
-											.row
-												span
-												|      ₱1200 for the first 4hrs.
-											.row
-												span
-												|      +₱300/additional hour
-									.row
-										.col-md-4
-											span
-												strong Ideal For: 
-											
-										.col-md-8
-											.row
-												span
-												|      Meetings, training, seminars, workshops, holiday parties, banquets, receptions, class reunions, anniversary parties, birthday parties, baby showers
-									.row
-										.col-md-4
-											span
-												strong Size:
-											
-										.col-md-8
-											.row
-												span
-												|      4.9m x 11.5m (16ft x 37ft)
-							.card-footer.p-0
-								.extra.p-3
-									.learn-more.text-center
-										//- a.btn.btn-common.ml-auto.mx-auto#submitButton( type = 'button' value ='2') Inquire
-										a.btn.btn-common.ml-auto.mx-auto#submitButton( value ='2') Inquire
-									span.right
-										| ₱300/hr
+					
 block addjs
 	script(type='text/javascript').
 		
@@ -124,14 +76,10 @@ block addjs
 			$('#submitButton').click(function(){
 					var idNow = $(this).val();
 					console.log(idNow)
-					$.post('/guest/facilities/query',{
-						id:idNow
-					}).done(data=>{
-						window.location=`/guest/facilities/form?redirect="${$(this).val()}"`
+					
+						window.location=`/guest/facilities/form?id=1`
 							//dito dito dito
 
 					})
 						
 				})		
-
-				})

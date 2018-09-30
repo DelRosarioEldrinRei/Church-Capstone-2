@@ -29,23 +29,53 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 //===============================================================================================//
 // T R A N S A C T I O N S //
 //===============================================================================================//
-    // secretariatRouter.get('/transaction-facilityreservation', (req, res)=>{
-    //     var queryString1 =`SELECT * FROM tbl_facilityreservation 
-    //     join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
-    //     join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID`
-    //     db.query(queryString1, (err, results, fields) => {
-    //         var reservations = results;
-    //         for(var i = 0; i < reservations.length; i++){
+    secretariatRouter.get('/transaction-facilityreservation', (req, res)=>{
+        var queryString1 =`SELECT * FROM tbl_facilityreservation 
+        join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
+        join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID`
+        db.query(queryString1, (err, results, fields) => {
+            var reservations = results;
+            for(var i = 0; i < reservations.length; i++){
 
-    //             reservations[i].date_reservedate= moment(reservations[i].date_reservedate).format('MM/DD/YYYY');
-    //             reservations[i].time_reservestart= moment(reservations[i].time_reservestart, 'HH:mm:ss').format('h:mm a');
-    //             reservations[i].time_reserveend= moment(reservations[i].time_reserveend, 'HH:mm:ss').format('h:mm a');
-    //         }
-    //         if (err) console.log(err);       
-    //         return res.render('secretariat/views/transactions/facilityres',{ reservations : reservations });
-    //     });     
+                // reservations[i].date_reservedate= moment(reservations[i].date_reservedate).format('MM/DD/YYYY');
+                reservations[i].datetime_reservestart= moment(reservations[i].datetime_reservestart, 'HH:mm:ss').format('MM/DD/YYYY h:mm a');
+                reservations[i].datetime_reserveend= moment(reservations[i].datetime_reserveend, 'HH:mm:ss').format('MM/DD/YYYY h:mm a');
+            }
+            if (err) console.log(err);       
+            return res.render('secretariat/views/transactions/facilityres',{ reservations : reservations });
+        });     
         
-    // });
+    });
+    secretariatRouter.post('/transaction-facilityreservation/query', (req, res)=>{
+        
+        var queryString1 =`SELECT * FROM tbl_facilityreservation 
+        join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
+        join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID
+        
+        join tbl_requirementsfacility on tbl_facilityreservation.int_reservationID = tbl_requirementsfacility.int_reservationID
+        where tbl_facilityreservation.int_reservationID = ?`
+        db.query(queryString1,[req.body.id], (err, results, fields) => {
+            if (err) console.log(err);
+            res.send(results[0])
+            console.log(results[0])
+        });
+    });
+
+    secretariatRouter.post('/transaction-facilityreservation/query/update', (req, res)=>{
+        var queryString1 =`SELECT * FROM tbl_facilityreservation 
+        join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
+        join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID
+        
+        join tbl_requirementsfacility on tbl_facilityreservation.int_reservationID = tbl_requirementsfacility.int_reservationID
+        where tbl_facilityreservation.int_reservationID = ?`
+        db.query(queryString1,[req.body.id], (err, results, fields) => {
+                
+            if (err) console.log(err);
+            res.send(results[0])
+            console.log(results[0])
+        });
+    });
+    
     secretariatRouter.get('/transaction-documentrequest', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_documentrequest 
         join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID 
