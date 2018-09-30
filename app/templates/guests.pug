@@ -100,6 +100,11 @@ html(lang='en')
 						background:#cb9c57 !important;
 					}
 				}
+
+				select{
+					width: 331px;
+					height: 48px;
+				}
 	body
 		#loader
 			.spinner
@@ -117,7 +122,7 @@ html(lang='en')
 								img.rounded-circle.shadow(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem")
 						#main-navbar.collapse.navbar-collapse
 							ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix
-								li.nav-item: a.nav-link(href="/guest")
+								li.nav-item: a.nav-link(href="/guest/#about")
 									| Home
 								li.nav-item: a.nav-link(href="/guest/#services")
 									| Services
@@ -164,61 +169,61 @@ html(lang='en')
 		block main
 		footer.footer
 			.container
-				.row.section
-					.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn
-						h3.small-title
-							| About Us
-						p
-							| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis veritatis eius porro modi hic. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-						.social-footer
-							a(href='#')
-								i.fa.fa-facebook.icon-round
-							a(href='#')
-								i.fa.fa-twitter.icon-round
-							a(href='#')
-								i.fa.fa-linkedin.icon-round
-							a(href='#')
-								i.fa.fa-google-plus.icon-round
-					.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.2s')
-						h3.small-title
-							| Links
-						ul.menu
-							li
-								a(href='#') About Us
-							li
-								a(href='#') Services
-							li
-								a(href='#') Works
-							li
-								a(href='#') Pricing
-							li
-								a(href='#') Contact
-					.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.5s')
-						h3.small-title
-							| GALLERY
-						.plain-flicker-gallery
-							a(href='#')
-								img(src='/Helium/img/img1(2).jpg', alt='')
-							a(href='#')
-								img(src='/Helium/img/img2(2).jpg', alt='')
-							a(href='#')
-								img(src='/Helium/img/img3(2).jpg', alt='')
-							a(href='#')
-								img(src='/Helium/img/img4(1).jpg', alt='')
-							a(href='#')
-								img(src='/Helium/img/img5(1).jpg', alt='')
-							a(href='#')
-								img(src='/Helium/img/img6(1).jpg', alt='')
-					.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.8s')
-						h3.small-title
-							| SUBSCRIBE US
-						.contact-us
-							form
-								.form-group
-									input#exampleInputName2.form-control(type='text', placeholder='Enter your name')
-								.form-group
-									input#exampleInputEmail2.form-control(type='email', placeholder='Enter your email')
-								button.btn.btn-common(type='submit') Submit
+				//- .row.section
+				//- 	.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn
+				//- 		h3.small-title
+				//- 			| About Us
+				//- 		p
+				//- 			| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis veritatis eius porro modi hic. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+				//- 		.social-footer
+				//- 			a(href='#')
+				//- 				i.fa.fa-facebook.icon-round
+				//- 			a(href='#')
+				//- 				i.fa.fa-twitter.icon-round
+				//- 			a(href='#')
+				//- 				i.fa.fa-linkedin.icon-round
+				//- 			a(href='#')
+				//- 				i.fa.fa-google-plus.icon-round
+				//- 	.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.2s')
+				//- 		h3.small-title
+				//- 			| Links
+				//- 		ul.menu
+				//- 			li
+				//- 				a(href='#') About Us
+				//- 			li
+				//- 				a(href='#') Services
+				//- 			li
+				//- 				a(href='#') Works
+				//- 			li
+				//- 				a(href='#') Pricing
+				//- 			li
+				//- 				a(href='#') Contact
+				//- 	.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.5s')
+				//- 		h3.small-title
+				//- 			| GALLERY
+				//- 		.plain-flicker-gallery
+				//- 			a(href='#')
+				//- 				img(src='/Helium/img/img1(2).jpg', alt='')
+				//- 			a(href='#')
+				//- 				img(src='/Helium/img/img2(2).jpg', alt='')
+				//- 			a(href='#')
+				//- 				img(src='/Helium/img/img3(2).jpg', alt='')
+				//- 			a(href='#')
+				//- 				img(src='/Helium/img/img4(1).jpg', alt='')
+				//- 			a(href='#')
+				//- 				img(src='/Helium/img/img5(1).jpg', alt='')
+				//- 			a(href='#')
+				//- 				img(src='/Helium/img/img6(1).jpg', alt='')
+				//- 	.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.8s')
+				//- 		h3.small-title
+				//- 			| SUBSCRIBE US
+				//- 		.contact-us
+				//- 			form
+				//- 				.form-group
+				//- 					input#exampleInputName2.form-control(type='text', placeholder='Enter your name')
+				//- 				.form-group
+				//- 					input#exampleInputEmail2.form-control(type='email', placeholder='Enter your email')
+				//- 				button.btn.btn-common(type='submit') Submit
 			#copyright
 				.container
 					.row

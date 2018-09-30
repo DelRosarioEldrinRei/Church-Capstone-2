@@ -130,6 +130,86 @@ adminRouter.use(authMiddleware.adminAuth)
         });
     });
 //=======================================================
+//PRIESTS
+//=======================================================
+adminRouter.get('/maintenance-priests', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_user where char_usertype = "Priest"`
+    db.query(queryString1, (err, results1, fields) => {
+        if (err) console.log(err)  
+         
+        return res.render('admin/views/maintenance/priest',{ priests : results1});    
+    }); 
+});
+adminRouter.post('/maintenance-priests/add', (req, res) => {
+    var queryString= `INSERT INTO tbl_user(
+        var_userlname,
+        var_userfname,
+        var_usermname,
+        char_usergender,
+        var_useraddress,
+        var_usercontactnum,
+        var_username,
+        var_useremail,
+        var_password,
+        char_usertype,
+        var_userstatus
+        
+        ) VALUES(?,?,?,?,?, ?,?,?,?,?,?);`  
+        db.query(queryString, [req.body.var_userlname,
+            req.body.var_userfname,
+            req.body.var_usermname,
+            "Male",
+            req.body.var_useraddress,
+            req.body.var_usercontactnum,
+            req.body.var_username,
+            req.body.var_useremail,
+            req.body.var_password,
+            "Priest",
+            "Active"], (err, results, fields) => {
+            if (err) throw err;
+                return res.redirect('/admin/maintenance-priests');
+        });            
+});
+adminRouter.post('/maintenance-services/delete', (req, res) => {
+    const queryString = `UPDATE tbl_services SET bool_isDeleted = 1`;
+    db.query(queryString, (err, results, fields) => {        
+        if (err) throw err;
+        return res.redirect('/admin/maintenance-priests');
+    });
+});
+adminRouter.post('/maintenance-priests/edit', (req, res) => {
+    const queryString = `UPDATE tbl_user SET
+    var_userlname = ?,
+    var_userfname = ?,
+    var_usermname = ?,
+    var_usercontactnum = ?,
+    var_useremail = ?,
+    var_useraddress = ?,
+    var_username = ?,
+    var_password = ?
+    WHERE int_userID= ?`; 
+    db.query(queryString,[req.body.var_userlname,
+        req.body.var_userfname,
+        req.body.var_usermname,
+        req.body.var_usercontactnum,
+        req.body.var_useremail,
+        req.body.var_useraddress,
+        req.body.var_username,
+        req.body.var_password,req.body.id1], (err, results, fields) => {        
+        if (err) throw err;
+        return res.redirect('/admin/maintenance-priests');
+    });
+});
+adminRouter.post('/maintenance-priests/query', (req, res) => {
+    var queryString = `SELECT * FROM tbl_user 
+    WHERE int_userID = ?`;
+    db.query(queryString,[req.body.id], (err, results, fields) => {        
+        if (err) throw err;
+        res.send(results[0])
+        console.log(results[0])   
+    });
+});
+//=======================================================
 //FACILITY
 //=======================================================
     adminRouter.get('/maintenance-facilities', (req, res)=>{
@@ -685,11 +765,11 @@ adminRouter.post('/utilities-services/query', (req, res) => {
     }); 
 })
 adminRouter.get('/utilities-services', (req, res)=>{
-    var queryString2 =`SELECT * FROM tbl_utilities join tbl_services where tbl_utilities.int_eventID= tbl_services.int_eventID and tbl_utilities.int_eventID is not null`    
+    var queryString2 =`SELECT * FROM tbl_utilities join tbl_services on tbl_utilities.int_eventID= tbl_services.int_eventID and tbl_utilities.int_eventID is not null`    
         db.query(queryString2, (err, results, fields) => {
             if (err) console.log(err);       
             var services= results
-            // console.log(results)
+            
             for(var i = 0; i < services.length; i++){
                 services[i].time_availablestart= moment(services[i].time_availablestart,'HH:mm:ss').format('hh:mm A'); 
                 services[i].time_availableend= moment(services[i].time_availableend,'HH:mm:ss').format('hh:mm A'); 
@@ -701,7 +781,7 @@ adminRouter.get('/utilities-services', (req, res)=>{
 
 adminRouter.get('/utilities-specialservices', (req, res)=>{
     
-    var queryString2 =`SELECT * FROM tbl_utilities join tbl_serviceutilities where tbl_utilities.int_serviceutilitiesID= tbl_serviceutilities.int_serviceutilitiesID and tbl_utilities.int_serviceutilitiesID is not null`
+    var queryString2 =`SELECT * FROM tbl_utilities join tbl_serviceutilities on tbl_utilities.int_serviceutilitiesID= tbl_serviceutilities.int_serviceutilitiesID where tbl_utilities.int_serviceutilitiesID is not null`
         db.query(queryString2, (err, results, fields) => {
             if (err) console.log(err);       
             var services= results
@@ -717,40 +797,116 @@ adminRouter.get('/utilities-specialservices', (req, res)=>{
 //S E R V I C E S 
 //=======================================================
 
-adminRouter.post('/utilities-services/query', (req, res)=>{
-        console.log(req.body.id)
-        console.log(req.body.id)
+adminRouter.get('/utilities-services/viewdetails', (req, res)=>{
+    console.log("==========================================")
+    console.log("View details (req.query.id): "+req.query.id) 
+    console.log("==========================================")
+    var utilitiesID = parseInt(req.query.id)
+    var queryString1 =`SELECT * FROM tbl_utilities join tbl_services on 
+    tbl_services.int_eventID=tbl_utilities.int_eventID where tbl_utilities.int_utilitiesID=?`
+    db.query(queryString1,[utilitiesID], (err, results, fields) => {
+        if (err) console.log(err);       
+        var services = results[0];
+        console.log("==========================================")
+        console.log("Results set: "+JSON.stringify(services))
+        console.log("==========================================")
         
-        var queryString1 =`SELECT * FROM tbl_utilities join tbl_services on 
-        tbl_services.int_eventID where tbl_utilities.int_utilitiesID=?`    
-            db.query(queryString1,[req.body.id], (err, results, fields) => {
-                res.send(results);
-            }); 
+        var days = services.var_availabledays.split(',');
+        console.log(days)
+        var sun=0; var mon=0; var tues=0; var wed=0; var thurs=0; var fri=0; var sat=0;
+        for(i=0; i<days.length; i++){
+            if(days[i]==0){sun=1;}
+            if(days[i]==1){mon=1;}
+            if(days[i]==2){tues=1;}
+            if(days[i]==3){wed=1;}
+            if(days[i]==4){thurs=1;}
+            if(days[i]==5){fri=1;}
+            if(days[i]==6){sat=1;}
+        }
 
+        services.time_duration= moment(services.time_duration,'HH:mm:ss').format('hh:mm'); 
+        services.time_defaulttime= moment(services.time_defaulttime,'HH:mm:ss').format('hh:mm A'); 
+        services.time_availablestart= moment(services.time_availablestart,'HH:mm:ss').format('hh:mm A'); 
+        services.time_availableend= moment(services.time_availableend,'HH:mm:ss').format('hh:mm A'); 
+
+        return res.render('admin/views/utilities/services/editservice',{ services : services, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun});
+    }); 
 });
 
-adminRouter.get('/utilities-services/viewdetails/:int_utilitiesID', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_utilities
-    join tbl_services on tbl_services.int_eventID where tbl_utilities.int_utilitiesID=?`
-    db.query(queryString1,[req.params.int_utilitiesID], (err, results, fields) => {
-        if (err) throw(err);       
+adminRouter.get('/utilities-specialservices/viewdetails', (req, res)=>{
+    console.log("==========================================")
+    console.log("View details (req.query.id): "+req.query.id) 
+    console.log("==========================================")
+    var utilitiesID = parseInt(req.query.id)
+    var queryString1 =`SELECT * FROM tbl_utilities join tbl_serviceutilities on 
+    tbl_serviceutilities.int_serviceutilitiesID=tbl_utilities.int_serviceutilitiesID where tbl_utilities.int_utilitiesID=?`
+    db.query(queryString1,[utilitiesID], (err, results, fields) => {
+        if (err) console.log(err);       
         var services = results[0];
-        console.log(results[0])
-        console.log(req.params.int_utilitiesID)
-        return res.render('admin/views/utilities/services/editservice',{ services : services });
+        console.log("==========================================")
+        console.log("Results set: "+JSON.stringify(services))
+        console.log("==========================================")
+        var sun=0; var mon=0; var tues=0; var wed=0; var thurs=0; var fri=0; var sat=0;
+        if(services.var_availabledays!=null){
+            var days = services.var_availabledays.split(',');
+            console.log(days)
+            for(i=0; i<days.length; i++){
+                if(days[i]==0){sun=1;}
+                if(days[i]==1){mon=1;}
+                if(days[i]==2){tues=1;}
+                if(days[i]==3){wed=1;}
+                if(days[i]==4){thurs=1;}
+                if(days[i]==5){fri=1;}
+                if(days[i]==6){sat=1;}
+            }
+        }
+        if(services.time_duration!=null) services.time_duration= moment(services.time_duration,'HH:mm:ss').format('hh:mm'); 
+        if(services.time_defaulttime!=null)services.time_defaulttime= moment(services.time_defaulttime,'HH:mm:ss').format('hh:mm A'); 
+        if(services.time_availablestart!=null)services.time_availablestart= moment(services.time_availablestart,'HH:mm:ss').format('hh:mm A'); 
+        if(services.time_availableend!=null)services.time_availableend= moment(services.time_availableend,'HH:mm:ss').format('hh:mm A'); 
+
+        return res.render('admin/views/utilities/specialservices/editspecialservice',{ services : services, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun});
     }); 
 });
 
 
 adminRouter.post('/utilities-services/viewdetails', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_utilities
-    join tbl_services on tbl_services.int_eventID where tbl_utilities.int_utilitiesID=?`
-    db.query(queryString1,[req.params.int_utilitiesID], (err, results, fields) => {
-        if (err) throw(err);       
-        var services = results[0];
-        console.log(results[0])
-        console.log(req.params.int_utilitiesID)
-        return res.render('admin/views/utilities/services/editservice',{ services : services });
+    var success =0
+    var notsuccess =1
+    console.log(req.body)
+    console.log(req.body.int_utilitiesID);  
+    var queryString1 = `UPDATE tbl_utilities SET        
+            int_reservationmaxdays='${req.body.int_reservationmaxdays}',
+            int_reservationmindays='${req.body.int_reservationmindays}',
+            int_requirementsdays='${req.body.int_requirementsdays}',
+            time_duration='${req.body.time_duration}',
+            time_availablestart='${req.body.time_availablestart}',
+            time_availableend='${req.body.time_availableend}',
+            bool_withpayment='${req.body.bool_withpayment}',
+            double_fee='${req.body.double_fee}',
+            double_addrate='${req.body.double_addrate}',
+            int_downpaymentdays='${req.body.int_downpaymentdays}',
+            int_fullpaymentdays='${req.body.int_fullpaymentdays}',
+            bool_refundable='${req.body.bool_refundable}',
+            double_refundpercent='${req.body.double_refundpercent}',
+            bool_withageconstraints='${req.body.bool_withageconstraints}',
+            int_agemin='${req.body.int_agemin}',
+            int_agemax='${req.body.int_agemax}',
+            char_servicestatus='${req.body.char_servicestatus}'
+            
+            where int_utilitiesID= ?;`
+
+    db.query(queryString1, [req.body.int_utilitiesID], (err, results, fields) => {
+        if (err) console.log(err);       
+        
+        if (err){
+            console.log(err)
+            res.send({alertDesc:notsuccess})
+        }
+        else{
+            res.send({alertDesc:success})
+            console.log(results)
+        }
     }); 
 });
 

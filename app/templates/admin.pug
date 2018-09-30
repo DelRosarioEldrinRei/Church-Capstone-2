@@ -60,7 +60,7 @@ html
 					.sidebar-logo
 						.peers.ai-c.fxw-nw
 							.peer.peer-greed
-								a.sidebar-link.td-n(href='index.html')
+								a.sidebar-link.td-n(href='/admin')
 									.peers.ai-c.fxw-nw
 										.peer
 											.logo.text-center.mt-3
@@ -94,7 +94,7 @@ html
 									i.ti-angle-right
 							ul.dropdown-menu
 								li
-									a.sidebar-link(href='/admin/maintenance-services') Services
+									a.sidebar-link(href='/admin/maintenance-priests') Priests
 								li
 									a.sidebar-link(href='/admin/maintenance-events') Events
 								li
@@ -148,12 +148,12 @@ html
 								li
 									a(href='#') Facility Reservation
 						li.nav-item
-							a.sidebar-link(href='forms.html')
+							a.sidebar-link(href='#reports')
 								span.icon-holder
 									i.c-light-blue-500.ti-pencil
 								span.title Reports
 						li.nav-item.dropdown
-							a.sidebar-link(href='ui.html')
+							a.sidebar-link(href='#queries')
 								span.icon-holder
 									i.c-pink-500.ti-palette
 								span.title Queries
@@ -379,10 +379,10 @@ html
 						block main
 				// ### $App Screen Footer ###
 				footer.bdT.ta-c.p-30.lh-0.fsz-sm.c-grey-600
-					span
-						| Copyright © 2017 Designed by
-						a(href='https://colorlib.com', target='_blank', title='Colorlib') Colorlib
-						| . All rights reserved.
+					//- span
+					//- 	| Copyright © 2017 Designed by
+					//- 	a(href='https://colorlib.com', target='_blank', title='Colorlib') Colorlib
+					//- 	| . All rights reserved.
 	script(src='/js/jquery.min.js')
 	script(src='/js/loader.js')
 	script(src='/admin/vendor.js')

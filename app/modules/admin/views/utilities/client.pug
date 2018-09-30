@@ -22,20 +22,17 @@ block prepend main
 														
 														.form-group
 															label.h6(for='exampleFormControlTextarea1') Address:
-																//- .text-danger.d-inline *
 															input.form-control#parishlocation(rows='1' name='address' placeholder="Enter the parish complete address"  value= `${clients.var_clientlocation}`)
 														
 														.form-row
 															.form-group.col-md-4.m-0
 																.form-group
 																	label.h6 Telephone Number
-																		//- .text-danger.d-inline *
 																	input.form-control#telephonenumber(type='text' placeholder="Enter your telephone number" name='telephonenumber'  value= `${clients.var_clienttelephone}` required)
 																	.invalid-feedback Please enter your telephone number
 															.form-group.col-md-4.m-0
 																.form-group
 																	label.h6 Mobile Number
-																		//- .text-danger.d-inline *
 																	input.form-control#mobilenumber(type='text' placeholder="Enter your telephone number" name='mobilenumber' value= `${clients.var_clientmobile}` required)
 																	.invalid-feedback Please enter your mobile number.
 															.form-group.col-md-4.m-0
@@ -48,28 +45,12 @@ block prepend main
 																	.form-group.col-md-6
 																		label.h6 Open:
 																			.text-danger.d-inline *
-																		input.desiredTime.form-control#officeopen(type='text' name='officeopen' placeholder="Open"  required='' value= `${clients.time_officeopen}`)
-																		//- .invalid-feedback Please enter .
+																		input.desiredTime.form-control#officeopen(type='text' name='officeopen' placeholder="Open"  value= `${clients.time_officeopen}`)
 																	.form-group.col-md-6
 																		label.h6 Close:
 																			.text-danger.d-inline *
-																		input.desiredTime.form-control#officeclose(type='text' name='officeclose' placeholder="Close"  required='' value= `${clients.time_officeclose}`)
-														.form-row
-															.form-group
-																h6.c-grey-900 Sample Data
-																label.h6 Check me &nbsp; &nbsp; &nbsp;
-																	input.form-check-input.checkbox(type='checkbox')
-																.form-row
-																	.form-group.col-md-6
-																		label.h6 Disable enable whe clickbox cliked:
-																			.text-danger.d-inline *
-																		input.input.desiredTime.form-control#officeopen(type='text' name='officeopen' placeholder="Open"  required='' value= `${clients.time_officeopen}`)
-																		//- .invalid-feedback Please enter .
-																	.form-group.col-md-6
-																		label.h6 Disable enable whe clickbox cliked:
-																			.text-danger.d-inline *
-																		input.input.desiredTime.form-control#officeclose(type='text' name='officeclose' placeholder="Close"  required='' value= `${clients.time_officeclose}`)
-																		//- .invalid-feedback Please provide a valid email address
+																		input.desiredTime.form-control#officeclose(type='text' name='officeclose' placeholder="Close"  value= `${clients.time_officeclose}`)
+														
 														button.btn.btn-primary.mt-3#submitButton(type='submit' value=`${clients.clintID}`) Save Changes
 
 
@@ -136,23 +117,4 @@ block addjs
 						})
 				})
 				
-			
-			$('.desiredTime').datetimepicker({
-				format: 'LT',
-				minDate: startTime,
-				maxDate: endTime,
-				useCurrent: "hour",
-				stepping: 30,
-				icons: {
-					time: "fa fa-clock-o",
-					date: "fa fa-calendar",
-					up: "fa fa-chevron-up",
-					down: "fa fa-chevron-down",
-					previous: 'fa fa-chevron-left',
-					next: 'fa fa-chevron-right',
-					today: 'fa fa-screenshot',
-					clear: 'fa fa-trash',
-					close: 'fa fa-remove'
-				}
-			});
 				})		

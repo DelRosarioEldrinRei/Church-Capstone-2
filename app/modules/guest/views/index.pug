@@ -8,7 +8,7 @@ block prepend main
 				#counter > div > div > div > span > i {
 						color:white;
 				}
-		#headers
+		#about.p-0
 				#header-style-1
 						.container
 								.header-caption
@@ -21,7 +21,7 @@ block prepend main
 																| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
 														//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
 														//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
-		#about.section-padding
+		.section-padding
 				.container
 						.row
 								.col-lg-3.col-md-6.col-xs-12
@@ -127,11 +127,13 @@ block prepend main
 																										select#documenttype(type="text" name='documenttype')
 																												option Baptismal Certificate
 																												option Confirmation Certificate
-																												option First Communion Certificate
 																		.row
 																				.col-md-6
 																						h5.label-control Event Date
 																						input#eventDate.datepicker.form-control(type='date' name='birthday')
+																		.row
+																				.col-md-12
+																						h5.label-control OR
 																		.row
 																				.col-md-12
 																						h5.label-control Person in the Certificate:
@@ -514,7 +516,7 @@ block addjs
 														lastName:$('#lastName').val(),
 														documentType:$('#documenttype').val(),
 														}).done(data=>{
-																if(($('#lastName').val() == data.var_lname) && ($('#firstName').val() == data.var_fname) && (eventDate == data.date_eventdate)){
+																if(($('#lastName').val() == data.var_lname) && ($('#firstName').val() == data.var_fname) || (eventDate == data.date_eventdate)){
 																var fullName = data.var_lname + ", " + data.var_fname
 																var birthDate =  moment(data.date_birthday).format('YYYY-MM-DD');
 																swal({
