@@ -15,7 +15,7 @@ block prepend main
 													input.form-control#int_utilitiesfacilityID(type='hidden' name='utilitiesID' value=`${facilities.int_utilitiesfacilityID}`)
 
 													//-delete this kung id kailangan XD
-													input.form-control#bool_withageconstraints(type='hidden'  value=`${facilities.bool_withageconstraints}`)
+													
 													input.form-control#bool_withpayment(type='hidden'  value=`${facilities.bool_withpayment}`)
 													input.form-control#bool_refundable(type='hidden'  value=`${facilities.bool_refundable}`)
 													input.form-control#mon_val(type='hidden'  value=`${mon}`)
@@ -31,11 +31,11 @@ block prepend main
 																.form-group.col-md-12.m-0
 																	.form-group
 																		label.h6 Facility Name:
-																		input.form-control#facilityname(type='text' name='parishname'  value= `${facilities.var_facilityname}`)
+																		input.form-control#var_facilityname(type='text' name='parishname'  value= `${facilities.var_facilityname}`)
 																		.form-group.col-md-12.m-0
 																	.form-group
 																		label.h6 Facility Description:
-																		input.form-control#facilitydesc(type='text' name='parishname'  value= `${facilities.var_facilitydesc}`)
+																		input.form-control#var_facilitydesc(type='text' name='parishname'  value= `${facilities.var_facilitydesc}`)
 															.form-row
 																.form-group.col-md-6.m-0
 																	.form-group
@@ -58,17 +58,129 @@ block prepend main
 																	.form-group
 																		label.h6 Maximum Reservation Days
 																		input.form-control#int_reservationmaxdays(type='number' value= `${facilities.int_reservationmaxdays}`)
+															.form-row
+																.form-group.col-md-8.m-0
+
+																	if(facilities.bool_withpayment=='0')
+																		.form-group.pl-3
+																				input.form-check-input.paymentDetails(type='checkbox')
+																				label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+																		.form-row
+																			.form-group.col-md-6.m-0
+																				.form-row
+																					.form-group.col-md-6.m-0
+																						.form-group
+																							label.h6 Fee
+																							input.form-control#double_fee(type='number' disabled)
+																					.form-group.col-md-6.m-0
+																						.form-group
+																							label.h6 Per(hrs)
+																							input.form-control#time_feeper(type='text' disabled)
+
+																				.form-row
+																					.form-group.col-md-6.m-0
+																						.form-group
+																							label.h6 Additional Rate
+																							input.form-control#double_addrate(type='number' disabled)
+																					.form-group.col-md-6.m-0
+																						.form-group
+																							label.h6 Per(hrs)
+																							input.form-control#time_addper(type='text' disabled)
+																			.form-group.col-md-6.m-0
+																				.form-group
+																					label.h6 Downpayment Days
+																					input.form-control#int_downpaymentdays(type='number' disabled)
+
+																				.form-group
+																					label.h6 Full Payment Days
+																					input.form-control#int_fullpaymentdays(type='number' disabled)
+
+																	if(facilities.bool_withpayment=='1')
+																		.form-group.pl-3
+																				input.form-check-input.paymentDetails(type='checkbox' checked)
+																				label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+																		.form-row
+																			.form-group.col-md-6.m-0
+																				.form-row
+																					.form-group.col-md-6.m-0
+																						.form-group
+																							label.h6 Fee
+																							input.form-control#double_fee(type='number' value= `${facilities.double_fee}`)
+																					.form-group.col-md-6.m-0
+																						.form-group
+																							label.h6 Per(hrs)
+																							input.form-control#time_feeper(type='text' value= `${facilities.time_feeper}`)
+
+																				.form-row
+																					.form-group.col-md-6.m-0
+																						.form-group
+																							label.h6 Additionalrate
+																							input.form-control#double_addrate(type='number' value= `${facilities.double_addrate}`)
+																					.form-group.col-md-6.m-0
+																						.form-group
+																							label.h6 Per(hrs)
+																							input.form-control#time_addper(type='text' value= `${facilities.time_addper}`)
+																			.form-group.col-md-6.m-0
+																				.form-group
+																					label.h6 Downpayment Days
+																					input.form-control#int_downpaymentdays(type='number' value= `${facilities.int_downpaymentdays}`)
+
+																				.form-group
+																					label.h6 Full Payment Days
+																					input.form-control#int_fullpaymentdays(type='number' value= `${facilities.int_fullpaymentdays}`)
+
+																.form-group.col-md-4.m-0
+																	if(facilities.bool_refundable=='0')
+																		.form-row
+																			.form-group.pl-3
+																				if(facilities.bool_withpayment=='1')
+																					input.form-check-input.refundDetails(type='checkbox' value='0')
+																				if(facilities.bool_withpayment=='0')
+																					input.form-check-input.refundDetails(type='checkbox' value='0' disabled)
+																				h6 Refund Details &nbsp; &nbsp; &nbsp;
+																		.form-row
+																			.form-group.col-md-12.m-0
+																				.form-group
+																					label.h6 Refund Days
+																					input.form-control#int_refunddays(type='number' disabled)
+																				.form-group
+																					label.h6 Refund Percent
+																					input.form-control#int_refundpercent(type='number' disabled)
+
+																	if(facilities.bool_refundable=='1')
+																		.form-row
+																			.form-group.pl-3
+																				input.form-check-input.refundDetails(type='checkbox' value='1' checked)
+																				h6 Refund Details &nbsp; &nbsp; &nbsp;
+
+																		.form-row
+																			.form-group.col-md-12.m-0
+																				.form-group
+																					label.h6 Refund Days
+																					input.form-control#int_refunddays(type='number' value= `${facilities.int_refunddays}`)
+																				.form-group
+																					label.h6 Refund Percent
+																					input.form-control#int_refundpercent(type='number' value= `${facilities.int_refundpercent}`)
+
 
 
 														.form-group.col-md-4.m-0
 															.form-row
 																.form-group.col-md-12.m-0.text-right
 																		label.h6 Facility Status: &nbsp;
-																		select#char_facilitystatus(style='color:red' )
-																			option(style='color:green') Can be reserved
-																			option( style='color:red') Cannot be reserved
+																		if(facilities.char_facilitystatus=='Can be reserved')
+																			select#char_facilitystatus(style='color:green' )
+																				option(style='color:green') Can be reserved
+																				option( style='color:red') Cannot be reserved
+																		if(facilities.char_facilitystatus=='Cannot be reserved')
+																			select#char_facilitystatus(style='color:red' )
+																				option( style='color:red') Cannot be reserved
+																				option(style='color:green') Can be reserved
 															.form-row
-																.col-md-12.ml-3
+																.col-md-12.ml-3.mt
+
+																	.form-row
+																		img(alt=`${facilities.var_facilityname}`, src=`${facilities.var_facilitypicpath}` style="max-height:220px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);")
 																	.form-row.mt-3
 																		.form-group.col-md-6.ml-0
 																			label.h6 Open From
@@ -83,7 +195,7 @@ block prepend main
 																			label.h6.m-0 Days of the week
 																			.form-row
 																				.col-md-6
-																					.form-check.my-4
+																					.form-check.my-2
 																						label.form-check-label
 																						if(mon==0)
 																							input.form-check-input#mon(type='checkbox')
@@ -91,7 +203,7 @@ block prepend main
 																						if(mon==1)
 																							input.form-check-input#mon(type='checkbox' checked)
 																							|  Monday
-																					.form-check.my-4
+																					.form-check.my-2
 																						label.form-check-label
 																						if(tues==1)
 																							input.form-check-input#tues(type='checkbox' checked)
@@ -99,7 +211,7 @@ block prepend main
 																						if(tues==0)
 																							input.form-check-input#tues(type='checkbox')
 																							|  Tuesday
-																					.form-check.my-4
+																					.form-check.my-2
 																						label.form-check-label
 																						if(wed==1)
 																							input.form-check-input#wed(type='checkbox' checked)
@@ -107,15 +219,16 @@ block prepend main
 																						if(wed==0)
 																							input.form-check-input#wed(type='checkbox')
 																							|  Wednesday
-																					.form-check.my-4
+																					.form-check.my-2
 																						label.form-check-label
-																						if(wed==1)
+																						if(thurs==1)
 																							input.form-check-input#thurs(type='checkbox' checked)
 																							|  Thursday
-																						if(wed==0)
+																						if(thurs==0)
 																							input.form-check-input#thurs(type='checkbox')
 																							|  Thursday
-																					.form-check.my-4
+																				.col-md-6
+																					.form-check.my-2
 																						label.form-check-label
 																						if(fri==1)
 																							input.form-check-input#fri(type='checkbox' checked)
@@ -123,8 +236,7 @@ block prepend main
 																						if(fri==0)
 																							input.form-check-input#fri(type='checkbox')
 																							|  Friday
-																				.col-md-6
-																					.form-check.my-4
+																					.form-check.my-2
 																						label.form-check-label
 																						if(sat==1)
 																							input.form-check-input#sat(type='checkbox' checked)
@@ -132,7 +244,7 @@ block prepend main
 																						if(sat==0)
 																							input.form-check-input#sat(type='checkbox')
 																							|  Saturday
-																					.form-check.my-4
+																					.form-check.my-2
 																						label.form-check-label
 																						if(sun==1)
 																							input.form-check-input#sun(type='checkbox' checked)
@@ -142,111 +254,7 @@ block prepend main
 																							|  Sunday
 													
 
-													.form-row
-														.form-group.col-md-8.m-0
-
-															if(facilities.bool_withpayment=='0')
-																.form-group.pl-3
-																		input.form-check-input.paymentDetails(type='checkbox')
-																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
-																.form-row
-																	.form-group.col-md-6.m-0
-																		.form-row
-																			.form-group.col-md-6.m-0
-																				.form-group
-																					label.h6 Fee
-																					input.form-control#double_fee(type='number' disabled)
-																			.form-group.col-md-6.m-0
-																				.form-group
-																					label.h6 Per
-																					input.form-control#time_feeper(type='number' disabled)
-
-																		.form-row
-																			.form-group.col-md-6.m-0
-																				.form-group
-																					label.h6 Additional Rate
-																					input.form-control#double_addrate(type='number' disabled)
-																			.form-group.col-md-6.m-0
-																				.form-group
-																					label.h6 Per
-																					input.form-control#time_feeper(type='number' disabled)
-																	.form-group.col-md-6.m-0
-																		.form-group
-																			label.h6 Downpayment Days
-																			input.form-control#int_downpaymentdays(type='number' disabled)
-
-																		.form-group
-																			label.h6 Full Payment Days
-																			input.form-control#int_fullpaymentdays(type='number' disabled)
-
-															if(facilities.bool_withpayment=='1')
-																.form-group.pl-3
-																		input.form-check-input.paymentDetails(type='checkbox')
-																		label.h6 Payment Details &nbsp; &nbsp; &nbsp;
-
-																.form-row
-																	.form-group.col-md-6.m-0
-																		.form-row
-																			.form-group.col-md-6.m-0
-																				.form-group
-																					label.h6 Fee
-																					input.form-control#double_fee(type='number' value= `${facilities.double_fee}`)
-																			.form-group.col-md-6.m-0
-																				.form-group
-																					label.h6 Per
-																					input.form-control#time_feeper(type='number' value= `${facilities.time_feeper}`)
-
-																		.form-row
-																			.form-group.col-md-6.m-0
-																				.form-group
-																					label.h6 Additionalrate
-																					input.form-control#double_addrate(type='number' value= `${facilities.double_addrate}`)
-																			.form-group.col-md-6.m-0
-																				.form-group
-																					label.h6 Per
-																					input.form-control#time_addper(type='number' value= `${facilities.time_addper}`)
-																	.form-group.col-md-6.m-0
-																		.form-group
-																			label.h6 Downpayment Days
-																			input.form-control#int_downpaymentdays(type='number' value= `${facilities.int_downpaymentdays}`)
-
-																		.form-group
-																			label.h6 Full Payment Days
-																			input.form-control#int_fullpaymentdays(type='number' value= `${facilities.int_fullpaymentdays}`)
-
-														.form-group.col-md-4.m-0
-															if(facilities.bool_refundable=='0')
-																.form-row
-																	.form-group.pl-3
-																		if(facilities.bool_withpayment=='1')
-																			input.form-check-input.refundDetails(type='checkbox' value='0')
-																		if(facilities.bool_withpayment=='0')
-																			input.form-check-input.refundDetails(type='checkbox' value='0' disabled)
-																		h6 Refund Details &nbsp; &nbsp; &nbsp;
-																.form-row
-																	.form-group.col-md-12.m-0
-																		.form-group
-																			label.h6 Refund Days
-																			input.form-control#int_refundpercentdays(type='number' disabled)
-																		.form-group
-																			label.h6 Refund Percent
-																			input.form-control#double_refundpercent(type='number' disabled)
-
-															if(facilities.bool_refundable=='1')
-																.form-row
-																	.form-group.pl-3
-																		input.form-check-input.refundDetails(type='checkbox' value='1' checked)
-																		h6 Refund Details &nbsp; &nbsp; &nbsp;
-
-																.form-row
-																	.form-group.col-md-12.m-0
-																		.form-group
-																			label.h6 Refund Days
-																			input.form-control#int_refundpercentdays(type='number' value= `${facilities.int_refundpercentdays}`)
-																		.form-group
-																			label.h6 Refund Percent
-																			input.form-control#double_refundpercent(type='number' value= `${facilities.double_refundpercent}`)
-
+													
 														button.btn.btn-primary.mt-3#submitButton(type='submit' value=`${facilities.int_utilitiesfacilityID}`) Save Changes
 
 
@@ -270,9 +278,9 @@ block addjs
 					$("#int_fullpaymentdays").prop('disabled', true);
 					$(".refundDetails").prop('checked', false);
 					$(".refundDetails").prop('disabled', true);
-					$(".paymentDetails").val()='0';
-					$("#int_refundpercentdays").prop('disabled', true);
-					$("#double_refundpercent").prop('disabled', true);
+					
+					$("#int_refunddays").prop('disabled', true);
+					$("#int_refundpercent").prop('disabled', true);
 				}
 				else if($(this).prop("checked") == true){
 					$("#double_fee").prop('disabled', false);
@@ -289,14 +297,14 @@ block addjs
 
 			$(".refundDetails").click(function(){
 				if($(this).prop("checked") == false){
-					$("#int_refundpercentdays").prop('disabled', true);
-					$("#double_refundpercent").prop('disabled', true);
-					$(".refundDetails").val()='0';
+					$("#int_refunddays").prop('disabled', true);
+					$("#int_refundpercent").prop('disabled', true);
+					
 				}
 				else if($(this).prop("checked") == true){
-					$("#int_refundpercentdays").prop('disabled', false);
-					$("#double_refundpercent").prop('disabled', false);
-					$(".refundDetails").val()='1';
+					$("#int_refunddays").prop('disabled', false);
+					$("#int_refundpercent").prop('disabled', false);
+					$(".refundDetails").val(1);
 				}
 			});
 
@@ -331,8 +339,8 @@ block addjs
 								$('#bool_refundable').val(1)
 							}
 							if($(".refundDetails").prop("checked") == false){
-								$('#int_refundpercentdays').val(null)
-								$('#double_refundpercent').val(null)
+								$('#int_refunddays').val(null)
+								$('#int_refundpercent').val(null)
 								$('#bool_refundable').val(0);
 							}
 							if($("#mon").prop("checked") == true){$('#mon_val').val(1)}
@@ -353,6 +361,8 @@ block addjs
 
 							int_utilitiesfacilityID:$('#int_utilitiesfacilityID').val(),
 							int_facilityID:$('#int_facilityID').val(),
+							var_facilityname:$('#var_facilityname').val(),
+							var_facilitydesc:$('#var_facilitydesc').val(),
 							int_reservationmaxdays:$('#int_reservationmaxdays').val(),
 							int_reservationmindays:$('#int_reservationmindays').val(),
 							int_requirementsdays:$('#int_requirementsdays').val(),
@@ -371,8 +381,8 @@ block addjs
 							int_fullpaymentdays:$('#int_fullpaymentdays').val(),
 
 							bool_refundable:$('#bool_refundable').val(),
-							double_refundpercent:$('#double_refundpercent').val(),
-							int_refundpercentdays:$('#int_refundpercentdays').val(),
+							int_refundpercent:$('#int_refundpercent').val(),
+							int_refunddays:$('#int_refunddays').val(),
 
 							char_facilitystatus:$('#char_facilitystatus').val(),
 							mon:$('#mon_val').val(),

@@ -3,7 +3,17 @@ var adminRouter = express.Router();
 var moment = require('moment');
 var authMiddleware = require('../auth/middlewares/auth');
 var db = require('../../lib/database')();
-
+var multer = require('multer');
+fs = require('fs');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public/img/req')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now()+'.jpg')
+    }
+})
+var upload = multer({ storage: storage})
 adminRouter.use(authMiddleware.adminAuth)
 //===============================================================================================//
 // I N D E X //
@@ -208,21 +218,47 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
             return res.render('admin/views/maintenance/facilities',{ facilities : results });
         });     
     });
-    adminRouter.post('/maintenance-facilities/addfacility', (req, res) => {
-    
-        var queryString= `INSERT INTO tbl_facility(var_facilityname, var_facilitydesc,int_maxpax) VALUES(?,?,?);`  
-            db.query(queryString,  [req.body.facilityname, req.body.facilitydesc,req.body.maxpax], (err, results, fields) => {
-                if (err) throw err;
-                    return res.redirect('/admin/maintenance-facilities');
-            });            
+    adminRouter.post('/maintenance-facilities/add', (req, res) => {
+        var success =0
+        var notsuccess =1
+        console.log(req.body)
+        var queryString= `INSERT INTO tbl_facility( var_facilityname, var_facilitydesc) VALUES(?,?);`  
+        var queryString1= `INSERT INTO tbl_utilities_facility(int_facilityID,int_reservationmaxdays,int_reservationmindays,int_requirementsdays,var_availabledays,time_availablestart,time_availableend,bool_withpayment,double_fee,time_feeper,double_addrate,time_addper,int_maxpax,var_facilitysize,int_downpaymentdays,int_fullpaymentdays,bool_refundable,int_refundpercent,int_refunddays,char_facilitystatus)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`  
+            db.query(queryString,[req.body.var_facilityname,req.body.var_facilitydesc], (err, results, fields) => {
+                    console.log(results)
+                    var facilitydetails = results;
+                    var availabledays=[];
+                    if(req.body.sun==1){availabledays.push(0)}
+                    if(req.body.mon==1){availabledays.push(1)}
+                    if(req.body.tues==1){availabledays.push(2)}
+                    if(req.body.wed==1){availabledays.push(3)}
+                    if(req.body.thurs==1){availabledays.push(4)}
+                    if(req.body.fri==1){availabledays.push(5)}
+                    if(req.body.sat==1){availabledays.push(6)}
+                    console.log(availabledays)
+                    var days = availabledays.toString();
+                db.query(queryString1,[facilitydetails.insertId, req.body.int_reservationmaxdays, req.body.int_reservationmindays, req.body.int_requirementsdays, days, req.body.time_availablestart, req.body.time_availableend, req.body.bool_withpayment, req.body.double_fee, req.body.time_feeper, req.body.double_addrate, req.body.time_addper, req.body.int_maxpax, req.body.var_facilitysize, req.body.int_downpaymentdays, req.body.int_fullpaymentdays, req.body.bool_refundable, req.body.int_refundpercent, req.body.int_refunddays, 'Can be reserved'], (err, results, fields) => {
+                        res.send({facilityid:facilitydetails.insertId})
+                });});            
     });
     adminRouter.post('/maintenance-facilities/delete', (req, res) => {
-        const queryString = `DELETE FROM tbl_facility WHERE int_facilityID= ?`;
-        db.query(queryString,[req.body.id1], (err, results, fields) => {        
+        var success =0
+        var notsuccess =1
+        const queryString = `DELETE FROM tbl_utilities_facility WHERE int_facilityID= ?`;
+        const queryString1 = `DELETE FROM tbl_facility WHERE int_facilityID= ?`;
+        db.query(queryString,[req.body.id1], (err, results, fields) => {
+            db.query(queryString1,[req.body.id1], (err, results, fields) => {        
             if (err) throw err;
-            return res.redirect('/admin/maintenance-facilities');
-            
-        });
+            // return res.redirect('/admin/maintenance-facilities');
+            if (err){
+                console.log(err)
+                res.send({alertDesc:notsuccess})
+            }
+            else{
+                res.send({alertDesc:success})
+                console.log(results)
+            }
+        });});
     });
     adminRouter.get('/maintenance-facilities/update', (req, res)=>{
         console.log("==========================================")
@@ -255,6 +291,7 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
             if(facilities.time_availableend!=null)facilities.time_availableend= moment(facilities.time_availableend,'HH:mm:ss').format('hh:mm A'); 
             facilities.time_feeper= moment(facilities.time_feeper,'HH:mm:ss').format('hh'); 
             facilities.time_addper= moment(facilities.time_addper,'HH:mm:ss').format('hh'); 
+            console.log(facilities)
             return res.render('admin/views/maintenance/editfacility',{ facilities : facilities, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun});
             
         }); 
@@ -277,7 +314,26 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
                 res.send({alertDesc:success})
             }
         }); 
-        
+    });
+    adminRouter.post('/maintenance-facilities/upload', upload.single('image'), (req, res)=>{
+        var success =0
+        var notsuccess =1
+        console.log(req.body.id1)
+        var path = '/img/req/'+req.file.filename;
+        var queryString1 = `UPDATE tbl_facility SET        
+                var_facilitypicpath =?
+                where int_facilityID= ${req.body.int_facilityID};`;
+        db.query(queryString1, [path],(err, results, fields) => {
+            if (err) console.log(err);       
+            console.log(results)
+            if (err){
+                console.log(err)
+                res.send({alertDesc:notsuccess})
+            }
+            else{
+                res.send({alertDesc:success})
+            }
+        }); 
     });
     adminRouter.post('/maintenance-facilities/update', (req, res)=>{
         var success =0
@@ -313,13 +369,20 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
                 int_fullpaymentdays='${req.body.int_fullpaymentdays}',
                 bool_refundable='${req.body.bool_refundable}',
                 int_refundpercent='${req.body.int_refundpercent}',
+                int_refunddays='${req.body.int_refunddays}',
                 var_availabledays='${days}',
                 char_facilitystatus='${req.body.char_facilitystatus}'
                 
                 where int_utilitiesfacilityID= ?`;
-    
-        db.query(queryString1, [req.body.int_utilitiesfacilityID], (err, results, fields) => {
-            if (err) console.log(err);       
+        var queryString = `UPDATE tbl_facility SET        
+                var_facilityname='${req.body.var_facilityname}',
+                var_facilitydesc='${req.body.var_facilitydesc}'
+                
+                where int_facilityID= ?`;
+        db.query(queryString, [req.body.int_facilityID], (err, results, fields) => {
+            if (err) console.log(err);
+            db.query(queryString1, [req.body.int_utilitiesfacilityID], (err, results, fields) => {
+                if (err) console.log(err);              
             console.log(availabledays)
             if (err){
                 console.log(err)
@@ -329,8 +392,9 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
                 res.send({alertDesc:success})
                 console.log(results)
             }
-        }); 
+        }); }); 
     });
+   
 //=======================================================
 //MINISTRIES/ORG
 //=======================================================
