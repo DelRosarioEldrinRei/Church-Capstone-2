@@ -166,11 +166,11 @@ block prepend main
 											.form-group
 												label.h6 Open From
 												.form-group
-													input.form-control#time_availablestart(type='text' )
+													input.form-control.timeDropper#time_availablestart(type='text' )
 											.form-group.ml-1
 												label.h6 Open Until
 												.form-group
-													input.form-control#time_availableend(type='text' )
+													input.form-control.timeDropper#time_availableend(type='text' )
 										.form-row
 											.form-group.col-md-12
 											
@@ -458,3 +458,8 @@ block addjs
 				})
 			
 		});
+
+		// TimeDropper
+		$('.timeDropper').timeDropper({
+			meridians: false,
+		})
