@@ -171,7 +171,6 @@ block addjs
                     var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
                     var age = moment().diff(data.date_birthday,'years');
                     $('#viewBodyAppend').append(`
-<<<<<<< HEAD
                     <div class="form-group">
                         <label class="label-control"><strong> Name of the Child: </strong> ${data.var_lname}, ${data.var_fname}</label>
                     </div>
@@ -195,24 +194,6 @@ block addjs
                     </div>
                     <div class="form-group">
                         <img id="myImg" class="img-responsive" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px;">
-=======
-                    <table class="tableModal">
-                        <tr>
-                            <td class="tdModal h5"><strong> Desired Date: </strong> ${dateRequested}</td>
-                            <td class="tdModal h5"><strong> Desired Time:  </strong> ${timeRequested}</td>
-                        </tr>
-                        <tr>
-                            <td class="tdModal h5"><strong> Name of the Child: </strong> ${data.var_lname}, ${data.var_fname}</td>
-                            <td class="tdModal h5"><strong> Age:  </strong> ${age}</td>
-                        </tr>
-                        <tr>
-                            <td class="tdModal h5"><strong> Father's Name:  </strong> ${data.var_fathername}</td>
-                            <td class="tdModal h5"><strong> Mother's Name:  </strong> ${data.var_mothername}</td>
-                    </table>
-                    <h5 class=" ml-2 mt-2"><strong>Requirements: </strong> ${data.var_reqname} (Image)</h5> 
-                    <div class="form-group" style="margin: 1rem;">
-                        <img id="myImg shadow2" class="img-responsive" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
->>>>>>> ea0a109016bd3bcbf540e3ecdc9ecc128512ee12
                     </div>
                     `)
                     $('#viewModal').modal('show')
@@ -236,7 +217,7 @@ block addjs
                             <div class="form-group">
                             <input id="eventid" type="hidden" value="${data.int_eventinfoID}"></input>
                             <input id="eventstatus" type="hidden" value="${data.char_approvalstatus}"></input>
-                            <h6 class="label-control"><strong> Current Document Status : </strong> ${data.char_approvalstatus}</h6>
+                            <h6 class="label-control"><strong> Current Status : </strong> ${data.char_approvalstatus}</h6>
                         </div>
                         </div>
                         </div>

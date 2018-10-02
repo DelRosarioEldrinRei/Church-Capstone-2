@@ -252,11 +252,50 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                             // var queryString5 = `insert into tbl_notificatinon (int_userID,var_notifdesc,datetime_received,int_eventinfoID)`
                             // var queryString6 = `select int_userID from tbl_user where char_usertype=?`
                             // db.query(queryString6,["Priest"],(err,results,fields)=>{
-                            //     if (err) throw err 
+                            //     if (err) throw err   
                             //     var 
                             // })
 
-                            return res.redirect('/secretariat/transaction-baptism')
+                            var queryString8 = `SELECT tbl_user.int_userID, tbl_eventinfo.date_eventdate, tbl_eventinfo.int_eventinfoID
+                            , tbl_eventinfo.time_eventstart from tbl_user JOIN tbl_eventinfo 
+                            ON tbl_eventinfo.int_userpriestID = tbl_user.int_userID`
+                            db.query(queryString8,(err,results1,fields)=>{
+                                if(err) throw err
+                                    var schedules = results1;
+                                    console.log("SCHEDULE NG MGA PARI")
+                                    console.log(schedules)
+                                    var queryString9 = `SELECT * FROM tbl_eventinfo where int_eventinfoID = ?`
+                                    db.query(queryString9,[req.body.eventid],(err,results,fields)=>{
+                                        var event = results[0]
+                                        console.log("YUNG ICOCOMPARE NA SCHED ")
+                                        console.log(event.date_eventdate,event.time_eventstart)
+                                        console.log(schedules.length)
+                                            for(i=0;i<schedules.length;i++){
+                                                console.log("PASOK: " + i)   
+                                                schedules[i].date_eventdate = moment(schedules[i].date_eventdate,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD')
+                                                event.date_eventdate = moment(event.date_eventdate,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD')
+                                                console.log(event.date_eventdate + "?=" + schedules[i].date_eventdate )
+                                                console.log(schedules[i].time_eventstart + "?=" + event.time_eventstart)
+                                                if(moment(schedules[i].date_eventdate).isSame(event.date_eventdate) && schedules[i].time_eventstart == event.time_eventstart){  
+                                                        console.log("WALANG PUMASOK KASE BUSY LAHAT TANGINA")
+                                                }
+                                                else{
+                                                    console.log("PASOK: " + i)
+                                                    var nowDate = new Date();
+                                                    var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+                                                        console.log(date)
+                                                        var queryString10 = `INSERT INTO tbl_notification(int_userID,datetime_received,int_eventinfoID)
+                                                        VALUES(${schedules[i].int_userID},now(),${schedules[i].int_eventinfoID})`
+                                                        db.query(queryString10,(err,results,fields)=>{
+                                                            if(err) throw err;
+                                                            return res.redirect('/secretariat/transaction-baptism')
+                                                        })
+                                                } 
+                                            }
+
+                                    })
+                            }) 
+                            // return res.redirect('/secretariat/transaction-baptism')
                         
                         
                         })
@@ -437,7 +476,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                 specials[i].date_desireddate= moment(specials[i].date_desireddate).format('MM/DD/YYYY');
                                 specials[i].time_desiredtime= moment(specials[i].time_desiredtime, 'HH:mm:ss').format('hh:mm A');
                                 
-                            }
+                            }                            
                                 if (err) console.log(err);
                                 return res.render('secretariat/views/transactions/eventapp/confirmation',{regulars:regulars, specials:specials});
                         
