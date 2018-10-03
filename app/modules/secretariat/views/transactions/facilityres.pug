@@ -69,7 +69,7 @@ block prepend main
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
 					.modal-header
-						h4.modal-title View Baptism
+						h4.modal-title View Facility Reservation
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true') ×
 					.modal-body#viewBodyAppend
@@ -121,24 +121,26 @@ block addjs
 				$.post('/secretariat/transaction-facilityreservation/query/update',{id:idNow}).done(data =>{
 					$('#updateBodyAppend').append(`
 					<col-md-4 class="p-lg-0">
-						<div class="row">
+						<div class="form-row">
 						<div class="col-md-6">
 							<div class="form-group">
-							<input id="eventid" type="hidden" value="${data.int_reservationID}"></input>
-							<input id="eventstatus" type="hidden" value="${data.char_reservestatus}"></input>
-							<h6 class="label-control"><strong> Current Reservation Status : </strong> ${data.char_reservestatus}</h6>
-						</div>
-						</div>
-						</div>
-						<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-							<input id="reqid" type="hidden" value="${data.int_requirementsfacilityID}"></input>
-							<h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.char_reqstatus}</h6>
-							<select id="reqstatus" type="text">
-							</select>
+							<h6 class="label-control">Requirement</h6>
+							<img src= '${data.var_reqpath}' style="max-height:260px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"/>
 							</div>
+							
 						</div>
+						<div class="col-md-6">
+							<h6 class="label-control d-inline">Start: </h6><span style="font-size:14px">${data.datetime_reservestart}</span><br/>
+							<h6 class="label-control d-inline">End: </h6><span style="font-size:14px">${data.datetime_reserveend}</span>
+							<h6 class="label-control mt-2">Reservation Form:</h6>
+							<h6 class="label-control d-inline">Reserved by: </h6><span style="font-size:14px">${data.var_userlname}, ${data.var_userfname}</span>
+							<div class='form-row'>
+							<div class="form-group">
+								<select id="reservestatus" type='text'>
+									
+								</select>
+							</div>
+							</div>
 						</div>
 						</div>
 					`)
@@ -146,30 +148,13 @@ block addjs
 					$('#updateModal').on('hidden.bs.modal',function(){
 						$('#updateBodyAppend').empty()
 					})
-					if(data.char_paymentstatus == "Paid"){
-					$('#paystatus').append(`
+					if(data.char_reservestatus == "Pending"){
+					$('#reservestatus').append(`
 					<option selected="selected">Paid</option>
 					<option>Unpaid</option>
 					`)
 					}
-					else if(data.char_paymentstatus == "Unpaid"){
-					$('#paystatus').append(`
-					<option>Paid</option>
-					<option selected="selected">Unpaid</option>
-					`)
-					}
-					if(data.var_reqstatus == "Submitted"){
-					$('#reqstatus').append(`
-					<option selected="selected">Submitted</option>
-					<option>Approved</option>
-					`)
-					}
-					else if(data.var_reqstatus == "Approved"){
-					$('#reqstatus').append(`
-					<option>Submitted</option>
-					<option selected="selected">Approved</option>
-					`)
-					}
+					
 					if(data.var_reqstatus == "Approved" && data.char_paymentstatus == "Paid"){
 						document.getElementById("paystatus").disabled=true;
 						document.getElementById("reqstatus").disabled=true;
