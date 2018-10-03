@@ -301,40 +301,33 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     secretariatRouter.post('/transaction-baptism/changerequirementstatus', (req, res)=>{
         var success =0
         var notsuccess =1
-        // var status='';
         console.log('body: ' +req.body.id1)
         var value = req.body.id1.split(',');
         console.log(value);
-        // for(var i=0; i>value.length; i++){
             if(value[1]=='1'){var status= 'Approved'}
             if(value[1]=='2'){var status= 'Submitted'}
-            if(value[1]=='3'){var status= 'Disapproved'}
-        // }
+            if(value[1]=='0'){var status= 'Disapproved'}
         console.log('status: '+ status)
-        var queryString= `select * from tbl_eventinfo 
-            join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID = 
-            tbl_requirementsinevents.int_eventinfoID
-            
-            where tbl_requirementsinevents.int_eventinfoID =?`
-        var queryString1 = `UPDATE tbl_requirements SET        
-                var_reqstatus = ?
-                where int_requirementID = ?;`;
-
-        db.query(queryString,[value[0]], (err, results, fields) => {
-            reqqID=results[0];
-            if (err) console.log(err);       
-            console.log(results)
-        db.query(queryString1,[status, reqqID.int_requirementID], (err, results, fields) => {
-            if (err) console.log(err);       
-            console.log(results)
-            if (err){
-                console.log(err)
-                res.send({alertDesc:notsuccess})
-            }
-            else{
-                res.send({alertDesc:success})
-            }
-        }); }); 
+        var queryString= `select * from tbl_eventinfo  join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID =  tbl_requirementsinevents.int_eventinfoID where tbl_requirementsinevents.int_eventinfoID =?`
+        var queryString1 = `UPDATE tbl_requirements SET var_reqstatus = ? where int_requirementID = ?;`;
+        
+            db.query(queryString,[value[0]], (err, results, fields) => {
+                reqqID=results[0];
+                if (err) console.log(err);       
+                console.log(results)
+                db.query(queryString1,[status, reqqID.int_requirementID], (err, results, fields) => {
+                    if (err) console.log(err);       
+                    console.log(results)
+                    if(status!='Disapproved'){
+                        console.log(err)
+                        res.send({statu:1})
+                    }
+                    else{
+                        res.send({statu:0})
+                    }
+                }); 
+            }); 
+        
         
     });
     secretariatRouter.post('/transaction-baptism/changepaymentstatus', (req, res)=>{
@@ -424,50 +417,29 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             if (err) console.log(err);       
             console.log(results)
             res.send(results[0])
-        }); }); 
+        }); 
+    }); 
     secretariatRouter.post('/message/send', (req, res)=>{
         var success =0
         var notsuccess =1
         console.log(req.body)
-        
-        var queryString3= `INSERT INTO tbl_message(int_senderID, int_receiverID, var_subject, text_message) VALUES(?,?,?,?);`     ;
-        console.log('body: ' +req.body.id1)
-        var value = req.body.id1.split(',');
-        console.log(value);
-        
-            if(value[1]=='1'){var status= 'Approved'}
-            if(value[1]=='2'){var status= 'Submitted'}
-            if(value[1]=='3'){var status= 'Disapproved'}
-       
-        console.log('status: '+ status)
-        var queryString= `select * from tbl_eventinfo 
-            join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID = 
-            tbl_requirementsinevents.int_eventinfoID
+        var nowDate = new Date(); 
+            var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
             
-            where tbl_requirementsinevents.int_eventinfoID =?`
-        var queryString1 = `UPDATE tbl_requirements SET        
-                var_reqstatus = ?
-                where int_requirementID = ?;`;
-
-        db.query(queryString,[value[0]], (err, results, fields) => {
-            reqqID=results[0];
-
-            if (err) console.log(err);       
-            console.log(results)
-        db.query(queryString1,[status, reqqID.int_requirementID], (err, results, fields) => {
-            if (err) console.log(err);       
-            console.log(results)
-        db.query(queryString3,[req.session.secretariat.int_userID, req.body.int_userID, req.body.var_subject, req.body.text_message], (err, results, fields) => {
-            if (err) console.log(err);       
-            console.log(results)
-            if (err){
-                console.log(err)
-                res.send({alertDesc:notsuccess})
-            }
-            else{
-                res.send({alertDesc:success})
-            }
-        }); });}); }); 
+        var queryString3= `INSERT INTO tbl_message(int_senderID, int_receiverID, var_subject, text_message,datetime_sent) VALUES(?,?,?,?,?);`;
+       
+                db.query(queryString3,[req.session.secretariat.int_userID, req.body.int_receiverID, req.body.var_subject, req.body.text_message,date], (err, results, fields) => {
+                    if (err) console.log(err);       
+                    console.log(results)
+                    if (err){
+                        console.log(err)
+                        res.send({alertDesc:notsuccess})
+                    }
+                    else{
+                        res.send({alertDesc:success})
+                    }
+        }); 
+    }); 
             
        
     
