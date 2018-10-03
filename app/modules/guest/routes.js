@@ -662,7 +662,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
     })
     guestRouter.post('/baptism/query/regular/bilang', (req, res)=>{
         req.body.eventdate = moment(req.body.eventdate).format('YYYY-MM-DD')
-        var queryString = `SELECT    COUNT(*)AS bilang FROM tbl_eventinfo WHERE date_eventdate = ?` 
+        var queryString = `SELECT COUNT(*)AS bilang FROM tbl_eventinfo WHERE date_eventdate = ?` 
             db.query(queryString,req.body.eventdate,(err,results,fields) =>{
                 var eventdate = req.body.eventdate
                 results.push(eventdate)
