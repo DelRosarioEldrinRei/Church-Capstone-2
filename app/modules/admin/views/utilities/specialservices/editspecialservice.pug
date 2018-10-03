@@ -31,7 +31,7 @@ block prepend main
 																.form-group.col-md-12.m-0
 																	.form-group
 																		label.h6 Service Name:
-																		input.form-control#servicename(type='text' name='parishname'  value= `${services.var_eventname}`)
+																		input.form-control#servicename(type='text' name='parishname'  value= `${services.var_servicename}`)
 
 															.form-row
 																.form-group.col-md-6.m-0
@@ -339,7 +339,7 @@ block addjs
 							if($(".ageConstraint").prop("checked") == false){
 								$('#bool_withageconstraints').val(0);
 								$('#int_agemin').val(null);
-								$('#int_agemin').val(null);
+								$('#int_agemax').val(null);
 							}
 							if($(".paymentDetails").prop("checked") == true){
 								$('#bool_withpayment').val(1);
@@ -376,7 +376,7 @@ block addjs
 							$.post('/admin/utilities-services/viewdetails',{
 
 							int_utilitiesID:$('#int_utilitiesID').val(),
-							int_eventID:$('#int_eventID').val(),
+							int_serviceutilitiesID:$('#int_serviceutilitiesID').val(),
 							int_reservationmaxdays:$('#int_reservationmaxdays').val(),
 							int_reservationmindays:$('#int_reservationmindays').val(),
 							int_requirementsdays:$('#int_requirementsdays').val(),

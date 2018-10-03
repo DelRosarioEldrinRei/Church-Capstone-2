@@ -483,30 +483,10 @@ block addjs
 		
 		//- dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(7,'days').format('YYYY-MM-DD')
 		$.get('/guest/baptism/query').done(data=>{
-			dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data.utilities[0].int_reservationmindays,'days').format('YYYY-MM-DD')
+		dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data.utilities[0].int_reservationmindays,'days').format('YYYY-MM-DD')
 			console.log(dateNow2)
 			console.log(data.utilities[0].int_reservationmindays)
-			for(i=0;i<data.queries.length;i++){
-			var dateEvent = moment(data.queries[i].date_eventdate).format('MM/DD/YYYY');
-			data.queries[i].time_eventstart = moment(data.queries[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
-			var time_end = moment(data.queries[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
-			console.log(time_end)
-			console.log(dateEvent)
-			console.log(data.queries[i].time_eventstart)
-			console.log(data.queries[i].char_approvalstatus)
-				$('#calendarSpecial').fullCalendar('renderEvent', {
-				title: 'OCCUPIED EVENT',
-				start: `${dateEvent} ${data.queries[i].time_eventstart}`,
-				end: `${dateEvent} ${time_end}`,
-				allDay: false,
-				color:'#4c2508',
-				textColor: "white",
-				});
-			}
-			return dateNow2;
-		})
-		console.log(dateNow2)
-		$('#calendarSpecial').fullCalendar({
+			$('#calendarSpecial').fullCalendar({
 			header: {
 				left: 'title',
 				center: 'agendaDay,month',
@@ -654,6 +634,33 @@ block addjs
 						}
 					})
 			}
-		});
-
+			});
+			
+			for(i=0;i<data.queries.length;i++){
+			var dateEvent = moment(data.queries[i].date_eventdate).format('MM/DD/YYYY');
+			data.queries[i].time_eventstart = moment(data.queries[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
+			var time_end = moment(data.queries[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+			console.log(time_end)
+			console.log(dateEvent)
+			console.log(data.queries[i].time_eventstart)
+			console.log(data.queries[i].char_approvalstatus)
+				$('#calendarSpecial').fullCalendar('renderEvent', {
+				title: 'OCCUPIED EVENT',
+				start: `${dateEvent} ${data.queries[i].time_eventstart}`,
+				end: `${dateEvent} ${time_end}`,
+				allDay: false,
+				color:'#4c2508',
+				textColor: "white",
+				});
+				$('#calendarRegular').fullCalendar('renderEvent', {
+				title: 'OCCUPIED EVENT',
+				start: `${dateEvent} ${data.queries[i].time_eventstart}`,
+				end: `${dateEvent} ${time_end}`,
+				allDay: false,
+				color:'#4c2508',
+				textColor: "white",
+				});
+			}
+			return dateNow2;
+		})
 		

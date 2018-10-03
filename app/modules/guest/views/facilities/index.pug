@@ -22,116 +22,58 @@ block main
 							p Choose a facility to reserve
 			.container
 				.row
-					.col-md-6
-						.card-2.shadow2
-							.image
-								img(src='/img/facility/facility_1.jpg')
-							.card-block
-								h3.card-title Meeting Room
-								.meta
-									a Recommended
-								.description
-									.row
-										.col-md-4
-											span
-												strong Rate: 
-											
-										.col-md-8
-											.row
+					each facility in facilities
+						.col-md-6
+							.card-2.shadow2
+								.image
+									//- img(src='/img/facility/facility_1.jpg')
+									img(alt=`${facility.var_facilityname}`, src=`${facility.var_facilitypicpath}`)
+								.card-block
+									h3.card-title=facility.var_facilityname
+									.meta
+										a Recommended
+									.description
+										.row
+											.col-md-4
 												span
-												|      ₱1200 for the first 4hrs.
-											.row
+													strong Rate: 
+											.col-md-8
+												.row
+													span="₱"+facility.double_fee+ "(for the first "+ (facility.time_feeper) +"hr(s))"
+												.row
+													span="₱"+facility.double_addrate + "/"+ (facility.time_addper) +"hr(s)"
+										.row
+											.col-md-4
 												span
-												|      +₱300/additional hour
-									.row
-										.col-md-4
-											span
-												strong Ideal For: 
-											
-										.col-md-8
-											.row
+													strong Ideal For: 
+											.col-md-8
+												.row
+													span=facility.var_facilitydesc
+										.row
+											.col-md-4
 												span
-												|      Meetings, training, seminars, workshops
-									.row
-										.col-md-4
-											span
-												strong Size:
-											
-										.col-md-8
-											.row
-												span
-												|      4.9m x 11.5m (16ft x 37ft)
-							.card-footer.p-0
-								.extra.p-3
-									.learn-more.text-center
-										//- a.btn.btn-common.ml-auto.mx-auto#submitButton(type = 'button' value ='1') Inquire
-										a.btn.btn-common.ml-auto.mx-auto#submitButton(value ='1') Inquire
-									span.right
-										| ₱300/hr
-								//- span
-								//- 	i.fa.fa-user
-								//- 	|                   75 Friends
-					.col-md-6
-						.card-2.shadow2
-							.image
-								img(src='/img/facility/facility_2.jpg')
-							.card-block
-								h3.card-title Multi-purpose Room
-								.meta
-									a Highly Recommended
-								.description
-									.row
-										.col-md-4
-											span
-												strong Rate: 
-											
-										.col-md-8
-											.row
-												span
-												|      ₱1200 for the first 4hrs.
-											.row
-												span
-												|      +₱300/additional hour
-									.row
-										.col-md-4
-											span
-												strong Ideal For: 
-											
-										.col-md-8
-											.row
-												span
-												|      Meetings, training, seminars, workshops, holiday parties, banquets, receptions, class reunions, anniversary parties, birthday parties, baby showers
-									.row
-										.col-md-4
-											span
-												strong Size:
-											
-										.col-md-8
-											.row
-												span
-												|      4.9m x 11.5m (16ft x 37ft)
-							.card-footer.p-0
-								.extra.p-3
-									.learn-more.text-center
-										//- a.btn.btn-common.ml-auto.mx-auto#submitButton( type = 'button' value ='2') Inquire
-										a.btn.btn-common.ml-auto.mx-auto#submitButton( value ='2') Inquire
-									span.right
-										| ₱300/hr
+													strong Size:
+											.col-md-8
+												.row
+													span=facility.var_facilitysize
+								.card-footer.p-0
+									.extra.p-3
+										.learn-more.text-center
+											//- a.btn.btn-common.ml-auto.mx-auto#submitButton(type = 'button' value ='1') Inquire
+											//- a.btn.btn-primary#submitButton(type='submit' value=`${facility.int_facilityID}`) Inquire
+											button.btn.btn-primary.actionButton(type='button' value=`${facility.int_facilityID}`) Inquire
+												
+									
+					
 block addjs
 	script(type='text/javascript').
 		
 		$(document).ready(function(){
-			$('#submitButton').click(function(){
-					var idNow = $(this).val();
-					console.log(idNow)
-					$.post('/guest/facilities/query',{
-						id:idNow
-					}).done(data=>{
-						window.location=`/guest/facilities/form?redirect="${$(this).val()}"`
-							//dito dito dito
-
-					})
+			var idNow;
+			$('.actionButton').click(function(){
+				idNow = $(this).val();
+				console.log(idNow)
+				window.location=`/guest/facilities/form?id=${idNow}`
+				})
 						
 				})		
-
-				})

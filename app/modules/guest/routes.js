@@ -653,7 +653,24 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
             })
         })
     })
-
+    guestRouter.get('/baptism/query/regular', (req, res)=>{
+        var queryString = `SELECT * FROM tbl_eventinfo where char_approvalstatus = "Approved" GROUP BY date_eventdate` 
+            db.query(queryString,(err,results,fields) =>{
+                console.log(results)
+                    res.send(results)
+            })
+    })
+    guestRouter.post('/baptism/query/regular/bilang', (req, res)=>{
+        req.body.eventdate = moment(req.body.eventdate).format('YYYY-MM-DD')
+        var queryString = `SELECT    COUNT(*)AS bilang FROM tbl_eventinfo WHERE date_eventdate = ?` 
+            db.query(queryString,req.body.eventdate,(err,results,fields) =>{
+                var eventdate = req.body.eventdate
+                results.push(eventdate)
+                console.log(results)
+                res.send(results)
+                
+            })
+    })
     guestRouter.get('/baptism/form', (req, res)=>{
         console.log(req.query)
         console.log(req.session.eventId)
@@ -661,13 +678,13 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         var queryString1= `SELECT int_agemax, int_agemin, double_fee FROM tbl_utilities where int_eventID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
         db.query(queryString1, (err, results1, fields) => {
             var queryString2= `SELECT time_availabletime FROM tbl_utilities_availabletime where int_serviceID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
-            // db.query(queryString2, (err, results2, fields) => {
-            //     for(i=0;i<results2.length;i++){
-            //     results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
-            //     }
+            db.query(queryString2, (err, results2, fields) => {
+                for(i=0;i<results2.length;i++){
+                results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
+                }
                 if (err) throw err;
         return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1,utilities:results2})
-            // });    
+            });    
             });
         
     });
@@ -1447,81 +1464,97 @@ guestRouter.get('/marriage1/form', (req, res)=>{
 // F A C I L I T I E S 
 //===============================================================================================//
     guestRouter.get('/facilities', (req, res)=>{
-        var queryString= `select * from tbl_facility`
-            db.query(queryString, (err, results, fields) => {
-                if (err) console.log(err);
-                var facilities =results;
-        res.render('guest/views/facilities/index',{user: req.session.user, facilities:facilities})
-    });
-    });
-    guestRouter.post('/facility/query2', (req, res) => {
-        var queryString1 =`SELECT * FROM tbl_facility where int_facilityID = ?`
-        db.query(queryString1,[req.body.id], (err, results1, fields) => {
-            res.send({firstQuery:results1[0]});
-  
-      
-    });
-        })
-
-    guestRouter.post('/facilities/query', (req, res)=>{
-        console.log(req.body.id)
-        var queryString1 =`SELECT * FROM tbl_facility where int_facilityID = ?`
-        db.query(queryString1,[req.body.id], (err, results1, fields) => {
-            res.send({firstQuery:results1[0]});
+        var queryString1 =`SELECT * FROM tbl_facility join tbl_utilities_facility on 
+        tbl_utilities_facility.int_utilitiesfacilityID=tbl_facility.int_facilityID`
+        db.query(queryString1, (err, results, fields) => {
+            if (err) console.log(err);  
+            for(var i = 0; i < results.length; i++){
+                results[i].time_feeper= moment(results[i].time_feeper, "HH:mm:ss").format('hh'); 
+                results[i].time_addper= moment(results[i].time_addper, 'HH:mm:ss').format('hh'); 
+            }     
+            console.log(results)
+            return res.render('guest/views/facilities/index',{user: req.session.user, facilities : results });
         
-        });  });
-
+    });
+    });
+    guestRouter.get('/facilities/query', (req, res)=>{
+        var queryString = `SELECT * FROM tbl_facilityreservation where char_reservestatus = "Approved"`
+            db.query(queryString,(err,results,fields) =>{
+                res.send(results)
+                console.log(results)
+            })
+    })
+    guestRouter.get('/facilities/queryutilities', (req, res)=>{
+        var queryString = `SELECT * FROM tbl_utilities_facility where int_facilityID = ?`
+            db.query(queryString,[req.query.id],(err,results,fields) =>{
+                res.send(results)
+                console.log(results)
+            })
+    })
     guestRouter.get('/facilities/form', (req, res)=>{
-        var queryString= `select * from tbl_items`
+        console.log(req.query.id) 
+        console.log(req.body)
+        var queryString= `select * from tbl_items where int_goodquantity <> '0'`
             db.query(queryString, (err, results, fields) => {
                 if (err) console.log(err);
                 var items =results;
+                console.log(items)
                 var queryString1= `select * from tbl_facility where int_facilityID = ?`
-                    db.query(queryString1, [req.session.user.facilityid],(err, results, fields) => {
+                    db.query(queryString1, [req.query.id],(err, results, fields) => {
                         if (err) console.log(err);
                         // console.log()
-                        var facilitydetails =results;
-        res.render('guest/views/facilities/form',{user: req.session.user, items:items, facilitydetails:facilitydetails})
-    });
-});
-});
+                        var facilitydetails=results[0];
 
-    guestRouter.post('/facilities/form',upload.single('image'), (req, res) => {
+        return res.render('guest/views/facilities/form',{user: req.session.user, items:items, facilitydetails:facilitydetails})
+        });
+    });
+    });
+    guestRouter.post('/facilities/form', (req, res) => {
+    
+        // var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
+        
+            var queryString1 = `INSERT INTO tbl_facilityreservation(int_userID, int_facilityID, var_event, var_eventdesc, int_attendees, datetime_reservestart,datetime_reserveend, char_reservestatus) VALUES(?,?,?,? ,?,?,?,?)`;
+                db.query(queryString1, [req.body.userID, req.body.id, req.body.eventname, req.body.eventdesc, req.body.attendees,  req.body.reservestart, req.body.reserveend, 'Pending'], (err, results, fields) => {
+                    var reservationID = results;
+                    console.log(err)
+                        if (err) console.log(err);                                                 
+                            console.log(err)
+                            res.send({reservationID: reservationID.insertId})
+
+    });
+    });
+    
+    guestRouter.post('/facilities/upload',upload.single('image'), (req, res) => {
         var success =0
         var notsuccess =1
-        var queryString= `select int_serviceutilitiesID from tbl_serviceutilities where var_servicename="House/Business Blessing"`
-        db.query(queryString, (err, results, fields) => {
-            if (err) console.log(err);
-            console.log(results);
-            var serviceID = results[0];
-            
+            console.log(req.body)
             var path = '/img/req/'+req.file.filename;
             var nowDate = new Date(); 
             var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
             console.log(date)
-            var requirementQuery = `select int_servicereqtypeID from tbl_servicereqtype where int_serviceutilitiesID = ?`
-            db.query(requirementQuery, [serviceID.int_serviceutilitiesID], (err, results, fields) => {
+            var queryString= `select int_serviceutilitiesID from tbl_serviceutilities where var_servicename="House/Business Blessing"`
+            db.query(queryString, (err, results, fields) => {
                 if (err) console.log(err);
-                var reqq = results[0];
-                var queryString1 = `INSERT INTO tbl_facilityreservation(int_userID, int_facilityID, var_event, var_eventdesc, int_attendees, datetime_reservestart,datetime_reserveend, char_reservestatus) VALUES(?,?,?,? ,?,?,?,?)`;
-                    db.query(queryString1, [req.body.userID, req.body.facilityID, req.body.eventname, req.body.eventdesc, req.body.attendees,  req.body.reservestart, req.body.reserveend, 'Pending'], (err, results, fields) => {
-                        var reservationID = results;
-                        console.log(err)
-                    var queryString7 = `INSERT INTO tbl_requirementsfacilities(int_reservationID, int_servicereqtypeID, var_reqpath, datetime_reqreceived, char_reqstatus) VALUES (?,?,?,?,?);`
-                    db.query(queryString7,[reservationID.insertId,reqq.int_servicereqtypeID,path,date,'Submitted'],(err, results, fields)=>{
-                        
+                console.log(results);
+                var serviceID = results[0];
+                var requirementQuery = `select int_servicereqtypeID from tbl_servicereqtype where int_serviceutilitiesID = ?`
+                db.query(requirementQuery, [serviceID.int_serviceutilitiesID], (err, results, fields) => {
+                    if (err) console.log(err);
+                    var reqq = results[0];
+                    console.log(reqq)
+                    var queryString7 = `INSERT INTO tbl_requirementsfacility(int_reservationID, int_servicereqtypeID, var_reqpath, datetime_reqreceived, char_reqstatus) VALUES (?,?,?,?,?);`
+                    db.query(queryString7,[req.body.reservationID, reqq.int_servicereqtypeID, path,date,'Submitted'],(err, results, fields)=>{
                             if (err) console.log(err);                        
                             if (err){
-                                console.log(err)
-                                res.send({alertDesc:notsuccess})
+                                        console.log(err)
+                                        res.send({alertDesc:notsuccess})
                             }
                             else{
-                                res.send({alertDesc:success})
+                                        res.send({alertDesc:success})
                             }
-                    
-                        });});});});
+                        });
         });
-    // });
+    });});
 //===============================================================================================//
 // D O C U M E N T  
 //===============================================================================================//

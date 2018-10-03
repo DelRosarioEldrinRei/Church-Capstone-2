@@ -18,16 +18,30 @@ block prepend main
 												thead.text-primary
 														th ID
 														th Name
-														th Description
+														th Fee
+														th Additional Rate
 														th Maximum Pax
+														th Status
 														th.text-center(style=" width:120px") Actions
 												tbody
 														each facility in facilities
 															tr
 																td=facility.int_facilityID
 																td=facility.var_facilityname
-																td=facility.var_facilitydesc
+																td="₱"+facility.double_fee +" / "+ facility.time_feeper +" hr(s)"
+																td="₱"+facility.double_addrate+" / "+ facility.time_addper+" hr(s)"
 																td=facility.int_maxpax
+																if(facility.char_facilitystatus=='Cannot be reserved')
+																	td
+																		select#selectBox(onchange='can(value);' style='color:red' )
+																			option(value=`${facility.int_utilitiesfacilityID}`) Cannot be reserved
+																			option(value=`${facility.int_utilitiesfacilityID}`  style='color:green') Can be reserved
+																if(facility.char_facilitystatus=='Can be reserved')
+																	td
+																		select#selectBox(onchange='cannot(value);' style='color:green' )
+																			option(value=`${facility.int_utilitiesfacilityID}`) Can be reserved
+																			option(value=`${facility.int_utilitiesfacilityID}` style='color:red' ) Cannot be reserved
+																
 																td.td-actions.text-center
 																	button.btn.btn-primary.actionButton(type='button' value=`${facility.int_facilityID}`)
 																		i.ti-settings
@@ -37,55 +51,234 @@ block prepend main
 																				a.deleteButton(href='#')
 																					i.ti-close(style="color:white;")
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
-		.modal-dialog.modal-notify.modal-success(role='document')
+		.modal-dialog.modal-lg.modal-notify.modal-success(role='document')
 			// Content
 			.modal-content
 				// Header
-				.modal-header
-					p.heading.lead Add Facility
-					button.close(type='button' data-dismiss='modal' aria-label='Close')
+				.modal-header(style='background:#367587')
+					h4.heading.lead(style='color:white') Add Facility
+					button.close(type='button' data-dismiss='modal' aria-label='Close' style='color:white')
 						span.white-text(aria-hidden='true') &times;
 				// Body
 				.modal-body
-					form.form(action="/admin/maintenance-facilities/addfacility" method="post")
+						//- form.form(action="/admin/maintenance-events/add" method="post")
+						input.form-control#bool_withpayment(type='hidden'  value=0)
+						input.form-control#bool_refundable(type='hidden'  value=0)
+						input.form-control#mon_val(type='hidden'  value=0)
+						input.form-control#tues_val(type='hidden'  value=0)
+						input.form-control#wed_val(type='hidden'  value=0)
+						input.form-control#thurs_val(type='hidden'  value=0)
+						input.form-control#fri_val(type='hidden'  value=0)
+						input.form-control#sat_val(type='hidden'  value=0)
+						input.form-control#sun_val(type='hidden'  value=0)
 						.form-group
 							label.label-control Facility Name
-							input.form-control(type='text' name='facilityname')
+							input.form-control#var_facilityname(type='text' name='spceventname')
 						.form-group
-							label.label-control Facility Description
-							textarea.form-control(name='facilitydesc')
-						.form-group
-							label.label-control Maximum Pax
-							input.form-control(type='number' name='maxpax')
+							label.label-control Faciility Description
+							textarea.form-control#var_facilitydesc(rows="2" name='eventdesc')
+						.form-row
+							.form-group.col-md-6.m-0
+								.form-group
+									label.h6 Maximum PAX
+									input.form-control#int_maxpax(type='number' )
+							.form-group.col-md-6.m-0
+								.form-group
+									label.h6 Size 
+									input.form-control#var_facilitysize(type='text' )
+						.form-row
+							.form-group.col-md-4.m-0
+								.form-group
+									label.h6 Requirement Submission Days
+									input.form-control#int_requirementsdays(type='number' )
+							.form-group.col-md-4.m-0
+								.form-group
+									label.h6 Minimum Reservation Day
+									input.form-control#int_reservationmindays(type='number' )
+							.form-group.col-md-4.m-0
+								.form-group
+									label.h6 Maximum Reservation Days
+									input.form-control#int_reservationmaxdays(type='number' )
+						.form-row
+							.form-group.col-md-8.m-0
+
+								
+								.form-group.pl-3
+										input.form-check-input.paymentDetails(type='checkbox')
+										label.h6 Payment Details &nbsp; &nbsp; &nbsp;
+								.form-row
+									.form-group.col-md-6.m-0
+										.form-row
+											.form-group.col-md-6.m-0
+												.form-group
+													label.h6 Fee
+													input.form-control#double_fee(type='number' disabled )
+											.form-group.col-md-6.m-0
+												.form-group
+													label.h6 For the first (hrs)
+													input.form-control#time_feeper(type='text' disabled )
+
+										.form-row
+											.form-group.col-md-6.m-0
+												.form-group
+													label.h6 Additional Rate
+													input.form-control#double_addrate(type='number' disabled )
+											.form-group.col-md-6.m-0
+												.form-group
+													label.h6 Per(hrs)
+													input.form-control#time_addper(type='text' disabled )
+									.form-group.col-md-6.m-0
+										.form-group
+											label.h6 Downpayment Days
+											input.form-control#int_downpaymentdays(type='number' disabled )
+
+										.form-group
+											label.h6 Full Payment Days
+											input.form-control#int_fullpaymentdays(type='number' disabled )
+							.form-group.col-md-4.m-0
+							
+								.form-row
+									.form-group.pl-3
+										
+										input.form-check-input.refundDetails(type='checkbox' disabled )
+										h6 Refund Details &nbsp; &nbsp; &nbsp;
+								.form-row
+									.form-group.col-md-12.m-0
+										.form-group
+											label.h6 Refund Days
+											input.form-control#int_refunddays(type='number' disabled)
+										.form-group
+											label.h6 Refund Percent
+											input.form-control#int_refundpercent(type='number' disabled )
+						.form-row
+							.col-md-12.ml-3.mt
+
+								.form-row
+									.form-group.col-md-6.ml-0
+										.form-group.px-lg-3.px-md-3.px-sm-0
+											h6.label-control Facility Picture
+												.text-danger.d-inline  *
+											input#file-0b.file(type='file',accept='image/*',name="image" required data-error='Please upload your birth certificate')
+											label
+												.help-block.with-errors
+									.form-group.col-md-6
+										.form-row
+											.form-group
+												label.h6 Open From
+												.form-group
+													input.form-control#time_availablestart(type='text' )
+											.form-group.ml-1
+												label.h6 Open Until
+												.form-group
+													input.form-control#time_availableend(type='text' )
+										.form-row
+											.form-group.col-md-12
+											
+												label.h6.m-0 Days of the week
+												.form-row
+													.col-md-6
+														.form-check.my-2
+															label.form-check-label
+																input.form-check-input#mon(type='checkbox')
+																|  Monday
+														.form-check.my-2
+															label.form-check-label
+																input.form-check-input#tues(type='checkbox')
+																|  Tuesday
+														.form-check.my-2
+															label.form-check-label
+																input.form-check-input#wed(type='checkbox')
+																|  Wednesday
+														.form-check.my-2
+															label.form-check-label
+																input.form-check-input#thurs(type='checkbox')
+																|  Thursday
+													.col-md-6
+														.form-check.my-2
+															label.form-check-label
+																input.form-check-input#fri(type='checkbox')
+																|  Friday
+														.form-check.my-2
+															label.form-check-label
+																input.form-check-input#sat(type='checkbox')
+																|  Saturday
+														.form-check.my-2
+															label.form-check-label
+																input.form-check-input#sun(type='checkbox')
+																|  Sunday	
 						.row
 							.col-md-12.text-center.my-3
-								button.btn.btn-primary(type='submit') Add
+								button.btn.btn-primary#addFacility(type='submit') Add
 
-	#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
-		.modal-dialog.modal-notify.modal-success(role='document')
-			.modal-content
-				.modal-header
-					p.heading.lead Edit Facility
-					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
-						span.white-text(aria-hidden='true') &times;
-				.modal-body#updateAppend
-					.col-md-12.text-center.my-3
-				.modal-footer
-					button.btn.btn-primary#updateSubmitButton(type="button") Update
-	#modal-warning1.modal.modal-warning.fade
-			.modal-dialog
-			.modal-content
-				.modal-header
-				button.close(type='button', data-dismiss='modal', aria-label='Close')
-					span(aria-hidden='true') ×
-				h4.modal-title Warning
-				.modal-body
-				p Are you sure you?
-				.modal-footer
-					button.btn.btn-outline.pull-left#cancelButton1(type='button', data-dismiss='modal') No
-					button.btn.btn-outline.pull-right#deleteSubmit1 Yes
 block addjs
 	script.
+		$('.timepicker').datetimepicker({
+			icons: {
+				time: "fa fa-clock-o",
+				date: "fa fa-calendar",
+				up: "fa fa-chevron-up",
+				down: "fa fa-chevron-down",
+				previous: 'fa fa-chevron-left',
+				next: 'fa fa-chevron-right',
+				today: 'fa fa-screenshot',
+				clear: 'fa fa-trash',
+				close: 'fa fa-remove'
+			}
+		});
+		function can($i) {
+			//- alert($i);
+			swal({
+					title: 'Are you sure change status?',
+					text: "",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Confirm'
+					}).then((result) => {
+						if (result.value) {
+							$.post('/admin/maintenance-facilities/changestatus',{id1:$i, facilitystatus:'Can be reserved'})
+							.done(data =>{
+								if(data){
+									swal({
+									title:'Success',
+									text:'Status changed',
+									icon:'success'
+									}).then(function(){
+										location.reload();
+									})
+								}
+							});
+						}
+					})
+		}
+		function cannot($i) {
+			//- alert($i);
+			swal({
+					title: 'Are you sure change status?',
+					text: "",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Confirm'
+					}).then((result) => {
+						if (result.value) {
+							$.post('/admin/maintenance-facilities/changestatus',{id1:$i, facilitystatus:'Cannot be reserved'})
+							.done(data =>{
+								if(data){
+									swal({
+									title:'Success',
+									text:'Status changed',
+									icon:'success'
+									}).then(function(){
+										location.reload();
+									})
+								}
+							});
+						}
+					})
+		}
 		$(document).ready(function() {
 			var idNow;
 			$('.actionButton').click(function(){
@@ -119,58 +312,149 @@ block addjs
 					})
 				})
 			$('.updateButton').click(function(){
-					$.post('/admin/maintenance-facilities/query',{id:idNow})
-				.done(data=>{
-					$('#updateAppend').append(`
-					<div class="form-group">
-						<label class="label-control">Facility Name</label>
-						<input type="text" name="facilityname" id="facilityname" value="${data.var_facilityname}" class="form-control"/>
-					</div>
-					<div class="form-group">
-						<label class="label-control">Facility Description</label>
-						<textarea name="facilitydesc" id="facilitydesc" class="form-control">${data.var_facilitydesc}</textarea>
-					</div>
-					<div class="form-group">
-						<label class="label-control">Maximum Pax</label>
-						<textarea name="facilitydesc" id="maxpax" class="form-control">${data.int_maxpax}</textarea>
-					</div>
-					`)
-					$('#updateModal').modal('show')
-					$('#updateModal').on('hidden.bs.modal',function(){
-						console.log("NAALIS NA")
-						$('#updateAppend').empty()
-					})
-					$('#cancelButton').click(function(){
-						$('#updateAppend').empty();
-					})
-					$(document).keyup(function(e) {
-					if (e.keyCode === 27)
-						{
-						$('#updateModal').modal('hide');
-						$('#updateAppend').empty();
-						};
-					});
-					$('#updateSubmitButton').click(function(){
-						$.post('/admin/maintenance-facilities/edit',{
-						facilityname:$('#facilityname').val(),
-						facilitydesc:$('#facilitydesc').val(),
-						maxpax:$('#maxpax').val(),
-						id:idNow
-						})
-						.done(data=>{
-							if(data){
-								swal({
-								title:'Success',
-								text:'Facilities information updated',
-								icon:'success'
-								}).then(function(){
-									location.reload();
-								})
-								$('#updateModal').modal('hide');
-								$('#updateAppend').empty();
-							}
-						})
-					})
-				})
+					window.location=`/admin/maintenance-facilities/update?id=${idNow}`
+				
 			})
+			$(".paymentDetails").click(function(){
+				if($(this).prop("checked") == false){
+					$("#double_fee").prop('disabled', true);
+					$("#time_feeper").prop('disabled', true);
+					$("#double_addrate").prop('disabled', true);
+					$("#time_addper").prop('disabled', true);
+					$("#int_downpaymentdays").prop('disabled', true);
+					$("#int_fullpaymentdays").prop('disabled', true);
+					$(".refundDetails").prop('checked', false);
+					$(".refundDetails").prop('disabled', true);
+					$("#int_refunddays").prop('disabled', true);
+					$("#int_refundpercent").prop('disabled', true);
+				}
+				else if($(this).prop("checked") == true){
+					$("#double_fee").prop('disabled', false);
+					$("#time_feeper").prop('disabled', false);
+					$("#double_addrate").prop('disabled', false);
+					$("#time_addper").prop('disabled', false);
+					$("#int_downpaymentdays").prop('disabled', false);
+					$("#int_fullpaymentdays").prop('disabled', false);
+					$(".refundDetails").prop('checked', false);
+					$(".refundDetails").prop('disabled', false);
+				}
+			});
+
+			$(".refundDetails").click(function(){
+				if($(this).prop("checked") == false){
+					$("#int_refunddays").prop('disabled', true);
+					$("#int_refundpercent").prop('disabled', true);
+				}
+				else if($(this).prop("checked") == true){
+					$("#int_refunddays").prop('disabled', false);
+					$("#int_refundpercent").prop('disabled', false);
+				}
+			});
+			$('#addFacility').click(function(){
+					
+					console.log()
+					if($(".paymentDetails").prop("checked") == true){
+						$('#bool_withpayment').val(1);
+					}
+					if($(".paymentDetails").prop("checked") == false){
+						$('#bool_withpayment').val(0);
+						$('#double_fee').val(null)
+						$('#time_feeper').val(null)
+						$('#time_addper').val(null)
+						$('#double_addrate').val(null)
+						$('#int_downpaymentdays').val(null)
+						$('#int_fullpaymentdays').val(null)
+					}
+					if($(".refundDetails").prop("checked") == true){
+						$('#bool_refundable').val(1)
+					}
+					if($(".refundDetails").prop("checked") == false){
+						$('#int_refunddays').val(null)
+						$('#int_refundpercent').val(null)
+						$('#bool_refundable').val(0);
+					}
+					if($("#mon").prop("checked") == true){$('#mon_val').val(1)}
+					if($("#mon").prop("checked") == false){$('#mon_val').val(0)}
+					if($("#tues").prop("checked") == true){$('#tues_val').val(1)}
+					if($("#tues").prop("checked") == false){$('#tues_val').val(0)}
+					if($("#wed").prop("checked") == true){$('#wed_val').val(1)}
+					if($("#wed").prop("checked") == false){$('#wed_val').val(0)}
+					if($("#thurs").prop("checked") == true){$('#thurs_val').val(1)}
+					if($("#thurs").prop("checked") == false){$('#thurs_val').val(0)}
+					if($("#fri").prop("checked") == true){$('#fri_val').val(1)}
+					if($("#fri").prop("checked") == false){$('#fri_val').val(0)}
+					if($("#sat").prop("checked") == true){$('#sat_val').val(1)}
+					if($("#sat").prop("checked") == false){$('#sat_val').val(0)}
+					if($("#sun").prop("checked") == true){$('#sun_val').val(1)}
+					if($("#sun").prop("checked") == false){$('#sun_val').val(0)}
+					
+					$.post('/admin/maintenance-facilities/add',{
+
+					int_utilitiesfacilityID:$('#int_utilitiesfacilityID').val(),
+					int_facilityID:$('#int_facilityID').val(),
+					var_facilityname:$('#var_facilityname').val(),
+					var_facilitydesc:$('#var_facilitydesc').val(),
+					int_reservationmaxdays:$('#int_reservationmaxdays').val(),
+					int_reservationmindays:$('#int_reservationmindays').val(),
+					int_requirementsdays:$('#int_requirementsdays').val(),
+					var_availabledays:$('#var_availabledays').val(),
+					time_availablestart:$('#time_availablestart').val(),
+					time_availableend:$('#time_availableend').val(),
+					int_maxpax:$('#int_maxpax').val(),
+					var_facilitysize:$('#var_facilitysize').val(),
+
+					bool_withpayment:$('#bool_withpayment').val(),
+					double_fee:$('#double_fee').val(),
+					time_feeper:$('#time_feeper').val(),
+					double_addrate:$('#double_addrate').val(),
+					time_addper:$('#time_addper').val(),
+					int_downpaymentdays:$('#int_downpaymentdays').val(),
+					int_fullpaymentdays:$('#int_fullpaymentdays').val(),
+
+					bool_refundable:$('#bool_refundable').val(),
+					int_refundpercent:$('#int_refundpercent').val(),
+					int_refunddays:$('#int_refunddays').val(),
+
+					char_facilitystatus:$('#char_facilitystatus').val(),
+					mon:$('#mon_val').val(),
+					tues:$('#tues_val').val(),
+					wed:$('#wed_val').val(),
+					thurs:$('#thurs_val').val(),
+					fri:$('#fri_val').val(),
+					sat:$('#sat_val').val(),
+					sun:$('#sun_val').val(),
+
+					char_facilitiestatus:'Enabled'
+				}).done(data=>{
+						var facilityid= data.facilityid;
+						var formData= new FormData();
+
+						formData.append('image', $('#file-0b')[0].files[0]);
+						formData.append('int_facilityID', facilityid);
+						$.ajax({
+							type: 'POST',
+							url: '/admin/maintenance-facilities/upload',
+							data: formData,
+							processData:false,
+							contentType:false,
+							success: function(data){
+								swal({
+									title: "Facility Added",
+									//- text: 'Facility Added',
+									icon: 'success',
+									buttons:{
+										Okay:'okay'
+									}
+								}).then((value)=>{
+									location.reload()
+								})
+							}
+
+						})
+
+					})
+				
+			
+				})
+			
 		});
