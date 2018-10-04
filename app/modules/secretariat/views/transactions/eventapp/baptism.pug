@@ -64,13 +64,30 @@ block prepend main
 																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
 																						option(value=`${regular.int_eventinfoID},1` style='color:green')=regular.var_reqstatus
 																				td
-																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																					select#selectBox(onchange='payment(value);' style='color:grey' disabled)
 																						option(value=`${regular.int_eventinfoID},1` style='color:green')=regular.char_paymentstatus
 																				td
-																					select#selectBox(onchange='requirement(value);' style='color:red' disabled)
+																					select#selectBox(onchange='approval(value);' style='color:red')
 																						option(value=`${regular.int_eventinfoID},3` style='color:red')=regular.char_approvalstatus
+																						option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
+																				-break
+
+																			if(regular.char_approvalstatus=='Approved')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:green' disabled)
+																						option(value=`${regular.int_eventinfoID},1` style='color:green')=regular.var_reqstatus
+																				td
+																					select#selectBox(onchange='payment(value);' style='color:green' disabled)
+																						option(value=`${regular.int_eventinfoID},1` style='color:green')=regular.char_paymentstatus
+																				td
+																					select#selectBox(onchange='approval(value);' style='color:green')
+																						option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
+																						option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
+																						option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
+																				-break
 																			
-																			if(regular.var_reqstatus=='Disapproved')
+																			if(regular.var_reqstatus=='Disapproved'&& regular.char_approvalstatus=='Pending')
+
 																				td
 																					select#selectBox(onchange='requirement(value);' style='color:red')
 																						option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
@@ -80,10 +97,34 @@ block prepend main
 																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
 																						option(value=`${regular.int_eventinfoID},1` style='color:green')=regular.char_paymentstatus
 																				td
-																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																					select#selectBox(onchange='approval(value);' style='color:grey' disabled)
 																						option(value=`${regular.int_eventinfoID},3` style='color:red')=regular.char_approvalstatus
-																				//- if(regular.char_approvalstatus)
-																			else
+																				-break
+
+																			if(regular.var_reqstatus=='Approved'&&regular.char_paymentstatus=='Paid'&&regular.char_approvalstatus=='Pending')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:green')
+																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
+																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Submitted
+																							option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
+																				td
+																						select#selectBox(onchange='payment(value);' style='color:green')
+																							option(value=`${regular.int_eventinfoID},1` style='color:green') Paid
+																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Unpaid
+																				td
+																						select#selectBox(onchange='approval(value);' style='color:orange')
+																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
+																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
+																							option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
+																				-break
+																			
+
+
+
+
+
+																			
+																			if(regular.char_approvalstatus=='Pending'&& regular.var_reqstatus!='Approved'||regular.char_paymentstatus!='Paid')
 																				td
 																					if(regular.var_reqstatus=="Approved")
 																						select#selectBox(onchange='requirement(value);' style='color:green')
@@ -113,30 +154,17 @@ block prepend main
 																							option(value=`${regular.int_eventinfoID},1` style='color:green') Paid
 																					
 																				td
-																					if(regular.char_approvalstatus=="Approved")
-																						select#selectBox(onchange='approval(value);' style='color:green')
-																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
-																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
-																							option(value=`${regular.int_eventinfoID},3` style='color:red') Disapproved
 																					if(regular.char_approvalstatus=="Pending")
 																						select#selectBox(onchange='approval(value);' style='color:orange')
 																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
-																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
-																							option(value=`${regular.int_eventinfoID},3` style='color:red') Disapproved
-																					
-																					if(regular.char_approvalstatus=="Disapproved"||regular.char_approvalstatus=="Cancelled")
-																						select#selectBox(onchange='approval(value);' style='color:red')
-																							option(value=`${regular.int_eventinfoID},3` style='color:red') Disapproved
-																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
-																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
-																				td.td-actions.text-center
-																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
-																						i.ti-settings
-																							#toolbar-options.hidden
-																								a.viewButton(href='#')
-																									i.ti-new-window(style="color:white;")
-																								//- a.updateButton(href='#')
-																								//- 	i.ti-pencil(style="color:white;")
+																							option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
+																			td.td-actions.text-center
+																				button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																					i.ti-settings
+																						#toolbar-options.hidden
+																							a.viewButton(href='#')
+																								i.ti-new-window(style="color:white;")
+																							
 								#specialbaptism.tab-pane.fade
 									br
 									.card.shadow
@@ -187,10 +215,10 @@ block prepend main
 	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
-				.modal-header
-					h5.modal-title Message for the Guest
+				.modal-header(style='background:red')
+					h5.modal-titlestyle='background:white' Message for the Guest
 					button.close(type='button', data-dismiss='modal', aria-label='Close')
-						span(aria-hidden='true') ×
+						span(aria-hidden='true' style='background:white') ×
 				.modal-body#messageAppend
 				.modal-footer
 					button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
@@ -243,7 +271,7 @@ block addjs
 									if(data.statu==0){
 										$.post('/secretariat/message',{int_userID:$('#int_userID').val()})
 										.done(data =>{
-											console.log(data.var_userfname)
+											
 											$('#messageAppend').append(`
 											<h4 class="c-grey-900 mB-20">Send Message</h4>
 												<div class="send-header">
@@ -300,15 +328,8 @@ block addjs
 											})
 											})
 										})
-									
-
 									}
-
-
-
-
 								});
-							//- }
 						}
 					})
 		}
@@ -357,17 +378,79 @@ block addjs
 					}).then((result) => {
 						if (result.value) {
 						
-							$.post('/secretariat/transaction-baptism/changeapprovaltatus',{id1:$i})
+							$.post('/secretariat/transaction-baptism/changeapprovalstatus',{id1:$i})
 							.done(data =>{
-								if(data){
-									swal({
-									title:'Success',
-									text:'Status changed',
-									icon:'success'
-									}).then(function(){
-										location.reload();
-									})
-								}
+								if(data.statu==1){
+										swal({
+										title:'Success',
+										text:'Status changed',
+										icon:'success'
+										}).then(function(){
+											location.reload();
+										})
+									}
+
+									if(data.statu==0){
+										$.post('/secretariat/message',{int_userID:$('#int_userID').val()})
+										.done(data =>{
+											
+											$('#messageAppend').append(`
+											<h4 class="c-grey-900 mB-20">Send Message</h4>
+												<div class="send-header">
+													<div class="form-group">
+													<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
+													<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}, ${data.var_userfname}">
+													</div>
+													<div class="form-group">
+													<input class="form-control" id='var_subject' value='Disapproval of application'>
+													</div>
+													<div class="form-group">
+													<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you disapproved the guest's application." rows='6'></textarea>
+													</div>
+												</div>
+												<div id="compose-area"></div>
+											`)
+											$('#messageModal').modal('show')
+											$('#messageModal').on('hidden.bs.modal',function(){
+												$('#messageAppend').empty()
+											})
+											
+											$('#sendMessage').click(function(){
+												swal({
+												title:'Are you sure?', 
+												text:'This message will be sent to the guest and his/her application will be disapproved.', 
+												type:'warning',
+												showCancelButton: true,
+												confirmButtonColor: '#3085d6',
+												cancelButtonColor: '#d33',
+												confirmButtonText: 'Confirm'
+												}).then((result)=>{
+													if(result.value){										
+														$.post('/secretariat/message/send',{
+															int_receiverID:$('#int_receiverID').val(),
+															int_receiverID:$('#int_receiverID').val(),
+															var_subject:$('#var_subject').val(),
+															text_message:$('#text_message').val(),
+															id1:$i
+														})
+														.done(data=>{
+															if(data){
+																swal({
+																	title:'Success',
+																	text:'Status updated and message sent!', 
+																	type:'success'
+																}).then(function(){
+																		location.reload();
+																})
+																$('#messageModal').modal('hide');
+																$('#updateAppend').empty();
+															}
+														})
+													}
+											})
+											})
+										})
+									}
 							});
 						}
 					})

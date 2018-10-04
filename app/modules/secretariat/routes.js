@@ -379,36 +379,25 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         console.log('body: ' +req.body.id1)
         var value = req.body.id1.split(',');
         console.log(value);
-            if(value[1]=='1'){var status= 'Approve'}
+            if(value[1]=='1'){var status= 'Approved'}
             if(value[1]=='2'){var status= 'Pending'}
-            if(value[1]=='3'){var status= 'Disapproved'}
+            if(value[1]=='0'){var status= 'Disapproved'}
 
         console.log('status: '+ status)
-        var queryString= `select * from tbl_eventinfo 
-            join tbl_payment on tbl_eventinfo.int_paymentID = 
-            tbl_payment.int_paymentID
-            
-            where tbl_eventinfo.int_eventinfoID =?`
-        var queryString1 = `UPDATE tbl_payment SET        
-                char_paymentstatus = ?,
-                datetime_paymentreceived = ?
-                where int_paymentID = ?;`;
+        var queryString = `UPDATE tbl_eventinfo SET        
+                char_approvalstatus = ?
+                where int_eventinfoID = ?;`;
 
-        db.query(queryString,[value[0]], (err, results, fields) => {
-            reqqID=results[0];
-            if (err) console.log(err);       
+        db.query(queryString,[status,value[0]], (err, results, fields) => {
             console.log(results)
-        db.query(queryString1,[status, date,reqqID.int_paymentID], (err, results, fields) => {
-            if (err) console.log(err);       
-            console.log(results)
-            if (err){
+            if(status!='Disapproved'){
                 console.log(err)
-                res.send({alertDesc:notsuccess})
+                res.send({statu:1})
             }
             else{
-                res.send({alertDesc:success})
+                res.send({statu:0})
             }
-        }); }); 
+        }); 
         
     });
     secretariatRouter.post('/message', (req, res)=>{
