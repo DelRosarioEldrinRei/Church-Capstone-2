@@ -32,10 +32,20 @@ block prepend main
 								#regularbaptism.tab-pane.active
 									br
 									.card.shadow
-											.card-header.card-header-primary
-													h4.card-title Regular Baptism
+											.card-header.card-header-primary(style='background:#367587')
+												.row
+													.col-md-10
+														h4.card-title(style='background:#367587; color:white') Regular Baptism
+													//- .col-md-2
+													//- 	.row
+													//- 		label(style='background:#367587; color:white') FILTER BY: 
+													//- 	.row
+													//- 		select#selectBox(onchange='filter(value);' style='color:grey' )
+													//- 			option Approved
+													//- 			option Pending
+													//- 			option Disapproved
 											.card-body.table-responsive
-													table#shit.table.table-hover
+													table#shit.table.dataTable.table-hover
 															thead.text-primary
 																	th Name of the Child
 																	th Birthday
@@ -192,8 +202,8 @@ block prepend main
 								#specialbaptism.tab-pane.fade
 									br
 									.card.shadow
-										.card-header.card-header-primary
-											h4.card-title Special Baptism
+										.card-header.card-header-primary(style='background:#367587; color:white')
+											h4.card-title(style='background:#367587; color:white') Special Baptism
 										.card-body.table-responsive
 											table.table.dataTable.table-hover
 												thead.text-primary
@@ -377,6 +387,12 @@ block prepend main
 																			#toolbar-options.hidden
 																				a.viewButton(href='#')
 																					i.ti-new-window(style="color:white;")
+				//- .col-lg-2.col-md-2
+				//- 	.list-group
+				//- 		a.list-group-item(href='#') First item
+				//- 		a.list-group-item(href='#') Second item
+				//- 		a.list-group-item(href='#') Third item
+
 	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
@@ -386,23 +402,23 @@ block prepend main
 						span(aria-hidden='true' style='color:white') ×
 				.modal-body#messageAppend
 				.modal-footer
-					button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+					//- button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
 					button.btn.btn-danger#sendMessage(type="button") Send
 
 
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
-					.modal-header
-						h4.modal-title View Baptism
+					.modal-header(style='background:#367587; color:white')
+						h4.modal-title(style='background:#367587; color:white') View Baptism
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
-							span(aria-hidden='true') ×
+							span(aria-hidden='true')(style='background:#367587; color:white') ×
 					.modal-body#viewBodyAppend
 					//- .modal-footer
 					//-     button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 	#myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-label='Close')
-			span(aria-hidden='true') ×
+			span(aria-hidden='true')(style='background:#367587; color:white') ×
 		img.modal-content1#imgReq
 	
 
@@ -463,7 +479,7 @@ block addjs
 												title:'Are you sure?', 
 												text:'This message will be sent to the guest and his/her requirement(s) will be disapproved. Temporarily, we will hold the transaction until you approve their submitted requirements to the office.', 
 												type:'warning',
-												showCancelButton: true,
+												showCancelButton: false,
 												confirmButtonColor: '#3085d6',
 												cancelButtonColor: '#d33',
 												confirmButtonText: 'Confirm'

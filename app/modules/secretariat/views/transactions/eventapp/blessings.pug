@@ -23,8 +23,9 @@ block prepend main
                             .tab-content
                                 #anointing.tab-pane.active
                                     .card
-                                            .card-header.card-header-primary
-                                                    h4.card-title Anointing of the Sick
+                                            .card-header.card-header-primary(style='background:#367587; color:white')
+                                                    h4.card-title(style='background:#367587; color:white') Anointing of the Sick
+                                                    
                                             .card-body.table-responsive
                                                     table.table.table-hover.dataTable
                                                             thead.text-primary
@@ -51,8 +52,8 @@ block prepend main
                                                                  
                                 #funeral.tab-pane.fade
                                     .card
-                                            .card-header.card-header-primary
-                                                    h4.card-title Funeral Blessing
+                                            .card-header.card-header-primary(style='background:#367587; color:white')
+                                                    h4.card-title(style='background:#367587; color:white') Funeral Blessing
                                             .card-body.table-responsive
                                                     table.table.table-hover.dataTable
                                                             thead.text-primary
@@ -79,8 +80,8 @@ block prepend main
                                                                 
                                 #establishment.tab-pane.fade
                                     .card
-                                        .card-header.card-header-primary
-                                                h4.card-title Establishment Blessing
+                                        .card-header.card-header-primary(style='background:#367587; color:white')
+                                                h4.card-title(style='background:#367587; color:white') Establishment Blessing
                                                 
                                         .card-body.table-responsive
                                                 table.table.table-hover.dataTable
@@ -110,10 +111,10 @@ block prepend main
     #updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
         .modal-dialog.modal-lg(role="document")
             .modal-content
-                .modal-header
-                    h5.modal-title Update Event Application
+                .modal-header(style='background:#367587; color:white')
+                    h5.modal-title(style='background:#367587; color:white') Update Event Application
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        span(aria-hidden='true') ×
+                        span(aria-hidden='true')(style='background:#367587; color:white') ×
                 .modal-body#updateBodyAppend
                 .modal-footer
                     button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
@@ -121,16 +122,16 @@ block prepend main
     #viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
             .modal-dialog.modal-lg(role="document")
                 .modal-content
-                    .modal-header
-                        h5.modal-title Blessing
+                    .modal-header(style='background:#367587; color:white')
+                        h5.modal-title(style='background:#367587; color:white') Blessing
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
+                            span(aria-hidden='true')(style='background:#367587; color:white') ×
                     .modal-body#viewBodyAppend
                     .modal-footer
                         button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
     #myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
         button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') ×
+            span(aria-hidden='true')(style='background:#367587; color:white') ×
         img.modal-content1#imgReq
 block addjs
     script.

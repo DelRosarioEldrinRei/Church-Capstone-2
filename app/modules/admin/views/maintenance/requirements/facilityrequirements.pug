@@ -8,10 +8,10 @@ block prepend main
 			.row
 				.col-lg-12.col-md-12
 						.card
-								.card-header.card-header-primary
+								.card-header.card-header-primary(style='background:#367587; color:white')
 									.row
 										.col-md-6
-											h4.card-title Requirements on Facility Reservation
+											h4.card-title(style='background:#367587; color:white') Requirements on Facility Reservation
 										.col-md-6
 											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Requirement
 								.card-body.table-responsive
@@ -56,8 +56,8 @@ block prepend main
 			// Content
 			.modal-content
 				// Header
-				.modal-header
-					p.heading.lead Add Requirement
+				.modal-header(style='background:#367587; color:white')
+					p.heading.lead(style='background:#367587; color:white') Add Requirement
 					button.close(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				// Body
@@ -76,8 +76,8 @@ block prepend main
 	#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
 			.modal-content
-				.modal-header
-					p.heading.lead Edit Requirement
+				.modal-header(style='background:#367587; color:white')
+					p.heading.lead(style='background:#367587; color:white') Edit Requirement
 					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				.modal-body#updateAppend                
