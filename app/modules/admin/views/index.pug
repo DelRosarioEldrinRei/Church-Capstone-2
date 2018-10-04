@@ -296,3 +296,21 @@ block addjs
 						options:{legend:{display:!1}}})
 				}
 			})
+			const areaChartBox = document.getElementById('area-chart');
+			if (areaChartBox) {
+				const areaCtx = areaChartBox.getContext('2d');
+
+				new Chart(areaCtx, {
+					type: 'line',
+					data: {
+						labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+						datasets: [{
+							backgroundColor : 'rgba(3, 169, 244, 0.5)',
+							borderColor     : COLORS['light-blue-800'],
+							data            : [10, 50, 20, 40, 60, 30, 70],
+							label           : 'Dataset',
+							fill            : 'start',
+						}],
+					},
+				});
+			}
