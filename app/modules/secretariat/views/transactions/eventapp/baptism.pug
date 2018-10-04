@@ -32,13 +32,24 @@ block prepend main
 								#regularbaptism.tab-pane.active
 									br
 									.card.shadow
-											.card-header.card-header-primary
-													h4.card-title Regular Baptism
+											.card-header.card-header-primary(style='background:#367587')
+												.row
+													.col-md-10
+														h4.card-title(style='background:#367587; color:white') Regular Baptism
+													//- .col-md-2
+													//- 	.row
+													//- 		label(style='background:#367587; color:white') FILTER BY: 
+													//- 	.row
+													//- 		select#selectBox(onchange='filter(value);' style='color:grey' )
+													//- 			option Approved
+													//- 			option Pending
+													//- 			option Disapproved
 											.card-body.table-responsive
-													table#shit.table.table-hover
+													table#shit.table.dataTable.table-hover
 															thead.text-primary
+																	th ID
 																	th Name of the Child
-																	th Birthday
+																	th Event Date
 																	th Req Status
 																	th Payment Status
 																	th Approval Status
@@ -46,9 +57,10 @@ block prepend main
 															tbody
 																	each regular in regulars
 																		tr
+																			td=regular.int_eventinfoID
 																			input.form-control#int_userID(type='hidden' name='clientID' value=regular.int_userID)
 																			td=regular.var_lname + ", " + regular.var_fname
-																			td=regular.date_birthday
+																			td=regular.date_eventdate
 																			if(regular.char_approvalstatus=='Cancelled')
 																				td
 																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)=regular.var_reqstatus
@@ -59,18 +71,54 @@ block prepend main
 																				td
 																					select#selectBox(onchange='requirement(value);' style='color:red' disabled)
 																						option(value=`${regular.int_eventinfoID},3` style='color:red')=regular.char_approvalstatus
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
 																			if(regular.char_approvalstatus=='Disapproved')
 																				td
 																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
 																						option(value=`${regular.int_eventinfoID},1` style='color:green')=regular.var_reqstatus
 																				td
-																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																					select#selectBox(onchange='payment(value);' style='color:grey' disabled)
 																						option(value=`${regular.int_eventinfoID},1` style='color:green')=regular.char_paymentstatus
 																				td
-																					select#selectBox(onchange='requirement(value);' style='color:red' disabled)
+																					select#selectBox(onchange='approval(value);' style='color:red')
 																						option(value=`${regular.int_eventinfoID},3` style='color:red')=regular.char_approvalstatus
+																						option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
+
+																			if(regular.char_approvalstatus=='Approved')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:green' disabled)
+																						option(value=`${regular.int_eventinfoID},1` style='color:green')=regular.var_reqstatus
+																				td
+																					select#selectBox(onchange='payment(value);' style='color:green' disabled)
+																						option(value=`${regular.int_eventinfoID},1` style='color:green')=regular.char_paymentstatus
+																				td
+																					select#selectBox(onchange='approval(value);' style='color:green')
+																						option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
+																						option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
+																						option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
 																			
-																			if(regular.var_reqstatus=='Disapproved')
+																			if(regular.var_reqstatus=='Disapproved'&& regular.char_approvalstatus=='Pending')
+
 																				td
 																					select#selectBox(onchange='requirement(value);' style='color:red')
 																						option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
@@ -80,10 +128,46 @@ block prepend main
 																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
 																						option(value=`${regular.int_eventinfoID},1` style='color:green')=regular.char_paymentstatus
 																				td
-																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																					select#selectBox(onchange='approval(value);' style='color:grey' disabled)
 																						option(value=`${regular.int_eventinfoID},3` style='color:red')=regular.char_approvalstatus
-																				//- if(regular.char_approvalstatus)
-																			else
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
+
+																			if(regular.var_reqstatus=='Approved'&&regular.char_paymentstatus=='Paid'&&regular.char_approvalstatus=='Pending')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:green')
+																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
+																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Submitted
+																							option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
+																				td
+																						select#selectBox(onchange='payment(value);' style='color:green')
+																							option(value=`${regular.int_eventinfoID},1` style='color:green') Paid
+																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Unpaid
+																				td
+																						select#selectBox(onchange='approval(value);' style='color:orange')
+																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
+																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
+																							option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
+																			
+
+
+
+
+
+																			
+																			if(regular.char_approvalstatus=='Pending'&& regular.var_reqstatus!='Approved'||regular.char_paymentstatus!='Paid')
 																				td
 																					if(regular.var_reqstatus=="Approved")
 																						select#selectBox(onchange='requirement(value);' style='color:green')
@@ -113,283 +197,248 @@ block prepend main
 																							option(value=`${regular.int_eventinfoID},1` style='color:green') Paid
 																					
 																				td
-																					if(regular.char_approvalstatus=="Approved")
-																						select#selectBox(onchange='approval(value);' style='color:green')
-																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
-																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
-																							option(value=`${regular.int_eventinfoID},3` style='color:red') Disapproved
 																					if(regular.char_approvalstatus=="Pending")
 																						select#selectBox(onchange='approval(value);' style='color:orange')
 																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
-																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
-																							option(value=`${regular.int_eventinfoID},3` style='color:red') Disapproved
-																					
-																					if(regular.char_approvalstatus=="Disapproved"||regular.char_approvalstatus=="Cancelled")
-																						select#selectBox(onchange='approval(value);' style='color:red')
-																							option(value=`${regular.int_eventinfoID},3` style='color:red') Disapproved
-																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
-																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
+																							option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
 																				td.td-actions.text-center
 																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
 																						i.ti-settings
 																							#toolbar-options.hidden
 																								a.viewButton(href='#')
 																									i.ti-new-window(style="color:white;")
-																								//- a.updateButton(href='#')
-																								//- 	i.ti-pencil(style="color:white;")
+																							
 								#specialbaptism.tab-pane.fade
 									br
 									.card.shadow
-										.card-header.card-header-primary
-											h4.card-title Special Baptism
+										.card-header.card-header-primary(style='background:#367587; color:white')
+											h4.card-title(style='background:#367587; color:white') Special Baptism
 										.card-body.table-responsive
 											table.table.dataTable.table-hover
 												thead.text-primary
-													th ID
 													th Name of the Child
 													th Birthday
-													th Desired Schedule
 													th Req Status
-													th Pymt Status
+													th Payment Status
 													th Approval Status
 													th.text-right(style=" width:120px") Actions
 												tbody
 													each special in specials
+														//- tr
+														//- 	td=special.int_eventinfoID
+														//- 	td=special.var_lname + ", " + special.var_fname
+														//- 	td=special.date_birthday
+														//- 	td=special.date_desireddate + ' ' + special.time_eventstart
+														//- 	td
+														//- 		if special.var_reqstatus == "Approved"
+														//- 			span.badge.badge-pill.bgc-green-100.c-green-700 #{special.var_reqstatus}
+														//- 		else
+														//- 			span.badge.badge-pill.bgc-blue-100.c-blue-700 #{special.var_reqstatus}
+														//- 	td
+														//- 		if special.char_paymentstatus == "Paid"
+														//- 			span.badge.badge-pill.bgc-green-100.c-green-700 #{special.char_paymentstatus}
+														//- 		else
+														//- 			span.badge.badge-pill.bgc-amber-100.c-amber-700 #{special.char_paymentstatus}
+														//- 	td
+														//- 		if special.char_approvalstatus == "Approved"
+														//- 			span.badge.badge-pill.bgc-green-100.c-green-700 #{special.char_approvalstatus}
+																
+														//- 		else
+														//- 			span.badge.badge-pill.bgc-amber-100.c-amber-700 #{special.char_approvalstatus}
+														//- 	td.td-actions.text-center
+														//- 		button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+														//- 			i.ti-settings
+														//- 				#toolbar-options.hidden
+														//- 					a.viewButton(href='#')
+														//- 						i.ti-new-window(style="color:white;")
+														//- 					a.updateButton(href='#')
+														//- 						i.ti-pencil(style="color:white;")
 														tr
-															td=special.int_eventinfoID
+															input.form-control#int_userID(type='hidden' name='clientID' value=special.int_userID)
 															td=special.var_lname + ", " + special.var_fname
 															td=special.date_birthday
-															td=special.date_desireddate + ' ' + special.time_desiredtime
-															td
-																if special.var_reqstatus == "Approved"
-																	span.badge.badge-pill.bgc-green-100.c-green-700 #{special.var_reqstatus}
-																else
-																	span.badge.badge-pill.bgc-blue-100.c-blue-700 #{special.var_reqstatus}
-															td
-																if special.char_paymentstatus == "Paid"
-																	span.badge.badge-pill.bgc-green-100.c-green-700 #{special.char_paymentstatus}
-																else
-																	span.badge.badge-pill.bgc-amber-100.c-amber-700 #{special.char_paymentstatus}
-															td
-																if special.char_approvalstatus == "Approved"
-																	span.badge.badge-pill.bgc-green-100.c-green-700 #{special.char_approvalstatus}
-																
-																else
-																	span.badge.badge-pill.bgc-amber-100.c-amber-700 #{special.char_approvalstatus}
-															td.td-actions.text-center
-																button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
-																	i.ti-settings
-																		#toolbar-options.hidden
-																			a.viewButton(href='#')
-																				i.ti-new-window(style="color:white;")
-																			a.updateButton(href='#')
-																				i.ti-pencil(style="color:white;")
+															if(special.char_approvalstatus=='Cancelled')
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:grey' disabled)=special.var_reqstatus
+																		option  --------------
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:grey' disabled)=special.char_paymentstatus
+																		option  --------------
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:red' disabled)
+																		option(value=`${special.int_eventinfoID},3` style='color:red')=special.char_approvalstatus
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.viewButton(href='#')
+																					i.ti-new-window(style="color:white;")
+															if(special.char_approvalstatus=='Disapproved')
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																		option(value=`${special.int_eventinfoID},1` style='color:green')=special.var_reqstatus
+																td
+																	select#selectBox(onchange='payment(value);' style='color:grey' disabled)
+																		option(value=`${special.int_eventinfoID},1` style='color:green')=special.char_paymentstatus
+																td
+																	select#selectBox(onchange='approval(value);' style='color:red')
+																		option(value=`${special.int_eventinfoID},3` style='color:red')=special.char_approvalstatus
+																		option(value=`${special.int_eventinfoID},2` style='color:orange') Pending
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.viewButton(href='#')
+																					i.ti-new-window(style="color:white;")
+																-continue
+
+															if(special.char_approvalstatus=='Approved')
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:green' disabled)
+																		option(value=`${special.int_eventinfoID},1` style='color:green')=special.var_reqstatus
+																td
+																	select#selectBox(onchange='payment(value);' style='color:green' disabled)
+																		option(value=`${special.int_eventinfoID},1` style='color:green')=special.char_paymentstatus
+																td
+																	select#selectBox(onchange='approval(value);' style='color:green')
+																		option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																		option(value=`${special.int_eventinfoID},2` style='color:orange') Pending
+																		option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.viewButton(href='#')
+																					i.ti-new-window(style="color:white;")
+																-continue
+															
+															if(special.var_reqstatus=='Disapproved'&& special.char_approvalstatus=='Pending')
+
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:red')
+																		option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																		option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																		option(value=`${special.int_eventinfoID},2` style='color:orange') Submitted
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																		option(value=`${special.int_eventinfoID},1` style='color:green')=special.char_paymentstatus
+																td
+																	select#selectBox(onchange='approval(value);' style='color:grey' disabled)
+																		option(value=`${special.int_eventinfoID},3` style='color:red')=special.char_approvalstatus
+																-continue
+
+															if(special.var_reqstatus=='Approved'&&special.char_paymentstatus=='Paid'&&special.char_approvalstatus=='Pending')
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:green')
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Submitted
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																td
+																		select#selectBox(onchange='payment(value);' style='color:green')
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Paid
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Unpaid
+																td
+																		select#selectBox(onchange='approval(value);' style='color:orange')
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Pending
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.viewButton(href='#')
+																					i.ti-new-window(style="color:white;")
+																-continue
+															
+
+
+
+
+
+															
+															if(special.char_approvalstatus=='Pending'&& special.var_reqstatus!='Approved'||special.char_paymentstatus!='Paid')
+																td
+																	if(special.var_reqstatus=="Approved")
+																		select#selectBox(onchange='requirement(value);' style='color:green')
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Submitted
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																	if(special.var_reqstatus=="Submitted")
+																		select#selectBox(onchange='requirement(value);' style='color:orange')
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Submitted
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																	
+																	if(special.var_reqstatus=="Disapproved")
+																		select#selectBox(onchange='requirement(value);' style='color:red')
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Submitted
+
+																td
+																	if(special.char_paymentstatus=="Paid")
+																		select#selectBox(onchange='payment(value);' style='color:green')
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Paid
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Unpaid
+																	if(special.char_paymentstatus=="Unpaid")
+																		select#selectBox(onchange='payment(value);' style='color:orange')
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Unpaid
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Paid
+																	
+																td
+																	if(special.char_approvalstatus=="Pending")
+																		select#selectBox(onchange='approval(value);' style='color:orange')
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Pending
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.viewButton(href='#')
+																					i.ti-new-window(style="color:white;")
+				//- .col-lg-2.col-md-2
+				//- 	.list-group
+				//- 		a.list-group-item(href='#') First item
+				//- 		a.list-group-item(href='#') Second item
+				//- 		a.list-group-item(href='#') Third item
+
 	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
-				.modal-header
-					h5.modal-title Message for the Guest
+				.modal-header(style='background:red')
+					h5.modal-title(style='color:white') Message for the Guest
 					button.close(type='button', data-dismiss='modal', aria-label='Close')
-						span(aria-hidden='true') ×
+						span(aria-hidden='true' style='color:white') ×
 				.modal-body#messageAppend
 				.modal-footer
-					button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+					//- button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
 					button.btn.btn-danger#sendMessage(type="button") Send
 
 
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
-					.modal-header
-						h4.modal-title View Baptism
+					.modal-header(style='background:#367587; color:white')
+						h4.modal-title(style='background:#367587; color:white') View Baptism
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
-							span(aria-hidden='true') ×
+							span(aria-hidden='true')(style='background:#367587; color:white') ×
 					.modal-body#viewBodyAppend
 					//- .modal-footer
 					//-     button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 	#myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-label='Close')
-			span(aria-hidden='true') ×
+			span(aria-hidden='true')(style='background:#367587; color:white') ×
 		img.modal-content1#imgReq
 	
 
 block addjs
-	//-     script.
-	//-         $(document).ready(function(){
-	//-             var idNow;
-	//-             $('#shit').dataTable({
-	//-                 fnDrawCallback: function(){
-	//-                     $('.actionButton').toolbar({
-	//-                         content: '#toolbar-options',
-	//-                         position: 'top',
-	//-                         //- style: 'primary',
-	//-                         event: 'click',
-	//-                         hideOnClick: true
-	//-                     });
-	//-                 }
-	//-             })
-	//-             $(document).on('click', '.actionButton', function(){
-					
-	//-                 idNow = $(this).val();
-	//-                 console.log(idNow)
-	//-             })
-	//-             $(document).on('click', '.viewButton', function(){
-	//-                 console.log(idNow)
-	//-                 $.post('/secretariat/transaction-baptism/query',{id:idNow}).done(data =>{
-	//-                     var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
-	//-                     var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
-	//-                     var age = moment().diff(data.date_birthday,'years');
-	//-                     $('#viewBodyAppend').append(`
-	//-                     <div class="form-group">
-	//-                         <label class="label-control"><strong> Name of the Child: </strong> ${data.var_lname}, ${data.var_fname}</label>
-	//-                     </div>
-	//-                     <div class="form-group">
-	//-                         <label class="label-control"> <strong> Desired Date: </strong> ${dateRequested}</label>
-	//-                     </div>
-	//-                     <div class="form-group">
-	//-                         <label class=" label-control"> <strong> Desired Time:  </strong> ${timeRequested}</label>
-	//-                     </div>
-	//-                     <div class="form-group">
-	//-                         <label class=" label-control"> <strong> Father's Name:  </strong> ${data.var_fathername}</label>
-	//-                     </div>
-	//-                     <div class="form-group">
-	//-                         <label class=" label-control"> <strong> Mother's Name:  </strong> ${data.var_mothername}</label>
-	//-                     </div>
-	//-                     <div class="form-group">
-	//-                         <label class=" label-control"> <strong> Age:  </strong> ${age}</label>
-	//-                     </div>
-	//-                     <div class="form-group">
-	//-                             <label class="label-control"> <strong> Requirements: </strong> ${data.var_reqname}</label>
-	//-                     </div>
-	//-                     <div class="form-group">
-	//-                         <img id="myImg" class="img-responsive" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px;">
-	//-                     </div>
-	//-                     `)
-	//-                     $('#viewModal').modal('show')
-	//-                     $('#viewModal').on('hidden.bs.modal',function(){
-	//-                         $('#viewBodyAppend').empty()
-	//-                     })
-	//-                     $('#myImg').click(function(){
-	//-                         $('#myModal').modal('show');
-	//-                         $("#imgReq").attr("src",`${data.var_reqpath}`);
-	//-                     });
-
-	//-                 })
-	//-             })
-	//-             $(document).on('click', '.updateButton', function(){
-	//-                 console.log(idNow)
-	//-                 $.post('/secretariat/transaction-baptism/query/update',{id:idNow}).done(data =>{
-	//-                     $('#updateBodyAppend').append(`
-	//-                     <col-md-4 class="p-lg-0">
-	//-                         <div class="row">
-	//-                         <div class="col-md-6">
-	//-                             <div class="form-group">
-	//-                             <input id="eventid" type="hidden" value="${data.int_eventinfoID}"></input>
-	//-                             <input id="eventstatus" type="hidden" value="${data.char_approvalstatus}"></input>
-	//-                             <h6 class="label-control"><strong> Current Status : </strong> ${data.char_approvalstatus}</h6>
-	//-                         </div>
-	//-                         </div>
-	//-                         </div>
-	//-                         <div class="row">
-	//-                         <div class="col-md-6">
-	//-                             <div class="form-group">
-	//-                             <input id="reqid" type="hidden" value="${data.int_requirementID}"></input>
-	//-                             <h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.var_reqstatus}</h6>
-	//-                             <select id="reqstatus" type="text">
-	//-                             </select>
-	//-                             </div>
-	//-                         </div>
-	//-                         <div class="col-md-6">
-	//-                             <div class="form-group">
-	//-                             <input id="payid" type="hidden" value="${data.int_paymentID}"></input>
-	//-                             <h6 class="label-control"><strong> Current Payment Status: </strong> ${data.char_paymentstatus}</h6>
-	//-                             <select id="paystatus" type="text">
-	//-                             </select>
-	//-                             <div class="form-group">
-	//-                             <strong> Fee : </strong>P ${data.dbl_amount}.00
-	//-                             </div>
-	//-                             </div>
-	//-                         </div>
-	//-                         </div>
-	//-                         </div>
-	//-                     `)
-	//-                     $('#updateModal').modal('show')
-	//-                     $('#updateModal').on('hidden.bs.modal',function(){
-	//-                         $('#updateBodyAppend').empty()
-	//-                     })
-	//-                     if(data.char_paymentstatus == "Paid"){
-	//-                     $('#paystatus').append(`
-	//-                     <option selected="selected">Paid</option>
-	//-                     <option>Unpaid</option>
-	//-                     `)
-	//-                     }
-	//-                     else if(data.char_paymentstatus == "Unpaid"){
-	//-                     $('#paystatus').append(`
-	//-                     <option>Paid</option>
-	//-                     <option selected="selected">Unpaid</option>
-	//-                     `)
-	//-                     }
-	//-                     if(data.var_reqstatus == "Submitted"){
-	//-                     $('#reqstatus').append(`
-	//-                     <option selected="selected">Submitted</option>
-	//-                     <option>Approved</option>
-	//-                     `)
-	//-                     }
-	//-                     else if(data.var_reqstatus == "Approved"){
-	//-                     $('#reqstatus').append(`
-	//-                     <option>Submitted</option>
-	//-                     <option selected="selected">Approved</option>
-	//-                     `)
-	//-                     }
-	//-                     if(data.var_reqstatus == "Approved" && data.char_paymentstatus == "Paid"){
-	//-                         document.getElementById("paystatus").disabled=true;
-	//-                         document.getElementById("reqstatus").disabled=true;
-	//-                     }
-	//-                     $('#updateSubmitButton').click(function(){
-	//-                         swal({
-	//-                         title:'Are You Sure?', 
-	//-                         text:'You want to update the Status of the Request?', 
-	//-                         type:'warning',
-	//-                         showCancelButton: true,
-	//-                         confirmButtonColor: '#3085d6',
-	//-                         cancelButtonColor: '#d33',
-	//-                         confirmButtonText: 'Confirm'
-	//-                         }).then((result)=>{
-	//-                         if(result.value){
-	//-                         data.time_desiredtime = moment(data.time_desiredtime,'HH:mm:ss').format('HH:mm:ss')
-	//-                         $.post('/secretariat/transaction-baptism/update',{
-	//-                         dateRequested:data.date_eventdate,
-	//-                         timeRequested:data.time_eventstart,
-	//-                         eventstatus:$('#eventstatus').val(),
-	//-                         eventid:$('#eventid').val(),
-	//-                         reqid:$('#reqid').val(),
-	//-                         reqstatus:$('#reqstatus').val(),
-	//-                         payid:$('#payid').val(),
-	//-                         paystatus:$('#paystatus').val()
-	//-                         })
-	//-                         .done(data=>{
-	//-                             if(data){
-	//-                                 swal({
-	//-                                 title:'Success',
-	//-                                 text:'Status updated', 
-	//-                                 type:'success'
-	//-                                 }).then(function(){
-	//-                                     location.reload();
-	//-                                 })
-	//-                                 $('#updateModal').modal('hide');
-	//-                                 $('#updateAppend').empty();
-	//-                             }
-	//-                         })
-	//-                         }
-	//-                     })
-	//-                     })
-	//-                 })
-	//-             })
-	//-         })
-	//- =======
-		
+	
 	script(type='text/javascript').
+
 		function requirement($i) {
+			console.log(this)
+			var split = $i.split(',')
+			console.log(split)
 			
 			swal({
 					title: 'Are you sure change status?',
@@ -401,7 +450,9 @@ block addjs
 					confirmButtonText: 'Confirm'
 					}).then((result) => {
 						if (result.value) {
-								$.post('/secretariat/transaction-baptism/changerequirementstatus',{id1:$i})
+
+							if(split[1]!=0){
+								$.post('/secretariat/transaction-baptism/changerequirementstatus',{id1:split[0]})
 								.done(data =>{
 									if(data.statu==1){
 										swal({
@@ -412,11 +463,12 @@ block addjs
 											location.reload();
 										})
 									}
-
-									if(data.statu==0){
+								})
+							}
+							else if(split[1]==0){
 										$.post('/secretariat/message',{int_userID:$('#int_userID').val()})
 										.done(data =>{
-											console.log(data.var_userfname)
+											
 											$('#messageAppend').append(`
 											<h4 class="c-grey-900 mB-20">Send Message</h4>
 												<div class="send-header">
@@ -435,6 +487,7 @@ block addjs
 											`)
 											$('#messageModal').modal('show')
 											$('#messageModal').on('hidden.bs.modal',function(){
+												$('#selectBox').val('default')
 												$('#messageAppend').empty()
 											})
 											
@@ -443,7 +496,7 @@ block addjs
 												title:'Are you sure?', 
 												text:'This message will be sent to the guest and his/her requirement(s) will be disapproved. Temporarily, we will hold the transaction until you approve their submitted requirements to the office.', 
 												type:'warning',
-												showCancelButton: true,
+												showCancelButton: false,
 												confirmButtonColor: '#3085d6',
 												cancelButtonColor: '#d33',
 												confirmButtonText: 'Confirm'
@@ -463,27 +516,24 @@ block addjs
 																	text:'Status updated and message sent!', 
 																	type:'success'
 																}).then(function(){
-																		location.reload();
+																	$.post('/secretariat/transaction-baptism/changerequirementstatus',{id1:$i})
+																		.done(data =>{
+																			location.reload()
+																		})	
 																})
 																$('#messageModal').modal('hide');
 																$('#updateAppend').empty();
+
 															}
 														})
 													}
 											})
 											})
 										})
-									
-
 									}
-
-
-
-
-								});
-							//- }
-						}
-					})
+								
+							}
+						})
 		}
 		function payment($i) {
 			//- alert($i);
@@ -530,17 +580,79 @@ block addjs
 					}).then((result) => {
 						if (result.value) {
 						
-							$.post('/secretariat/transaction-baptism/changeapprovaltatus',{id1:$i})
+							$.post('/secretariat/transaction-baptism/changeapprovalstatus',{id1:$i})
 							.done(data =>{
-								if(data){
-									swal({
-									title:'Success',
-									text:'Status changed',
-									icon:'success'
-									}).then(function(){
-										location.reload();
-									})
-								}
+								if(data.statu==1){
+										swal({
+										title:'Success',
+										text:'Status changed',
+										icon:'success'
+										}).then(function(){
+											location.reload();
+										})
+									}
+
+									if(data.statu==0){
+										$.post('/secretariat/message',{int_userID:$('#int_userID').val()})
+										.done(data =>{
+											
+											$('#messageAppend').append(`
+											<h4 class="c-grey-900 mB-20">Send Message</h4>
+												<div class="send-header">
+													<div class="form-group">
+													<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
+													<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}, ${data.var_userfname}">
+													</div>
+													<div class="form-group">
+													<input class="form-control" id='var_subject' value='Disapproval of application'>
+													</div>
+													<div class="form-group">
+													<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you disapproved the guest's application." rows='6'></textarea>
+													</div>
+												</div>
+												<div id="compose-area"></div>
+											`)
+											$('#messageModal').modal('show')
+											$('#messageModal').on('hidden.bs.modal',function(){
+												$('#messageAppend').empty()
+											})
+											
+											$('#sendMessage').click(function(){
+												swal({
+												title:'Are you sure?', 
+												text:'This message will be sent to the guest and his/her application will be disapproved.', 
+												type:'warning',
+												showCancelButton: true,
+												confirmButtonColor: '#3085d6',
+												cancelButtonColor: '#d33',
+												confirmButtonText: 'Confirm'
+												}).then((result)=>{
+													if(result.value){										
+														$.post('/secretariat/message/send',{
+															int_receiverID:$('#int_receiverID').val(),
+															int_receiverID:$('#int_receiverID').val(),
+															var_subject:$('#var_subject').val(),
+															text_message:$('#text_message').val(),
+															id1:$i
+														})
+														.done(data=>{
+															if(data){
+																swal({
+																	title:'Success',
+																	text:'Status updated and message sent!', 
+																	type:'success'
+																}).then(function(){
+																		location.reload();
+																})
+																$('#messageModal').modal('hide');
+																$('#updateAppend').empty();
+															}
+														})
+													}
+											})
+											})
+										})
+									}
 							});
 						}
 					})
@@ -586,9 +698,115 @@ block addjs
 						$('#myModal').modal('show');
 						$("#imgReq").attr("src",`${data.var_reqpath}`);
 					});
-						});	
 
-
-
-
-						
+				})
+			})
+			$('.updateButton').click(function(){
+				$.post('/secretariat/transaction-baptism/message',{int_userID:$('#int_userID')}).done(data =>{
+					$('#messageAppend').append(`
+					<col-md-4 class="p-lg-0">
+						<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+							<input id="eventid" type="hidden" value="${data.int_eventinfoID}"></input>
+							<input id="eventstatus" type="hidden" value="${data.char_approvalstatus}"></input>
+							<h6 class="label-control"><strong> Current Document Status : </strong> ${data.char_approvalstatus}</h6>
+						</div>
+						</div>
+						</div>
+						<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+							<input id="reqid" type="hidden" value="${data.int_requirementID}"></input>
+							<h6 class="label-control"><strong> Current Requirement Status : </strong> ${data.var_reqstatus}</h6>
+							<select id="reqstatus" type="text">
+							</select>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+							<input id="payid" type="hidden" value="${data.int_paymentID}"></input>
+							<h6 class="label-control"><strong> Current Payment Status: </strong> ${data.char_paymentstatus}</h6>
+							<select id="paystatus" type="text">
+							</select>
+							<div class="form-group">
+							<strong> Fee : </strong>P ${data.dbl_amount}.00
+							</div>
+							</div>
+						</div>
+						</div>
+						</div>
+					`)
+					$('#messageModal').modal('show')
+					$('#messageModal').on('hidden.bs.modal',function(){
+						$('#messageAppend').empty()
+					})
+					if(data.char_paymentstatus == "Paid"){
+					$('#paystatus').append(`
+					<option selected="selected">Paid</option>
+					<option>Unpaid</option>
+					`)
+					}
+					else if(data.char_paymentstatus == "Unpaid"){
+					$('#paystatus').append(`
+					<option>Paid</option>
+					<option selected="selected">Unpaid</option>
+					`)
+					}
+					if(data.var_reqstatus == "Submitted"){
+					$('#reqstatus').append(`
+					<option selected="selected">Submitted</option>
+					<option>Approved</option>
+					`)
+					}
+					else if(data.var_reqstatus == "Approved"){
+					$('#reqstatus').append(`
+					<option>Submitted</option>
+					<option selected="selected">Approved</option>
+					`)
+					}
+					if(data.var_reqstatus == "Approved" && data.char_paymentstatus == "Paid"){
+						document.getElementById("paystatus").disabled=true;
+						document.getElementById("reqstatus").disabled=true;
+					}
+					$('#sendMessage').click(function(){
+						swal({
+						title:'Are You Sure?', 
+						text:'You want to update the Status of the Request?', 
+						type:'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Confirm'
+						}).then((result)=>{
+						if(result.value){
+						data.time_eventstart = moment(data.time_eventstart,'HH:mm:ss').format('HH:mm:ss')
+						$.post('/secretariat/transaction-baptism/update',{
+						dateRequested:data.date_eventdate,
+						timeRequested:data.time_eventstart,
+						eventstatus:$('#eventstatus').val(),
+						eventid:$('#eventid').val(),
+						reqid:$('#reqid').val(),
+						reqstatus:$('#reqstatus').val(),
+						payid:$('#payid').val(),
+						paystatus:$('#paystatus').val()
+						})
+						.done(data=>{
+							if(data){
+								swal({
+								title:'Success',
+								text:'Status updated', 
+								type:'success'
+								}).then(function(){
+									location.reload();
+								})
+								$('#messageModal').modal('hide');
+								$('#updateAppend').empty();
+							}
+						})
+						}
+					})
+					})
+				})
+			})
+		})

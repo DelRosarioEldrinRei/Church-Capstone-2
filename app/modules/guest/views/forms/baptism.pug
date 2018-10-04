@@ -250,6 +250,7 @@ block main
 						// Form Wizard
 block addjs
 	script.
+		var baptismType1 = "";
 		$('#textarea1').hide();
 		$('#textarea2').hide();
 		$('#radioup').click(function() {
@@ -266,7 +267,7 @@ block addjs
 		});
 		$('#regular').hide();
 		$('#special').hide();
-		var baptismType;
+		
 		$('#nextButton1').click(function(){
 			if(eventDate == ''){
 				alert('Please input your desired time')
@@ -277,17 +278,105 @@ block addjs
 			}
 		})
 		$('#radio1').click(function() {
-			baptismType = $('#radio1').val();
-			console.log(baptismType)
+			baptismType1 = "Regular";
+			console.log(baptismType1)
 			$('#regular').slideDown();
 			$('#special').slideUp();
-		});
+		if(baptismType1 == "Regular"){
+		$('#nextButton2').click(function(){
+			$.get('/guest/baptism/query').done(data=>{
+		console.log(data.utilities[0].int_agemax)
+		console.log(baptismType1)
+			console.log(baptismType1)
+			var age = moment().diff($('#birthdate').val(),'years')
+			console.log(age)
+			console.log($('#file-0b').val())
+			if ($("#customRadio1").prop("checked")) {
+			gender = $("#customRadio1").val();
+			}
+			else if($("#customRadio2").prop("checked")){
+			gender = $("#customRadio2").val();
+			}
+			console.log(gender)
+			if(
+			gender != undefined &&
+			$('#firstname').val() != ''  &&
+			$('#lastname').val() != ''  &&
+			$('#birthdate').val() != '' &&
+			$('#birthplace').val() != '' &&
+			$('#fatherfullname').val() != '' &&
+			$('#fatherbirthplace').val() != '' &&
+			$('#motherfullname').val() != '' &&
+			$('#motherbirthplace').val() != '' &&
+			$('#relation').val() != '' &&
+			$('#contactnumber').val() != '' &&
+			$('.marriageaddress').val() != '' &&
+			$('.address').val() != '' &&
+			$('#file-0b').val() != '' &&
+			$('#file-0b').val() != undefined &&
+			age < data.utilities[0].int_agemax
+			){
+				$('#nextButton2').addClass('btn-next')
+			}
+			else if(age >= data.utilities[0].int_agemax){
+				swal({
+					title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, re-input or go back to home?`,
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonClass: 'btn btn-success',
+					cancelButtonClass: 'btn btn-danger',
+					buttonsStyling: true,
+				})
+			}
+			else{
+				alert('Please complete the form')
+			}
+		})
+		})
+		}
+		})
+
 		$('#radio2').click(function() {
-			baptismType = $('#radio2').val();
-			console.log(baptismType)
+			baptismType1 = "Special"
+			console.log(baptismType1)
 			$('#calendarSpecial').fullCalendar('changeView', 'month')
 			$('#special').slideDown();
 			$('#regular').slideUp();
+			
+		if(baptismType1 == "Special"){
+		$('#nextButton2').click(function(){
+			console.log($('#file-0b').val())
+			if ($("#customRadio1").prop("checked")) {
+			gender = $("#customRadio1").val();
+			}
+			else if($("#customRadio2").prop("checked")){
+			gender = $("#customRadio2").val();
+			}
+			console.log(gender)
+			if(
+			gender != undefined &&
+			$('#firstname').val() != ''  &&
+			$('#lastname').val() != ''  &&
+			$('#birthdate').val() != '' &&
+			$('#birthplace').val() != '' &&
+			$('#fatherfullname').val() != '' &&
+			$('#fatherbirthplace').val() != '' &&
+			$('#motherfullname').val() != '' &&
+			$('#motherbirthplace').val() != '' &&
+			$('#relation').val() != '' &&
+			$('#contactnumber').val() != '' &&
+			$('.marriageaddress').val() != '' &&
+			$('.address').val() != '' &&
+			$('#file-0b').val() != '' &&
+			$('#file-0b').val() != undefined){
+				$('#nextButton2').addClass('btn-next')
+			}
+			else{
+				alert('Please complete the form')
+			}
+		})
+		}
 		});
 		$('#submitButton').click(function() {
 			var baptismtype;
@@ -408,39 +497,39 @@ block addjs
 															style: 'styleLabelTop',
 															absolutePosition: {x:487, y:68},
 															},
-															{
-															text:'Voucher ID 42352',
-															style: 'styleLabelTop',
-															absolutePosition: {x:495, y:90},
-															},
+															//- {
+															//- text:`#${data.var_vouchercode}`,
+															//- style: 'styleLabelTop',
+															//- absolutePosition: {x:495, y:90},
+															//- },
 															//Middle part
 															{
-															text:'Juan Dela Cruz',
+															text:`${data.var_userfname} ${data.var_userlname}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:51, y:127},
 															},
 															{
-															text:'4-A Del rosario st. Marulas \n Valenzuela City',
+															text:`${data.var_useraddress}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:51, y:140},
 															},
 															{
-															text:'# 42352',
+															text:`# ${data.var_vouchercode}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:127},
 															},
 															{
-															text:'01 / 01 / 2020',
+															text:`${data.date_issued}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:140},
 															},
 															{
-															text:'15 / 01 / 2020',
+															text:`${data.date_due}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:153},
 															},
 															{
-															text: '₱ 634.57',
+															text: `₱ ${data.dbl_amount.toFixed(2)}`,
 															style: 'styleLabelMiddleTA',
 															absolutePosition: {x:505, y:143},
 															},
@@ -734,90 +823,9 @@ block addjs
 		var gender;
 		//- dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(7,'days').format('YYYY-MM-DD')
 		$.get('/guest/baptism/query').done(data=>{
-		
 		console.log(data.utilities[0].int_agemax)
-		if(baptismType == "Regular"){
-		$('#nextButton2').click(function(){
-			var age = moment().diff($('#birthdate').val(),'years')
-			console.log(age)
-			console.log($('#file-0b').val())
-			if ($("#customRadio1").prop("checked")) {
-			gender = $("#customRadio1").val();
-			}
-			else if($("#customRadio2").prop("checked")){
-			gender = $("#customRadio2").val();
-			}
-			console.log(gender)
-			if(
-			gender != undefined &&
-			$('#firstname').val() != ''  &&
-			$('#lastname').val() != ''  &&
-			$('#birthdate').val() != '' &&
-			$('#birthplace').val() != '' &&
-			$('#fatherfullname').val() != '' &&
-			$('#fatherbirthplace').val() != '' &&
-			$('#motherfullname').val() != '' &&
-			$('#motherbirthplace').val() != '' &&
-			$('#relation').val() != '' &&
-			$('#contactnumber').val() != '' &&
-			$('.marriageaddress').val() != '' &&
-			$('.address').val() != '' &&
-			$('#file-0b').val() != '' &&
-			$('#file-0b').val() != undefined &&
-			age < data.utilities[0].int_agemax
-			){
-				$('#nextButton2').addClass('btn-next')
-			}
-			else if(age >= data.utilities[0].int_agemax){
-				swal({
-					title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, re-input or go back to home?`,
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonClass: 'btn btn-success',
-					cancelButtonClass: 'btn btn-danger',
-					buttonsStyling: true,
-				})
-			}
-			else{
-				alert('Please complete the form')
-			}
-		})
-		}
-		else{
-		$('#nextButton2').click(function(){
-			console.log($('#file-0b').val())
-			if ($("#customRadio1").prop("checked")) {
-			gender = $("#customRadio1").val();
-			}
-			else if($("#customRadio2").prop("checked")){
-			gender = $("#customRadio2").val();
-			}
-			console.log(gender)
-			if(
-			gender != undefined &&
-			$('#firstname').val() != ''  &&
-			$('#lastname').val() != ''  &&
-			$('#birthdate').val() != '' &&
-			$('#birthplace').val() != '' &&
-			$('#fatherfullname').val() != '' &&
-			$('#fatherbirthplace').val() != '' &&
-			$('#motherfullname').val() != '' &&
-			$('#motherbirthplace').val() != '' &&
-			$('#relation').val() != '' &&
-			$('#contactnumber').val() != '' &&
-			$('.marriageaddress').val() != '' &&
-			$('.address').val() != '' &&
-			$('#file-0b').val() != '' &&
-			$('#file-0b').val() != undefined &&
-			){
-				$('#nextButton2').addClass('btn-next')
-			}
-			else{
-				alert('Please complete the form')
-			}
-		})
-		}
+		console.log(baptismType1)
+
 		dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data.utilities[0].int_reservationmindays,'days').format('YYYY-MM-DD')
 			console.log(dateNow2)
 			console.log(data.utilities[0].int_reservationmindays)
