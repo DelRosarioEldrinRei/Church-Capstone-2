@@ -59,6 +59,12 @@ block prepend main
 																				td
 																					select#selectBox(onchange='requirement(value);' style='color:red' disabled)
 																						option(value=`${regular.int_eventinfoID},3` style='color:red')=regular.char_approvalstatus
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
 																			if(regular.char_approvalstatus=='Disapproved')
 																				td
 																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
@@ -70,6 +76,12 @@ block prepend main
 																					select#selectBox(onchange='approval(value);' style='color:red')
 																						option(value=`${regular.int_eventinfoID},3` style='color:red')=regular.char_approvalstatus
 																						option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
 																				-break
 
 																			if(regular.char_approvalstatus=='Approved')
@@ -84,6 +96,12 @@ block prepend main
 																						option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
 																						option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
 																						option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
 																				-break
 																			
 																			if(regular.var_reqstatus=='Disapproved'&& regular.char_approvalstatus=='Pending')
@@ -116,6 +134,12 @@ block prepend main
 																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
 																							option(value=`${regular.int_eventinfoID},1` style='color:green') Approved
 																							option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
 																				-break
 																			
 
@@ -158,12 +182,12 @@ block prepend main
 																						select#selectBox(onchange='approval(value);' style='color:orange')
 																							option(value=`${regular.int_eventinfoID},2` style='color:orange') Pending
 																							option(value=`${regular.int_eventinfoID},0` style='color:red') Disapproved
-																			td.td-actions.text-center
-																				button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
-																					i.ti-settings
-																						#toolbar-options.hidden
-																							a.viewButton(href='#')
-																								i.ti-new-window(style="color:white;")
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
 																							
 								#specialbaptism.tab-pane.fade
 									br
@@ -173,45 +197,186 @@ block prepend main
 										.card-body.table-responsive
 											table.table.dataTable.table-hover
 												thead.text-primary
-													th ID
 													th Name of the Child
 													th Birthday
-													th Desired Schedule
 													th Req Status
-													th Pymt Status
+													th Payment Status
 													th Approval Status
 													th.text-right(style=" width:120px") Actions
 												tbody
 													each special in specials
+														//- tr
+														//- 	td=special.int_eventinfoID
+														//- 	td=special.var_lname + ", " + special.var_fname
+														//- 	td=special.date_birthday
+														//- 	td=special.date_desireddate + ' ' + special.time_eventstart
+														//- 	td
+														//- 		if special.var_reqstatus == "Approved"
+														//- 			span.badge.badge-pill.bgc-green-100.c-green-700 #{special.var_reqstatus}
+														//- 		else
+														//- 			span.badge.badge-pill.bgc-blue-100.c-blue-700 #{special.var_reqstatus}
+														//- 	td
+														//- 		if special.char_paymentstatus == "Paid"
+														//- 			span.badge.badge-pill.bgc-green-100.c-green-700 #{special.char_paymentstatus}
+														//- 		else
+														//- 			span.badge.badge-pill.bgc-amber-100.c-amber-700 #{special.char_paymentstatus}
+														//- 	td
+														//- 		if special.char_approvalstatus == "Approved"
+														//- 			span.badge.badge-pill.bgc-green-100.c-green-700 #{special.char_approvalstatus}
+																
+														//- 		else
+														//- 			span.badge.badge-pill.bgc-amber-100.c-amber-700 #{special.char_approvalstatus}
+														//- 	td.td-actions.text-center
+														//- 		button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+														//- 			i.ti-settings
+														//- 				#toolbar-options.hidden
+														//- 					a.viewButton(href='#')
+														//- 						i.ti-new-window(style="color:white;")
+														//- 					a.updateButton(href='#')
+														//- 						i.ti-pencil(style="color:white;")
 														tr
-															td=special.int_eventinfoID
+															input.form-control#int_userID(type='hidden' name='clientID' value=special.int_userID)
 															td=special.var_lname + ", " + special.var_fname
 															td=special.date_birthday
-															td=special.date_desireddate + ' ' + special.time_desiredtime
-															td
-																if special.var_reqstatus == "Approved"
-																	span.badge.badge-pill.bgc-green-100.c-green-700 #{special.var_reqstatus}
-																else
-																	span.badge.badge-pill.bgc-blue-100.c-blue-700 #{special.var_reqstatus}
-															td
-																if special.char_paymentstatus == "Paid"
-																	span.badge.badge-pill.bgc-green-100.c-green-700 #{special.char_paymentstatus}
-																else
-																	span.badge.badge-pill.bgc-amber-100.c-amber-700 #{special.char_paymentstatus}
-															td
-																if special.char_approvalstatus == "Approved"
-																	span.badge.badge-pill.bgc-green-100.c-green-700 #{special.char_approvalstatus}
-																
-																else
-																	span.badge.badge-pill.bgc-amber-100.c-amber-700 #{special.char_approvalstatus}
-															td.td-actions.text-center
-																button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
-																	i.ti-settings
-																		#toolbar-options.hidden
-																			a.viewButton(href='#')
-																				i.ti-new-window(style="color:white;")
-																			a.updateButton(href='#')
-																				i.ti-pencil(style="color:white;")
+															if(special.char_approvalstatus=='Cancelled')
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:grey' disabled)=special.var_reqstatus
+																		option  --------------
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:grey' disabled)=special.char_paymentstatus
+																		option  --------------
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:red' disabled)
+																		option(value=`${special.int_eventinfoID},3` style='color:red')=special.char_approvalstatus
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.viewButton(href='#')
+																					i.ti-new-window(style="color:white;")
+															if(special.char_approvalstatus=='Disapproved')
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																		option(value=`${special.int_eventinfoID},1` style='color:green')=special.var_reqstatus
+																td
+																	select#selectBox(onchange='payment(value);' style='color:grey' disabled)
+																		option(value=`${special.int_eventinfoID},1` style='color:green')=special.char_paymentstatus
+																td
+																	select#selectBox(onchange='approval(value);' style='color:red')
+																		option(value=`${special.int_eventinfoID},3` style='color:red')=special.char_approvalstatus
+																		option(value=`${special.int_eventinfoID},2` style='color:orange') Pending
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.viewButton(href='#')
+																					i.ti-new-window(style="color:white;")
+																-break
+
+															if(special.char_approvalstatus=='Approved')
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:green' disabled)
+																		option(value=`${special.int_eventinfoID},1` style='color:green')=special.var_reqstatus
+																td
+																	select#selectBox(onchange='payment(value);' style='color:green' disabled)
+																		option(value=`${special.int_eventinfoID},1` style='color:green')=special.char_paymentstatus
+																td
+																	select#selectBox(onchange='approval(value);' style='color:green')
+																		option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																		option(value=`${special.int_eventinfoID},2` style='color:orange') Pending
+																		option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.viewButton(href='#')
+																					i.ti-new-window(style="color:white;")
+																-break
+															
+															if(special.var_reqstatus=='Disapproved'&& special.char_approvalstatus=='Pending')
+
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:red')
+																		option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																		option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																		option(value=`${special.int_eventinfoID},2` style='color:orange') Submitted
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																		option(value=`${special.int_eventinfoID},1` style='color:green')=special.char_paymentstatus
+																td
+																	select#selectBox(onchange='approval(value);' style='color:grey' disabled)
+																		option(value=`${special.int_eventinfoID},3` style='color:red')=special.char_approvalstatus
+																-break
+
+															if(special.var_reqstatus=='Approved'&&special.char_paymentstatus=='Paid'&&special.char_approvalstatus=='Pending')
+																td
+																	select#selectBox(onchange='requirement(value);' style='color:green')
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Submitted
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																td
+																		select#selectBox(onchange='payment(value);' style='color:green')
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Paid
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Unpaid
+																td
+																		select#selectBox(onchange='approval(value);' style='color:orange')
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Pending
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.viewButton(href='#')
+																					i.ti-new-window(style="color:white;")
+																-break
+															
+
+
+
+
+
+															
+															if(special.char_approvalstatus=='Pending'&& special.var_reqstatus!='Approved'||special.char_paymentstatus!='Paid')
+																td
+																	if(special.var_reqstatus=="Approved")
+																		select#selectBox(onchange='requirement(value);' style='color:green')
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Submitted
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																	if(special.var_reqstatus=="Submitted")
+																		select#selectBox(onchange='requirement(value);' style='color:orange')
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Submitted
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																	
+																	if(special.var_reqstatus=="Disapproved")
+																		select#selectBox(onchange='requirement(value);' style='color:red')
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Approved
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Submitted
+
+																td
+																	if(special.char_paymentstatus=="Paid")
+																		select#selectBox(onchange='payment(value);' style='color:green')
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Paid
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Unpaid
+																	if(special.char_paymentstatus=="Unpaid")
+																		select#selectBox(onchange='payment(value);' style='color:orange')
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Unpaid
+																			option(value=`${special.int_eventinfoID},1` style='color:green') Paid
+																	
+																td
+																	if(special.char_approvalstatus=="Pending")
+																		select#selectBox(onchange='approval(value);' style='color:orange')
+																			option(value=`${special.int_eventinfoID},2` style='color:orange') Pending
+																			option(value=`${special.int_eventinfoID},0` style='color:red') Disapproved
+																td.td-actions.text-center
+																	button.btn.btn-primary.actionButton(type='button' value=`${special.int_eventinfoID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.viewButton(href='#')
+																					i.ti-new-window(style="color:white;")
 	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
@@ -578,7 +743,7 @@ block addjs
 						confirmButtonText: 'Confirm'
 						}).then((result)=>{
 						if(result.value){
-						data.time_desiredtime = moment(data.time_desiredtime,'HH:mm:ss').format('HH:mm:ss')
+						data.time_eventstart = moment(data.time_eventstart,'HH:mm:ss').format('HH:mm:ss')
 						$.post('/secretariat/transaction-baptism/update',{
 						dateRequested:data.date_eventdate,
 						timeRequested:data.time_eventstart,
