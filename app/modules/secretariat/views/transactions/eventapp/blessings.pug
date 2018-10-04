@@ -23,22 +23,23 @@ block prepend main
                             .tab-content
                                 #anointing.tab-pane.active
                                     .card
-                                            .card-header.card-header-primary
-                                                    h4.card-title Anointing of the Sick
+                                            .card-header.card-header-primary(style='background:#367587; color:white')
+                                                    h4.card-title(style='background:#367587; color:white') Anointing of the Sick
+                                                    
                                             .card-body.table-responsive
                                                     table.table.table-hover.dataTable
                                                             thead.text-primary
-                                                                    th ID
+                                                                    //- th ID
                                                                     th Sick
-                                                                    th Desired schedule
+                                                                    th Event Date
                                                                     th Approval Status
                                                                     th.text-center(style=" width:11rem") Actions
                                                             tbody
                                                                 each anointing in anointings
                                                                     tr
-                                                                        td=anointing.int_eventinfoID
+                                                                        //- td=anointing.int_eventinfoID
                                                                         td=anointing.var_lname + ", " + anointing.var_fname + " " + anointing.var_mname
-                                                                        td=anointing.date_desireddate
+                                                                        td=anointing.date_eventdate
                                                                         td=anointing.char_approvalstatus
                                                                         td.td-actions.text-center
                                                                                 button.btn.btn-primary.actionButton(type='button' value=`${anointing.int_eventinfoID}`)
@@ -51,22 +52,22 @@ block prepend main
                                                                  
                                 #funeral.tab-pane.fade
                                     .card
-                                            .card-header.card-header-primary
-                                                    h4.card-title Funeral Blessing
+                                            .card-header.card-header-primary(style='background:#367587; color:white')
+                                                    h4.card-title(style='background:#367587; color:white') Funeral Blessing
                                             .card-body.table-responsive
                                                     table.table.table-hover.dataTable
                                                             thead.text-primary
-                                                                    th ID
+                                                                    //- th ID
                                                                     th Deceased
-                                                                    th Desired schedule
+                                                                    th Event Date
                                                                     th Approval Status
                                                                     th.text-center(style=" width:120px") Actions
                                                             tbody
                                                                 each funeral in funerals
                                                                     tr
-                                                                        td=funeral.int_eventinfoID
+                                                                        //- td=funeral.int_eventinfoID
                                                                         td=funeral.var_lname + ", " + funeral.var_fname + " " + funeral.var_mname
-                                                                        td=funeral.date_desireddate
+                                                                        td=funeral.date_eventdate
                                                                         td=funeral.char_approvalstatus
                                                                         td.td-actions.text-center
                                                                                 button.btn.btn-primary.actionButton(type='button' value=`${funeral.int_eventinfoID}`)
@@ -79,24 +80,25 @@ block prepend main
                                                                 
                                 #establishment.tab-pane.fade
                                     .card
-                                        .card-header.card-header-primary
-                                                h4.card-title Establishment Blessing
+                                        .card-header.card-header-primary(style='background:#367587; color:white')
+                                                h4.card-title(style='background:#367587; color:white') Establishment Blessing
                                                 
                                         .card-body.table-responsive
                                                 table.table.table-hover.dataTable
                                                     thead.text-primary
-                                                                th ID
+                                                                //- th ID
                                                                 th Owner
                                                                 th Location
-                                                                th Desired schedule
+                                                                th Event schedule
                                                                 th Approval Status
                                                                 th.text-center(style=" width:120px") Actions
                                                     tbody
                                                             each establishment in establishments
                                                                 tr
-                                                                    td=establishment.int_eventinfoID
-                                                                    td=establishment.var_lname + ", " + establishment.var_fname + " " + establishment.var_mname
-                                                                    td=establishment.date_desireddate
+                                                                    //- td=establishment.int_eventinfoID
+                                                                    td=establishment.var_owner
+                                                                    td=establishment.var_estloc
+                                                                    td=establishment.date_blessingdate + " "+ establishment.time_blessingstart
                                                                     td=establishment.char_approvalstatus
                                                                     td.td-actions.text-center
                                                                             button.btn.btn-primary.actionButton(type='button' value=`${establishment.int_eventinfoID}`)
@@ -109,10 +111,10 @@ block prepend main
     #updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
         .modal-dialog.modal-lg(role="document")
             .modal-content
-                .modal-header
-                    h5.modal-title Update Event Application
+                .modal-header(style='background:#367587; color:white')
+                    h5.modal-title(style='background:#367587; color:white') Update Event Application
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        span(aria-hidden='true') ×
+                        span(aria-hidden='true')(style='background:#367587; color:white') ×
                 .modal-body#updateBodyAppend
                 .modal-footer
                     button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
@@ -120,16 +122,16 @@ block prepend main
     #viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
             .modal-dialog.modal-lg(role="document")
                 .modal-content
-                    .modal-header
-                        h5.modal-title Blessing
+                    .modal-header(style='background:#367587; color:white')
+                        h5.modal-title(style='background:#367587; color:white') Blessing
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
+                            span(aria-hidden='true')(style='background:#367587; color:white') ×
                     .modal-body#viewBodyAppend
                     .modal-footer
                         button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
     #myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
         button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') ×
+            span(aria-hidden='true')(style='background:#367587; color:white') ×
         img.modal-content1#imgReq
 block addjs
     script.
@@ -142,8 +144,8 @@ block addjs
             $('.viewButton').click(function(){
                 console.log(idNow)
                 $.post('/secretariat/transaction-blessings/query',{id:idNow}).done(data =>{
-                    var desireddate = moment(data.date_desireddate).format('MM/DD/YYYY')
-                    var timeRequested = moment(data.time_desiredtime,'HH:mm:ss').format('hh:mm A')
+                    var desireddate = moment(data.date_eventdate).format('MM/DD/YYYY')
+                    var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
                     $('#viewBodyAppend').append(`
                     <div class="form-group m-0">
                         <label class="label-control"><strong> Name of the relative: </strong> ${data.var_lname} , ${data.var_fname} ${data.var_mname}</label>
@@ -249,10 +251,10 @@ block addjs
                         confirmButtonText: 'Confirm'
                         }).then((result)=>{
                         if(result.value){
-                        data.time_desiredtime = moment(data.time_desiredtime,'HH:mm:ss').format('HH:mm:ss')
+                        data.time_eventstart = moment(data.time_eventstart,'HH:mm:ss').format('HH:mm:ss')
                         $.post('/secretariat/transaction-blessings/update',{
-                        dateRequested:data.date_desireddate,
-                        timeRequested:data.time_desiredtime,
+                        dateRequested:data.date_eventdate,
+                        timeRequested:data.time_eventstart,
                         eventstatus:$('#eventstatus').val(),
                         eventid:$('#eventid').val(),
                         reqid:$('#reqid').val(),

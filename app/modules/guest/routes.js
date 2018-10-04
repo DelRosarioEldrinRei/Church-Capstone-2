@@ -134,10 +134,20 @@ guestRouter.get('/notification', (req, res)=>{
     WHERE int_userID =?`
     db.query(queryString1, [req.session.user.int_userID], (err, results, fields) => {
         if (err) console.log(err);
-        return res.render('guest/views/reservations/notification',{ notifications: results });
+        return res.render('guest/views/others/notifications',{ notifications: results });
     });
 
 });
+guestRouter.get('/messages', (req, res)=>{
+    var queryString1 =`SELECT * from tbl_message 
+    WHERE int_receiverID =?`
+    db.query(queryString1, [req.session.user.int_userID], (err, results, fields) => {
+        if (err) console.log(err);
+        return res.render('guest/views/others/messages',{ notifications: results });
+    });
+
+});
+
 //===============================================================================================//
 // V O U C H E R //
 //===============================================================================================//

@@ -34,7 +34,7 @@ block main
         section.form-box
             .container
                 .row
-                    .col-md-12.form-wizard
+                    .col-md-12.form-wizard.shadow3
                         form#form(action="/guest/marriage/form" method="post" enctype="multipart/form-data")
                                 h3 Marriage Application Request
                                 p Fill all form field to go next step
@@ -84,7 +84,7 @@ block main
                                                 .form-group
                                                     input.marriage.form-control(type='date' name='desireddate')
                                         .row
-                                            .col-md-12.text-lg-center.text-sm-left
+                                            .col-md-6.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
                                                 .form-group
                                                     h6.label-control Desired Time
                                                         br
@@ -146,7 +146,7 @@ block main
                                                         input.form-control(type='text' name='gfatherbplace' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
-                                                    .form-group.text-lg-center.text-sm-left
+                                                    .form-group
                                                         h6.label-control Father's Religion
                                                         select(type="text" name='gfatherreligion')
                                                             option Catholic
@@ -165,7 +165,7 @@ block main
                                                         input.form-control(type='text' name='gmotherbplace' placeholder="Ex. San Isidro, Quezon City" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
-                                                    .form-group.text-lg-center.text-sm-left
+                                                    .form-group
                                                         h6.label-control Mother's Religion
                                                         select(type="text" name='gmotherreligion')
                                                             option Catholic
@@ -173,9 +173,9 @@ block main
                                                             option Non-Christion
                                                             option No religion
                                             .row
-                                                .col-md-6.px-lg-3.px-md-3.px-sm-0
-                                                    .row.text-lg-center.text-sm-left
-                                                        .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
+                                                .col-md-6.px-lg-3.px-md-0.px-sm-3
+                                                    .row
+                                                        .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3
                                                             .form-group
                                                                 h6.label-control Civil Status
                                                                 select(type="text" name='gcivilstatus')
@@ -183,7 +183,7 @@ block main
                                                                     option Married
                                                                     option Divorced
                                                                     option Widower
-                                                        .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
+                                                        .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3
                                                             .form-group
                                                                 h6.label-control Religion
                                                                 select(type="text" name='greligion')
@@ -194,15 +194,15 @@ block main
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
                                                         h6(for='exampleFormControlTextarea1') Address:
-                                                        textarea#exampleFormControlTextarea1.form-control(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
+                                                        textarea#exampleFormControlTextarea1.form-control(rows='1' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                             .row
-                                                .col-md-6.px-lg-3.pr-md-3.px-sm-0
+                                                .col-md-6.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Current Parish:
                                                         input.form-control(type='text' name='gcurrentparish' placeholder=" Ex. Ina ng Lupang Pangako Parish")
                                                         .help-block.with-errors
-                                                .col-md-6.px-lg-3.pr-md-3.px-sm-0
+                                                .col-md-6.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Occupation:
                                                         input.form-control(type='text' name='goccupation' placeholder="Ex. Driver")
@@ -214,7 +214,7 @@ block main
                                                         .form-check
                                                             label.form-check-label
                                                                 input.exampleRadios1.form-check-input(type="radio" name="gbaptized" value="1")
-                                                                .dropdown-toggle.mr-3 Yes
+                                                                | Yes
                                                                 span.circle
                                                                     span.check
                                                             .textarea1.form-group
@@ -237,7 +237,7 @@ block main
                                                         .form-check
                                                             label.form-check-label
                                                                 input.exampleRadios2.form-check-input(type="radio" name="gconfirmed" value="1")
-                                                                .dropdown-toggle.mr-3 Yes
+                                                                | Yes
                                                                 span.circle
                                                                     span.check
                                                             .textarea2.form-group
@@ -317,7 +317,7 @@ block main
                                                         input.form-control(type'text' name='bfatherbplace' placeholder="Ex. Caloocan, Quezon City" required='' pattern="[A-Za-z0-9.,- ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
-                                                    .form-group.text-lg-center.text-sm-left
+                                                    .form-group
                                                         h6.label-control Father's Religion
                                                         select(type="text" name='bfatherreligion')
                                                             option Catholic
@@ -336,7 +336,7 @@ block main
                                                         input.form-control(type'text' name='bmotherbplace' placeholder="Ex. San Isidro, Quezon City" required='' pattern="[A-Za-z.,- ]{2,}" )
                                                         .help-block.with-errors
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
-                                                    .form-group.text-lg-center.text-sm-left
+                                                    .form-group
                                                         h6.label-control Mother's Religion
                                                         select(type="text" name='bmotherreligion')
                                                             option Catholic
@@ -345,8 +345,8 @@ block main
                                                             option No religion
                                             .row
                                                 .col-md-6.px-lg-3.px-md-3.px-sm-0
-                                                    .row.text-lg-center.text-sm-left
-                                                        .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
+                                                    .row
+                                                        .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3
                                                             .form-group
                                                                 h6.label-control Civil Status
                                                                 select(type="text" name='bcivilstatus')
@@ -354,7 +354,7 @@ block main
                                                                     option Married
                                                                     option Divorced
                                                                     option Widower
-                                                        .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3.extra-small-balance
+                                                        .col-md-6.px-lg-0.px-md-0.px-sm-0.pl-sm-3
                                                             .form-group
                                                                 h6.label-control Religion
                                                                 select(type="text" name='breligion')
@@ -365,7 +365,7 @@ block main
                                                 .col-md-6.px-lg-3.px-md-3.px-sm-0
                                                     .form-group
                                                         h6(for='exampleFormControlTextarea1') Address:
-                                                        textarea#exampleFormControlTextarea1.form-control(rows='2' name='baddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
+                                                        textarea#exampleFormControlTextarea1.form-control(rows='1' name='baddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                             .row
                                                 .col-md-4.px-lg-3.px-md-0.px-sm-0
@@ -383,7 +383,7 @@ block main
                                                                 | No
                                                                 span.circle
                                                                     span.check
-                                                .col-md-4.p-lg-0.px-md-3.px-sm-0
+                                                .col-md-4.p-lg-0.px-md-3.px-sm-0.pr-lg-0
                                                     .form-group
                                                         h6.label-control Current Parish:
                                                         input.form-control(type='text' name='bcurrentparish' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z.-, ]{2,}" )
