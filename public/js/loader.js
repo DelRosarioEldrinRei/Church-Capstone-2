@@ -2,9 +2,9 @@ window.addEventListener('load', () => {
   const loader = document.getElementById('loader');
   setTimeout(() => {
     loader.classList.add('fadeOut');
-  }, 300);
+  }, 100);
   $(document).ready(function(){
-    $('#wrapper').fadeIn(700);  
+    $('#wrapper').fadeIn(500);  
   });
 });
 

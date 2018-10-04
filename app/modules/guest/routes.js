@@ -644,27 +644,49 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
 //==============================================================
 // B A P T I S M
 //==============================================================
-
     guestRouter.get('/baptism/query', (req, res)=>{
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = ${req.session.eventId}`
+        db.query(queryString3,(err,results2,fields)=>{
         var queryString = `SELECT * FROM tbl_eventinfo where char_approvalstatus = "Approved"`
             db.query(queryString,(err,results,fields) =>{
-                res.send(results)
+                res.send({queries:results,utilities:results2})
+            })
+        })
+    })
+    guestRouter.get('/baptism/query/regular', (req, res)=>{
+        var queryString = `SELECT * FROM tbl_eventinfo where char_approvalstatus = "Approved" GROUP BY date_eventdate` 
+            db.query(queryString,(err,results,fields) =>{
                 console.log(results)
+                    res.send(results)
             })
     })
-
+    guestRouter.post('/baptism/query/regular/bilang', (req, res)=>{
+        req.body.eventdate = moment(req.body.eventdate).format('YYYY-MM-DD')
+        var queryString = `SELECT COUNT(*)AS bilang FROM tbl_eventinfo WHERE date_eventdate = ?` 
+            db.query(queryString,req.body.eventdate,(err,results,fields) =>{
+                var eventdate = req.body.eventdate
+                results.push(eventdate)
+                console.log(results)
+                res.send(results)
+                
+            })
+    })
     guestRouter.get('/baptism/form', (req, res)=>{
+        console.log(req.query)
+        console.log(req.session.eventId)
+       
         var queryString1= `SELECT int_agemax, int_agemin, double_fee FROM tbl_utilities where int_eventID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
         db.query(queryString1, (err, results1, fields) => {
             var queryString2= `SELECT time_availabletime FROM tbl_utilities_availabletime where int_serviceID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
-            // db.query(queryString2, (err, results2, fields) => {
-            //     for(i=0;i<results2.length;i++){
-            //     results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
-            //     }
+            db.query(queryString2, (err, results2, fields) => {
+                for(i=0;i<results2.length;i++){
+                results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
+                }
                 if (err) throw err;
-        return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1})
-            // });    
-        });
+        return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1,utilities:results2})
+            });    
+            });
+        
     });
 
     guestRouter.post('/baptism/form',upload.single('image'), (req, res) => {

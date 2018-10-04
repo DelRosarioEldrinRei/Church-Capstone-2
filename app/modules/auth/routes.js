@@ -82,7 +82,7 @@ loginRouter.route('/')
                 delete user.var_password;
                 req.session.user = user;
                 console.log(req.session.user);
-                return res.redirect('/guest/baptism/form');
+                return res.redirect(`/guest/baptism/form?${req.session.eventId}`);
                 }
                 else if(req.session.eventId == 4){
                     delete user.var_password;

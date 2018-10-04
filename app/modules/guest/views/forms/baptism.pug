@@ -141,6 +141,20 @@ block main
 										.row
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
+													h6.label-control Relationship with the Child
+													select#relation(type="text" name='relation' required='')
+														option(selected="" value="" disabled) Choose...
+														option Aunt/Uncle
+														option Parent
+														option Grandparent
+														option Sibling
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.form-group
+													h6.label-control Contact Number
+													input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" required='' pattern="[0-9]{11}" )
+										.row
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.form-group
 													h6.label-control Father's Full Name:
 													input#fatherfullname.form-control(type='text' name='fathername' placeholder="Ex. Juan Dela Cruz" required='' )
 													.help-block.with-errors
@@ -152,7 +166,7 @@ block main
 										.row
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
-													h6.label-control Mother's Full name:
+													h6.label-control Mother's Full Name:
 													input#motherfullname.form-control(type='text' name='mothername' placeholder="Ex. Maria Dela Cruz" required='' )
 													.help-block.with-errors
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
@@ -160,29 +174,29 @@ block main
 													h6.label-control Mother's Birthplace:
 													input#motherbirthplace.form-control(type='text' name='motherbirthplace' placeholder="Ex. San Isidro, Quezon City" required=''  )
 													.help-block.with-errors
+										//- .row
+										//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
+										//- 		.form-group
+										//- 			h6.label-control Relationship with the Child
+										//- 			select#relation(type="text" name='relation' required='')
+										//- 				option(selected="" value="" disabled) Choose...
+										//- 				option Aunt/Uncle
+										//- 				option Parent
+										//- 				option Grandparent
+										//- 				option Sibling
+										//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
+										//- 		.form-group
+										//- 			h6.label-control Family's Contact number
+										//- 			input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" required='' pattern="[0-9]{11}" )
 										.row
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
-													h6.label-control Relationship with the Child
-													select#relation(type="text" name='relation' required='')
-														option(selected="" value="" disabled) Choose...
-														option Aunt/Uncle
-														option Parent
-														option Grandparent
-														option Sibling
-											.col-md-6.px-lg-3.px-md-3.px-sm-0
-												.form-group
-													h6.label-control Family's Contact number
-													input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" required='' pattern="[0-9]{11}" )
-										.row
+													h6(for='exampleFormControlTextarea1') Address:
+													textarea#exampleFormControlTextarea1.address.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City" required='' )
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Parents' Marriage Address:
-													textarea#exampleFormControlTextarea1.parentsmarriage.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' )
-											.col-md-6.px-lg-3.px-md-3.px-sm-0
-												.form-group
-													h6(for='exampleFormControlTextarea1') Family address:
-													textarea#exampleFormControlTextarea1.address.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City" required='' )
+													textarea#exampleFormControlTextarea1.parentsmarriage.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' )  
 										.row
 											.col-md-7.px-lg-3.px-md-3.px-sm-0.mx-auto
 												.form-group
@@ -252,51 +266,25 @@ block addjs
 		});
 		$('#regular').hide();
 		$('#special').hide();
-		var gender;
-		$('#nextButton2').click(function(){
-			console.log($('#file-0b').val())
-			if ($("#customRadio1").prop("checked")) {
-			gender = $("#customRadio1").val();
-			}
-			else if($("#customRadio2").prop("checked")){
-			gender = $("#customRadio2").val();
-			}
-			console.log(gender)
-			if(
-			gender != undefined &&
-			$('#firstname').val() != ''  &&
-			$('#lastname').val() != ''  &&
-			$('#birthdate').val() != '' &&
-			$('#birthplace').val() != '' &&
-			$('#fatherfullname').val() != '' &&
-			$('#fatherbirthplace').val() != '' &&
-			$('#motherfullname').val() != '' &&
-			$('#motherbirthplace').val() != '' &&
-			$('#relation').val() != '' &&
-			$('#contactnumber').val() != '' &&
-			$('.marriageaddress').val() != '' &&
-			$('.address').val() != '' &&
-			$('#file-0b').val() != '' &&
-			$('#file-0b').val() != undefined){
-				$('#nextButton2').addClass('btn-next')
-			}
-			else{
-				alert('Please complete the form')
-			}
-		})
+		var baptismType;
 		$('#nextButton1').click(function(){
 			if(eventDate == ''){
 				alert('Please input your desired time')
 			}
 			else{
+				
 				$('#nextButton1').addClass('btn-next')
 			}
 		})
 		$('#radio1').click(function() {
+			baptismType = $('#radio1').val();
+			console.log(baptismType)
 			$('#regular').slideDown();
 			$('#special').slideUp();
 		});
 		$('#radio2').click(function() {
+			baptismType = $('#radio2').val();
+			console.log(baptismType)
 			$('#calendarSpecial').fullCalendar('changeView', 'month')
 			$('#special').slideDown();
 			$('#regular').slideUp();
@@ -372,68 +360,331 @@ block addjs
 												xhr.responseType = 'blob';
 												xhr.send();
 											}
-											toDataURL('/document_templates/voucherTemplate.jpg', function(dataUrl) {
-												var docDefinition = {
-													pageMargins: [ 0, 0, 0, 0 ],
-													content: [
-														{
-															image: dataUrl,
-															width: 610,
-															//- height: 100,
+											toDataURL('/document_templates/voucherTemplate3.png', function(dataUrl) {
+												toDataURL('/document_templates/logo.png', function(logo) {
+													var docDefinition = {
+														pageMargins: [ 0, 35, 0, 0 ],
+														content: [
+															{
+																image: dataUrl,
+																width: 610,
+																//- height: 100,
+															},
+															{
+																image: logo,
+																width: 45,
+																height: 40,
+																absolutePosition: {x:13, y:60},
+															},
+															{
+																image: logo,
+																width: 45,
+																height: 40,
+																absolutePosition: {x:13, y:447},
+															},
+															//mga laman sa taas
+															{
+															text:'500-0239',
+															style: 'styleLabelTop',
+															absolutePosition: {x:350, y:45},
+															},
+															{
+															text:'churcheventapp@gmail.com',
+															style: 'styleLabelTop',
+															absolutePosition: {x:257, y:68},
+															},
+															{
+															text:'inanglupangpangako.com',
+															style: 'styleLabelTop',
+															absolutePosition: {x:269, y:90},
+															},
+															{
+															text:'Urban, Brgy. Payatas B. 1119',
+															style: 'styleLabelTop',
+															absolutePosition: {x:444, y:45},
+															},
+															{
+															text:'Quezon City, Manila',
+															style: 'styleLabelTop',
+															absolutePosition: {x:487, y:68},
+															},
+															{
+															text:'Voucher ID 42352',
+															style: 'styleLabelTop',
+															absolutePosition: {x:495, y:90},
+															},
+															//Middle part
+															{
+															text:'Juan Dela Cruz',
+															style: 'styleLabelMiddle',
+															absolutePosition: {x:51, y:127},
+															},
+															{
+															text:'4-A Del rosario st. Marulas \n Valenzuela City',
+															style: 'styleLabelMiddle',
+															absolutePosition: {x:51, y:140},
+															},
+															{
+															text:'# 42352',
+															style: 'styleLabelMiddle',
+															absolutePosition: {x:225, y:127},
+															},
+															{
+															text:'01 / 01 / 2020',
+															style: 'styleLabelMiddle',
+															absolutePosition: {x:225, y:140},
+															},
+															{
+															text:'15 / 01 / 2020',
+															style: 'styleLabelMiddle',
+															absolutePosition: {x:225, y:153},
+															},
+															{
+															text: '₱ 634.57',
+															style: 'styleLabelMiddleTA',
+															absolutePosition: {x:505, y:143},
+															},
+															//table Contents
+															// .toUpperCase() yung event name before ilagay sa pdfmake
+															//ito yung ifoforeach mu rae
+															{
+															text: 'FACILITY RESERVATION',
+															style: 'styleLabelEventName',
+															absolutePosition: {x:65, y:217},
+															},
+															{
+															text: '₱ 75/hr',
+															style: 'styleLabelEvent',
+															absolutePosition: {x:393, y:217},
+															},
+															{
+															text: '₱ 225.00',
+															style: 'styleLabelEvent',
+															absolutePosition: {x:507, y:217},
+															},
+															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+															{
+															text: '2ND ROOM RESERVATION',
+															style: 'styleLabelEventName',
+															absolutePosition: {x:65, y:243},
+															},
+															{
+															text: '₱ 90/hr',
+															style: 'styleLabelEvent',
+															absolutePosition: {x:393, y:243},
+															},
+															{
+															text: '₱ 270.00',
+															style: 'styleLabelEvent',
+															absolutePosition: {x:506, y:243},
+															},
+															//total amount
+															{
+															text: '₱ 634.57',
+															style: 'styleLabelTA',
+															absolutePosition: {x:476, y:354},
+															},
+															//remaining days
+															{
+															text: '14',
+															style: 'styleLabelRemaining',
+															absolutePosition: {x:338, y:389},
+															},
+															//IBABANG VOUCHER 387 sa y-axis dinagdag
+															{
+															text:'500-0239',
+															style: 'styleLabelTop',
+															absolutePosition: {x:350, y:432},
+															},
+															{
+															text:'churcheventapp@gmail.com',
+															style: 'styleLabelTop',
+															absolutePosition: {x:257, y:455},
+															},
+															{
+															text:'inanglupangpangako.com',
+															style: 'styleLabelTop',
+															absolutePosition: {x:269, y:477},
+															},
+															{
+															text:'Urban, Brgy. Payatas B. 1119',
+															style: 'styleLabelTop',
+															absolutePosition: {x:444, y:432},
+															},
+															{
+															text:'Quezon City, Manila',
+															style: 'styleLabelTop',
+															absolutePosition: {x:487, y:455},
+															},
+															{
+															text:'Voucher ID 42352',
+															style: 'styleLabelTop',
+															absolutePosition: {x:495, y:477},
+															},
+															//Middle part
+															{
+															text:'Juan Dela Cruz',
+															style: 'styleLabelMiddle',
+															absolutePosition: {x:51, y:514},
+															},
+															{
+															text:'4-A Del rosario st. Marulas \n Valenzuela City',
+															style: 'styleLabelMiddle',
+															absolutePosition: {x:51, y:527},
+															},
+															{
+															text:'# 42352',
+															style: 'styleLabelMiddle',
+															absolutePosition: {x:225, y:514},
+															},
+															{
+															text:'01 / 01 / 2020',
+															style: 'styleLabelMiddle',
+															absolutePosition: {x:225, y:527},
+															},
+															{
+															text:'15 / 01 / 2020',
+															style: 'styleLabelMiddle',
+															absolutePosition: {x:225, y:540},
+															},
+															{
+															text: '₱ 634.57',
+															style: 'styleLabelMiddleTA',
+															absolutePosition: {x:505, y:530},
+															},
+															//table Contents
+															// .toUpperCase() yung event name before ilagay sa pdfmake
+															//ito yung ifoforeach mu rae
+															{
+															text: 'FACILITY RESERVATION',
+															style: 'styleLabelEventName',
+															absolutePosition: {x:65, y:604},
+															},
+															{
+															text: '₱ 75/hr',
+															style: 'styleLabelEvent',
+															absolutePosition: {x:393, y:604},
+															},
+															{
+															text: '₱ 225.00',
+															style: 'styleLabelEvent',
+															absolutePosition: {x:507, y:604},
+															},
+															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+															{
+															text: '2ND ROOM RESERVATION',
+															style: 'styleLabelEventName',
+															absolutePosition: {x:65, y:630},
+															},
+															{
+															text: '₱ 90/hr',
+															style: 'styleLabelEvent',
+															absolutePosition: {x:393, y:630},
+															},
+															{
+															text: '₱ 270.00',
+															style: 'styleLabelEvent',
+															absolutePosition: {x:506, y:630},
+															},
+															//total amount
+															{
+															text: '₱ 634.57',
+															style: 'styleLabelTA',
+															absolutePosition: {x:476, y:741},
+															},
+															//remaining days
+															{
+															text: '14',
+															style: 'styleLabelRemaining',
+															absolutePosition: {x:338, y:776},
+															},
+															//- {
+															//- text:`${data.int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
+															//- style: 'styleLabelFill',
+															//- absolutePosition: {x:520, y:28},
+															//- text: 'Date: ' + dateRequested,
+															//- },
+														],
+														styles: {
+															styleLabel: {
+																font: 'EdwardianScript',
+																fontSize:85,
+															},
+															styleHeader: {
+																font: 'OldEnglishText',
+																fontSize: 45,
+																alignment: 'center',
+																margin: [0, 15, 0, 0],
+															},
+															styleHeader2: {
+																font: 'EdwardianScript',
+																fontSize: 33,
+																alignment: 'center',
+																margin: [0, 5, 0, 5],
+															},
+															styleLabel: {
+																font: 'EdwardianScript',
+																fontSize: 26,
+															},
+															styleLabelTop: {
+																font: 'Roboto',
+																fontSize: 11,
+																color: 'white',
+															},
+															styleLabelMiddle: {
+																font: 'Roboto',
+																fontSize: 9,
+															},
+															styleLabelMiddleTA: {
+																font: 'Roboto',
+																fontSize: 18,
+															},
+															styleLabelEventName: {
+																font: 'Roboto',
+																fontSize: 10,
+																bold: true,
+															},
+															styleLabelEvent: {
+																font: 'Roboto',
+																fontSize: 10,
+															},
+															styleLabelFill: {
+																font: 'Roboto',
+																fontSize: 20,
+															},
+															styleLabelTA: {
+																font: 'Roboto',
+																fontSize: 15,
+																color: 'white',
+																bold: true,
+															},
+															styleLabelRemaining: {
+																font: 'Roboto',
+																fontSize: 9,
+																italic: true,
+															},
 														},
-														{
-														text:`${data.int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
-														style: 'styleLabelFill',
-														absolutePosition: {x:520, y:28},
-														//- text: 'Date: ' + dateRequested,
-														},
-													],
-													styles: {
-														styleLabel: {
-															font: 'EdwardianScript',
-															fontSize:85,
-														},
-														styleHeader: {
-															font: 'OldEnglishText',
-															fontSize: 45,
-															alignment: 'center',
-															margin: [0, 15, 0, 0],
-														},
-														styleHeader2: {
-															font: 'EdwardianScript',
-															fontSize: 33,
-															alignment: 'center',
-															margin: [0, 5, 0, 5],
-														},
-														styleLabel: {
-															font: 'EdwardianScript',
-															fontSize: 26,
-														},
-														styleLabelFill: {
-															font: 'Roboto',
-															fontSize: 20,
-														},
-													},
-												}
-												pdfMake.fonts = {
-													Roboto: {
-														normal: 'Roboto-Regular.ttf',
-														bold: 'Roboto-Medium.ttf',
-														italic: 'Roboto-Italic.ttf',
-														bolditalics: 'Roboto-MediumItalic.ttf',
-													},
-													EdwardianScript: {
-														normal: 'Edwardian-script-itc-Regular.TTF'
-													},
-													OldEnglishText: {
-														normal: 'Old-english-text-mt-Regular.ttf'
-													},
-													TimesNewRoman: {
-														normal: 'Times-new-roman-Regular.ttf'
 													}
-												}
-												pdfMake.createPdf(docDefinition).open();
-												pdfMake.createPdf(docDefinition).download();
+													pdfMake.fonts = {
+														Roboto: {
+															normal: 'Roboto-Regular.ttf',
+															bold: 'Roboto-Medium.ttf',
+															italic: 'Roboto-Italic.ttf',
+															bolditalics: 'Roboto-MediumItalic.ttf',
+														},
+														EdwardianScript: {
+															normal: 'Edwardian-script-itc-Regular.TTF'
+														},
+														OldEnglishText: {
+															normal: 'Old-english-text-mt-Regular.ttf'
+														},
+														TimesNewRoman: {
+															normal: 'Times-new-roman-Regular.ttf'
+														}
+													}
+													pdfMake.createPdf(docDefinition).open();
+													pdfMake.createPdf(docDefinition).download();
+												});
 											})
 									})
 							})
@@ -474,31 +725,103 @@ block addjs
 			event.stopPropagation();
 		});
 		// for Regular Baptism Date
+		var dateNow2
 		var eventDate ='';
 		var timeStart ='';
 		var timeEnd2 ='';
 		var dateNow = new Date()
-		var dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(7,'days').format('YYYY-MM-DD')
-		console.log(eventDate)
+		var dateNow2;
+		var gender;
+		//- dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(7,'days').format('YYYY-MM-DD')
 		$.get('/guest/baptism/query').done(data=>{
-			for(i=0;i<data.length;i++){
-			var dateEvent = moment(data[i].date_eventdate).format('MM/DD/YYYY');
-			data[i].time_eventstart = moment(data[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
-			var time_end = moment(data[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
-			console.log(time_end)
-			console.log(dateEvent)
-			console.log(data[i].time_eventstart)
-				$('#calendarSpecial').fullCalendar('renderEvent', {
-				title: 'OCCUPIED EVENT',
-				start: `${dateEvent} ${data[i].time_eventstart}`,
-				end: `${dateEvent} ${time_end}`,
-				allDay: false,
-				color:'#4c2508',
-				textColor: "white",
-				});
+		
+		console.log(data.utilities[0].int_agemax)
+		if(baptismType == "Regular"){
+		$('#nextButton2').click(function(){
+			var age = moment().diff($('#birthdate').val(),'years')
+			console.log(age)
+			console.log($('#file-0b').val())
+			if ($("#customRadio1").prop("checked")) {
+			gender = $("#customRadio1").val();
+			}
+			else if($("#customRadio2").prop("checked")){
+			gender = $("#customRadio2").val();
+			}
+			console.log(gender)
+			if(
+			gender != undefined &&
+			$('#firstname').val() != ''  &&
+			$('#lastname').val() != ''  &&
+			$('#birthdate').val() != '' &&
+			$('#birthplace').val() != '' &&
+			$('#fatherfullname').val() != '' &&
+			$('#fatherbirthplace').val() != '' &&
+			$('#motherfullname').val() != '' &&
+			$('#motherbirthplace').val() != '' &&
+			$('#relation').val() != '' &&
+			$('#contactnumber').val() != '' &&
+			$('.marriageaddress').val() != '' &&
+			$('.address').val() != '' &&
+			$('#file-0b').val() != '' &&
+			$('#file-0b').val() != undefined &&
+			age < data.utilities[0].int_agemax
+			){
+				$('#nextButton2').addClass('btn-next')
+			}
+			else if(age >= data.utilities[0].int_agemax){
+				swal({
+					title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, re-input or go back to home?`,
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonClass: 'btn btn-success',
+					cancelButtonClass: 'btn btn-danger',
+					buttonsStyling: true,
+				})
+			}
+			else{
+				alert('Please complete the form')
 			}
 		})
-		$('#calendarSpecial').fullCalendar({
+		}
+		else{
+		$('#nextButton2').click(function(){
+			console.log($('#file-0b').val())
+			if ($("#customRadio1").prop("checked")) {
+			gender = $("#customRadio1").val();
+			}
+			else if($("#customRadio2").prop("checked")){
+			gender = $("#customRadio2").val();
+			}
+			console.log(gender)
+			if(
+			gender != undefined &&
+			$('#firstname').val() != ''  &&
+			$('#lastname').val() != ''  &&
+			$('#birthdate').val() != '' &&
+			$('#birthplace').val() != '' &&
+			$('#fatherfullname').val() != '' &&
+			$('#fatherbirthplace').val() != '' &&
+			$('#motherfullname').val() != '' &&
+			$('#motherbirthplace').val() != '' &&
+			$('#relation').val() != '' &&
+			$('#contactnumber').val() != '' &&
+			$('.marriageaddress').val() != '' &&
+			$('.address').val() != '' &&
+			$('#file-0b').val() != '' &&
+			$('#file-0b').val() != undefined &&
+			){
+				$('#nextButton2').addClass('btn-next')
+			}
+			else{
+				alert('Please complete the form')
+			}
+		})
+		}
+		dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data.utilities[0].int_reservationmindays,'days').format('YYYY-MM-DD')
+			console.log(dateNow2)
+			console.log(data.utilities[0].int_reservationmindays)
+			$('#calendarSpecial').fullCalendar({
 			header: {
 				left: 'title',
 				center: 'agendaDay,month',
@@ -582,7 +905,10 @@ block addjs
 			},
 			droppable: false,
 		});
-		var calendar =  $('#calendarRegular').fullCalendar({
+		
+			var limit = data.utilities[0].int_maxcount
+			console.log(limit)
+			var calendar =  $('#calendarRegular').fullCalendar({
 			header: {
 				left: 'title',
 				center: 'agendaDay,month',
@@ -593,12 +919,28 @@ block addjs
 			selectable: true,
 			defaultView: 'month',
 			allDaySlot: false,
-			validRange: {
-				start: dateNow2,
-			},
+			//- validRange: {
+			//- 	start: dateNow2,
+			//- },
 			businessHours: { dow: [0] },
 			selectConstraint: "businessHours",
 			select: function(date, jsEvent, view) {
+				eventDate = date.format('YYYY-MM-DD')
+				$.post('/guest/baptism/query/regular/bilang',{eventdate:eventDate}).done(data=>{
+					console.log(data[0].bilang >= limit)
+					console.log(data[0].bilang  + "is greater than" + limit + "?")
+					if(data[0].bilang >= limit){
+						swal({
+							title: 'Sorry but there are no slots available for this day',
+							showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonClass: 'btn btn-success',
+							cancelButtonClass: 'btn btn-danger',
+							buttonsStyling: true,   
+						})
+					}
+				})
 				eventDate = date.format('YYYY-MM-DD')
 				timeStart = "10:00 am"
 				timeEnd2 = "12:00 pm"
@@ -646,5 +988,52 @@ block addjs
 						}
 					})
 			}
-		});
-		
+			});
+			
+			for(i=0;i<data.queries.length;i++){
+			var dateEvent = moment(data.queries[i].date_eventdate).format('MM/DD/YYYY');
+			var time_start = data.queries[i].time_eventstart = moment(data.queries[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
+			var time_end = moment(data.queries[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+			//- console.log(time_end)
+			//- console.log(dateEvent)
+			//- console.log(data.queries[i].time_eventstart)
+			//- console.log(data.queries[i].char_approvalstatus)
+				$('#calendarSpecial').fullCalendar('renderEvent', {
+				title: 'OCCUPIED EVENT',
+				start: `${dateEvent} ${time_start}`,
+				end: `${dateEvent} ${time_end}`,
+				allDay: false,
+				color:'#4c2508',
+				textColor: "white",
+				});
+			}
+			$.get('/guest/baptism/query/regular').done(data=>{
+				
+				for(i=0;i<data.length;i++){
+					var dateEvent = moment(data.date_eventdate).format('MM/DD/YYYY');
+					var time_start = data.time_eventstart = moment(data.time_eventstart,'hh:mm:ss').format('hh:mm a');
+					var time_end = moment(data.time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+					console.log(data[i].date_eventdate)
+					 $.post('/guest/baptism/query/regular/bilang',{eventdate:data[i].date_eventdate}).done(data=>{
+						console.log(data[1])
+						console.log(data[0].bilang)
+					 	var dateEvent1 = moment(data[1]).format('MM/DD/YYYY')
+						 if(data[0].bilang >= limit){
+							 $('#calendarRegular').fullCalendar('renderEvent',{
+								title: ' NO SLOTS AVAILABLE',
+								start: `${dateEvent1}`,
+								end: `${dateEvent1}`,
+								allDay:true,
+								color:'#4c2508',
+								textColor: "white",
+							 })
+							 console.log("narender na pota")
+
+						 }
+						 else{
+
+						 }
+					 })
+				}
+			})
+		})
