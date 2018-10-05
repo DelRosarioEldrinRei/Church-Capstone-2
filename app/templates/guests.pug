@@ -21,6 +21,8 @@ html(lang='en')
 		link(rel='stylesheet', href='/css/loader.css')
 		link(rel='stylesheet', href='/css/dataTables.bootstrap4.min.css')
 		link(rel='stylesheet', href='/css/responsive.bootstrap4.min.css')
+		link(rel='stylesheet', href='/css/buttons.dataTables.min.css')
+		//- link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.0.2/css/tableexport.min.css')
 		//- link(rel="stylesheet" href="/css/fileinput.css")
 		link(rel="stylesheet" href="/css/fileinput.min.css")
 		//- link(rel="stylesheet" href="/css/timedropper.min.css")
@@ -110,6 +112,53 @@ html(lang='en')
 					-webkit-appearance: none;
 					display: none;
 				}
+
+							.dropdown-submenu {
+				position: relative;
+			}
+
+			.dropdown-submenu>.dropdown-menu {
+					top: 0;
+					left: 100%;
+					margin-top: -6px;
+					margin-left: 2px;
+					z-index: 1000;
+					min-width: 12rem;
+			}
+
+			.dropdown-submenu:hover>.dropdown-menu {
+					display: block;
+			}
+
+			.dropdown-submenu>a:after {
+					display: block;
+					content: " ";
+					float: right;
+					width: 0;
+					height: 0;
+					border-color: transparent;
+					border-style: solid;
+					border-width: 5px 0 5px 5px;
+					border-left-color: #ccc;
+					margin-top: 5px;
+					margin-right: -10px;
+			}
+
+			.dropdown-submenu:hover>a:after {
+					border-left-color: #fff;
+			}
+
+			.dropdown-submenu.pull-left {
+					float: none;
+			}
+
+			.dropdown-submenu.pull-left>.dropdown-menu {
+					left: -100%;
+					margin-left: 10px;
+					-webkit-border-radius: 6px 0 6px 6px;
+					-moz-border-radius: 6px 0 6px 6px;
+					border-radius: 6px 0 6px 6px;
+			}
 	body
 		#loader
 			.spinner
@@ -129,8 +178,28 @@ html(lang='en')
 							ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix
 								li.nav-item: a.nav-link(href="/guest/#about")
 									| Home
-								li.nav-item: a.nav-link(href="/guest/#services")
-									| Services
+								li.nav-item.dropdown
+									a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Services
+									.dropdown-menu
+										ul
+											li.dropdown-submenu
+												a.dropdown-item(tabindex="-1" href="#") Special Services
+												ul.dropdown-menu
+													li
+														a.dropdown-item(href='#') Document Request
+													li
+														a.dropdown-item(href='#') Facility Reservation
+													li
+														a.dropdown-item(href='#') House/Business Blessing
+											hr
+											li
+												a.dropdown-item(href='#') Anointing of the Sick
+											li
+												a.dropdown-item(href='#') Baptism
+											li
+												a.dropdown-item(href='#') Funeral Service
+											li
+												a.dropdown-item(href='#') Marriage
 								li.nav-item: a.nav-link(href="/guest/#portfolio")
 									| Events
 								li.nav-item: a.nav-link(href="/guest/#team")
@@ -266,7 +335,6 @@ html(lang='en')
 		script(src='/Helium/js/main.js')
 		script(src='/js/loader.js')
 		script(src='/js/moment.min.js')
-		//- script(src='/js/timedropper.min.js')
 		script(src="/js/calendar.js")
 		script(src="/js/fullcalendar.min.js")
 		script(src='/js/fileinput.js')
@@ -274,6 +342,13 @@ html(lang='en')
 		script(src='/js/dataTables.bootstrap4.min.js')
 		script(src='/js/dataTables.responsive.min.js')
 		script(src='/js/responsive.bootstrap4.min.js')
+		//- para sa excel export
+		//- script(src='/js/dataTables.buttons.min.js')
+		//- script(src='/js/buttons.flash.min.js')
+		//- script(src='/js/jszip.min.js')
+		//- script(src='/js/buttons.html5.min.js')
+		//- script(src='/js/buttons.print.min.js')
+		//- hanggang dito andami no?
 		script(src='/js/plugins/sortable.js')
 		script(src='/js/form-wizard.js')
 		script(src='/js/locales/fr.js')
@@ -283,7 +358,7 @@ html(lang='en')
 		script(src='/js/sweetalert2.all.min.js')
 		script(src='/js/jquery.form.js')
 		script(src="/js/bootstrap-datetimepicker.min.js")
-		//- script(src="/js/jspdf.js")
+		//- script(src='/js/tableexport.min.js')
 		script(src="/js/jspdf.min.js")
 		script(src='/js/pdfmake.js')
 		script(src='/js/vfs_fonts.js')
