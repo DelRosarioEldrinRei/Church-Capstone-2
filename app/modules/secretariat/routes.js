@@ -32,7 +32,9 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     secretariatRouter.get('/transaction-facilityreservation', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_facilityreservation 
         join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
-        join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID`
+        join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID
+        JOIN tbl_requirementshouse ON tbl_requirementshouse.int_reservationID = tbl_facilityreservation.int_reservationID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_facilityreservation.int_paymentID`
         db.query(queryString1, (err, results, fields) => {
             var reservations = results;
             for(var i = 0; i < reservations.length; i++){
@@ -294,28 +296,29 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         var success =0
         var notsuccess =1
         console.log('body: ' +req.body.id1)
-        var value = req.body.id1.split(',');
-        console.log(value);
-            if(value[1]=='1'){var status= 'Approved'}
-            if(value[1]=='2'){var status= 'Submitted'}
-            if(value[1]=='0'){var status= 'Disapproved'}
-        console.log('status: '+ status)
+        console.log('status: ' +req.body.status)
+        // var value = req.body.id1.split(',');
+        // console.log(value);
+            if(req.body.status=='1'){var statuss= 'Approved'}
+            if(req.body.status=='2'){var statuss= 'Submitted'}
+            if(req.body.status=='0'){var statuss= 'Disapproved'}
+        console.log('status: '+ statuss)
         var queryString= `select * from tbl_eventinfo  join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID =  tbl_requirementsinevents.int_eventinfoID where tbl_requirementsinevents.int_eventinfoID =?`
         var queryString1 = `UPDATE tbl_requirements SET var_reqstatus = ? where int_requirementID = ?;`;
         
-            db.query(queryString,[value[0]], (err, results, fields) => {
+            db.query(queryString,[req.body.id1], (err, results, fields) => {
                 reqqID=results[0];
                 if (err) console.log(err);       
                 console.log(results)
-                db.query(queryString1,[status, reqqID.int_requirementID], (err, results, fields) => {
+                db.query(queryString1,[statuss, reqqID.int_requirementID], (err, results, fields) => {
                     if (err) console.log(err);       
                     console.log(results)
-                    if(status!='Disapproved'){
+                    if (err){
                         console.log(err)
-                        res.send({statu:1})
+                        res.send({alertDesc:notsuccess})
                     }
                     else{
-                        res.send({statu:0})
+                        res.send({alertDesc:success})
                     }
                 }); 
             }); 
@@ -368,21 +371,25 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     secretariatRouter.post('/transaction-baptism/changeapprovalstatus', (req, res)=>{
         var success =0
         var notsuccess =1
+        // console.log('body: ' +req.body.id1)
+        // var value = req.body.id1.split(',');
+        // console.log(value);
+        var success =0
+        var notsuccess =1
         console.log('body: ' +req.body.id1)
-        var value = req.body.id1.split(',');
-        console.log(value);
-            if(value[1]=='1'){var status= 'Approved'}
-            if(value[1]=='2'){var status= 'Pending'}
-            if(value[1]=='0'){var status= 'Disapproved'}
-
-        console.log('status: '+ status)
+        console.log('status: ' +req.body.status)
+        if(req.body.status=='1'){var statuss= 'Approved'}
+        if(req.body.status=='2'){var statuss= 'Pending'}
+        if(req.body.status=='0'){var statuss= 'Disapproved'}
+        console.log('status: '+ statuss)
+        
         var queryString = `UPDATE tbl_eventinfo SET        
                 char_approvalstatus = ?
                 where int_eventinfoID = ?;`;
 
-        db.query(queryString,[status,value[0]], (err, results, fields) => {
-            console.log(results)
-            if(status!='Disapproved'){
+        db.query(queryString,[statuss,req.body.id1], (err, results, fields) => {
+            console.log('update resultss tae mo : ' +results)
+            if(statuss!='Disapproved '){
                 if(err) throw err
                             var queryString8 = `SELECT tbl_user.int_userID, tbl_eventinfo.date_eventdate, tbl_eventinfo.int_eventinfoID
                             , tbl_eventinfo.time_eventstart from tbl_user JOIN tbl_eventinfo 
@@ -395,7 +402,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                     var queryString9 = `SELECT * FROM tbl_eventinfo 
                                     JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
                                     where int_eventinfoID = ?`
-                                    db.query(queryString9,[value[0]],(err,results,fields)=>{
+                                    db.query(queryString9,[req.body.id1],(err,results,fields)=>{
                                         if(results.var_eventname == "Special Baptism"){
                                         var event = results[0]
                                         console.log("YUNG ICOCOMPARE NA SCHED ")
@@ -419,7 +426,13 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                                         VALUES(${schedules[i].int_userID},now(),${schedules[i].int_eventinfoID})`
                                                         db.query(queryString10,(err,results,fields)=>{
                                                             if(err) throw err;
-                                                            res.send({statu:1})
+                                                            if (err){
+                                                                console.log(err)
+                                                                res.send({alertDesc:notsuccess})
+                                                            }
+                                                            else{
+                                                                res.send({alertDesc:success})
+                                                            }
                                                         })
                                                 } 
                                             }
@@ -432,7 +445,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                             var queryDate = `SELECT date_eventdate FROM tbl_eventinfo WHERE int_eventinfoID = ?`
                                             var queryEvents = `SELECT * FROM tbl_eventinfo WHERE date_eventdate = ?`
                                             var updatePriests = `UPDATE tbl_eventinfo SET int_userpriestID = ? WHERE date_eventdate = ?`
-                                            db.query(queryDate,[value[0]],(err,results,fields)=>{
+                                            db.query(queryDate,[req.body.id1],(err,results,fields)=>{
                                                 baptismDate = results[0].date_eventdate;
                                                 db.query(queryEvents, [results[0].date_eventdate], (err, results, fields) => {
                                                     console.log(results[0])
@@ -443,7 +456,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                                         WHERE tbl_services.var_eventname = "Baptism" 
                                                         order by date_eventdate DESC`
                                                         db.query(queryString1,(err,results,fields)=>{
-                                                            var lastPriest = results[0].int_userID;
+                                                            var lastPriest = results.int_userID;
                                                             console.log(lastPriest)
                                                             var queryString2 = `SELECT int_userID from tbl_user where char_usertype = "Priest"`
                                                             var nextPriest;
@@ -482,10 +495,22 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                     })
                                 }) 
                 console.log(err)
-                res.send({statu:1})
+                if (err){
+                    console.log(err)
+                    res.send({alertDesc:notsuccess})
+                }
+                else{
+                    res.send({alertDesc:success})
+                }
             }
             else{
-                res.send({statu:0})
+                if (err){
+                    console.log(err)
+                    res.send({alertDesc:notsuccess})
+                }
+                else{
+                    res.send({alertDesc:success})
+                }
             }
         }); 
 
@@ -525,9 +550,23 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                     }
         }); 
     }); 
-            
+    secretariatRouter.post('/transaction-baptism/paymentquery', (req, res)=>{
+        var queryString1 =`SELECT * from tbl_eventinfo 
        
-    
+        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        where tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString1,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            
+            res.send(results[0])
+            console.log(results[0])
+        });
+    });
+
 
     
     secretariatRouter.get('/transaction-blessings', (req, res)=>{
@@ -535,6 +574,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+        JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
         join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
         where tbl_services.var_eventname = 'Anointing of the sick'`
 
@@ -552,22 +593,45 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
                 JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
                 JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+                JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
+                JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
                 join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
-                where tbl_services.var_eventname = 'Funeral Service'`
+                where tbl_services.var_eventname = 'Funeral Mass'`
 
                         db.query(queryString3, (err, results, fields) => {
                             if (err) console.log(err);
-                            var funerals = results;                
-                            for(var i = 0; i < funerals.length; i++){
+                            var funerals1 = results;                
+                            for(var i = 0; i < funerals1.length; i++){
                                 
-                                funerals[i].date_birthday= moment(funerals[i].date_birthday).format('MM/DD/YYYY');
-                                funerals[i].date_eventdate= moment(funerals[i].date_eventdate).format('MM/DD/YYYY');
-                                funerals[i].time_eventstart= moment(funerals[i].time_eventstart, 'HH:mm:ss').format('hh:mm A');
+                                funerals1[i].date_birthday= moment(funerals1[i].date_birthday).format('MM/DD/YYYY');
+                                funerals1[i].date_eventdate= moment(funerals1[i].date_eventdate).format('MM/DD/YYYY');
+                                funerals1[i].time_eventstart= moment(funerals1[i].time_eventstart, 'HH:mm:ss').format('hh:mm A');
                                 
                             }   
+                            var queryString3 =`SELECT * FROM tbl_eventinfo 
+                            JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+                            JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
+                            JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+                            JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                            JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
+                            join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
+                            where tbl_services.var_eventname = 'Funeral Service'`
+            
+                                    db.query(queryString3, (err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var funerals2 = results;                
+                                        for(var i = 0; i < funerals2.length; i++){
+                                            
+                                            funerals2[i].date_birthday= moment(funerals2[i].date_birthday).format('MM/DD/YYYY');
+                                            funerals2[i].date_eventdate= moment(funerals2[i].date_eventdate).format('MM/DD/YYYY');
+                                            funerals2[i].time_eventstart= moment(funerals2[i].time_eventstart, 'HH:mm:ss').format('hh:mm A');
+                                            
+                                        }   
 
                     var queryString4 =`SELECT * FROM tbl_houseblessing 
-                    JOIN tbl_user on tbl_houseblessing.int_userID =tbl_user.int_userID`
+                    JOIN tbl_user on tbl_houseblessing.int_userID =tbl_user.int_userID
+                    JOIN tbl_requirementshouse ON tbl_requirementshouse.int_houseblessID = tbl_houseblessing.int_houseblessID`
 
                         db.query(queryString4, (err, results, fields) => {
                             if (err) console.log(err);
@@ -580,10 +644,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                 
                             }   
 
-                            return res.render('secretariat/views/transactions/eventapp/blessings',{anointings:anointings, funerals:funerals, establishments:establishments});
+                            return res.render('secretariat/views/transactions/eventapp/blessings',{anointings:anointings, funerals1:funerals1,funerals2:funerals2, establishments:establishments});
         });
         });  
-        }); 
+        });
+    }); 
     });
     secretariatRouter.post('/transaction-blessings/query', (req, res)=>{
         var queryString1 =`SELECT * from tbl_eventinfo 
@@ -690,6 +755,201 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             })
         })
     })
+    secretariatRouter.post('/transaction-blessings/changerequirementstatus', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        console.log('body: ' +req.body.id1)
+        console.log('status: ' +req.body.status)
+        // var value = req.body.id1.split(',');
+        // console.log(value);
+            if(req.body.status=='1'){var statuss= 'Approved'}
+            if(req.body.status=='2'){var statuss= 'Submitted'}
+            if(req.body.status=='0'){var statuss= 'Disapproved'}
+        console.log('status: '+ statuss)
+        var queryString= `select * from tbl_eventinfo  join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID =  tbl_requirementsinevents.int_eventinfoID where tbl_requirementsinevents.int_eventinfoID =?`
+        var queryString1 = `UPDATE tbl_requirements SET var_reqstatus = ? where int_requirementID = ?;`;
+        
+            db.query(queryString,[req.body.id1], (err, results, fields) => {
+                reqqID=results[0];
+                if (err) console.log(err);       
+                console.log(results)
+                db.query(queryString1,[statuss, reqqID.int_requirementID], (err, results, fields) => {
+                    if (err) console.log(err);       
+                    console.log(results)
+                    if (err){
+                        console.log(err)
+                        res.send({alertDesc:notsuccess})
+                    }
+                    else{
+                        res.send({alertDesc:success})
+                    }
+                }); 
+            }); 
+        
+        
+    });
+    secretariatRouter.post('/transaction-blessings/changeestrequirementstatus', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        console.log('body: ' +req.body.id1)
+        console.log('status: ' +req.body.status)
+        // var value = req.body.id1.split(',');
+        // console.log(value);
+            if(req.body.status=='1'){var statuss= 'Approved'}
+            if(req.body.status=='2'){var statuss= 'Submitted'}
+            if(req.body.status=='0'){var statuss= 'Disapproved'}
+        console.log('status: '+ statuss)
+        var queryString= `select * from tbl_houseblessing join tbl_requirementshouse on tbl_houseblessing.int_houseblessID =  tbl_requirementshouse.int_houseblessID where tbl_requirementshouse.int_houseblessID =?`
+        var queryString1 = `UPDATE tbl_requirementshouse SET var_reqstatus = ? where int_requirementhouseID = ?;`;
+        
+            db.query(queryString,[req.body.id1], (err, results, fields) => {
+                reqqID=results[0];
+                if (err) console.log(err);       
+                console.log(results)
+                db.query(queryString1,[statuss, reqqID.int_requirementhouseID], (err, results, fields) => {
+                    if (err) console.log(err);       
+                    console.log(results)
+                    if (err){
+                        console.log(err)
+                        res.send({alertDesc:notsuccess})
+                    }
+                    else{
+                        res.send({alertDesc:success})
+                    }
+                }); 
+            }); 
+        
+        
+    });
+    secretariatRouter.post('/transaction-blessings/changepaymentstatus', (req, res)=>{
+        var success =0
+        var notsuccess =1
+            if(req.body.id1=='1'){var status= 'Paid'}
+            if(req.body.id1=='2'){var status= 'Unpaid'}
+       
+        var nowDate = new Date(); 
+        var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+        console.log('status: '+ status)
+        var queryString= `select * from tbl_eventinfo 
+            join tbl_payment on tbl_eventinfo.int_paymentID = 
+            tbl_payment.int_paymentID
+            
+            where tbl_eventinfo.int_eventinfoID =?`
+        var queryString1 = `UPDATE tbl_payment SET        
+                char_paymentstatus = ?,
+                datetime_paymentreceived = ?
+                where int_paymentID = ?;`;
+
+        db.query(queryString,[req.body.id1], (err, results, fields) => {
+            reqqID=results[0];
+            if (err) console.log(err);       
+            console.log(results)
+        db.query(queryString1,["Paid", date,reqqID.int_paymentID], (err, results, fields) => {
+            if (err) console.log(err);       
+            console.log(results)
+            if (err){
+                console.log(err)
+                res.send({alertDesc:notsuccess})
+            }
+            else{
+                res.send({alertDesc:success})
+            }
+        }); }); 
+        
+    });
+    secretariatRouter.post('/transaction-blessings/changeapprovalstatus', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        // console.log('body: ' +req.body.id1)
+        // var value = req.body.id1.split(',');
+        // console.log(value);
+        var success =0
+        var notsuccess =1
+        console.log('body: ' +req.body.id1)
+        console.log('status: ' +req.body.status)
+        if(req.body.status=='1'){var statuss= 'Approved'}
+        if(req.body.status=='2'){var statuss= 'Pending'}
+        if(req.body.status=='0'){var statuss= 'Disapproved'}
+        console.log('status: '+ statuss)
+        
+        var queryString = `UPDATE tbl_eventinfo SET        
+                char_approvalstatus = ?
+                where int_eventinfoID = ?;`;
+
+        db.query(queryString,[statuss,req.body.id1], (err, results, fields) => {
+            console.log('update resultss tae mo : ' +results)
+            if (err){
+                console.log(err)
+                res.send({alertDesc:notsuccess})
+            }
+            else{
+                res.send({alertDesc:success})
+            }
+        }); 
+
+
+
+
+
+
+        
+    });
+    secretariatRouter.post('/transaction-blessings/changeestapprovalstatus', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        // console.log('body: ' +req.body.id1)
+        // var value = req.body.id1.split(',');
+        // console.log(value);
+        var success =0
+        var notsuccess =1
+        console.log('body: ' +req.body.id1)
+        console.log('status: ' +req.body.status)
+        if(req.body.status=='1'){var statuss= 'Approved'}
+        if(req.body.status=='2'){var statuss= 'Pending'}
+        if(req.body.status=='0'){var statuss= 'Disapproved'}
+        console.log('status: '+ statuss)
+        
+        var queryString = `UPDATE tbl_houseblessing SET        
+                char_approvalstatus = ?
+                where int_houseblessID = ?;`;
+
+        db.query(queryString,[statuss,req.body.id1], (err, results, fields) => {
+            console.log('update resultss tae mo : ' +results)
+            if (err){
+                console.log(err)
+                res.send({alertDesc:notsuccess})
+            }
+            else{
+                res.send({alertDesc:success})
+            }
+        }); 
+
+
+
+
+
+
+        
+    });
+    secretariatRouter.post('/transaction-blessings/paymentquery', (req, res)=>{
+        var queryString1 =`SELECT * from tbl_eventinfo 
+       
+        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_blessing ON tbl_blessing.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        where tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString1,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            
+            res.send(results[0])
+            console.log(results[0])
+        });
+    });
+    
+
+
     secretariatRouter.get('/transaction-confirmation', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
@@ -830,11 +1090,13 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             res.send(results[0])
         })
     })
+
+
     secretariatRouter.get('/transaction-marriage', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
         
-         
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         JOIN tbl_wedbride on tbl_eventinfo.int_eventinfoID = tbl_wedbride.int_eventinfoID
@@ -952,6 +1214,102 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             res.send(results[0])
         })
     })
+    secretariatRouter.post('/transaction-marriage/paymentquery', (req, res)=>{
+        var queryString1 =`SELECT * from tbl_eventinfo 
+       
+        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        where tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString1,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            
+            res.send(results[0])
+            console.log(results[0])
+        });
+    });
+    secretariatRouter.post('/transaction-marriage/changepaymentstatus', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        // var status='';
+        console.log('body: ' +req.body.id1)
+        var value = req.body.id1.split(',');
+        console.log(value);
+        // for(var i=0; i>value.length; i++){
+            if(value[1]=='1'){var status= 'Paid'}
+            if(value[1]=='2'){var status= 'Unpaid'}
+            // if(value[1]=='3'){var status= 'Disapproved'}
+        // }
+
+        var nowDate = new Date(); 
+        var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+        console.log('status: '+ status)
+        var queryString= `select * from tbl_eventinfo 
+            join tbl_payment on tbl_eventinfo.int_paymentID = 
+            tbl_payment.int_paymentID
+            
+            where tbl_eventinfo.int_eventinfoID =?`
+        var queryString1 = `UPDATE tbl_payment SET        
+                char_paymentstatus = ?,
+                datetime_paymentreceived = ?
+                where int_paymentID = ?;`;
+
+        db.query(queryString,[value[0]], (err, results, fields) => {
+            reqqID=results[0];
+            if (err) console.log(err);       
+            console.log(results)
+        db.query(queryString1,[status, date,reqqID.int_paymentID], (err, results, fields) => {
+            if (err) console.log(err);       
+            console.log(results)
+            if (err){
+                console.log(err)
+                res.send({alertDesc:notsuccess})
+            }
+            else{
+                res.send({alertDesc:success})
+            }
+        }); }); 
+        
+    });
+    secretariatRouter.post('/transaction-marriage/changeapprovalstatus', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        // console.log('body: ' +req.body.id1)
+        // var value = req.body.id1.split(',');
+        // console.log(value);
+        var success =0
+        var notsuccess =1
+        console.log('body: ' +req.body.id1)
+        console.log('status: ' +req.body.status)
+        if(req.body.status=='1'){var statuss= 'Approved'}
+        if(req.body.status=='2'){var statuss= 'Pending'}
+        if(req.body.status=='0'){var statuss= 'Disapproved'}
+        console.log('status: '+ statuss)
+        
+        var queryString = `UPDATE tbl_eventinfo SET        
+                char_approvalstatus = ?
+                where int_eventinfoID = ?;`;
+
+        db.query(queryString,[statuss,req.body.id1], (err, results, fields) => {
+            console.log('update resultss tae mo : ' +results)
+            if (err){
+                console.log(err)
+                res.send({alertDesc:notsuccess})
+            }
+            else{
+                res.send({alertDesc:success})
+            }
+        }); 
+    }); 
+    
+
+
+
+
+
+
+
+
     secretariatRouter.get('/transaction-eventproposal', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_specialevent 
         JOIN tbl_user on tbl_specialevent.int_userID = tbl_user.int_userID`

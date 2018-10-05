@@ -149,16 +149,34 @@ html
 						//- 					a(href='#') Marriage
 						//- 		li
 						//- 			a(href='#') Facility Reservation
-						li.nav-item
-							a.sidebar-link(href='#reports')
-								span.icon-holder
-									i.c-light-blue-500.ti-pencil
-								span.title Reports
 						li.nav-item.dropdown
-							a.sidebar-link(href='#queries')
+							a.dropdown-toggle(href='javascript:void(0);')
 								span.icon-holder
-									i.c-pink-500.ti-palette
+									i.c-orange-500.ti-pencil
+								span.title Reports
+								span.arrow
+									i.ti-angle-right
+							ul.dropdown-menu
+								li
+									a.sidebar-link(href='/admin/reports-services') Services
+								li
+									a.sidebar-link(href='/admin/reports-specialservices') Special Services
+								//- li
+								//- 	a.sidebar-link(href='/admin/reports-facilities') Facilities
+								//- li
+								//- 	a.sidebar-link(href='/admin/reports-items') Facility Items
+						li.nav-item.dropdown
+							a.dropdown-toggle(href='javascript:void(0);')
+								span.icon-holder
+									i.c-orange-500.ti-pencil
 								span.title Queries
+								span.arrow
+									i.ti-angle-right
+							ul.dropdown-menu
+								li
+									a.sidebar-link(href='/admin/queries-services') Services
+								li
+									a.sidebar-link(href='/admin/queries-specialservices') Special Services
 								
 						li.nav-item.dropdown
 							//- a.dropdown-toggle(href='/admin/utilities')
