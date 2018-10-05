@@ -1,0 +1,43 @@
+extends ../../../../templates/admin
+block prepend main
+	#wrap
+	div(style='clear:both')
+	.content
+		.container-fluid
+
+			.row
+				.col-lg-12.col-md-12
+						.card
+								.card-header.card-header-primary(style='background:#367587; color:white')
+									.row
+										.col-md-6
+											h4.card-title(style='background:#367587; color:white') Special Events
+										.col-md-6
+											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Event
+								.card-body.table-responsive
+										table.dataTable.table.table-hover.dt-responsive
+												thead.text-primary
+														//- th ID
+														th Service Name
+														th Name
+														//- th Father's Name
+														//- th Mother's Name
+														th Event Date
+														th Event Time
+														//- th Diff
+														
+												tbody
+													tr
+														each query in queries
+															td=query.var_eventname
+															td=query.var_lname +", "+ query.var_fname
+															//- td=query.var_fathername
+															//- td=query.var_mothername
+															td=query.date_eventdate
+															td=query.time_eventstart
+
+																
+	
+block addjs
+	script.
+		

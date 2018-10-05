@@ -22,7 +22,7 @@ block prepend main
 						#nonwedding.tab-pane.active.mx-3
 							br
 							.tab-content
-								#regularbaptism.tab-pane.active
+								#reservationsbaptism.tab-pane.active
 									br
 									.card.shadow
 											.card-header.card-header-primary(style='background:#367587; color:white')
@@ -34,7 +34,9 @@ block prepend main
 																	th Reserved by
 																	th Reserved From
 																	th Reserved Until
-																	th Status
+																	th Requirement Status
+																	th Payment Status
+																	th Reservation Status
 																	th.text-center(style=" width:120px") Actions
 															tbody
 																	each reservation in reservations
@@ -43,16 +45,184 @@ block prepend main
 																			td=reservation.var_userlname + ", " + reservation.var_userfname
 																			td=reservation.datetime_reservestart
 																			td=reservation.datetime_reserveend 
-																			td=reservation.char_reservestatus
-											
-																			td.td-actions.text-center
-																				button.btn.btn-primary.actionButton(type='button' value=`${reservation.int_reservationID}`)
-																					i.ti-settings
-																						#toolbar-options.hidden
-																							a.viewButton(href='#')
-																								i.ti-new-window(style="color:white;")
-																							a.updateButton(href='#')
-																								i.ti-pencil(style="color:white;")
+																			if(reservations.char_approvalstatus=='Cancelled')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)=reservations.var_reqstatus
+																						option  --------------
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)=reservations.char_paymentstatus
+																						option  --------------
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:red' disabled)
+																						option(value=`${reservations.int_eventinfoID},3` style='color:red')=reservations.char_approvalstatus
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${reservations.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
+																			if(reservations.char_approvalstatus=='Disapproved')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																						option(value=`${reservations.int_eventinfoID},1` style='color:green')=reservations.var_reqstatus
+																				td
+																					select#selectBox(onchange='payment(value);' style='color:grey' disabled)
+																						option(value=`${reservations.int_eventinfoID},1` style='color:green')=reservations.char_paymentstatus
+																				td
+																					select#selectBox(onchange='approval(value);' style='color:red')
+																						option(value=`${reservations.int_eventinfoID},3` style='color:red')=reservations.char_approvalstatus
+																						option(value=`${reservations.int_eventinfoID},2` style='color:orange') Pending
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${reservations.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
+
+																			if(reservations.char_approvalstatus=='Approved')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:green' disabled)
+																						option(value=`${reservations.int_eventinfoID},1` style='color:green')=reservations.var_reqstatus
+																				td
+																					select#selectBox(onchange='payment(value);' style='color:green' disabled)
+																						option(value=`${reservations.int_eventinfoID},1` style='color:green')=reservations.char_paymentstatus
+																				td
+																					select#selectBox(onchange='approval(value);' style='color:green' disabled)
+																						option(value=`${reservations.int_eventinfoID},1` style='color:green') Approved
+																						option(value=`${reservations.int_eventinfoID},2` style='color:orange') Pending
+																						option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${reservations.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
+																			
+																			if(reservations.var_reqstatus=='Disapproved'&& reservations.char_approvalstatus=='Pending')
+
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:red')
+																						option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																						option(value=`${reservations.int_eventinfoID},1` style='color:green') Approved
+																						option(value=`${reservations.int_eventinfoID},2` style='color:orange') Submitted
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																						option(value=`${reservations.int_eventinfoID},1` style='color:green')=reservations.char_paymentstatus
+																				td
+																					select#selectBox(onchange='approval(value);' style='color:grey' disabled)
+																						option(value=`${reservations.int_eventinfoID},3` style='color:red')=reservations.char_approvalstatus
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${reservations.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
+
+																			if(reservations.var_reqstatus=='Approved'&&reservations.char_paymentstatus=='Paid'&&reservations.char_approvalstatus=='Pending')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:green')
+																							option(value=`${reservations.int_eventinfoID},1` style='color:green') Approved
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Submitted
+																							option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																				td
+																						select#selectBox(onchange='payment(value);' style='color:green' disabled)
+																							option(value=`${reservations.int_eventinfoID},1` style='color:green') Paid
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Unpaid
+																				td
+																						select#selectBox(onchange='approval(value);' style='color:orange')
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Pending
+																							option(value=`${reservations.int_eventinfoID},1` style='color:green') Approved
+																							option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${reservations.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
+																			
+
+
+																			if(reservations.var_reqstatus!='Approved'&&reservations.char_paymentstatus=='Paid'&&reservations.char_approvalstatus=='Pending')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:orange')
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange')=reservations.var_reqstatus
+																							option(value=`${reservations.int_eventinfoID},1` style='color:green') Approved
+																							option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																				td
+																						select#selectBox(onchange='payment(value);' style='color:green' disabled)
+																							option(value=`${reservations.int_eventinfoID},1` style='color:green') Paid
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Unpaid
+																				td
+																						select#selectBox(onchange='approval(value);' style='color:orange')
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Pending
+																							option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${reservations.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
+																			if(reservations.var_reqstatus=='Approved'&&reservations.char_paymentstatus!='Paid'&&reservations.char_approvalstatus=='Pending')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:green')
+																							option(value=`${reservations.int_eventinfoID},2` style='color:green')=reservations.var_reqstatus
+																							option(value=`${reservations.int_eventinfoID},1` style='color:orange') Submitted
+																							option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																				td
+																						select#selectBox(onchange='payment(value);' style='color:orange')
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Unpaid
+																							option(value=`${reservations.int_eventinfoID},1` style='color:green') Paid
+																				td
+																						select#selectBox(onchange='approval(value);' style='color:orange')
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Pending
+																							option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${reservations.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
+
+
+																			
+																			if(reservations.char_approvalstatus=='Pending'&& reservations.var_reqstatus!='Approved'||reservations.char_paymentstatus!='Paid')
+																				td
+																					
+																					if(reservations.var_reqstatus=="Submitted")
+																						select#selectBox(onchange='requirement(value);' style='color:orange')
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Submitted
+																							option(value=`${reservations.int_eventinfoID},1` style='color:green') Approved
+																							option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																					
+																					if(reservations.var_reqstatus=="Disapproved")
+																						select#selectBox(onchange='requirement(value);' style='color:red')
+																							option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																							option(value=`${reservations.int_eventinfoID},1` style='color:green') Approved
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Submitted
+																				td
+																					if(reservations.char_paymentstatus=="Unpaid")
+																						select#selectBox(onchange='payment(value);' style='color:orange')
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Unpaid
+																							option(value=`${reservations.int_eventinfoID},1` style='color:green') Paid
+																					
+																				td
+																					if(reservations.char_approvalstatus=="Pending")
+																						select#selectBox(onchange='approval(value);' style='color:orange')
+																							option(value=`${reservations.int_eventinfoID},2` style='color:orange') Pending
+																							option(value=`${reservations.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${reservations.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
 							  
 	#updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")

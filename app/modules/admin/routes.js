@@ -955,6 +955,57 @@ adminRouter.post('/utilities-clients-info', (req, res)=>{
 
 
 
+adminRouter.get('/reports-services', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_services`
+    var january =`SELECT *, 
+    count(int_eventinfoID) as jan from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID =tbl_eventinfo.int_eventID
+    where tbl_eventinfo.char_approvalstatus='Approved' and (select month(date_eventdate) as date_eventdate) =1 `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var reports = results;
+        db.query(january, (err, results, fields) => {
+            if (err) console.log(err);       
+            reports.jan = results;
+          
+            
+            
+        return res.render('admin/views/reports/services',{ reports : reports, jan:jan, feb:feb, mar:mar });
+    
+}); }); 
+});
+
+
+adminRouter.get('/queries-services', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_eventinfo
+    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+        JOIN tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
+        JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        where tbl_services.var_eventname ='Baptism'`
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+            }
+        // for(var i=0; i>queries.length; i++){
+        //     queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+        //     queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+        // }
+            
+        return res.render('admin/views/queries/services',{ queries : queries});
+    
+}); 
+});
+
+
+
+
 //===============================================================================================//
     adminRouter.use(function (err, req, res, next) {
         console.error(err.stack)
