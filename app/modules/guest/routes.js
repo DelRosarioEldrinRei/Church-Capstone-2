@@ -686,17 +686,17 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                                         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
                                         for(i=0;i<8;i++)
                                         text += possible.charAt(Math.floor(Math.random()*possible.length));
-                                        
-                                        // var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode) VALUES(?,?,?,?,?)`
-                                        // db.query(queryString9,[eventinfoID.insertId,dateNow,dateDue1,req.session.user.int_userID,text],(err,results,fields)=>{
-                                        //     var voucherResults = results[0]
-                                        //     var queryString10 = `SELECT * FROM tbl_voucherevents WHERE int_voucherID = ?`
-                                        //     db.query(queryString10,[voucherResults.insertId],(err,results,fields)=>{
-                                        //         if (err) throw err;
-                                        //         console.log(results[0])
-                                        //         res.send(results[0]);
-                                        //     })
-                                        // })
+                                        var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode) VALUES(?,?,?,?,?)`
+                                        db.query(queryString9,[eventinfoID.insertId,dateNow,dateDue1,req.session.user.int_userID,text],(err,results,fields)=>{
+                                            var voucherResults = results
+                                            console.log(voucherResults)
+                                            var queryString10 = `SELECT * FROM tbl_voucherevents WHERE int_voucherID = ?`
+                                            db.query(queryString10,[voucherResults.insertId],(err,results,fields)=>{
+                                                if (err) throw err;
+                                                console.log(results[0])
+                                                res.send(results[0]);
+                                            })
+                                        })
                                         });
                                     });
                                 });

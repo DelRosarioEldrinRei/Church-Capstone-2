@@ -239,6 +239,7 @@ block main
 					.modal-body
 						.col-md-12.px-lg-3.px-md-3.px-sm-0
 							.form-group.m-0
+								input.toggle.form-control(type='hidden' name='userID' value='1')
 								p Your application request has been submitted
 						.col-md-6.px-lg-3.px-md-3.px-sm-0
 							.form-group.m-0
@@ -246,7 +247,7 @@ block main
 									p Please Print the Voucher and pay until before the due date
 									button.btn.std-btn#voucherButton Click to view and downlad
 					.modal-footer
-						button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal' disabled='true') Close
+						a.filter.btn.btn-common(href=`/guest`) OK
 						// Form Wizard
 block addjs
 	script.
@@ -429,6 +430,10 @@ block addjs
 
 									$(document).off('click', '#voucherButton')
 									$.post('/guest/voucherEvents',{voucherId:data.int_voucherID}).done(data=>{
+										for(i=0;i<data.sponsors.length;i++){
+										console.log("sponsors"+data.sponsors[i])
+										}
+										console.log("info"+data.voucherinfo[0])
 										$(document).off('click', '#voucherButton')
 											function toDataURL(url, callback) {
 												var xhr = new XMLHttpRequest();
@@ -509,50 +514,45 @@ block addjs
 															//- },
 															//Middle part
 															{
-															text:`${data.voucherinfo.var_userfname} ${data.voucherinfo.var_userlname}`,
+															text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:51, y:127},
 															},
 															{
-															text:`${data.voucherinfo.var_useraddress}`,
+															text:`${data.voucherinfo[0].var_useraddress}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:51, y:140},
 															},
 															{
-															text:`# ${data.voucherinfo.var_vouchercode}`,
+															text:`# ${data.voucherinfo[0].var_vouchercode}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:127},
 															},
 															{
-															text:`${data.voucherinfo.date_issued}`,
+															text:`${data.voucherinfo[0].date_issued}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:140},
 															},
 															{
-															text:`${data.voucherinfo.date_due}`,
+															text:`${data.voucherinfo[0].date_due}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:153},
-															},
-															{
-															text: `₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
-															style: 'styleLabelMiddleTA',
-															absolutePosition: {x:505, y:143},
 															},
 															//table Contents
 															// .toUpperCase() yung event name before ilagay sa pdfmake
 															//ito yung ifoforeach mu rae
 															{ 
-															text: `${data.voucherinfo.var_eventname}`,
+															text: `${data.voucherinfo[0].var_eventname}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:217},
 															},
 															{
-															text: `₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
+															text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:217},
 															},
 															{
-															text:`₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
+															text:`₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:507, y:217},
 															},
@@ -574,7 +574,7 @@ block addjs
 															},
 															//total amount
 															{
-															text: `₱ ${((data.sponsors.length*50) + data.voucherinfo.dbl_amount).toFixed(2)}`,
+															text: `₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
 															style: 'styleLabelTA',
 															absolutePosition: {x:476, y:354},
 															},
@@ -617,32 +617,32 @@ block addjs
 															},
 															//Middle part
 															{
-															text:`${data.voucherinfo.var_userfname} ${data.voucherinfo.var_userlname}`,
+															text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:51, y:514},
 															},
 															{
-															text:`${data.voucherinfo.var_useraddress}`,
+															text:`${data.voucherinfo[0].var_useraddress}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:51, y:527},
 															},
 															{
-															text:`# ${data.voucherinfo.var_vouchercode}`,
+															text:`# ${data.voucherinfo[0].var_vouchercode}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:514},
 															},
 															{
-															text:`${data.voucherinfo.date_issued}`,
+															text:`${data.voucherinfo[0].date_issued}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:527},
 															},
 															{
-															text:`${data.voucherinfo.date_due}`,
+															text:`${data.voucherinfo[0].date_due}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:540},
 															},
 															{
-															text: `₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
+															text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
 															style: 'styleLabelMiddleTA',
 															absolutePosition: {x:505, y:530},
 															},
@@ -650,17 +650,17 @@ block addjs
 															// .toUpperCase() yung event name before ilagay sa pdfmake
 															//ito yung ifoforeach mu rae
 															{
-															text: `${data.voucherinfo.var_eventname}`,
+															text: `${data.voucherinfo[0].var_eventname}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:604},
 															},
 															{
-															text:  `₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
+															text:  `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:604},
 															},
 															{
-															text: `₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
+															text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:507, y:604},
 															},
@@ -682,7 +682,7 @@ block addjs
 															},
 															//total amount
 															{
-															text: `₱ ${((data.sponsors.length*50) + data.voucherinfo.dbl_amount).toFixed(2)}`,
+															text: `₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
 															style: 'styleLabelTA',
 															absolutePosition: {x:476, y:741},
 															},
@@ -693,7 +693,7 @@ block addjs
 															absolutePosition: {x:338, y:776},
 															},
 															//- {
-															//- text:`${data.int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
+															//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
 															//- style: 'styleLabelFill',
 															//- absolutePosition: {x:520, y:28},
 															//- text: 'Date: ' + dateRequested,
