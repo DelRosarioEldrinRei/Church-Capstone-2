@@ -1171,8 +1171,8 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
             db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
                 if (err) console.log(err);
                 var paymentid= results;
-        var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID , date_eventdate, time_eventstart, char_approvalstatus, int_paymentID) VALUES(?,?,?,?,? ,?)`;
-            db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID, req.body.desireddate1, desiredtime1,"Pending", paymentid.insertId], (err, results, fields) => {
+        var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID , date_eventdate, time_eventstart, char_approvalstatus, int_paymentID, char_requirements) VALUES(?,?,?,?,?,?,?)`;
+            db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID, req.body.desireddate1, desiredtime1,"Pending", paymentid.insertId, "Incomplete"], (err, results, fields) => {
                 if (err) console.log(err);
                 var eventinfoID= results;
                     var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?);`

@@ -9,6 +9,15 @@ priestRouter.use(authMiddleware.priestAuth)
 //===============================================================================================//
 // I N D E X //
 //===============================================================================================//
+priestRouter.get('/updateaccount', (req, res)=>{
+    var queryString=`UPDATE tbl_user SET var_userstatus=? WHERE int_userID= ?`
+            db.query(queryString, ['Active', req.session.priest.int_userID], (err, results, fields) => {
+                if (err) throw err;
+                
+                res.redirect('/priest');
+            });
+        });
+
 priestRouter.get('/', (req, res)=>{
     var queryString1 =`SELECT * FROM tbl_notification 
     JOIN tbl_user ON tbl_user.int_userID = tbl_notification.int_userID
