@@ -704,8 +704,47 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                         var timeRequestedEnd = moment(req.body.timeRequested,'HH:mm:ss').add(1,'h').format('HH:mm:ss')
                         var dateRequested = moment(req.body.dateRequested).format('YYYY-MM-DD')
                         db.query(queryString4,[dateRequested,req.body.timeRequested,timeRequestedEnd,req.body.eventid],(err,results,fields) =>{
-                            if(err) throw err
-                            return res.redirect('/secretariat/transaction-blessings')
+                            var queryString8 = `SELECT tbl_user.int_userID, tbl_eventinfo.date_eventdate, tbl_eventinfo.int_eventinfoID
+                            , tbl_eventinfo.time_eventstart from tbl_user JOIN tbl_eventinfo 
+                            ON tbl_eventinfo.int_userpriestID = tbl_user.int_userID`
+                            db.query(queryString8,(err,results1,fields)=>{
+                                if(err) throw err
+                                    var schedules = results1;
+                                    console.log("SCHEDULE NG MGA PARI")
+                                    console.log(schedules)
+                                    var queryString9 = `SELECT * FROM tbl_eventinfo 
+                                    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+                                    where int_eventinfoID = ?`
+                                    db.query(queryString9,[value[0]],(err,results,fields)=>{
+                                        var event = results[0]
+                                        console.log("YUNG ICOCOMPARE NA SCHED ")
+                                        console.log(event.date_eventdate,event.time_eventstart)
+                                        console.log(schedules.length)
+                                            for(i=0;i<schedules.length;i++){
+                                                console.log("PASOK: " + i)   
+                                                schedules[i].date_eventdate = moment(schedules[i].date_eventdate,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD')
+                                                event.date_eventdate = moment(event.date_eventdate,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD')
+                                                console.log(event.date_eventdate + "?=" + schedules[i].date_eventdate )
+                                                console.log(schedules[i].time_eventstart + "?=" + event.time_eventstart)
+                                                if(moment(schedules[i].date_eventdate).isSame(event.date_eventdate) && schedules[i].time_eventstart == event.time_eventstart){  
+                                                        console.log("WALANG PUMASOK KASE BUSY LAHAT TANGINA")
+                                                }
+                                                else{
+                                                    console.log("PASOK: " + i)
+                                                    var nowDate = new Date();
+                                                    var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+                                                        console.log(date)
+                                                        var queryString10 = `INSERT INTO tbl_notification(int_userID,datetime_received,int_eventinfoID)
+                                                        VALUES(${schedules[i].int_userID},now(),${schedules[i].int_eventinfoID})`
+                                                        db.query(queryString10,(err,results,fields)=>{
+                                                            if(err) throw err;
+                                                            return res.redirect('/secretariat/transaction-blessings')
+                                                            
+                                                        })
+                                                } 
+                                            }
+                                        })
+                                    })
                         })
                     }) 
                 }
