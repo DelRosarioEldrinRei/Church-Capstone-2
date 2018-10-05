@@ -139,12 +139,32 @@ guestRouter.get('/notification', (req, res)=>{
 
 });
 guestRouter.get('/messages', (req, res)=>{
-    var queryString1 =`SELECT * from tbl_message 
-    WHERE int_receiverID =?`
+    var queryString1 =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID= tbl_message.int_senderID
+    WHERE tbl_message.int_receiverID =?`
     db.query(queryString1, [req.session.user.int_userID], (err, results, fields) => {
         if (err) console.log(err);
-        return res.render('guest/views/others/messages',{ notifications: results });
-    });
+        for(var i=0; i>results.length; i++){
+            results[i].datetime_sent= moment(results[i].datetime_sent).format('MM/DD/YYYY h:mm a');
+            console.log(results[i].datetime_sent)
+        }
+        
+        var inboxs= results;
+
+        var queryString =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID= tbl_message.int_receiverID
+        WHERE int_senderID =?`
+        db.query(queryString, [req.session.user.int_userID], (err, results, fields) => {
+            if (err) console.log(err);
+            for(var o=0; o>results.length; o++){
+                results[o].datetime_sent= moment(results[o].datetime_sent).format('MM/DD/YYYY h:mm a');
+            }
+            var sents= results;
+            
+            // console.log('Inbox: '+JSON.stringify(inboxs))
+            console.log(inboxs)
+            console.log('Sent: '+JSON.stringify(sents))
+
+        return res.render('guest/views/others/messages',{ inboxs: inboxs, sents:sents });
+    });});
 
 });
 

@@ -27,7 +27,7 @@ block prepend main
 																td=requirement.var_reqname
 																td=requirement.var_reqdesc
 																td.td-actions.text-center
-																	button.btn.btn-primary.actionButton(type='button' value=`${requirement.int_docureqtypeID}`)
+																	button.btn.btn-primary.actionButton(type='button' value=`${requirement.int_servicereqtypeID}`)
 																		i.ti-settings
 																			#toolbar-options.hidden
 																				a.updateButton(href='#')
@@ -103,7 +103,7 @@ block addjs
 		
 
 		$('.updateButton').click(function(){
-			var idNow = $(this).val();
+			
 			console.log(idNow)
 				$.post('/admin/maintenance-document-requirements/query',{id:idNow})
 			.done(data=>{
