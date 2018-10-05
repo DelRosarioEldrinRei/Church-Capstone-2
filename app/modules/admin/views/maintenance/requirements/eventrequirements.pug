@@ -21,22 +21,22 @@ block prepend main
 								.card-body.table-responsive
 										table.table.table-hover.dataTable
 												thead.text-primary
-														th ID
+														//- th ID
+														th Event
 														th Requirement
 														th Description
 														th Mode
 														th Requirement Origin
-														th Event
 														th.text-center(style=" width:120px") Actions
 												tbody
 														each requirement in requirements
 															tr
-																td=requirement.int_reqtypeID
+																//- td=requirement.int_reqtypeID
+																td=requirement.var_eventname
 																td=requirement.var_reqname
 																td=requirement.var_reqdesc
 																td=requirement.char_reqmode
 																td=requirement.char_reqtype
-																td=requirement.var_eventname
 																td.td-actions.text-center
 																	button.btn.btn-primary.actionButton(type='button' value=`${requirement.int_reqtypeID}`)
 																		i.ti-settings

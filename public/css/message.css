@@ -1,4 +1,4 @@
-.container{max-width:1170px; margin:auto;}
+.container{max-width:1070px; margin:auto;}
 img{ max-width:100%;}
 .inbox_people {
   background: #f8f8f8 none repeat scroll 0 0;
@@ -54,9 +54,11 @@ img{ max-width:100%;}
 .chat_list {
   border-bottom: 1px solid #c4c4c4;
   margin: 0;
-  padding: 18px 16px 10px;
+  padding: 18px 0rem 10px 2.5rem;
+  cursor: pointer;
 }
 .inbox_chat { height: 550px; overflow-y: scroll;}
+.sent_messages { height: 550px; overflow-y: scroll; display: none;}
 
 .active_chat{ background:#ebebeb;}
 
@@ -76,8 +78,28 @@ img{ max-width:100%;}
   color: #646464;
   font-size: 14px;
   margin: 0;
-  padding: 5px 10px 5px 12px;
+  padding: 5px 25px 15px 22px;
   width: 100%;
+}
+ .received_withd_msg h5 {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  margin: 0;
+  padding: 15px 25px 0px 22px;
+  width: 100%;
+}
+ .received_withd_msg .time_date {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  color: #747474;
+  font-size: 12.5px;
+  margin: 0;
+  padding: 15px 25px 0px 22px;
+  width: 100%;
+}
+ .received_withd_msg .container {
+  background: #ebebeb none repeat scroll 0 0;
+  padding-top: 1rem;
 }
 .time_date {
   color: #747474;
@@ -85,11 +107,19 @@ img{ max-width:100%;}
   font-size: 12px;
   margin: 8px 0 0;
 }
-.received_withd_msg { width: 57%;}
+.received_withd_msg { width: 87%;}
 .mesgs {
+  border-left:1px solid #c4c4c4;
   float: left;
   padding: 30px 15px 0 25px;
   width: 60%;
+}
+.mesgs_compose {
+  border-left:1px solid #c4c4c4;
+  float: left;
+  padding: 30px 15px 0 25px;
+  width: 60%;
+  display:none;
 }
 
  .sent_msg p {
@@ -113,6 +143,16 @@ img{ max-width:100%;}
   min-height: 48px;
   width: 100%;
 }
+.input_msg_write textarea {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #4c4c4c;
+  font-size: 15px;
+  min-height: 390px;
+  width: 100%;
+}
 
 .type_msg {border-top: 1px solid #c4c4c4;position: relative;}
 .msg_send_btn {
@@ -131,4 +171,27 @@ img{ max-width:100%;}
 .msg_history {
   height: 516px;
   overflow-y: auto;
+}
+
+.msg_name {
+  font-size: .875rem;
+  letter-spacing: .5px;
+  color: #72777a;
+  font-weight: 600;
+}
+
+.composeClose {
+  cursor: pointer;
+}
+
+.inbox {
+  font-size: 21px;
+  font-weight: 700;
+  cursor: default;
+  /* cursor: pointer; */
+}
+
+.sent {
+  font-size: 21px;
+  cursor: pointer;
 }
