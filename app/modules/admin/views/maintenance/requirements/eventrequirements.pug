@@ -113,11 +113,19 @@ block prepend main
 					.col-md-12.text-center.my-3
 				.modal-footer
 					button.btn.btn-primary#updateSubmitButton(type="button") Update
+
+
+
 block addjs
 	script.
 		$(document).ready(function() {
+			var idNow = 0;
+			$('.actionButton').click(function(){
+				idNow = $(this).val();
+				console.log(idNow)
+			});
 			$('.deleteButton').click(function(){
-				var idNow = $(this).val();
+			
 				swal({
 					title: 'Are you sure?',
 					text: "You won't be able to revert this!",
@@ -146,7 +154,7 @@ block addjs
 		
 
 			$('.updateButton').click(function(){
-				var idNow = $(this).val();
+				
 				console.log(idNow)
 					$.post('/admin/maintenance-service-requirements/query',{id:idNow})
 				.done(data=>{
@@ -243,7 +251,7 @@ block addjs
 						};
 					});
 					$('#updateSubmitButton').click(function(){
-						$.post('/admin/maintenance-services-requirements/edit',{
+						$.post('/admin/maintenance-service-requirements/edit',{
 						reqname:$('#reqname').val(),
 						reqdesc:$('#reqdesc').val(),
 						reqmode:$('#reqmode').val(),

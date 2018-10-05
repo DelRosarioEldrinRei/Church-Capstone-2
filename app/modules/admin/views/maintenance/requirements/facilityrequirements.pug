@@ -28,11 +28,14 @@ block prepend main
 																td=requirement.var_reqname
 																td=requirement.var_reqdesc
 																td.td-actions.text-center
-																	button.btn.btn-danger.deleteButton(type='button',rel='tooltip',value=`${requirement.int_facilityreqtypeID}`)
-																		i.ti-close
-																	| &nbsp;
-																	button.btn.btn-primary.updateButton(type='button',rel='tooltip', value=`${requirement.int_facilityreqtypeID}`)
-																		i.ti-pencil
+																	button.btn.btn-primary.actionButton(type='button' value=`${requirement.int_servicereqtypeID}`)
+																		i.ti-settings
+																			#toolbar-options.hidden
+																				a.updateButton(href='#')
+																					i.ti-pencil(style="color:white;")
+																				a.deleteButton(href='#')
+																					i.ti-close(style="color:white;")
+																
 																
 														
 								.card-footer.text-right
@@ -88,8 +91,13 @@ block addjs
 	script(src='/js/forIndex.js')
 	script.
 		$(document).ready(function() {
+			var idNow = 0;
+			$('.actionButton').click(function(){
+				idNow = $(this).val();
+				console.log(idNow)
+			});
 		$('.deleteButton').click(function(){
-			var idNow = $(this).val();
+			console.log(idNow)
 			swal({
 				title: 'Are you sure?',
 				text: "You won't be able to revert this!",
@@ -118,7 +126,7 @@ block addjs
 		
 
 		$('.updateButton').click(function(){
-			var idNow = $(this).val();
+			
 			console.log(idNow)
 				$.post('/admin/maintenance-facility-requirements/query',{id:idNow})
 			.done(data=>{
