@@ -252,4 +252,10 @@ block addjs
         $('.inbox_chat').css('display', 'block');
       });
 
+      $('.chat_list').click(function(e){
+        $('.chat_list.active_chat').removeClass('active_chat');
+        $(this).addClass('active_chat');
+        e.preventDefault();
+      });
+
     });
