@@ -73,7 +73,12 @@ loginRouter.route('/')
                 delete user.var_password;
                 req.session.priest = user;
                 console.log(req.session);
+                if(req.session.priest.var_userstatus=='Unconfirmed'){
+                    return res.redirect('/priest/updateaccount')
+                }
+                else{
                 return res.redirect('/priest');
+                }
             }
 
             if(user.char_usertype=="Guest"){         
@@ -130,15 +135,15 @@ loginRouter.route('/')
             }
                 });
     })
-
+    
     signupRouter.route('/')
     .get(authMiddleware.noAuthed, (req, res) => {
         res.render('auth/views/signup.pug', req.query);
     })
     .post((req, res) => {
         
-        var queryString = `INSERT INTO tbl_user(var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype) VALUES(?,?,?,?,?,?,?,?,?,?)`;
-        db.query(queryString, [req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.contactnumber, req.body.username, req.body.email, req.body.password, "Guest"], (err, results, fields) => {
+        var queryString = `INSERT INTO tbl_user(var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype, var_userstatus) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
+        db.query(queryString, [req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.contactnumber, req.body.username, req.body.email, req.body.password, "Guest", "Active"], (err, results, fields) => {
             if (err) throw err;
             
             res.redirect('/login?signUpSuccess');

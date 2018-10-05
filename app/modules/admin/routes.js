@@ -153,7 +153,7 @@ adminRouter.get('/maintenance-priests', (req, res)=>{
 adminRouter.post('/maintenance-priests/add', (req, res) => {
     var queryString= `INSERT INTO tbl_user( var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype, var_userstatus)
      VALUES(?,?,?,?,?, ?,?,?,?,?,?);`  
-        db.query(queryString, [req.body.var_userlname, req.body.var_userfname, req.body.var_usermname, "Male", req.body.var_useraddress, req.body.var_usercontactnum, req.body.var_username, req.body.var_useremail, req.body.var_password, "Priest", "Active"], (err, results, fields) => {
+        db.query(queryString, [req.body.var_userlname, req.body.var_userfname, req.body.var_usermname, "Male", req.body.var_useraddress, req.body.var_usercontactnum, req.body.var_username, req.body.var_useremail, req.body.var_password, "Priest", "Unconfirmed"], (err, results, fields) => {
             if (err) throw err;
                 return res.redirect('/admin/maintenance-priests');
         });            
@@ -180,7 +180,13 @@ adminRouter.post('/maintenance-priests/query', (req, res) => {
         console.log(results[0])   
     });
 });
-
+adminRouter.post('/maintenance-priests/delete', (req, res) => {
+    const queryString = `DELETE FROM tbl_user WHERE int_userID= ?`;
+    db.query(queryString,[req.body.id1], (err, results, fields) => {        
+        if (err) throw err;
+        return res.redirect('/admin/maintenance-priests');
+    });
+});
 adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
     var success =0
     var notsuccess =1
@@ -448,7 +454,7 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
 //=======================================================
     adminRouter.get('/maintenance-service-requirements', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_requirementtype 
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_requirementtype.int_eventID`
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_requirementtype.int_eventID where tbl_services.var_eventname<>'Marriage' order by tbl_services.var_eventname`
         db.query(queryString1, (err, results1, fields) => {
             var queryString2 =`SELECT * FROM tbl_services`
             db.query(queryString2, (err, results2, fields) => {
