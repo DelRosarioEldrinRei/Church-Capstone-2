@@ -424,14 +424,8 @@ block addjs
 							success: function(data){
 								console.log(formData)
 								$('#viewModal').modal('show');
-								//- $('#voucherButton').click(function(){
-								//- 	console.log(data.int_voucherID)
-								//- 	window.location=`/guest/voucherEvents?
-								//- 	int_voucherID=${data.int_voucherID}`
-									
-								//- })
 								console.log(data.int_voucherID)
-								$(document).on(	'click', '#voucherButton', function(){
+								$(document).on(	'click', '#voucherButton', function(){ // yung #voucherButton yung id nung button
 
 									$(document).off('click', '#voucherButton')
 									$.post('/guest/voucherEvents',{voucherId:data.int_voucherID}).done(data=>{
@@ -451,6 +445,17 @@ block addjs
 											}
 											toDataURL('/document_templates/voucherTemplate3.png', function(dataUrl) {
 												toDataURL('/document_templates/logo.png', function(logo) {
+													var sponsorText = [];
+													var sponsorX = [65,393,507];
+													var sponsorY = 243;
+													console.log(`${data.sponsors}`)
+													//- for(i=0;i<data.sponsors[i].length;i++){
+													//- 	sponsorText.push({
+													//- 		text: `${data.sponsor[i].var_sponsorname}`,
+													//- 		style: 'styleLabelEvent',
+													//- 		absolutePosition: {x:sponsorX[0], y:sponsorY},
+													//- 	})
+													//- }
 													var docDefinition = {
 														pageMargins: [ 0, 35, 0, 0 ],
 														content: [
@@ -504,72 +509,72 @@ block addjs
 															//- },
 															//Middle part
 															{
-															text:`${data.var_userfname} ${data.var_userlname}`,
+															text:`${data.voucherinfo.var_userfname} ${data.voucherinfo.var_userlname}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:51, y:127},
 															},
 															{
-															text:`${data.var_useraddress}`,
+															text:`${data.voucherinfo.var_useraddress}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:51, y:140},
 															},
 															{
-															text:`# ${data.var_vouchercode}`,
+															text:`# ${data.voucherinfo.var_vouchercode}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:127},
 															},
 															{
-															text:`${data.date_issued}`,
+															text:`${data.voucherinfo.date_issued}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:140},
 															},
 															{
-															text:`${data.date_due}`,
+															text:`${data.voucherinfo.date_due}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:153},
 															},
 															{
-															text: `₱ ${data.dbl_amount.toFixed(2)}`,
+															text: `₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
 															style: 'styleLabelMiddleTA',
 															absolutePosition: {x:505, y:143},
 															},
 															//table Contents
 															// .toUpperCase() yung event name before ilagay sa pdfmake
 															//ito yung ifoforeach mu rae
-															{
-															text: 'FACILITY RESERVATION',
+															{ 
+															text: `${data.voucherinfo.var_eventname}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:217},
 															},
 															{
-															text: '₱ 75/hr',
+															text: `₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:217},
 															},
 															{
-															text: '₱ 225.00',
+															text:`₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:507, y:217},
 															},
 															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
 															{
-															text: '2ND ROOM RESERVATION',
+															text: `Number of Sponsors : ${data.sponsors.length}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:243},
 															},
 															{
-															text: '₱ 90/hr',
+															text: '₱ 50/head',
 															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:243},
 															},
 															{
-															text: '₱ 270.00',
+															text: `₱ ${(data.sponsors.length*50).toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:506, y:243},
 															},
 															//total amount
 															{
-															text: '₱ 634.57',
+															text: `₱ ${((data.sponsors.length*50) + data.voucherinfo.dbl_amount).toFixed(2)}`,
 															style: 'styleLabelTA',
 															absolutePosition: {x:476, y:354},
 															},
@@ -612,32 +617,32 @@ block addjs
 															},
 															//Middle part
 															{
-															text:'Juan Dela Cruz',
+															text:`${data.voucherinfo.var_userfname} ${data.voucherinfo.var_userlname}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:51, y:514},
 															},
 															{
-															text:'4-A Del rosario st. Marulas \n Valenzuela City',
+															text:`${data.voucherinfo.var_useraddress}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:51, y:527},
 															},
 															{
-															text:'# 42352',
+															text:`# ${data.voucherinfo.var_vouchercode}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:514},
 															},
 															{
-															text:'01 / 01 / 2020',
+															text:`${data.voucherinfo.date_issued}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:527},
 															},
 															{
-															text:'15 / 01 / 2020',
+															text:`${data.voucherinfo.date_due}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:540},
 															},
 															{
-															text: '₱ 634.57',
+															text: `₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
 															style: 'styleLabelMiddleTA',
 															absolutePosition: {x:505, y:530},
 															},
@@ -645,39 +650,39 @@ block addjs
 															// .toUpperCase() yung event name before ilagay sa pdfmake
 															//ito yung ifoforeach mu rae
 															{
-															text: 'FACILITY RESERVATION',
+															text: `${data.voucherinfo.var_eventname}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:604},
 															},
 															{
-															text: '₱ 75/hr',
+															text:  `₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:604},
 															},
 															{
-															text: '₱ 225.00',
+															text: `₱ ${data.voucherinfo.dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:507, y:604},
 															},
 															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
 															{
-															text: '2ND ROOM RESERVATION',
+															text: `Number of Sponsors : ${data.sponsors.length}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:630},
 															},
 															{
-															text: '₱ 90/hr',
+															text: '₱ 50/head',
 															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:630},
 															},
 															{
-															text: '₱ 270.00',
+															text: `₱ ${(data.sponsors.length*50).toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:506, y:630},
 															},
 															//total amount
 															{
-															text: '₱ 634.57',
+															text: `₱ ${((data.sponsors.length*50) + data.voucherinfo.dbl_amount).toFixed(2)}`,
 															style: 'styleLabelTA',
 															absolutePosition: {x:476, y:741},
 															},

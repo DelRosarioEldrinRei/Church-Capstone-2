@@ -208,6 +208,24 @@ block main
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									button.btn.btn-submit#submitButton(type='button' value= `${user.int_userID}` ) Submit
+	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header
+						h5.modal-title Application Request Completed
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span.p-3(aria-hidden='true') ×
+					.modal-body
+						.col-md-12.px-lg-3.px-md-3.px-sm-0
+							.form-group.m-0
+								p Your application request has been submitted
+						.col-md-6.px-lg-3.px-md-3.px-sm-0
+							.form-group.m-0
+								label.label-control Voucher
+									p Please Print the Voucher and pay until before the due date
+									button.btn.std-btn#voucherButton Click to view and downlad
+					.modal-footer
+						button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal' disabled='true') Close
 block addjs
 	script(type='text/javascript').
 		
@@ -255,16 +273,8 @@ block addjs
 							processData:false,
 							contentType:false,
 							success: function(data){
-								swal({
-									title: "Success",
-									text: 'Your request has been submitted; however, the time is still tentative. We will notify you once the scheduled time is changed. Thank you and God bless.',
-									icon: 'success',
-									buttons:{
-										Okay:'okay'
-									}
-								}).then((value)=>{
-									window.location='/guest'
-								})
+								console.log(formData)
+								$('#viewModal').modal('show');
 							}
 
 						})
@@ -291,20 +301,20 @@ block addjs
 		let startDate = moment().add(2, 'days')
 		let endDate = moment().add(15, 'days')
 
-		$('.desiredDate').datetimepicker({
-			format: 'YYYY-MM-DD',
-			minDate: startDate,
-			maxDate: endDate,
-			icons: {
-					time: "fa fa-clock-o",
-					date: "fa fa-calendar",
-					up: "fa fa-chevron-up",
-					down: "fa fa-chevron-down",
-					previous: 'fa fa-chevron-left',
-					next: 'fa fa-chevron-right',
-					today: 'fa fa-screenshot',
-					clear: 'fa fa-trash',
-					close: 'fa fa-remove',
-			},
-		});	
+		//- $('.desiredDate').datetimepicker({
+		//- 	format: 'YYYY-MM-DD',
+		//- 	minDate: startDate,
+		//- 	maxDate: endDate,
+		//- 	icons: {
+		//- 			time: "fa fa-clock-o",
+		//- 			date: "fa fa-calendar",
+		//- 			up: "fa fa-chevron-up",
+		//- 			down: "fa fa-chevron-down",
+		//- 			previous: 'fa fa-chevron-left',
+		//- 			next: 'fa fa-chevron-right',
+		//- 			today: 'fa fa-screenshot',
+		//- 			clear: 'fa fa-trash',
+		//- 			close: 'fa fa-remove',
+		//- 	},
+		//- });	
 				})

@@ -169,7 +169,7 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
     return res.render('guest/views/voucher',{results:results});
     })
 });
-guestRouter.post(`/voucherEvents`, (req, res)=>{
+guestRouter.post(`/voucherEvents`, (req, res)=>{    
     console.log(req.body.voucherId)
         var queryString = `select *  from tbl_voucherevents 
         JOIN tbl_user ON tbl_user.int_userID = tbl_voucherevents.int_userID
@@ -177,13 +177,20 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
         WHERE tbl_voucherevents.int_voucherID = ?`
-    db.query(queryString,[req.body.voucherId],(err,results,fields)=>{
-    console.log(results[0])
-    results[0].date_issued = moment(results[0].date_issued).format('MM/DD/YYYY')
-    results[0].date_due = moment(results[0].date_due).format('MM/DD/YYYY')
-    results[0].date_eventdate = moment(results[0].date_eventdate).format('MM/DD/YYYY')
-    results = results[0];
-    res.send(results)
+    db.query(queryString,[req.body.voucherId],(err,results1,fields)=>{
+        var queryString2 = `SELECT tbl_sponsors.var_sponsorname,tbl_sponsors.int_eventinfoID from tbl_sponsors 
+        JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_sponsors.int_eventinfoID
+        JOIN tbl_voucherevents ON tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        WHERE tbl_voucherevents.int_voucherID =?`
+        db.query(queryString2,[req.body.voucherId],(err,results2,fields)=>{
+            console.log(results1[0])
+            console.log(results2)
+            results1[0].date_issued = moment(results1[0].date_issued).format('MM/DD/YYYY')
+            results1[0].date_due = moment(results1[0].date_due).format('MM/DD/YYYY')
+            results1[0].date_eventdate = moment(results1[0].date_eventdate).format('MM/DD/YYYY')
+            results = results1[0];
+            res.send({voucherinfo:results,sponsors:results2})
+        })
     })
 });
 //===============================================================================================//
