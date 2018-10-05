@@ -47,8 +47,9 @@ block prepend main
 											.card-body.table-responsive
 													table#shit.table.dataTable.table-hover
 															thead.text-primary
+																	th ID
 																	th Name of the Child
-																	th Birthday
+																	th Event Date
 																	th Req Status
 																	th Payment Status
 																	th Approval Status
@@ -56,9 +57,10 @@ block prepend main
 															tbody
 																	each regular in regulars
 																		tr
+																			td=regular.int_eventinfoID
 																			input.form-control#int_userID(type='hidden' name='clientID' value=regular.int_userID)
 																			td=regular.var_lname + ", " + regular.var_fname
-																			td=regular.date_birthday
+																			td=regular.date_eventdate
 																			if(regular.char_approvalstatus=='Cancelled')
 																				td
 																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)=regular.var_reqstatus
@@ -75,6 +77,7 @@ block prepend main
 																							#toolbar-options.hidden
 																								a.viewButton(href='#')
 																									i.ti-new-window(style="color:white;")
+																				-continue
 																			if(regular.char_approvalstatus=='Disapproved')
 																				td
 																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
@@ -92,7 +95,7 @@ block prepend main
 																							#toolbar-options.hidden
 																								a.viewButton(href='#')
 																									i.ti-new-window(style="color:white;")
-																				-break
+																				-continue
 
 																			if(regular.char_approvalstatus=='Approved')
 																				td
@@ -112,7 +115,7 @@ block prepend main
 																							#toolbar-options.hidden
 																								a.viewButton(href='#')
 																									i.ti-new-window(style="color:white;")
-																				-break
+																				-continue
 																			
 																			if(regular.var_reqstatus=='Disapproved'&& regular.char_approvalstatus=='Pending')
 
@@ -127,7 +130,13 @@ block prepend main
 																				td
 																					select#selectBox(onchange='approval(value);' style='color:grey' disabled)
 																						option(value=`${regular.int_eventinfoID},3` style='color:red')=regular.char_approvalstatus
-																				-break
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${regular.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																				-continue
 
 																			if(regular.var_reqstatus=='Approved'&&regular.char_paymentstatus=='Paid'&&regular.char_approvalstatus=='Pending')
 																				td
@@ -150,7 +159,7 @@ block prepend main
 																							#toolbar-options.hidden
 																								a.viewButton(href='#')
 																									i.ti-new-window(style="color:white;")
-																				-break
+																				-continue
 																			
 
 
@@ -281,7 +290,7 @@ block prepend main
 																			#toolbar-options.hidden
 																				a.viewButton(href='#')
 																					i.ti-new-window(style="color:white;")
-																-break
+																-continue
 
 															if(special.char_approvalstatus=='Approved')
 																td
@@ -301,7 +310,7 @@ block prepend main
 																			#toolbar-options.hidden
 																				a.viewButton(href='#')
 																					i.ti-new-window(style="color:white;")
-																-break
+																-continue
 															
 															if(special.var_reqstatus=='Disapproved'&& special.char_approvalstatus=='Pending')
 
@@ -316,7 +325,7 @@ block prepend main
 																td
 																	select#selectBox(onchange='approval(value);' style='color:grey' disabled)
 																		option(value=`${special.int_eventinfoID},3` style='color:red')=special.char_approvalstatus
-																-break
+																-continue
 
 															if(special.var_reqstatus=='Approved'&&special.char_paymentstatus=='Paid'&&special.char_approvalstatus=='Pending')
 																td
@@ -339,7 +348,7 @@ block prepend main
 																			#toolbar-options.hidden
 																				a.viewButton(href='#')
 																					i.ti-new-window(style="color:white;")
-																-break
+																-continue
 															
 
 
@@ -425,7 +434,11 @@ block prepend main
 block addjs
 	
 	script(type='text/javascript').
+
 		function requirement($i) {
+			console.log(this)
+			var split = $i.split(',')
+			console.log(split)
 			
 			swal({
 					title: 'Are you sure change status?',
@@ -437,7 +450,9 @@ block addjs
 					confirmButtonText: 'Confirm'
 					}).then((result) => {
 						if (result.value) {
-								$.post('/secretariat/transaction-baptism/changerequirementstatus',{id1:$i})
+
+							if(split[1]!=0){
+								$.post('/secretariat/transaction-baptism/changerequirementstatus',{id1:split[0]})
 								.done(data =>{
 									if(data.statu==1){
 										swal({
@@ -448,8 +463,9 @@ block addjs
 											location.reload();
 										})
 									}
-
-									if(data.statu==0){
+								})
+							}
+							else if(split[1]==0){
 										$.post('/secretariat/message',{int_userID:$('#int_userID').val()})
 										.done(data =>{
 											
@@ -471,6 +487,7 @@ block addjs
 											`)
 											$('#messageModal').modal('show')
 											$('#messageModal').on('hidden.bs.modal',function(){
+												$('#selectBox').val('default')
 												$('#messageAppend').empty()
 											})
 											
@@ -499,10 +516,14 @@ block addjs
 																	text:'Status updated and message sent!', 
 																	type:'success'
 																}).then(function(){
-																		location.reload();
+																	$.post('/secretariat/transaction-baptism/changerequirementstatus',{id1:$i})
+																		.done(data =>{
+																			location.reload()
+																		})	
 																})
 																$('#messageModal').modal('hide');
 																$('#updateAppend').empty();
+
 															}
 														})
 													}
@@ -510,9 +531,9 @@ block addjs
 											})
 										})
 									}
-								});
-						}
-					})
+								
+							}
+						})
 		}
 		function payment($i) {
 			//- alert($i);

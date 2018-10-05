@@ -171,12 +171,12 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
 });
 guestRouter.post(`/voucherEvents`, (req, res)=>{
     console.log(req.body.voucherId)
-    var queryString = `select *  from tbl_voucherevents 
-    JOIN tbl_user ON tbl_user.int_userID = tbl_voucherevents.int_userID
-    JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_voucherevents.int_eventinfoID
-    JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
-    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
-    WHERE tbl_voucherevents.int_voucherID = ?`
+        var queryString = `select *  from tbl_voucherevents 
+        JOIN tbl_user ON tbl_user.int_userID = tbl_voucherevents.int_userID
+        JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_voucherevents.int_eventinfoID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        WHERE tbl_voucherevents.int_voucherID = ?`
     db.query(queryString,[req.body.voucherId],(err,results,fields)=>{
     console.log(results[0])
     results[0].date_issued = moment(results[0].date_issued).format('MM/DD/YYYY')
@@ -689,7 +689,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         db.query(queryString1, (err, results1, fields) => {
             var queryString2= `SELECT time_availabletime FROM tbl_utilities_availabletime where int_serviceID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
             db.query(queryString2, (err, results2, fields) => {
-                for(i=0;i<results2.length;i++){
+                for(i=0;i<results2.length;i++){ 
                 results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
                 }
                 if (err) throw err;
@@ -776,7 +776,6 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                                                             var queryString4 = `INSERT INTO tbl_baptism(int_eventinfoID, var_parentmarriageadd, var_fatherbplace, var_motherbplace, var_fathername, var_mothername, var_contactnum) VALUES(?,?,?, ?,?,? ,?);`
                                                             console.log(dtime)
                                                             db.query(queryString4 , [eventinfoID.insertId, req.body.marriageaddress, req.body.fatherbirthplace, req.body.motherbirthplace, req.body.fathername, req.body.mothername, req.body.contactnumber], (err, results, fields) => {
-                                                                var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID) VALUES(?,?,?,?)`
                                                                 var datenow = new Date();
                                                                 var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
                                                                 console.log(dateNow)
@@ -784,15 +783,23 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                                                                 var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
                                                                 var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
                                                                 console.log(dateDue1)
-                                                                db.query(queryString9,[eventinfoID.insertId,dateNow,dateDue1,req.session.user.int_userID],(err,results,fields)=>{
-                                                                    if (err) throw err;
-                                                                    sponsors(eventinfoID.insertId);
-                                                                    var queryString10 = `SELECT * FROM tbl_voucherevents WHERE int_eventinfoID = ?`
-                                                                    db.query(queryString10,[eventinfoID.insertId],(err,results,fields)=>{
-                                                                        res.send(results[0]);
+                                                                sponsors(eventinfoID.insertId);
+                                                                var text="";
+                                                                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
+                                                                for(i=0;i<8;i++)
+                                                                text += possible.charAt(Math.floor(Math.random()*possible.length));
 
+                                                                var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode) VALUES(?,?,?,?,?)`
+                                                                db.query(queryString9,[eventinfoID.insertId,dateNow,dateDue1,req.session.user.int_userID,text],(err,results,fields)=>{
+                                                                       
+                                                                        var queryString10 = `SELECT * FROM tbl_voucherevents WHERE int_eventinfoID = ?`
+                                                                        db.query(queryString10,[eventinfoID.insertId],(err,results,fields)=>{
+                                                                            if (err) throw err;
+                                                                            res.send(results[0]);
+
+                                                                        })
                                                                     })
-                                                                })
+                                                                
                                                         })
                                                     })
                                                 })
