@@ -1,4 +1,4 @@
-extends ../../../../templates/admin
+extends ../../../../../templates/admin
 block prepend main
 	#wrap
 	div(style='clear:both')
@@ -11,22 +11,20 @@ block prepend main
 								.card-header.card-header-primary(style='background:#367587; color:white')
 									.row
 										.col-md-6
-											h3.card-title(style='background:#367587; color:white') Services
+											h3.card-title(style='background:#367587; color:white') Document Request
 										.col-md-6.text-right
 											.row.text-right
 												.col-md-12.text-right
 													label SERVICES:
 													select#selectBox(onchange='services(value);' style='color:grey' )
-														option(value=0) All
-														option(value=1) Anointing of the sick
-														option(value=3) Baptism
-														option(value=9) Special Baptism
-														option(value=7) Funeral Mass
-														option(value=4) Funeral Service
-														option(value=5) Marriage
+														//- option(value=0) All
+														option(value=1) Document Request
+														option(value=2) Facility Reservation
+														option(value=3) House Blessing
+														
 
 												.col-md-12.text-right
-													label APPROVAL STATUS:
+													label RESERVATION STATUS:
 													select#selectBox(onchange='month(value);' style='color:grey' )
 														option(value=0) All
 														option(value=1) Approved
@@ -55,35 +53,39 @@ block prepend main
 										table.table.table-hover.dt-responsive
 												thead.text-primary
 														th ID
-														th Service Name
-														th Name
+														th Name 
+														th Document type
 														//- th Father's Name
 														//- th Mother's Name
-														th Event Date
-														th Event Time
+														th Requested
+														th Released
+														th Received
 														th Approval Status
 														
 												tbody
 													each query in queries
 														tr
-															td=query.int_eventinfoID
-															td=query.var_eventname
-															td=query.var_lname +", "+ query.var_fname
+															td=query.int_requestID
+															td=query.var_doclastname +", "+ query.var_docfirstname
+															td=query.var_documenttype
 															//- td=query.var_fathername
 															//- td=query.var_mothername
-															td=query.date_eventdate
-															td=query.time_eventstart
-															td=query.char_approvalstatus
+															td=query.date_docurequested
+															td=query.date_docureleased
+															td=query.date_docureceived
+															
+															td=query.char_docustatus
 
 																
-	
+	script(type='text/javascript', src='/js/jquery.min.js')
+	script(type='text/javascript', src='/admin/vendor.js')
+	script(type='text/javascript', src='/admin/bundle.js')
+	script(type='text/javascript', src='/js/loader.js')
 block addjs
 	script.
-		function services($i) {
-			var id = $i;
-			$.post(`/admin/queries-services?serviceid:${id}`)
-			//- window.location=`/admin/queries-services?serviceid=${id}`
-			}
 		$(document).ready(function() {
+			function services($i) {
+				var id = $i;
+				$.post(`/admin/queries-services?serviceid:${id}`)
+				}
 			})
-			

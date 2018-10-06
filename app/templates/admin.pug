@@ -175,9 +175,19 @@ html
 							ul.dropdown-menu
 								li
 									a.sidebar-link(href='/admin/queries-services') Services
-								li
-									a.sidebar-link(href='/admin/queries-specialservices') Special Services
-								
+								li.nav-item.dropdown
+									a.dropdown-toggle(href='javascript:void(0);')
+										span.icon-holder
+										span.title Special Services
+										span.arrow
+											i.ti-angle-right
+									ul.dropdown-menu
+										li
+											a.sidebar-link(href='/admin/queries-facilityreservation') Facility Reservation
+										li
+											a.sidebar-link(href='/admin/queries-documentrequest') Document Request
+										li
+											a.sidebar-link(href='/admin/queries-houseblessing') House Blessing
 						li.nav-item.dropdown
 							//- a.dropdown-toggle(href='/admin/utilities')
 							a.dropdown-toggle(href='javascript:void(0);')

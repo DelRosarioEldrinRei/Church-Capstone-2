@@ -1,4 +1,4 @@
-extends ../../../../templates/admin
+extends ../../../../../templates/admin
 block prepend main
 	#wrap
 	div(style='clear:both')
@@ -11,14 +11,14 @@ block prepend main
 								.card-header.card-header-primary(style='background:#367587; color:white')
 									.row
 										.col-md-6
-											h3.card-title(style='background:#367587; color:white') Services
+											h3.card-title(style='background:#367587; color:white') Anointing of the sick
 										.col-md-6.text-right
 											.row.text-right
 												.col-md-12.text-right
 													label SERVICES:
 													select#selectBox(onchange='services(value);' style='color:grey' )
-														option(value=0) All
 														option(value=1) Anointing of the sick
+														option(value=0) All
 														option(value=3) Baptism
 														option(value=9) Special Baptism
 														option(value=7) Funeral Mass
@@ -76,14 +76,15 @@ block prepend main
 															td=query.char_approvalstatus
 
 																
-	
+	script(type='text/javascript', src='/js/jquery.min.js')
+	script(type='text/javascript', src='/admin/vendor.js')
+	script(type='text/javascript', src='/admin/bundle.js')
+	script(type='text/javascript', src='/js/loader.js')
 block addjs
 	script.
-		function services($i) {
-			var id = $i;
-			$.post(`/admin/queries-services?serviceid:${id}`)
-			//- window.location=`/admin/queries-services?serviceid=${id}`
-			}
 		$(document).ready(function() {
+			function services($i) {
+				var id = $i;
+				$.post(`/admin/queries-services?serviceid:${id}`)
+				}
 			})
-			
