@@ -27,7 +27,7 @@ priestRouter.get('/', (req, res)=>{
         if (err) console.log(err);
         details=results;
         for(var i = 0; i < details.length; i++){
-            details[i].date_eventdate = moment(details.date_eventdate).format('YYYY-MM-DD');
+            details[i].date_eventdate = moment(details[i].date_eventdate).format('YYYY-MM-DD');
         }
         return res.render('priest/views/appointments',{ details : details});
         
@@ -57,9 +57,23 @@ priestRouter.get('/notification', (req, res)=>{
 priestRouter.get('/priestSchedule', (req, res)=>{
     var queryString = `select * from tbl_eventinfo
     JOIN tbl_user ON tbl_user.int_userID = tbl_eventinfo.int_userpriestID
-    WHERE tbl_user.int_userID = ?`
-    db.query(queryString,[req.session.int_userID],(err,results,fields)=>{
+    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+    WHERE tbl_user.int_userID = ? AND tbl_services.var_eventname != "Baptism"`
+    db.query(queryString,[req.session.userID],(err,results,fields)=>{
         console.log(results)
+        console.log(req.session.userID)
+        res.send(results)
+    })
+});
+priestRouter.get('/priestRegularSchedule', (req, res)=>{
+    var queryString = `select * from tbl_eventinfo
+    JOIN tbl_user ON tbl_user.int_userID = tbl_eventinfo.int_userpriestID
+    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+    WHERE tbl_user.int_userID = ? AND tbl_services.var_eventname = "Baptism"
+    GROUP BY tbl_eventinfo.date_eventdate`
+    db.query(queryString,[req.session.userID],(err,results,fields)=>{
+        console.log(results)
+        console.log(req.session.userID)
         res.send(results)
     })
 });

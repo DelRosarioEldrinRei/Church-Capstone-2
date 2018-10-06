@@ -154,7 +154,7 @@ block addjs
 				})
 				
 				
-				$.get('/priest/priestSchedule').done(data=>{
+				
 				$('#calendarPriest').fullCalendar({
 				header: {
 				left: 'title',
@@ -182,6 +182,7 @@ block addjs
 				}
 			},
 				})
+				$.get('/priest/priestSchedule').done(data=>{
 					for(i=0;i<data.length;i++){
 					var dateEvent = moment(data[i].date_eventdate).format('MM/DD/YYYY');
 					var time_start = data[i].time_eventstart = moment(data[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
@@ -200,5 +201,25 @@ block addjs
 						});
 					}
 				})
+				$.get('/priest/priestRegularSchedule').done(data=>{
+					for(i=0;i<data.length;i++){
+					var dateEvent = moment(data[i].date_eventdate).format('MM/DD/YYYY');
+					var time_start = data[i].time_eventstart = moment(data[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
+					var time_end = moment(data[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+					console.log(time_end)
+					console.log(dateEvent)
+					console.log(data[i].time_eventstart)
+					console.log(data[i].char_approvalstatus)
+						$('#calendarPriest').fullCalendar('renderEvent', {
+						title: 'OCCUPIED EVENT',
+						start: `${dateEvent} ${time_start}`,
+						end: `${dateEvent} ${time_end}`,
+						allDay: false,
+						color:'#4c2508',
+						textColor: "white",
+						});
+					}
+				})
+
 			})
 
