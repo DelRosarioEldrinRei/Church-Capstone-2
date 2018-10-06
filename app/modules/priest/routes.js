@@ -23,7 +23,7 @@ priestRouter.get('/', (req, res)=>{
     JOIN tbl_user ON tbl_user.int_userID = tbl_notification.int_userID
     JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_notification.int_eventinfoID
     JOIN tbl_services ON tbl_eventinfo.int_eventID = tbl_services.int_eventID
-    WHERE tbl_eventinfo.char_approvalstatus = "Approved"`
+    WHERE tbl_eventinfo.char_approvalstatus = "Approved" AND tbl_user.int_userID =?`
     db.query(queryString1,["Approved",req.session.userID], (err, results, fields) => {
         if (err) console.log(err);
         details=results;
@@ -37,7 +37,7 @@ priestRouter.get('/', (req, res)=>{
     
 });
 priestRouter.get('/notification', (req, res)=>{
-    res.render('priest/views/notification')
+    res.render('priest/views/notifications')
 });
 // priestRouter.get('/schedule', (req, res)=>{
 //     var queryString1 =`SELECT * FROM tbl_schedule

@@ -715,7 +715,8 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
     guestRouter.get('/baptism/query', (req, res)=>{
         var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = ${req.session.eventId}`
         db.query(queryString3,(err,results2,fields)=>{
-        var queryString = `SELECT * FROM tbl_eventinfo where char_approvalstatus = "Approved"`
+        var queryString = `SELECT * FROM tbl_eventinfo JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        where tbl_eventinfo.char_approvalstatus = "Approved" AND tbl_services.var_eventname != "Baptism"`
             db.query(queryString,(err,results,fields) =>{
                 res.send({queries:results,utilities:results2})
             })

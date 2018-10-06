@@ -636,7 +636,7 @@ block addjs
 							.done(data =>{
 								
 								var nowDate = new Date(); 
-								var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+								var date = moment(nowDate,'YYYY-MM-DD HH:mm:ss').format('YYYY/MM/DD hh:mm a')
 
 								$('#paymentAppend').append(`
 									
@@ -645,14 +645,16 @@ block addjs
 												<div class="col-md-6">
 													<div class="form-group">
 														<label class="label-control"><strong> Guest's Name: </strong> ${data.var_userlname}, ${data.var_userfname} </label>
-														<label class="label-control"><strong> Address; </strong> ${data.var_useraddress}</label>
+														<label class="label-control"><strong> Address: </strong> ${data.var_useraddress}</label>
+														<br>
 														<label class="label-control"><strong>Service Name:</strong> ${data.var_eventname}</label>
 													</div>
 												</div>
 												<div class="col-md-6">
 													<div class="form-group">	
-														<label class="label-control"><strong> Voucher ID: </strong> Voucher ID here</label>
-														<label class="label-control"><strong> Date Issued: </strong> Date issued here</label>
+														<label class="label-control"><strong> Voucher ID: </strong>${data.var_vouchercode}</label>
+														<br>
+														<label class="label-control"><strong> Date Issued: </strong>${data.date_issued}</label>
 														<label class="label-control"><strong> Date Received:</strong> ${date}</label>
 													</div>
 												</div>
@@ -664,9 +666,7 @@ block addjs
 											<div class="row">
 												<div class="col-md-6">
 													<div class="form-group">
-														
-														<label class="label-control"><strong>Service Fee:</strong> ${data.dbl_amount}</label>
-														form-control">
+														<label class="label-control"><strong>Service Fee:</strong>P ${data.dbl_amount.toFixed(2)}</label>
 													</div>
 												</div>
 												<div class="col-md-6">

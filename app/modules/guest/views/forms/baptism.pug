@@ -932,9 +932,9 @@ block addjs
 			selectable: true,
 			defaultView: 'month',
 			allDaySlot: false,
-			//- validRange: {
-			//- 	start: dateNow2,
-			//- },
+			validRange: {
+				start: dateNow2,
+			},
 			businessHours: { dow: [0] },
 			selectConstraint: "businessHours",
 			select: function(date, jsEvent, view) {
