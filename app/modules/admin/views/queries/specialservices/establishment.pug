@@ -1,4 +1,4 @@
-extends ../../../../templates/admin
+extends ../../../../../templates/admin
 block prepend main
 	#wrap
 	div(style='clear:both')
@@ -11,19 +11,17 @@ block prepend main
 								.card-header.card-header-primary(style='background:#367587; color:white')
 									.row
 										.col-md-6
-											h3.card-title(style='background:#367587; color:white') Services
+											h3.card-title(style='background:#367587; color:white') House Blessing
 										.col-md-6.text-right
 											.row.text-right
 												.col-md-12.text-right
 													label SERVICES:
 													select#selectBox(onchange='services(value);' style='color:grey' )
-														option(value=0) All
-														option(value=1) Anointing of the sick
-														option(value=3) Baptism
-														option(value=9) Special Baptism
-														option(value=7) Funeral Mass
-														option(value=4) Funeral Service
-														option(value=5) Marriage
+														//- option(value=0) All
+														option(value=3) House Blessing
+														option(value=1) Document Request
+														option(value=2) Facility Reservation
+														
 
 												.col-md-12.text-right
 													label APPROVAL STATUS:
@@ -55,9 +53,9 @@ block prepend main
 										table.table.table-hover.dt-responsive
 												thead.text-primary
 														th ID
-														th Service Name
-														th Name
-														//- th Father's Name
+														//- th Service Name
+														th Owner
+														th Location
 														//- th Mother's Name
 														th Event Date
 														th Event Time
@@ -66,24 +64,25 @@ block prepend main
 												tbody
 													each query in queries
 														tr
-															td=query.int_eventinfoID
-															td=query.var_eventname
-															td=query.var_lname +", "+ query.var_fname
-															//- td=query.var_fathername
+															td=query.int_houseblessID
+															//- td=query.var_eventname
+															td=query.var_owner
+															td=query.var_estloc
 															//- td=query.var_mothername
-															td=query.date_eventdate
-															td=query.time_eventstart
+															td=query.date_blessingdate
+															td=query.time_blessingstart
 															td=query.char_approvalstatus
 
 																
-	
+	script(type='text/javascript', src='/js/jquery.min.js')
+	script(type='text/javascript', src='/admin/vendor.js')
+	script(type='text/javascript', src='/admin/bundle.js')
+	script(type='text/javascript', src='/js/loader.js')
 block addjs
 	script.
-		function services($i) {
-			var id = $i;
-			$.post(`/admin/queries-services?serviceid:${id}`)
-			//- window.location=`/admin/queries-services?serviceid=${id}`
-			}
 		$(document).ready(function() {
+			function services($i) {
+				var id = $i;
+				$.post(`/admin/queries-services?serviceid:${id}`)
+				}
 			})
-			

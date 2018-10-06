@@ -954,7 +954,7 @@ adminRouter.post('/utilities-clients-info', (req, res)=>{
 
 
 
-
+//reports
 adminRouter.get('/reports-services', (req, res)=>{
     var queryString1 =`SELECT * FROM tbl_services`
     var january =`SELECT *, 
@@ -970,41 +970,223 @@ adminRouter.get('/reports-services', (req, res)=>{
           
             
             
-        return res.render('admin/views/reports/services',{ reports : reports, jan:jan, feb:feb, mar:mar });
+        return res.render('admin/views/reports/services',{ reports : reports});
     
 }); }); 
 });
 
-
+//queries
 adminRouter.get('/queries-services', (req, res)=>{
     var queryString1 =`SELECT * FROM tbl_eventinfo
     JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
-        JOIN tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
-        JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
-        JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
-        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
-        where tbl_services.var_eventname ='Baptism'`
+        order by tbl_services.var_eventname
+        `
     db.query(queryString1, (err, results, fields) => {
         if (err) console.log(err);       
         var queries = results;
         for(i=0;i<queries.length;i++){ 
             queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
             queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
-            }
-        // for(var i=0; i>queries.length; i++){
-        //     queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
-        //     queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
-        // }
-            
+            }     
         return res.render('admin/views/queries/services',{ queries : queries});
-    
+}); 
+});
+adminRouter.post('/queries-services', (req, res)=>{
+    if(req.body.serviceid==0){ return res.redirect('/admin/queries-services'); }
+    if(req.body.serviceid==1){ return res.redirect('/admin/queries-anointing'); }
+    if(req.body.serviceid==3){ return res.redirect('/admin/queries-baptism'); }
+    if(req.body.serviceid==4){ return res.redirect('/admin/queries-funeralservice'); }
+    if(req.body.serviceid==5){ return res.redirect('/admin/queries-marriage'); }
+    if(req.body.serviceid==7){ return res.redirect('/admin/queries-funeralmass'); }
+    if(req.body.serviceid==9){ return res.redirect('/admin/queries-specialbaptism'); }    
+}); 
+
+adminRouter.get('/queries-anointing', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_eventinfo
+    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+        JOIN tbl_blessing on tbl_eventinfo.int_eventinfoID =tbl_blessing.int_eventinfoID
+        where tbl_services.var_eventname ='Anointing of the sick'
+        order by tbl_eventinfo.int_eventinfoID
+        `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+            } 
+        return res.render('admin/views/queries/services/anointing',{ queries : queries});
+    })
+})
+
+adminRouter.get('/queries-baptism', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_eventinfo
+    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+        JOIN tbl_baptism on tbl_eventinfo.int_eventinfoID =tbl_baptism.int_eventinfoID
+        where tbl_services.var_eventname ='Baptism'
+        order by tbl_eventinfo.int_eventinfoID
+        `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+            } 
+        return res.render('admin/views/queries/services/baptism',{ queries : queries});
+    })
+})
+adminRouter.get('/queries-specialbaptism', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_eventinfo
+    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+        JOIN tbl_baptism on tbl_eventinfo.int_eventinfoID =tbl_baptism.int_eventinfoID
+        where tbl_services.var_eventname ='Special Baptism'
+        order by tbl_eventinfo.int_eventinfoID
+        `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+            } 
+        return res.render('admin/views/queries/services/specialbaptism',{ queries : queries});
+    })
+})
+
+adminRouter.get('/queries-funeralmass', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_eventinfo
+    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+        JOIN tbl_blessing on tbl_eventinfo.int_eventinfoID =tbl_blessing.int_eventinfoID
+        where tbl_services.var_eventname ='Funeral Mass'
+        order by tbl_eventinfo.int_eventinfoID
+        `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+            } 
+        return res.render('admin/views/queries/services/funeralmass',{ queries : queries});
+    })
+})
+
+adminRouter.get('/queries-funeralservice', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_eventinfo
+    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+        JOIN tbl_blessing on tbl_eventinfo.int_eventinfoID =tbl_blessing.int_eventinfoID
+        where tbl_services.var_eventname ='Funeral Service'
+        order by tbl_eventinfo.int_eventinfoID
+        `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+            } 
+        return res.render('admin/views/queries/services/funeralservice',{ queries : queries});
+    })
+})
+
+adminRouter.get('/queries-marriage', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_eventinfo
+    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
+        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
+        JOIN tbl_wedbride on tbl_eventinfo.int_eventinfoID =tbl_wedbride.int_eventinfoID
+        JOIN tbl_wedgroom on tbl_eventinfo.int_eventinfoID =tbl_wedgroom.int_eventinfoID
+        JOIN tbl_wedcouple on tbl_eventinfo.int_eventinfoID =tbl_wedcouple.int_eventinfoID
+        where tbl_services.var_eventname ='Marriage'
+        order by tbl_eventinfo.int_eventinfoID
+        `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+            } 
+        return res.render('admin/views/queries/services/anointing',{ queries : queries});
+    })
+})
+
+
+adminRouter.get('/queries-facilityreservation', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_facilityreservation
+        JOIN tbl_user on tbl_facilityreservation.int_userID =tbl_user.int_userID
+        JOIN tbl_facility on tbl_facilityreservation.int_facilityID =tbl_facility.int_facilityID
+        order by tbl_facilityreservation.int_reservationID
+        `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].datetime_reservestart=moment(queries[i].datetime_reservestart).format('MM/DD/YYYY hh:mm A')
+            queries[i].datetime_reserveend=moment(queries[i].datetime_reserveend).format('MM/DD/YYYY hh:mm A')
+            
+            }     
+        return res.render('admin/views/queries/specialservices/facility',{ queries : queries});
+}); 
+});
+adminRouter.get('/queries-documentrequest', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_documentrequest
+        JOIN tbl_user on tbl_documentrequest.int_userID =tbl_user.int_userID
+        JOIN tbl_document on tbl_documentrequest.int_documentID =tbl_document.int_documentID
+        order by tbl_documentrequest.int_requestID
+        `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_docurequested=moment(queries[i].date_docurequested).format('MM/DD/YYYY')
+            if(queries[i].date_docureleased==null){
+                queries[i].date_docureleased="Not yet released"
+            }
+            else if(queries[i].date_docureleased!=null){
+                queries[i].date_docureleased=moment(queries[i].date_docureleased).format('MM/DD/YYYY')
+            }
+            if(queries[i].date_docureceived==null){
+                queries[i].date_docureceived='Not yet received'
+            }
+            else if(queries[i].date_docureceived!=null){
+                queries[i].date_docureceived=moment(queries[i].date_docureceived).format('MM/DD/YYYY')
+            }
+            }     
+            console.log(queries)
+        return res.render('admin/views/queries/specialservices/document',{ queries : queries});
 }); 
 });
 
-
-
+adminRouter.get('/queries-houseblessing', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_houseblessing
+        JOIN tbl_user on tbl_houseblessing.int_userID =tbl_user.int_userID
+        order by tbl_houseblessing.int_houseblessID
+        `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_blessingdate=moment(queries[i].date_blessingdate).format('MM/DD/YYYY')
+            queries[i].time_blessingstart=moment(queries[i].time_blessingstart, 'HH:mm:ss').format('hh:mm A')
+            
+            }     
+        return res.render('admin/views/queries/specialservices/establishment',{ queries : queries});
+}); 
+});
 
 //===============================================================================================//
     adminRouter.use(function (err, req, res, next) {
