@@ -20,24 +20,48 @@ priestRouter.get('/updateaccount', (req, res)=>{
 
 priestRouter.get('/', (req, res)=>{
     var queryString1 =`SELECT * FROM tbl_notification 
-    JOIN tbl_user ON tbl_user.int_userID = tbl_notification.int_userID
     JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_notification.int_eventinfoID
-    JOIN tbl_services ON tbl_eventinfo.int_eventID = tbl_services.int_eventID
-    WHERE tbl_eventinfo.char_approvalstatus = "Approved" AND tbl_user.int_userID =?`
+    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+    where tbl_eventinfo.char_approvalstatus =? AND tbl_notification.int_userID = ?`
     db.query(queryString1,["Approved",req.session.userID], (err, results, fields) => {
         if (err) console.log(err);
         details=results;
         for(var i = 0; i < details.length; i++){
             details[i].date_eventdate = moment(details.date_eventdate).format('YYYY-MM-DD');
-            
         }
         return res.render('priest/views/appointments',{ details : details});
         
-    });      
-    
+    });
+});
+priestRouter.post('/queryNotif', (req, res)=>{
+    var queryString1 =`SELECT * FROM tbl_eventinfo
+    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+    JOIN tbl_user ON tbl_user.int_userID = tbl_eventinfo.int_userID
+    WHERE tbl_eventinfo.int_eventinfoID = ?`
+    db.query(queryString1,[req.body.id], (err, results, fields) => {
+        if (err) console.log(err);
+            results[0].date_eventdate = moment(results[0].date_eventdate).format('YYYY-MM-DD');
+        
+        res.send(results[0])
+    });
+});
+priestRouter.post('/cancelNotif', (req, res)=>{
+    var queryString1 =`DELETE from tbl_notification where int_eventinfoID = ?`
+    db.query(queryString1,[req.body.id], (err, results, fields) => {
+        return res.redirect('/priest');
+    });
 });
 priestRouter.get('/notification', (req, res)=>{
     res.render('priest/views/notifications')
+});
+priestRouter.get('/priestSchedule', (req, res)=>{
+    var queryString = `select * from tbl_eventinfo
+    JOIN tbl_user ON tbl_user.int_userID = tbl_eventinfo.int_userpriestID
+    WHERE tbl_user.int_userID = ?`
+    db.query(queryString,[req.session.int_userID],(err,results,fields)=>{
+        console.log(results)
+        res.send(results)
+    })
 });
 // priestRouter.get('/schedule', (req, res)=>{
 //     var queryString1 =`SELECT * FROM tbl_schedule
