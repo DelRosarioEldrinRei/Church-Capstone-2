@@ -417,7 +417,8 @@ html
 	script(src='/js/jquery.min.js')
 	script(src='/js/loader.js')
 	script(src='/admin/vendor.js')
-	script(src='/admin/bundle.js')
+	block filter
+		script(src='/admin/bundle.js')
 	script(src='/js/moment.min.js')
 	script(src="/js/bootstrap-datetimepicker.min.js")
 	script(src='/js/datatables.min.js')
