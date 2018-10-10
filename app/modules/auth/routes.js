@@ -1,5 +1,6 @@
 var express = require('express');
 var loginRouter = express.Router();
+var adminloginRouter = express.Router();
 var logoutRouter = express.Router();
 var signupRouter = express.Router();
 var authMiddleware = require('./middlewares/auth');
@@ -17,6 +18,50 @@ loginRouter.route('/queryservice')
         req.session.serviceId = req.body.id
         res.render('auth/views/login');
     })
+
+adminloginRouter.route('/')  
+    .get(authMiddleware.noAuthed, (req, res) => {
+        if(req.query){
+            res.render('auth/views/login2',{reqQuery:req.query});
+            }
+            else{
+                res.render('auth/views/login2')
+            }
+    })
+adminloginRouter.route('/')  
+    .get(authMiddleware.noAuthed, (req, res) => {
+        if(req.query){
+            res.render('auth/views/login2',{reqQuery:req.query});
+            }
+            else{
+                res.render('auth/views/login2')
+            }
+    })
+    .post((req, res) => {
+        console.log('POST LOGIN');
+        var db = require('../../lib/database')();
+        db.query(`SELECT * FROM tbl_user WHERE var_username="${req.body.user_username}"`, (err, results, fields) => {
+        
+            if (err) throw err;
+            if (results.length === 0) return res.redirect('/login?incorrect');
+            
+            var user = results[0];
+            req.session.userID = user.int_userID
+            console.log(req.session.userID)
+            if (user.var_password !== req.body.user_password) return res.redirect('/login?incorrect');
+            
+            if(user.char_usertype == "Admin"){
+                delete user.var_password;
+                req.session.admin = user;
+                console.log(req.session);
+                return res.redirect('/admin');
+            }
+            else{
+                return res.redirect('/login?guest');
+            }
+        });
+    })
+    
 loginRouter.route('/')  
     .get(authMiddleware.noAuthed, (req, res) => {
         if(req.query){
@@ -40,10 +85,7 @@ loginRouter.route('/')
             if (user.var_password !== req.body.user_password) return res.redirect('/login?incorrect');
             
             if(user.char_usertype == "Admin"){
-                delete user.var_password;
-                req.session.admin = user;
-                console.log(req.session);
-                return res.redirect('/admin');
+                return res.redirect('/adminlogin?verify');
             }
             if(user.char_usertype == "Secretariat"){
                 delete user.var_password;
@@ -136,23 +178,23 @@ loginRouter.route('/')
                 });
     })
     
-    signupRouter.route('/')
-    .get(authMiddleware.noAuthed, (req, res) => {
-        res.render('auth/views/signup.pug', req.query);
-    })
-    .post((req, res) => {
+signupRouter.route('/')
+.get(authMiddleware.noAuthed, (req, res) => {
+    res.render('auth/views/signup.pug', req.query);
+})
+.post((req, res) => {
+    
+    var queryString = `INSERT INTO tbl_user(var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype, var_userstatus) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
+    db.query(queryString, [req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.contactnumber, req.body.username, req.body.email, req.body.password, "Guest", "Active"], (err, results, fields) => {
+        if (err) throw err;
         
-        var queryString = `INSERT INTO tbl_user(var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype, var_userstatus) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
-        db.query(queryString, [req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.contactnumber, req.body.username, req.body.email, req.body.password, "Guest", "Active"], (err, results, fields) => {
-            if (err) throw err;
-            
-            res.redirect('/login?signUpSuccess');
-        });
+        res.redirect('/login?signUpSuccess');
+    });
 
-        // res.redirect('/guest')
+    // res.redirect('/guest')
 
-        });
-    // })
+    });
+// })
 
 logoutRouter.get('/', (req, res) => {
     req.session.destroy(err => {
@@ -162,5 +204,6 @@ logoutRouter.get('/', (req, res) => {
 });
 
 exports.login = loginRouter;
+exports.adminlogin = adminloginRouter;
 exports.logout = logoutRouter;
 exports.signup = signupRouter;

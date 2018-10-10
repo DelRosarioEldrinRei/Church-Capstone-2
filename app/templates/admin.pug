@@ -150,22 +150,24 @@ html
 						//- 					a(href='#') Marriage
 						//- 		li
 						//- 			a(href='#') Facility Reservation
-						li.nav-item.dropdown
-							a.dropdown-toggle(href='javascript:void(0);')
+						//- li.nav-item.dropdown
+						//- 	a.dropdown-toggle(href='javascript:void(0);')
+						//- 		span.icon-holder
+						//- 			i.c-orange-500.ti-pencil
+						//- 		span.title Reports
+						//- 		span.arrow
+						//- 			i.ti-angle-right
+						//- 	ul.dropdown-menu
+						//- 		li
+						//- 			a.sidebar-link(href='/admin/reports-services') Services
+						//- 		//- li
+						//- 		//- 	a.sidebar-link(href='/admin/reports-specialservices') Special Services
+						li.nav-item
+							a.sidebar-link(href='/admin/reports')
 								span.icon-holder
-									i.c-orange-500.ti-pencil
+									i.c-red-500.ti-settings
 								span.title Reports
-								span.arrow
-									i.ti-angle-right
-							ul.dropdown-menu
-								li
-									a.sidebar-link(href='/admin/reports-services') Services
-								li
-									a.sidebar-link(href='/admin/reports-specialservices') Special Services
-								//- li
-								//- 	a.sidebar-link(href='/admin/reports-facilities') Facilities
-								//- li
-								//- 	a.sidebar-link(href='/admin/reports-items') Facility Items
+
 						li.nav-item.dropdown
 							a.dropdown-toggle(href='javascript:void(0);')
 								span.icon-holder
@@ -275,109 +277,39 @@ html
 							li.search-input
 								input.form-control(type='text', placeholder='Search...')
 						ul.nav-right
+							
 							li.notifications.dropdown
-								span.counter.bgc-red 3
-								a.dropdown-toggle.no-after(href='', data-toggle='dropdown')
-									i.ti-bell
-								ul.dropdown-menu
-									li.pX-20.pY-15.bdB
-										i.ti-bell.pR-10
-										span.fsz-sm.fw-600.c-grey-900 Notifications
-									li
-										ul.ovY-a.pos-r.scrollable.lis-n.p-0.m-0.fsz-sm
-											li
-												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
-													.peer.mR-15
-														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/1.jpg', alt='')
-													.peer.peer-greed
-														span
-															span.fw-500 John Doe
-															span.c-grey-600
-																| liked your
-																span.text-dark post
-														p.m-0
-															small.fsz-xs 5 mins ago
-											li
-												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
-													.peer.mR-15
-														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/2.jpg', alt='')
-													.peer.peer-greed
-														span
-															span.fw-500 Moo Doe
-															span.c-grey-600
-																| liked your
-																span.text-dark cover image
-														p.m-0
-															small.fsz-xs 7 mins ago
-											li
-												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
-													.peer.mR-15
-														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/3.jpg', alt='')
-													.peer.peer-greed
-														span
-															span.fw-500 Lee Doe
-															span.c-grey-600
-																| commented on your
-																span.text-dark video
-														p.m-0
-															small.fsz-xs 10 mins ago
-									li.pX-20.pY-15.ta-c.bdT
-										span
-											a.c-grey-600.cH-blue.fsz-sm.td-n(href='')
-												| View All Notifications
-												i.ti-angle-right.fsz-xs.mL-10
-							li.notifications.dropdown
-								span.counter.bgc-blue 3
-								a.dropdown-toggle.no-after(href='', data-toggle='dropdown')
-									i.ti-email
+								if newmessages.newmessage==0
+									
+									a.dropdown-toggle.no-after(href='',data-toggle='dropdown')
+										i.ti-email
+								else
+									span.counter.bgc-blue=newmessages.newmessage
+									a.dropdown-toggle.no-after(href='', data-toggle='dropdown')
+										i.ti-email
 								ul.dropdown-menu
 									li.pX-20.pY-15.bdB
 										i.ti-email.pR-10
 										span.fsz-sm.fw-600.c-grey-900 Emails
 									li
 										ul.ovY-a.pos-r.scrollable.lis-n.p-0.m-0.fsz-sm
+										each message in messages
 											li
 												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
 													.peer.mR-15
-														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/1.jpg', alt='')
+														//- img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/1.jpg', alt='')
 													.peer.peer-greed
 														div
 															.peers.jc-sb.fxw-nw.mB-5
 																.peer
-																	p.fw-500.mB-0 John Doe
+																	p.fw-500.mB-0=message.var_userlname
 																.peer
-																	small.fsz-xs 5 mins ago
-															span.c-grey-600.fsz-sm
-																| Want to create your own customized data generator for your app...
-											li
-												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
-													.peer.mR-15
-														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/2.jpg', alt='')
-													.peer.peer-greed
-														div
-															.peers.jc-sb.fxw-nw.mB-5
-																.peer
-																	p.fw-500.mB-0 Moo Doe
-																.peer
-																	small.fsz-xs 15 mins ago
-															span.c-grey-600.fsz-sm
-																| Want to create your own customized data generator for your app...
-											li
-												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
-													.peer.mR-15
-														img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/3.jpg', alt='')
-													.peer.peer-greed
-														div
-															.peers.jc-sb.fxw-nw.mB-5
-																.peer
-																	p.fw-500.mB-0 Lee Doe
-																.peer
-																	small.fsz-xs 25 mins ago
-															span.c-grey-600.fsz-sm
-																| Want to create your own customized data generator for your app...
+																	small.fsz-xs=message.datetime_sent
+															span.c-grey-600.fsz-sm=message.var_subject
+											
 									li.pX-20.pY-15.ta-c.bdT
 										span
-											a.c-grey-600.cH-blue.fsz-sm.td-n(href='email.html')
+											a.c-grey-600.cH-blue.fsz-sm.td-n(href='#')
 												| View All Email
 												i.fs-xs.ti-angle-right.mL-10
 							li.dropdown
