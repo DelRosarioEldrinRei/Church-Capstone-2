@@ -11,13 +11,13 @@ block prepend main
 										.scrollable.pos-r.bdT.layer.w-100.fxg-1
 											ul.p-20.nav.flex-column
 												li.nav-item
-													a.nav-link.c-grey-800.cH-blue-500.active(href='javascript:void(0)')
+													a.nav-link.c-grey-800.cH-blue-500#inbox
 														.peers.ai-c.jc-sb
 															.peer.peer-greed
 																i.mR-10.ti-email
 																span Inbox
 															.peer
-																span.badge.badge-pill.bgc-deep-purple-50.c-deep-purple-700 +99
+																span.badge.badge-pill.bgc-deep-purple-50.c-deep-purple-700=newmessages.newmessage
 												li.nav-item
 													a.nav-link.c-grey-800.cH-blue-500(href='')
 														.peers.ai-c.jc-sb
@@ -59,137 +59,164 @@ block prepend main
 												//-       .peer
 												//-         span.badge.badge-pill.bgc-red-50.c-red-700 +99
 								.email-wrapper.row.remain-height.bgc-white.ov-h
-									.email-list.h-100.layers#messagelist
+									.email-list.h-100.layers
 									 
 										.layer.w-100.fxg-1.scrollable.pos-r
-											div
-											each listmessage in listmessages
-												#mess.email-list-item.peers.fxw-nw.p-20.bdB.bgcH-grey-100.cur-p
-													input#messageid(type='hidden', value=`${listmessage.int_messageID}`)
+											div#listmessages
+											//- each listmessage in listmessages
+											//- 	#mess.email-list-item.peers.fxw-nw.p-20.bdB.bgcH-grey-100.cur-p
+											//- 		input#messageid(type='hidden', value=`${listmessage.int_messageID}`)
 													
-													.peer.peer-greed.ov-h
-														.peers.ai-c
-															.peer.peer-greed
-																h6=listmessage.var_userlname
-															.peer
-																small=listmessage.datetime_sent
-														h5.fsz-def.tt-c.c-grey-900=listmessage.var_subject
-														span.whs-nw.w-100.ov-h.tov-e.d-b.text-truncate=listmessage.text_message
-									.email-list.h-100.layers#messagelist
+											//- 		.peer.peer-greed.ov-h
+											//- 			.peers.ai-c
+											//- 				.peer.peer-greed
+											//- 					h6=listmessage.var_userlname
+											//- 				.peer
+											//- 					small=listmessage.datetime_sent
+											//- 			h5.fsz-def.tt-c.c-grey-900=listmessage.var_subject
+											//- 			span.whs-nw.w-100.ov-h.tov-e.d-b.text-truncate=listmessage.text_message
+												
 									.email-content.h-100
 										
 											.email-content-wrapper#messageView
-
+												
 block addjs
 	script(type='text/javascript').
 			$(document).ready(function(){
-				$('#mess').click(function(){
-				idNow = $('#messageid').val();
-				//- idNow = $(this).val();
-				console.log(idNow)
-				$.post('/admin/messages/query',{id:idNow}).done(data =>{
-					data.datetime_sent=moment(data.datetime_sent).format('MM/DD/YYYY hh:mm A')
-					$('#messageView').append(`
-						
-						<div class="peers ai-c jc-sb pX-40 pY-30">
-							<div class="peers peer-greed">
+				$('#mess').click(function(){	
+					idNow = $('#messageid').val();
+					//- idNow = $(this).val();
+					console.log(idNow)
+					$.post('/admin/messages/query',{id:idNow}).done(data =>{
+						data.datetime_sent=moment(data.datetime_sent).format('MM/DD/YYYY hh:mm A')
+						$('#messageView').append(`
 							
-							<div class="peer">
-								<small>${data.datetime_sent}</small>
-								<h5 class="c-grey-900 mB-5">${data.var_userlname}</h5>
-								<span>To: email@gmail.com</span>
+							<div class="peers ai-c jc-sb pX-40 pY-30">
+								<div class="peers peer-greed">
+								
+								<div class="peer">
+									<small>${data.datetime_sent}</small>
+									<h5 class="c-grey-900 mB-5">${data.var_userlname}</h5>
+									<span>To: email@gmail.com</span>
+								</div>
+								</div>
+								<div class="peer">
+								<id= 'reply' data-toggle="modal" data-target="#messageModal" value=${data.int_messageID} class="btn btn-danger bdrs-50p p-15 lh-0">
+									<i class="fa fa-reply"></i>
+								</a>
+								</div>
 							</div>
-							</div>
-							<div class="peer">
-							<id= 'reply' data-toggle="modal" data-target="#messageModal" value=${data.int_messageID} class="btn btn-danger bdrs-50p p-15 lh-0">
-								<i class="fa fa-reply"></i>
-							</a>
-							</div>
+							<div class="bdT pX-40 pY-30">
+								<h4>${data.var_subject}</h4>
+								<p>
+								${data.text_message}
+								</p>
 						</div>
-						<div class="bdT pX-40 pY-30">
-							<h4>${data.var_subject}</h4>
-							<p>
-							${data.text_message}
-							</p>
-					</div>
 
-					<div class="modal fade" id="messageModal" tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-lg" role="document">
-							<div class="modal-content">
-							<input id="messageid" type="hidden" value=${data.int_messageID}/>
-							<div class="modal-header" style="background:red">
-								<h5 class="modal-title" style="color:white">Reply</h5>
-								<button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:white">×</span></button>
+						<div class="modal fade" id="messageModal" tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg" role="document">
+								<div class="modal-content">
+								<input id="messageid" type="hidden" value=${data.int_messageID}/>
+								<div class="modal-header" style="background:red">
+									<h5 class="modal-title" style="color:white">Reply</h5>
+									<button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:white">×</span></button>
+								</div>
+								<div class="modal-body">
+								<h4 class="c-grey-900 mB-20">Send Message</h4>
+								<div class="send-header">
+									<div class="form-group">
+									<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
+									<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}" disabled>
+									</div>
+									<div class="form-group">
+									<input class="form-control" id='var_subject' >
+									</div>
+									<div class="form-group">
+									<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you disapproved the guest's application." rows='6'></textarea>
+									</div>
+								</div>
+								<div id="compose-area"></div>
+								
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-danger" id="sendMessage" type="button">Send</button>
+								</div>
+								</div>
 							</div>
-							<div class="modal-body">
-							<h4 class="c-grey-900 mB-20">Send Message</h4>
-							<div class="send-header">
-								<div class="form-group">
-								<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
-								<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}" disabled>
-								</div>
-								<div class="form-group">
-								<input class="form-control" id='var_subject' >
-								</div>
-								<div class="form-group">
-								<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you disapproved the guest's application." rows='6'></textarea>
-								</div>
 							</div>
-							<div id="compose-area"></div>
+						
+						`)
+
+						//- $('#messageModal').modal('show')
+						$('#messageModal').on('hidden.bs.modal',function(){
+							$('#selectBox').val('default')
+							$('#messageAppend').empty()
+						})
+						
+						$('#sendMessage').click(function(){
+							swal({
+							title:'Send this message?', 
 							
+							type:'warning',
+							showCancelButton: false,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Confirm'
+							}).then((result)=>{
+								if(result.value){										
+									$.post('/admin/message/send',{
+										int_receiverID:$('#int_receiverID').val(),
+										int_receiverID:$('#int_receiverID').val(),
+										var_subject:$('#var_subject').val(),
+										text_message:$('#text_message').val(),
+										id1:$('#messageid').val(),
+									})
+									.done(data=>{
+										if(data){
+												
+											swal({
+												title:'Success',
+												text:'Status updated and message sent!', 
+												type:'success'
+											}).then(function(){
+												location.reload()
+											})
+											$('#messageModal').modal('hide');
+											$('#messageAppend').empty();
+										}
+									})
+								}
+						})
+						})
+						
+					});
+				});//mess
+				$('#inbox').click(function(){
+					$.post('/admin/messages/inboxquery').done(data =>{
+
+					$('#listmessages').append(`
+						<div class="email-list-item peers fxw-nw p-20 bdB bgcH-grey-100 cur-p">
+							<div class="peer mR-10">
+							<div class="checkbox checkbox-circle checkbox-info peers ai-c">
+								<input type="checkbox" id="inputCall1" name="inputCheckboxesCall" class="peer">
+								<label for="inputCall1" class=" peers peer-greed js-sb ai-c"></label>
 							</div>
-							<div class="modal-footer">
-								<button class="btn btn-danger" id="sendMessage" type="button">Send</button>
 							</div>
+							<div class="peer peer-greed ov-h">
+							<div class="peers ai-c">
+								<div class="peer peer-greed">
+								<h6>John Doe</h6>
+								</div>
+								<div class="peer">
+								<small>1 min ago</small>
+								</div>
+							</div>
+							<h5 class="fsz-def tt-c c-grey-900">title goes here</h5>
+							<span class="whs-nw w-100 ov-h tov-e d-b">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</span>
 							</div>
 						</div>
-						</div>
-					
+
 					`)
-
-					//- $('#messageModal').modal('show')
-					$('#messageModal').on('hidden.bs.modal',function(){
-						$('#selectBox').val('default')
-						$('#messageAppend').empty()
 					})
-					
-					$('#sendMessage').click(function(){
-						swal({
-						title:'Send this message?', 
-						
-						type:'warning',
-						showCancelButton: false,
-						confirmButtonColor: '#3085d6',
-						cancelButtonColor: '#d33',
-						confirmButtonText: 'Confirm'
-						}).then((result)=>{
-							if(result.value){										
-								$.post('/admin/message/send',{
-									int_receiverID:$('#int_receiverID').val(),
-									int_receiverID:$('#int_receiverID').val(),
-									var_subject:$('#var_subject').val(),
-									text_message:$('#text_message').val(),
-									id1:$('#messageid').val(),
-								})
-								.done(data=>{
-									if(data){
-											
-										swal({
-											title:'Success',
-											text:'Status updated and message sent!', 
-											type:'success'
-										}).then(function(){
-											location.reload()
-										})
-										$('#messageModal').modal('hide');
-										$('#messageAppend').empty();
-									}
-								})
-							}
-					})
-					})
-					
-				});
-			});//mess
-			
-		})//docuready
+				})
+			})//docuready

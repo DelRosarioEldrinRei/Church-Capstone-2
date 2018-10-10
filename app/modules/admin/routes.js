@@ -89,6 +89,15 @@ adminRouter.use(authMiddleware.adminAuth)
             res.send(query[0])
         });
     });
+    adminRouter.post('/messages/inboxquery', (req, res) => {
+        const queryString = `SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and int_messageID = ?`;
+        db.query(queryString,[req.session.admin.int_userID,req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            var query= results
+            console.log(query[0])
+            res.send(query[0])
+        });
+    });
     adminRouter.post('/message/send', (req, res)=>{
         var success =0
         var notsuccess =1
@@ -714,7 +723,7 @@ adminRouter.use(authMiddleware.adminAuth)
     adminRouter.post('/maintenance-marriage-requirements/add', (req, res) => {
         var queryString=`INSERT INTO tbl_requirementtype(var_reqname,var_reqdesc,char_reqmode,char_reqtype,int_eventID) 
         VALUES(?,?,?,?,?)`  
-            db.query(queryString,[req.body.reqname,req.body.reqdesc,req.body.reqmode,req.body.reqtype,req.body.id], (err, results, fields) => {
+            db.query(queryString,[req.body.reqname,req.body.reqdesc,req.body.reqmode,req.body.reqtype,5], (err, results, fields) => {
                 if (err) console.log(err);
                     return res.redirect('/admin/maintenance-marriage-requirements');
             });            
@@ -745,7 +754,7 @@ adminRouter.use(authMiddleware.adminAuth)
     adminRouter.post('/maintenance-marriage-requirements/edit', (req, res) => {
         const queryString = `UPDATE tbl_requirementtype SET var_reqname =?, var_reqdesc= ?, char_reqmode=?,char_reqtype=?,int_eventID=?
         WHERE int_reqtypeID= ?`;
-        db.query(queryString,[req.body.reqname, req.body.reqdesc,req.body.reqmode,req.body.reqtype,req.body.eventID,req.body.id], (err, results, fields) => {        
+        db.query(queryString,[req.body.reqname, req.body.reqdesc,req.body.reqmode,req.body.reqtype,5,req.body.id], (err, results, fields) => {        
             if (err) throw err;
             return res.redirect('/admin/maintenance-facilities');
             
