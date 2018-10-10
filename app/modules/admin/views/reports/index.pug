@@ -189,51 +189,51 @@ block addjs
 				});
 
 
-			//- 	const lineChart=document.getElementById("line-chart");
-			//- 	if(lineChart)
-			//- 	{
-			//- 	const lineCtx=lineChart.getContext("2d");lineChart.height=80,
-			//- 	new Chart
-			//- 	(lineChart,{
-			//- 		type:"line",
-			//- 		data:{
-			//- 			labels:["January","February","March","April","May","June","July"],
-			//- 			datasets:[{
-			//- 			label:"Series A",
-			//- 				backgroundColor:"rgba(237, 231, 246, 0.5)",
-			//- 				borderColor:"deep-purple-500",
-			//- 				pointBackgroundColor:"deep-purple-700",
-			//- 				borderWidth:4,
-			//- 				data:[60,50,70,60,50,70,60]},
-			//- 			{label:"Series B",
-			//- 				backgroundColor:"rgba(232, 245, 233, 0.5)",
-			//- 				borderColor:"blue-500",
-			//- 				pointBackgroundColor:"blue-700",
-			//- 				borderWidth:2,
-			//- 				data:[chartdata]}]},
+				const lineChart=document.getElementById("line-chart");
+				if(lineChart)
+				{
+				const lineCtx=lineChart.getContext("2d");lineChart.height=80,
+				new Chart
+				(lineChart,{
+					type:"line",
+					data:{
+						labels:["January","February","March","April","May","June","July"],
+						datasets:[{
+						label:"Series A",
+							backgroundColor:"rgba(237, 231, 246, 0.5)",
+							borderColor:"deep-purple-500",
+							pointBackgroundColor:"deep-purple-700",
+							borderWidth:4,
+							data:[60,50,70,60,50,70,60]},
+						{label:"Series B",
+							backgroundColor:"rgba(232, 245, 233, 0.5)",
+							borderColor:"blue-500",
+							pointBackgroundColor:"blue-700",
+							borderWidth:2,
+							data:[chartdata]}]},
 
-			//- options:{legend:{display:!1}}})
+			options:{legend:{display:!1}}})
 
-			//- }
+			}
 
-			//- const areaChartBox = document.getElementById('area-chart');
-			//- if (areaChartBox) {
-			//- 	const areaCtx = areaChartBox.getContext('2d');
+			const areaChartBox = document.getElementById('area-chart');
+			if (areaChartBox) {
+				const areaCtx = areaChartBox.getContext('2d');
 
-			//- 	new Chart(areaCtx, {
-			//- 		type: 'line',
-			//- 		data: {
-			//- 			labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-			//- 			datasets: [{
-			//- 				backgroundColor : 'rgba(3, 169, 244, 0.5)',
-			//- 				borderColor     : 'rgb(75, 192, 192)',
-			//- 				borderWidth		:	4,
-			//- 				data            : [10,20,30,10,20,30,10],
-			//- 				label           : 'Dataset',
-			//- 				fill            : 'start',
-			//- 			}],
-			//- 		},
-			//- 	});
-			//- }
+				new Chart(areaCtx, {
+					type: 'line',
+					data: {
+						labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+						datasets: [{
+							backgroundColor : 'rgba(3, 169, 244, 0.5)',
+							borderColor     : 'rgb(75, 192, 192)',
+							borderWidth		:	4,
+							data            : [10,20,30,10,20,30,10],
+							label           : 'Dataset',
+							fill            : 'start',
+						}],
+					},
+				});
+			}
 			})
 				

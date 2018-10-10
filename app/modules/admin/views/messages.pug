@@ -1,0 +1,195 @@
+extends ../../../templates/admin
+block prepend main
+		main.main-content.bgc-grey-100
+					#mainContent
+						.full-container
+							.email-app
+								.email-side-nav.remain-height.ov-h
+									.h-100.layers
+										.p-20.bgc-grey-100.layer.w-100
+											a.btn.btn-danger.btn-block(href='/compose') New Message
+										.scrollable.pos-r.bdT.layer.w-100.fxg-1
+											ul.p-20.nav.flex-column
+												li.nav-item
+													a.nav-link.c-grey-800.cH-blue-500.active(href='javascript:void(0)')
+														.peers.ai-c.jc-sb
+															.peer.peer-greed
+																i.mR-10.ti-email
+																span Inbox
+															.peer
+																span.badge.badge-pill.bgc-deep-purple-50.c-deep-purple-700 +99
+												li.nav-item
+													a.nav-link.c-grey-800.cH-blue-500(href='')
+														.peers.ai-c.jc-sb
+															.peer.peer-greed
+																i.mR-10.ti-share
+																span Sent
+															.peer
+																span.badge.badge-pill.bgc-green-50.c-green-700 12
+												//- li.nav-item
+												//-   a.nav-link.c-grey-800.cH-blue-500(href='')
+												//-     .peers.ai-c.jc-sb
+												//-       .peer.peer-greed
+												//-         i.mR-10.ti-star
+												//-         span Important
+												//-       .peer
+												//-         span.badge.badge-pill.bgc-blue-50.c-blue-700 3
+												//- li.nav-item
+												//-   a.nav-link.c-grey-800.cH-blue-500(href='')
+												//-     .peers.ai-c.jc-sb
+												//-       .peer.peer-greed
+												//-         i.mR-10.ti-file
+												//-         span Drafts
+												//-       .peer
+												//-         span.badge.badge-pill.bgc-amber-50.c-amber-700 5
+												//- li.nav-item
+												//-   a.nav-link.c-grey-800.cH-blue-500(href='')
+												//-     .peers.ai-c.jc-sb
+												//-       .peer.peer-greed
+												//-         i.mR-10.ti-alert
+												//-         span Spam
+												//-       .peer
+												//-         span.badge.badge-pill.bgc-red-50.c-red-700 1
+												//- li.nav-item
+												//-   a.nav-link.c-grey-800.cH-blue-500(href='')
+												//-     .peers.ai-c.jc-sb
+												//-       .peer.peer-greed
+												//-         i.mR-10.ti-trash
+												//-         span Trash
+												//-       .peer
+												//-         span.badge.badge-pill.bgc-red-50.c-red-700 +99
+								.email-wrapper.row.remain-height.bgc-white.ov-h
+									.email-list.h-100.layers#messagelist
+									 
+										.layer.w-100.fxg-1.scrollable.pos-r
+											div
+											each listmessage in listmessages
+												#mess.email-list-item.peers.fxw-nw.p-20.bdB.bgcH-grey-100.cur-p
+													input#messageid(type='hidden', value=`${listmessage.int_messageID}`)
+													
+													.peer.peer-greed.ov-h
+														.peers.ai-c
+															.peer.peer-greed
+																h6=listmessage.var_userlname
+															.peer
+																small=listmessage.datetime_sent
+														h5.fsz-def.tt-c.c-grey-900=listmessage.var_subject
+														span.whs-nw.w-100.ov-h.tov-e.d-b.text-truncate=listmessage.text_message
+									.email-list.h-100.layers#messagelist
+									.email-content.h-100
+										
+											.email-content-wrapper#messageView
+
+block addjs
+	script(type='text/javascript').
+			$(document).ready(function(){
+				$('#mess').click(function(){
+				idNow = $('#messageid').val();
+				//- idNow = $(this).val();
+				console.log(idNow)
+				$.post('/admin/messages/query',{id:idNow}).done(data =>{
+					data.datetime_sent=moment(data.datetime_sent).format('MM/DD/YYYY hh:mm A')
+					$('#messageView').append(`
+						
+						<div class="peers ai-c jc-sb pX-40 pY-30">
+							<div class="peers peer-greed">
+							
+							<div class="peer">
+								<small>${data.datetime_sent}</small>
+								<h5 class="c-grey-900 mB-5">${data.var_userlname}</h5>
+								<span>To: email@gmail.com</span>
+							</div>
+							</div>
+							<div class="peer">
+							<id= 'reply' data-toggle="modal" data-target="#messageModal" value=${data.int_messageID} class="btn btn-danger bdrs-50p p-15 lh-0">
+								<i class="fa fa-reply"></i>
+							</a>
+							</div>
+						</div>
+						<div class="bdT pX-40 pY-30">
+							<h4>${data.var_subject}</h4>
+							<p>
+							${data.text_message}
+							</p>
+					</div>
+
+					<div class="modal fade" id="messageModal" tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+							<input id="messageid" type="hidden" value=${data.int_messageID}/>
+							<div class="modal-header" style="background:red">
+								<h5 class="modal-title" style="color:white">Reply</h5>
+								<button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:white">×</span></button>
+							</div>
+							<div class="modal-body">
+							<h4 class="c-grey-900 mB-20">Send Message</h4>
+							<div class="send-header">
+								<div class="form-group">
+								<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
+								<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}" disabled>
+								</div>
+								<div class="form-group">
+								<input class="form-control" id='var_subject' >
+								</div>
+								<div class="form-group">
+								<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you disapproved the guest's application." rows='6'></textarea>
+								</div>
+							</div>
+							<div id="compose-area"></div>
+							
+							</div>
+							<div class="modal-footer">
+								<button class="btn btn-danger" id="sendMessage" type="button">Send</button>
+							</div>
+							</div>
+						</div>
+						</div>
+					
+					`)
+
+					//- $('#messageModal').modal('show')
+					$('#messageModal').on('hidden.bs.modal',function(){
+						$('#selectBox').val('default')
+						$('#messageAppend').empty()
+					})
+					
+					$('#sendMessage').click(function(){
+						swal({
+						title:'Send this message?', 
+						
+						type:'warning',
+						showCancelButton: false,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Confirm'
+						}).then((result)=>{
+							if(result.value){										
+								$.post('/admin/message/send',{
+									int_receiverID:$('#int_receiverID').val(),
+									int_receiverID:$('#int_receiverID').val(),
+									var_subject:$('#var_subject').val(),
+									text_message:$('#text_message').val(),
+									id1:$('#messageid').val(),
+								})
+								.done(data=>{
+									if(data){
+											
+										swal({
+											title:'Success',
+											text:'Status updated and message sent!', 
+											type:'success'
+										}).then(function(){
+											location.reload()
+										})
+										$('#messageModal').modal('hide');
+										$('#messageAppend').empty();
+									}
+								})
+							}
+					})
+					})
+					
+				});
+			});//mess
+			
+		})//docuready
