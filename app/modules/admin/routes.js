@@ -66,8 +66,8 @@ adminRouter.use(authMiddleware.adminAuth)
             console.log(newmessages)
             db.query(sentmessage, [req.session.admin.int_userID],(err, results, fields) => {
                 if (err) console.log(err);
-                var newmessages = results[0];
-                console.log(newmessages)
+                var sentmessages = results[0];
+                console.log(sentmessages)
                 
             db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
                 if (err) console.log(err);
@@ -89,7 +89,7 @@ adminRouter.use(authMiddleware.adminAuth)
                         } 
                     console.log(sents)
                 
-                return res.render('admin/views/messages',{messages:messages, newmessages:newmessages,sentmessages:sentmessages,inboxs, sents:inboxs, sents})
+                return res.render('admin/views/messages',{messages:messages, newmessages:newmessages,sentmessages:sentmessages,inboxs:inboxs, sents:sents})
             }); }); }); }); });
     });
 

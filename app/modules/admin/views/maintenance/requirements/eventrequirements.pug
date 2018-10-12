@@ -11,7 +11,7 @@ block prepend main
 			
 			.row
 				.col-lg-12.col-md-12
-						.card
+						.card.shadow
 								.card-header.card-header-primary(style='background:#367587; color:white')
 									.row
 										.col-md-6
@@ -71,43 +71,43 @@ block prepend main
 				// Header
 				.modal-header(style='background:#367587; color:white')
 					p.heading.lead(style='background:#367587; color:white') Add Requirement
-					button.close(type='button' data-dismiss='modal' aria-label='Close')
+					button.close.text-white(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				// Body
 				.modal-body
 					form.form(action='/admin/maintenance-service-requirements/add' method="post")
 						.form-group
-							label.label-control Requirements
+							label.label-control Requirements: 
 							input.form-control(type='text' name='reqname')
 						.form-group
-							label.label-control Description
+							label.label-control Description: 
 							textarea.form-control(name='reqdesc')
 						.form-group
-							label.label-control Requirement Mode
+							label.label-control Requirement Mode: 
 								select(type="text" name='reqmode')
 									option(value="Copy") Copy
 									option(value="Original") Original
 									option(Value="Copy or Original") Copy or Original
 						.form-group
-							label.label-control Requirement Type
+							label.label-control Requirement Type: 
 								select(type="text" name='reqtype')
 									option(value="Civil") Civil
 									option(value="Church") Church
 						.form-group
-							label.label-control Requirement For
+							label.label-control Requirement For: 
 								select#eventAppend(type="text" name='id')
 									each service in services	
 										option(value=service.int_eventID)=service.var_eventname
 						.row
 							.col-md-12.text-center.my-3
-								button.btn.btn-primary(type='submit') Add	
+								button.btn.btn-primary(type='submit') Add	Requirement
 		
 	#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
 			.modal-content
 				.modal-header(style='background:#367587; color:white')
 					p.heading.lead(style='background:#367587; color:white') Edit Requirement
-					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
+					button.close#cancelButton.text-white(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				.modal-body#updateAppend                
 					.col-md-12.text-center.my-3
@@ -162,27 +162,27 @@ block addjs
 					console.log(data.requirementtype.var_eventname)
 					$('#updateAppend').append(`
 					<div class="form-group">
-						<label class="label-control">Requirements</label>
+						<label class="label-control">Requirements: </label>
 						<input type="text" id="reqname" class="form-control" value="${data.requirementtype.var_reqname}"/>
 					</div>
 					<div class="form-group">
-						<label class="label-control">Description</label>
+						<label class="label-control">Description: </label>
 						<textarea id="reqdesc" class="form-control">${data.requirementtype.var_reqdesc}</textarea>
 					</div>
 					<div class="form-group">
-						<label class="label-control">Requirement Mode
+						<label class="label-control">Requirement Mode: 
 							<select type="text" id="reqmode">
 							</select>
 						</label>
 					</div>
 					<div class="form-group">
-						<label class="label-control">Requirement Type
+						<label class="label-control">Requirement Type: 
 							<select type="text" id="reqtype">
 							</select>
 						</label>
 					</div>
 					<div class="form-group">
-						<label class="label-control">Requirement For
+						<label class="label-control">Requirement For: 
 							<select type="text" id="id">
 							</select>
 						</label>

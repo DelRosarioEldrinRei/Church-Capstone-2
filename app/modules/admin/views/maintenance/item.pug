@@ -7,7 +7,7 @@ block prepend main
 				.container-fluid
 						.row
 								.col-lg-12.col-md-12
-												.card
+												.card.shadow
 																.card-header.card-header-primary(style='background:#367587; color:white')
 																		.row
 																				.col-md-6
@@ -48,9 +48,9 @@ block prepend main
 						// Content
 						.modal-content
 								// Header
-								.modal-header
+								.modal-header(style='background:#367587; color:white;')
 										p.heading.lead Add Item
-										button.close(type='button' data-dismiss='modal' aria-label='Close')
+										button.close.text-white(type='button' data-dismiss='modal' aria-label='Close')
 												span.white-text(aria-hidden='true') &times;
 								// Body
 								.modal-body
@@ -66,15 +66,15 @@ block prepend main
 														input.form-control#quantity(type='number' name='good')
 												.row
 														.col-md-12.text-center.my-3
-																button.btn.btn-primary#additem(type='button') Add
+																button.btn.btn-primary#additem(type='button') Add Item
 
 
 		#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 				.modal-dialog.modal-notify.modal-success(role='document')
 						.modal-content
-								.modal-header
+								.modal-header(style='background:#367587; color:white;')
 										p.heading.lead Edit Items
-										button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
+										button.close#cancelButton.text-white(type='button' data-dismiss='modal' aria-label='Close')
 												span.white-text(aria-hidden='true') &times;
 								.modal-body#updateAppend
 										.col-md-12.text-center.my-3

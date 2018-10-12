@@ -44,13 +44,13 @@ block main
 									// Step 1
 									.form-wizard-step.active
 											.form-wizard-step-icon
-													i.fa.fa-user(aria-hidden='true')
+													i.fa.fa-calendar(aria-hidden='true')
 											p.d-none.d-sm-block Schedule Date
 									// Step 1
 									// Step 2
 									.form-wizard-step
 											.form-wizard-step-icon
-													i.fa.fa-location-arrow(aria-hidden='true')
+													i.fa.fa-info(aria-hidden='true')
 											p.d-none.d-sm-block Blessing Details
 									// Step 2
 								// Form Step 1
@@ -143,7 +143,7 @@ block main
 														option Spouse
 														option Sibling
 													.help-block.with-errors(style="margin-top:2rem!important;")
-											.col-md-6.pl-lg-0.px-md-0.pl-md-3.px-sm-0
+											.col-md-6.pl-lg-0.px-md-0.pl-md-3.px-sm-0.pr-lg-3
 												.form-group
 													h6(for='address') Address
 														.text-danger.d-inline  *
@@ -151,14 +151,14 @@ block main
 													.help-block.with-errors
 										.row
 											//- .col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
-											.col-lg-6.col-md-12.px-lg-0.px-md-3.px-sm-0
+											.col-lg-6.col-md-12.pr-lg-0.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Cause of Death
 														.text-danger.d-inline  *
 													textarea#details.form-control(rows='3' name='details' placeholder="Please enter the cause of death" required data-error='Please specify cause of death')
 													.help-block.with-errors
 												.form-group
-													label.label-control Place where the will happen
+													h6.label-control Place where the will happen
 														.text-danger.d-inline  *
 													.ml-4
 														.form-check

@@ -7,7 +7,7 @@ block prepend main
 
 			.row
 				.col-lg-12.col-md-12
-						.card
+						.card.shadow
 								.card-header.card-header-primary(style='background:#367587; color:white')
 									.row
 										.col-md-6
@@ -15,7 +15,7 @@ block prepend main
 										.col-md-6
 											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Event
 								.card-body.table-responsive
-										table.table.table-hover.dt-responsive#example(style="width:100%;")
+										table.table.table-hover.dt-responsive.dataTable(style="width:100%;")
 												thead.text-primary
 														th ID
 														th Event Name
@@ -44,9 +44,9 @@ block prepend main
 			// Content
 			.modal-content
 				// Header
-				.modal-header
+				.modal-header(style='background:#367587; color:white;')
 					p.heading.lead Add Event
-					button.close(type='button' data-dismiss='modal' aria-label='Close')
+					button.close.text-white(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				// Body
 				.modal-body
@@ -78,13 +78,13 @@ block prepend main
 
 						.row
 							.col-md-12.text-center.my-3
-								button.btn.btn-primary(type='submit') Add
+								button.btn.btn-primary(type='submit') Add Event
 	#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
 			.modal-content
-				.modal-header
+				.modal-header(style='background:#367587; color:white;')
 					p.heading.lead Edit Event
-					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
+					button.close#cancelButton.text-white(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				.modal-body#updateAppend
 					.col-md-12.text-center.my-3
@@ -260,35 +260,4 @@ block addjs
 					})
 				})
 			})
-
-
-
-			//- $('#example').DataTable( {
-			//- 			dom: 'Bfrtip',
-			//- 			buttons: [
-			//- 					'copy', 'csv', 'excel', 'pdf', 'print'
-			//- 			],
-			//- 			initComplete: function () {
-			//- 			this.api().columns().every( function () {
-			//- 					var column = this;
-			//- 					var select = $('<select><option value=""></option></select>')
-			//- 							.appendTo( $(column.footer()).empty() )
-			//- 							.on( 'change', function () {
-			//- 									var val = $.fn.dataTable.util.escapeRegex(
-			//- 											$(this).val()
-			//- 									);
- 
-			//- 									column
-			//- 											.search( val ? '^'+val+'$' : '', true, false )
-			//- 											.draw();
-			//- 							} );
- 
-			//- 					column.data().unique().sort().each( function ( d, j ) {
-			//- 							select.append( '<option value="'+d+'">'+d+'</option>' )
-			//- 					} );
-			//- 			} );
-			//- 		}
-			//- 	} );
-		});
-block filter
-	script(src='/admin/bundlesomecssremoved.js')
+			})

@@ -8,7 +8,7 @@ block prepend main
 				.container-fluid
 						.row
 								.col-lg-11.col-md-12.mx-auto
-										.bgc-white.p-20.bd
+										.bgc-white.p-20.bd.shadow
 													h4.c-grey-900 Client's Information
 													input.form-control#clientID(type='hidden' name='clientID' value=`${clients.int_clientID}`)
 													//- form#needs-validation.form(method='POST', action='/secretariat/newpriestaccount' novalidate)
@@ -47,8 +47,8 @@ block prepend main
 																	.form-group.col-md-6
 																		label.h6 Close:
 																		input.desiredTime.form-control#officeclose(type='text' name='officeclose' placeholder="Close"  value= `${clients.time_officeclose}`)
-														
-														button.btn.btn-primary.mt-3#submitButton(type='submit' value=`${clients.clintID}`) Save Changes
+														.text-right
+															button.btn.btn-primary.mt-3#submitButton(type='submit' value=`${clients.clintID}`) Save Changes
 
 
 													

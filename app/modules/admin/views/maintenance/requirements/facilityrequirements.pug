@@ -7,7 +7,7 @@ block prepend main
 		.container-fluid
 			.row
 				.col-lg-12.col-md-12
-						.card
+						.card.shadow
 								.card-header.card-header-primary(style='background:#367587; color:white')
 									.row
 										.col-md-6
@@ -15,7 +15,7 @@ block prepend main
 										.col-md-6
 											a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Requirement
 								.card-body.table-responsive
-										table.table.table-hover
+										table.table.table-hover.dataTable
 												thead.text-primary
 														//- th ID
 														th Requirement
@@ -35,24 +35,6 @@ block prepend main
 																					i.ti-pencil(style="color:white;")
 																				a.deleteButton(href='#')
 																					i.ti-close(style="color:white;")
-																
-																
-														
-								.card-footer.text-right
-									.col-md-3
-									.col-md-6.text-right
-										<nav aria-label="Page navigation example">
-											<ul class="pagination justify-content-center">
-												<li class="page-item">
-													<a class="page-link" href="#" tabindex="-1">Previous</a>
-												</li>
-												<li class="page-item"><a class="page-link" href="#">1</a></li>
-												<li class="page-item">
-													<a class="page-link" href="#">Next</a>
-												</li>
-											</ul>
-										</nav>
-	
 
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
@@ -61,7 +43,7 @@ block prepend main
 				// Header
 				.modal-header(style='background:#367587; color:white')
 					p.heading.lead(style='background:#367587; color:white') Add Requirement
-					button.close(type='button' data-dismiss='modal' aria-label='Close')
+					button.close.text-white(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				// Body
 				.modal-body
@@ -74,14 +56,14 @@ block prepend main
 							textarea.form-control(name='reqdesc')
 						.row
 							.col-md-12.text-center.my-3
-								button.btn.btn-primary(type='submit') Add	
+								button.btn.btn-primary(type='submit') Add	Requirement
 		
 	#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
 		.modal-dialog.modal-notify.modal-success(role='document')
 			.modal-content
 				.modal-header(style='background:#367587; color:white')
 					p.heading.lead(style='background:#367587; color:white') Edit Requirement
-					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
+					button.close#cancelButton.text-white(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				.modal-body#updateAppend                
 					.col-md-12.text-center.my-3
