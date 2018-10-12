@@ -188,7 +188,7 @@ block addjs
 					console.log(data[i].time_eventstart)
 					console.log(data[i].char_approvalstatus)
 						$('#calendarPriest').fullCalendar('renderEvent', {
-						title: 'OCCUPIED EVENT',
+						title:`${data[i].var_eventname}`,
 						start: `${dateEvent} ${time_start}`,
 						end: `${dateEvent} ${time_end}`,
 						allDay: false,
@@ -207,7 +207,7 @@ block addjs
 					console.log(data[i].time_eventstart)
 					console.log(data[i].char_approvalstatus)
 						$('#calendarPriest').fullCalendar('renderEvent', {
-						title: 'OCCUPIED EVENT',
+						title: `${data[i].var_eventname}`,
 						start: `${dateEvent} ${time_start}`,
 						end: `${dateEvent} ${time_end}`,
 						allDay: false,

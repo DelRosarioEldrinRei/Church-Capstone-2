@@ -70,7 +70,6 @@ block prepend main
 							// Tab panes
 							.tab-content
 								#regularbaptism.tab-pane.active
-									br
 									.card.shadow
 											.card-header.card-header-primary(style='background:#367587')
 												.row
@@ -335,10 +334,14 @@ block addjs
 							confirmButtonText: 'Confirm'
 							}).then((result)=>{
 							if(result.value){
+							console.log($('#reqstatus').val())
+							var reqstatus = $('#reqstatus').val()
+							var paystatus = $('#paystatusupdate').val()
 							for(i=0;i<$('.checkbox').length;i++){
 							if($('.checkbox')[i].checked == true){
 								$.post('/secretariat/transaction-baptism/updateRequirements',{
-								id:$('.checkbox')[i].getAttribute('value')
+								id:$('.checkbox')[i].getAttribute('value'),
+								eventid:idNow
 								})
 								}
 							}
@@ -401,78 +404,134 @@ block addjs
 					}	
 				}
 				if(ctr2 == data.requirements.length){
-					$('#reqstatus').append(`Current Requirement Status :<strong> Complete</strong>`)
-				}
-				else{
-					$('#reqstatus').append(`Current Requirement Status :<strong>Incomplete</strong>`)
-				}
-				if(data.results.char_paymentstatus=="Paid"){
-					$('#paystatus').append(`
-					Current Payment Status: <strong>Paid</strong>
-					<input id="paystatusupdate" type="hidden" value="Paid">`)
-				}
-				else if(data.results.char_paymentstatus=="Unpaid"){
-					$('#paystatus').append(`
-					Current Payment Status: 
-					<select id="paystatusupdate" type="text">
-					<option >Paid</option>
-					<option selected="selected">Unpaid</option>
-					</select>`)
-				}
-				if(ctr2 != data.requirements.length && data.results.char_paymentstatus == "Unpaid"){
-					$('#eventstatus').append(`
-					<strong> Current Approval Status : Pending</strong>
-					<input id="eventstatusupdate" type="hidden" value="pending">
+					$('#reqstatus').append(`Current Requirement Status :<strong> Complete</strong>
+					<input id="reqstatusupdate" type="hidden" value="Approved">
 					`)
+					console.log("cur reqstatus"+$('#reqstatusupdate').val())
+						if(data.results.char_paymentstatus=="Paid"){
+							$('#paystatus').append(`
+							Current Payment Status: <strong>Paid</strong>
+							<input id="paystatusupdate" type="hidden" value="Paid">`)
+								if(data.results.char_approvalstatus=="Cancelled"){
+									$('#eventstatus').append(`
+									Current Approval Status:
+									<select id="eventstatusupdate">
+									<option selected="selected">Cancelled</option>
+									<option>Approved</option>
+									</select>`)
+								}
+								else{
+									$('#eventstatus').append(`
+									Current Approval Status:
+									<select id="eventstatusupdate">
+									<option>Cancelled</option>
+									<option selected="selected">Approved</option>
+									</select>`)
+								}
+						}
+						else if(data.results.char_paymentstatus=="Unpaid"){
+							$('#paystatus').append(`
+							Current Payment Status: 
+							<select id="paystatusupdate" type="text">
+							<option>Paid</option>
+							<option selected="selected">Unpaid</option>
+							</select>`)
+								if(data.results.char_approvalstatus=="Pending"){
+									$('#eventstatus').append(`
+									Current Approval Status:
+									<select id="eventstatusupdate">
+									<option selected="selected">Pending</option>
+									<option>Cancelled</option>
+									<option>Disapproved</option>
+									</select>`)
+								}
+								else if(data.results.char_approvalstatus=="Cancelled"){
+									$('#eventstatus').append(`
+									Current Approval Status:
+									<select id="eventstatusupdate">
+									<option >Pending</option>
+									<option selected="selected">Cancelled</option>
+									<option>Disapproved</option>
+									</select>`)
+								}
+						}
 				}
 				else{
-					if(data.results.char_approvalstatus=="Pending"){
-						$('#eventstatus').append(`
-						Current Approval Status:
-						<select id="eventstatusupdate">
-						<option selected="selected">Pending</option>
-						<option>Cancelled</option>
-						<option>Approved</option>
-						<option>Dispproved</option>
+					$('#reqstatus').append(`Current Requirement Status :<strong>Incomplete</strong>
+					<input id="reqstatusupdate" type="hidden" value="Submitted">`)
+					if(data.results.char_paymentstatus=="Paid"){
+							$('#paystatus').append(`
+							Current Payment Status: <strong>Paid</strong>
+							<input id="paystatusupdate" type="hidden" value="Paid">`)
+								if(data.results.char_approvalstatus=="Pending"){
+									$('#eventstatus').append(`
+									Current Approval Status:
+									<select id="eventstatusupdate">
+									<option>Cancelled</option>
+									<option selected="selected">Pending</option>
+									<option>Disapproved</option>
+									</select>`)
+								}
+								else if(data.results.char_approvalstatus=="Cancelled"){
+									$('#eventstatus').append(`
+									Current Approval Status:
+									<select id="eventstatusupdate">
+									<option selected="selected">Cancelled</option>
+									<option>Pending</option>
+									<option>Disapproved</option>
+									</select>`)
+								}
+								else if(data.results.char_approvalstatus=="Disapproved"){
+									$('#eventstatus').append(`
+									Current Approval Status:
+									<select id="eventstatusupdate">
+									<option>Cancelled</option>
+									<option>Pending</option>
+									<option selected="selected">Disapproved</option>
+									</select>`)
+								}
+						}
+					else if(data.results.char_paymentstatus=="Unpaid"){
+						$('#paystatus').append(`
+						Current Payment Status: 
+						<select id="paystatusupdate" type="text">
+						<option>Paid</option>
+						<option selected="selected">Unpaid</option>
 						</select>`)
-					}
-					else if(data.results.char_approvalstatus=="Cancelled"){
-						$('#eventstatus').append(`
-						Current Approval Status:
-						<select id="eventstatusupdate">
-						<option >Pending</option>
-						<option selected="selected">Cancelled</option>
-						<option>Approved</option>
-						<option>Dispproved</option>
-						</select>`)
-					}
-					else if(data.results.char_approvalstatus=="Approved"){
-						$('#eventstatus').append(`
-						Current Payment Status: <strong>Approved</strong>
-						<input id="paystatusupdate" type="hidden" value="Approved">
-						`)
-					}
-					else if(data.results.char_approvalstatus=="Disaproved"){
-						$('#eventstatus').append(`
-						Current Approval Status:
-						<select id="eventstatusupdate">
-						<option selected="selected">Dispproved</option>
-						<option>Pending</option>
-						<option>Approved</option>
-						<option>Cancelled</option>
-						</select>`)
+							if(data.results.char_approvalstatus=="Pending"){
+								$('#eventstatus').append(`
+								Current Approval Status:
+								<select id="eventstatusupdate">
+								<option selected="selected">Pending</option>
+								<option>Cancelled</option>
+								<option>Disapproved</option>
+								</select>`)
+							}
+							else if(data.results.char_approvalstatus=="Cancelled"){
+								$('#eventstatus').append(`
+								Current Approval Status:
+								<select id="eventstatusupdate">
+								<option >Pending</option>
+								<option selected="selected">Cancelled</option>
+								<option>Disapproved</option>
+								</select>`)
+							}
 					}
 				}
+				
+				
 				
 				$('#updateModal').modal('show')
 				$('#updateModal').on('hidden.bs.modal',function(){
 					$('#updateBodyAppend').empty()
 				})
-				$('#updateStatusButton').click(function(){
-					var eventstatus = $('#eventstatusupdate').val()
-					var paystatus = $('#paystatusupdate').val()
-					console.log(eventstatus)
-					console.log(paystatus)
+				$('#updateStatusButton').click(function(){	
+				var eventstatus = $('#eventstatusupdate').val()
+				var paystatus = $('#paystatusupdate').val()
+				var reqstatus = $('#reqstatusupdate').val()
+					console.log("eventstatus "+eventstatus)
+					console.log("paystatus "+paystatus)
+					console.log("reqstatus "+reqstatus)
 					swal({
 							title:'Are You Sure?', 
 							text:'You want to update the Status of the Requirements?', 
@@ -489,6 +548,7 @@ block addjs
 							id:data.results.int_eventinfoID,
 							eventstatus:eventstatus,
 							paystatus:paystatus,
+							reqstatus:reqstatus,
 							}).done(data=>{
 								swal({
 								title:'Success',

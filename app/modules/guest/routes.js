@@ -1696,8 +1696,8 @@ guestRouter.get('/marriage1/form', (req, res)=>{
                     console.log(results2)
                     var paymentID = results2.insertId;
                     var datenow= new Date();
-                    var queryString3 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus,date_doceventdate,int_paymentID) VALUES(?,?,?,?,?,?,?,?,?)`;
-                        db.query(queryString3, [req.session.user.int_userID, documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Pending",req.body.eventDate,paymentID], (err, results3, fields) => {
+                    var queryString3 = `INSERT INTO tbl_documentrequest(int_userID, int_documentID, var_doclastname, var_docfirstname, text_purpose, date_docurequested,char_docustatus,int_paymentID) VALUES(?,?,?,?,?,?,?,?)`;
+                        db.query(queryString3, [req.session.user.int_userID, documentID, req.body.lastname, req.body.firstname, req.body.purpose,datenow,"Pending",paymentID], (err, results3, fields) => {
                             if (err) console.log(err);
                             var requestID =results3.insertId;
                             var path = '/img/req/'+req.file.filename;
