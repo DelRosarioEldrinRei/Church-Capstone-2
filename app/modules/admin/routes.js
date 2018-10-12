@@ -57,40 +57,73 @@ adminRouter.use(authMiddleware.adminAuth)
     adminRouter.get('/messages', (req, res)=>{
         var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
         var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
-        var listmessages =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ?`
+        var sentmessage =`SELECT count(int_messageID) as sentmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_receiverID where int_senderID= ? `
+        var inboxs =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? `
+        var sents =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_senderID= ? `
         db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
             if (err) console.log(err);
             var newmessages = results[0];
             console.log(newmessages)
+            db.query(sentmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                
             db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
                 if (err) console.log(err);
                 var messages = results;
                 for(i=0;i<messages.length;i++){ 
                     messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
                 } 
-                db.query(listmessages, [req.session.admin.int_userID],(err, results, fields) => {
+                db.query(inboxs, [req.session.admin.int_userID],(err, results, fields) => {
                     if (err) console.log(err);
-                    var listmessages = results;
-                    for(i=0;i<listmessages.length;i++){ 
-                        listmessages[i].datetime_sent=moment(listmessages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    var inboxs = results;
+                    for(i=0;i<inboxs.length;i++){ 
+                        inboxs[i].datetime_sent=moment(inboxs[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
                     } 
-                    console.log(listmessages)
+                    db.query(sents, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var sents = results;
+                        for(i=0;i<sents.length;i++){ 
+                            sents[i].datetime_sent=moment(sents[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                    console.log(sents)
                 
-                return res.render('admin/views/messages',{messages:messages, newmessages:newmessages,listmessages:listmessages})
-            }); }); });
+                return res.render('admin/views/messages',{messages:messages, newmessages:newmessages,sentmessages:sentmessages,inboxs, sents:inboxs, sents})
+            }); }); }); }); });
     });
 
     adminRouter.post('/messages/query', (req, res) => {
         const queryString = `SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and int_messageID = ?`;
         db.query(queryString,[req.session.admin.int_userID,req.body.id], (err, results, fields) => {        
             if (err) throw err;
-            var query= results
-            console.log(query[0])
-            res.send(query[0])
+            var query= results[0]
+            // console.log(query.var_messagesatus)
+            var nowDate = new Date(); 
+            var date = nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+            if(query.var_messagestatus=='Delivered'){
+                var queryString1 = `UPDATE tbl_message SET        
+                var_messagestatus = "Seen",
+                datetime_seen= "${req.body.date}"
+                where int_messageID= ${req.body.id};`;
+                db.query(queryString1,(err, results, fields) => {        
+                    console.log(results+"   : RESULTS")
+                    console.log(queryString1)
+                    res.send(query)
+                    // console.log(query)
+                }); 
+
+            }
+            else{
+                res.send(query)
+                // console.log(query)
+
+            }
+            // console.log(query)
         });
     });
-    adminRouter.post('/messages/inboxquery', (req, res) => {
-        const queryString = `SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and int_messageID = ?`;
+    adminRouter.post('/messages/query1', (req, res) => {
+        const queryString = `SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_receiverID where int_senderID= ? and int_messageID = ?`;
         db.query(queryString,[req.session.admin.int_userID,req.body.id], (err, results, fields) => {        
             if (err) throw err;
             var query= results
@@ -98,6 +131,7 @@ adminRouter.use(authMiddleware.adminAuth)
             res.send(query[0])
         });
     });
+    
     adminRouter.post('/message/send', (req, res)=>{
         var success =0
         var notsuccess =1
@@ -967,6 +1001,40 @@ adminRouter.use(authMiddleware.adminAuth)
             return res.redirect('/admin/maintenance-items');    
         });
     });
+    adminRouter.post('/maintenance-items/querylist', (req, res) => {
+        var success =0
+        var notsuccess =1
+        var same;
+        
+        var item =`SELECT * from tbl_items`
+        console.log(req.body)
+        db.query(item, (err, results, fields) => {
+            if (err) throw err;
+            console.log(results)
+            for(var i=0; i>results.length; i++){
+                if(results[i].var_itemname==req.body.itemname){
+                    same=1;
+                    res.send({same})
+                    continue
+                }
+                if(i==results.length-1){
+                var queryString1=`INSERT INTO tbl_items(var_itemname,var_itemdesc,int_goodquantity,int_damagedquantity)
+                VALUES(?,?,?,?)`
+                db.query(queryString1,[req.body.itemname,req.body.itemdesc,req.body.quantity,0], (err, results, fields) => {
+                        if (err) console.log(err);
+                        // return res.redirect('/admin/maintenance-items');
+                       
+                        same=0;
+                        res.send({same})
+                    });
+                }
+                
+            }
+
+            // res.send(results)
+            
+            });
+    })
 
 //===============================================================================================//
 // U T I L I T I E S //
@@ -1485,6 +1553,63 @@ adminRouter.get('/queries-houseblessing', (req, res)=>{
 }); 
 });
 
+
+adminRouter.get('/queries-guests', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
+    var queryString1 =`SELECT * from tbl_user where char_usertype='Guest'
+        order by var_userlname
+        `
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+            }    
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/queries/users/guests',{ queries : queries, messages:messages, newmessages:newmessages});
+                }); }); 
+}); 
+});
+adminRouter.get('/queries-priests', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
+    var queryString1 =`SELECT * from tbl_user where char_usertype='Priest' order by var_userlname`
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+            }    
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/queries/users/priests',{ queries : queries, messages:messages, newmessages:newmessages});
+                }); }); 
+}); 
+});
 //===============================================================================================//
     adminRouter.use(function (err, req, res, next) {
         console.error(err.stack)

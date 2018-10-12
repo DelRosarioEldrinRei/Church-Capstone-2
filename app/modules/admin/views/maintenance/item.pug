@@ -54,19 +54,19 @@ block prepend main
 												span.white-text(aria-hidden='true') &times;
 								// Body
 								.modal-body
-										form.form(action='/admin/maintenance-items/add' method="post")
+												//- form.form(action='/admin/maintenance-items/add' method="post")
 												.form-group
 														label.label-control Item Name
-														input.form-control(type='text' name='reqname')
+														input.form-control#itemname(type='text' name='reqname')
 												.form-group
 														label.label-control Description
-														textarea.form-control(name='reqdesc')
+														textarea.form-control#itemdesc(name='reqdesc')
 												.form-group
 														label.label-control Quantity
-														input.form-control(type='number' name='good')
+														input.form-control#quantity(type='number' name='good')
 												.row
 														.col-md-12.text-center.my-3
-																button.btn.btn-primary(type='submit') Add
+																button.btn.btn-primary#additem(type='button') Add
 
 
 		#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
@@ -145,8 +145,33 @@ block addjs
 										}
 								})
 				});
+				$('#additem').click(function(){
+				$.post('/admin/maintenance-items/querylist',{
+					itemname:$('#itemname').val(),
+					itemdesc:$('#itemdesc').val(),
+					quantity:$('#quantity').val()
+				}).done(data=>{
+					if(data.same==1){
+						swal({
+								title:'Success',
+								text:'Quantity Added',
+								icon:'success'
+								}).then(function(){
+										location.reload();
+								})
+					}
+					if(data.same==0)
+					{
+							swal({
+								title:'Item already listed',
+								//- text:'This item is already ',
+								icon:'error'
+								})
+					}
 
 
+				})
+				})
 				$('.updateButton').click(function(){
 						console.log(idNow)
 								$.post('/admin/maintenance-items/query',{id:idNow})

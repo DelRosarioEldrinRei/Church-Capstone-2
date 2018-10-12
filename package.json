@@ -24,6 +24,7 @@
     "animate.css": "^3.6.1",
     "body-parser": "^1.17.2",
     "bootstrap": "^4.1.1",
+    "chartjs": "^0.3.24",
     "dotenv": "^4.0.0",
     "ekko-lightbox": "^5.3.0",
     "express": "^4.16.3",

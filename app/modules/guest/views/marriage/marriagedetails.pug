@@ -39,22 +39,22 @@ block main
 							h3.text-right.text-uppercase.text-primary About the marriage
 						.col-md-7
 							each desc in description
-								p.guidelines--desc #{desc.var_eventdesc}
-					.row
-						.col-md-4.my-3
-							h3.text-right.text-uppercase.guidelines--text Marriage Steps
-						.col-md-7.my-3
-							each step in steps
-								p.mt-3.guidelines--desc #{step.var_weddingstepname}
-								
-							
-					.row
-						.col-md-4.my-3
-							h3.text-right.text-uppercase.guidelines--text Requirements
-						.col-md-7.my-3
-							each requirement in requirements
-								p.mt-3.guidelines--desc #{requirement.var_reqname}
-								
+								p.pl-3.guidelines--desc.description.text-justify #{desc.var_eventdesc}
+					.row.mt-4
+						.col-md-6
+							.row
+								.col-md-5.my-3
+									h3.text-right.text-uppercase.guidelines--text Requirements
+								.col-md-7.my-3
+									each requirement in requirements
+										p.mt-3.guidelines--desc.description.pl-2 #{requirement.var_reqname}
+						.col-md-6
+							.row
+								.col-md-6.my-3
+									h3.text-right.text-uppercase.guidelines--text Marriage Steps
+								.col-md-6.my-3
+									each step in steps
+										p.pl-2.mt-3.guidelines--desc.description #{step.var_weddingstepname}
 					.row
 						.col-md-12.my-3
 							.learn-more.text-center

@@ -177,11 +177,11 @@ html
 									i.ti-angle-right
 							ul.dropdown-menu
 								li
-									a.sidebar-link(href='/admin/queries-services') Services
+									a.sidebar-link(href='/admin/queries-services') Event Application
 								li.nav-item.dropdown
 									a.dropdown-toggle(href='javascript:void(0);')
 										span.icon-holder
-										span.title Special Services
+										span.title Services Application
 										span.arrow
 											i.ti-angle-right
 									ul.dropdown-menu
@@ -191,6 +191,17 @@ html
 											a.sidebar-link(href='/admin/queries-documentrequest') Document Request
 										li
 											a.sidebar-link(href='/admin/queries-houseblessing') House Blessing
+								li.nav-item.dropdown
+									a.dropdown-toggle(href='javascript:void(0);')
+										span.icon-holder
+										span.title Users
+										span.arrow
+											i.ti-angle-right
+									ul.dropdown-menu
+										li
+											a.sidebar-link(href='/admin/queries-guests') Guests
+										li
+											a.sidebar-link(href='/admin/queries-priests') Priests
 						li.nav-item.dropdown
 							//- a.dropdown-toggle(href='/admin/utilities')
 							a.dropdown-toggle(href='javascript:void(0);')
@@ -239,7 +250,7 @@ html
 										ul.ovY-a.pos-r.scrollable.lis-n.p-0.m-0.fsz-sm
 										each message in messages
 											li
-												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='')
+												a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100(href='#')
 													.peer.mR-15
 														//- img.w-3r.bdrs-50p(src='https://randomuser.me/api/portraits/men/1.jpg', alt='')
 													.peer.peer-greed
@@ -250,7 +261,6 @@ html
 																.peer
 																	small.fsz-xs=message.datetime_sent
 															span.c-grey-600.fsz-sm=message.var_subject
-											
 									li.pX-20.pY-15.ta-c.bdT
 										span
 											a.c-grey-600.cH-blue.fsz-sm.td-n(href='/admin/messages')
@@ -258,8 +268,6 @@ html
 												i.fs-xs.ti-angle-right.mL-10
 							li.dropdown
 								a.dropdown-toggle.no-after.peers.fxw-nw.ai-c.lh-1(href='/logout')
-									
-									
 									.peer
 										span.fsz-sm.c-grey-900 Logout
 								
@@ -292,6 +300,7 @@ html
 	script(src='/js/jquery.toolbar.min.js')
 	script(src='/js/vfs_fonts.js')
 	script(src='/js/sweetalert2.all.min.js')
+	script(src="/js/chart.bundle.min.js")
 	script(src='/js/timedropper.min.js')
 	script(src="/js/modal.js")
 	script(src="/js/util.js")

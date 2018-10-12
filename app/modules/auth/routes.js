@@ -43,12 +43,12 @@ adminloginRouter.route('/')
         db.query(`SELECT * FROM tbl_user WHERE var_username="${req.body.user_username}"`, (err, results, fields) => {
         
             if (err) throw err;
-            if (results.length === 0) return res.redirect('/login?incorrect');
+            if (results.length === 0) return res.redirect('/adminlogin?incorrect');
             
             var user = results[0];
             req.session.userID = user.int_userID
             console.log(req.session.userID)
-            if (user.var_password !== req.body.user_password) return res.redirect('/login?incorrect');
+            if (user.var_password !== req.body.user_password) return res.redirect('/adminlogin?incorrect');
             
             if(user.char_usertype == "Admin"){
                 delete user.var_password;
@@ -85,7 +85,7 @@ loginRouter.route('/')
             if (user.var_password !== req.body.user_password) return res.redirect('/login?incorrect');
             
             if(user.char_usertype == "Admin"){
-                return res.redirect('/adminlogin?verify');
+                return res.redirect('/login?NotAllowed');
             }
             if(user.char_usertype == "Secretariat"){
                 delete user.var_password;
