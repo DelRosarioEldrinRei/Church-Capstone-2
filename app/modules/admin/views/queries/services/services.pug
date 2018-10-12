@@ -7,43 +7,47 @@ block prepend main
 
 			.row
 				.col-lg-12.col-md-12
-						.card
+						.card.shadow
 								.card-header.card-header-primary(style='background:#367587; color:white')
 									.row
 										.col-md-6
-											h3.card-title(style='background:#367587; color:white') Document Request
-										.col-md-6.text-right
-											.row.text-right
-												
-														
+											h3.card-title(style='background:#367587; color:white') Services
+
 								.card-body.table-responsive
 										table.table.table-hover.dt-responsive#example(style="width:100%;")
 												thead.text-primary
 														th ID
-														th Name 
-														th Document type
+														th Service Name
+														th Name
 														//- th Father's Name
 														//- th Mother's Name
-														th Requested
-														th Released
-														th Received
+														th Event Date
+														th Event Time
 														th Approval Status
 														
 												tbody
 													each query in queries
 														tr
-															td=query.int_requestID
-															td=query.var_doclastname +", "+ query.var_docfirstname
-															td=query.var_documenttype
+															td=query.int_eventinfoID
+															td=query.var_eventname
+															td=query.var_lname +", "+ query.var_fname
 															//- td=query.var_fathername
 															//- td=query.var_mothername
-															td=query.date_docurequested
-															td=query.date_docureleased
-															td=query.date_docureceived
-															
-															td=query.char_docustatus
+															td=query.date_eventdate
+															td=query.time_eventstart
+															td=query.char_approvalstatus
+												tfoot
+														th ID
+														th Service Name
+														th Name
+														//- th Father's Name
+														//- th Mother's Name
+														th Event Date
+														th Event Time
+														th Approval Status
 
-
+																
+	
 block addjs
 	script.
 		function services($i) {

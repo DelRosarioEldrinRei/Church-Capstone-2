@@ -1,4 +1,4 @@
-extends ../../../templates/admin
+extends ../../../../templates/admin
 block prepend main
 	#mainContent
 		.row.gap-20.masonry.pos-r
@@ -94,6 +94,7 @@ block prepend main
 											.progress.mT-10
 												.progress-bar.bgc-blue-grey-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:90%;')
 													span.sr-only 90% Complete
+													
 									//- // Pie Charts
 									//- .peers.pT-20.mT-20.bdT.jc-sb.ta-c.gap-10(class='fxw-nw@lg+')
 									//-   .peer
@@ -116,6 +117,8 @@ block prepend main
 							h6.lh-1 Monthly Stats
 						.layer.w-100.p-20
 							canvas#line-chart(height='220')
+						.layer.w-100.p-20
+							canvas#bar(height='220')
 						//- .layer.bdT.p-20.w-100
 						//- 	.peers.ai-c.jc-c.gapX-20
 						//- 		.peer
@@ -138,34 +141,81 @@ block prepend main
 						//- 				| 8% 
 						//- 				i.fa.fa-level-down.c-red-500
 						//- 			small.c-grey-500.fw-600 Profit
+
+						
 			.masonry-item.col-md-6
-				
+	<script type="text/javascript" src="/admin/chart.js/dist/Chart.js"></script>			
 block addjs
 	
 	script(type='text/javascript').
 			$(document).ready(function(){
-				var t=document.getElementById("line-chart");
-				if(t){var i=t.getContext("2d");
-				t.height=80,new n.a(i,
-						{
-				type:"line",
-				data:
-				{labels:
-					["January","February","March","April","May","June","July"],
-						datasets:[
-						{label:"Baptism A",backgroundColor:"rgba(237, 231, 246, 0.5)",
-						borderColor:p.a["deep-purple-500"],
-						pointBackgroundColor:p.a["deep-purple-700"],
-						borderWidth:2,data:[60,50,70,60,50,70,60]},
-						
-						{label:"Marriage B",backgroundColor:"rgba(232, 245, 233, 0.5)",
-						borderColor:p.a["blue-500"],
-						pointBackgroundColor:p.a["blue-700"],
-						borderWidth:2,data:[70,75,85,70,75,85,70]}
-						]},
-						options:{legend:{display:!1}}})
-				}
-			})
+				$.ajax({
+					url: "/admin/reports/queries",
+					method: "GET",
+					success: function(data) {
+						console.log(data);
+						var player = [];
+						var score = [];
+
+						for(var i in data) {
+							score.push(data[i]);
+						}
+						console.log(score)
+
+						var chartdata = {
+							labels: player,
+							datasets : [
+								{
+									label: 'Player Score',
+									backgroundColor: 'rgba(200, 200, 200, 0.75)',
+									borderColor: 'rgba(200, 200, 200, 0.75)',
+									hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
+									hoverBorderColor: 'rgba(200, 200, 200, 1)',
+									data: data
+								}
+							]
+						};
+
+						var ctx = $("#bar");
+
+						var barGraph = new Chart(ctx, {
+							type: 'bar',
+							data: chartdata
+						});
+					},
+					error: function(data) {
+						console.log(data);
+					}
+				});
+
+
+				const lineChart=document.getElementById("line-chart");
+				if(lineChart)
+				{
+				const lineCtx=lineChart.getContext("2d");lineChart.height=80,
+				new Chart
+				(lineChart,{
+					type:"line",
+					data:{
+						labels:["January","February","March","April","May","June","July"],
+						datasets:[{
+						label:"Series A",
+							backgroundColor:"rgba(237, 231, 246, 0.5)",
+							borderColor:"deep-purple-500",
+							pointBackgroundColor:"deep-purple-700",
+							borderWidth:4,
+							data:[60,50,70,60,50,70,60]},
+						{label:"Series B",
+							backgroundColor:"rgba(232, 245, 233, 0.5)",
+							borderColor:"blue-500",
+							pointBackgroundColor:"blue-700",
+							borderWidth:2,
+							data:[chartdata]}]},
+
+			options:{legend:{display:!1}}})
+
+			}
+
 			const areaChartBox = document.getElementById('area-chart');
 			if (areaChartBox) {
 				const areaCtx = areaChartBox.getContext('2d');
@@ -176,11 +226,14 @@ block addjs
 						labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 						datasets: [{
 							backgroundColor : 'rgba(3, 169, 244, 0.5)',
-							borderColor     : COLORS['light-blue-800'],
-							data            : [10, 50, 20, 40, 60, 30, 70],
+							borderColor     : 'rgb(75, 192, 192)',
+							borderWidth		:	4,
+							data            : [10,20,30,10,20,30,10],
 							label           : 'Dataset',
 							fill            : 'start',
 						}],
 					},
 				});
 			}
+			})
+				

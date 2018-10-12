@@ -16,7 +16,6 @@ block prepend main
 														
 														.form-group
 															label.h6 Parish Name:
-																.text-danger.d-inline *
 															input.form-control#parishname(type='text' name='parishname' placeholder="Enter Parish Name" value= `${clients.var_clientname}` required)
 															.invalid-feedback Please provide parish name.
 														
@@ -44,11 +43,9 @@ block prepend main
 																.form-row
 																	.form-group.col-md-6
 																		label.h6 Open:
-																			.text-danger.d-inline *
 																		input.desiredTime.form-control#officeopen(type='text' name='officeopen' placeholder="Open"  value= `${clients.time_officeopen}`)
 																	.form-group.col-md-6
 																		label.h6 Close:
-																			.text-danger.d-inline *
 																		input.desiredTime.form-control#officeclose(type='text' name='officeclose' placeholder="Close"  value= `${clients.time_officeclose}`)
 														
 														button.btn.btn-primary.mt-3#submitButton(type='submit' value=`${clients.clintID}`) Save Changes

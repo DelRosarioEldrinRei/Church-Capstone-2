@@ -19,9 +19,14 @@ adminRouter.use(authMiddleware.adminAuth)
 // I N D E X //
 //===============================================================================================//
     adminRouter.get('/', (req, res)=>{
-        var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo`
+        
+        var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
         var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
         var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+        var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+        
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);
             var application = results[0];
@@ -31,19 +36,100 @@ adminRouter.use(authMiddleware.adminAuth)
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
-            return res.render('admin/views/index',{ application:application,reservation:reservation,request:request});
-        }); }); });
+                    db.query(queryString4, (err, results, fields) => {
+                        if (err) console.log(err);
+                        var baptism = results[0];
+                    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var newmessages = results[0];
+                        console.log(newmessages)
+                        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var messages = results;
+                            for(i=0;i<messages.length;i++){ 
+                                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                            } 
+                                
+                        console.log(messages)
+            return res.render('admin/views/index',{ application:application,reservation:reservation,request:request, messages:messages, newmessages:newmessages, baptism:baptism});
+        }); }); }); }); });});
     });
-    adminRouter.get('/details', (req, res)=>{
-        res.render('admin/views/ref/details')
+    adminRouter.get('/messages', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        var listmessages =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ?`
+        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var newmessages = results[0];
+            console.log(newmessages)
+            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var messages = results;
+                for(i=0;i<messages.length;i++){ 
+                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                } 
+                db.query(listmessages, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var listmessages = results;
+                    for(i=0;i<listmessages.length;i++){ 
+                        listmessages[i].datetime_sent=moment(listmessages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+                    console.log(listmessages)
+                
+                return res.render('admin/views/messages',{messages:messages, newmessages:newmessages,listmessages:listmessages})
+            }); }); });
     });
+
+    adminRouter.post('/messages/query', (req, res) => {
+        const queryString = `SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and int_messageID = ?`;
+        db.query(queryString,[req.session.admin.int_userID,req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            var query= results
+            console.log(query[0])
+            res.send(query[0])
+        });
+    });
+    adminRouter.post('/messages/inboxquery', (req, res) => {
+        const queryString = `SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and int_messageID = ?`;
+        db.query(queryString,[req.session.admin.int_userID,req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            var query= results
+            console.log(query[0])
+            res.send(query[0])
+        });
+    });
+    adminRouter.post('/message/send', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        console.log(req.body)
+        var nowDate = new Date(); 
+            var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+            
+        var queryString3= `INSERT INTO tbl_message(int_senderID, int_receiverID, var_subject, text_message,datetime_sent) VALUES(?,?,?,?,?);`;
+        
+                db.query(queryString3,[req.session.admin.int_userID, req.body.int_receiverID, req.body.var_subject, req.body.text_message,date], (err, results, fields) => {
+                    if (err) console.log(err);       
+                    console.log(results)
+                    if (err){
+                        console.log(err)
+                        res.send({alertDesc:notsuccess})
+                    }
+                    else{
+                        res.send({alertDesc:success})
+                    }
+        }); 
+    }); 
 //===============================================================================================//
 // M A I N T E N A N C E //
 //===============================================================================================//
 //EVENTS
 //=======================================================
     adminRouter.get('/maintenance-events', (req, res)=>{    
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
         var queryString2 =`SELECT * FROM tbl_specialevent`
+        
         db.query(queryString2, (err, results, fields) => {
             if (err) console.log(err);
             for(var i = 0; i < results.length; i++){
@@ -51,7 +137,20 @@ adminRouter.use(authMiddleware.adminAuth)
                 results[i].time_eventstart= moment(results[i].time_eventstart).format('MM/DD/YYYY h:mm a');
                 results[i].time_eventend= moment(results[i].time_eventend).format('MM/DD/YYYY h:mm a');
             }
-            return res.render('admin/views/maintenance/events',{specialevents: results });
+            var specialevents = results;
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/maintenance/events',{specialevents: specialevents, messages:messages, newmessages:newmessages });
+                }); });
         });     
     });
     adminRouter.post('/maintenance-events/add', (req, res) => {
@@ -95,13 +194,28 @@ adminRouter.use(authMiddleware.adminAuth)
 //SERVICES
 //=======================================================
     adminRouter.get('/maintenance-services', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
         var queryString1 =`SELECT * FROM tbl_services where char_type = "Sacrament"`
         db.query(queryString1, (err, results1, fields) => {
             if (err) console.log(err)  
             var queryString2 =`SELECT * FROM tbl_services where char_type = "Special Service"`
             db.query(queryString2, (err, results2, fields) => {
-                if (err) console.log(err);      
-            return res.render('admin/views/maintenance/services',{ sacraments : results1, services:results2 });    
+                if (err) console.log(err);  
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+    
+                        return res.render('admin/views/maintenance/services',{ sacraments : results1, services:results2 , messages:messages, newmessages:newmessages});    
+                    }); });    
         }); });
     });
     adminRouter.post('/maintenance-services/add', (req, res) => {
@@ -142,75 +256,92 @@ adminRouter.use(authMiddleware.adminAuth)
 //=======================================================
 //PRIESTS
 //=======================================================
-adminRouter.get('/maintenance-priests', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_user where char_usertype = "Priest"`
-    db.query(queryString1, (err, results1, fields) => {
-        if (err) console.log(err)  
-         
-        return res.render('admin/views/maintenance/priest',{ priests : results1});    
-    }); 
-});
-adminRouter.post('/maintenance-priests/add', (req, res) => {
-    var queryString= `INSERT INTO tbl_user( var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype, var_userstatus)
-     VALUES(?,?,?,?,?, ?,?,?,?,?,?);`  
-        db.query(queryString, [req.body.var_userlname, req.body.var_userfname, req.body.var_usermname, "Male", req.body.var_useraddress, req.body.var_usercontactnum, req.body.var_username, req.body.var_useremail, req.body.var_password, "Priest", "Unconfirmed"], (err, results, fields) => {
+    adminRouter.get('/maintenance-priests', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+            var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+            
+        var queryString1 =`SELECT * FROM tbl_user where char_usertype = "Priest"`
+        db.query(queryString1, (err, results1, fields) => {
+            if (err) console.log(err)  
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/maintenance/priest',{ priests : results1, messages:messages, newmessages:newmessages});    
+                }); });
+        }); 
+    });
+    adminRouter.post('/maintenance-priests/add', (req, res) => {
+        var queryString= `INSERT INTO tbl_user( var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype, var_userstatus)
+        VALUES(?,?,?,?,?, ?,?,?,?,?,?);`  
+            db.query(queryString, [req.body.var_userlname, req.body.var_userfname, req.body.var_usermname, "Male", req.body.var_useraddress, req.body.var_usercontactnum, req.body.var_username, req.body.var_useremail, req.body.var_password, "Priest", "Unconfirmed"], (err, results, fields) => {
+                if (err) throw err;
+                    return res.redirect('/admin/maintenance-priests');
+            });            
+    });
+    adminRouter.post('/maintenance-priest/status', (req, res) => {
+        const queryString = `UPDATE tbl_user SET var_userstatus = Transfered`;
+        db.query(queryString, (err, results, fields) => {        
             if (err) throw err;
-                return res.redirect('/admin/maintenance-priests');
-        });            
-});
-adminRouter.post('/maintenance-priest/status', (req, res) => {
-    const queryString = `UPDATE tbl_user SET var_userstatus = Transfered`;
-    db.query(queryString, (err, results, fields) => {        
-        if (err) throw err;
-        return res.redirect('/admin/maintenance-priests');
+            return res.redirect('/admin/maintenance-priests');
+        });
     });
-});
-adminRouter.post('/maintenance-priests/edit', (req, res) => {
-    const queryString = `UPDATE tbl_user SET var_userlname = ?, var_userfname = ?, var_usermname = ?, var_usercontactnum = ?, var_useremail = ?, var_useraddress = ?, var_username = ?, var_password = ? WHERE int_userID= ?`; 
-    db.query(queryString,[req.body.var_userlname, req.body.var_userfname, req.body.var_usermname, req.body.var_usercontactnum, req.body.var_useremail, req.body.var_useraddress, req.body.var_username, req.body.var_password,req.body.id1], (err, results, fields) => {        
-        if (err) throw err;
-        return res.redirect('/admin/maintenance-priests');
+    adminRouter.post('/maintenance-priests/edit', (req, res) => {
+        const queryString = `UPDATE tbl_user SET var_userlname = ?, var_userfname = ?, var_usermname = ?, var_usercontactnum = ?, var_useremail = ?, var_useraddress = ?, var_username = ?, var_password = ? WHERE int_userID= ?`; 
+        db.query(queryString,[req.body.var_userlname, req.body.var_userfname, req.body.var_usermname, req.body.var_usercontactnum, req.body.var_useremail, req.body.var_useraddress, req.body.var_username, req.body.var_password,req.body.id1], (err, results, fields) => {        
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-priests');
+        });
     });
-});
-adminRouter.post('/maintenance-priests/query', (req, res) => {
-    var queryString = `SELECT * FROM tbl_user WHERE int_userID = ?`;
-    db.query(queryString,[req.body.id], (err, results, fields) => {        
-        if (err) throw err;
-        res.send(results[0])
-        console.log(results[0])   
+    adminRouter.post('/maintenance-priests/query', (req, res) => {
+        var queryString = `SELECT * FROM tbl_user WHERE int_userID = ?`;
+        db.query(queryString,[req.body.id], (err, results, fields) => {        
+            if (err) throw err;
+            res.send(results[0])
+            console.log(results[0])   
+        });
     });
-});
-adminRouter.post('/maintenance-priests/delete', (req, res) => {
-    const queryString = `DELETE FROM tbl_user WHERE int_userID= ?`;
-    db.query(queryString,[req.body.id1], (err, results, fields) => {        
-        if (err) throw err;
-        return res.redirect('/admin/maintenance-priests');
+    adminRouter.post('/maintenance-priests/delete', (req, res) => {
+        const queryString = `DELETE FROM tbl_user WHERE int_userID= ?`;
+        db.query(queryString,[req.body.id1], (err, results, fields) => {        
+            if (err) throw err;
+            return res.redirect('/admin/maintenance-priests');
+        });
     });
-});
-adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
-    var success =0
-    var notsuccess =1
-    console.log(req.body.id1)
-    var queryString1 = `UPDATE tbl_user SET        
-            var_userstatus = "${req.body.userstatus}"
-            where int_userID= ${req.body.id1};`;
-    db.query(queryString1, (err, results, fields) => {
-        if (err) console.log(err);       
-        console.log(results)
-        if (err){
-            console.log(err)
-            res.send({alertDesc:notsuccess})
-        }
-        else{
-            res.send({alertDesc:success})
-        }
-    }); 
-    
-});
+    adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        console.log(req.body.id1)
+        var queryString1 = `UPDATE tbl_user SET        
+                var_userstatus = "${req.body.userstatus}"
+                where int_userID= ${req.body.id1};`;
+        db.query(queryString1, (err, results, fields) => {
+            if (err) console.log(err);       
+            console.log(results)
+            if (err){
+                console.log(err)
+                res.send({alertDesc:notsuccess})
+            }
+            else{
+                res.send({alertDesc:success})
+            }
+        }); 
+        
+    });
 //=======================================================
 //FACILITY
 //=======================================================
     adminRouter.get('/maintenance-facilities', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
         var queryString1 =`SELECT * FROM tbl_facility join tbl_utilities_facility on 
         tbl_utilities_facility.int_utilitiesfacilityID=tbl_facility.int_facilityID`
         db.query(queryString1, (err, results, fields) => {
@@ -219,9 +350,21 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
                 results[i].time_feeper= moment(results[i].time_feeper, "HH:mm:ss").format('hh'); 
                 results[i].time_addper= moment(results[i].time_addper, 'HH:mm:ss').format('hh'); 
             }     
-           
-            console.log(results)
-            return res.render('admin/views/maintenance/facilities',{ facilities : results });
+            var facilities = results;
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    console.log(results)
+                    return res.render('admin/views/maintenance/facilities',{ facilities : facilities, messages:messages, newmessages:newmessages });
+                }); });
         });     
     });
     adminRouter.post('/maintenance-facilities/add', (req, res) => {
@@ -267,6 +410,9 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
         });});
     });
     adminRouter.get('/maintenance-facilities/update', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
         console.log("==========================================")
         console.log("View details (req.query.id): "+req.query.id) 
         console.log("==========================================")
@@ -298,7 +444,20 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
             facilities.time_feeper= moment(facilities.time_feeper,'HH:mm:ss').format('hh'); 
             facilities.time_addper= moment(facilities.time_addper,'HH:mm:ss').format('hh'); 
             console.log(facilities)
-            return res.render('admin/views/maintenance/editfacility',{ facilities : facilities, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun});
+
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/maintenance/editfacility',{ facilities : facilities, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun, messages:messages, newmessages:newmessages});
+                }); });
             
         }); 
     });
@@ -405,10 +564,26 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
 //MINISTRIES/ORG
 //=======================================================
     adminRouter.get('/maintenance-ministries', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
         var queryString1 =`SELECT * FROM tbl_ministry`
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);       
-            return res.render('admin/views/maintenance/ministries',{ ministries : results });
+            var ministries = results;
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+                    return res.render('admin/views/maintenance/ministries',{ ministries : ministries, messages:messages, newmessages:newmessages });
+
+                }); });
         });     
     });
     adminRouter.post('/maintenance-ministries/addministry', (req, res) => {
@@ -453,13 +628,28 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
 //REQUIREMENTS 
 //=============================== ========================
     adminRouter.get('/maintenance-service-requirements', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
         var queryString1 =`SELECT * FROM tbl_requirementtype 
         JOIN tbl_services ON tbl_services.int_eventID = tbl_requirementtype.int_eventID where tbl_services.var_eventname<>'Marriage' order by tbl_services.var_eventname`
         db.query(queryString1, (err, results1, fields) => {
             var queryString2 =`SELECT * FROM tbl_services`
             db.query(queryString2, (err, results2, fields) => {
             if (err) console.log(err);       
-            return res.render('admin/views/maintenance/requirements/eventrequirements',{ requirements:results1,services:results2 });
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/maintenance/requirements/eventrequirements',{ requirements:results1,services:results2 , messages:messages, newmessages:newmessages});
+                }); });
             });
         });     
     });
@@ -506,19 +696,34 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
 
 
     adminRouter.get('/maintenance-marriage-requirements', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
         var queryString1 =`SELECT * FROM tbl_requirementtype 
         JOIN tbl_services ON tbl_services.int_eventID = tbl_requirementtype.int_eventID where tbl_services.var_eventname='Marriage' order by tbl_requirementtype.var_reqname`
         db.query(queryString1, (err, results1, fields) => {
            
-            if (err) console.log(err);       
-            return res.render('admin/views/maintenance/requirements/wedrequirements',{ requirements:results1});
+            if (err) console.log(err);    
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/maintenance/requirements/wedrequirements',{ requirements:results1, messages:messages, newmessages:newmessages});
+                }); });   
             
         });     
     });
     adminRouter.post('/maintenance-marriage-requirements/add', (req, res) => {
         var queryString=`INSERT INTO tbl_requirementtype(var_reqname,var_reqdesc,char_reqmode,char_reqtype,int_eventID) 
         VALUES(?,?,?,?,?)`  
-            db.query(queryString,[req.body.reqname,req.body.reqdesc,req.body.reqmode,req.body.reqtype,req.body.id], (err, results, fields) => {
+            db.query(queryString,[req.body.reqname,req.body.reqdesc,req.body.reqmode,req.body.reqtype,5], (err, results, fields) => {
                 if (err) console.log(err);
                     return res.redirect('/admin/maintenance-marriage-requirements');
             });            
@@ -549,7 +754,7 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
     adminRouter.post('/maintenance-marriage-requirements/edit', (req, res) => {
         const queryString = `UPDATE tbl_requirementtype SET var_reqname =?, var_reqdesc= ?, char_reqmode=?,char_reqtype=?,int_eventID=?
         WHERE int_reqtypeID= ?`;
-        db.query(queryString,[req.body.reqname, req.body.reqdesc,req.body.reqmode,req.body.reqtype,req.body.eventID,req.body.id], (err, results, fields) => {        
+        db.query(queryString,[req.body.reqname, req.body.reqdesc,req.body.reqmode,req.body.reqtype,5,req.body.id], (err, results, fields) => {        
             if (err) throw err;
             return res.redirect('/admin/maintenance-facilities');
             
@@ -558,12 +763,28 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
 
     // Documents Requirements
     adminRouter.get('/maintenance-document-requirements', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
             var queryString =`SELECT * FROM tbl_servicereqtype join tbl_serviceutilities 
             on tbl_servicereqtype.int_serviceutilitiesID=tbl_serviceutilities.int_serviceutilitiesID
             where tbl_serviceutilities.var_servicename='Document Request'`
-            db.query(queryString, (err, results, fields) => {
-            if (err) console.log(err);       
-            return res.render('admin/views/maintenance/requirements/docurequirements',{requirements:results});
+            db.query(queryString, (err, results1, fields) => {
+            if (err) console.log(err);    
+               
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/maintenance/requirements/docurequirements',{requirements:results1, messages:messages, newmessages:newmessages});
+                }); });
             });
     });
     adminRouter.post('/maintenance-document-requirements/add', (req, res) => {
@@ -609,12 +830,27 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
 
     // Facility Reservation Requirements
     adminRouter.get('/maintenance-facility-requirements', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
         var queryString =`SELECT * FROM tbl_servicereqtype join tbl_serviceutilities 
             on tbl_servicereqtype.int_serviceutilitiesID=tbl_serviceutilities.int_serviceutilitiesID
             where tbl_serviceutilities.var_servicename='Facility Reservation'`
-            db.query(queryString, (err, results, fields) => {
-            if (err) console.log(err);         
-        return res.render('admin/views/maintenance/requirements/facilityrequirements',{requirements:results});
+            db.query(queryString, (err, results1, fields) => {
+            if (err) console.log(err);        
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/maintenance/requirements/facilityrequirements',{requirements:results1, messages:messages, newmessages:newmessages});
+                }); }); 
         });
     });
     adminRouter.post('/maintenance-facility-requirements/add', (req, res) => {
@@ -661,10 +897,25 @@ adminRouter.post('/maintenance-priests/changestatus', (req, res)=>{
 //=======================================================
 
     adminRouter.get('/maintenance-items', (req, res)=>{
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
         var queryString =`SELECT * FROM tbl_items`
-        db.query(queryString, (err, results, fields) => {
+        db.query(queryString, (err, results1, fields) => {
         if (err) console.log(err);
-        return res.render('admin/views/maintenance/item',{items:results});
+        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var newmessages = results[0];
+            console.log(newmessages)
+            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var messages = results;
+                for(i=0;i<messages.length;i++){ 
+                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                } 
+
+                return res.render('admin/views/maintenance/item',{items:results1, messages:messages, newmessages:newmessages});
+            }); });
         });
     });
     adminRouter.post('/maintenance-items/add', (req, res) => {
@@ -727,6 +978,9 @@ adminRouter.post('/utilities-services/query', (req, res) => {
     }); 
 })
 adminRouter.get('/utilities-services', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
     var queryString2 =`SELECT * FROM tbl_utilities join tbl_services on tbl_utilities.int_eventID= tbl_services.int_eventID and tbl_utilities.int_eventID is not null`    
         db.query(queryString2, (err, results, fields) => {
             if (err) console.log(err);       
@@ -736,10 +990,25 @@ adminRouter.get('/utilities-services', (req, res)=>{
                 services[i].time_availablestart= moment(services[i].time_availablestart,'HH:mm:ss').format('hh:mm A'); 
                 services[i].time_availableend= moment(services[i].time_availableend,'HH:mm:ss').format('hh:mm A'); 
             }
-        return res.render('admin/views/utilities/services/index',{ services : services});
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/utilities/services/index',{ services : services, messages:messages, newmessages:newmessages});
+                }); });
     }); 
 }); 
 adminRouter.get('/utilities-specialservices', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
     
     var queryString2 =`SELECT * FROM tbl_utilities join tbl_serviceutilities on tbl_utilities.int_serviceutilitiesID= tbl_serviceutilities.int_serviceutilitiesID where tbl_utilities.int_serviceutilitiesID is not null`
         db.query(queryString2, (err, results, fields) => {
@@ -750,7 +1019,19 @@ adminRouter.get('/utilities-specialservices', (req, res)=>{
                     services[i].time_availablestart= moment(services[i].time_availablestart,'HH:mm:ss').format('hh:mm A'); 
                     services[i].time_availableend= moment(services[i].time_availableend,'HH:mm:ss').format('hh:mm A'); 
             }
-        return res.render('admin/views/utilities/specialservices/index',{ services : services});
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/utilities/specialservices/index',{ services : services, messages:messages, newmessages:newmessages});
+                }); });
     }); 
 }); 
 //===============================================================================================//
@@ -767,6 +1048,9 @@ adminRouter.post('/utilities-services/viewdetails/query', (req, res) => {
     });
 });
 adminRouter.get('/utilities-services/viewdetails', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
     console.log("==========================================")
     console.log("View details (req.query.id): "+req.query.id) 
     console.log("==========================================")
@@ -797,11 +1081,25 @@ adminRouter.get('/utilities-services/viewdetails', (req, res)=>{
         services.time_defaulttime= moment(services.time_defaulttime,'HH:mm:ss').format('hh:mm A'); 
         services.time_availablestart= moment(services.time_availablestart,'HH:mm:ss').format('hh:mm A'); 
         services.time_availableend= moment(services.time_availableend,'HH:mm:ss').format('hh:mm A'); 
+        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var newmessages = results[0];
+            console.log(newmessages)
+            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var messages = results;
+                for(i=0;i<messages.length;i++){ 
+                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                } 
 
-        return res.render('admin/views/utilities/services/editservice',{ services : services, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun});
+                return res.render('admin/views/utilities/services/editservice',{ services : services, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun, messages:messages, newmessages:newmessages});
+            }); });
     }); 
 });
 adminRouter.get('/utilities-specialservices/viewdetails', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
     console.log("==========================================")
     console.log("View details (req.query.id): "+req.query.id) 
     console.log("==========================================")
@@ -832,8 +1130,19 @@ adminRouter.get('/utilities-specialservices/viewdetails', (req, res)=>{
         if(services.time_defaulttime!=null)services.time_defaulttime= moment(services.time_defaulttime,'HH:mm:ss').format('hh:mm A'); 
         if(services.time_availablestart!=null)services.time_availablestart= moment(services.time_availablestart,'HH:mm:ss').format('hh:mm A'); 
         if(services.time_availableend!=null)services.time_availableend= moment(services.time_availableend,'HH:mm:ss').format('hh:mm A'); 
-        
-        return res.render('admin/views/utilities/specialservices/editspecialservice',{ services : services, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun});
+        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var newmessages = results[0];
+            console.log(newmessages)
+            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var messages = results;
+                for(i=0;i<messages.length;i++){ 
+                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                } 
+
+                return res.render('admin/views/utilities/specialservices/editspecialservice',{ services : services, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun, messages:messages, newmessages:newmessages});
+            }); });
         
     }); 
 });
@@ -912,11 +1221,29 @@ adminRouter.post('/utilities-specialservices/changestatus', (req, res)=>{
 //C L I E N T ' S  I N F O
 //=======================================================
 adminRouter.get('/utilities-clients-info', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
     var queryString1 =`SELECT * FROM tbl_utilities_client`
     db.query(queryString1, (err, results, fields) => {
         if (err) console.log(err);       
         var clients = results[0];
-        return res.render('admin/views/utilities/client',{ clients : clients });
+        
+        clients.time_officeopen=moment(clients.time_officeopen, 'HH:mm:ss').format('hh:mm A')
+        clients.time_officeclose=moment(clients.time_officeclose, 'HH:mm:ss').format('hh:mm A')
+        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var newmessages = results[0];
+            console.log(newmessages)
+            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var messages = results;
+                for(i=0;i<messages.length;i++){ 
+                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                } 
+
+                return res.render('admin/views/utilities/client',{ clients : clients , messages:messages, newmessages:newmessages});
+            }); });
     }); 
 });
 
@@ -953,30 +1280,76 @@ adminRouter.post('/utilities-clients-info', (req, res)=>{
 });
 
 
+//=======================================================
+//R E P O R T S
+//=======================================================
+adminRouter.get('/reports/queries', (req, res)=>{
+    var months;
+    for(var i=1; i>13; i++){
+    var queryString1 =`select count(int_eventinfoID) as countt from tbl_eventinfo 
+    where int_eventID = (select int_eventID from tbl_services where var_eventname = 'Anointing of the sick' 
+    and month(datetime_eventdate) =?)`
+    db.query(queryString1, [i],(err, results, fields) => {
+        if (err) console.log(err);
+        months.push(results.countt)
+        
+        if (i==12){
+        res.send(months)
 
-//reports
-adminRouter.get('/reports-services', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_services`
-    var january =`SELECT *, 
-    count(int_eventinfoID) as jan from tbl_eventinfo 
-    join tbl_services on tbl_services.int_eventID =tbl_eventinfo.int_eventID
-    where tbl_eventinfo.char_approvalstatus='Approved' and (select month(date_eventdate) as date_eventdate) =1 `
-    db.query(queryString1, (err, results, fields) => {
-        if (err) console.log(err);       
-        var reports = results;
-        db.query(january, (err, results, fields) => {
-            if (err) console.log(err);       
-            reports.jan = results;
-          
-            
-            
-        return res.render('admin/views/reports/services',{ reports : reports});
+        }
+    });
     
-}); }); 
+}
 });
 
-//queries
+
+
+
+
+adminRouter.get('/reports', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
+    var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
+    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+    var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+        db.query(queryString1, (err, results, fields) => {
+            if (err) console.log(err);
+            var application = results[0];
+            db.query(queryString2, (err, results, fields) => {
+                if (err) console.log(err);
+                var reservation = results[0];
+                db.query(queryString3, (err, results, fields) => {
+                    if (err) console.log(err);
+                    var request = results[0];
+                    db.query(queryString4, (err, results, fields) => {
+                        if (err) console.log(err);
+                        var baptism = results[0];
+                        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var newmessages = results[0];
+                            console.log(newmessages)
+                            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var messages = results;
+                                for(i=0;i<messages.length;i++){ 
+                                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                                } 
+            
+                                return res.render('admin/views/reports/index',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages});
+                            }); });
+        }); }); });});
+    
+}); 
+
+//=======================================================
+//Q U E R I E S
+//=======================================================
 adminRouter.get('/queries-services', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
     var queryString1 =`SELECT * FROM tbl_eventinfo
     JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
@@ -989,143 +1362,26 @@ adminRouter.get('/queries-services', (req, res)=>{
         for(i=0;i<queries.length;i++){ 
             queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
             queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
-            }     
-        return res.render('admin/views/queries/services',{ queries : queries});
+            }    
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/queries/services/services',{ queries : queries, messages:messages, newmessages:newmessages});
+                }); }); 
 }); 
 });
-adminRouter.post('/queries-services', (req, res)=>{
-    if(req.body.serviceid==0){ return res.redirect('/admin/queries-services'); }
-    if(req.body.serviceid==1){ return res.redirect('/admin/queries-anointing'); }
-    if(req.body.serviceid==3){ return res.redirect('/admin/queries-baptism'); }
-    if(req.body.serviceid==4){ return res.redirect('/admin/queries-funeralservice'); }
-    if(req.body.serviceid==5){ return res.redirect('/admin/queries-marriage'); }
-    if(req.body.serviceid==7){ return res.redirect('/admin/queries-funeralmass'); }
-    if(req.body.serviceid==9){ return res.redirect('/admin/queries-specialbaptism'); }    
-}); 
-
-adminRouter.get('/queries-anointing', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_eventinfo
-    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
-        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
-        JOIN tbl_blessing on tbl_eventinfo.int_eventinfoID =tbl_blessing.int_eventinfoID
-        where tbl_services.var_eventname ='Anointing of the sick'
-        order by tbl_eventinfo.int_eventinfoID
-        `
-    db.query(queryString1, (err, results, fields) => {
-        if (err) console.log(err);       
-        var queries = results;
-        for(i=0;i<queries.length;i++){ 
-            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
-            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
-            } 
-        return res.render('admin/views/queries/services/anointing',{ queries : queries});
-    })
-})
-
-adminRouter.get('/queries-baptism', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_eventinfo
-    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
-        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
-        JOIN tbl_baptism on tbl_eventinfo.int_eventinfoID =tbl_baptism.int_eventinfoID
-        where tbl_services.var_eventname ='Baptism'
-        order by tbl_eventinfo.int_eventinfoID
-        `
-    db.query(queryString1, (err, results, fields) => {
-        if (err) console.log(err);       
-        var queries = results;
-        for(i=0;i<queries.length;i++){ 
-            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
-            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
-            } 
-        return res.render('admin/views/queries/services/baptism',{ queries : queries});
-    })
-})
-adminRouter.get('/queries-specialbaptism', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_eventinfo
-    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
-        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
-        JOIN tbl_baptism on tbl_eventinfo.int_eventinfoID =tbl_baptism.int_eventinfoID
-        where tbl_services.var_eventname ='Special Baptism'
-        order by tbl_eventinfo.int_eventinfoID
-        `
-    db.query(queryString1, (err, results, fields) => {
-        if (err) console.log(err);       
-        var queries = results;
-        for(i=0;i<queries.length;i++){ 
-            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
-            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
-            } 
-        return res.render('admin/views/queries/services/specialbaptism',{ queries : queries});
-    })
-})
-
-adminRouter.get('/queries-funeralmass', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_eventinfo
-    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
-        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
-        JOIN tbl_blessing on tbl_eventinfo.int_eventinfoID =tbl_blessing.int_eventinfoID
-        where tbl_services.var_eventname ='Funeral Mass'
-        order by tbl_eventinfo.int_eventinfoID
-        `
-    db.query(queryString1, (err, results, fields) => {
-        if (err) console.log(err);       
-        var queries = results;
-        for(i=0;i<queries.length;i++){ 
-            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
-            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
-            } 
-        return res.render('admin/views/queries/services/funeralmass',{ queries : queries});
-    })
-})
-
-adminRouter.get('/queries-funeralservice', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_eventinfo
-    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
-        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
-        JOIN tbl_blessing on tbl_eventinfo.int_eventinfoID =tbl_blessing.int_eventinfoID
-        where tbl_services.var_eventname ='Funeral Service'
-        order by tbl_eventinfo.int_eventinfoID
-        `
-    db.query(queryString1, (err, results, fields) => {
-        if (err) console.log(err);       
-        var queries = results;
-        for(i=0;i<queries.length;i++){ 
-            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
-            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
-            } 
-        return res.render('admin/views/queries/services/funeralservice',{ queries : queries});
-    })
-})
-
-adminRouter.get('/queries-marriage', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_eventinfo
-    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
-        JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
-        JOIN tbl_wedbride on tbl_eventinfo.int_eventinfoID =tbl_wedbride.int_eventinfoID
-        JOIN tbl_wedgroom on tbl_eventinfo.int_eventinfoID =tbl_wedgroom.int_eventinfoID
-        JOIN tbl_wedcouple on tbl_eventinfo.int_eventinfoID =tbl_wedcouple.int_eventinfoID
-        where tbl_services.var_eventname ='Marriage'
-        order by tbl_eventinfo.int_eventinfoID
-        `
-    db.query(queryString1, (err, results, fields) => {
-        if (err) console.log(err);       
-        var queries = results;
-        for(i=0;i<queries.length;i++){ 
-            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
-            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
-            } 
-        return res.render('admin/views/queries/services/anointing',{ queries : queries});
-    })
-})
-
-
 adminRouter.get('/queries-facilityreservation', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
     var queryString1 =`SELECT * FROM tbl_facilityreservation
         JOIN tbl_user on tbl_facilityreservation.int_userID =tbl_user.int_userID
         JOIN tbl_facility on tbl_facilityreservation.int_facilityID =tbl_facility.int_facilityID
@@ -1139,10 +1395,25 @@ adminRouter.get('/queries-facilityreservation', (req, res)=>{
             queries[i].datetime_reserveend=moment(queries[i].datetime_reserveend).format('MM/DD/YYYY hh:mm A')
             
             }     
-        return res.render('admin/views/queries/specialservices/facility',{ queries : queries});
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/queries/specialservices/facility',{ queries : queries, messages:messages, newmessages:newmessages});
+                }); });
 }); 
 });
 adminRouter.get('/queries-documentrequest', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
     var queryString1 =`SELECT * FROM tbl_documentrequest
         JOIN tbl_user on tbl_documentrequest.int_userID =tbl_user.int_userID
         JOIN tbl_document on tbl_documentrequest.int_documentID =tbl_document.int_documentID
@@ -1167,11 +1438,25 @@ adminRouter.get('/queries-documentrequest', (req, res)=>{
             }
             }     
             console.log(queries)
-        return res.render('admin/views/queries/specialservices/document',{ queries : queries});
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/queries/specialservices/document',{ queries : queries, messages:messages, newmessages:newmessages});
+                }); });
 }); 
 });
-
 adminRouter.get('/queries-houseblessing', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
     var queryString1 =`SELECT * FROM tbl_houseblessing
         JOIN tbl_user on tbl_houseblessing.int_userID =tbl_user.int_userID
         order by tbl_houseblessing.int_houseblessID
@@ -1184,7 +1469,19 @@ adminRouter.get('/queries-houseblessing', (req, res)=>{
             queries[i].time_blessingstart=moment(queries[i].time_blessingstart, 'HH:mm:ss').format('hh:mm A')
             
             }     
-        return res.render('admin/views/queries/specialservices/establishment',{ queries : queries});
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/queries/specialservices/establishment',{ queries : queries, messages:messages, newmessages:newmessages});
+                }); });
 }); 
 });
 
@@ -1198,5 +1495,6 @@ adminRouter.get('/queries-houseblessing', (req, res)=>{
         res.status(404)
         return res.render('admin/views/error/404', {title: '404: File Not Found'});
     });
+    
 
 exports.admin = adminRouter;

@@ -13,44 +13,10 @@ block prepend main
 										.col-md-6
 											h3.card-title(style='background:#367587; color:white') House Blessing
 										.col-md-6.text-right
-											.row.text-right
-												.col-md-12.text-right
-													label SERVICES:
-													select#selectBox(onchange='services(value);' style='color:grey' )
-														//- option(value=0) All
-														option(value=3) House Blessing
-														option(value=1) Document Request
-														option(value=2) Facility Reservation
-														
-
-												.col-md-12.text-right
-													label APPROVAL STATUS:
-													select#selectBox(onchange='month(value);' style='color:grey' )
-														option(value=0) All
-														option(value=1) Approved
-														option(value=2) Pending
-														option(value=3) Disapproved
-														option(value=4) Cancelled
-
-												.col-md-12.text-right
-													label MONTH:
-													select#selectBox(onchange='month(value);' style='color:grey' )
-														option(value=0) All
-														option(value=1) January
-														option(value=2) February
-														option(value=3) March
-														option(value=4) April
-														option(value=5) May
-														option(value=6) June
-														option(value=7) July
-														option(value=8) August
-														option(value=9) September
-														option(value=10) October
-														option(value=11) November
-														option(value=12) December
+											
 														
 								.card-body.table-responsive
-										table.table.table-hover.dt-responsive
+										table.table.table-hover.dt-responsive#example(style="width:100%;")
 												thead.text-primary
 														th ID
 														//- th Service Name
@@ -73,16 +39,46 @@ block prepend main
 															td=query.time_blessingstart
 															td=query.char_approvalstatus
 
-																
-	script(type='text/javascript', src='/js/jquery.min.js')
-	script(type='text/javascript', src='/admin/vendor.js')
-	script(type='text/javascript', src='/admin/bundle.js')
-	script(type='text/javascript', src='/js/loader.js')
+	
 block addjs
 	script.
-		$(document).ready(function() {
-			function services($i) {
-				var id = $i;
-				$.post(`/admin/queries-services?serviceid:${id}`)
-				}
-			})
+		function services($i) {
+			var id = $i;
+			$.post(`/admin/queries-services?serviceid:${id}`)
+			//- window.location=`/admin/queries-services?serviceid=${id}`
+			}
+			$(document).ready(function() {
+				// itong datatable ay hindi galing sa template as in inimport siya beshy kasi hindi lumalabas yung
+				// mga export button kapag sa datatable na template
+				$('#example').DataTable( {
+						dom: 'Bfrtip',
+						buttons: [
+								'copy', 'csv', 'excel', 'pdf', 'print'
+						],
+						initComplete: function () {
+						this.api().columns().every( function () {
+								var column = this;
+								var select = $('<select><option value=""></option></select>')
+										.appendTo( $(column.footer()).empty() )
+										.on( 'change', function () {
+												var val = $.fn.dataTable.util.escapeRegex(
+														$(this).val()
+												);
+ 
+												column
+														.search( val ? '^'+val+'$' : '', true, false )
+														.draw();
+										} );
+ 
+								column.data().unique().sort().each( function ( d, j ) {
+										select.append( '<option value="'+d+'">'+d+'</option>' )
+								} );
+						} );
+					}
+				} );
+			} );
+		// ampanget kasi ng itsura ng pagination kaya dito tinanggal ko yung css niya kaya tatawagin lang to
+		// pag gumamit ng datatable na hindi from template. Kapag niremove mo yung css diyan tapos cinall mo yung datatable
+		// na nasa template, walang design yung pagination ng template kaya ampanget
+block filter
+	script(src='/admin/bundlesomecssremoved.js')
