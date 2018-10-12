@@ -78,11 +78,16 @@ block prepend main
 																.modal-header#headerAppend
 																		button.close(type='button', data-dismiss='modal', aria-label='Close')
 																				span.p-3(aria-hidden='true') ×
-																.modal-body#bodyAppend
-																.modal-body#reqAppend
-																.modal-footer
-																		button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-																		button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${event.int_eventID}`) Apply
+																.modal-body
+																	#bodyAppend
+																	#reqAppend
+																	.row
+																		.col-md-12.text-center
+																			.learn-more
+																				button.btn.std-btn.btn-common#proceedButton(type='button' value=`${event.int_eventID}`) Apply
+																//- .modal-footer
+																//- 		//- button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+																//- 		button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${event.int_eventID}`) Apply
 				.container
 					.row
 						.col-md-12
@@ -123,29 +128,31 @@ block prepend main
 																				.col-md-6
 																						.form-group
 																								h5.label-control Document
-																								label
-																										select#documenttype(type="text" name='documenttype')
-																												option Baptismal Certificate
-																												option Confirmation Certificate
-																		.row
+																									.text-danger.d-inline  *
+																								select#documenttype(type="text" name='documenttype' style="width:100%;")
+																										option Baptismal Certificate
+																										option Confirmation Certificate
 																				.col-md-6
 																						h5.label-control Event Date
+																							.text-danger.d-inline  *
 																						input#eventDate.datepicker.form-control(type='date' name='birthday')
-																		.row
-																				.col-md-12
-																						h5.label-control OR
-																		.row
-																				.col-md-12
+																		.row.mt-4
+																				.col-md-6
 																						h5.label-control Person in the Certificate:
-																		.row
-																				.col-md-6.my-3
-																						input#lastName.form-control(type='text' name='lastname' placeholder='Last Name')
-																				.col-md-6.my-3
-																						input#firstName.form-control(type='text' name='firstname' placeholder='First Name')
-																.modal-body#reqAppend
-																.modal-footer
-																		button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
-																		button.btn.std-btn.btn-common.btn-info.mb-0#searchButton(type='button') Search
+																							.text-danger.d-inline  *
+																						input#lastName.form-control(type='text' name='lastname' placeholder='Last Name *')
+																				.col-md-6
+																						h5.label-control.invisible Person in the Certificate:
+																							.text-danger.d-inline  *
+																						input#firstName.form-control(type='text' name='firstname' placeholder='First Name *')
+																		.row#reqAppend
+																				.col-md-12.text-center
+																					.learn-more
+																						button.btn.std-btn.btn-common#searchButton(type='button') Search
+																//- .modal-body#reqAppend
+																//- .modal-footer
+																//- 		button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
+																//- 		button.btn.std-btn.btn-common.btn-info.mb-0#searchButton(type='button') Search
 								//- .col-md-12.text-center
 								//-     .learn-more
 								//-         a.btn.std-btn.btn-common(href='/guest/services') View All
@@ -467,15 +474,18 @@ block addjs
 												$('#headerAppend').append(`
 														<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
 														<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
+														<button class='close' type='button', data-dismiss='modal', aria-label='Close'>
+																<span class="p-3" aria-hidden='true'> × </span>
+														</button>
 														`)
 														$('#bodyAppend').append(`
-														<p><strong>Service Description</strong></p>
-														<p>${data.firstQuery.var_eventdesc}</p>
+														<h5><strong>Service Description</strong></h5>
+														<p class="pl-2 description">${data.firstQuery.var_eventdesc}</p>
 												`)
 												for(i=0;i<data.secondQuery.length;i++){
 												$('#reqAppend').append(`
-														<p><strong>Requirements</strong></p>
-														<p>${data.secondQuery[i].var_reqname}</p>
+														<h5><strong>Requirements</strong></h5>
+														<p class="pl-2 description">${data.secondQuery[i].var_reqname}</p>
 												`)
 												}
 												$('#inquireModal').modal('show');
@@ -486,7 +496,7 @@ block addjs
 
 												})
 												$('#cancelButton').css('display', 'block');
-												$('#proceedButton').css('display', 'block');
+												//- $('#proceedButton').css('display', 'block');
 														$('#proceedButton').click(function(){
 																$.post('/guest/query',{id:data.firstQuery.int_eventID}).done(data =>{
 																		window.location='/guest/service'
@@ -582,17 +592,20 @@ block addjs
 									$('#headerAppend').append(`
 										<label id="idshit" hidden>${data.firstQuery.int_serviceutilitiesID}</label>
 										<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_servicename}</h5>
+										<button class='close' type='button', data-dismiss='modal', aria-label='Close'>
+											<span class="p-3" aria-hidden='true'> × </span>
+										</button>
 										`)
 										$('#bodyAppend').append(`
-										<p><strong>Service Description</strong></p>
-										<p>${data.firstQuery.var_servicedesc}</p>
+										<h5><strong>Service Description</strong></h5>
+										<p class="pl-2 description">${data.firstQuery.var_servicedesc}</p>
 										<br>
 										
 									`)
 									for(i=0;i<data.secondQuery.length;i++){
 									$('#reqAppend').append(`
-										<p><strong>Requirements</strong></p>
-										<p>${data.secondQuery[i].var_reqname}</p>
+										<h5><strong>Requirements</strong></h5>
+										<p class="pl-2 description">${data.secondQuery[i].var_reqname}</p>
 									`)
 									}
 									$('#inquireModal').modal('show');	
@@ -603,7 +616,7 @@ block addjs
 
 									})
 									$('#cancelButton').css('display', 'block');
-									$('#proceedButton').css('display', 'block');
+									//- $('#proceedButton').css('display', 'block');
 										$('#proceedButton').click(function(){
 																$.post('/guest/query',{id:data.firstQuery.int_eventID}).done(data =>{
 																		window.location='/guest/establishment/form'

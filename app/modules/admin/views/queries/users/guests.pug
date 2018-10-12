@@ -11,50 +11,47 @@ block prepend main
 								.card-header.card-header-primary(style='background:#367587; color:white')
 									.row
 										.col-md-6
-											h3.card-title(style='background:#367587; color:white') Services
-
+											h3.card-title(style='background:#367587; color:white') Guests' Accounts
+										.col-md-6.text-right
+											.row.text-right
+												
+														
 								.card-body.table-responsive
-										table.table.table-hover.dt-responsive#example(style="width:100%;")
+										table.table.table-hover.dt-responsive#example2(style="width:100%;")
 												thead.text-primary
 														th ID
-														th Service Name
-														th Name
-														//- th Father's Name
-														//- th Mother's Name
-														th Event Date
-														th Event Time
-														th Approval Status
+														th Name 
+														th Username
+														th Email
+														th Contact Number
+														//- th Status
 														
 												tbody
 													each query in queries
 														tr
-															td=query.int_eventinfoID
-															td=query.var_eventname
-															td=query.var_lname +", "+ query.var_fname
-															//- td=query.var_fathername
-															//- td=query.var_mothername
-															td=query.date_eventdate
-															td=query.time_eventstart
-															td=query.char_approvalstatus
+															td=query.int_userID
+															td=query.var_userlname +", "+ query.var_userfname
+															td=query.var_username
+															td=query.var_useremail
+															td=query.var_usercontactnum
+															
+															//- td=query.vr_userstatus
 												tfoot
 														th ID
-														th Service Name
-														th Name
-														//- th Father's Name
-														//- th Mother's Name
-														th Event Date
-														th Event Time
-														th Approval Status
+														th Name 
+														th Username
+														th Email
+														th Contact Number
+														th Status
 
-																
-	
+
 block addjs
 	script.
 		
-			$(document).ready(function() {
+		$(document).ready(function() {
 				// itong datatable ay hindi galing sa template as in inimport siya beshy kasi hindi lumalabas yung
 				// mga export button kapag sa datatable na template
-				$('#example').DataTable( {
+				$('#example2').DataTable( {
 						dom: 'Bfrtip',
 						buttons: [
 								'copy', 'csv', 'excel', 'pdf', 'print'

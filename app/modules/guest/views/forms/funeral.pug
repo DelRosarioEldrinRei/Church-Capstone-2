@@ -82,6 +82,7 @@ block main
 										span Step 2 - 2
 										input.form-control#userID(type='hidden' name='userID' value=`${user.int_userID}`)
 										h6.label-control Name of the deceased
+											.text-danger.d-inline  *
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.pt-0
@@ -180,6 +181,7 @@ block main
 																	span.check
 															#textarea2.form-group
 																h6.label-control Enter Complete Address
+																	.text-danger.d-inline  *
 																textarea.form-control#othervenue(placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" rows="2" name='othervenue')
 																.help-block.with-errors
 

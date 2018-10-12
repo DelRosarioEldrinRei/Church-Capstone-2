@@ -11,7 +11,7 @@ block prepend main
 										.scrollable.pos-r.bdT.layer.w-100.fxg-1
 											ul.p-20.nav.flex-column
 												li.nav-item
-													a.nav-link.c-grey-800.cH-blue-500#inbox
+													a.nav-link.c-grey-800.cH-blue-500#inbox(href='#')
 														.peers.ai-c.jc-sb
 															.peer.peer-greed
 																i.mR-10.ti-email
@@ -19,7 +19,7 @@ block prepend main
 															.peer
 																span.badge.badge-pill.bgc-deep-purple-50.c-deep-purple-700=newmessages.newmessage
 												li.nav-item
-													a.nav-link.c-grey-800.cH-blue-500(href='')
+													a#sent.nav-link.c-grey-800.cH-blue-500(href='#')
 														.peers.ai-c.jc-sb
 															.peer.peer-greed
 																i.mR-10.ti-share
@@ -60,34 +60,78 @@ block prepend main
 												//-         span.badge.badge-pill.bgc-red-50.c-red-700 +99
 								.email-wrapper.row.remain-height.bgc-white.ov-h
 									.email-list.h-100.layers
-									 
-										.layer.w-100.fxg-1.scrollable.pos-r
+										//inbox content
+										.layer.w-100.fxg-1.scrollable.pos-r.inbox-content
 											div#listmessages
-											//- each listmessage in listmessages
-											//- 	#mess.email-list-item.peers.fxw-nw.p-20.bdB.bgcH-grey-100.cur-p
-											//- 		input#messageid(type='hidden', value=`${listmessage.int_messageID}`)
+											each inbox in inboxs
+												.mess.email-list-item.peers.fxw-nw.p-20.bdB.bgcH-grey-100.cur-p
+													input.messageid(type='hidden', value=`${inbox.int_messageID}`)
 													
-											//- 		.peer.peer-greed.ov-h
-											//- 			.peers.ai-c
-											//- 				.peer.peer-greed
-											//- 					h6=listmessage.var_userlname
-											//- 				.peer
-											//- 					small=listmessage.datetime_sent
-											//- 			h5.fsz-def.tt-c.c-grey-900=listmessage.var_subject
-											//- 			span.whs-nw.w-100.ov-h.tov-e.d-b.text-truncate=listmessage.text_message
-												
-									.email-content.h-100
-										
+													.peer.peer-greed.ov-h
+														.peers.ai-c
+															.peer.peer-greed
+																h6=inbox.var_userlname
+															.peer
+																small=inbox.datetime_sent
+														h5.fsz-def.tt-c.c-grey-900=inbox.var_subject
+														span.whs-nw.w-100.ov-h.tov-e.d-b.text-truncate=inbox.text_message
+										//sent content
+										.layer.w-100.fxg-1.scrollable.pos-r.sent-content(style="display:none;")
+											div#listmessages
+											each sent in sents
+												.mess2.email-list-item.peers.fxw-nw.p-20.bdB.bgcH-grey-100.cur-p
+													input.messageid(type='hidden', value=`${sent.int_messageID}`)
+														
+													.peer.peer-greed.ov-h
+														.peers.ai-c
+															.peer.peer-greed
+																h6=sent.var_userlname
+															.peer
+																small=sent.datetime_sent
+														h5.fsz-def.tt-c.c-grey-900=sent.var_subject
+														span.whs-nw.w-100.ov-h.tov-e.d-b.text-truncate=sent.text_message
+									
+									
+									.email-content.h-100.inbox-content
 											.email-content-wrapper#messageView
+									.email-content.h-100.sent-content
+											.email-content-wrapper#messageView2
 												
 block addjs
 	script(type='text/javascript').
 			$(document).ready(function(){
-				$('#mess').click(function(){	
-					idNow = $('#messageid').val();
+				$('#inbox').click(function(){
+					$('.sent-content').fadeOut(function(){
+						$('.inbox-content').fadeIn();
+					});
+					//- $(this).attr('disabled', 'disabled');
+					//- $(this).css('cursor', 'no-drop');
+				});
+				$('#sent').click(function(){
+					$('.inbox-content').fadeOut(function(){
+						$('.sent-content').fadeIn();
+					});
+					//- $(this).attr('disabled', 'disabled');
+					//- $(this).css('cursor', 'no-drop');
+				});
+
+				$('.composeClose').click(function(){
+					$('.mesgs_compose').fadeOut(function(){
+						$('.mesgs').fadeIn('slow');
+					});
+					$('.compose').removeAttr("disabled");
+					$('.compose').css('cursor', 'pointer');
+				});
+
+				$('.mess').click(function(){	
+					$('#messageView').empty()
+					idNow = $(this).children('.messageid').val(	);
 					//- idNow = $(this).val();
 					console.log(idNow)
-					$.post('/admin/messages/query',{id:idNow}).done(data =>{
+					var nowDate = new Date(); 
+					var date = nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+						
+					$.post('/admin/messages/query',{id:idNow,date}).done(data =>{
 						data.datetime_sent=moment(data.datetime_sent).format('MM/DD/YYYY hh:mm A')
 						$('#messageView').append(`
 							
@@ -191,32 +235,111 @@ block addjs
 						
 					});
 				});//mess
-				$('#inbox').click(function(){
-					$.post('/admin/messages/inboxquery').done(data =>{
 
-					$('#listmessages').append(`
-						<div class="email-list-item peers fxw-nw p-20 bdB bgcH-grey-100 cur-p">
-							<div class="peer mR-10">
-							<div class="checkbox checkbox-circle checkbox-info peers ai-c">
-								<input type="checkbox" id="inputCall1" name="inputCheckboxesCall" class="peer">
-								<label for="inputCall1" class=" peers peer-greed js-sb ai-c"></label>
-							</div>
-							</div>
-							<div class="peer peer-greed ov-h">
-							<div class="peers ai-c">
-								<div class="peer peer-greed">
-								<h6>John Doe</h6>
-								</div>
+
+				$('.mess2').click(function(){	
+					$('#messageView2').empty()
+					idNow = $(this).children('.messageid').val(	);
+					//- idNow = $(this).val();
+					console.log(idNow)
+					$.post('/admin/messages/query1',{id:idNow}).done(data =>{
+						data.datetime_sent=moment(data.datetime_sent).format('MM/DD/YYYY hh:mm A')
+						$('#messageView2').append(`
+							
+							<div class="peers ai-c jc-sb pX-40 pY-30">
+								<div class="peers peer-greed">
+								
 								<div class="peer">
-								<small>1 min ago</small>
+									<small>${data.datetime_sent}</small>
+									<h5 class="c-grey-900 mB-5">${data.var_userlname}</h5>
+									<span>To: email@gmail.com</span>
 								</div>
+								</div>
+								
 							</div>
-							<h5 class="fsz-def tt-c c-grey-900">title goes here</h5>
-							<span class="whs-nw w-100 ov-h tov-e d-b">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</span>
-							</div>
+							<div class="bdT pX-40 pY-30">
+								<h4>${data.var_subject}</h4>
+								<p>
+								${data.text_message}
+								</p>
 						</div>
 
-					`)
-					})
-				})
+						<div class="modal fade" id="messageModal" tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg" role="document">
+								<div class="modal-content">
+								<input id="messageid" type="hidden" value=${data.int_messageID}/>
+								<div class="modal-header" style="background:red">
+									<h5 class="modal-title" style="color:white">Reply</h5>
+									<button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:white">×</span></button>
+								</div>
+								<div class="modal-body">
+								<h4 class="c-grey-900 mB-20">Send Message</h4>
+								<div class="send-header">
+									<div class="form-group">
+									<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
+									<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}" disabled>
+									</div>
+									<div class="form-group">
+									<input class="form-control" id='var_subject' >
+									</div>
+									<div class="form-group">
+									<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you disapproved the guest's application." rows='6'></textarea>
+									</div>
+								</div>
+								<div id="compose-area"></div>
+								
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-danger" id="sendMessage" type="button">Send</button>
+								</div>
+								</div>
+							</div>
+							</div>
+						
+						`)
+
+						//- $('#messageModal').modal('show')
+						$('#messageModal').on('hidden.bs.modal',function(){
+							$('#selectBox').val('default')
+							$('#messageAppend').empty()
+						})
+						
+						$('#sendMessage').click(function(){
+							swal({
+							title:'Send this message?', 
+							
+							type:'warning',
+							showCancelButton: false,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Confirm'
+							}).then((result)=>{
+								if(result.value){										
+									$.post('/admin/message/send',{
+										int_receiverID:$('#int_receiverID').val(),
+										int_receiverID:$('#int_receiverID').val(),
+										var_subject:$('#var_subject').val(),
+										text_message:$('#text_message').val(),
+										id1:$('#messageid').val(),
+									})
+									.done(data=>{
+										if(data){
+												
+											swal({
+												title:'Success',
+												text:'Status updated and message sent!', 
+												type:'success'
+											}).then(function(){
+												location.reload()
+											})
+											$('#messageModal').modal('hide');
+											$('#messageAppend').empty();
+										}
+									})
+								}
+						})
+						})
+						
+					});
+				});//mess
 			})//docuready

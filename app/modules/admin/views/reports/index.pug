@@ -7,7 +7,7 @@ block prepend main
 				.row.gap-20
 					// #Toatl Visits ====================
 					.col-md-3
-						.layers.bd.bgc-white.p-20
+						.layers.bd.bgc-white.p-20.shadow
 							.layer.w-100.mB-10
 								h6.lh-1 Facility Reservations
 							.layer.w-100
@@ -18,7 +18,7 @@ block prepend main
 										span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500=reservation.reservationcount
 					// #Total Page Views ====================
 					.col-md-3
-						.layers.bd.bgc-white.p-20
+						.layers.bd.bgc-white.p-20.shadow
 							.layer.w-100.mB-10
 								h6.lh-1 Document Requests
 							.layer.w-100
@@ -29,7 +29,7 @@ block prepend main
 										span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-red-50.c-red-500=request.requestcount
 					// #Unique Visitors ====================
 					.col-md-3
-						.layers.bd.bgc-white.p-20
+						.layers.bd.bgc-white.p-20.shadow
 							.layer.w-100.mB-10
 								h6.lh-1 Baptisms
 							.layer.w-100
@@ -40,7 +40,7 @@ block prepend main
 										span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-purple-50.c-purple-500=baptism.baptismcount
 					// #Bounce Rate ====================
 					.col-md-3
-						.layers.bd.bgc-white.p-20
+						.layers.bd.bgc-white.p-20.shadow
 							.layer.w-100.mB-10
 								h6.lh-1 Other Event Application
 							.layer.w-100
@@ -52,7 +52,7 @@ block prepend main
 			.masonry-item.col-12
 				// #Site Visits ====================
 				.bd.bgc-white
-					.peers.ai-s(class='fxw-nw@lg+')
+					.peers.ai-s.shadow(class='fxw-nw@lg+')
 						.peer.peer-greed.p-20(class='w-70p@lg+ w-100@lg-')
 							.layers
 								.layer.w-100.mB-10
@@ -109,16 +109,76 @@ block prepend main
 									//-     .easy-pie-chart(data-size='80', data-percent='90', data-bar-color='#ff9800')
 									//-       span
 									//-     h6.fsz-sm Bounce Rate
-			.masonry-item.col-md-12
+			// line charts
+		.row.gap-20.masonry.pos-r
+			.masonry-item.col-md-6
 				// #Monthly Stats ====================
 				.bd.bgc-white
-					.layers
+					.layers.shadow
 						.layer.w-100.pX-20.pT-20
 							h6.lh-1 Monthly Stats
 						.layer.w-100.p-20
-							canvas#line-chart(height='220')
+							canvas#canvas(height='150')
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h6.lh-1 Monthly Stats
 						.layer.w-100.p-20
-							canvas#bar(height='220')
+							canvas#canvas2(height='150')
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h6.lh-1 Monthly Stats
+						.layer.w-100.p-20
+							canvas#canvas3(height='150')
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h6.lh-1 Monthly Stats
+						.layer.w-100.p-20
+							canvas#canvas4(height='150')
+			.masonry-item.col-12
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h6.lh-1 Site Visits
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h6.lh-1 Monthly Stats
+														.layer.w-100
+															canvas#oilChart(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h6.lh-1 Monthly Stats
+														.layer.w-100
+															canvas#oilChart2(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h6.lh-1 Monthly Stats
+														.layer.w-100
+															canvas#oilChart3(height='250')
+						//- .layer.w-100.p-20
+						//- 	canvas#bar(height='220')
 						//- .layer.bdT.p-20.w-100
 						//- 	.peers.ai-c.jc-c.gapX-20
 						//- 		.peer
@@ -140,14 +200,123 @@ block prepend main
 						//- 			span.fsz-def.fw-600.mR-10.c-grey-800
 						//- 				| 8% 
 						//- 				i.fa.fa-level-down.c-red-500
-						//- 			small.c-grey-500.fw-600 Profit
-
-						
-			.masonry-item.col-md-6
-	<script type="text/javascript" src="/admin/chart.js/dist/Chart.js"></script>			
+						//- 			small.c-grey-500.fw-600 Profit		
 block addjs
 	
 	script(type='text/javascript').
+			//line chart data andcolor instantiate
+			var lineChartData = {
+				labels: ["0", "5", "7.5", "10", "11", "12", "13", "15"],
+				datasets: [{
+						label: "SES 3.4",
+						fill: false,
+						borderColor: "#108587",
+						pointBackgroundColor: "#108587",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#108587",
+						data: ["128.940", "131.397", "132.235", "128.235", "125.636", "127.271", "125.667", "129.554"]
+				}, {
+						label: "SES 5.6",
+						fill: false,
+						borderColor: "#52b99f",
+						pointBackgroundColor: "#52b99f",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#52b99f",
+						data: ["128.948", "130.369", "131.038", "125.867", "121.893", "119.656", "119.026", "119.737"]
+				}, {
+						label: "SES 6.7",
+						fill: false,
+						borderColor: "#f2af3e",
+						pointBackgroundColor: "#f2af3e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#f2af3e",
+						data: ["127.473", "128.983", "129.327", "123.416", "118.829", "116.843", "117.190", "115.215"]
+				}, {
+						label: "SES 8.9",
+						fill: false,
+						borderColor: "#ec533e",
+						pointBackgroundColor: "#ec533e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#ec533e",
+						data: ["127.283", "128.147", "124.489", "116.783", "111.696", "110.563", "105.469", "104.332"]
+				}]
+
+			}
+
+			window.onload = function() {
+					// first
+					var canvas = document.getElementById("canvas");
+					var ctx = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx , {
+							type: "line",
+							data: lineChartData,
+							responsive: true,
+					});
+					//second
+					var canvas = document.getElementById("canvas2");
+					var ctx2 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx2 , {
+							type: "line",
+							data: lineChartData,
+							responsive: true,
+					});
+					//third
+					var canvas = document.getElementById("canvas3");
+					var ctx3 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx3 , {
+							type: "line",
+							data: lineChartData,
+							responsive: true,
+					});
+					//fourth
+					var canvas = document.getElementById("canvas4");
+					var ctx4 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx4 , {
+							type: "line",
+							data: lineChartData,
+							responsive: true,
+					});
+			}
+			// end of line charts
+
+			// pie chart
+			var oilCanvas = document.getElementById("oilChart");
+			var oilCanvas2 = document.getElementById("oilChart2");
+			var oilCanvas3 = document.getElementById("oilChart3");
+			var oilCanvas4 = document.getElementById("oilChart4");
+			var oilData = {
+					labels: [
+							"Saudi Arabia",
+							"Russia",
+							"Iraq",
+					],
+					datasets: [
+							{
+									data: [133.3, 86.2, 52.2],
+									backgroundColor: [
+											"#ec533e",
+											"#f2af3e",
+											"#6384FF",
+									]
+							}]
+			};
+
+			var pieChart = new Chart(oilCanvas, {
+				type: 'pie',
+				data: oilData
+			});
+			var pieChart = new Chart(oilCanvas2, {
+				type: 'pie',
+				data: oilData
+			});
+			var pieChart = new Chart(oilCanvas3, {
+				type: 'pie',
+				data: oilData
+			});
+			var pieChart = new Chart(oilCanvas4, {
+				type: 'pie',
+				data: oilData
+			});
 			$(document).ready(function(){
 				$.ajax({
 					url: "/admin/reports/queries",
@@ -187,53 +356,5 @@ block addjs
 						console.log(data);
 					}
 				});
-
-
-				const lineChart=document.getElementById("line-chart");
-				if(lineChart)
-				{
-				const lineCtx=lineChart.getContext("2d");lineChart.height=80,
-				new Chart
-				(lineChart,{
-					type:"line",
-					data:{
-						labels:["January","February","March","April","May","June","July"],
-						datasets:[{
-						label:"Series A",
-							backgroundColor:"rgba(237, 231, 246, 0.5)",
-							borderColor:"deep-purple-500",
-							pointBackgroundColor:"deep-purple-700",
-							borderWidth:4,
-							data:[60,50,70,60,50,70,60]},
-						{label:"Series B",
-							backgroundColor:"rgba(232, 245, 233, 0.5)",
-							borderColor:"blue-500",
-							pointBackgroundColor:"blue-700",
-							borderWidth:2,
-							data:[chartdata]}]},
-
-			options:{legend:{display:!1}}})
-
-			}
-
-			const areaChartBox = document.getElementById('area-chart');
-			if (areaChartBox) {
-				const areaCtx = areaChartBox.getContext('2d');
-
-				new Chart(areaCtx, {
-					type: 'line',
-					data: {
-						labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-						datasets: [{
-							backgroundColor : 'rgba(3, 169, 244, 0.5)',
-							borderColor     : 'rgb(75, 192, 192)',
-							borderWidth		:	4,
-							data            : [10,20,30,10,20,30,10],
-							label           : 'Dataset',
-							fill            : 'start',
-						}],
-					},
-				});
-			}
 			})
 				

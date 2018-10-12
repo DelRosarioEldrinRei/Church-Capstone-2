@@ -97,6 +97,7 @@ block main
 												.col-md-3.px-lg-3.px-md-0.px-sm-0
 													.form-group.pt-2
 														h6.label-control Place where the blessing will happen:
+															.text-danger.d-inline  *
 														.ml-4
 															.custom-control.custom-radio.mt-2
 																input#ourhomeradio.custom-control-input(type='radio', name='establishment' value="ourhome" checked)
@@ -111,16 +112,20 @@ block main
 														.col-md-6.px-lg-3.px-md-3.px-sm-0
 															.form-group
 																h6.label-control Owner:
+																	.text-danger.d-inline  *
 																input.form-control#owner(type='text' value=`${user.var_userlname}`+ ', '+`${user.var_userfname}` name='owner'  readonly)
 															.form-group
 																h6.label-control House/Establishment Location:
+																	.text-danger.d-inline  *
 																textarea.form-control#locations(placeholder="Please Enter Complete Address" rows="1" name='location' readonly) #{user.var_useraddress}
 														.col-md-6.px-lg-3.px-md-3.px-sm-0
 															.form-group
 																h6.label-control Contact Number:
+																	.text-danger.d-inline  *
 																input.form-control#contactnumber(type='text' value=`${user.var_usercontactnum}` name='contactnumber' readonly)
 															.form-group
 																h6.label-control Email:
+																	.text-danger.d-inline  *
 																input.form-control.mb-2#email(type='Email' value=`${user.var_useremail}` name='email'  readonly)
 													#other.form-group.pt-2
 														.row
