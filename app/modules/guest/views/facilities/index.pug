@@ -1,5 +1,9 @@
 extends ../../../../templates/guests
 block main
+	style.
+		#header-style-1 {
+			background-image: url(/imgchurch/rsz_ceiling.jpg)
+		}
 	#headers
 		#header-style-1
 			.container
@@ -32,7 +36,7 @@ block main
 									h3.card-title=facility.var_facilityname
 									.meta
 										a Recommended
-									.description
+									.div(style="font-size: 16px;")
 										.row
 											.col-md-4
 												span
@@ -61,7 +65,7 @@ block main
 										.learn-more.text-center
 											//- a.btn.btn-common.ml-auto.mx-auto#submitButton(type = 'button' value ='1') Inquire
 											//- a.btn.btn-primary#submitButton(type='submit' value=`${facility.int_facilityID}`) Inquire
-											button.btn.btn-primary.actionButton(type='button' value=`${facility.int_facilityID}`) Inquire
+											button.btn.btn-common.actionButton(type='button' value=`${facility.int_facilityID}`) Inquire
 												
 									
 					

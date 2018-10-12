@@ -2,103 +2,105 @@ extends ../../../../templates/admin
 block prepend main
 	#wrap
 	div(style='clear:both' )
-	.content
-		.container-fluid
-			.row
-				.col-lg-12.col-md-12
-							br
-							
-							.tab-content
-								#sacrament.tab-pane.active
-									br
-									.card
-											.card-header.card-header-primary(style='background:#367587')
-												.row
-													.col-md-6
-														h4.card-title(style='color:white') Priests
-													.col-md-6
-														a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Priest Account
-											.card-body.table-responsive
-													table.dataTable.table.table-hover.dt-responsive
-															thead.text-primary
-																	th ID
-																	th Name
-																	th Contact Number
-																	th Email
-																	th Status
-																	th.text-center(style=" width:120px") Actions
-															tbody
-																	each priest in priests
-																		tr
-																			td=priest.int_userID
-																			td=priest.var_userlname +", " + priest.var_userfname
-																			td=priest.var_usercontactnum
-																			td=priest.var_useremail
-																			//- td=priest.var_userstatus
-																			if(priest.var_userstatus=='Active')
-																				td
-																					select#selectBox(onchange='transfered(value);' style='color:green' )
-																						option(value=`${priest.int_userID}`) Active
-																						option(value=`${priest.int_userID}` style='color:red' ) Transfered
-																			if(priest.var_userstatus=='Transfered')
-																				td
-																					select#selectBox(onchange='active(value);' style='color:red' )
-																						option(value=`${priest.int_userID}`) Transfered
-																						option(value=`${priest.int_userID}`  style='color:green') Active
-																			td.td-actions.text-center
-																				button.btn.btn-primary.actionButton(type='button' value=`${priest.int_userID}`)
-																					i.ti-settings
-																						#toolbar-options.hidden
-																							a.button.updateButton(href='#')
-																								i.ti-pencil(style="color:white;")
-																							a.button.deleteButton(href='#')
-																								i.ti-close(style="color:white;")
+		.card.shadow
+				.card-header.card-header-primary(style='background:#367587')
+					.row
+						.col-md-6
+							h4.card-title(style='color:white') Priests
+						.col-md-6
+							a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Priest Account
+				.card-body.table-responsive
+						table.dataTable.table.table-hover.dt-responsive.dataTable
+								thead.text-primary
+										th ID
+										th Name
+										th Contact Number
+										th Email
+										th Status
+										th.text-center(style=" width:120px") Actions
+								tbody
+										each priest in priests
+											tr
+												td=priest.int_userID
+												td=priest.var_userlname +", " + priest.var_userfname
+												td=priest.var_usercontactnum
+												td=priest.var_useremail
+												//- td=priest.var_userstatus
+												if(priest.var_userstatus=='Active')
+													td
+														select#selectBox(onchange='transfered(value);' style='color:green' )
+															option(value=`${priest.int_userID}`) Active
+															option(value=`${priest.int_userID}` style='color:red' ) Transfered
+												if(priest.var_userstatus=='Transfered')
+													td
+														select#selectBox(onchange='active(value);' style='color:red' )
+															option(value=`${priest.int_userID}`) Transfered
+															option(value=`${priest.int_userID}`  style='color:green') Active
+												td.td-actions.text-center
+													button.btn.btn-primary.actionButton(type='button' value=`${priest.int_userID}`)
+														i.ti-settings
+															#toolbar-options.hidden
+																a.button.updateButton(href='#')
+																	i.ti-pencil(style="color:white;")
+																a.button.deleteButton(href='#')
+																	i.ti-close(style="color:white;")
 							
 						
 	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
-		.modal-dialog.modal-notify.modal-success(role='document')
+		.modal-dialog.modal-lg.modal-success(role='document')
 			.modal-content
-				.modal-header
+				.modal-header(style='background:#367587; color:white;')
 					p.heading.lead Add Priest Account
-					button.close(type='button' data-dismiss='modal' aria-label='Close')
+					button.close.text-white(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				.modal-body
 					form.form(action="/admin/maintenance-priests/add" method="post")
-						.form-group
-							label.label-control Last Name
-							input.form-control(type='text' name='var_userlname')
-						.form-group
-							label.label-control First Name
-							input.form-control(type='text' name='var_userfname')
-							.form-group
-							label.label-control Middle Name
-							input.form-control(type='text' name='var_usermname')
-						.form-group
-							label.label-control Address
-							input.form-control(type='text' name='var_useraddress')
-						.form-group
-							label.label-control Contact Number
-							input.form-control(type='text' name='var_usercontactnum')
-						.form-group
-							label.label-control Email Address
-							input.form-control(type='text' name='var_useremail')
-						.form-group
-							label.label-control Temporary Username
-							input.form-control(type='text' name='var_username')
-						.form-group
-							label.label-control Temporary Password
-							input.form-control(type='text' name='var_password')
+						.row
+							.col-md-4
+								.form-group
+									label.label-control Last Name
+									input.form-control(type='text' name='var_userlname')
+							.col-md-4
+								.form-group
+									label.label-control First Name
+									input.form-control(type='text' name='var_userfname')
+							.col-md-4
+								.form-group
+									label.label-control Middle Name
+									input.form-control(type='text' name='var_usermname')
+						.row
+							.col-md-4
+								.form-group
+									label.label-control Address
+									input.form-control(type='text' name='var_useraddress')
+							.col-md-4
+								.form-group
+									label.label-control Contact Number
+									input.form-control(type='text' name='var_usercontactnum')
+							.col-md-4
+								.form-group
+									label.label-control Email Address
+									input.form-control(type='text' name='var_useremail')
+						.row
+							.col-md-6
+								.form-group
+									label.label-control Temporary Username
+									input.form-control(type='text' name='var_username')
+							.col-md-6
+								.form-group
+									label.label-control Temporary Password
+									input.form-control(type='text' name='var_password')
 						
 						.col-md-6.my-3
 						.row
 							.col-md-12.text-center.my-3
-								button.btn.btn-primary(type='submit') Add
+								button.btn.btn-primary(type='submit') Add Account
 	#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
-		.modal-dialog.modal-notify.modal-success(role='document')
+		.modal-dialog.modal-lg.modal-success(role='document')
 			.modal-content
-				.modal-header
+				.modal-header(style='background:#367587; color:white;')
 					p.heading.lead Edit Event
-					button.close#cancelButton(type='button' data-dismiss='modal' aria-label='Close')
+					button.close#cancelButton.text-white(type='button' data-dismiss='modal' aria-label='Close')
 						span.white-text(aria-hidden='true') &times;
 				.modal-body#updateAppend
 					.col-md-12.text-center.my-3
@@ -183,38 +185,60 @@ block addjs
 					$.post('/admin/maintenance-priests/query',{id:idNow})
 				.done(data=>{
 					$('#updateAppend').append(`
-					<div class="form-group">
-						<label class="label-control">Last Name</label>
-						<input type="text"  id="var_userlname" value="${data.var_userlname}" class="form-control"/>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="label-control">Last Name</label>
+								<input type="text"  id="var_userlname" value="${data.var_userlname}" class="form-control"/>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="label-control">First Name</label>
+								<input type="text"  id="var_userfname" value="${data.var_userfname}" class="form-control"/>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="label-control">Middle Name</label>
+								<input type="text"  id="var_usermname" value="${data.var_usermname}" class="form-control"/>
+							</div>
+						</div>
 					</div>
-					<div class="form-group">
-						<label class="label-control">First Name</label>
-						<input type="text"  id="var_userfname" value="${data.var_userfname}" class="form-control"/>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="label-control">Address</label>
+								<input type="text"  id="var_useraddress" value="${data.var_useraddress}" class="form-control"/>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="label-control">Contact Number</label>
+								<input type="text"  id="var_usercontactnum" value="${data.var_usercontactnum}" class="form-control"/>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="label-control">Email Address</label>
+								<input type="text"  id="var_useremail" value="${data.var_useremail}" class="form-control"/>
+							</div>
+						</div>
 					</div>
-					<div class="form-group">
-						<label class="label-control">Middle Name</label>
-						<input type="text"  id="var_usermname" value="${data.var_usermname}" class="form-control"/>
-					</div>
-					<div class="form-group">
-						<label class="label-control">Address</label>
-						<input type="text"  id="var_useraddress" value="${data.var_useraddress}" class="form-control"/>
-					</div>
-					<div class="form-group">
-						<label class="label-control">Contact Number</label>
-						<input type="text"  id="var_usercontactnum" value="${data.var_usercontactnum}" class="form-control"/>
-					</div>
-					<div class="form-group">
-						<label class="label-control">Email Address</label>
-						<input type="text"  id="var_useremail" value="${data.var_useremail}" class="form-control"/>
-					</div>
-					<div class="form-group">
-						<label class="label-control">Temporary Username</label>
-						<input type="text"  id="var_username" value="${data.var_username}" class="form-control"/>
-					</div>
-					<div class="form-group">
-						<label class="label-control">Temporary Password</label>
-						<input type="text"  id="var_password" value="${data.var_password}" class="form-control"/>
-					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="label-control">Temporary Username</label>
+								<input type="text"  id="var_username" value="${data.var_username}" class="form-control"/>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="label-control">Temporary Password</label>
+								<input type="text"  id="var_password" value="${data.var_password}" class="form-control"/>
+							</div>
+						</div>
+					<div>
 					
 					`)
 					$('#updateModal').modal('show')

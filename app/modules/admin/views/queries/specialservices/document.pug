@@ -7,7 +7,7 @@ block prepend main
 
 			.row
 				.col-lg-12.col-md-12
-						.card
+						.card.shadow
 								.card-header.card-header-primary(style='background:#367587; color:white')
 									.row
 										.col-md-6
@@ -42,6 +42,16 @@ block prepend main
 															td=query.date_docureceived
 															
 															td=query.char_docustatus
+												tfoot
+													th ID
+													th Name 
+													th Document type
+													//- th Father's Name
+													//- th Mother's Name
+													th Requested
+													th Released
+													th Received
+													th Approval Status
 
 
 block addjs
