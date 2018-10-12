@@ -208,6 +208,17 @@ block prepend main
 					.modal-footer
 						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 						button.btn.btn-outline.btn-secondary.pull-left#updateReqButton(type='button') Update
+	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content
+				.modal-header(style='background:red')
+					h5.modal-title(style='color:white') Message for the Guest
+					button.close(type='button', data-dismiss='modal', aria-label='Close')
+						span(aria-hidden='true' style='color:white') ×
+				.modal-body#messageAppend
+				.modal-footer
+					//- button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
+					button.btn.btn-danger#sendMessage(type="button") Send
 
 block addjs
 	
@@ -300,7 +311,8 @@ block addjs
 						if(data.requirements[i].var_reqstatus != "Approved"){
 						$(`#reqAppend`).append(`
 						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-						<input type="checkbox" class="checkbox" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  
+						<input class="custom-control-input" id="customRadio2" type="radio" name="Reject" value=${data.requirements[i].int_requirementID} />
+						<input class="custom-control-input" id="customRadio2" type="radio" name="Approved" value=${data.requirements[i].int_requirementID} />
 						`)
 						}
 						else if(data.requirements[i].var_reqstatus == "Approved"){
