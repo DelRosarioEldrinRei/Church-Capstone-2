@@ -24,7 +24,7 @@ block main
 							tbody
 								each notification in notifications
 									tr.text-center
-										td=notification.var_notifdesc
+										td=notification.var_notifdesc	
 										td.text-center
 											a.voucherLink(href=`/guest/voucherLink?notifId=${notification.int_notifID}` style= 'margin-left: 3px' target="_blank") Click Here To Save and Print Voucher
 											//- a(href=`/guest/reservation/${reservation.int_eventinfoID}/cancel` style= 'margin-left: 8px') CANCEL

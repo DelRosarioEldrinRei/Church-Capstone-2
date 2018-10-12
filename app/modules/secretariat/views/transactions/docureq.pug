@@ -209,12 +209,14 @@ block addjs
                 var idNow = $(this).val();
                 console.log(idNow)
                 $.post('/secretariat/transaction-documentrequest/update/query',{id:idNow}).done(data =>{
+                    console.log(data)
                     $('#updateAppend').append(`
                     <col-md-4 class="p-lg-0">
                         <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                             <input id="docuid" type="hidden" value="${data.int_requestID}"></input>
+                            <input id="userid" type="hidden" value="${data.int_userID}"></input>
                             <input id="docustatus" type="hidden" value="${data.char_docustatus}"></input>
                             <h6 class="label-control"><strong> Current Document Status : </strong> ${data.char_docustatus}</h6>
                         </div>
@@ -332,7 +334,8 @@ block addjs
                         reqid:$('#reqid').val(),
                         reqstatus:$('#reqstatus').val(),
                         payid:$('#payid').val(),
-                        paystatus:$('#paystatus').val()
+                        paystatus:$('#paystatus').val(),
+                        userid:$('#userid').val()
                         })
                         .done(data=>{
                             if(data){

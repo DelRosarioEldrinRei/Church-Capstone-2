@@ -134,7 +134,7 @@ guestRouter.get('/notification', (req, res)=>{
     WHERE int_userID =?`
     db.query(queryString1, [req.session.user.int_userID], (err, results, fields) => {
         if (err) console.log(err);
-        return res.render('guest/views/others/notifications',{ notifications: results });
+        return res.render('guest/views/reservations/info/notification',{ notifications: results });
     });
 
 });
@@ -1653,7 +1653,8 @@ guestRouter.get('/marriage1/form', (req, res)=>{
         WHERE tbl_document.var_documenttype = ?
         AND tbl_relation.var_fname = ?
         AND tbl_relation.var_lname = ?
-        OR tbl_eventinfo.date_eventdate = ?`
+        OR tbl_eventinfo.date_eventdate = ?
+        AND tbl_eventinfo.char_approvalstatus = "Approved"`
         db.query(queryString,[req.body.documentType,req.body.firstName,req.body.lastName,req.body.eventDate],(err,results,fields)=>{
         if (err) console.log(err);
         if(results[0] == undefined){
