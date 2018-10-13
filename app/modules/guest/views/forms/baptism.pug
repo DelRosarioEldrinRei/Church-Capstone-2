@@ -284,15 +284,6 @@ block addjs
 		$('#regular').hide();
 		$('#special').hide();
 		
-		$('#nextButton1').click(function(){
-			if(eventDate == ''){
-				alert('Please input your desired time')
-			}
-			else{
-				
-				$('#nextButton1').addClass('btn-next')
-			}
-		})
 		$('#radio1').click(function() {
 			baptismType1 = "Regular";
 			console.log(baptismType1)
@@ -841,6 +832,14 @@ block addjs
 		var dateNow = new Date()
 		var dateNow2;
 		var gender;
+		$('#nextButton1').click(function(){
+			if(eventDate == '' && timeStart == ''){
+				alert('Please input your desired time')
+			}
+			else{
+				$('#nextButton1').addClass('btn-next')
+			}
+		})
 		//- dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(7,'days').format('YYYY-MM-DD')
 		$.get('/guest/baptism/query').done(data=>{
 		console.log(data.utilities[0].int_agemax)
