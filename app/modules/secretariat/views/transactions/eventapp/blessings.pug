@@ -1170,28 +1170,21 @@ block addjs
 					var desireddate = moment(data.date_eventdate).format('MM/DD/YYYY')
 					var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
 					$('#viewBodyAppend').append(`
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">	
-								<label class="label-control"><strong>Blessing of:</strong> ${data.var_lname}, ${data.var_fname}</label>
-								<label class="label-control"><strong>Parishioner's Address:</strong> ${data.var_address}</label>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">	
-								<label class="label-control"><strong>Service Name:</strong> ${data.var_eventname}</label>
-								<label class="label-control"><strong>Event Date:</strong> ${desireddate} ${timeRequested}</label>
-							</div>
-						</div>
-					</div>
-					<div class="form-group m-0">
-					
-					<div class="form-group">
-						<label class="label-control"><strong> Requirements: </strong> ${data.var_reqname}</label>
-					</div>
-					<div class="form-group">
-						<img id="myImg" class="img-responsive" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px;">
+					<table class="tableModal">
+						<tr>
+							<td class="tdModal h5"><strong> Blessing of: </strong> ${data.var_lname}, ${data.var_fname}</td>
+							<td class="tdModal h5"><strong> Parishioner's Address:  </strong> ${data.var_address}</td>
+						</tr>
+						<tr>
+							<td class="tdModal h5"><strong> Service Name: </strong> ${data.var_eventname}</td>
+							<td class="tdModal h5"><strong> Event Date: </strong> ${desireddate} ${timeRequested}</td>
+						</tr>
+						<tr>
+							<td class="tdModal h5"><strong> Requirements: </strong> ${data.var_reqname}</td>
+						</tr>
+					</table>
+					<div class="form-group mt-3">
+						<img id="myImg shadow" class="img-responsive" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px;">
 					</div>
 					`)
 				

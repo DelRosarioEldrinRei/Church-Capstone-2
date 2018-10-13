@@ -67,9 +67,13 @@ block main
 													//- a.btn-success.btn-sm.updateButton(type='button',rel='tooltip', href = `/guest/reservation/${reservation.int_eventinfoID}/edit` style='margin-left: 68px') Edit
 													a.btn-info.btn-sm.updateButton(type='button',rel='tooltip', href = `/guest/reservation/${reservation.int_eventinfoID}` style='margin-left: 68px') View
 											else
-												td.td-actions
-													a.btn-info.btn-sm.updateButton(type='button',rel='tooltip', href = `/guest/reservation/${reservation.int_eventinfoID}` style='margin-left: 68px') View
-													a.btn-success.btn-sm.updateButton(type='button',rel='tooltip', href = `/guest/reservation/${reservation.int_eventinfoID}/edit`) Edit
+												td.td-actions.learn-more
+													button.btn.btn-info.btn-sm.updateButton(type='button',rel='tooltip', onclick=`window.location.href='/guest/reservation/${reservation.int_eventinfoID}'`) View 
+													| &nbsp;
+													button.btn.btn-success.btn-sm.updateButton(type='button',rel='tooltip', onclick=`window.location.href='/guest/reservation/${reservation.int_eventinfoID}/edit'`) Edit
+													| &nbsp;
+													//- a.btn.btn-info.btn-sm.updateButton(type='button',rel='tooltip', href = `/guest/reservation/${reservation.int_eventinfoID}` style='margin-left: 68px') View
+													//- a.btn.btn-success.btn-sm.updateButton(type='button',rel='tooltip', href = `/guest/reservation/${reservation.int_eventinfoID}/edit`) Edit
 													button.btn.btn-danger.btn-sm.deleteButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
 													| &nbsp;
 	

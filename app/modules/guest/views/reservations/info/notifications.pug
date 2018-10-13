@@ -29,7 +29,7 @@ block prepend main
         .blog-posts-small
           .blog-post-small.first-post
             img(src='/document_templates/logo.png')
-            p.m-0 #{notification.var_notifdesc} 
-              a.voucherLink.text-danger(href=`/guest/voucherLink?notifId=${notification.int_notifID}` style= 'margin-left: 3px' target="_blank") Click Here To Save and Print Voucher.
+            p #{notification.var_notifdesc} 
+              a.voucherLink(href=`/guest/voucherLink?notifId=${notification.int_notifID}` style= 'margin-left: 3px' target="_blank") Click Here To Save and Print Voucher.
             p 
               a.post-date(href='#') Sep. 03, 2016
