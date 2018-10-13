@@ -1,10 +1,10 @@
 extends ../../../../templates/admin
 block prepend main
 	#mainContent
-		.row.gap-20.masonry.pos-r
+		.row.masonry.pos-r
 			.masonry-sizer.col-md-6
 			.masonry-item.w-100
-				.row.gap-20
+				//- .row.gap-20
 					// #Toatl Visits ====================
 					.col-md-3
 						.layers.bd.bgc-white.p-20.shadow
@@ -51,7 +51,7 @@ block prepend main
 										span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-blue-50.c-blue-500=application.applicationcount
 			.masonry-item.col-12
 				// #Site Visits ====================
-				.bd.bgc-white
+				//- .bd.bgc-white
 					.peers.ai-s.shadow(class='fxw-nw@lg+')
 						.peer.peer-greed.p-20(class='w-70p@lg+ w-100@lg-')
 							.layers
@@ -61,39 +61,39 @@ block prepend main
 									.mT-30
 										canvas#area-chart(height='160')
 									//- #world-map-marker
-						.peer.bdL.p-20(class='w-30p@lg+ w-100p@lg-')
-							.layers
-								.layer.w-100
-									// Progress Bars
-									.layers
-										.layer.w-100
-											h5.mB-5 100k
-											small.fw-600.c-grey-700 Visitors From USA
-											span.pull-right.c-grey-600.fsz-sm 50%
-											.progress.mT-10
-												.progress-bar.bgc-deep-purple-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:50%;')
-													span.sr-only 50% Complete
-										.layer.w-100.mT-15
-											h5.mB-5 1M
-											small.fw-600.c-grey-700 Visitors From Europe
-											span.pull-right.c-grey-600.fsz-sm 80%
-											.progress.mT-10
-												.progress-bar.bgc-green-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:80%;')
-													span.sr-only 80% Complete
-										.layer.w-100.mT-15
-											h5.mB-5 450k
-											small.fw-600.c-grey-700 Visitors From Australia
-											span.pull-right.c-grey-600.fsz-sm 40%
-											.progress.mT-10
-												.progress-bar.bgc-light-blue-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:40%;')
-													span.sr-only 40% Complete
-										.layer.w-100.mT-15
-											h5.mB-5 1B
-											small.fw-600.c-grey-700 Visitors From India
-											span.pull-right.c-grey-600.fsz-sm 90%
-											.progress.mT-10
-												.progress-bar.bgc-blue-grey-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:90%;')
-													span.sr-only 90% Complete
+						//- .peer.bdL.p-20(class='w-30p@lg+ w-100p@lg-')
+						//- 	.layers
+						//- 		.layer.w-100
+						//- 			// Progress Bars
+						//- 			.layers
+						//- 				.layer.w-100
+						//- 					h5.mB-5 100k
+						//- 					small.fw-600.c-grey-700 Visitors From USA
+						//- 					span.pull-right.c-grey-600.fsz-sm 50%
+						//- 					.progress.mT-10
+						//- 						.progress-bar.bgc-deep-purple-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:50%;')
+						//- 							span.sr-only 50% Complete
+						//- 				.layer.w-100.mT-15
+						//- 					h5.mB-5 1M
+						//- 					small.fw-600.c-grey-700 Visitors From Europe
+						//- 					span.pull-right.c-grey-600.fsz-sm 80%
+						//- 					.progress.mT-10
+						//- 						.progress-bar.bgc-green-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:80%;')
+						//- 							span.sr-only 80% Complete
+						//- 				.layer.w-100.mT-15
+						//- 					h5.mB-5 450k
+						//- 					small.fw-600.c-grey-700 Visitors From Australia
+						//- 					span.pull-right.c-grey-600.fsz-sm 40%
+						//- 					.progress.mT-10
+						//- 						.progress-bar.bgc-light-blue-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:40%;')
+						//- 							span.sr-only 40% Complete
+						//- 				.layer.w-100.mT-15
+						//- 					h5.mB-5 1B
+						//- 					small.fw-600.c-grey-700 Visitors From India
+						//- 					span.pull-right.c-grey-600.fsz-sm 90%
+						//- 					.progress.mT-10
+						//- 						.progress-bar.bgc-blue-grey-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:90%;')
+						//- 							span.sr-only 90% Complete
 													
 									//- // Pie Charts
 									//- .peers.pT-20.mT-20.bdT.jc-sb.ta-c.gap-10(class='fxw-nw@lg+')
