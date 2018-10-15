@@ -1437,7 +1437,7 @@ adminRouter.get('/reports', (req, res)=>{
             var anointingrequirement=[];
             
             //line graphs queries
-            var docu =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and month(date_eventdate) =?`
+            var event =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and month(date_eventdate) =?`
             var facility =`select count(int_reservationID) as countt from tbl_facilityreservation where month(datetime_reservestart) =?`
             var docu =`select count(int_requestID) as countt from tbl_documentrequest where month(date_docurequested) =?`
             var house =`select count(int_houseblessID) as countt from tbl_houseblessing where month(date_blessingdate) =?`
@@ -1446,151 +1446,324 @@ adminRouter.get('/reports', (req, res)=>{
             var eventpieapprovalquery =`select count(int_eventinfoID) as countt from tbl_eventinfo 
             where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
             and char_approvalstatus=?`
-            var eventpierequirementquery =`select count(int_eventinfoID) as countt from tbl_eventinfo 
+            var eventpierequirementquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
             join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID = tbl_requirementsinevents.int_eventinfoID
             join tbl_requirements on tbl_requirementsinevents.int_requirementID =tbl_requirements.int_requirementID
             where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
-            and tbl_eventinfo.char_approvalstatus=?`
-            var eventpiepaymentquery =`select count(int_eventinfoID) as countt from tbl_eventinfo 
-            join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID=
+            and tbl_requirements.var_reqstatus=?`
+            var eventpiepaymentquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+            join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID
             where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
-            and tbl_eventinfo.char_paymentstatus=?`
+            and tbl_payment.char_paymentstatus=?`
 
             var docupieapprovalquery =`select count(int_requestID) as countt from tbl_documentrequest
             where char_docustatus=?`
-            var docupierequirementquery =`select count(int_requestID) as countt from tbl_documentrequest 
+            var docupierequirementquery =`select count(tbl_documentrequest.int_requestID) as countt from tbl_documentrequest 
             join tbl_requirementsdocument on tbl_documentrequest.int_requestID = tbl_requirementsdocument.int_requestID
             where tbl_requirementsdocument.char_reqstatus=?`
-            var docupiepaymentquery =`select count(int_requestID) as countt from tbl_documentrequest 
+            var docupiepaymentquery =`select count(tbl_documentrequest.int_requestID) as countt from tbl_documentrequest 
             join tbl_payment on tbl_documentrequest.int_paymentID = tbl_payment.int_paymentID
-            where tbl_documentrequest.char_paymentstatus=?`
+            where tbl_payment.char_paymentstatus=?`
 
-            var facilitypieapprovalquery =`select count(int_requestID) as countt from tbl_facilityreservation 
+            var facilitypieapprovalquery =`select count(int_reservationID) as countt from tbl_facilityreservation 
             where char_reservestatus=?`
-            var facilitypierequirementquery =`select count(int_requestID) as countt from tbl_facilityreservation 
+            var facilitypierequirementquery =`select count(tbl_facilityreservation.int_reservationID) as countt from tbl_facilityreservation 
             join tbl_requirementsfacility on tbl_facilityreservation.int_reservationID = tbl_requirementsfacility.int_reservationID
             where tbl_requirementsfacility.char_reqstatus=?`
-            var facilitypiepaymentquery =`select count(int_requestID) as countt from tbl_facilityreservation 
+            var facilitypiepaymentquery =`select count(tbl_facilityreservation.int_reservationID) as countt from tbl_facilityreservation 
             join tbl_payment on tbl_facilityreservation.int_paymentID = tbl_payment.int_paymentID
-            where tbl_facilityreservation.char_paymentstatus=?`
+            where tbl_payment.char_paymentstatus=?`
             
             var housepieapprovalquery =`select count(int_houseblessID) as countt from tbl_houseblessing 
-            where char_reservestatus=?`
-            var housepierequirementquery =`select count(int_houseblessID) as countt from tbl_houseblessing 
+            where char_approvalstatus=?`
+            var housepierequirementquery =`select count(tbl_houseblessing.int_houseblessID) as countt from tbl_houseblessing 
             join tbl_requirementshouse on tbl_houseblessing.int_houseblessID = tbl_requirementshouse.int_houseblessID
-            where tbl_requirementshouse.char_reqstatus=?`
-            var housepiepaymentquery =`select count(int_houseblessID) as countt from tbl_houseblessing 
+            where tbl_requirementshouse.var_reqstatus=?`
+            var housepiepaymentquery =`select count(tbl_houseblessing.int_houseblessID) as countt from tbl_houseblessing 
             join tbl_payment on tbl_houseblessing.int_paymentID = tbl_payment.int_paymentID
-            where tbl_houseblessing.char_paymentstatus=?`
+            where tbl_payment.char_paymentstatus=?`
 
-            // db.query(eventpieapprovalquery,['Anointing of the sick', "Approved"],(err, results, fields) => {
-            //     if (err) console.log(err);
-            //     var approved = results[0]
-            //     anointingpieapproval.push(approved.countt)
-            //     db.query(eventpieapprovalquery,['Anointing of the sick', "Disapproved"],(err, results, fields) => {
-            //         if (err) console.log(err);
-            //         var disapproved = results[0]
-            //         anointingpieapproval.push(disapproved.countt)
-            //         db.query(eventpieapprovalquery,['Anointing of the sick', "Pending"],(err, results, fields) => {
-            //             if (err) console.log(err);
-            //             var pending = results[0]
-            //             anointingpieapproval.push(pending.countt)
-            // db.query(eventpieapprovalquery,['Baptism', "Approved"],(err, results, fields) => {
-            //     if (err) console.log(err);
-            //     var approved = results[0]
-            //     baptismpieapproval.push(approved.countt)
-            //     db.query(eventpieapprovalquery,['Baptism', "Disapproved"],(err, results, fields) => {
-            //         if (err) console.log(err);
-            //         var disapproved = results[0]
-            //         baptismpieapproval.push(disapproved.countt)
-            //         db.query(eventpieapprovalquery,['Baptism', "Pending"],(err, results, fields) => {
-            //             if (err) console.log(err);
-            //             var pending = results[0]
-            //             baptismpieapproval.push(pending.countt)
-            // db.query(eventpieapprovalquery,['Special Baptism', "Approved"],(err, results, fields) => {
-            //     if (err) console.log(err);
-            //     var approved = results[0]
-            //     spcbaptismpieapproval.push(approved.countt)
-            //     db.query(eventpieapprovalquery,['Special Baptism', "Disapproved"],(err, results, fields) => {
-            //         if (err) console.log(err);
-            //         var disapproved = results[0]
-            //         spcbaptismpieapproval.push(disapproved.countt)
-            //         db.query(eventpieapprovalquery,['Special Baptism', "Pending"],(err, results, fields) => {
-            //             if (err) console.log(err);
-            //             var pending = results[0]
-            //             spcbaptismpieapproval.push(pending.countt)
-            // db.query(eventpieapprovalquery,['Funeral Mass', "Approved"],(err, results, fields) => {
-            //     if (err) console.log(err);
-            //     var approved = results[0]
-            //     funeralmasspieapproval.push(approved.countt)
-            //     db.query(eventpieapprovalquery,['Funeral Mass', "Disapproved"],(err, results, fields) => {
-            //         if (err) console.log(err);
-            //         var disapproved = results[0]
-            //         funeralmasspieapproval.push(disapproved.countt)
-            //         db.query(eventpieapprovalquery,['Funeral Mass', "Pending"],(err, results, fields) => {
-            //             if (err) console.log(err);
-            //             var pending = results[0]
-            //             funeralmasspieapproval.push(pending.countt)
-            // db.query(eventpieapprovalquery,['Funeral Service', "Approved"],(err, results, fields) => {
-            //     if (err) console.log(err);
-            //     var approved = results[0]
-            //     funeralservicepieapproval.push(approved.countt)
-            //     db.query(eventpieapprovalquery,['Funeral Service', "Disapproved"],(err, results, fields) => {
-            //         if (err) console.log(err);
-            //         var disapproved = results[0]
-            //         funeralservicepieapproval.push(disapproved.countt)
-            //         db.query(eventpieapprovalquery,['Funeral Service', "Pending"],(err, results, fields) => {
-            //             if (err) console.log(err);
-            //             var pending = results[0]
-            //             funeralservicepieapproval.push(pending.countt)
-            // db.query(eventpieapprovalquery,['marriage', "Approved"],(err, results, fields) => {
-            //     if (err) console.log(err);
-            //     var approved = results[0]
-            //     marriagepieapproval.push(approved.countt)
-            //     db.query(eventpieapprovalquery,['marriage', "Disapproved"],(err, results, fields) => {
-            //         if (err) console.log(err);
-            //         var disapproved = results[0]
-            //         marriagepieapproval.push(disapproved.countt)
-            //         db.query(eventpieapprovalquery,['marriage', "Pending"],(err, results, fields) => {
-            //             if (err) console.log(err);
-            //             var pending = results[0]
-            //             marriagepieapproval.push(pending.countt)
-            // db.query(docupieapprovalquery,["Approved"],(err, results, fields) => {
-            //     if (err) console.log(err);
-            //     var approved = results[0]
-            //     docupieapproval.push(approved.countt)
-            //     db.query(docupieapprovalquery,["Disapproved"],(err, results, fields) => {
-            //         if (err) console.log(err);
-            //         var disapproved = results[0]
-            //         docupieapproval.push(disapproved.countt)
-            //         db.query(docupieapprovalquery,["Pending"],(err, results, fields) => {
-            //             if (err) console.log(err);
-            //             var pending = results[0]
-            //             docupieapproval.push(pending.countt)
-            // db.query(facilitypieapprovalquery,["Approved"],(err, results, fields) => {
-            //     if (err) console.log(err);
-            //     var approved = results[0]
-            //     facilitypieapproval.push(approved.countt)
-            //     db.query(facilitypieapprovalquery,["Disapproved"],(err, results, fields) => {
-            //         if (err) console.log(err);
-            //         var disapproved = results[0]
-            //         facilitypieapproval.push(disapproved.countt)
-            //         db.query(facilitypieapprovalquery,["Pending"],(err, results, fields) => {
-            //             if (err) console.log(err);
-            //             var pending = results[0]
-            //             facilitypieapproval.push(pending.countt)
-            // db.query(housepieapprovalquery,["Approved"],(err, results, fields) => {
-            //     if (err) console.log(err);
-            //     var approved = results[0]
-            //     housepieapproval.push(approved.countt)
-            //     db.query(housepieapprovalquery,["Disapproved"],(err, results, fields) => {
-            //         if (err) console.log(err);
-            //         var disapproved = results[0]
-            //         housepieapproval.push(disapproved.countt)
-            //         db.query(housepieapprovalquery,["Pending"],(err, results, fields) => {
-            //             if (err) console.log(err);
-            //             var pending = results[0]
-            //             housepieapproval.push(pending.countt)
+        db.query(eventpieapprovalquery,['Anointing of the sick', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending1 = results[0]
+            anointingpieapproval.push(pending1.countt)
+            db.query(eventpieapprovalquery,['Anointing of the sick', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved1 = results[0]
+                anointingpieapproval.push(approved1.countt)
+                db.query(eventpieapprovalquery,['Anointing of the sick', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved1 = results[0]
+                    anointingpieapproval.push(disapproved1.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Anointing of the sick', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted1 = results[0]
+                        anointingrequirement.push(submitted1.countt)
+                        db.query(eventpierequirementquery,['Anointing of the sick', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted1 = results[0]
+                            anointingrequirement.push(accepted1.countt)
+                            db.query(eventpierequirementquery,['Anointing of the sick', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected1 = results[0]
+                                anointingrequirement.push(rejected1.countt)
+        db.query(eventpieapprovalquery,['Baptism', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending2 = results[0]
+            baptismpieapproval.push(pending2.countt)
+            db.query(eventpieapprovalquery,['Baptism', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved2 = results[0]
+                baptismpieapproval.push(approved2.countt)
+                db.query(eventpieapprovalquery,['Baptism', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved2 = results[0]
+                    baptismpieapproval.push(disapproved2.countt)
+                        //requirement
+                        db.query(eventpierequirementquery,['Baptism', "Submitted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var submitted2 = results[0]
+                            baptismpierequirement.push(submitted2.countt)
+                            db.query(eventpierequirementquery,['Baptism', "Accepted"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var accepted2 = results[0]
+                                baptismpierequirement.push(accepted2.countt)
+                                db.query(eventpierequirementquery,['Baptism', "Rejected"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var rejected2 = results[0]
+                                    baptismpierequirement.push(rejected2.countt)
+                                    //payment
+                                    db.query(eventpiepaymentquery,['Baptism', "Paid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var paid2 = results[0]
+                                        baptismpiepayment.push(paid2.countt)
+                                        db.query(eventpiepaymentquery,['Baptism', "Unpaid"],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var unpaid2 = results[0]
+                                            baptismpiepayment.push(unpaid2.countt)
+        db.query(eventpieapprovalquery,['Special Baptism', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending3 = results[0]
+            spcbaptismpieapproval.push(pending3.countt)
+            db.query(eventpieapprovalquery,['Special Baptism', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved3 = results[0]
+                spcbaptismpieapproval.push(approved3.countt)
+                db.query(eventpieapprovalquery,['Special Baptism', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved3 = results[0]
+                    spcbaptismpieapproval.push(disapproved3.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Special Baptism', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted3 = results[0]
+                        spcbaptismrequirement.push(submitted3.countt)
+                        db.query(eventpierequirementquery,['Special Baptism', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted3 = results[0]
+                            spcbaptismrequirement.push(accepted3.countt)
+                            db.query(eventpierequirementquery,['Special Baptism', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected3 = results[0]
+                                spcbaptismrequirement.push(rejected3.countt)
+                                //payment
+                                db.query(eventpiepaymentquery,['Special Baptism', "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid3 = results[0]
+                                    spcbaptismpiepayment.push(paid3.countt)
+                                    db.query(eventpiepaymentquery,['Special Baptism', "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid3 = results[0]
+                                        spcbaptismpiepayment.push(unpaid3.countt)
+        db.query(eventpieapprovalquery,['Funeral Mass', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending4 = results[0]
+            funeralmasspieapproval.push(pending4.countt)
+            db.query(eventpieapprovalquery,['Funeral Mass', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved4 = results[0]
+                funeralmasspieapproval.push(approved4.countt)
+                db.query(eventpieapprovalquery,['Funeral Mass', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved4 = results[0]
+                    funeralmasspieapproval.push(disapproved4.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Funeral Mass', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted4 = results[0]
+                        funeralmassrequirement.push(submitted4.countt)
+                        db.query(eventpierequirementquery,['Funeral Mass', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted4 = results[0]
+                            funeralmassrequirement.push(accepted4.countt)
+                            db.query(eventpierequirementquery,['Funeral Mass', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected4 = results[0]
+                                funeralmassrequirement.push(rejected4.countt)
+                                //payment
+                                db.query(eventpiepaymentquery,['Funeral Mass', "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid4 = results[0]
+                                    funeralmasspiepayment.push(paid4.countt)
+                                    db.query(eventpiepaymentquery,['Funeral Mass', "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid4 = results[0]
+                                        funeralmasspiepayment.push(unpaid4.countt)
+        db.query(eventpieapprovalquery,['Funeral Service', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending5 = results[0]
+            funeralservicepieapproval.push(pending5.countt)
+            db.query(eventpieapprovalquery,['Funeral Service', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved5 = results[0]
+                funeralservicepieapproval.push(approved5.countt)
+                db.query(eventpieapprovalquery,['Funeral Service', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved5 = results[0]
+                    funeralservicepieapproval.push(disapproved5.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Funeral Service', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted5 = results[0]
+                        funeralservicerequirement.push(submitted5.countt)
+                        db.query(eventpierequirementquery,['Funeral Service', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted5 = results[0]
+                            funeralservicerequirement.push(accepted5.countt)
+                            db.query(eventpierequirementquery,['Funeral Service', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected5 = results[0]
+                                funeralservicerequirement.push(rejected5.countt)
+                                
+        db.query(eventpieapprovalquery,['Marriage', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending6 = results[0]
+            marriagepieapproval.push(pending6.countt)
+            db.query(eventpieapprovalquery,['Marriage', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved6 = results[0]
+                marriagepieapproval.push(approved6.countt)
+                db.query(eventpieapprovalquery,['Marriage', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved6 = results[0]
+                    marriagepieapproval.push(disapproved6.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Marriage', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted6 = results[0]
+                        marriagerequirement.push(submitted6.countt)
+                        db.query(eventpierequirementquery,['Marriage', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted6 = results[0]
+                            marriagerequirement.push(accepted6.countt)
+                            db.query(eventpierequirementquery,['Marriage', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected6 = results[0]
+                                marriagerequirement.push(rejected6.countt)
+                                //payment
+                                db.query(eventpiepaymentquery,['Marriage', "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid6 = results[0]
+                                    marriagepiepayment.push(paid6.countt)
+                                    db.query(eventpiepaymentquery,['Marriage', "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid6 = results[0]
+                                        marriagepiepayment.push(unpaid6.countt)
+        db.query(docupieapprovalquery,["Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending7 = results[0]
+            docupieapproval.push(pending7.countt)
+            db.query(docupieapprovalquery,["Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved7 = results[0]
+                docupieapproval.push(approved7.countt)
+                db.query(docupieapprovalquery,["Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved7 = results[0]
+                    docupieapproval.push(disapproved7.countt)
+                    //requirement
+                    db.query(docupierequirementquery,[ "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted7 = results[0]
+                        docurequirement.push(submitted7.countt)
+                        db.query(docupierequirementquery,[ "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted7 = results[0]
+                            docurequirement.push(accepted7.countt)
+                            db.query(docupierequirementquery,[ "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected7 = results[0]
+                                docurequirement.push(rejected7.countt)
+                                //payment
+                                db.query(docupiepaymentquery,[ "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid7 = results[0]
+                                    docupiepayment.push(paid7.countt)
+                                    db.query(docupiepaymentquery,[ "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid7 = results[0]
+                                        docupiepayment.push(unpaid7.countt)
+        db.query(facilitypieapprovalquery,["Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending8 = results[0]
+            facilitypieapproval.push(pending8.countt)
+            db.query(facilitypieapprovalquery,["Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved8 = results[0]
+                facilitypieapproval.push(approved8.countt)
+                db.query(facilitypieapprovalquery,["Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved8 = results[0]
+                    facilitypieapproval.push(disapproved8.countt)
+                    //requirement
+                    db.query(facilitypierequirementquery,[ "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted8 = results[0]
+                        facilityrequirement.push(submitted8.countt)
+                        db.query(facilitypierequirementquery,[ "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted8 = results[0]
+                            facilityrequirement.push(accepted8.countt)
+                            db.query(facilitypierequirementquery,[ "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected8 = results[0]
+                                facilityrequirement.push(rejected8.countt)
+                                //payment
+                                db.query(facilitypiepaymentquery,[ "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid8 = results[0]
+                                    facilitypiepayment.push(paid8.countt)
+                                    db.query(facilitypiepaymentquery,[ "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid8 = results[0]
+                                        facilitypiepayment.push(unpaid8.countt)
+        db.query(housepieapprovalquery,["Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending9 = results[0]
+            housepieapproval.push(pending9.countt)
+            db.query(housepieapprovalquery,["Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved9 = results[0]
+                housepieapproval.push(approved9.countt)
+                db.query(housepieapprovalquery,["Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved9 = results[0]
+                    housepieapproval.push(disapproved9.countt)
+                    //requirement
+                    db.query(housepierequirementquery,[ "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted9 = results[0]
+                        houserequirement.push(submitted9.countt)
+                        db.query(housepierequirementquery,[ "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted9 = results[0]
+                            houserequirement.push(accepted9.countt)
+                            db.query(housepierequirementquery,[ "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected9 = results[0]
+                                houserequirement.push(rejected9.countt)
+                               
 
 
 
@@ -2042,11 +2215,67 @@ adminRouter.get('/reports', (req, res)=>{
                     // res.send(resulta)
                     return res.render('admin/views/reports/index',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                         anointingCount:anointingCount,baptismCount:baptismCount, specialbaptismCount:specialbaptismCount, funeralmassCount:funeralmassCount, funeralserviceCount:funeralserviceCount, marriageCount:marriageCount,
-                    facilityCount:facilityCount, docuCount:docuCount, houseCount:houseCount });
+                    facilityCount:facilityCount, docuCount:docuCount, houseCount:houseCount,
+                    baptismpieapproval:baptismpieapproval,
+                    baptismpierequirement:baptismpierequirement,
+                    baptismpiepayment:baptismpiepayment,
+                    
+                    //SPECIAL BAPTISM
+                    spcbaptismpieapproval:spcbaptismpieapproval,
+                    spcbaptismrequirement:spcbaptismrequirement,
+                    spcbaptismpiepayment:spcbaptismpiepayment,
+                    
+                    //FUNERAL MASS
+                    funeralmasspieapproval:funeralmasspieapproval,
+                    funeralmassrequirement:funeralmassrequirement,
+                    funeralmasspiepayment:funeralmasspiepayment,
+                    
+                    //MARRIAGE
+                    marriagepieapproval:marriagepieapproval,
+                    marriagerequirement:marriagerequirement,
+                    marriagepiepayment:marriagepiepayment,
+                    
+                    //FACILITY RESERVATION
+                    facilitypieapproval:facilitypieapproval,
+                    facilityrequirement:facilityrequirement,
+                    facilitypiepayment:facilitypiepayment,
+                    
+                    //DOCUMENT
+                    docupieapproval:docupieapproval,
+                    docurequirement:docurequirement,
+                    docupiepayment:docupiepayment,
+                    
+                    //FUNERAL SERVICE
+                    funeralservicepieapproval:funeralservicepieapproval,
+                    funeralservicerequirement:funeralservicerequirement,
+                    
+                    // HOUSE
+                    housepieapproval:housepieapproval,
+                    houserequirement:houserequirement,
+                    //ANOINTING
+                    anointingpieapproval:anointingpieapproval,
+                    anointingrequirement:anointingrequirement
+                
+                
+                
+                });
                 
 
 
-                // }); }); }); }); }); }); }); }); }); //approval
+                }); }); }); }); }); }); }); }); }); //approval
+            }); }); }); }); }); }); }); }); }); //approval
+        }); }); }); }); }); }); }); }); }); //approval
+
+                        }); }); }); }); }); 
+                    }); }); }); }); }); 
+                }); }); }); }); }); 
+            }); }); }); }); }); 
+        }); }); }); }); }); 
+    }); }); }); }); }); 
+}); }); });
+}); }); });
+}); }); });
+
                                             }); }); }); }); }); }); }); }); }); }); }); });     //anointing           
                                         }); }); }); }); }); }); }); }); }); }); }); }); //reg bap
                                     }); }); }); }); }); }); }); }); }); }); }); });  // spc bap

@@ -386,6 +386,48 @@ block prepend main
 															p(hidden)#facilityCount #{facilityCount}
 															p(hidden)#docuCount #{docuCount}
 															p(hidden)#houseCount #{houseCount}
+
+															p(hidden)#baptismpieapproval #{baptismpieapproval}
+															p(hidden)#baptismpierequirement #{baptismpierequirement}
+															p(hidden)#baptismpiepayment #{baptismpiepayment}
+															
+															
+															//SPECIAL BAPTISM
+															p(hidden)#spcbaptismpieapproval #{spcbaptismpieapproval}
+															p(hidden)#spcbaptismrequirement #{spcbaptismrequirement}
+															p(hidden)#spcbaptismpiepayment #{spcbaptismpiepayment}
+															
+															//FUNERAL MASS
+															p(hidden)#funeralmasspieapproval #{funeralmasspieapproval}
+															p(hidden)#funeralmassrequirement #{funeralmassrequirement}
+															p(hidden)#funeralmasspiepayment #{funeralmasspiepayment}
+															
+															//MARRIAGE
+															p(hidden)#marriagepieapproval #{marriagepieapproval}
+															p(hidden)#marriagerequirement #{marriagerequirement}
+															p(hidden)#marriagepiepayment #{marriagepiepayment}
+															
+															//FACILITY RESERVATION
+															p(hidden)#facilitypieapproval #{facilitypieapproval}
+															p(hidden)#facilityrequirement #{facilityrequirement}
+															p(hidden)#facilitypiepayment #{facilitypiepayment}
+															
+															//DOCUMENT
+															p(hidden)#docupieapproval #{docupieapproval}
+															p(hidden)#docurequirement #{docurequirement}
+															p(hidden)#docupiepayment #{docupiepayment}
+															
+															//FUNERAL SERVICE
+															p(hidden)#funeralservicepieapproval #{funeralservicepieapproval}
+															p(hidden)#funeralservicerequirement #{funeralservicerequirement}
+															
+															// HOUSE
+															p(hidden)#housepieapproval #{housepieapproval}
+															p(hidden)#houserequirement #{houserequirement}
+															//ANOINTING
+															p(hidden)#anointingpieapproval #{anointingpieapproval}
+															p(hidden)#anointingrequirement #{anointingrequirement}
+
 block addjs
 	
 	script(type='text/javascript').
@@ -399,6 +441,49 @@ block addjs
 			var facility= document.getElementById('facilityCount').innerHTML;
 			var docu= document.getElementById('docuCount').innerHTML;
 			var house= document.getElementById('houseCount').innerHTML;
+
+			var baptismapproval=document.getElementById('baptismpieapproval').innerHTML;
+			var baptismrrequirement=document.getElementById('baptismpierequirement').innerHTML;
+			var baptismpayment=document.getElementById('baptismpiepayment').innerHTML;
+			
+			
+			//SPECIAL BAPTISM
+			var spcbaptismapproval=document.getElementById('spcbaptismpieapproval').innerHTML;
+			var spcbaptismrrequirement=document.getElementById('spcbaptismrequirement').innerHTML;
+			var spcbaptismpayment=document.getElementById('spcbaptismpiepayment').innerHTML;
+			
+			//FUNERAL MASS
+			var funeralmassapproval=document.getElementById('funeralmasspieapproval').innerHTML;
+			var funeralmassrrequirement=document.getElementById('funeralmassrequirement').innerHTML;
+			var funeralmasspayment=document.getElementById('funeralmasspiepayment').innerHTML;
+			
+			//MARRIAGE
+			var marriageapproval=document.getElementById('marriagepieapproval').innerHTML;
+			var marriagerrequirement=document.getElementById('marriagerequirement').innerHTML;
+			var marriagepayment=document.getElementById('marriagepiepayment').innerHTML;
+			
+			//FACILITY RESERVATION
+			var facilityapproval=document.getElementById('facilitypieapproval').innerHTML;
+			var facilityrrequirement=document.getElementById('facilityrequirement').innerHTML;
+			var facilitypayment=document.getElementById('facilitypiepayment').innerHTML;
+			
+			//DOCUMENT
+			var docuapproval=document.getElementById('docupieapproval').innerHTML;
+			var docurrequirement=document.getElementById('docurequirement').innerHTML;
+			var docupayment=document.getElementById('docupiepayment').innerHTML;
+			
+			//FUNERAL SERVICE
+			var funeralserviceapproval=document.getElementById('funeralservicepieapproval').innerHTML;
+			var funeralservicerrequirement=document.getElementById('funeralservicerequirement').innerHTML;
+			
+			// HOUSE
+			var houseapproval=document.getElementById('housepieapproval').innerHTML;
+			var houserrequirement=document.getElementById('houserequirement').innerHTML;
+			//ANOINTING
+			var anointingapproval=document.getElementById('anointingpieapproval').innerHTML;
+			var anointingrrequirement=document.getElementById('anointingrequirement').innerHTML;
+
+
 			anointing = anointing.split(',')
 			baptismm = baptismm.split(',')
 			spcbaptism = spcbaptism.split(',')
@@ -408,6 +493,49 @@ block addjs
 			facility = facility.split(',')
 			docu = docu.split(',')
 			house = house.split(',')
+
+			baptismapproval= baptismapproval.split(',')
+			baptismrrequirement= baptismrrequirement.split(',')
+			baptismpayment= baptismpayment.split(',')
+			
+			
+			//SPECIAL BAPTISM
+			spcbaptismapproval= spcbaptismapproval.split(',')
+			spcbaptismrrequirement= spcbaptismrrequirement.split(',')
+			spcbaptismpayment= spcbaptismpayment.split(',')
+			
+			//FUNERAL MASS
+			funeralmassapproval= funeralmassapproval.split(',')
+			funeralmassrrequirement= funeralmassrrequirement.split(',')
+			funeralmasspayment= funeralmasspayment.split(',')
+			
+			//MARRIAGE
+			marriageapproval= marriageapproval.split(',')
+			marriagerrequirement= marriagerrequirement.split(',')
+			marriagepayment= marriagepayment.split(',')
+			
+			//FACILITY RESERVATION
+			facilityapproval= facilityapproval.split(',')
+			facilityrrequirement= facilityrrequirement.split(',')
+			facilitypayment= facilitypayment.split(',')
+			
+			//DOCUMENT
+			docuapproval= docuapproval.split(',')
+			docurrequirement= docurrequirement.split(',')
+			docupayment= docupayment.split(',')
+			
+			//FUNERAL SERVICE
+			funeralserviceapproval= funeralserviceapproval.split(',')
+			funeralservicerrequirement= funeralservicerrequirement.split(',')
+			
+			// HOUSE
+			houseapproval= houseapproval.split(',')
+			houserrequirement= houserrequirement.split(',')
+			//ANOINTING
+			anointingapproval= anointingapproval.split(',')
+			anointingrrequirement= anointingrrequirement.split(',')
+
+
 				//- for(var i=0; i>anointing.length; i++){
 				//- 	anointing[i]= parseInt(anointing[i])
 				//- }
@@ -554,7 +682,7 @@ block addjs
 							data: specialServices,
 							responsive: true,
 					});
-			}
+			
 			// end of line charts
 
 			// Facility
@@ -621,6 +749,7 @@ block addjs
 				data: requirement9
 			});
 			// regular baptism
+			//- console.log(baptismapproval)
 			var oilCanvas = document.getElementById("oilChart");
 			var oilCanvas2 = document.getElementById("oilChart2");
 			var oilCanvas3 = document.getElementById("oilChart3");
@@ -632,7 +761,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [46.2, 33.3, 25.2],
+									data: [baptismapproval[0], baptismapproval[1], baptismapproval[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -647,7 +776,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [45, 36.2],
+									data: [baptismpayment[0], baptismpayment[1]],
 									backgroundColor: [
 											"#6384FF",
 											"#ec533e",
@@ -662,7 +791,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [55.3, 20.2, 10.2],
+									data: [baptismrrequirement[0], baptismrrequirement[1], baptismrrequirement[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -695,7 +824,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [29.2, 43.3, 10.2],
+									data: [spcbaptismapproval[0], spcbaptismapproval[1], spcbaptismapproval[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -710,7 +839,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [55, 26.2],
+									data: [spcbaptismpayment[0], spcbaptismpayment[1]],
 									backgroundColor: [
 											"#6384FF",
 											"#ec533e",
@@ -725,7 +854,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [45.3, 50.2, 10.2],
+									data: [baptismrrequirement[0], baptismrrequirement[1], baptismrrequirement[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -758,7 +887,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [50.2, 63.3, 20.2],
+									data: [marriageapproval[0], marriageapproval[1], marriageapproval[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -773,7 +902,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [15, 76.2],
+									data: [marriagepayment[0], marriagepayment[1]],
 									backgroundColor: [
 											"#6384FF",
 											"#ec533e",
@@ -788,7 +917,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [35.3, 60.2, 10.2],
+									data: [marriagerrequirement[0], marriagerrequirement[1], marriagerrequirement[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -821,7 +950,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [30.2, 63.3, 10.2],
+									data: [funeralmassapproval[0], funeralmassapproval[1], funeralmassapproval[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -836,7 +965,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [45, 26.2],
+									data: [funeralmasspayment[0], funeralmasspayment[1]],
 									backgroundColor: [
 											"#6384FF",
 											"#ec533e",
@@ -851,7 +980,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [55.3, 30.2, 15.2],
+									data: [funeralmassrrequirement[0], funeralmassrrequirement[1], funeralmassrrequirement[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -872,7 +1001,7 @@ block addjs
 				type: 'pie',
 				data: requirement4
 			});
-			// funeral mass
+			// funeral service
 			var oilCanvas13 = document.getElementById("oilChart13");
 			var oilCanvas15 = document.getElementById("oilChart15");
 			var approval5 = {
@@ -883,7 +1012,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [30.2, 63.3, 10.2],
+									data: [funeralserviceapproval[0], funeralserviceapproval[1], funeralserviceapproval[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -899,7 +1028,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [55.3, 30.2, 15.2],
+									data: [funeralservicerrequirement[0], funeralservicerrequirement[1], funeralservicerrequirement[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -916,7 +1045,7 @@ block addjs
 				type: 'pie',
 				data: requirement5
 			});
-			// funeral mass
+			// anointing of the sick
 			var oilCanvas17 = document.getElementById("oilChart17");
 			var oilCanvas18 = document.getElementById("oilChart18");
 			var approval6 = {
@@ -927,7 +1056,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [10.2, 43.3, 5.2],
+									data: [anointingapproval[0], anointingapproval[1], anointingapproval[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -943,7 +1072,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [45.3, 25.2, 10.2],
+									data: [anointingrrequirement[0], anointingrrequirement[1], anointingrrequirement[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -960,7 +1089,7 @@ block addjs
 				type: 'pie',
 				data: requirement6
 			});
-			// funeral service
+			// house blessing
 			var oilCanvas19 = document.getElementById("oilChart19");
 			var oilCanvas20 = document.getElementById("oilChart20");
 			var approval7 = {
@@ -971,7 +1100,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [10.2, 43.3, 5.2],
+									data: [houseapproval[0], houseapproval[1], houseapproval[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -987,7 +1116,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [45.3, 25.2, 10.2],
+									data: [houserrequirement[0], houserrequirement[1], houserrequirement[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -1004,7 +1133,7 @@ block addjs
 				type: 'pie',
 				data: requirement7
 			});
-			// funeral mass
+			// Document request
 			var oilCanvas21 = document.getElementById("oilChart21");
 			var oilCanvas22 = document.getElementById("oilChart22");
 			var oilCanvas23 = document.getElementById("oilChart23");
@@ -1016,7 +1145,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [30.2, 63.3, 10.2],
+									data: [docuapproval[0], docuapproval[1], docuapproval[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -1031,7 +1160,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [45, 26.2],
+									data: [docupayment[0], docupayment[1], docupayment[2]],
 									backgroundColor: [
 											"#6384FF",
 											"#ec533e",
@@ -1046,7 +1175,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [55.3, 30.2, 15.2],
+									data: [docurrequirement[0], docurrequirement[1], docurrequirement[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -1069,4 +1198,4 @@ block addjs
 			});
 					//- })
 				//- })
-				
+			}	
