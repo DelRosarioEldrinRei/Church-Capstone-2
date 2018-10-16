@@ -53,8 +53,7 @@ block prepend main
 						button.close.text-white(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true') ×
 					.modal-body#documentAppend
-					.modal-footer
-						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+					.modal-footer.mx-auto
 						button.btn.btn-outline.btn-primary.pull-right#generateButton Generate
 	#updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
@@ -64,8 +63,7 @@ block prepend main
 						button.close.text-white(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true') ×
 					.modal-body#updateAppend
-					.modal-footer
-						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+					.modal-footer.mx-auto
 						button.btn.btn-primary#updateSubmitButton(type="button") Update						
 	#myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-label='Close')
@@ -85,19 +83,34 @@ block addjs
 					.done(data =>{
 					var dateRequested = moment(data.date_docurequested).format('MM/DD/YYYY');
 					$('#documentAppend').append(`
-					<table class="tableModal">
-						<tr>
-							<td class="tdModal h5"><strong> Name of the Child: </strong> ${data.var_doclastname}, ${data.var_docfirstname}</td>
-							<td class="tdModal h5"><strong> Baptism Date:  </strong> ${dateRequested}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Purpose: </strong> ${data.text_purpose}</td>
-							<td class="tdModal h5"><strong> Requirements: </strong> ${data.var_reqname}</td>
-						</tr>
-					</table>
-					<div class="form-group">
-						<img id="myImg" class="img-responsive mt-3 shadow" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px;">
-					</div>
+						<form>
+							<label>Name of the Child:</label>
+							<div class="form-row mx-1">
+								<div class="form-group col-md-6">
+									<label>Last Name:</label>
+									<input type="text" class="form-control" placeholder="Last Name" value="${data.var_doclastname}" disabled>
+								</div>
+								<div class="form-group col-md-6">
+									<label>First Name</label>
+									<input type="text" class="form-control" placeholder="First Name" value="${data.var_docfirstname}" disabled>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Baptism Date:</label>
+									<input type="text" class="form-control" placeholder="Date of Baptism" value="${dateRequested}" disabled>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Purpose:</label>
+									<input type="text" class="form-control" placeholder="Purpose of Request" value="${data.text_purpose}" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Requirements: <strong> ${data.var_reqname} </strong></label>
+								<img id="myImg" class="img-responsive mt-1 ml-3 shadow d-block" alt ="${data.var_reqname}" src="${data.var_reqpath}" style="max-height:250px;">
+							</div>
+
+						</form>
 					`)
 					$('#viewModal').modal('show');
 					$('#myModal').on('shown.bs.modal',function(){
@@ -219,24 +232,44 @@ block addjs
 				$.post('/secretariat/transaction-documentrequest/update/query',{id:idNow}).done(data =>{
 					console.log(data)
 					$('#updateAppend').append(`
-					<table class="tableModal">
-						<tr>
-							<input id="docuid" type="hidden" value="${data.int_requestID}"></input>
-							<input id="userid" type="hidden" value="${data.int_userID}"></input>
-							<input id="docustatus" type="hidden" value="${data.char_docustatus}"></input>
-							<td class="tdModal h5"><strong> Current Document Status: </strong> ${data.char_docustatus}</td>
-							<input id="reqid" type="hidden" value="${data.int_requirementdocumentID}"></input>
-							<td class="tdModal h5"><strong> Current Requirement Status :  </strong> ${data.char_reqstatus}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Current Payment Status: </strong> ${data.char_paymentstatus}</td>
-							<td class="tdModal h5"><strong>  Fee : </strong> ₱ ${data.dbl_docuprice}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><select id="reqstatus" type="text"></select></td>
-							<td class="tdModal h5"><select id="paystatus" type="text"></select></td>
-						</tr>
-					</table>
+					<form>
+						<input id="docuid" type="hidden" value="${data.int_requestID}"></input>
+						<input id="userid" type="hidden" value="${data.int_userID}"></input>
+						<input id="docustatus" type="hidden" value="${data.char_docustatus}"></input>
+						<input id="reqid" type="hidden" value="${data.int_requirementdocumentID}"></input>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label>Current Document Status:</label>
+								<input type="text" class="form-control" value="${data.char_docustatus}" disabled>
+							</div>
+							<div class="form-group col-md-6">
+								<label>Current Requirement Status:</label>
+								<input type="text" class="form-control" value="${data.char_reqstatus}" disabled>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label>Current Payment Status:</label>
+								<input type="text" class="form-control" value="${data.char_paymentstatus}" disabled>
+							</div>
+							<div class="form-group col-md-6">
+								<label>Fee:</label>
+								<input type="text" class="form-control" value="&#8369;${data.dbl_docuprice}" disabled>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label>Update Payment Status:</label>
+								<select id="reqstatus" class="form-control">
+								</select>
+							</div>
+							<div class="form-group col-md-6">
+								<label>Update Fee Status:</label>
+								<select id="paystatus" class="form-control">
+								</select>
+							</div>
+						</div>
+					</form>
 					`)
 					if(data.char_reqstatus == "Pending"){
 					document.getElementById("paystatus").disabled=true;
