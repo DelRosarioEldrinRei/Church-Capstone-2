@@ -179,7 +179,6 @@ block prepend main
 							span(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#viewBodyAppend
 					.modal-footer
-						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 	#myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-label='Close')
 			span(aria-hidden='true' style='background:#367587; color:white') ×
@@ -192,9 +191,8 @@ block prepend main
 					button.close.text-white(type='button', data-dismiss='modal', aria-label='Close')
 						span(aria-hidden='true') ×
 				.modal-body#updateBodyAppend
-				.modal-footer
-					button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-					button.btn.btn-outline.btn-secondary.pull-left#updateStatusButton(type='button', data-dismiss='modal') Update
+				.modal-footer.mx-auto
+					button.btn.btn-outline.btn-primary.pull-left#updateStatusButton(type='button', data-dismiss='modal') Update
 	#updateReqModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document" style="z-index: 9998;")
 				.modal-content
@@ -203,12 +201,14 @@ block prepend main
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#reqStatus
-					.modal-body.pt-0
-						.form-group
-							.gallery#reqAppend
-					.modal-footer
-						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-						button.btn.btn-outline.btn-secondary.pull-left#updateReqButton(type='button') Update
+						.row
+							.col-md-6.mx-auto
+								.gallery#reqAppend
+							.col-md-6
+								#upStatus
+								#status
+					.modal-footer.mx-auto
+						button.btn.btn-outline.btn-primary.pull-left#updateReqButton(type='button') Update
 	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
@@ -248,7 +248,7 @@ block addjs
 					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
 				}
 				else if($('.approval').eq(i).attr('value') == "Cancelled"){
-					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-grey-100 c-grey-700')
+					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700 ')
 				}
 				else if($('.approval').eq(i).attr('value') == "Approved"){
 					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-green-100 c-green-700')
@@ -270,35 +270,81 @@ block addjs
 					var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
 					var age = moment().diff(data.date_birthday,'years');
 					$('#viewBodyAppend').append(`
-					<table class="tableModal">
-						<tr>
-							<td class="tdModal h5"><strong> Desired Date: </strong> ${dateRequested}</td>
-							<td class="tdModal h5"><strong> Desired Time:  </strong> ${timeRequested}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Name of the Child: </strong> ${data.var_lname}, ${data.var_fname}</td>
-							<td class="tdModal h5"><strong> Gender:  </strong> ${data.char_gender}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Relationship with the child:  </strong> ${data.var_relation}</td>
-							<td class="tdModal h5"><strong> Contact No.:  </strong> ${data.var_contactnum}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Birth Date:  </strong> ${moment(data.date_birthday).format('YYYY-MM-DD')}</td>
-							<td class="tdModal h5"><strong> Birth Place:  </strong> ${data.var_birthplace}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Mother's Name:  </strong> ${data.var_mothername}</td>
-							<td class="tdModal h5"><strong> Mother's Birthplace:  </strong> ${data.var_motherbplace}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Father's Name:  </strong> ${data.var_fathername}</td>
-							<td class="tdModal h5"><strong> Father's Birthplace:  </strong> ${data.var_fatherbplace}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Address:  </strong> ${data.var_address}</td>
-							<td class="tdModal h5"><strong> Parent Marriage Address:  </strong> ${data.var_parentmarriageadd}</td>
-						</tr>
+					<form>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label>Desired Date:</label>
+								<input type="text" class="form-control" value="${dateRequested}" disabled>
+							</div>
+							<div class="form-group col-md-6">
+								<label>Desired Time:</label>
+								<input type="text" class="form-control" value="${timeRequested}" disabled>
+							</div>
+						</div>
+						<label>Name of the Child:</label>
+						<div class="form-row mx-1">
+							<div class="form-group col-md-6">
+								<label>Last Name:</label>
+								<input type="text" class="form-control" value="${data.var_lname}" disabled>
+							</div>
+							<div class="form-group col-md-6">
+								<label>First Name:</label>
+								<input type="text" class="form-control" value="${data.var_fname}" disabled>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-4">
+								<label>Relationship with the Child:</label>
+								<input type="text" class="form-control" value="${data.var_relation}" disabled>
+							</div>
+							<div class="form-group col-md-4">
+								<label>Gender:</label>
+								<input type="text" class="form-control" value="${data.char_gender}" disabled>
+							</div>
+							<div class="form-group col-md-4">
+								<label>Contact No:</label>
+								<input type="text" class="form-control" value="${data.var_contactnum}" disabled>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label>Birth Date:</label>
+								<input type="text" class="form-control" value="${moment(data.date_birthday).format('MM/DD/YYYY')}" disabled>
+							</div>
+							<div class="form-group col-md-6">
+								<label>Birth Place:</label>
+								<input type="text" class="form-control" value="${data.var_birthplace}" disabled>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label>Mother's Name:</label>
+								<input type="text" class="form-control" value="${data.var_mothername}" disabled>
+							</div>
+							<div class="form-group col-md-6">
+								<label>Mother's Birthplace:</label>
+								<input type="text" class="form-control" value="${data.var_motherbplace}" disabled>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label>Father's Name:</label>
+								<input type="text" class="form-control" value="${data.var_fathername}" disabled>
+							</div>
+							<div class="form-group col-md-6">
+								<label>Father's Birthplace:</label>
+								<input type="text" class="form-control" value="${data.var_fatherbplace}" disabled>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Address:</label>
+							<input type="text" class="form-control" value="${data.var_address}" disabled>
+						</div>
+						<div class="form-group">
+							<label>Parent Marriage Address:</label>
+							<input type="text" class="form-control" value="${data.var_parentmarriageadd}" disabled>
+						</div>
+					</form>
 					`)
 					$('#viewModal').modal('show')
 					$('#viewModal').on('hidden.bs.modal',function(){
@@ -315,39 +361,53 @@ block addjs
 
 						if(data.requirements[i].var_reqstatus == "Submitted"){
 						$(`#reqAppend`).append(`
-						<h4><input type="checkbox" class="checkbox tdModal h5" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  </h4>
-						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-						<input class="reject" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
-						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Accept
+						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
 						`)
+						$('#status').append(`
+						<input class="reject" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} />
+							<h5 class="d-inline">Reject</h5>
+						<br>
+						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} />
+							<h5 class="d-inline">Accept</h5>
+						`)
+						
 						}
 						else if(data.requirements[i].var_reqstatus == "Approved"){
 						ctr++;
 						$(`#reqAppend`).append(`
-						<h4><input type="checkbox" disabled=true checked="" class="checkbox tdModal" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  </h4>
-						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-						<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
-						<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Approved
+						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
 						`) 
+						$('#status').append(`
+						<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> 
+							<h5 class="d-inline">Reject</h5>
+						<br>
+						<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} />
+							<h5 class="d-inline">Accept</h5>
+						`)
 						}
 						else if(data.requirements[i].var_reqstatus == "Rejected"){
 						$(`#reqAppend`).append(`
-						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-						<input class="reject" checked="" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
-						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Accept
+						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
+						`)
+						$('#status').append(`
+						<input class="reject" checked="" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} />
+							<h5class="d-inline">Reject</h5>
+						<br>
+						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} />
+							<h5 class="d-inline">Accep</h5>
 						`)
 						$(`input[name="${data.requirements[i].var_reqname}reject"][class="reject"]`).attr("checked",true);
 						console.log()
 						}
 					}
 					if(ctr == data.requirements.length){
-						$(`#reqStatus`).append(`
-						<h6 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h5> <span class="approvalpay badge btn btn-primary-lg bgc-green-100 c-green-700" value="Complete">Complete</span>
+						$(`#upStatus`).append(`
+						<h4 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h4> <span class="approvalpay badge btn btn-primary-lg bgc-green-100 c-green-700" value="Complete">Complete</span>
 						`)
 					}
 					else{
-						$(`#reqStatus`).append(`
-						<h6 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h5> <span class="approval badge btn btn-primary-lg bgc-amber-100 c-amber-700" value="Incomplete">Incomplete</span>
+						$(`#upStatus`).append(`
+						<h4 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h4> <span class="approval badge btn btn-primary-lg bgc-amber-100 c-amber-700" value="Incomplete">Incomplete</span>
 						`)
 					}
 					console.log(ctr)
@@ -498,15 +558,13 @@ block addjs
 									location.reload();
 								})
 							}
-
-
-
 							}
 							})
 					})
 					$('#updateReqModal').on('hidden.bs.modal',function(){
 						$('#reqAppend').empty()
-						$('#reqStatus').empty()
+						$('#upStatus').empty()
+						$('#status').empty()
 					})
 				})
 			})
@@ -514,19 +572,30 @@ block addjs
 			$('.updateButton').click(function(){
 				$.post('/secretariat/transaction-baptism/query/updateStatus',{id:idNow}).done(data=>{
 				$('#updateBodyAppend').append(`
-					<table class="tableModal">
-						<tr>
-							<input id="eventid" type="hidden" value="${data.results.int_eventinfoID}"></input>
-							<input id="userid" type="hidden" value="${data.results.int_userID}"></input>
-							<td id="eventstatus" class="tdModal h5" ></td>
-							<td id="reqstatus" class="tdModal h5"></td>
-						</tr>
-						<tr>
-							<input id="payid" type="hidden" value="${data.results.int_paymentID}"></input>
-							<td id="paystatus" class="tdModal h5"></td>
-							<td class="tdModal h5"><strong> Fee: </strong> ₱ ${data.results.dbl_amount.toFixed(2)}</td>
-						</tr>
-					</table>
+				<form>
+					<input id="eventid" type="hidden" value="${data.results.int_eventinfoID}"></input>
+					<input id="userid" type="hidden" value="${data.results.int_userID}"></input>
+					<input id="payid" type="hidden" value="${data.results.int_paymentID}"></input>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label>Current Approval Status:</label>
+							<select class="form-control" id="eventstatusupdate"></select>
+						</div>
+						<div class="form-group col-md-6">
+							<label >Current Requirement Status:</label>
+							<input id="reqstatus" type="text" class="form-control" value="">
+						</div>
+					</div>
+					<div class="form-row">
+						<div id="paystatus" class="form-group col-md-6">
+							<label>Current Payment Status:</label>
+						</div>
+						<div class="form-group col-md-6">
+							<label>Fee:</label>
+							<input type="text" class="form-control" value="&#8369; ${data.results.dbl_amount.toFixed(2)}">
+						</div>
+					</div>
+				</form>
 				`)
 				var ctr2 =0;
 				for(i=0;i<data.requirements.length;i++){
@@ -536,117 +605,94 @@ block addjs
 					}	
 				}
 				if(ctr2 == data.requirements.length){
-					$('#reqstatus').append(`Current Requirement Status :<strong> Complete</strong>
-					<input id="reqstatusupdate" type="hidden" value="Approved">
-					`)
+					$('#reqstatus').val("Complete")
 					console.log("cur reqstatus"+$('#reqstatusupdate').val())
 						if(data.results.char_paymentstatus=="Paid"){
 							$('#paystatus').append(`
-							Current Payment Status: <strong>Paid</strong>
+							<input type="text" class="form-control" value="Paid">
 							<input id="paystatusupdate" type="hidden" value="Paid">`)
 								if(data.results.char_approvalstatus=="Cancelled"){
-									$('#eventstatus').append(`
-									Current Approval Status:
-									<select id="eventstatusupdate">
+									$('#eventstatusupdate').append(`
 									<option selected="selected">Cancelled</option>
 									<option>Approved</option>
-									</select>`)
+									`)
 								}
 								else{
-									$('#eventstatus').append(`
-									Current Approval Status:
-									<select id="eventstatusupdate">
+									$('#eventstatusupdate').append(`
 									<option>Cancelled</option>
 									<option selected="selected">Approved</option>
-									</select>`)
+									`)
 								}
 						}
 						else if(data.results.char_paymentstatus=="Unpaid"){
 							$('#paystatus').append(`
-							Current Payment Status: 
-							<select id="paystatusupdate" type="text">
+							<select class="form-control" id="paystatusupdate" type="text">
 							<option>Paid</option>
 							<option selected="selected">Unpaid</option>
 							</select>`)
 								if(data.results.char_approvalstatus=="Pending"){
-									$('#eventstatus').append(`
-									Current Approval Status:
-									<select id="eventstatusupdate">
+									$('#eventstatusupdate').append(`
 									<option selected="selected">Pending</option>
 									<option>Cancelled</option>
 									<option>Disapproved</option>
-									</select>`)
+									`)
 								}
 								else if(data.results.char_approvalstatus=="Cancelled"){
-									$('#eventstatus').append(`
-									Current Approval Status:
-									<select id="eventstatusupdate">
+									$('#eventstatusupdate').append(`
 									<option >Pending</option>
 									<option selected="selected">Cancelled</option>
 									<option>Disapproved</option>
-									</select>`)
+									`)
 								}
 						}
 				}
 				else{
-					$('#reqstatus').append(`Current Requirement Status :<strong>Incomplete</strong>
-					<input id="reqstatusupdate" type="hidden" value="Submitted">`)
+					$('#reqstatus').val("Incomplete")
 					if(data.results.char_paymentstatus=="Paid"){
 							$('#paystatus').append(`
-							Current Payment Status: <strong>Paid</strong>
+							<input type="text" class="form-control" value="Paid">
 							<input id="paystatusupdate" type="hidden" value="Paid">`)
 								if(data.results.char_approvalstatus=="Pending"){
-									$('#eventstatus').append(`
-									Current Approval Status:
-									<select id="eventstatusupdate">
+									$('#eventstatusupdate').append(`
 									<option>Cancelled</option>
 									<option selected="selected">Pending</option>
 									<option>Disapproved</option>
-									</select>`)
+									`)
 								}
 								else if(data.results.char_approvalstatus=="Cancelled"){
-									$('#eventstatus').append(`
-									Current Approval Status:
-									<select id="eventstatusupdate">
+									$('#eventstatusupdate').append(`
 									<option selected="selected">Cancelled</option>
 									<option>Pending</option>
 									<option>Disapproved</option>
-									</select>`)
+									`)
 								}
 								else if(data.results.char_approvalstatus=="Disapproved"){
-									$('#eventstatus').append(`
-									Current Approval Status:
-									<select id="eventstatusupdate">
+									$('#eventstatusupdate').append(`
 									<option>Cancelled</option>
 									<option>Pending</option>
 									<option selected="selected">Disapproved</option>
-									</select>`)
+									`)
 								}
 						}
 					else if(data.results.char_paymentstatus=="Unpaid"){
 						$('#paystatus').append(`
-						Current Payment Status: 
-						<select id="paystatusupdate" type="text">
+						<select class="form-control" id="paystatusupdate" type="text">
 						<option>Paid</option>
 						<option selected="selected">Unpaid</option>
 						</select>`)
 							if(data.results.char_approvalstatus=="Pending"){
-								$('#eventstatus').append(`
-								Current Approval Status:
-								<select id="eventstatusupdate">
+								$('#eventstatusupdate').append(`
 								<option selected="selected">Pending</option>
 								<option>Cancelled</option>
 								<option>Disapproved</option>
-								</select>`)
+								`)
 							}
 							else if(data.results.char_approvalstatus=="Cancelled"){
-								$('#eventstatus').append(`
-								Current Approval Status:
-								<select id="eventstatusupdate">
+								$('#eventstatusupdate').append(`
 								<option >Pending</option>
 								<option selected="selected">Cancelled</option>
 								<option>Disapproved</option>
-								</select>`)
+								`)
 							}
 					}
 				}
@@ -857,7 +903,7 @@ block addjs
 						$.post('/secretariat/transaction-baptism/update',{
 						dateRequested:data.date_eventdate,
 						timeRequested:data.time_eventstart,
-						eventstatus:$('#eventstatus').val(),
+						eventstatus:$('#eventstatusupdate').val(),
 						eventid:$('#eventid').val(),
 						reqid:$('#reqid').val(),
 						reqstatus:$('#reqstatus').val(),

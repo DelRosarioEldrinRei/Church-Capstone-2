@@ -138,6 +138,7 @@ block addjs
 						pointHoverBorderColor: "#f2af3e",
 						data:[baptismm[0], baptismm[1], baptismm[2], baptismm[3], baptismm[4], baptismm[5], baptismm[6], baptismm[7], baptismm[8], baptismm[9], baptismm[10], baptismm[11]]
 				}, {
+
 						label: "Special Baptism",
 						fill: false,
 						borderColor: "#ec533e",
@@ -146,8 +147,7 @@ block addjs
 						pointHoverBackgroundColor: "#FFF",
 						pointHoverBorderColor: "#ec533e",
 						data: [spcbaptism[0], spcbaptism[1], spcbaptism[2], spcbaptism[3], spcbaptism[4], spcbaptism[5], spcbaptism[6], spcbaptism[7], spcbaptism[8], spcbaptism[9], spcbaptism[10], spcbaptism[11]]
-				},]
-
+				}]
 			}
 			var blessing = {
 				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -266,50 +266,4 @@ block addjs
 							responsive: true,
 					});
 			
-			
-			// funeral service
-			var oilCanvas13 = document.getElementById("oilChart13");
-			var oilCanvas15 = document.getElementById("oilChart15");
-			var approval5 = {
-					labels: [
-							"Pending",
-							"Approved",
-							"Disapproved",
-					],
-					datasets: [
-							{
-									data: [funeralserviceapproval[0], funeralserviceapproval[1], funeralserviceapproval[2]],
-									backgroundColor: [
-											"#f2af3e",
-											"#52b99f",
-											"#ec533e",
-									]
-							}]
-			};
-			var requirement5 = {
-					labels: [
-							"Submitted",
-							"Accepted",
-							"Rejected",
-					],
-					datasets: [
-							{
-									data: [funeralservicerrequirement[0], funeralservicerrequirement[1], funeralservicerrequirement[2]],
-									backgroundColor: [
-											"#f2af3e",
-											"#52b99f",
-											"#ec533e",
-									]
-							}]
-			};
-
-			var pieChart = new Chart(oilCanvas13, {
-				type: 'pie',
-				data: approval5
-			});
-			var pieChart = new Chart(oilCanvas15, {
-				type: 'pie',
-				data: requirement5
-			});
-			
-			}	
+			}
