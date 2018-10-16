@@ -269,6 +269,17 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
             console.log(results)
             res.send(results[0])
         }); 
+    });
+    guestRouter.post('/refund', (req, res)=>{
+        console.log(req.body.id)
+        var queryString1= `select * from tbl_message 
+        JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_message.int_eventinfoID
+        WHERE tbl_eventinfo.int_eventinfoID =?`
+        db.query(queryString1,[req.body.id], (err, results, fields) => {
+            if (err) console.log(err);       
+            console.log(results)
+            res.send(results[0])
+        }); 
     }); 
     guestRouter.post('/message/send', (req, res)=>{
         var success =0

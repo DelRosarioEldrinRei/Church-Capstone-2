@@ -159,32 +159,18 @@ block addjs
 							<td class="tdModal h5"><strong> Address:  </strong> ${data[0].var_address}</td>
 							<td class="tdModal h5"><strong> Parent Marriage Address:  </strong> ${data[0].var_parentmarriageadd}</td>
 						</tr>
+						<div id="refund" class="form-group">
+						</div>
 					`)
-					}
-					else if(data[0].var_eventname == "Anointing of the sick" || data[0].var_eventname == "Funeral Service"){
-						var dateRequested = moment(data[0].date_eventdate).format('MM/DD/YYYY')
-						var timeRequested = moment(data[0].time_eventstart,'HH:mm:ss').format('hh:mm A')
-						$('#viewBodyAppend').append(`
-						<table class="tableModal">
-						<tr>
-							<td class="tdModal h5"><strong> Desired Date: </strong> ${dateRequested}</td>
-							<td class="tdModal h5"><strong> Desired Time:  </strong> ${timeRequested}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Name of the Relative: </strong> ${data[0].var_lname}, ${data[0].var_fname}</td>
-							<td class="tdModal h5"><strong> Gender:  </strong> ${data[0].char_gender}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Relationship:  </strong> ${data[0].var_relation}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Birth Date:  </strong> ${moment(data[0].date_birthday).format('YYYY-MM-DD')}</td>
-							<td class="tdModal h5"><strong> Birth Place:  </strong> ${data[0].var_birthplace}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Address:  </strong> ${data[0].var_address}</td>
-						</tr>
+					if(data[0].char_approvalstatus){
+						$('#refund').append(`
+						<button type="button id="refundslip" class="btn btn-primary">Refund Slip</button>
 						`)
+						$(document).on(	'click', '#refundslip', function(){ // yung #voucherButton yung id nung button
+							$(document).off('click', '#refundslip')
+							
+						})
+					}
 					}
 					else if(data[0].var_eventname == "Anointing of the sick" || data[0].var_eventname == "Funeral Service"){
 						var dateRequested = moment(data[0].date_eventdate).format('MM/DD/YYYY')
@@ -209,6 +195,8 @@ block addjs
 						<tr>
 							<td class="tdModal h5"><strong> Address:  </strong> ${data[0].var_address}</td>
 						</tr>
+						<div id="refund" class="form-group">
+						</div>
 						`)
 					}
 					$('#viewModal').modal('show')
@@ -575,7 +563,7 @@ block addjs
 						}
 						else{
 							swal({
-								title:'Warning',
+								title:'Sorry',
 								text:'Your application is Approved/Cancelled Already!', 
 								type:'warning'
 							})
