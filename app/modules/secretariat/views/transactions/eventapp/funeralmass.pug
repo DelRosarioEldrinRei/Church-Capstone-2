@@ -83,7 +83,7 @@ block prepend main
 															tbody
 																	each funeral in funerals
 																		tr
-																			td=funeral.int_eventinfoID
+																			//- td=funeral.int_eventinfoID
 																			input.form-control#int_userID(type='hidden' name='clientID' value=funeral.int_userID)
 																			td=funeral.var_lname + ", " + funeral.var_fname
 																			td=funeral.date_eventdate
