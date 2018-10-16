@@ -294,7 +294,6 @@ block addjs
 		$.get('/guest/baptism/query').done(data=>{
 		console.log(data.utilities[0].int_agemax)
 		console.log(baptismType1)
-			var age = moment().diff($('#birthdate').val(),'years')
 			console.log(age)
 			console.log($('#file-0b').val())
 			if ($("#customRadio1").prop("checked")) {
@@ -321,6 +320,7 @@ block addjs
 			$('#file-0b').val() != '' &&
 			$('#file-0b').val() != undefined
 			){
+				var age = moment().diff($('#birthdate').val(),'years')
 				console.log(age >= data.utilities[0].int_agemax)
 				console.log(age)
 				if(age >= data.utilities[0].int_agemax){
