@@ -86,7 +86,7 @@ block main
                                                     #special
                                                         .form-group
                                                             .container
-                                                                #calendarAnointing
+                                                                #calendarMarriage
                                                         .help-block.with-errors
                                         .learn-more.pull-right
                                             button.btn.btn-next(type='button') Next
@@ -542,6 +542,8 @@ block main
                                                         h6.label-control Previous Wedding Place/Parish:
                                                             .text-danger.d-inline  *
                                                         input.datepicker.form-control(type='text' name='cprevweddingplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
+                                                        input.datepicker.form-control#eventdate(type='hidden' name='eventDate' placeholder="Ex. Ina ng Lupang Pangako Parish")
+                                                        input.datepicker.form-control#timestart(type='hidden' name='timeStart' placeholder="Ex. Ina ng Lupang Pangako Parish")
                                     br
                                     .learn-more.pull-right
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
@@ -708,10 +710,10 @@ block addjs
             var dateNow = new Date()
             var dateNow2;
             var gender;
-            $.get('/guest/anointing/utilities/query').done(data=>{
+            $.get('/guest/marriage/utilities/query').done(data=>{
                 console.log(data[0].int_reservationmindays)
                 dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data[0].int_reservationmindays,'days').format('YYYY-MM-DD')
-                $('#calendarAnointing').fullCalendar({
+                $('#calendarMarriage').fullCalendar({
                     header: {
                     left: 'title',
                     center: 'agendaDay,month',
@@ -723,15 +725,15 @@ block addjs
                     defaultView: 'month',
                     allDaySlot: false,
                     selectHelper: true,
-                    minTime:'9:00:00',
-                    maxTime:'17:00:00',
+                    minTime:data[0].time_availablestart,
+                    maxTime:data[0].time_availableend,
                     validRange: {
                         start: dateNow2
                     },
                     businessHours: { dow: [0,1,2,3,4,5,6] },
                     selectConstraint:"businessHours",
                     select:function(date,jsEvent,view){
-                    var view = $('#calendarAnointing').fullCalendar('getView');
+                    var view = $('#calendarMarriage').fullCalendar('getView');
                     console.log(view.name)
                     if(view.name == 'agendaDay'){
                         eventDate = date.format('YYYY-MM-DD')
@@ -754,14 +756,16 @@ block addjs
                             buttonsStyling: true,   
                         }).then((value) => {
                             if(value.value) {
-                                $("#calendarAnointing").fullCalendar('removeEvents',[1])
+                                $('#eventdate').val(`${eventDate}`)
+                                $('#timestart').val(`${timeStart}`)
+                                $("#calendarMarriage").fullCalendar('removeEvents',[1])
                                 swal(
                                     'Sucess!',
                                     'Event Date has been set.',
                                     'success'
                                 ).then((value)=>{
                                 console.log('DESIRED TIME')
-                                $('#calendarAnointing').fullCalendar('renderEvent', {
+                                $('#calendarMarriage').fullCalendar('renderEvent', {
                                     title: 'DESIRED TIME',
                                     start: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeStart}`,
                                     end: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeEnd2}`,
@@ -783,8 +787,8 @@ block addjs
                         })
                     }
                     else if(view.name == 'month'){
-                        $('#calendarAnointing').fullCalendar('changeView', 'agendaDay')
-                        $('#calendarAnointing').fullCalendar('gotoDate', date);
+                        $('#calendarMarriage').fullCalendar('changeView', 'agendaDay')
+                        $('#calendarMarriage').fullCalendar('gotoDate', date);
                     }
                     else{
                         return  
@@ -793,53 +797,3 @@ block addjs
                 })
             })
         });
-        //- var currentTab = 0; // Current tab is set to be the first tab (0)
-        //- showTab(currentTab); // Display the current tab
-
-        //- function showTab(n) {
-        //- 	// This function will display the specified tab of the form ...
-        //- 	var x = document.getElementsByClassName("tab");
-        //- 	x[n].style.display = "block";
-        //- 	// ... and fix the Previou data-toggle='modal', data-target='#exampleModal's/Proceed buttons:
-        //- 	if (n == 0) {
-        //- 		document.getElementById("prevBtn").style.display = "none";
-        //- 	} else {
-        //- 		document.getElementById("prevBtn").style.display = "inline";
-        //- 	}
-        //- 	if (n == (x.length - 1)) {
-        //- 		document.getElementById("nextBtn").innerHTML = "Submit";
-        //- 	} else {
-        //- 		document.getElementById("nextBtn").innerHTML = "Next";
-        //- 	}
-        //- 	// ... and run a function that displays the correct step indicator:
-        //- 	fixStepIndicator(n)
-        //- }
-
-        //- function nextPrev(n) {
-        //- 	// This function will figure out which tab to display
-        //- 	var x = document.getElementsByClassName("tab");
-        //- 	// Exit the function if any field in the current tab is invalid:
-        //- 	//- if (n == 1 && !validateForm()) return false;
-        //- 	// Hide the current tab:
-        //- 	x[currentTab].style.display = "none";
-        //- 	// Increase or decrease the current tab by 1:
-        //- 	currentTab = currentTab + n;
-        //- 	// if you have ed  Wee woo woothe end of the form... :
-        //- 	if (currentTab >=.length) {
-        //- 		//...the form gets submitted:
-        //- 		document.getElementById("form").submit();
-        //- 		return false;
-        //- 	}
-        //- 	// Otherwise, display the correct tab:
-        //- 	showTab(currentTab);
-        //- }
-
-        //- function fixStepIndicator(n) {
-        //- 	// This function removes the "active" class of all steps...
-        //- 	var i, x = document.getElementsByClassName("step");
-        //- 	for (i = 0; i < x.length; i++) {
-        //- 		x[i].className = x[i].className.replace(" active", "");
-        //- 	}
-        //- 	//... and adds the "active" class to the current step:
-        //- 	x[n].className += " active";
-        //- }

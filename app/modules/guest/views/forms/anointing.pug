@@ -226,7 +226,7 @@ block addjs
 		
 		$(document).ready(function(){
 			$('#OK').click(function(){
-			window.href=`/guest`
+			window.location=`/guest`
 			})
 			$('#nextButton1').click(function(){
 			if(eventDate == ''){
@@ -323,12 +323,19 @@ block addjs
 		var eventDate ='';
 		var timeStart ='';
 		var timeEnd2 ='';
+		var availablestart='';
+		var availableend='';
 		var dateNow = new Date()
 		var dateNow2;
 		var gender;
 		$.get('/guest/anointing/utilities/query').done(data=>{
 			console.log(data[0].int_reservationmindays)
 			dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data[0].int_reservationmindays,'days').format('YYYY-MM-DD')
+			//- availablestart= moment(data[0].time_availablestart).format('HH:mm:ss')
+			availablestart=data[0].time_availablestart
+			console.log(availablestart)
+			availableend=data[0].time_availableend
+			console.log(availableend)
 			$('#calendarAnointing').fullCalendar({
 				header: {
 				left: 'title',
@@ -341,8 +348,8 @@ block addjs
 				defaultView: 'month',
 				allDaySlot: false,
 				selectHelper: true,
-				minTime:'9:00:00',
-				maxTime:'17:00:00',
+				minTime: availablestart,
+				maxTime: availableend,
 				validRange: {
 					start: dateNow2
 				},

@@ -1129,6 +1129,14 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         });
 
     })
+    guestRouter.get('/establishment/utilities/query', (req, res)=>{
+        var queryString3 = `SELECT * FROM tbl_utilities where int_serviceutilitiesID = ${req.session.eventId}`
+        db.query(queryString3,(err,results,fields)=>{
+            console.log(results)
+        res.send(results)
+    })
+    })
+
     guestRouter.get('/establishment/form', (req, res)=>{
         res.render('guest/views/forms/establishment',{user: req.session.user});
     });
@@ -1171,7 +1179,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                                 db.query(queryString3, [req.session.user.int_userID, req.body.owner, req.body.locations, req.body.contactnumber, req.body.email, req.body.desireddate1, desiredtime1, "Pending"], (err, results, fields) => {
                                     var houseblessID = results
                                     if (err) console.log(err);
-                                    var queryString7 = `INSERT INTO tbl_requirementshouse(int_houseblessID, int_servicereqtypeID, var_reqpath, datetime_reqreceived, char_reqstatus) VALUES (?,?,?,?,?);`
+                                    var queryString7 = `INSERT INTO tbl_requirementshouse(int_houseblessID, int_servicereqtypeID, var_reqpath, datetime_reqreceived, var_reqstatus) VALUES (?,?,?,?,?);`
                                     db.query(queryString7,[houseblessID.insertId,reqq.int_servicereqtypeID,path,date,'Submitted'],(err, results, fields)=>{
                                         
                                             if (err) console.log(err);                        
@@ -1193,6 +1201,14 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
 //==============================================================
 // F U N E R A L  B L E S S I N G
 //==============================================================
+    guestRouter.get('/funeral/utilities/query', (req, res)=>{
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = ${req.session.eventId}`
+        db.query(queryString3,(err,results,fields)=>{
+            console.log(results)
+        res.send(results)
+    })
+    })
+
     guestRouter.post('/funeral/query', (req, res) => {
 
     var queryString1 =`SELECT * FROM tbl_user where int_userID = ?`
@@ -1305,6 +1321,13 @@ guestRouter.post('/marriage/query', (req, res) => {
     });
 
     })
+    guestRouter.get('/marriage/utilities/query', (req, res)=>{
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = ${req.session.eventId}`
+        db.query(queryString3,(err,results,fields)=>{
+            console.log(results)
+        res.send(results)
+    })
+    })
 
 guestRouter.get('/marriage/form', (req, res)=>{
     res.render('guest/views/marriage/marriage',{user: req.session.user})
@@ -1356,7 +1379,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                 if (err) console.log(err);
                 var paymentid= results;
         var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID , date_eventdate, time_eventstart, char_approvalstatus, int_paymentID, char_requirements) VALUES(?,?,?,?,?,?,?)`;
-            db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID, req.body.desireddate1, desiredtime1,"Pending", paymentid.insertId, "Incomplete"], (err, results, fields) => {
+            db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID, req.body.eventDate, req.body.timeStart,"Pending", paymentid.insertId, "Incomplete"], (err, results, fields) => {
                 if (err) console.log(err);
                 var eventinfoID= results;
                     var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?);`
