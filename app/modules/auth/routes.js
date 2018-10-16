@@ -44,7 +44,6 @@ adminloginRouter.route('/')
         
             if (err) throw err;
             if (results.length === 0) return res.redirect('/adminlogin?incorrect');
-            
             var user = results[0];
             req.session.userID = user.int_userID
             console.log(req.session.userID)

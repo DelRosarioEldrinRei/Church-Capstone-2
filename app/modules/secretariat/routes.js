@@ -454,6 +454,14 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             }) 
         })
     })
+    secretariatRouter.post('/transaction-baptism/updateRequirementsReject',(req,res)=>{
+        var queryString2 = `UPDATE tbl_requirements SET var_reqstatus = "Rejected" 
+        WHERE int_requirementID =? `
+        db.query(queryString2,[req.body.id],(err,results,fields) =>{
+            if(err) throw err;
+            res.send(results)
+        })
+    })
     secretariatRouter.post('/transaction-baptism/updateRequirements',(req,res)=>{
         var queryString2 = `UPDATE tbl_requirements SET var_reqstatus = "Approved" 
         WHERE int_requirementID =? `
@@ -636,7 +644,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                         })
                     }
                     else{
-                        res.send(results[0])
                     }
                 }
                 
@@ -662,16 +669,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         var queryString3= `INSERT INTO tbl_message(int_senderID, int_receiverID, var_subject, text_message,datetime_sent) VALUES(?,?,?,?,?);`;
         
                 db.query(queryString3,[req.session.secretariat.int_userID, req.body.int_receiverID, req.body.var_subject, req.body.text_message,date], (err, results, fields) => {
-                    if (err) console.log(err);       
+                    if (err) console.log(err); 
+                          
                     console.log(results)
-                    if (err){
-                        console.log(err)
-                        res.send({alertDesc:notsuccess})
-                    }
-                    else{
-                        res.send({alertDesc:success})
-                    }
-        }); 
+                    res.send(results)
+                }); 
     }); 
     secretariatRouter.post('/transaction-baptism/paymentquery', (req, res)=>{
         var queryString1 =`SELECT * from tbl_eventinfo 
@@ -694,6 +696,22 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
     
     secretariatRouter.get('/transaction-blessings', (req, res)=>{
+        db.query(queryString,(err,results,fields)=>{
+            var unangresults = results
+            db.query(queryString,(err,results,fields)=>{
+                db.query(queryString,(err,results,fields)=>{
+                    db.query(queryString,(err,results,fields)=>{
+                        db.query(queryString,(err,results,fields)=>{
+                            db.query(queryString,(err,results,fields)=>{
+            
+                            })
+                        })
+                    })
+                })
+            })  
+        })
+
+
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  

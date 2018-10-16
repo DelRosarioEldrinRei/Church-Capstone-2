@@ -224,14 +224,17 @@ block addjs
 	
 	script(type='text/javascript').
 		$(document).ready(function(){
+			var ctr = 0;
 			for(var i =0; i<= $('.approvalreq').length; i++){
+
+
 				if($('.approvalreq').eq(i).attr('value') == "Submitted"){
 					$('.approvalreq').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
 				}
 				else if($('.approvalreq').eq(i).attr('value') == "Approved"){
 					$('.approvalreq').eq(i).addClass('badge btn btn-primary-lg bgc-green-100 c-green-700')
 				}
-				else if($('.approvalreq').eq(i).attr('value') == "Disapproved"){
+				else if($('.approvalreq').eq(i).attr('value') == "Rejected"){
 					$('.approvalreq').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700')
 				}
 				if($('.approvalpay').eq(i).attr('value') == "Paid"){
@@ -308,19 +311,30 @@ block addjs
 					$('#updateReqModal').modal('show')
 					var ctr=0;
 					for(i=0;i<data.requirements.length;i++){
-						if(data.requirements[i].var_reqstatus != "Approved"){
+
+						if(data.requirements[i].var_reqstatus == "Submitted"){
 						$(`#reqAppend`).append(`
 						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-						<input class="custom-control-input" id="customRadio2" type="radio" name="Reject" value=${data.requirements[i].int_requirementID} />
-						<input class="custom-control-input" id="customRadio2" type="radio" name="Approved" value=${data.requirements[i].int_requirementID} />
+						<input class="reject" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
+						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Accept
 						`)
 						}
 						else if(data.requirements[i].var_reqstatus == "Approved"){
 						ctr++;
 						$(`#reqAppend`).append(`
 						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-						<input type="checkbox" disabled=true checked="" class="checkbox" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  
+						<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
+						<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Approved
 						`) 
+						}
+						else if(data.requirements[i].var_reqstatus == "Rejected"){
+						$(`#reqAppend`).append(`
+						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
+						<input class="reject" checked="" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
+						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Accept
+						`)
+						$(`input[name="${data.requirements[i].var_reqname}reject"][class="reject"]`).attr("checked",true);
+						console.log()
 						}
 					}
 					if(ctr == data.requirements.length){
@@ -336,6 +350,23 @@ block addjs
 					console.log(ctr)
 					console.log(data.requirements.length)
 					$('#updateReqButton').click(function(){
+						var idsa = [];
+						var idsr = [];
+						var requirements = [];
+						for(i=0;i<data.requirements.length;i++){
+						requirements.push(data.requirements[i])
+						if($(`input[name="${data.requirements[i].var_reqname}accept"]`).is(':checked') == true){
+							idsa.push($(`input[name="${data.requirements[i].var_reqname}accept"]`).val())
+						}
+						else if($(`input[name="${data.requirements[i].var_reqname}reject"]`).is(':checked') == true){
+							idsr.push($(`input[name="${data.requirements[i].var_reqname}reject"]`).val())
+						}
+						console.log($(`input[name="${data.requirements[i].var_reqname}accept"]`).is(':checked'))
+						console.log($(`input[name="${data.requirements[i].var_reqname}reject"]`).is(':checked'))
+						}
+						console.log(idsa)
+						console.log(idsr)
+						console.log(requirements)
 							swal({
 							title:'Are You Sure?', 
 							text:'You want to update the Status of the Requirements?', 
@@ -346,16 +377,106 @@ block addjs
 							confirmButtonText: 'Confirm'
 							}).then((result)=>{
 							if(result.value){
-							console.log($('#reqstatus').val())
 							var reqstatus = $('#reqstatus').val()
 							var paystatus = $('#paystatusupdate').val()
-							for(i=0;i<$('.checkbox').length;i++){
-							if($('.checkbox')[i].checked == true){
+							if(idsr.length > 0){
+								$.post('/secretariat/message',{int_userID:$('#int_userID').val()})
+										.done(data =>{
+											var rejected =[];
+											for(j=0;j<idsr.length;j++){
+												for(i=0;i<requirements.length;i++){
+													if(idsr[j] == requirements[i].int_requirementID){
+														rejected.push(requirements[i].var_reqname)
+													}
+												}
+
+											}
+											$('#messageAppend').append(`
+											<h4 class="c-grey-900 mB-20">Send Message</h4>
+												<div class="send-header">
+													<div class="form-group">
+													<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
+													<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}, ${data.var_userfname}"  readonly>
+													</div>
+													<div class="form-group">
+													<h6 class="label-control" id="eventstatus">Rejected Requirements: 
+													<span id="var_subject" class="badge btn btn-primary-lg bgc-blue-100 c-white-700"></span>
+													</h6>
+													</div>
+													<div class="form-group">
+													<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you declined the guest's request." rows='6'></textarea>
+													</div>
+												</div>
+												<div id="compose-area"></div>
+											`)
+											for(v=0;v<rejected.length;v++){
+												if(v < rejected.length - 1){
+													$('#var_subject').append(rejected[v] + ",")
+												}
+												else{
+													$('#var_subject').append(rejected[v])
+												}
+											}
+											$('#updateReqModal').modal('hide')
+											$('#messageModal').modal('show')
+											$('#messageModal').on('hidden.bs.modal',function(){
+												$('#selectBox').val('default')
+												$('#messageAppend').empty()
+											})
+											
+											$('#sendMessage').click(function(){
+												swal({
+												title:'Are you sure?', 
+												text:'This message will be sent to the guest and his/her request will be declined.', 
+												type:'warning',
+												showCancelButton: false,
+												confirmButtonColor: '#3085d6',
+												cancelButtonColor: '#d33',
+												confirmButtonText: 'Confirm'
+												}).then((result)=>{
+													if(result.value){										
+														$.post('/secretariat/message/send',{
+															int_receiverID:$('#int_receiverID').val(),
+															int_receiverID:$('#int_receiverID').val(),
+															var_subject:$('#var_subject').val(),
+															text_message:$('#text_message').val(),
+															id1:idNow
+														})
+														.done(data=>{
+															if(data){
+																swal({
+																	title:'Success',
+																	text:'Status updated and message sent!', 
+																	type:'success'
+																}).then(function(){
+																	for(i=0;i<idsr.length;i++){
+																		$.post('/secretariat/transaction-baptism/updateRequirementsReject',{
+																		id:idsr[i],
+																		eventid:idNow
+																		}).done(data=>{
+																		location.reload()
+																		})
+																	}
+																})
+																$('#messageModal').modal('hide');
+																$('#messageAppend').empty();
+															}
+														})
+													}
+											})
+											})
+										})
+								
+
+							}
+							else if(idsa.length > 0){
+							for(i=0;i<idsa.length;i++){
 								$.post('/secretariat/transaction-baptism/updateRequirements',{
-								id:$('.checkbox')[i].getAttribute('value'),
+								id:idsa[i],
 								eventid:idNow
+								}).done(data=>{
+
 								})
-								}
 							}
 							swal({
 								title:'Success',
@@ -364,6 +485,19 @@ block addjs
 								}).then(function(){
 									location.reload();
 								})
+							}
+							else{
+								swal({
+								title:'Success',
+								text:'Status updated', 
+								type:'success'
+								}).then(function(){
+									location.reload();
+								})
+							}
+
+
+
 							}
 							})
 					})
@@ -541,6 +675,7 @@ block addjs
 				var eventstatus = $('#eventstatusupdate').val()
 				var paystatus = $('#paystatusupdate').val()
 				var reqstatus = $('#reqstatusupdate').val()
+				
 					console.log("eventstatus "+eventstatus)
 					console.log("paystatus "+paystatus)
 					console.log("reqstatus "+reqstatus)
@@ -562,6 +697,80 @@ block addjs
 							paystatus:paystatus,
 							reqstatus:reqstatus,
 							}).done(data=>{
+								if(eventstatus == "Disapproved"){
+									$.post('/secretariat/message',{int_userID:$('#int_userID').val()})
+										.done(data =>{
+											
+											$('#messageAppend').append(`
+											<h4 class="c-grey-900 mB-20">Send Message</h4>
+												<div class="send-header">
+													<div class="form-group">
+													<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
+													<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}, ${data.var_userfname}">
+													</div>
+													<div class="form-group">
+													<h6 class="label-control" id="eventstatus">Rejected Requirements: 
+													<input class="form-control" id='var_subject' value='Declined request'">
+													</h6>
+													</div>
+													<div class="form-group">
+													<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you declined the guest's request." rows='6'></textarea>
+													</div>
+												</div>
+												<div id="compose-area"></div>
+											`)
+											$('#updateReqModal').modal('hide')
+											$('#messageModal').modal('show')
+											$('#messageModal').on('hidden.bs.modal',function(){
+												$('#selectBox').val('default')
+												$('#messageAppend').empty()
+											})
+											
+											$('#sendMessage').click(function(){
+												swal({
+												title:'Are you sure?', 
+												text:'This message will be sent to the guest and his/her request will be declined.', 
+												type:'warning',
+												showCancelButton: false,
+												confirmButtonColor: '#3085d6',
+												cancelButtonColor: '#d33',
+												confirmButtonText: 'Confirm'
+												}).then((result)=>{
+													if(result.value){										
+														$.post('/secretariat/message/send',{
+															int_receiverID:$('#int_receiverID').val(),
+															int_receiverID:$('#int_receiverID').val(),
+															var_subject:$('#var_subject').val(),
+															text_message:$('#text_message').val(),
+															id1:idNow
+														})
+														.done(data=>{
+															if(data){
+																swal({
+																	title:'Success',
+																	text:'Status updated and message sent!', 
+																	type:'success'
+																}).then(function(){
+																	for(i=0;i<idsr.length;i++){
+																		$.post('/secretariat/transaction-baptism/updateRequirementsReject',{
+																		id:idsr[i],
+																		eventid:idNow
+																		}).done(data=>{
+																		location.reload()
+																		})
+																	}
+																})
+																$('#messageModal').modal('hide');
+																$('#messageAppend').empty();
+																location.reload();
+															}
+														})
+													}
+											})
+											})
+										})
+								}
+								else{
 								swal({
 								title:'Success',
 								text:'Status updated', 
@@ -569,6 +778,7 @@ block addjs
 								}).then(function(){
 									location.reload();
 								})
+								}
 							})
 							
 							}
