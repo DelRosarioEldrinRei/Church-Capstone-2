@@ -2213,7 +2213,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         })
     })
 
-
     secretariatRouter.get('/transaction-marriage', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
@@ -2424,6 +2423,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         }); 
     }); 
     
+ 
 
 
 

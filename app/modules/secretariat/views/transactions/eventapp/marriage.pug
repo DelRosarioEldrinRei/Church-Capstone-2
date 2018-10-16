@@ -77,22 +77,125 @@ block prepend main
 																			td=marriage.var_blname + ", " + marriage.var_bfname
 																			td=marriage.date_eventdate + ' ' + marriage.time_eventstart
 																			//- td=marriage.char_weddingtype
-																			td
-																				span.approvalreq(value=`${marriage.char_requirements}`) #{marriage.char_requirements}
-																			td
-																				span.approvalpay(value=`${marriage.char_paymentstatus}`) #{marriage.char_paymentstatus}
-																			td
-																				span.approval(value=`${marriage.char_approvalstatus}`) #{marriage.char_approvalstatus}
-																			td.td-actions.text-center
-																				button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)
-																					i.ti-settings
-																						#toolbar-options.hidden
-																							a.viewButton(href='#')
-																								i.ti-file(style="color:white;")
-																							a.updateButton(href='#')
-																								i.ti-pencil(style="color:white;")
-																							a.updateReqButton(href='#')
-																								i.ti-new-window(style="color:white;")
+																			if(marriage.char_approvalstatus=='Cancelled')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)=marriage.char_requirements
+																						option  --------------
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)=marriage.char_paymentstatus
+																						option  --------------
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:red' disabled)
+																						option(value=`${marriage.int_eventinfoID},3` style='color:red')=marriage.char_approvalstatus
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																								a.updateButton(href='#')
+																									i.ti-pencil(style="color:white;")
+																				-continue
+																			if(marriage.char_approvalstatus=='Disapproved')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:grey' disabled)
+																						option(value=`${marriage.int_eventinfoID},1` style='color:green')=marriage.char_requirements
+																				td
+																					select#selectBox(onchange='payment(value);' style='color:grey' disabled)
+																						option(value=`${marriage.int_eventinfoID},1` style='color:green')=marriage.char_paymentstatus
+																				td
+																					select#selectBox(onchange='approval(value);' style='color:red')
+																						option(value=`${marriage.int_eventinfoID},3` style='color:red')=marriage.char_approvalstatus
+																						option(value=`${marriage.int_eventinfoID},2` style='color:orange') Pending
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																								a.updateButton(href='#')
+																									i.ti-pencil(style="color:white;")
+																				-continue
+
+																			if(marriage.char_approvalstatus=='Approved')
+																				td
+																					if(marriage.char_requirements=='Incomplete')
+																						select#selectBox(onchange='requirement(value);' style='color:orange' disabled)
+																							option(value=`${marriage.int_eventinfoID},1` style='color:orange')=marriage.char_requirements
+																					if(marriage.char_requirements=='Complete')
+																						select#selectBox(onchange='requirement(value);' style='color:green' disabled)
+																							option(value=`${marriage.int_eventinfoID},1` style='color:green')=marriage.char_requirements
+																				td
+																					select#selectBox(onchange='payment(value);' style='color:green' disabled)
+																						option(value=`${marriage.int_eventinfoID},1` style='color:green')=marriage.char_paymentstatus
+																				td
+																					select#selectBox(onchange='approval(value);' style='color:green' disabled)
+																						option(value=`${marriage.int_eventinfoID},1` style='color:green') Approved
+																						option(value=`${marriage.int_eventinfoID},2` style='color:orange') Pending
+																						option(value=`${marriage.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																								a.updateButton(href='#')
+																									i.ti-pencil(style="color:white;")
+																				-continue
+																			
+																			if(marriage.char_requirements=='Incomplete'&& marriage.char_approvalstatus=='Pending'&&marriage.char_paymentstatus!='Paid')
+
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:orange' disabled)
+																						option(value=`${marriage.int_eventinfoID},0` style='color:orange') Incomplete
+																						
+																				td
+																						select#selectBox(onchange='payment(value);' style='color:orange')
+																							option(value=`${marriage.int_eventinfoID},2` style='color:orange') Unpaid
+																							option(value=`${marriage.int_eventinfoID},1` style='color:green') Paid
+																				td
+																					select#selectBox(onchange='approval(value);' style='color:orange')
+																						option(value=`${marriage.int_eventinfoID},2` style='color:orange') Pending
+																						option(value=`${marriage.int_eventinfoID},1` style='color:green') Approved
+																						option(value=`${marriage.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																								a.updateButton(href='#')
+																									i.ti-pencil(style="color:white;")
+																				-continue
+
+																			
+
+																			
+																			if(marriage.char_requirements=='Incomplete'&&marriage.char_paymentstatus=='Paid'&&marriage.char_approvalstatus=='Pending')
+																				td
+																					select#selectBox(onchange='requirement(value);' style='color:orange' disabled)
+																							option(value=`${marriage.int_eventinfoID},2` style='color:orange')=marriage.char_requirements
+																				td
+																						select#selectBox(onchange='payment(value);' style='color:green' disabled)
+																							option(value=`${marriage.int_eventinfoID},1` style='color:green') Paid
+																							option(value=`${marriage.int_eventinfoID},2` style='color:orange') Unpaid
+																				td
+																						select#selectBox(onchange='approval(value);' style='color:orange')
+																							option(value=`${marriage.int_eventinfoID},2` style='color:orange') Pending
+																							option(value=`${marriage.int_eventinfoID},1` style='color:green') Approved
+																							option(value=`${marriage.int_eventinfoID},0` style='color:red') Disapproved
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																								a.updateButton(href='#')
+																									i.ti-pencil(style="color:white;")
+																				-continue
+
+
+
 	#updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
@@ -117,57 +220,20 @@ block prepend main
 							.gallery#reqAppend
 					.modal-footer
 						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-	#updateReqModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
-			.modal-dialog.modal-lg(role="document" style="z-index: 9998;")
+	#paymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
 				.modal-content
-					.modal-header(style='background:#367587; color:white')
-						h5.modal-title(style='background:#367587; color:white') Update Requirements
+					.modal-header(style='background:#367587')
+						h5.modal-title(style='color:white') Update Payment Status
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
-							span(aria-hidden='true' style='background:#367587; color:white') ×
-					.modal-body#reqStatus
-						.row
-							.col-md-6.mx-auto
-								.gallery#reqAppend
-							.col-md-6
-								#upStatus
-								#status
-					.modal-footer.mx-auto
-						button.btn.btn-outline.btn-primary.pull-left#updateReqButton(type='button') Update
+							span(aria-hidden='true' style='color:white') ×
+					.modal-body#paymentAppend
+					.modal-footer
+						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
+						button.btn#updatePayment(type="button" style='background:#367587; color:white') Update
+
 block addjs
 	script.
-		var ctr = 0;
-			for(var i =0; i<= $('.approvalreq').length; i++){
-
-
-				if($('.approvalreq').eq(i).attr('value') == "Submitted"){
-					$('.approvalreq').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
-				}
-				else if($('.approvalreq').eq(i).attr('value') == "Approved"){
-					$('.approvalreq').eq(i).addClass('badge btn btn-primary-lg bgc-green-100 c-green-700')
-				}
-				else if($('.approvalreq').eq(i).attr('value') == "Rejected"){
-					$('.approvalreq').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700')
-				}
-				if($('.approvalpay').eq(i).attr('value') == "Paid"){
-					$('.approvalpay').eq(i).addClass('badge btn btn-primary-lg bgc-green-100 c-green-700')
-				}
-				else if($('.approvalpay').eq(i).attr('value') == "Unpaid"){
-					$('.approvalpay').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
-				}
-				if($('.approval').eq(i).attr('value') == "Pending"){
-					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
-				}
-				else if($('.approval').eq(i).attr('value') == "Cancelled"){
-					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700 ')
-				}
-				else if($('.approval').eq(i).attr('value') == "Approved"){
-					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-green-100 c-green-700')
-				}
-				else if($('.approval').eq(i).attr('value') == "Disapproved"){
-					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700')
-				}
-			}
-
 		$(document).ready(function() {
 			$('.actionButton').click(function(){
 			idNow = $(this).val();
@@ -190,7 +256,7 @@ block addjs
 						</div>
 						<div class="row">
 						<div class="col-md-6">
-						<input id="reqstatus" type="hidden" value="${data.results.char_requirements}"></input>
+						<input id="reqstatus" type="hidden" value="${data.results.var_reqstatus}"></input>
 						<h6 class="label-control"><strong> Requirements Approval: </strong></h6>
 							<div class="form-group" id="reqAppend">
 							</div>
@@ -300,19 +366,21 @@ block addjs
 					var timeRequested = moment(data.results.time_eventstart,'HH:mm:ss').format('hh:mm A')
 					var age = moment().diff(data.results.date_birthday,'years');
 					$('#viewBodyAppend').append(`
-					<table class="tableModal">
-						<tr>
-							<td class="tdModal h5"><strong> Groom's Name </strong> ${data.results.var_lname}, ${data.results.var_fname}</td>
-							<td class="tdModal h5"><strong> Desired Date:  </strong> ${dateRequested}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Bride's Name: </strong> ${data.results.var_blname}, ${data.results.var_bfname}</td>
-							<td class="tdModal h5"><strong> Desired Time: </strong> ${timeRequested}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Requirements: </strong></td>
-						</tr>
-					</table>
+					<div class="form-group">
+						<label class="label-control"><strong> Groom's Name: </strong> ${data.results.var_lname}, ${data.results.var_fname}</label>
+					</div>
+					<div class="form-group">
+						<label class="label-control"><strong> Bride's Name: </strong> ${data.results.var_blname}, ${data.results.var_bfname}</label>
+					</div>
+					<div class="form-group">
+						<label class="label-control"> <strong> Desired Date: </strong> ${dateRequested}</label>
+					</div>
+					<div class="form-group">
+						<label class=" label-control"> <strong> Desired Time:  </strong> ${timeRequested}</label>
+					</div>
+					<div class="form-group">
+						<label class=" label-control"> <strong> Requirements:  </strong></label>
+					</div>
 					`)
 					console.log(data.requirements)
 					for(i=0;i<data.requirements.length;i++){
