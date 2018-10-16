@@ -8,190 +8,190 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 //===============================================================================================//
 // I N D E X //
 //===============================================================================================//
-    secretariatRouter.get('/', (req, res)=>{
+	secretariatRouter.get('/', (req, res)=>{
    
-        
-        var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
-        var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
-        var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
-        var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
-            db.query(queryString1, (err, results, fields) => {
-                if (err) console.log(err);
-                var application = results[0];
-                db.query(queryString2, (err, results, fields) => {
-                    if (err) console.log(err);
-                    var reservation = results[0];
-                    db.query(queryString3, (err, results, fields) => {
-                        if (err) console.log(err);
-                        var request = results[0];
-                        db.query(queryString4, (err, results, fields) => {
-                            if (err) console.log(err);
-                            var baptism = results[0];
+		
+		var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
+		var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+		var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+		var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+			db.query(queryString1, (err, results, fields) => {
+				if (err) console.log(err);
+				var application = results[0];
+				db.query(queryString2, (err, results, fields) => {
+					if (err) console.log(err);
+					var reservation = results[0];
+					db.query(queryString3, (err, results, fields) => {
+						if (err) console.log(err);
+						var request = results[0];
+						db.query(queryString4, (err, results, fields) => {
+							if (err) console.log(err);
+							var baptism = results[0];
 
 
-        
-                
-            return res.render('secretariat/views/index',{application:application,reservation:reservation,request:request, baptism:baptism, });
-        }); }); }); }); });
+		
+				
+			return res.render('secretariat/views/index',{application:application,reservation:reservation,request:request, baptism:baptism, });
+		}); }); }); }); });
 
 
-    secretariatRouter.get('/details', (req, res)=>{
-        res.render('secretariat/views/ref/details')
-    });
+	secretariatRouter.get('/details', (req, res)=>{
+		res.render('secretariat/views/ref/details')
+	});
 
 //===============================================================================================//
 // T R A N S A C T I O N S //
 //===============================================================================================//
-    secretariatRouter.get('/transaction-facilityreservation', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_facilityreservation 
-        join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
-        join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID
-        JOIN tbl_requirementsfacility ON tbl_requirementsfacility.int_reservationID = tbl_facilityreservation.int_reservationID
-        `
-        db.query(queryString1, (err, results, fields) => {
-            var reservations = results;
-            for(var i = 0; i < reservations.length; i++){
+	secretariatRouter.get('/transaction-facilityreservation', (req, res)=>{
+		var queryString1 =`SELECT * FROM tbl_facilityreservation 
+		join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
+		join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID
+		JOIN tbl_requirementsfacility ON tbl_requirementsfacility.int_reservationID = tbl_facilityreservation.int_reservationID
+		`
+		db.query(queryString1, (err, results, fields) => {
+			var reservations = results;
+			for(var i = 0; i < reservations.length; i++){
 
-                // reservations[i].date_reservedate= moment(reservations[i].date_reservedate).format('MM/DD/YYYY');
-                reservations[i].datetime_reservestart= moment(reservations[i].datetime_reservestart, 'HH:mm:ss').format('MM/DD/YYYY h:mm a');
-                reservations[i].datetime_reserveend= moment(reservations[i].datetime_reserveend, 'HH:mm:ss').format('MM/DD/YYYY h:mm a');
-            }
-            if (err) console.log(err);       
-            return res.render('secretariat/views/transactions/facilityres',{ reservations : reservations });
-        });     
-        
-    });
-    secretariatRouter.post('/transaction-facilityreservation/query', (req, res)=>{
-        console.log(req.body)
-        var queryString1 =`SELECT * FROM tbl_facilityreservation 
-        join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
-        join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID
-        join tbl_requirementsfacility on tbl_facilityreservation.int_reservationID = tbl_requirementsfacility.int_reservationID
-        where tbl_facilityreservation.int_reservationID = ?`
-        db.query(queryString1,[req.body.id], (err, results, fields) => {
-            if (err) console.log(err);
-            console.log(results[0])
-            res.send(results[0])
-        });
-    });
+				// reservations[i].date_reservedate= moment(reservations[i].date_reservedate).format('MM/DD/YYYY');
+				reservations[i].datetime_reservestart= moment(reservations[i].datetime_reservestart, 'HH:mm:ss').format('MM/DD/YYYY h:mm a');
+				reservations[i].datetime_reserveend= moment(reservations[i].datetime_reserveend, 'HH:mm:ss').format('MM/DD/YYYY h:mm a');
+			}
+			if (err) console.log(err);       
+			return res.render('secretariat/views/transactions/facilityres',{ reservations : reservations });
+		});     
+		
+	});
+	secretariatRouter.post('/transaction-facilityreservation/query', (req, res)=>{
+		console.log(req.body)
+		var queryString1 =`SELECT * FROM tbl_facilityreservation 
+		join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
+		join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID
+		join tbl_requirementsfacility on tbl_facilityreservation.int_reservationID = tbl_requirementsfacility.int_reservationID
+		where tbl_facilityreservation.int_reservationID = ?`
+		db.query(queryString1,[req.body.id], (err, results, fields) => {
+			if (err) console.log(err);
+			console.log(results[0])
+			res.send(results[0])
+		});
+	});
 
-    secretariatRouter.post('/transaction-facilityreservation/query/update', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_facilityreservation 
-        join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
-        join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID
-        
-        join tbl_requirementsfacility on tbl_facilityreservation.int_reservationID = tbl_requirementsfacility.int_reservationID
-        where tbl_facilityreservation.int_reservationID = ?`
-        db.query(queryString1,[req.body.id], (err, results, fields) => {
-                
-            if (err) console.log(err);
-            res.send(results[0])
-            console.log(results[0])
-        });
-    });
-    secretariatRouter.get('/transaction-documentrequest', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_documentrequest 
-        join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID 
-        join tbl_user on tbl_documentrequest.int_userID = tbl_user.int_userID`
-        db.query(queryString1, (err, results, fields) => {
-            if (err) console.log(err);       
-            var requests = results;
-            // var arrays
-            for(var i = 0; i < requests.length; i++){
-                requests[i].date_docurequested= moment(requests[i].date_docurequested).format('MM/DD/YYYY');
-            }
-            // for(var i = 0; i < requests.length; i++){
-            //     requests[i].date_docurequested= moment(requests[i].date_docurequested).format('MM/DD/YYYY');
-            // }
-            
-            return res.render('secretariat/views/transactions/docureq',{ requests : requests });
-        }); 
-        
-    });
-    secretariatRouter.post('/transaction-documentrequest/query', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_documentrequest
-        join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
-        join tbl_requirementsdocument on tbl_documentrequest.int_requestID = tbl_requirementsdocument.int_requestID
-        join tbl_servicereqtype on tbl_servicereqtype.int_servicereqtypeID = tbl_requirementsdocument.int_servicereqtypeID
-        where tbl_documentrequest.int_requestID = ?`
-        db.query(queryString1,[req.body.id], (err, results, fields) => {
-            if (err) console.log(err);
-            res.send(results[0])
-            console.log(results[0])
-        });
-    });
-    secretariatRouter.post('/transaction-documentrequest/update/query', (req, res)=>{
-        var queryString1 =`SELECT tbl_user.int_userID,tbl_documentrequest.int_requestID,tbl_documentrequest.char_docustatus,tbl_payment.int_paymentID,tbl_payment.char_paymentstatus,
-        tbl_requirementsdocument.int_requirementsdocumentID,tbl_requirementsdocument.char_reqstatus,tbl_document.dbl_docuprice FROM tbl_documentrequest 
-        join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID
-        join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
-        join tbl_requirementsdocument on tbl_documentrequest.int_requestID = tbl_requirementsdocument.int_requestID
-        join tbl_servicereqtype on tbl_servicereqtype.int_servicereqtypeID = tbl_requirementsdocument.int_servicereqtypeID
-        join tbl_user on tbl_user.int_userID = tbl_documentrequest.int_userID
-        where tbl_documentrequest.int_requestID = ?`
-        db.query(queryString1,[req.body.id], (err, results, fields) => {
-            if (err) console.log(err);
-            res.send(results[0])
-            console.log(results[0])
-        });
-    });
-    secretariatRouter.post('/transaction-documentrequest/update', (req, res)=>{
-        console.log(req.body)
-        const queryString2 = `UPDATE tbl_requirementsdocument set char_reqstatus=?
-        where int_requirementdocumentID = ?`
-        db.query(queryString2,[req.body.reqstatus,req.body.reqid], (err, results1, fields) => {
-            const queryString3 = `UPDATE tbl_payment set char_paymentstatus=?
-            where int_paymentID = ?`
-            db.query(queryString3,[req.body.paystatus,req.body.payid], (err, results1, fields) => { 
-                const queryString4 = `UPDATE tbl_documentrequest set char_docustatus=?
-                where int_requestID = ?`
-                if(req.body.reqstatus == "Approved"){
-                    if(req.body.paystatus == "Unpaid"){
-                        db.query(queryString4,["To be Released",req.body.docuid], (err, results1, fields) => { 
-                            var queryString6 = `INSERT INTO tbl_notification(int_userID,var_notifdesc,datetime_received) VALUES(?,?,now())`
-                            db.query(queryString6,[req.body.userid,'Your Document Request is to ready to release'], (err, results2, fields) => {
-                                var queryString7 =`INSERT INTO tbl_voucher(int_notifID,int_requestID,date_issued,date_due)
-                                VALUES(?,?,?,?)`
-                                var datenow = new Date();
-                                var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-                                console.log(dateNow)
-                                var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
-                                var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
-                                console.log(dateDue1)
-                                console.log(results2)
-                                db.query(queryString7,[results2.insertId,req.body.docuid,dateNow,dateDue1], (err, results1, fields) => {
-                                if (err) console.log(err);
-                                return res.redirect('/secretariat/transaction-documentrequest');
-                                })
-                            })
-                        });
-                    }
-                    else if(req.body.paystatus == "Paid"){
-                         db.query(queryString4,["Released",req.body.docuid], (err, results1, fields) => { 
-                         if (err) console.log(err);
-                         return res.redirect('/secretariat/transaction-documentrequest');
-                         });
-                    }
-                }
-                else if(req.body.reqstatus == "Pending" ||req.body.reqstatus == "Incomplete"){
-                    db.query(queryString4,["Pending",req.body.docuid], (err, results1, fields) => {
-                        var queryString5 =`UPDATE tbl_payment SET char_paymentstatus =?
-                        WHERE int_paymentID = ?`
-                        db.query(queryString5,["Unpaid",req.body.payid], (err, results1, fields) => {
-                        if (err) console.log(err);
-                        return res.redirect('/secretariat/transaction-documentrequest');
-                        });
-                    });
-                }
-                else if(req.body.paystatus == "Paid"){
-                    db.query(queryString4,["Released",req.body.docuid], (err, results1, fields) => { 
-                    if (err) console.log(err);
-                    return res.redirect('/secretariat/transaction-documentrequest');
-                    });
-                }
-                
-            });
-        });
+	secretariatRouter.post('/transaction-facilityreservation/query/update', (req, res)=>{
+		var queryString1 =`SELECT * FROM tbl_facilityreservation 
+		join tbl_facility on tbl_facilityreservation.int_facilityID = tbl_facility.int_facilityID 
+		join tbl_user on tbl_facilityreservation.int_userID = tbl_user.int_userID
+		
+		join tbl_requirementsfacility on tbl_facilityreservation.int_reservationID = tbl_requirementsfacility.int_reservationID
+		where tbl_facilityreservation.int_reservationID = ?`
+		db.query(queryString1,[req.body.id], (err, results, fields) => {
+				
+			if (err) console.log(err);
+			res.send(results[0])
+			console.log(results[0])
+		});
+	});
+	secretariatRouter.get('/transaction-documentrequest', (req, res)=>{
+		var queryString1 =`SELECT * FROM tbl_documentrequest 
+		join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID 
+		join tbl_user on tbl_documentrequest.int_userID = tbl_user.int_userID`
+		db.query(queryString1, (err, results, fields) => {
+			if (err) console.log(err);       
+			var requests = results;
+			// var arrays
+			for(var i = 0; i < requests.length; i++){
+				requests[i].date_docurequested= moment(requests[i].date_docurequested).format('MM/DD/YYYY');
+			}
+			// for(var i = 0; i < requests.length; i++){
+			//     requests[i].date_docurequested= moment(requests[i].date_docurequested).format('MM/DD/YYYY');
+			// }
+			
+			return res.render('secretariat/views/transactions/docureq',{ requests : requests });
+		}); 
+		
+	});
+	secretariatRouter.post('/transaction-documentrequest/query', (req, res)=>{
+		var queryString1 =`SELECT * FROM tbl_documentrequest
+		join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
+		join tbl_requirementsdocument on tbl_documentrequest.int_requestID = tbl_requirementsdocument.int_requestID
+		join tbl_servicereqtype on tbl_servicereqtype.int_servicereqtypeID = tbl_requirementsdocument.int_servicereqtypeID
+		where tbl_documentrequest.int_requestID = ?`
+		db.query(queryString1,[req.body.id], (err, results, fields) => {
+			if (err) console.log(err);
+			res.send(results[0])
+			console.log(results[0])
+		});
+	});
+	secretariatRouter.post('/transaction-documentrequest/update/query', (req, res)=>{
+		var queryString1 =`SELECT tbl_user.int_userID,tbl_documentrequest.int_requestID,tbl_documentrequest.char_docustatus,tbl_payment.int_paymentID,tbl_payment.char_paymentstatus,
+		tbl_requirementsdocument.int_requirementsdocumentID,tbl_requirementsdocument.char_reqstatus,tbl_document.dbl_docuprice FROM tbl_documentrequest 
+		join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID
+		join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID
+		join tbl_requirementsdocument on tbl_documentrequest.int_requestID = tbl_requirementsdocument.int_requestID
+		join tbl_servicereqtype on tbl_servicereqtype.int_servicereqtypeID = tbl_requirementsdocument.int_servicereqtypeID
+		join tbl_user on tbl_user.int_userID = tbl_documentrequest.int_userID
+		where tbl_documentrequest.int_requestID = ?`
+		db.query(queryString1,[req.body.id], (err, results, fields) => {
+			if (err) console.log(err);
+			res.send(results[0])
+			console.log(results[0])
+		});
+	});
+	secretariatRouter.post('/transaction-documentrequest/update', (req, res)=>{
+		console.log(req.body)
+		const queryString2 = `UPDATE tbl_requirementsdocument set char_reqstatus=?
+		where int_requirementdocumentID = ?`
+		db.query(queryString2,[req.body.reqstatus,req.body.reqid], (err, results1, fields) => {
+			const queryString3 = `UPDATE tbl_payment set char_paymentstatus=?
+			where int_paymentID = ?`
+			db.query(queryString3,[req.body.paystatus,req.body.payid], (err, results1, fields) => { 
+				const queryString4 = `UPDATE tbl_documentrequest set char_docustatus=?
+				where int_requestID = ?`
+				if(req.body.reqstatus == "Approved"){
+					if(req.body.paystatus == "Unpaid"){
+						db.query(queryString4,["To be Released",req.body.docuid], (err, results1, fields) => { 
+							var queryString6 = `INSERT INTO tbl_notification(int_userID,var_notifdesc,datetime_received) VALUES(?,?,now())`
+							db.query(queryString6,[req.body.userid,'Your Document Request is to ready to release'], (err, results2, fields) => {
+								var queryString7 =`INSERT INTO tbl_voucher(int_notifID,int_requestID,date_issued,date_due)
+								VALUES(?,?,?,?)`
+								var datenow = new Date();
+								var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+								console.log(dateNow)
+								var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
+								var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
+								console.log(dateDue1)
+								console.log(results2)
+								db.query(queryString7,[results2.insertId,req.body.docuid,dateNow,dateDue1], (err, results1, fields) => {
+								if (err) console.log(err);
+								return res.redirect('/secretariat/transaction-documentrequest');
+								})
+							})
+						});
+					}
+					else if(req.body.paystatus == "Paid"){
+						 db.query(queryString4,["Released",req.body.docuid], (err, results1, fields) => { 
+						 if (err) console.log(err);
+						 return res.redirect('/secretariat/transaction-documentrequest');
+						 });
+					}
+				}
+				else if(req.body.reqstatus == "Pending" ||req.body.reqstatus == "Incomplete"){
+					db.query(queryString4,["Pending",req.body.docuid], (err, results1, fields) => {
+						var queryString5 =`UPDATE tbl_payment SET char_paymentstatus =?
+						WHERE int_paymentID = ?`
+						db.query(queryString5,["Unpaid",req.body.payid], (err, results1, fields) => {
+						if (err) console.log(err);
+						return res.redirect('/secretariat/transaction-documentrequest');
+						});
+					});
+				}
+				else if(req.body.paystatus == "Paid"){
+					db.query(queryString4,["Released",req.body.docuid], (err, results1, fields) => { 
+					if (err) console.log(err);
+					return res.redirect('/secretariat/transaction-documentrequest');
+					});
+				}
+				
+			});
+		});
    
     });
     secretariatRouter.get('/transaction-walkin', (req, res)=>{
@@ -2463,32 +2463,32 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
 
 
-    secretariatRouter.get('/newpriestaccount', (req, res)=>{
-        res.render('secretariat/views/createaccount');
-        
-        
-    });
+	secretariatRouter.get('/newpriestaccount', (req, res)=>{
+		res.render('secretariat/views/createaccount');
+		
+		
+	});
 
 
-    secretariatRouter.post('/newpriestaccount', (req, res)=>{
-        var queryString = `INSERT INTO tbl_user(var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype) VALUES(?,?,?,?,?,?,?,?,?,?)`;
-        db.query(queryString, [req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.contactnumber, req.body.username, req.body.email, req.body.createpassword, "Priest"], (err, results, fields) => {
-            if (err) throw err;
-            
-            res.redirect('/secretariat?createAccountSuccess');
-        });
+	secretariatRouter.post('/newpriestaccount', (req, res)=>{
+		var queryString = `INSERT INTO tbl_user(var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype) VALUES(?,?,?,?,?,?,?,?,?,?)`;
+		db.query(queryString, [req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.contactnumber, req.body.username, req.body.email, req.body.createpassword, "Priest"], (err, results, fields) => {
+			if (err) throw err;
+			
+			res.redirect('/secretariat?createAccountSuccess');
+		});
  
-        
-    });
+		
+	});
 
 
-    secretariatRouter.use(function (err, req, res, next) {
-        console.error(err.stack)
-        res.status(500)
-        return res.render('secretariat/views/error/505', {title: '505: Something broke!'});
-      })
-    secretariatRouter.use(function(req, res, next) {
-        res.status(404)
-        return res.render('secretariat/views/error/404', {title: '404: File Not Found'});
-    });
+	secretariatRouter.use(function (err, req, res, next) {
+		console.error(err.stack)
+		res.status(500)
+		return res.render('secretariat/views/error/505', {title: '505: Something broke!'});
+	  })
+	secretariatRouter.use(function(req, res, next) {
+		res.status(404)
+		return res.render('secretariat/views/error/404', {title: '404: File Not Found'});
+	});
 exports.secretariat = secretariatRouter;

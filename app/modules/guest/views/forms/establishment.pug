@@ -76,7 +76,7 @@ block main
                               #special
                                   .form-group
                                       .container
-                                          #calendarAnointing
+                                          #calendarEstablishment
                                   .help-block.with-errors
                   .learn-more.pull-right
                         button.btn.btn-next(type='button') Next
@@ -194,8 +194,8 @@ block addjs
             
           
               var formData= new FormData();
-              formData.append('desireddate1', $('#desireddate1').val()),
-              formData.append('desiredtime1', $('#desiredtime1').val()),
+              formData.append('desireddate1', eventDate),
+              formData.append('desiredtime1', timeStart),
               formData.append('userID', $('#userID').val()),
               formData.append('image', $('#file-0b')[0].files[0]),
               formData.append('owner', owner),
@@ -282,9 +282,6 @@ block addjs
           close: 'fa fa-remove'
         }
       });
-      });
-
-      $(document).ready(function(){
         var dateNow2
         var eventDate ='';
         var timeStart ='';
@@ -292,10 +289,10 @@ block addjs
         var dateNow = new Date()
         var dateNow2;
         var gender;
-        $.get('/guest/anointing/utilities/query').done(data=>{
+        $.get('/guest/establishment/utilities/query').done(data=>{
           console.log(data.int_reservationmindays)
           dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data.int_reservationmindays,'days').format('YYYY-MM-DD')
-          $('#calendarAnointing').fullCalendar({
+          $('#calendarEstablishment').fullCalendar({
             header: {
             left: 'title',
             center: 'agendaDay,month',
@@ -307,15 +304,15 @@ block addjs
             defaultView: 'month',
             allDaySlot: false,
             selectHelper: true,
-            minTime:'9:00:00',
-            maxTime:'17:00:00',
+            minTime:data.time_availablestart,
+            maxTime:data.time_availableend,
             validRange: {
               start: dateNow2
             },
             businessHours: { dow: [0,1,2,3,4,5,6] },
             selectConstraint:"businessHours",
             select:function(date,jsEvent,view){
-            var view = $('#calendarAnointing').fullCalendar('getView');
+            var view = $('#calendarEstablishment').fullCalendar('getView');
             console.log(view.name)
             if(view.name == 'agendaDay'){
               eventDate = date.format('YYYY-MM-DD')
@@ -338,14 +335,14 @@ block addjs
                 buttonsStyling: true,   
               }).then((value) => {
                 if(value.value) {
-                  $("#calendarAnointing").fullCalendar('removeEvents',[1])
+                  $("#calendarEstablishment").fullCalendar('removeEvents',[1])
                   swal(
                     'Sucess!',
                     'Event Date has been set.',
                     'success'
                   ).then((value)=>{
                   console.log('DESIRED TIME')
-                  $('#calendarAnointing').fullCalendar('renderEvent', {
+                  $('#calendarEstablishment').fullCalendar('renderEvent', {
                     title: 'DESIRED TIME',
                     start: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeStart}`,
                     end: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeEnd2}`,
@@ -367,8 +364,8 @@ block addjs
               })
             }
             else if(view.name == 'month'){
-              $('#calendarAnointing').fullCalendar('changeView', 'agendaDay')
-              $('#calendarAnointing').fullCalendar('gotoDate', date);
+              $('#calendarEstablishment').fullCalendar('changeView', 'agendaDay')
+              $('#calendarEstablishment').fullCalendar('gotoDate', date);
             }
             else{
               return  
