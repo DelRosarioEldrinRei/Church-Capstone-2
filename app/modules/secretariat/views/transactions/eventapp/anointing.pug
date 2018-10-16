@@ -1,5 +1,52 @@
 extends ../../../../../templates/secretariat
 block prepend main
+	style.
+		.tableModal {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+		}
+
+		.tdModal{
+			border: 2px solid #dddddd;
+			text-align: left;
+			padding: 12px;
+		}
+		.shadow3 {
+			box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+		}
+
+		body > div.mfp-wrap.mfp-close-btn-in.mfp-auto-cursor.mfp-with-zoom.mfp-ready > div {
+			z-index: 9999 !important;
+		}
+
+		.mfp-with-zoom .mfp-container,
+		.mfp-with-zoom.mfp-bg {
+			opacity: 0;
+			-webkit-backface-visibility: hidden;
+			/* ideally, transition speed should match zoom duration */
+			-webkit-transition: all 0.3s ease-out;
+			-moz-transition: all 0.3s ease-out;
+			-o-transition: all 0.3s ease-out;
+			transition: all 0.3s ease-out;
+			z-index: 99999;
+		}
+
+		.mfp-image, .mfp-container, .mfp-ready, .mfp-image-holder, .mfp-content, .mfp-preloader, .mfp-figure {
+			z-index: 99999;
+		}
+
+		.mfp-with-zoom.mfp-ready .mfp-container {
+			opacity: 1;
+		}
+		.mfp-with-zoom.mfp-ready.mfp-bg {
+			opacity: 0.8;
+		}
+
+		.mfp-with-zoom.mfp-removing .mfp-container,
+		.mfp-with-zoom.mfp-removing.mfp-bg {
+		opacity: 0;
+		}
 	#wrap
 	//- #calendar
 	div(style='clear:both')
@@ -69,8 +116,7 @@ block prepend main
 					button.close(type='button', data-dismiss='modal', aria-label='Close')
 						span(aria-hidden='true' style='background:#367587; color:white') ×
 				.modal-body#updateBodyAppend
-				.modal-footer
-					button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+				.modal-footer.mx-auto
 					button.btn.btn-primary#updateStatusButton(type="button") Update
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
@@ -81,7 +127,6 @@ block prepend main
 							span(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#viewBodyAppend
 					.modal-footer
-						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 	#myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-label='Close')
 			span(aria-hidden='true' style='background:#367587; color:white') ×
@@ -459,7 +504,7 @@ block addjs
 						</div>
 						<div class="form-group col-md-6">
 							<label >Current Requirement Status:</label>
-							<input id="reqstatus" type="text" class="form-control" value="">
+							<input id="reqstatus" type="text" class="form-control" value="" disabled>
 						</div>
 					</div>
 					

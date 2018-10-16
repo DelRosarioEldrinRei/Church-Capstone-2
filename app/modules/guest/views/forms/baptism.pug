@@ -294,8 +294,6 @@ block addjs
 		$.get('/guest/baptism/query').done(data=>{
 		console.log(data.utilities[0].int_agemax)
 		console.log(baptismType1)
-			var age = moment().diff($('#birthdate').val(),'years')
-			console.log(age)
 			console.log($('#file-0b').val())
 			if ($("#customRadio1").prop("checked")) {
 			gender = $("#customRadio1").val();
@@ -304,6 +302,8 @@ block addjs
 			gender = $("#customRadio2").val();
 			}
 			console.log(gender)
+			var age = moment().diff($('#birthdate').val(),'years')
+			console.log(age)
 			if(
 			gender != undefined &&
 			$('#firstname').val() != ''  &&
@@ -321,25 +321,7 @@ block addjs
 			$('#file-0b').val() != '' &&
 			$('#file-0b').val() != undefined
 			){
-				console.log(age >= data.utilities[0].int_agemax)
-				console.log(age)
-				if(age >= data.utilities[0].int_agemax){
-				swal({
-					title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, re-input or go back to home?`,
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonClass: 'btn btn-success',
-					cancelButtonClass: 'btn btn-danger',
-					buttonsStyling: true,
-				})
-				}
-				else{
-					$('#nextButton2').addClass('btn-next')
-				}
-				
-			}
-			else if(age >= data.utilities[0].int_agemax){
+			if(age >= data.utilities[0].int_agemax){
 				swal({
 					title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, re-input or go back to home?`,
 					showCancelButton: true,
@@ -351,7 +333,18 @@ block addjs
 				})
 			}
 			else{
-				alert('Please complete the form')
+
+					$('#nextButton2').addClass('btn-next')
+			}
+			}
+			else{
+				swal({
+					title: "Form is not completed yet",
+					text: "Please fill out all the required fields",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
 			}
 		})
 		})
@@ -391,24 +384,16 @@ block addjs
 			$('.address').val() != '' &&
 			$('#file-0b').val() != '' &&
 			$('#file-0b').val() != undefined){
-				if(age >= data.utilities[0].int_agemax){
-				swal({
-					title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, re-input or go back to home?`,
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonClass: 'btn btn-success',
-					cancelButtonClass: 'btn btn-danger',
-					buttonsStyling: true,
-				})
-				}
-				else{
-					$('#nextButton2').addClass('btn-next')
-				}
-
+				$('#nextButton2').addClass('btn-next')
 			}
 			else{
-				alert('Please complete the form')
+				swal({
+					title: "Form is not completed yet",
+					text: "Please fill out all the required fields",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
 			}
 		})
 		}
@@ -862,7 +847,13 @@ block addjs
 		var gender;
 		$('#nextButton1').click(function(){
 			if(eventDate == '' && timeStart == ''){
-				alert('Please input your desired time')
+				swal({
+					title: "Please schedule your date",
+					text: "You haven't chosen your desired schedule yet",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
 			}
 			else{
 				$('#nextButton1').addClass('btn-next')
