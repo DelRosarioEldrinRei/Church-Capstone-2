@@ -234,9 +234,11 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
     guestRouter.post('/reservation/query',(req,res)=>{
         if(req.body.eventname == "Baptism" || req.body.eventname == "Special Baptism"){
             var queryString = `SELECT * FROM tbl_eventinfo 
+            JOIN tbl_voucherevents ON tbl_eventinfo.int_eventinfoID = tbl_voucherevents.int_eventinfoID
             JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
             JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
             WHERE tbl_eventinfo.int_eventinfoID = ?`
             console.log(req.body)
             db.query(queryString,[req.body.id],(err,results,fields)=>{
@@ -247,6 +249,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         }
         else if(req.body.eventname == "Anointing of the sick" || req.body.eventname == "Funeral Service" || req.body.eventname == "Funeral Mass"){
             var queryString = `SELECT * FROM tbl_eventinfo 
+            JOIN tbl_eventinfo.int_eventinfID = tbl_voucherevents.int_eventinfoID
             JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
             JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_blessing ON tbl_blessing.int_eventinfoID = tbl_eventinfo.int_eventinfoID
@@ -272,15 +275,19 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
     });
     guestRouter.post('/refund', (req, res)=>{
         console.log(req.body.id)
-        var queryString1= `select * from tbl_message 
-        JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_message.int_eventinfoID
-        WHERE tbl_eventinfo.int_eventinfoID =?`
+        var queryString1= `select * from tbl_user
+        JOIN tbl_eventinfo ON tbl_eventinfo.int_userID = tbl_user.int_userID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_utilities ON tbl_utilities.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        WHERE tbl_eventinfo.int_eventinfoID = ?
+        `
         db.query(queryString1,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);       
             console.log(results)
             res.send(results[0])
         }); 
-    }); 
+    });
     guestRouter.post('/message/send', (req, res)=>{
         var success =0
         var notsuccess =1

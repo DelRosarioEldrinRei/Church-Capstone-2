@@ -276,6 +276,21 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             WHERE int_eventinfoID = ?`
             console.log(req.body)
             var eventstatus="";
+            if(req.body.paystatus=="Paid" && req.body.eventstatus == "Cancelled"){
+                var text="";
+                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
+                for(i=0;i<8;i++){
+                    text += possible.charAt(Math.floor(Math.random()*possible.length));
+                }
+                var date = new Date()
+                var due_date1 = moment(date).add(7,'days')
+                var due_date = moment(due_date1).format('YYYY-MM-DD')
+                console.log(due_date)
+                var queryString01 = `UPDATE tbl_payment set var_vouhercode = ? , date_issued = now(), date_due =?WHERE int_paymentID = ?`
+                db.query(queryString01,[text,due_date,req.body.payid],(err,results,fields)=>{
+                    if(err) throw err;
+                })
+            }
             if(req.body.paystatus=="Paid" && req.body.reqstatus == "Approved"){
                 eventstatus = "Approved"
             }
