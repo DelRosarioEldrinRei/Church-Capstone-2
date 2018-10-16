@@ -75,28 +75,25 @@ block main
 					.modal-header(style='background:#367587; color:white')
 						h4.modal-title(style='background:#367587; color:white') View Application Form
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
-							span(aria-hidden='true' style='background:#367587; color:white') ×
+							span.p-3(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#viewBodyAppend
-					.modal-footer
-						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 	#updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
 				.modal-header(style='background:#367587; color:white')
 					h4.modal-title(style='background:#367587; color:white') Update Application
 				.modal-body#updateBodyAppend
-				.modal-footer
-					button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-					button.btn.btn-outline.btn-secondary.pull-left#confirmButton(type='button', data-dismiss='modal') Update
+				.modal-footer.mx-auto
+					button.btn.btn-outline.btn-common.pull-left#confirmButton(type='button') Update
 	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
 				.modal-header(style='background:red')
 					h5.modal-title(style='color:white') Message for the Guest
 					button.close(type='button', data-dismiss='modal', aria-label='Close')
-						span(aria-hidden='true' style='color:white') ×
+						span.p-3(aria-hidden='true' style='color:white') ×
 				.modal-body#messageAppend
-				.modal-footer
+				.modal-footer.mx-auto
 					//- button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
 					button.btn.btn-danger#sendMessage(type="button") Send
 
@@ -131,42 +128,87 @@ block addjs
 					console.log(timeRequested)
 					var age = moment().diff(data.date_birthday,'years');
 					$('#viewBodyAppend').append(`
-					<table class="tableModal">
-						<tr>
-							<td class="tdModal h5"><strong> Desired Date: </strong> ${dateRequested}</td>
-							<td class="tdModal h5"><strong> Desired Time:  </strong> ${timeRequested}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Name of the Relative: </strong> ${data[0].var_lname}, ${data[0].var_fname}</td>
-							<td class="tdModal h5"><strong> Gender:  </strong> ${data[0].char_gender}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Relationship:  </strong> ${data[0].var_relation}</td>
-							<td class="tdModal h5"><strong> Contact No.:  </strong> ${data[0].var_contactnum}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Birth Date:  </strong> ${moment(data[0].date_birthday).format('YYYY-MM-DD')}</td>
-							<td class="tdModal h5"><strong> Birth Place:  </strong> ${data[0].var_birthplace}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Mother's Name:  </strong> ${data[0].var_mothername}</td>
-							<td class="tdModal h5"><strong> Mother's Birthplace:  </strong> ${data[0].var_motherbplace}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Father's Name:  </strong> ${data[0].var_fathername}</td>
-							<td class="tdModal h5"><strong> Father's Birthplace:  </strong> ${data[0].var_fatherbplace}</td>
-						</tr>
-						<tr>
-							<td class="tdModal h5"><strong> Address:  </strong> ${data[0].var_address}</td>
-							<td class="tdModal h5"><strong> Parent Marriage Address:  </strong> ${data[0].var_parentmarriageadd}</td>
-						</tr>
-						<div id="refund" class="form-group">
+					<div class="row">
+						<div class="col-md-6">
+							<h6 class="label-control">Desired Date:</h6>
+							<input type="text" class="form-control" value="${dateRequested}" disabled> 
 						</div>
+						<div class="col-md-6">
+							<h6 class="label-control"> Desired Time:</h6>
+							<input type="text" class="form-control" value="${timeRequested}" disabled> 
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h6 class="label-control">Last Name:</h6>
+							<input type="text" class="form-control" value="${data[0].var_lname}" disabled> 
+						</div>
+						<div class="col-md-4">
+							<h6 class="label-control p-0"> First Name:</h6>
+							<input type="text" class="form-control" value="${data[0].var_fname}" disabled> 
+						</div>
+						<div class="col-md-4">
+							<h6 class="label-control">Gender:</h6>
+							<input type="text" class="form-control" value="${data[0].char_gender}" disabled> 
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<h6 class="label-control">Relationship:</h6>
+							<input type="text" class="form-control" value="${data[0].var_relation}" disabled> 
+						</div>
+						<div class="col-md-6">
+							<h6 class="label-control">Contact No:</h6>
+							<input type="text" class="form-control" value="${data[0].var_contactnum}" disabled> 
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<h6 class="label-control">Birth Date:</h6>
+							<input type="text" class="form-control" value="${moment(data[0].date_birthday).format('YYYY-MM-DD')}" disabled> 
+						</div>
+						<div class="col-md-6">
+							<h6 class="label-control">Birth Place:</h6>
+							<input type="text" class="form-control" value="${data[0].var_birthplace}" disabled> 
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<h6 class="label-control">Mother's Name:</h6>
+							<input type="text" class="form-control" value="${data[0].var_mothername}" disabled> 
+						</div>
+						<div class="col-md-6">
+							<h6 class="label-control">Mother's Birthplace:</h6>
+							<input type="text" class="form-control" value="${data[0].var_motherbplace}" disabled> 
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<h6 class="label-control">Father's Name:</h6>
+							<input type="text" class="form-control" value="${data[0].var_fathername}" disabled> 
+						</div>
+						<div class="col-md-6">
+							<h6 class="label-control">Father's Birthplace:</h6>
+							<input type="text" class="form-control" value="${data[0].var_fatherbplace}" disabled> 
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<h6 class="label-control">Address:</h6>
+							<input type="text" class="form-control" value="${data[0].var_address}" disabled> 
+						</div>
+						<div class="col-md-6">
+							<h6 class="label-control">Parent Marriage Address:</h6>
+							<input type="text" class="form-control" value="${data[0].var_parentmarriageadd}" disabled> 
+						</div>
+					</div>
+					<div class="text-center" id="refund" class="form-group">
+					</div>
 					`)
 					if(data[0].char_approvalstatus == "Cancelled"){
 						if(data[0].char_paymentstatus == "Paid"){
 						$('#refund').append(`
-						<button id="refundslip" type="button" class="btn btn-primary">Refund Slip</button>
+						<button id="refundslip" type="button" class="btn btn-common">Refund Slip</button>
 						`)
 						
 						$('#refundslip').click(function(){
@@ -484,7 +526,7 @@ block addjs
 						}
 						else if(data[0].char_approvalstatus == "Pending" && data[0].char_paymentstatus == "Unpaid"){
 						$('#refund').append(`
-						<button id="voucher" type="button" class="btn btn-primary">Voucher</button>
+						<button id="voucher" type="button" class="btn btn-common">Voucher</button>
 						`)	
 						$('#voucher').click(function(){
 							console.log(data[0].int_voucherID)
@@ -895,76 +937,91 @@ block addjs
 							console.log(birthday)
 							$('#updateBodyAppend').append(
 								`
-								<div class="form-group">
-									<label class="label-control">Name of the Relative</label>
-									<label class="label-control">First Name</label>
-									<input type="text" id="firstname" value="${data[0].var_fname}" class="form-control">
-									<label class="label-control">Middle Name</label>
-									<input type="text" id="middlename" value="${data[0].var_mname}" class="form-control">
-									<label class="label-control">Last Name</label>
-									<input type="text" id="lastname" value="${data[0].var_lname}" class="form-control">
-								</div>
-								<div class="form-group">
-									<h6 class="label-control">Gender
-									<div class="text-danger d-inline"> *</div>
-									<div class="custom-control custom-radio">
-										<input class="custom-control-input" id="customRadio1" type="radio" name="gender" value="Male" />
-										<label class="custom-control-label" for="customRadio1">
-										Male</label>
+								<div class="row">
+									<div class="col-md-4">
+										<h6 class="label-control">Last Name:</h6>
+										<input type="text" class="form-control" value="${data[0].var_fname}"> 
 									</div>
-									<div class="custom-control custom-radio">
-										<input class="custom-control-input" id="customRadio2" type="radio" name="gender" value="Female" />
-										<label class="custom-control-label" for="customRadio2">
-										Female</label>
+									<div class="col-md-4">
+										<h6 class="label-control"> First Name:</h6>
+										<input type="text" class="form-control" value="${data[0].var_mname}"> 
 									</div>
-									</h6>
+									<div class="col-md-4">
+										<h6 class="label-control"> Middle Name:</h6>
+										<input type="text" class="form-control" value="${data[0].var_lname}"> 
+									</div>
 								</div>
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-md-3">
+										<div class="form-group">
+											<h6 class="label-control">Gender
+											<div class="custom-control custom-radio">
+												<input class="custom-control-input" id="customRadio1" type="radio" name="gender" value="Male" />
+												<input class="custom-control-input" id="customRadio1" type="radio" name="gender" value="Male" />
+												<label class="custom-control-label" for="customRadio1">
+												Male</label>
+											</div>
+											<div class="custom-control custom-radio">
+												<input class="custom-control-input" id="customRadio2" type="radio" name="gender" value="Female" />
+												<label class="custom-control-label" for="customRadio2">
+												Female</label>
+											</div>
+											</h6>
+										</div>
+									</div>
+									<div class="col-md-5">
+										<h6 class="label-control"> Relationship:</h6>
 										<div class="form-group">
 											<select id="relation" type="text" name="relation" required="">
 											</select>
 										</div>
 									</div>
-									<div class="col-md-6">
-										<div class="form-group mt-1">
-										<label class="label-control">Contact No.</label>
-										<input type="text" id="contactnum" value="${data[0].var_contactnum}" class="form-control">
+									<div class="col-md-4">
+										<h6 class="label-control"> Contact No:</h6>
+										<div class="form-group">
+											<input type="text" class="form-control" value="${data[0].var_contactnum}"> 
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="label-control">Birth Date</label>
-									<input type="date" id="birthdate" class="date-picker1 form-control" value='${birthday}'>
+								<div class="row">
+									<div class="col-md-6">
+										<h6 class="label-control">Birth Date:</h6>
+										<input type="text" class="form-control" value="${birthday}"> 
+									</div>
+									<div class="col-md-6">
+										<h6 class="label-control">Birth Place:</h6>
+										<input type="text" class="form-control" value="${data[0].var_birthplace}"> 
+									</div>
 								</div>
-								<div class="form-group">
-									<label class="label-control">Date Birth Place
-										<input type="text" id="birthplace" value="${data[0].var_birthplace}" class="form-control">
-									</label>
+								<div class="row">
+									<div class="col-md-6">
+										<h6 class="label-control">Mother's Name:</h6>
+										<input type="text" class="form-control" value="${data[0].var_mothername}"> 
+									</div>
+									<div class="col-md-6">
+										<h6 class="label-control">Mother's Birth Place:</h6>
+										<input type="text" class="form-control" value="${data[0].var_motherbplace}"> 
+									</div>
 								</div>
-								<div class="form-group">
-									<label class="label-control">Mother's Name
-										<input type="text" id="mothername" value="${data[0].var_mothername}" class="form-control">
-									</label>
-									<label class="label-control">Mother's Birth Place
-										<input type="text" id="motherbplace" value="${data[0].var_motherbplace}" class="form-control">
-									</label>
+								<div class="row">
+									<div class="col-md-6">
+										<h6 class="label-control">Father's Name:</h6>
+										<input type="text" class="form-control" value="${data[0].var_fathername}"> 
+									</div>
+									<div class="col-md-6">
+										<h6 class="label-control">Father's Birth Place:</h6>
+										<input type="text" class="form-control" value="${data[0].var_fatherbplace}"> 
+									</div>
 								</div>
-								<div class="form-group">
-									<label class="label-control">Father's Name
-										<input type="text" id="fathername" value="${data[0].var_fathername}" class="form-control">
-									</label>
-									<label class="label-control">Father's Birth Place
-										<input type="text" id="fatherbplace" value="${data[0].var_fatherbplace}" class="form-control">
-									</label>
-								</div>
-								<div class="form-group">
-									<label class="label-control">Address
-										<input type="text" id="address" value="${data[0].var_address}" class="form-control">
-									</label>
-									<label class="label-control">Parent's Marriage Address
-										<input type="text" id="parentmarriageaddress" value="${data[0].var_parentmarriageadd}" class="form-control">
-									</label>
+								<div class="row">
+									<div class="col-md-6">
+										<h6 class="label-control">Address:</h6>
+										<input type="text" class="form-control" value="${data[0].var_address}"> 
+									</div>
+									<div class="col-md-6">
+										<h6 class="label-control">Parent's Marriage Address:</h6>
+										<input type="text" class="form-control" value="${data[0].var_parentmarriageadd}"> 
+									</div>
 								</div>
 								`)
 								$('#updateModal').modal('show');
