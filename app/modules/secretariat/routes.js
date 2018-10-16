@@ -301,7 +301,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 var due_date1 = moment(date).add(7,'days')
                 var due_date = moment(due_date1).format('YYYY-MM-DD')
                 console.log(due_date)
-                var queryString01 = `UPDATE tbl_payment set var_vouhercode = ? , date_issued = now(), date_due =?WHERE int_paymentID = ?`
+                var queryString01 = `UPDATE tbl_payment set var_vouhercode = ? , date_refundissued = now(), date_refunddue =?WHERE int_paymentID = ?`
                 db.query(queryString01,[text,due_date,req.body.payid],(err,results,fields)=>{
                     if(err) throw err;
                 })

@@ -191,25 +191,23 @@ guestRouter.get(`/voucherLink`, (req, res)=>{
 });
 guestRouter.post(`/voucherEvents`, (req, res)=>{    
     console.log(req.body.voucherId)
-        var queryString = `select *  from tbl_voucherevents 
-        JOIN tbl_user ON tbl_user.int_userID = tbl_voucherevents.int_userID
-        JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_voucherevents.int_eventinfoID
-        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
-        WHERE tbl_voucherevents.int_voucherID = ?`
+    var queryString = `select *  from tbl_voucherevents 
+    JOIN tbl_user ON tbl_user.int_userID = tbl_voucherevents.int_userID
+    JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_voucherevents.int_eventinfoID
+    JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+    JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+    WHERE tbl_voucherevents.int_voucherID = ?`
     db.query(queryString,[req.body.voucherId],(err,results1,fields)=>{
+        var eventid = results1[0].int_eventinfoID
+        console.log(results1[0].date_issued)
+        console.log(results1[0].date_due)
         var queryString2 = `SELECT tbl_sponsors.var_sponsorname,tbl_sponsors.int_eventinfoID from tbl_sponsors 
         JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_sponsors.int_eventinfoID
-        JOIN tbl_voucherevents ON tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
-        WHERE tbl_voucherevents.int_voucherID =?`
-        db.query(queryString2,[req.body.voucherId],(err,results2,fields)=>{
-            console.log(results1)
-            console.log(results2)
-            results1.date_issued = moment(results1[0].date_issued).format('MM/DD/YYYY')
-            results1.date_due = moment(results1[0].date_due).format('MM/DD/YYYY')
-            results1.date_eventdate = moment(results1[0].date_eventdate).format('MM/DD/YYYY')
-            results = results1;
-            res.send({voucherinfo:results,sponsors:results2})
+        WHERE tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString2,[eventid],(err,results2,fields)=>{
+            console.log(results1[0])
+            console.log(results2[0])
+            res.send({voucherinfo:results1,sponsors:results2})
         })
     })
 });
@@ -282,10 +280,16 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
         WHERE tbl_eventinfo.int_eventinfoID = ?
         `
-        db.query(queryString1,[req.body.id], (err, results, fields) => {
-            if (err) console.log(err);       
-            console.log(results)
-            res.send(results[0])
+        db.query(queryString1,[req.body.id], (err, results1, fields) => {
+            if (err) console.log(err); 
+            var queryString2 = `SELECT tbl_sponsors.var_sponsorname,tbl_sponsors.int_eventinfoID from tbl_sponsors 
+            JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_sponsors.int_eventinfoID
+            WHERE tbl_eventinfo.int_eventinfoID = ?`
+            db.query(queryString2,[req.body.id],(err,results2,fields)=>{
+                console.log(results1[0])
+                console.log(results2[0])
+                res.send({voucherinfo:results1,sponsors:results2})
+            })
         }); 
     });
     guestRouter.post('/message/send', (req, res)=>{
@@ -961,24 +965,24 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                                                             var queryString4 = `INSERT INTO tbl_baptism(int_eventinfoID, var_parentmarriageadd, var_fatherbplace, var_motherbplace, var_fathername, var_mothername, var_contactnum) VALUES(?,?,?, ?,?,? ,?);`
                                                             console.log(dtime)
                                                             db.query(queryString4 , [eventinfoID.insertId, req.body.marriageaddress, req.body.fatherbirthplace, req.body.motherbirthplace, req.body.fathername, req.body.mothername, req.body.contactnumber], (err, results, fields) => {
-                                                                var datenow = new Date();
-                                                                var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-                                                                console.log(dateNow)
-                                                                console.log(eventinfoID.insertId)
-                                                                var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
-                                                                var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
-                                                                console.log(dateDue1)
-                                                                sponsors(eventinfoID.insertId);
                                                                 var text="";
                                                                 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
-                                                                for(i=0;i<8;i++)
-                                                                text += possible.charAt(Math.floor(Math.random()*possible.length));
-
-                                                                var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode) VALUES(?,?,?,?,?)`
-                                                                db.query(queryString9,[eventinfoID.insertId,dateNow,dateDue1,req.session.user.int_userID,text],(err,results,fields)=>{
+                                                                for(i=0;i<8;i++){
+                                                                    text += possible.charAt(Math.floor(Math.random()*possible.length));
+                                                                }
+                                                                var datenow = new Date();
+                                                                var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+                                                                var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
+                                                                var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
+                                                                console.log(dateNow)
+                                                                console.log(dateDue1)
+                                                                sponsors(eventinfoID.insertId);
+                                                                var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode) VALUES(?,?,now(),?,?)`
+                                                                db.query(queryString9,[eventinfoID.insertId,dateDue1,req.session.user.int_userID,text],(err,results,fields)=>{
                                                                     var queryString10 = `SELECT * FROM tbl_voucherevents WHERE int_eventinfoID = ?`
                                                                     db.query(queryString10,[eventinfoID.insertId],(err,results,fields)=>{
                                                                         if (err) throw err;
+                                                                        console.log(results[0])
                                                                         res.send(results[0]);
 
                                                                     })
