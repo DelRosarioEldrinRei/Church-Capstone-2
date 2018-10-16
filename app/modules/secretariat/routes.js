@@ -696,21 +696,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
     
     secretariatRouter.get('/transaction-blessings', (req, res)=>{
-        db.query(queryString,(err,results,fields)=>{
-            var unangresults = results
-            db.query(queryString,(err,results,fields)=>{
-                db.query(queryString,(err,results,fields)=>{
-                    db.query(queryString,(err,results,fields)=>{
-                        db.query(queryString,(err,results,fields)=>{
-                            db.query(queryString,(err,results,fields)=>{
-            
-                            })
-                        })
-                    })
-                })
-            })  
-        })
-
+        
 
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
