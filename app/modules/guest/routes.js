@@ -1382,10 +1382,16 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
             db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
                 if (err) console.log(err);
                 var paymentid= results;
-        var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID , date_eventdate, time_eventstart, char_approvalstatus, int_paymentID, char_requirements) VALUES(?,?,?,?,?,?,?)`;
-            db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID, req.body.eventDate, req.body.timeStart,"Pending", paymentid.insertId, "Incomplete"], (err, results, fields) => {
-                if (err) console.log(err);
                 var eventinfoID= results;
+                var datenow = new Date()
+                var dateDue1 = moment(datenow).add(7,'days')
+                var dateDue = moment(dateDue1).format('YYYY-MM-DD')
+                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID , date_eventdate, time_eventstart, char_approvalstatus, int_paymentID, char_requirements) VALUES(?,?,?,?,?,?,?)`;
+                db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID, req.body.eventDate, req.body.timeStart,"Pending", paymentid.insertId, "Incomplete"], (err, results, fields) => {
+                    if (err) console.log(err);
+                    var queryString01 =`insert into tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode)
+                    VALUES(?,?,?,?,?)`
+                    db.query(queryString01,[eventinfoID.insertId,dateNow,dateDue,req.session.user.int_userID],(err,results,fields)=>{
                     var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?);`
                             db.query(queryString3, [eventinfoID.insertId, req.body.lastname, req.body.firstname, req.body.middlename,'Male', req.body.address, req.body.birthday, req.body.birthplace], (err, results, fields) => {
                                 if (err) console.log(err);
@@ -1429,7 +1435,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                                             return res.redirect(`/guest`);
                                         });
                                     }      
-                                });});});});});
+                                });});})});});});
     function groombapconChecking(eventinfoID){
         if(req.body.gbaptized == 1){
             if(req.body.gconfirmed==1){
