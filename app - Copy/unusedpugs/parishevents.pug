@@ -1,0 +1,49 @@
+extends ../../../templates/masterguests
+block main
+	.profile-page
+		//- Heading Page
+		#heading-page.page-header.header-filter(data-parallax="true" style="background-image: url('/img/Nave.jpeg');")
+			.container
+				.row
+					.col-md-9.main-header__textbox
+						h1.font-italic Events
+						p.text-uppercase.card-desc
+							| Parish Events
+		#raised-section.main.main-raised
+			#guide
+				.container
+					.row
+						.col-md-12.pb-3
+							hr.mt-5.mx-5
+						.card.mt-5.shadow
+							img.card-img-top(src='/img/events/marriage-slide.jpg', alt='Card image cap' style="height: 18rem;")
+							.card-body.p-0
+								.container
+									.row
+										.col-md-3 
+											img.img.img-fluid.rounded-circle.ml-2(src="/img/christian.jpg" alt="" style="height: 13rem; margin-top: -7rem")
+										.col-md-9
+											hr.mb-1
+											h2.main--header.font-italic.text-right.m-0 Marriage Seminar
+											.text-right Sam deals with topics such as Biblical Basis of Marriage, Divorce and Remarriage, Being Christ-like in
+											.text-right.text-muted A Seminar Organized By:
+												strong  Dr. Sam Matthews, Associate Pastor
+											br
+											
+											button.btn.btn-info.float-right.mb-2(type='button') View More
+
+						.card.mt-5.shadow
+							img.card-img-top(src='/img/events/marriage-seminar.jpg', alt='Card image cap' style="height: 18rem;")
+							.card-body.p-0
+								.container
+									.row
+										.col-md-3
+											img.img.img-fluid.rounded-circle.ml-2(src="/img/marc.jpg" alt="" style="height: 13rem; margin-top: -8rem")
+										.col-md-9
+											hr.mb-1
+											h2.main--header.font-italic.text-right.m-0 Better Together Seminar
+											.text-right Marriages are vulnerable and riddled by difficulties. Struggle rises and frustration sets in.
+											.text-right.text-muted Our Speaker:
+												strong  Dr. Ted Elmore
+											button.btn.btn-info.float-right.mb-2(type='button') View More
+

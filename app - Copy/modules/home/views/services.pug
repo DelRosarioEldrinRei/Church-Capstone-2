@@ -1,0 +1,101 @@
+extends ../../../templates/home
+block main
+	#headers
+		#header-style-1
+			.container
+				.header-caption
+					.row
+						.col-md-12.header-content
+							h3.header-title.animated.fadeInDown.invisible
+								span.text-primary Helium - 
+								| Bootstrap 4 UI Kit
+							h5.header-text.animated.fadeIn.invisible
+								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+							//- a.page-scroll.btn.btn-lg.btn-common.animated.fadeInUp.invisible(href="#") Explore
+	#raised-section.main.main-raised
+		section.form-box
+			.container
+				.row
+					.col-md-12.form-wizard
+						h3 Services
+						p Choose a service to inquire
+				each event in events
+					.row
+						.col-md-4
+							.card.shadow2
+								img.card-img-top(src="img/card/img-05.jpg" alt="")
+								.card-block.text-center
+									h3.card-title #{event.var_eventname}
+									p.card-text #{event.var_eventdesc.substring(0, 70)}...
+									.learn-more
+										button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
+										// Modal
+										#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+											.modal-dialog.modal-lg(role='document')
+												.modal-content#each
+													.modal-header#headerAppend
+														button.close(type='button', data-dismiss='modal', aria-label='Close')
+															span.p-3(aria-hidden='true') ×
+													.modal-body#bodyAppend
+													.modal-body#reqAppend
+													.modal-footer
+														button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button') Apply
+					//- .col-md-4
+					//- 	.card.shadow2
+					//- 		img.card-img-top(src="img/card/img-06.jpg" alt="")
+					//- 		.card-block.text-center
+					//- 			h3.card-title Item Title
+					//- 			p.card-text Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+					//- 			a.btn.card-btn.btn-common(href="#") Inquire 
+					//- .col-md-4
+					//- 	.card.shadow2
+					//- 		img.card-img-top(src="img/card/img-07.jpg" alt="")
+					//- 		.card-block.text-center
+					//- 			h3.card-title Item Title
+					//- 			p.card-text Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+					//- 			a.btn.card-btn.btn-common(href="#") Inquire 
+block addjs
+	script.
+		$(document).ready(function(){
+			$('.inquireButton').click(function(){
+				var idNow = $(this).val();
+				console.log(idNow)
+					$.post('/index/query',{id:idNow})
+						.done(data =>{
+						
+						$('#headerAppend').append(`
+							<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
+							<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
+							`)
+							$('#bodyAppend').append(`
+							<p><strong>Service Description</strong></p>
+							<p>${data.firstQuery.var_eventdesc}</p>
+							<br>
+							<p><strong>Requirements</strong></p>
+							
+						`)
+						for(i=0;i<data.secondQuery.length;i++){
+						$('#reqAppend').append(`
+							<p>${data.secondQuery[i].var_reqname}</p>
+						`)
+						}
+						$('#inquireModal').modal('show');	
+						$('#inquireModal').on('hidden.bs.modal',function(){
+							$('#bodyAppend').empty()
+							$('#headerAppend').empty()
+							$('#reqAppend').empty()
+
+						})
+						$('#cancelButton').css('display', 'block');
+						$('#proceedButton').css('display', 'block');
+							$('#proceedButton').click(function(){
+								$.post('/login/query',{id:data.firstQuery.int_eventID}).done(data =>{
+									window.location='/login'
+								})
+							})
+						})
+								
+			})
+		})

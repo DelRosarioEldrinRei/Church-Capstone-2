@@ -1,0 +1,382 @@
+extends ../../../../templates/guests
+block main
+	style.
+		@media screen and (max-width: 576px) {
+			.col-md-4, .col-md-6, .col-md-9 {
+					padding-left: 0;
+					padding-right: 0;
+			}
+			.form-wizard-step {
+					padding-bottom: 10px !important;
+			}
+		}
+		#header-style-1 {
+			background-image: url(/imgchurch/rsz_ceiling.jpg)
+		}
+		.form-wizard-tolal-steps-3 .form-wizard-step {
+			width: 49.33%;
+		}
+		#other > div:nth-child(2) > div > div > div > div.file-preview > div > div.file-drop-zone-title {
+			font-size: 1rem;
+		}
+		.h4 {
+			font-size: 20px;
+			font-weight: 300;
+			font-family: "Montserrat", sans-serif;
+			color: #4c2508;
+			line-height: 26px;
+		}
+		.spandecor {cursor:pointer; }
+		.minus, .plus{
+			width:30px;
+			height:20px;
+			background:#f2f2f2;
+			border-radius:4px;
+			border:1px solid #ddd;
+			display: inline-block;
+			vertical-align: middle;
+			text-align: center;
+		}
+		.plusminus{
+			height:20px;
+			width: 20px;
+			text-align: center;
+			border:1px solid #ddd;
+			border-radius:4px;
+			display: inline-block;
+			vertical-align: middle;
+		}
+		.cover {
+			filter: blur(5px);
+			//- pointer-events: none;
+		}
+		.coverContent {
+			position: relative;
+			z-index: -1
+		}
+	#headers
+		#header-style-1
+			.container
+				.header-caption
+					.row
+						.col-md-12.header-content
+							h3.header-title.animated.fadeInDown.invisible
+								span.text-primary Helium - 
+								| Bootstrap 4 UI Kit
+							h5.header-text.animated.fadeIn.invisible
+								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+							//- a.page-scroll.btn.btn-lg.btn-success.animated.fadeInUp.invisible(href="#") Explore
+		#raised-section.main.main-raised
+			section.form-box
+				.container
+					.row
+						.col-md-12.form-wizard.shadow
+								//- form(action="/guest/facilities/form" enctype="multipart/form-data" method='post')
+								h3 Facility Reservation Form
+								p Fill all form fields
+								.form-wizard-steps.form-wizard-tolal-steps-3
+									.form-wizard-progress
+											.form-wizard-progress-line(data-now-value='12.25' data-number-of-steps='3' style='width: 12.25%;')
+									// Step 1
+									.form-wizard-step.active
+											.form-wizard-step-icon
+													i.fa.fa-calendar(aria-hidden='true')
+											p.d-none.d-sm-block Schedule Date
+									// Step 1
+									// Step 2
+									.form-wizard-step
+											.form-wizard-step-icon
+													i.fa.fa-info(aria-hidden='true')
+											p.d-none.d-sm-block Reservation Details
+									// Step 2
+								// Form Step 1
+								fieldset
+									h4
+										.d-none.d-sm-inline Schedule Date 
+										span Step 1 - 2
+										h5.label-control.ml-3 Choose a day to continue:
+											.text-danger.d-inline  *
+										.row
+											.col-md-10.mx-auto
+												.container
+													h5
+														#facilityCalendar
+												.learn-more.pull-right
+													button.btn.btn-next(type='button') Next
+										.learn-more.pull-right
+								// Form Step 1
+								// Form Step 2
+								fieldset
+									.div
+										.d-none.d-sm-inline.h4 Reservation Details
+										span.pull-right.h4 Step 2 - 2
+										h5.label-control.invisible.m-0 Choose a day to continue:
+										//- h6.label-control.mt-2 Date & Time Details:
+									.form-group
+										.row
+											.col-md-6
+												.container
+													.container.mb-2
+														h5.label-control.d-inline Date Chosen: 
+														span.text-danger 2018/10/10
+														br
+														h5.label-control.d-inline Time Chosen: 
+														span.text-danger 11:00 - 15:00
+													input.form-control#userID(type='hidden' name='userID' value=`${user.int_userID}`)
+													input.form-control#facilityID(type='hidden' name='facilityID' value=`${facilitydetails.int_facilityID}`)
+													.form-group
+														h6.label-control Event:
+															.text-danger.d-inline  *
+														input.form-control#eventname(type='text' name= 'event' placeholder="Ex. Seminar")
+													.form-group
+														h6.label-control Event Description:
+															.text-danger.d-inline  *
+														textarea.form-control#eventdesc(type='text' row="2" placeholder="Event Description")
+													//- .form-group
+													//- 	.row
+													//- 		.col-md-6
+													//- 			h6.label-control Start
+													//- 			input.dateandtimepicker.form-control#d(type='text' name='desireddate1' placeholder="MM/DD/YYYY 00:00 AM/PM")
+													//- 		.col-md-6
+													//- 			h6.label-control End
+													//- 			input.dateandtimepicker.form-control(type='text' name='desireddate2' placeholder="MM/DD/YYYY 00:00 AM/PM")
+													.form-group
+														h6.label-control Number of Attendees:
+															.text-danger.d-inline  *
+														input.form-control#attendees(type='number' name= 'event' placeholder="Max. 100")
+											
+
+											.col-md-6
+												.form-group
+													h6.label-control Your Valid ID:
+														.text-danger.d-inline  *
+													input#file-0b.file(type='file',accept='image/*',name="image")
+												.form-group
+													input(type='checkbox')
+													h6.d-inline
+														| &nbsp; I agree to the terms and condition.
+														.text-danger.d-inline  *
+											//- .col-md-6.my-1
+											//- 	.card
+											//- 			.card-block.bg-white.shadow
+											//- 				input.rentcheckbox(type="checkbox", name="")
+											//- 				.div.label-control.d-inline.h4  Rent Items
+											//- 					.card
+											//- 						#cover.card-block.p-0.py-2.cover
+											//- 							#content.card-block.bg-white.p-0.py-2.coverContent
+											//- 								.row
+											//- 									.col-md-6
+											//- 										p.label-control.text-center.h4 Item
+											//- 									.col-md-6
+											//- 										p.label-control.text-center.h4.mb-0 QTY
+											//- 								.row.my-3
+											//- 									each item in items
+											//- 										.col-md-6
+											//- 											p#itemname.label-control.h6.ml-5.pl-4.mb-0=item.var_itemname
+											//- 										.col-md-6
+											//- 											.div.text-center
+											//- 												span.spandecor.minus -
+											//- 												input.plusminus.mx-1#itemqty(type='text', value='1')
+											//- 												span.spandecor.plus +
+																			
+										.learn-more.pull-right
+											button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+											button.btn.btn-submit#submitButton(type='submit'  value=facilitydetails.int_facilityID) Submit
+		
+		
+					//- #calendar1
+block addjs
+	script.
+
+		
+
+		$(document).ready(function() {
+			$('#submitButton').click(function(){
+					//- var idNow = 1;
+					var idNow = $(this).val();
+					console.log(idNow)
+					$.post('/guest/facilities/form',{
+						id:idNow,
+						reservestart:"2018-10-10 15:00:00",
+						reserveend:"2018-10-10 11:00:00",
+						userID:$('#userID').val(),
+						eventdesc:$('#eventdesc').val(),
+						eventname:$('#eventname').val(),
+						attendees:$('#attendees').val()
+					}).done(data=>{
+						var reservationID= data.reservationID;
+						console.log(reservationID+"RD")
+							var formData= new FormData();
+							formData.append('image', $('#file-0b')[0].files[0]);
+							formData.append('reservationID', reservationID);
+						
+						$.ajax({
+							type: 'POST',
+							url: '/guest/facilities/upload',
+							data: formData,
+							processData:false,
+							contentType:false,
+							success: function(data){
+								swal({
+									title: "Success",
+									text: 'Your reservation has been submitted',
+									icon: 'success',
+									buttons:{
+										Okay:'okay'
+									}
+								}).then((value)=>{
+									window.location='/guest'
+								})
+							}
+
+						})
+
+					})
+						
+				})		
+
+			$('.minus').click(function () {
+				var $input = $(this).parent().find('input');
+				var count = parseInt($input.val()) - 1;
+				count = count < 1 ? 1 : count;
+				$input.val(count);
+				$input.change();
+				return false;
+			});
+			$('.plus').click(function () {
+				var $input = $(this).parent().find('input');
+				$input.val(parseInt($input.val()) + 1);
+				$input.change();
+				return false;
+			});
+		});
+
+		$(".rentcheckbox").click(function(){
+			if($(this).prop("checked") == true){
+				$("#cover").toggleClass("cover")
+				$("#content").toggleClass("coverContent")
+			}
+			else if($(this).prop("checked") == false){
+				$("#cover").toggleClass("cover")
+				$("#content").toggleClass("coverContent")
+				$(".plusminus").val("1");
+			}
+		});
+
+
+
+
+
+
+	
+			var eventDate ='';
+			var timeStart ='';
+			var timeEnd2 ='';
+			var dateNow = new Date()
+			var dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(7,'days').format('YYYY-MM-DD')
+			console.log(eventDate)
+			
+		
+		$.get('/guest/facilities/query').done(data=>{
+			for(i=0;i<data.length;i++){
+				var time_start = moment(data[i].datetime_reservestart).format('MM/DD/YYYY hh:mm a');
+				var time_end = moment(data[i].datetime_reserveend).format('MM/DD/YYYY hh:mm a');
+				console.log(time_end)
+				console.log(time_start)
+				console.log(data[i].time_eventstart)
+					$('#facilityCalendar').fullCalendar('renderEvent', {
+					title: 'OCCUPIED',
+					start: `${time_start}`,
+					end: `${time_end}`,
+					allDay: false,
+					color:'#4c2508',
+					textColor: "white",
+					});
+			}
+		})
+		$('#facilityCalendar').fullCalendar({
+			header: {
+				left: 'title',
+				center: 'agendaDay,month',
+				right: 'prev,next today'
+			},
+			editable: false,
+			firstDay: 0,
+			selectable: true,
+			defaultView: 'month',
+			allDaySlot: false,
+			selectHelper: true,
+			minTime:'8:00:00',
+			maxTime:'20:00:00',
+			validRange: {
+				start: dateNow2
+			},
+			businessHours: { dow: [1,2,3,4,5,6] },
+			selectConstraint: "businessHours",
+			select: function(date, jsEvent, view) {
+				
+			var view = $('#facilityCalendar').fullCalendar('getView');
+				console.log(view.name)
+				if(view.name == 'agendaDay'){
+					eventDate = date.format('YYYY-MM-DD')
+					timeStart = date.format('hh:mm a')
+					timeEnd1 = date.add(1,'hour').format('YYYY-MM-DD hh:mm a')
+					timeEnd2 = moment(timeEnd1).format('hh:mm a')
+					console.log(eventDate)
+					console.log(timeStart)
+					console.log(timeEnd2)
+					swal({
+						title: 'You have selected this date, are you sure?',
+						html: `Date: ${eventDate}  <br>` +
+						`Time Start: ${timeStart} <br>` +
+						`Time End: ${timeEnd2} <br>`,
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonClass: 'btn btn-success',
+						cancelButtonClass: 'btn btn-danger',
+						buttonsStyling: true,   
+					}).then((value) => {
+						if(value.value) {
+							$('#nextButton1').addClass('btn-next')
+							$("#calendarRegular").fullCalendar('removeEvents',[1])
+							$("#facilityCalendar").fullCalendar('removeEvents',[1])
+							swal(
+								'Sucess!',
+								'Event Date has been set.',
+								'success'
+							).then((value)=>{
+							console.log('DESIRED TIME')
+							$('#facilityCalendar').fullCalendar('renderEvent', {
+								title: 'DESIRED TIME',
+								start: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeStart}`,
+								end: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeEnd2}`,
+								allDay: false,
+								id:1,
+								overlap: false,
+								droppable:true
+							});
+							return value
+							console.log(eventDate)
+							})
+						} else if (
+							value.dismiss === swal.DismissReason.cancel
+						) {
+							eventDate = '';
+							timeStart = '';
+							timeEnd2 = '';
+						}
+					})
+				}
+				else if(view.name == 'month'){
+					$('#facilityCalendar').fullCalendar('changeView', 'agendaDay')
+					$('#facilityCalendar').fullCalendar('gotoDate', date);
+				}
+				else{
+					return  
+				}
+			},
+			droppable: false,
+		});
+		
