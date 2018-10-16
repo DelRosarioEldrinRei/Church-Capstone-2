@@ -127,7 +127,8 @@ block addjs
 				$.post('/guest/reservation/query',{id:idNow,eventname:eventname}).done(data=>{
 					if(data[0].var_eventname == "Baptism" || data[0].var_eventname == "Special Baptism"){
 					var dateRequested = moment(data[0].date_eventdate).format('MM/DD/YYYY')
-					var timeRequested = moment(data[0].time_eventstart).format('hh:mm A')
+					var timeRequested = moment(data[0].time_eventstart,'HH:mm:ss').format('hh:mm A')
+					console.log(timeRequested)
 					var age = moment().diff(data.date_birthday,'years');
 					$('#viewBodyAppend').append(`
 					<table class="tableModal">
