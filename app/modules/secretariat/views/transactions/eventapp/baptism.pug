@@ -109,7 +109,6 @@ block prepend main
 																							a.updateReqButton(href='#')
 																								i.ti-new-window(style="color:white;")
 								#specialbaptism.tab-pane.fade
-									br
 									.card.shadow
 										.card-header.card-header-primary(style='background:#367587; color:white')
 											h4.card-title(style='background:#367587; color:white') Special Baptism
@@ -189,7 +188,9 @@ block prepend main
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
 				.modal-header(style='background:#367587; color:white')
-					h4.modal-title(style='background:#367587; color:white') Update Application
+					h5.modal-title(style='background:#367587; color:white') Update Application
+					button.close.text-white(type='button', data-dismiss='modal', aria-label='Close')
+						span(aria-hidden='true') ×
 				.modal-body#updateBodyAppend
 				.modal-footer
 					button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
@@ -202,7 +203,7 @@ block prepend main
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#reqStatus
-					.modal-body    
+					.modal-body.pt-0
 						.form-group
 							.gallery#reqAppend
 					.modal-footer
@@ -314,17 +315,30 @@ block addjs
 
 						if(data.requirements[i].var_reqstatus == "Submitted"){
 						$(`#reqAppend`).append(`
+						<h4><input type="checkbox" class="checkbox tdModal h5" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  </h4>
 						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
+<<<<<<< HEAD
 						<input class="reject" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
 						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Accept
+=======
+<<<<<<< HEAD
+=======
+						<input class="custom-control-input" id="customRadio2" type="radio" name="Reject" value=${data.requirements[i].int_requirementID} />
+						<input class="custom-control-input" id="customRadio2" type="radio" name="Approved" value=${data.requirements[i].int_requirementID} />
+>>>>>>> 04eaa6c3df62ce79193715061614491de8f062e4
+>>>>>>> 2aacd7f5f02d30a04273dc9571348327ebf71839
 						`)
 						}
 						else if(data.requirements[i].var_reqstatus == "Approved"){
 						ctr++;
 						$(`#reqAppend`).append(`
+						<h4><input type="checkbox" disabled=true checked="" class="checkbox tdModal" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  </h4>
 						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
+<<<<<<< HEAD
 						<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
 						<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Approved
+=======
+>>>>>>> 2aacd7f5f02d30a04273dc9571348327ebf71839
 						`) 
 						}
 						else if(data.requirements[i].var_reqstatus == "Rejected"){
@@ -511,36 +525,19 @@ block addjs
 			$('.updateButton').click(function(){
 				$.post('/secretariat/transaction-baptism/query/updateStatus',{id:idNow}).done(data=>{
 				$('#updateBodyAppend').append(`
-				<col-md-4 class="p-lg-0">
-						<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
+					<table class="tableModal">
+						<tr>
 							<input id="eventid" type="hidden" value="${data.results.int_eventinfoID}"></input>
 							<input id="userid" type="hidden" value="${data.results.int_userID}"></input>
-							<h6 class="label-control" id="eventstatus">
-							</h6>
-						</div>
-						</div>
-						</div>
-						<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-							<h6 class="label-control" id="reqstatus">
-							</h6>
-							</div>
-						</div>
-						<div class="col-md-12">
-							<div class="form-group">
+							<td id="eventstatus" class="tdModal h5" ></td>
+							<td id="reqstatus" class="tdModal h5"></td>
+						</tr>
+						<tr>
 							<input id="payid" type="hidden" value="${data.results.int_paymentID}"></input>
-							<h6 class="label-control" id="paystatus">
-							</h6>
-							<div class="form-group">
-							Fee : P ${data.results.dbl_amount.toFixed(2)}
-							</div>
-							</div>
-						</div>
-						</div>
-						</div>
+							<td id="paystatus" class="tdModal h5"></td>
+							<td class="tdModal h5"><strong> Fee: </strong> ₱ ${data.results.dbl_amount.toFixed(2)}</td>
+						</tr>
+					</table>
 				`)
 				var ctr2 =0;
 				for(i=0;i<data.requirements.length;i++){

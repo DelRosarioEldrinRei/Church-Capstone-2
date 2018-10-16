@@ -1,10 +1,10 @@
 extends ../../../../templates/admin
 block prepend main
 	#mainContent
-		.row.gap-20.masonry.pos-r
+		.row.masonry.pos-r
 			.masonry-sizer.col-md-6
 			.masonry-item.w-100
-				.row.gap-20
+				//- .row.gap-20
 					// #Toatl Visits ====================
 					.col-md-3
 						.layers.bd.bgc-white.p-20.shadow
@@ -49,66 +49,7 @@ block prepend main
 										span#sparklinedash4
 									.peer
 										span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-blue-50.c-blue-500=application.applicationcount
-			.masonry-item.col-12
-				// #Site Visits ====================
-				.bd.bgc-white
-					.peers.ai-s.shadow(class='fxw-nw@lg+')
-						.peer.peer-greed.p-20(class='w-70p@lg+ w-100@lg-')
-							.layers
-								.layer.w-100.mB-10
-									h6.lh-1 Site Visits
-								.layer.w-100
-									.mT-30
-										canvas#area-chart(height='160')
-									//- #world-map-marker
-						.peer.bdL.p-20(class='w-30p@lg+ w-100p@lg-')
-							.layers
-								.layer.w-100
-									// Progress Bars
-									.layers
-										.layer.w-100
-											h5.mB-5 100k
-											small.fw-600.c-grey-700 Visitors From USA
-											span.pull-right.c-grey-600.fsz-sm 50%
-											.progress.mT-10
-												.progress-bar.bgc-deep-purple-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:50%;')
-													span.sr-only 50% Complete
-										.layer.w-100.mT-15
-											h5.mB-5 1M
-											small.fw-600.c-grey-700 Visitors From Europe
-											span.pull-right.c-grey-600.fsz-sm 80%
-											.progress.mT-10
-												.progress-bar.bgc-green-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:80%;')
-													span.sr-only 80% Complete
-										.layer.w-100.mT-15
-											h5.mB-5 450k
-											small.fw-600.c-grey-700 Visitors From Australia
-											span.pull-right.c-grey-600.fsz-sm 40%
-											.progress.mT-10
-												.progress-bar.bgc-light-blue-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:40%;')
-													span.sr-only 40% Complete
-										.layer.w-100.mT-15
-											h5.mB-5 1B
-											small.fw-600.c-grey-700 Visitors From India
-											span.pull-right.c-grey-600.fsz-sm 90%
-											.progress.mT-10
-												.progress-bar.bgc-blue-grey-500(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width:90%;')
-													span.sr-only 90% Complete
-													
-									//- // Pie Charts
-									//- .peers.pT-20.mT-20.bdT.jc-sb.ta-c.gap-10(class='fxw-nw@lg+')
-									//-   .peer
-									//-     .easy-pie-chart(data-size='80', data-percent='75', data-bar-color='#f44336')
-									//-       span
-									//-     h6.fsz-sm New Users
-									//-   .peer
-									//-     .easy-pie-chart(data-size='80', data-percent='50', data-bar-color='#2196f3')
-									//-       span
-									//-     h6.fsz-sm New Purchases
-									//-   .peer
-									//-     .easy-pie-chart(data-size='80', data-percent='90', data-bar-color='#ff9800')
-									//-       span
-									//-     h6.fsz-sm Bounce Rate
+			
 			// line charts
 		.row.gap-20.masonry.pos-r
 			.masonry-item.col-md-6
@@ -116,7 +57,7 @@ block prepend main
 				.bd.bgc-white
 					.layers.shadow
 						.layer.w-100.pX-20.pT-20
-							h6.lh-1 Monthly Stats
+							h5.lh-1 Baptism
 						.layer.w-100.p-20
 							canvas#canvas(height='150')
 			.masonry-item.col-md-6
@@ -124,7 +65,7 @@ block prepend main
 				.bd.bgc-white
 					.layers.shadow
 						.layer.w-100.pX-20.pT-20
-							h6.lh-1 Monthly Stats
+							h5.lh-1 Blessing
 						.layer.w-100.p-20
 							canvas#canvas2(height='150')
 			.masonry-item.col-md-6
@@ -132,7 +73,7 @@ block prepend main
 				.bd.bgc-white
 					.layers.shadow
 						.layer.w-100.pX-20.pT-20
-							h6.lh-1 Monthly Stats
+							h5.lh-1 Marriage
 						.layer.w-100.p-20
 							canvas#canvas3(height='150')
 			.masonry-item.col-md-6
@@ -140,9 +81,11 @@ block prepend main
 				.bd.bgc-white
 					.layers.shadow
 						.layer.w-100.pX-20.pT-20
-							h6.lh-1 Monthly Stats
+							h5.lh-1 Special Services
 						.layer.w-100.p-20
 							canvas#canvas4(height='150')
+			
+			//regular
 			.masonry-item.col-12
 					// #Site Visits ====================
 					.bd.bgc-white
@@ -150,106 +93,581 @@ block prepend main
 							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
 								.layers
 									.layer.w-100.mB-10
-										h6.lh-1 Site Visits
+										h5.lh-1 Regular Baptism
 									.layer.w-100
 										.row.gap-20.masonry.pos-r
 											.masonry-item.col-md-4
 												// #Monthly Stats ====================
-												.bd.bgc-white
+												.bd.bgc-white.shadow
 													.layers.shadow
 														.layer.w-100.pX-20.pT-20
-															h6.lh-1 Monthly Stats
+															h5.lh-1 Approval Status
 														.layer.w-100
 															canvas#oilChart(height='250')
 											.masonry-item.col-md-4
 												// #Monthly Stats ====================
-												.bd.bgc-white
+												.bd.bgc-white.shadow
 													.layers.shadow
 														.layer.w-100.pX-20.pT-20
-															h6.lh-1 Monthly Stats
+															h5.lh-1 Payment Status
 														.layer.w-100
 															canvas#oilChart2(height='250')
 											.masonry-item.col-md-4
 												// #Monthly Stats ====================
-												.bd.bgc-white
+												.bd.bgc-white.shadow
 													.layers.shadow
 														.layer.w-100.pX-20.pT-20
-															h6.lh-1 Monthly Stats
+															h5.lh-1 Requirement Status
 														.layer.w-100
 															canvas#oilChart3(height='250')
-						//- .layer.w-100.p-20
-						//- 	canvas#bar(height='220')
-						//- .layer.bdT.p-20.w-100
-						//- 	.peers.ai-c.jc-c.gapX-20
-						//- 		.peer
-						//- 			span.fsz-def.fw-600.mR-10.c-grey-800
-						//- 				| 10% 
-						//- 				i.fa.fa-level-up.c-green-500
-						//- 			small.c-grey-500.fw-600 APPL
-						//- 		.peer.fw-600
-						//- 			span.fsz-def.fw-600.mR-10.c-grey-800
-						//- 				| 2% 
-						//- 				i.fa.fa-level-down.c-red-500
-						//- 			small.c-grey-500.fw-600 Average
-						//- 		.peer.fw-600
-						//- 			span.fsz-def.fw-600.mR-10.c-grey-800
-						//- 				| 15% 
-						//- 				i.fa.fa-level-up.c-green-500
-						//- 			small.c-grey-500.fw-600 Sales
-						//- 		.peer.fw-600
-						//- 			span.fsz-def.fw-600.mR-10.c-grey-800
-						//- 				| 8% 
-						//- 				i.fa.fa-level-down.c-red-500
-						//- 			small.c-grey-500.fw-600 Profit		
+			// special baptism
+			.masonry-item.col-12
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Special Baptism
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart4(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Payment Status
+														.layer.w-100
+															canvas#oilChart5(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart6(height='250')
+			// marriage
+			.masonry-item.col-12
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Marriage
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart7(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Payment Status
+														.layer.w-100
+															canvas#oilChart8(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart9(height='250')
+			//facility
+			.masonry-item.col-12
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Facility Reservation
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart30(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Payment Status
+														.layer.w-100
+															canvas#oilChart31(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart32(height='250')
+			// funeral mass
+			.masonry-item.col-12
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Funeral Mass
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart10(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Payment Status
+														.layer.w-100
+															canvas#oilChart11(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart12(height='250')
+			// funeral service
+			.masonry-item.col-6
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Funeral Service
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-6
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart13(height='250')
+											.masonry-item.col-md-6
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart15(height='250')
+			// anointing
+			.masonry-item.col-6
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Anointing of the sick
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-6
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart17(height='250')
+											.masonry-item.col-md-6
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart18(height='250')
+			// houseblessing
+			.masonry-item.col-5
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 House Blessing
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-6
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart19(height='250')
+											.masonry-item.col-md-6
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart20(height='250')
+			// document request
+			.masonry-item.col-12
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Document Request
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-3
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Document Requested Type
+														.layer.w-100
+															canvas#oilChart24(height='250')
+											.masonry-item.col-md-3
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart21(height='250')
+											.masonry-item.col-md-3
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Payment Status
+														.layer.w-100
+															canvas#oilChart22(height='250')
+												// #Monthly Stats ====================
+											.masonry-item.col-md-3
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart23(height='250')
+															
+
+
+
+
+															p(hidden)#anointingCount #{anointingCount}
+															p(hidden)#baptismCount #{baptismCount}
+															p(hidden)#specialbaptismCount #{specialbaptismCount}
+															p(hidden)#funeralmassCount #{funeralmassCount}
+															p(hidden)#funeralserviceCount #{funeralserviceCount}
+															p(hidden)#marriageCount #{marriageCount}
+															p(hidden)#facilityCount #{facilityCount}
+															p(hidden)#docuCount #{docuCount}
+															p(hidden)#houseCount #{houseCount}
+
+															p(hidden)#baptismpieapproval #{baptismpieapproval}
+															p(hidden)#baptismpierequirement #{baptismpierequirement}
+															p(hidden)#baptismpiepayment #{baptismpiepayment}
+															
+															
+															//SPECIAL BAPTISM
+															p(hidden)#spcbaptismpieapproval #{spcbaptismpieapproval}
+															p(hidden)#spcbaptismrequirement #{spcbaptismrequirement}
+															p(hidden)#spcbaptismpiepayment #{spcbaptismpiepayment}
+															
+															//FUNERAL MASS
+															p(hidden)#funeralmasspieapproval #{funeralmasspieapproval}
+															p(hidden)#funeralmassrequirement #{funeralmassrequirement}
+															p(hidden)#funeralmasspiepayment #{funeralmasspiepayment}
+															
+															//MARRIAGE
+															p(hidden)#marriagepieapproval #{marriagepieapproval}
+															p(hidden)#marriagerequirement #{marriagerequirement}
+															p(hidden)#marriagepiepayment #{marriagepiepayment}
+															
+															//FACILITY RESERVATION
+															p(hidden)#facilitypieapproval #{facilitypieapproval}
+															p(hidden)#facilityrequirement #{facilityrequirement}
+															p(hidden)#facilitypiepayment #{facilitypiepayment}
+															
+															//DOCUMENT
+															p(hidden)#docupieapproval #{docupieapproval}
+															p(hidden)#docurequirement #{docurequirement}
+															p(hidden)#docupiepayment #{docupiepayment}
+															
+															//FUNERAL SERVICE
+															p(hidden)#funeralservicepieapproval #{funeralservicepieapproval}
+															p(hidden)#funeralservicerequirement #{funeralservicerequirement}
+															
+															// HOUSE
+															p(hidden)#housepieapproval #{housepieapproval}
+															p(hidden)#houserequirement #{houserequirement}
+															//ANOINTING
+															p(hidden)#anointingpieapproval #{anointingpieapproval}
+															p(hidden)#anointingrequirement #{anointingrequirement}
+
 block addjs
 	
 	script(type='text/javascript').
-			//line chart data andcolor instantiate
-			var lineChartData = {
-				labels: ["0", "5", "7.5", "10", "11", "12", "13", "15"],
+			window.onload = function() {
+			var anointing= document.getElementById('anointingCount').innerHTML;
+			var baptismm= document.getElementById('baptismCount').innerHTML;
+			var spcbaptism= document.getElementById('specialbaptismCount').innerHTML;
+			var funeralmass= document.getElementById('funeralmassCount').innerHTML;
+			var funeralservice= document.getElementById('funeralserviceCount').innerHTML;
+			var marriage= document.getElementById('marriageCount').innerHTML;
+			var facility= document.getElementById('facilityCount').innerHTML;
+			var docu= document.getElementById('docuCount').innerHTML;
+			var house= document.getElementById('houseCount').innerHTML;
+
+			var baptismapproval=document.getElementById('baptismpieapproval').innerHTML;
+			var baptismrrequirement=document.getElementById('baptismpierequirement').innerHTML;
+			var baptismpayment=document.getElementById('baptismpiepayment').innerHTML;
+			
+			
+			//SPECIAL BAPTISM
+			var spcbaptismapproval=document.getElementById('spcbaptismpieapproval').innerHTML;
+			var spcbaptismrrequirement=document.getElementById('spcbaptismrequirement').innerHTML;
+			var spcbaptismpayment=document.getElementById('spcbaptismpiepayment').innerHTML;
+			
+			//FUNERAL MASS
+			var funeralmassapproval=document.getElementById('funeralmasspieapproval').innerHTML;
+			var funeralmassrrequirement=document.getElementById('funeralmassrequirement').innerHTML;
+			var funeralmasspayment=document.getElementById('funeralmasspiepayment').innerHTML;
+			
+			//MARRIAGE
+			var marriageapproval=document.getElementById('marriagepieapproval').innerHTML;
+			var marriagerrequirement=document.getElementById('marriagerequirement').innerHTML;
+			var marriagepayment=document.getElementById('marriagepiepayment').innerHTML;
+			
+			//FACILITY RESERVATION
+			var facilityapproval=document.getElementById('facilitypieapproval').innerHTML;
+			var facilityrrequirement=document.getElementById('facilityrequirement').innerHTML;
+			var facilitypayment=document.getElementById('facilitypiepayment').innerHTML;
+			
+			//DOCUMENT
+			var docuapproval=document.getElementById('docupieapproval').innerHTML;
+			var docurrequirement=document.getElementById('docurequirement').innerHTML;
+			var docupayment=document.getElementById('docupiepayment').innerHTML;
+			
+			//FUNERAL SERVICE
+			var funeralserviceapproval=document.getElementById('funeralservicepieapproval').innerHTML;
+			var funeralservicerrequirement=document.getElementById('funeralservicerequirement').innerHTML;
+			
+			// HOUSE
+			var houseapproval=document.getElementById('housepieapproval').innerHTML;
+			var houserrequirement=document.getElementById('houserequirement').innerHTML;
+			//ANOINTING
+			var anointingapproval=document.getElementById('anointingpieapproval').innerHTML;
+			var anointingrrequirement=document.getElementById('anointingrequirement').innerHTML;
+
+
+			anointing = anointing.split(',')
+			baptismm = baptismm.split(',')
+			spcbaptism = spcbaptism.split(',')
+			funeralmass = funeralmass.split(',')
+			funeralservice = funeralservice.split(',')
+			marriage = marriage.split(',')
+			facility = facility.split(',')
+			docu = docu.split(',')
+			house = house.split(',')
+
+			baptismapproval= baptismapproval.split(',')
+			baptismrrequirement= baptismrrequirement.split(',')
+			baptismpayment= baptismpayment.split(',')
+			
+			
+			//SPECIAL BAPTISM
+			spcbaptismapproval= spcbaptismapproval.split(',')
+			spcbaptismrrequirement= spcbaptismrrequirement.split(',')
+			spcbaptismpayment= spcbaptismpayment.split(',')
+			
+			//FUNERAL MASS
+			funeralmassapproval= funeralmassapproval.split(',')
+			funeralmassrrequirement= funeralmassrrequirement.split(',')
+			funeralmasspayment= funeralmasspayment.split(',')
+			
+			//MARRIAGE
+			marriageapproval= marriageapproval.split(',')
+			marriagerrequirement= marriagerrequirement.split(',')
+			marriagepayment= marriagepayment.split(',')
+			
+			//FACILITY RESERVATION
+			facilityapproval= facilityapproval.split(',')
+			facilityrrequirement= facilityrrequirement.split(',')
+			facilitypayment= facilitypayment.split(',')
+			
+			//DOCUMENT
+			docuapproval= docuapproval.split(',')
+			docurrequirement= docurrequirement.split(',')
+			docupayment= docupayment.split(',')
+			
+			//FUNERAL SERVICE
+			funeralserviceapproval= funeralserviceapproval.split(',')
+			funeralservicerrequirement= funeralservicerrequirement.split(',')
+			
+			// HOUSE
+			houseapproval= houseapproval.split(',')
+			houserrequirement= houserrequirement.split(',')
+			//ANOINTING
+			anointingapproval= anointingapproval.split(',')
+			anointingrrequirement= anointingrrequirement.split(',')
+
+
+				//- for(var i=0; i>anointing.length; i++){
+				//- 	anointing[i]= parseInt(anointing[i])
+				//- }
+
+				
+		
+			var baptism = {
+				
+				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 				datasets: [{
-						label: "SES 3.4",
-						fill: false,
-						borderColor: "#108587",
-						pointBackgroundColor: "#108587",
-						pointHoverBackgroundColor: "#FFF",
-						pointHoverBorderColor: "#108587",
-						data: ["128.940", "131.397", "132.235", "128.235", "125.636", "127.271", "125.667", "129.554"]
-				}, {
-						label: "SES 5.6",
-						fill: false,
-						borderColor: "#52b99f",
-						pointBackgroundColor: "#52b99f",
-						pointHoverBackgroundColor: "#FFF",
-						pointHoverBorderColor: "#52b99f",
-						data: ["128.948", "130.369", "131.038", "125.867", "121.893", "119.656", "119.026", "119.737"]
-				}, {
-						label: "SES 6.7",
+						label: "Regular Baptism",
 						fill: false,
 						borderColor: "#f2af3e",
+						backgroundColor: "#f2af3e",
 						pointBackgroundColor: "#f2af3e",
 						pointHoverBackgroundColor: "#FFF",
 						pointHoverBorderColor: "#f2af3e",
-						data: ["127.473", "128.983", "129.327", "123.416", "118.829", "116.843", "117.190", "115.215"]
+						data:[baptismm[0], baptismm[1], baptismm[2], baptismm[3], baptismm[4], baptismm[5], baptismm[6], baptismm[7], baptismm[8], baptismm[9], baptismm[10], baptismm[11]]
 				}, {
-						label: "SES 8.9",
+						label: "Special Baptism",
 						fill: false,
 						borderColor: "#ec533e",
+						backgroundColor: "#ec533e",
 						pointBackgroundColor: "#ec533e",
 						pointHoverBackgroundColor: "#FFF",
 						pointHoverBorderColor: "#ec533e",
-						data: ["127.283", "128.147", "124.489", "116.783", "111.696", "110.563", "105.469", "104.332"]
+						data: [spcbaptism[0], spcbaptism[1], spcbaptism[2], spcbaptism[3], spcbaptism[4], spcbaptism[5], spcbaptism[6], spcbaptism[7], spcbaptism[8], spcbaptism[9], spcbaptism[10], spcbaptism[11]]
+				}]
+
+			}
+			var blessing = {
+				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				datasets: [{
+						label: "Funeral Mass",
+						fill: false,
+						borderColor: "#108587",
+						backgroundColor: "#108587",
+						pointBackgroundColor: "#108587",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#108587",
+						data: [funeralmass[0], funeralmass[1], funeralmass[2], funeralmass[3], funeralmass[4], funeralmass[5], funeralmass[6], funeralmass[7], funeralmass[8], funeralmass[9], funeralmass[10], funeralmass[11]]
+				},  {
+						label: "Funeral Service",
+						fill: false,
+						borderColor: "#f2af3e",
+						backgroundColor: "#f2af3e",
+						pointBackgroundColor: "#f2af3e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#f2af3e",
+						data:[funeralservice[0], funeralservice[1], funeralservice[2], funeralservice[3], funeralservice[4], funeralservice[5], funeralservice[6], funeralservice[7], funeralservice[8], funeralservice[9], funeralservice[10], funeralservice[11]]
+				}, {
+						label: "Anointing of the sick",
+						fill: false,
+						borderColor: "#ec533e",
+						backgroundColor: "#ec533e",
+						pointBackgroundColor: "#ec533e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#ec533e",
+						data:  [anointing[0], anointing[1], anointing[2], anointing[3], anointing[4], anointing[5], anointing[6], anointing[7], anointing[8], anointing[9], anointing[10], anointing[11]]
+						
+
 				}]
 
 			}
 
-			window.onload = function() {
+			var marriage = {
+				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				datasets: [{
+						label: "Marriage",
+						fill: false,
+						borderColor: "#52b99f",
+						backgroundColor: "#52b99f",
+						pointBackgroundColor: "#52b99f",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#52b99f",
+						data: [marriage[0], marriage[1], marriage[2], marriage[3], marriage[4], marriage[5], marriage[6], marriage[7], marriage[8], marriage[9], marriage[10], marriage[11]]
+				}]
+
+			}
+
+			var specialServices = {
+				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				datasets: [{
+						label: "Facility Reservation",
+						fill: false,
+						borderColor: "#52b99f",
+						backgroundColor: "#52b99f",
+						pointBackgroundColor: "#52b99f",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#52b99f",
+						data: [facility[0], facility[1], facility[2], facility[3], facility[4], facility[5], facility[6], facility[7], facility[8], facility[9], facility[10], facility[11]]
+				}, {
+						label: "Document Request",
+						fill: false,
+						borderColor: "#f2af3e",
+						backgroundColor: "#f2af3e",
+						pointBackgroundColor: "#f2af3e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#f2af3e",
+						data: [docu[0], docu[1], docu[2], docu[3], docu[4], docu[5], docu[6], docu[7], docu[8], docu[9], docu[10], docu[11]]
+				}, {
+						label: "House Blessing",
+						fill: false,
+						borderColor: "#ec533e",
+						backgroundColor: "#ec533e",
+						pointBackgroundColor: "#ec533e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#ec533e",
+						data: [house[0], house[1], house[2], house[3], house[4], house[5], house[6], house[7], house[8], house[9], house[10], house[11]]
+				}]
+
+			}
+
+			
 					// first
 					var canvas = document.getElementById("canvas");
 					var ctx = canvas.getContext("2d");	
 					var myNewChart = new Chart(ctx , {
 							type: "line",
-							data: lineChartData,
+							data: baptism,
 							responsive: true,
 					});
 					//second
@@ -257,7 +675,7 @@ block addjs
 					var ctx2 = canvas.getContext("2d");	
 					var myNewChart = new Chart(ctx2 , {
 							type: "line",
-							data: lineChartData,
+							data: blessing,
 							responsive: true,
 					});
 					//third
@@ -265,7 +683,7 @@ block addjs
 					var ctx3 = canvas.getContext("2d");	
 					var myNewChart = new Chart(ctx3 , {
 							type: "line",
-							data: lineChartData,
+							data: marriage,
 							responsive: true,
 					});
 					//fourth
@@ -273,88 +691,542 @@ block addjs
 					var ctx4 = canvas.getContext("2d");	
 					var myNewChart = new Chart(ctx4 , {
 							type: "line",
-							data: lineChartData,
+							data: specialServices,
 							responsive: true,
 					});
-			}
+			
 			// end of line charts
 
-			// pie chart
-			var oilCanvas = document.getElementById("oilChart");
-			var oilCanvas2 = document.getElementById("oilChart2");
-			var oilCanvas3 = document.getElementById("oilChart3");
-			var oilCanvas4 = document.getElementById("oilChart4");
-			var oilData = {
+			// Facility
+			var oilCanvas30 = document.getElementById("oilChart30");
+			var oilCanvas31 = document.getElementById("oilChart31");
+			var oilCanvas32 = document.getElementById("oilChart32");
+			var approval9 = {
 					labels: [
-							"Saudi Arabia",
-							"Russia",
-							"Iraq",
+							"Pending",
+							"Approved",
+							"Disapproved",
 					],
 					datasets: [
 							{
-									data: [133.3, 86.2, 52.2],
+									data: [facilityapproval[0],facilityapproval[1],facilityapproval[2]],
 									backgroundColor: [
-											"#ec533e",
 											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var payment9 = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [facilitypayment[0],facilitypayment[1]],
+									backgroundColor: [
 											"#6384FF",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement9 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [facilityrrequirement[0],facilityrrequirement[1],facilityrrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+
+			var pieChart = new Chart(oilCanvas30, {
+				type: 'pie',
+				data: approval9
+			});
+			var pieChart = new Chart(oilCanvas31, {
+				type: 'pie',
+				data: payment9
+			});
+			var pieChart = new Chart(oilCanvas32, {
+				type: 'pie',
+				data: requirement9
+			});
+			// regular baptism
+			//- console.log(baptismapproval)
+			var oilCanvas = document.getElementById("oilChart");
+			var oilCanvas2 = document.getElementById("oilChart2");
+			var oilCanvas3 = document.getElementById("oilChart3");
+			var approval = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [baptismapproval[0], baptismapproval[1], baptismapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var payment = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [baptismpayment[0], baptismpayment[1]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [baptismrrequirement[0], baptismrrequirement[1], baptismrrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
 									]
 							}]
 			};
 
 			var pieChart = new Chart(oilCanvas, {
 				type: 'pie',
-				data: oilData
+				data: approval
 			});
 			var pieChart = new Chart(oilCanvas2, {
 				type: 'pie',
-				data: oilData
+				data: payment
 			});
 			var pieChart = new Chart(oilCanvas3, {
 				type: 'pie',
-				data: oilData
+				data: requirement
 			});
+			// special baptism
+			var oilCanvas4 = document.getElementById("oilChart4");
+			var oilCanvas5 = document.getElementById("oilChart5");
+			var oilCanvas6 = document.getElementById("oilChart6");
+			var approval2 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [spcbaptismapproval[0], spcbaptismapproval[1], spcbaptismapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var payment2 = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [spcbaptismpayment[0], spcbaptismpayment[1]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement2 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [baptismrrequirement[0], baptismrrequirement[1], baptismrrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+
 			var pieChart = new Chart(oilCanvas4, {
 				type: 'pie',
-				data: oilData
+				data: approval2
 			});
-			$(document).ready(function(){
-				$.ajax({
-					url: "/admin/reports/queries",
-					method: "GET",
-					success: function(data) {
-						console.log(data);
-						var player = [];
-						var score = [];
+			var pieChart = new Chart(oilCanvas5, {
+				type: 'pie',
+				data: payment2
+			});
+			var pieChart = new Chart(oilCanvas6, {
+				type: 'pie',
+				data: requirement2
+			});
+			// marriage
+			var oilCanvas7 = document.getElementById("oilChart7");
+			var oilCanvas8 = document.getElementById("oilChart8");
+			var oilCanvas9 = document.getElementById("oilChart9");
+			var approval3 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [marriageapproval[0], marriageapproval[1], marriageapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var payment3 = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [marriagepayment[0], marriagepayment[1]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement3 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [marriagerrequirement[0], marriagerrequirement[1], marriagerrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
 
-						for(var i in data) {
-							score.push(data[i]);
-						}
-						console.log(score)
+			var pieChart = new Chart(oilCanvas7, {
+				type: 'pie',
+				data: approval3
+			});
+			var pieChart = new Chart(oilCanvas8, {
+				type: 'pie',
+				data: payment3
+			});
+			var pieChart = new Chart(oilCanvas9, {
+				type: 'pie',
+				data: requirement3
+			});
+			// funeral mass
+			var oilCanvas10 = document.getElementById("oilChart10");
+			var oilCanvas11 = document.getElementById("oilChart11");
+			var oilCanvas12 = document.getElementById("oilChart12");
+			var approval4 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [funeralmassapproval[0], funeralmassapproval[1], funeralmassapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var payment4 = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [funeralmasspayment[0], funeralmasspayment[1]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement4 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [funeralmassrrequirement[0], funeralmassrrequirement[1], funeralmassrrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
 
-						var chartdata = {
-							labels: player,
-							datasets : [
-								{
-									label: 'Player Score',
-									backgroundColor: 'rgba(200, 200, 200, 0.75)',
-									borderColor: 'rgba(200, 200, 200, 0.75)',
-									hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
-									hoverBorderColor: 'rgba(200, 200, 200, 1)',
-									data: data
-								}
-							]
-						};
+			var pieChart = new Chart(oilCanvas10, {
+				type: 'pie',
+				data: approval4
+			});
+			var pieChart = new Chart(oilCanvas11, {
+				type: 'pie',
+				data: payment4
+			});
+			var pieChart = new Chart(oilCanvas12, {
+				type: 'pie',
+				data: requirement4
+			});
+			// funeral service
+			var oilCanvas13 = document.getElementById("oilChart13");
+			var oilCanvas15 = document.getElementById("oilChart15");
+			var approval5 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [funeralserviceapproval[0], funeralserviceapproval[1], funeralserviceapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement5 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [funeralservicerrequirement[0], funeralservicerrequirement[1], funeralservicerrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
 
-						var ctx = $("#bar");
+			var pieChart = new Chart(oilCanvas13, {
+				type: 'pie',
+				data: approval5
+			});
+			var pieChart = new Chart(oilCanvas15, {
+				type: 'pie',
+				data: requirement5
+			});
+			// anointing of the sick
+			var oilCanvas17 = document.getElementById("oilChart17");
+			var oilCanvas18 = document.getElementById("oilChart18");
+			var approval6 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [anointingapproval[0], anointingapproval[1], anointingapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement6 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [anointingrrequirement[0], anointingrrequirement[1], anointingrrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
 
-						var barGraph = new Chart(ctx, {
-							type: 'bar',
-							data: chartdata
-						});
-					},
-					error: function(data) {
-						console.log(data);
-					}
-				});
-			})
-				
+			var pieChart = new Chart(oilCanvas17, {
+				type: 'pie',
+				data: approval6
+			});
+			var pieChart = new Chart(oilCanvas18, {
+				type: 'pie',
+				data: requirement6
+			});
+			// house blessing
+			var oilCanvas19 = document.getElementById("oilChart19");
+			var oilCanvas20 = document.getElementById("oilChart20");
+			var approval7 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [houseapproval[0], houseapproval[1], houseapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement7 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [houserrequirement[0], houserrequirement[1], houserrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+
+			var pieChart = new Chart(oilCanvas19, {
+				type: 'pie',
+				data: approval7
+			});
+			var pieChart = new Chart(oilCanvas20, {
+				type: 'pie',
+				data: requirement7
+			});
+			// Document request
+			var oilCanvas21 = document.getElementById("oilChart21");
+			var oilCanvas22 = document.getElementById("oilChart22");
+			var oilCanvas23 = document.getElementById("oilChart23");
+			var oilCanvas24 = document.getElementById("oilChart24");
+			var approval8 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [docuapproval[0], docuapproval[1], docuapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var payment8 = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [docupayment[0], docupayment[1], docupayment[2]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement8 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [docurrequirement[0], docurrequirement[1], docurrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+
+			var docutype = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [docupayment[0], docupayment[1], docupayment[2]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}] };
+
+			var pieChart = new Chart(oilCanvas21, {
+				type: 'pie',
+				data: approval8
+			});
+			var pieChart = new Chart(oilCanvas22, {
+				type: 'pie',
+				data: payment8
+			});
+			var pieChart = new Chart(oilCanvas23, {
+				type: 'pie',
+				data: requirement8
+			});
+			var pieChart = new Chart(oilCanvas24, {
+				type: 'pie',
+				data: docutype
+			});
+					//- })
+				//- })
+			}	

@@ -19,40 +19,511 @@ adminRouter.use(authMiddleware.adminAuth)
 // I N D E X //
 //===============================================================================================//
     adminRouter.get('/', (req, res)=>{
-        
-        var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
-        var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
-        var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
-        var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
-        
-        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
-        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
-        db.query(queryString1, (err, results, fields) => {
-            if (err) console.log(err);
-            var application = results[0];
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var reservation = results[0];
-                db.query(queryString3, (err, results, fields) => {
+            var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+            var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+            var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
+            var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+            var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+            var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+                db.query(queryString1, (err, results, fields) => {
                     if (err) console.log(err);
-                    var request = results[0];
-                    db.query(queryString4, (err, results, fields) => {
+                    var application = results[0];
+                    db.query(queryString2, (err, results, fields) => {
                         if (err) console.log(err);
-                        var baptism = results[0];
-                    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
-                        if (err) console.log(err);
-                        var newmessages = results[0];
-                        console.log(newmessages)
-                        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        var reservation = results[0];
+                        db.query(queryString3, (err, results, fields) => {
                             if (err) console.log(err);
-                            var messages = results;
-                            for(i=0;i<messages.length;i++){ 
-                                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
-                            } 
-                                
-                        console.log(messages)
-            return res.render('admin/views/index',{ application:application,reservation:reservation,request:request, messages:messages, newmessages:newmessages, baptism:baptism});
-        }); }); }); }); });});
+                            var request = results[0];
+                            db.query(queryString4, (err, results, fields) => {
+                                if (err) console.log(err);
+                                var baptism = results[0];
+                                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var newmessages = results[0];
+                                    console.log(newmessages)
+                                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var messages = results;
+                                        for(i=0;i<messages.length;i++){ 
+                                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                                        } 
+                    //line graph
+                    var anointingCount=[];
+                    var baptismCount=[];
+                    var specialbaptismCount=[];
+                    var funeralmassCount=[];
+                    var funeralserviceCount=[];
+                    var marriageCount=[];
+                    var facilityCount=[];
+                    var docuCount=[];
+                    var houseCount=[];
+                    //pie charts
+                    //line graphs queries
+                    var event =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and month(date_eventdate) =?`
+                    var facility =`select count(int_reservationID) as countt from tbl_facilityreservation where month(datetime_reservestart) =?`
+                    var docu =`select count(int_requestID) as countt from tbl_documentrequest where month(date_docurequested) =?`
+                    var house =`select count(int_houseblessID) as countt from tbl_houseblessing where month(date_blessingdate) =?`
+
+                    db.query(event,['Anointing of the sick', 1],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var january = results[0]
+                        anointingCount.push(january.countt)
+                        db.query(event,['Anointing of the sick', 2],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var february = results[0]
+                            anointingCount.push(february.countt)
+                            db.query(event,['Anointing of the sick', 3],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var march = results[0]
+                                anointingCount.push(march.countt)
+                                db.query(event,['Anointing of the sick', 4],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var april = results[0]
+                                    anointingCount.push(april.countt)
+                                    db.query(event,['Anointing of the sick', 5],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var may = results[0]
+                                        anointingCount.push(may.countt)
+                                        db.query(event,['Anointing of the sick', 6],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var june = results[0]
+                                            anointingCount.push(june.countt)
+                                            db.query(event,['Anointing of the sick', 7],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var july = results[0]
+                                                anointingCount.push(july.countt)
+                                                db.query(event,['Anointing of the sick', 8],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var august = results[0]
+                                                    anointingCount.push(august.countt)
+                                                    db.query(event,['Anointing of the sick', 9],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var september = results[0]
+                                                        anointingCount.push(september.countt)
+                                                        db.query(event,['Anointing of the sick', 10],(err, results, fields) => {
+                                                            if (err) console.log(err);
+                                                            var october = results[0]
+                                                            anointingCount.push(october.countt)
+                                                            db.query(event,['Anointing of the sick', 11],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                var november = results[0]
+                                                                anointingCount.push(november.countt)
+                                                                db.query(event,['Anointing of the sick', 12],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                    var december = results[0]
+                                                                    anointingCount.push(december.countt)
+                                                                    console.log(anointingCount)
+                     db.query(event,['Baptism', 1],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var january1 = results[0]
+                        baptismCount.push(january1.countt)
+                        db.query(event,['Baptism', 2],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var february1 = results[0]
+                            baptismCount.push(february1.countt)
+                            db.query(event,['Baptism', 3],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var march1 = results[0]
+                                baptismCount.push(march1.countt)
+                                db.query(event,['Baptism', 4],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var april1 = results[0]
+                                    baptismCount.push(april1.countt)
+                                    db.query(event,['Baptism', 5],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var may1 = results[0]
+                                        baptismCount.push(may1.countt)
+                                        db.query(event,['Baptism', 6],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var june1 = results[0]
+                                            baptismCount.push(june1.countt)
+                                            db.query(event,['Baptism', 7],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var july1 = results[0]
+                                                baptismCount.push(july1.countt)
+                                                db.query(event,['Baptism', 8],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var august1 = results[0]
+                                                    baptismCount.push(august1.countt)
+                                                    db.query(event,['Baptism', 9],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var september1 = results[0]
+                                                        baptismCount.push(september1.countt)
+                                                        db.query(event,['Baptism', 10],(err, results, fields) => {
+                                                            if (err) console.log(err);
+                                                            var october1 = results[0]
+                                                            baptismCount.push(october1.countt)
+                                                            db.query(event,['Baptism', 11],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                var november1 = results[0]
+                                                                baptismCount.push(november1.countt)
+                                                                db.query(event,['Baptism', 12],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                    var december1 = results[0]
+                                                                    baptismCount.push(december1.countt)
+                                                                    console.log(baptismCount)
+                    db.query(event,['Special Baptism', 1],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var january2 = results[0]
+                        specialbaptismCount.push(january2.countt)
+                        db.query(event,['Special Baptism', 2],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var february2 = results[0]
+                            specialbaptismCount.push(february2.countt)
+                            db.query(event,['Special Baptism', 3],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var march2 = results[0]
+                                specialbaptismCount.push(march2.countt)
+                                db.query(event,['Special Baptism', 4],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var april2 = results[0]
+                                    specialbaptismCount.push(april2.countt)
+                                    db.query(event,['Special Baptism', 5],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var may2 = results[0]
+                                        specialbaptismCount.push(may2.countt)
+                                        db.query(event,['Special Baptism', 6],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var june2 = results[0]
+                                            specialbaptismCount.push(june2.countt)
+                                            db.query(event,['Special Baptism', 7],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var july2 = results[0]
+                                                specialbaptismCount.push(july2.countt)
+                                                db.query(event,['Special Baptism', 8],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var august2 = results[0]
+                                                    specialbaptismCount.push(august2.countt)
+                                                    db.query(event,['Special Baptism', 9],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var september2 = results[0]
+                                                        specialbaptismCount.push(september2.countt)
+                                                        db.query(event,['Special Baptism', 10],(err, results, fields) => {
+                                                            if (err) console.log(err);
+                                                            var october2 = results[0]
+                                                            specialbaptismCount.push(october2.countt)
+                                                            db.query(event,['Special Baptism', 11],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                var november2 = results[0]
+                                                                specialbaptismCount.push(november2.countt)
+                                                                db.query(event,['Special Baptism', 12],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                    var december2 = results[0]
+                                                                    specialbaptismCount.push(december2.countt)
+                                                                    console.log(specialbaptismCount)
+                    db.query(event,['Funeral Mass', 1],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var january3 = results[0]
+                        funeralmassCount.push(january3.countt)
+                        db.query(event,['Funeral Mass', 2],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var february3 = results[0]
+                            funeralmassCount.push(february3.countt)
+                            db.query(event,['Funeral Mass', 3],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var march3 = results[0]
+                                funeralmassCount.push(march3.countt)
+                                db.query(event,['Funeral Mass', 4],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var april3 = results[0]
+                                    funeralmassCount.push(april3.countt)
+                                    db.query(event,['Funeral Mass', 5],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var may3 = results[0]
+                                        funeralmassCount.push(may3.countt)
+                                        db.query(event,['Funeral Mass', 6],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var june3 = results[0]
+                                            funeralmassCount.push(june3.countt)
+                                            db.query(event,['Funeral Mass', 7],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var july3 = results[0]
+                                                funeralmassCount.push(july3.countt)
+                                                db.query(event,['Funeral Mass', 8],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var august3 = results[0]
+                                                    funeralmassCount.push(august3.countt)
+                                                    db.query(event,['Funeral Mass', 9],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var september3 = results[0]
+                                                        funeralmassCount.push(september3.countt)
+                                                        db.query(event,['Funeral Mass', 10],(err, results, fields) => {
+                                                            if (err) console.log(err);
+                                                            var october3 = results[0]
+                                                            funeralmassCount.push(october3.countt)
+                                                            db.query(event,['Funeral Mass', 11],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                var november3 = results[0]
+                                                                funeralmassCount.push(november3.countt)
+                                                                db.query(event,['Funeral Mass', 12],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                    var december3 = results[0]
+                                                                    funeralmassCount.push(december3.countt)
+                                                                    console.log(funeralmassCount)
+                    db.query(event,['Funeral Service', 1],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var january4 = results[0]
+                        funeralserviceCount.push(january4.countt)
+                        db.query(event,['Funeral Service', 2],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var february4 = results[0]
+                            funeralserviceCount.push(february4.countt)
+                            db.query(event,['Funeral Service', 3],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var march4 = results[0]
+                                funeralserviceCount.push(march4.countt)
+                                db.query(event,['Funeral Service', 4],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var april4 = results[0]
+                                    funeralserviceCount.push(april4.countt)
+                                    db.query(event,['Funeral Service', 5],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var may4 = results[0]
+                                        funeralserviceCount.push(may4.countt)
+                                        db.query(event,['Funeral Service', 6],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var june4 = results[0]
+                                            funeralserviceCount.push(june4.countt)
+                                            db.query(event,['Funeral Service', 7],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var july4 = results[0]
+                                                funeralserviceCount.push(july4.countt)
+                                                db.query(event,['Funeral Service', 8],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var august4 = results[0]
+                                                    funeralserviceCount.push(august4.countt)
+                                                    db.query(event,['Funeral Service', 9],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var september4 = results[0]
+                                                        funeralserviceCount.push(september4.countt)
+                                                        db.query(event,['Funeral Service', 10],(err, results, fields) => {
+                                                            if (err) console.log(err);
+                                                            var october4 = results[0]
+                                                            funeralserviceCount.push(october4.countt)
+                                                            db.query(event,['Funeral Service', 11],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                var november4 = results[0]
+                                                                funeralserviceCount.push(november4.countt)
+                                                                db.query(event,['Funeral Service', 12],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                    var december4 = results[0]
+                                                                    funeralserviceCount.push(december4.countt)
+                                                                    console.log(funeralserviceCount)
+                    db.query(event,['Marriage', 1],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var january5 = results[0]
+                        marriageCount.push(january5.countt)
+                        db.query(event,['Marriage', 2],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var february5 = results[0]
+                            marriageCount.push(february5.countt)
+                            db.query(event,['Marriage', 3],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var march5 = results[0]
+                                marriageCount.push(march5.countt)
+                                db.query(event,['Marriage', 4],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var april5 = results[0]
+                                    marriageCount.push(april5.countt)
+                                    db.query(event,['Marriage', 5],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var may5 = results[0]
+                                        marriageCount.push(may5.countt)
+                                        db.query(event,['Marriage', 6],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var june5 = results[0]
+                                            marriageCount.push(june5.countt)
+                                            db.query(event,['Marriage', 7],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var july5 = results[0]
+                                                marriageCount.push(july5.countt)
+                                                db.query(event,['Marriage', 8],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var august5 = results[0]
+                                                    marriageCount.push(august5.countt)
+                                                    db.query(event,['Marriage', 9],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var september5 = results[0]
+                                                        marriageCount.push(september5.countt)
+                                                        db.query(event,['Marriage', 10],(err, results, fields) => {
+                                                            if (err) console.log(err);
+                                                            var october5 = results[0]
+                                                            marriageCount.push(october5.countt)
+                                                            db.query(event,['Marriage', 11],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                var november5 = results[0]
+                                                                marriageCount.push(november5.countt)
+                                                                db.query(event,['Marriage', 12],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                    var december5 = results[0]
+                                                                    marriageCount.push(december5.countt)
+                                                                    console.log(marriageCount)       
+                    db.query(facility,[1],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var january6 = results[0]
+                        facilityCount.push(january6.countt)
+                        db.query(facility,[2],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var february6 = results[0]
+                            facilityCount.push(february6.countt)
+                            db.query(facility,[3],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var march6 = results[0]
+                                facilityCount.push(march6.countt)
+                                db.query(facility,[4],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var april6 = results[0]
+                                    facilityCount.push(april6.countt)
+                                    db.query(facility,[5],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var may6 = results[0]
+                                        facilityCount.push(may6.countt)
+                                        db.query(facility,[6],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var june6 = results[0]
+                                            facilityCount.push(june6.countt)
+                                            db.query(facility,[7],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var july6 = results[0]
+                                                facilityCount.push(july6.countt)
+                                                db.query(facility,[8],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var august6 = results[0]
+                                                    facilityCount.push(august6.countt)
+                                                    db.query(facility,[9],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var september6 = results[0]
+                                                        facilityCount.push(september6.countt)
+                                                        db.query(facility,[10],(err, results, fields) => {
+                                                            if (err) console.log(err);
+                                                            var october6 = results[0]
+                                                            facilityCount.push(october6.countt)
+                                                            db.query(facility,[11],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                var november6 = results[0]
+                                                                facilityCount.push(november6.countt)
+                                                                db.query(facility,[12],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                    var december6 = results[0]
+                                                                    facilityCount.push(december6.countt)
+                                                                    console.log(facilityCount)
+                    db.query(docu,[1],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var january7 = results[0]
+                        docuCount.push(january7.countt)
+                        db.query(docu,[2],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var february7 = results[0]
+                            docuCount.push(february7.countt)
+                            db.query(docu,[3],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var march7 = results[0]
+                                docuCount.push(march7.countt)
+                                db.query(docu,[4],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var april7 = results[0]
+                                    docuCount.push(april7.countt)
+                                    db.query(docu,[7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var may7 = results[0]
+                                        docuCount.push(may7.countt)
+                                        db.query(docu,[7],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var june7 = results[0]
+                                            docuCount.push(june7.countt)
+                                            db.query(docu,[7],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var july7 = results[0]
+                                                docuCount.push(july7.countt)
+                                                db.query(docu,[8],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var august7 = results[0]
+                                                    docuCount.push(august7.countt)
+                                                    db.query(docu,[9],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var september7 = results[0]
+                                                        docuCount.push(september7.countt)
+                                                        db.query(docu,[10],(err, results, fields) => {
+                                                            if (err) console.log(err);
+                                                            var october7 = results[0]
+                                                            docuCount.push(october7.countt)
+                                                            db.query(docu,[11],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                var november7 = results[0]
+                                                                docuCount.push(november7.countt)
+                                                                db.query(docu,[12],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                    var december7 = results[0]
+                                                                    docuCount.push(december7.countt)
+                                                                    console.log(docuCount)
+                    db.query(house,[1],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var january7 = results[0]
+                        houseCount.push(january7.countt)
+                        db.query(house,[2],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var february7 = results[0]
+                            houseCount.push(february7.countt)
+                            db.query(house,[3],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var march7 = results[0]
+                                houseCount.push(march7.countt)
+                                db.query(house,[4],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var april7 = results[0]
+                                    houseCount.push(april7.countt)
+                                    db.query(house,[7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var may7 = results[0]
+                                        houseCount.push(may7.countt)
+                                        db.query(house,[7],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var june7 = results[0]
+                                            houseCount.push(june7.countt)
+                                            db.query(house,[7],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var july7 = results[0]
+                                                houseCount.push(july7.countt)
+                                                db.query(house,[8],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var august7 = results[0]
+                                                    houseCount.push(august7.countt)
+                                                    db.query(house,[9],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var september7 = results[0]
+                                                        houseCount.push(september7.countt)
+                                                        db.query(house,[10],(err, results, fields) => {
+                                                            if (err) console.log(err);
+                                                            var october7 = results[0]
+                                                            houseCount.push(october7.countt)
+                                                            db.query(house,[11],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                var november7 = results[0]
+                                                                houseCount.push(november7.countt)
+                                                                db.query(house,[12],(err, results, fields) => {
+                                                                if (err) console.log(err);
+                                                                    var december7 = results[0]
+                                                                    houseCount.push(december7.countt)
+                                                                    console.log(houseCount)
+                            // res.send(resulta)
+                            return res.render('admin/views/index',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                                anointingCount:anointingCount,baptismCount:baptismCount, specialbaptismCount:specialbaptismCount, funeralmassCount:funeralmassCount, funeralserviceCount:funeralserviceCount, marriageCount:marriageCount,
+                            facilityCount:facilityCount, docuCount:docuCount, houseCount:houseCount
+                                                    }); }); }); }); }); }); }); }); }); }); }); });     //anointing           
+                                                }); }); }); }); }); }); }); }); }); }); }); }); //reg bap
+                                            }); }); }); }); }); }); }); }); }); }); }); });  // spc bap
+                                        }); }); }); }); }); }); }); }); }); }); }); });  //funeral mass
+                                    }); }); }); }); }); }); }); }); }); }); }); }); //funeral service
+                                }); }); }); }); }); }); }); }); }); }); }); }); //marriage
+                            }); }); }); }); }); }); }); }); }); }); }); }); //facility
+                        }); }); }); }); }); }); }); }); }); }); }); }); //document
+                    }); }); }); }); }); }); }); }); }); }); }); }); //house 
+        
+        
+        
+            }); }); }); }); }); });//upto message
+        }); 
+        
     });
     adminRouter.get('/messages', (req, res)=>{
         var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
@@ -929,112 +1400,77 @@ adminRouter.use(authMiddleware.adminAuth)
 //=======================================================
 // ITEM MONITORING
 //=======================================================
-
-    adminRouter.get('/maintenance-items', (req, res)=>{
-        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
-        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
-        
-        var queryString =`SELECT * FROM tbl_items`
-        db.query(queryString, (err, results1, fields) => {
+adminRouter.get('/maintenance-items', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ?`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+    
+    var queryString =`SELECT * FROM tbl_items`
+    db.query(queryString, (err, results1, fields) => {
+    if (err) console.log(err);
+    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
         if (err) console.log(err);
-        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+        var newmessages = results[0];
+        console.log(newmessages)
+        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
             if (err) console.log(err);
-            var newmessages = results[0];
-            console.log(newmessages)
-            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
-                if (err) console.log(err);
-                var messages = results;
-                for(i=0;i<messages.length;i++){ 
-                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
-                } 
+            var messages = results;
+            for(i=0;i<messages.length;i++){ 
+                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+            } 
 
-                return res.render('admin/views/maintenance/item',{items:results1, messages:messages, newmessages:newmessages});
-            }); });
-        });
+            return res.render('admin/views/maintenance/item',{items:results1, messages:messages, newmessages:newmessages});
+        }); });
     });
-    adminRouter.post('/maintenance-items/add', (req, res) => {
-        var queryString1=`INSERT INTO tbl_items(var_itemname,var_itemdesc,int_goodquantity,int_damagedquantity) 
-        VALUES(?,?,?,?)`  
-        db.query(queryString1,[req.body.reqname,req.body.reqdesc,req.body.good,0], (err, results, fields) => {
-                if (err) console.log(err);
-                return res.redirect('/admin/maintenance-items');
-            }); 
-    });
-    adminRouter.post('/maintenance-items/delete', (req, res) => {
-        const queryString = `DELETE FROM tbl_items
-        WHERE int_itemID= ?`;
-        db.query(queryString,[req.body.id], (err, results, fields) => {        
-            if (err) throw err;
+});
+adminRouter.post('/maintenance-items/add', (req, res) => {
+    var queryString1=`INSERT INTO tbl_items(var_itemname,var_itemdesc,int_goodquantity,int_damagedquantity) 
+    VALUES(?,?,?,?)`  
+    db.query(queryString1,[req.body.reqname,req.body.reqdesc,req.body.good,0], (err, results, fields) => {
+            if (err) console.log(err);
             return res.redirect('/admin/maintenance-items');
-            
-        });
-    });
-    adminRouter.post('/maintenance-items/query', (req, res) => {
-        const queryString = `SELECT * from tbl_items
-        WHERE int_itemID = ?`;
-        db.query(queryString,[req.body.id], (err, results, fields) => {        
-            if (err) throw err;
-            res.send(results[0])
-            console.log(results[0].int_goodquantity)
-            });
-    });
-    adminRouter.post('/maintenance-items/addItems', (req, res) => {
-        const queryString1 = `SELECT int_goodquantity from tbl_items
-        WHERE int_itemID = ?`;
-        db.query(queryString1,[req.body.id], (err, results1, fields) => {
-            console.log(results1[0].int_goodquantity)
-            sum = eval(req.body.total) + eval(results1[0].int_goodquantity)
-            console.log("sum: " + sum)
-            const queryString2 = `UPDATE tbl_items SET int_goodquantity =?
-            WHERE int_itemID =?`;
-            db.query(queryString2,[sum,req.body.id], (err, results2, fields) => { 
-            if (err) throw err;
-            return res.redirect('/admin/maintenance-items');
-            });
-        });
-    });
-    adminRouter.post('/maintenance-items/edit', (req, res) => {
-        const queryString = `UPDATE tbl_items SET var_itemname =?, var_itemdesc= ?,int_goodquantity=?,int_damagedquantity=?
-        WHERE int_itemID= ?`;
-        db.query(queryString,[req.body.itemname,req.body.itemdesc,req.body.good,req.body.damaged,req.body.id], (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/admin/maintenance-items');    
-        });
-    });
-    adminRouter.post('/maintenance-items/querylist', (req, res) => {
-        var success =0
-        var notsuccess =1
-        var same;
+        }); 
+});
+adminRouter.post('/maintenance-items/delete', (req, res) => {
+    const queryString = `DELETE FROM tbl_items
+    WHERE int_itemID= ?`;
+    db.query(queryString,[req.body.id], (err, results, fields) => {        
+        if (err) throw err;
+        return res.redirect('/admin/maintenance-items');
         
-        var item =`SELECT * from tbl_items`
-        console.log(req.body)
-        db.query(item, (err, results, fields) => {
-            if (err) throw err;
-            console.log(results)
-            for(var i=0; i>results.length; i++){
-                if(results[i].var_itemname==req.body.itemname){
-                    same=1;
-                    res.send({same})
-                    continue
-                }
-                if(i==results.length-1){
-                var queryString1=`INSERT INTO tbl_items(var_itemname,var_itemdesc,int_goodquantity,int_damagedquantity)
-                VALUES(?,?,?,?)`
-                db.query(queryString1,[req.body.itemname,req.body.itemdesc,req.body.quantity,0], (err, results, fields) => {
-                        if (err) console.log(err);
-                        // return res.redirect('/admin/maintenance-items');
-                       
-                        same=0;
-                        res.send({same})
-                    });
-                }
-                
-            }
-
-            // res.send(results)
-            
-            });
-    })
+    });
+});
+adminRouter.post('/maintenance-items/query', (req, res) => {
+    const queryString = `SELECT * from tbl_items
+    WHERE int_itemID = ?`;
+    db.query(queryString,[req.body.id], (err, results, fields) => {        
+        if (err) throw err;
+        res.send(results[0])
+        console.log(results[0].int_goodquantity)
+        });
+});
+adminRouter.post('/maintenance-items/addItems', (req, res) => {
+    const queryString1 = `SELECT int_goodquantity from tbl_items
+    WHERE int_itemID = ?`;
+    db.query(queryString1,[req.body.id], (err, results1, fields) => {
+        console.log(results1[0].int_goodquantity)
+        sum = eval(req.body.total) + eval(results1[0].int_goodquantity)
+        console.log("sum: " + sum)
+        const queryString2 = `UPDATE tbl_items SET int_goodquantity =?
+        WHERE int_itemID =?`;
+        db.query(queryString2,[sum,req.body.id], (err, results2, fields) => { 
+        if (err) throw err;
+        return res.redirect('/admin/maintenance-items');
+        });
+    });
+});
+adminRouter.post('/maintenance-items/edit', (req, res) => {
+    const queryString = `UPDATE tbl_items SET var_itemname =?, var_itemdesc= ?,int_goodquantity=?,int_damagedquantity=?
+    WHERE int_itemID= ?`;
+    db.query(queryString,[req.body.itemname,req.body.itemdesc,req.body.good,req.body.damaged,req.body.id], (err, results, fields) => {        
+        if (err) throw err;
+        return res.redirect('/admin/maintenance-items');    
+    });
+});
 
 //===============================================================================================//
 // U T I L I T I E S //
@@ -1351,30 +1787,7 @@ adminRouter.post('/utilities-clients-info', (req, res)=>{
 //=======================================================
 //R E P O R T S
 //=======================================================
-adminRouter.get('/reports/queries', (req, res)=>{
-    var months;
-    for(var i=1; i>13; i++){
-    var queryString1 =`select count(int_eventinfoID) as countt from tbl_eventinfo 
-    where int_eventID = (select int_eventID from tbl_services where var_eventname = 'Anointing of the sick' 
-    and month(datetime_eventdate) =?)`
-    db.query(queryString1, [i],(err, results, fields) => {
-        if (err) console.log(err);
-        months.push(results.countt)
-        
-        if (i==12){
-        res.send(months)
-
-        }
-    });
-    
-}
-});
-
-
-
-
-
-adminRouter.get('/reports', (req, res)=>{
+adminRouter.get('/reports-anointing', (req, res)=>{
     var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
     var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
         
@@ -1404,11 +1817,2553 @@ adminRouter.get('/reports', (req, res)=>{
                                 for(i=0;i<messages.length;i++){ 
                                     messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
                                 } 
+        var anointingCount=[];
+        var anointingCountyear=[];
+        var anointingpieapproval=[];
+        var anointingrequirement=[];
+
+        var event =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and month(date_eventdate) =?`
+        var years =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and year(date_eventdate) =?`
+        var eventpieapprovalquery =`select count(int_eventinfoID) as countt from tbl_eventinfo 
+        where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+        and char_approvalstatus=?`
+        var eventpierequirementquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+        join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID = tbl_requirementsinevents.int_eventinfoID
+        join tbl_requirements on tbl_requirementsinevents.int_requirementID =tbl_requirements.int_requirementID
+        where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+        and tbl_requirements.var_reqstatus=?`
+        var eventpiepaymentquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+        join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID
+        where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+        and tbl_payment.char_paymentstatus=?`
+
+
+        db.query(eventpieapprovalquery,['Anointing of the sick', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending1 = results[0]
+            anointingpieapproval.push(pending1.countt)
+            db.query(eventpieapprovalquery,['Anointing of the sick', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved1 = results[0]
+                anointingpieapproval.push(approved1.countt)
+                db.query(eventpieapprovalquery,['Anointing of the sick', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved1 = results[0]
+                    anointingpieapproval.push(disapproved1.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Anointing of the sick', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted1 = results[0]
+                        anointingrequirement.push(submitted1.countt)
+                        db.query(eventpierequirementquery,['Anointing of the sick', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted1 = results[0]
+                            anointingrequirement.push(accepted1.countt)
+                            db.query(eventpierequirementquery,['Anointing of the sick', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected1 = results[0]
+                                anointingrequirement.push(rejected1.countt)
+        db.query(event,['Anointing of the sick', 1],(err, results, fields) => {
+            if (err) console.log(err);
+            var january = results[0]
+            anointingCount.push(january.countt)
+            db.query(event,['Anointing of the sick', 2],(err, results, fields) => {
+                if (err) console.log(err);
+                var february = results[0]
+                anointingCount.push(february.countt)
+                db.query(event,['Anointing of the sick', 3],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var march = results[0]
+                    anointingCount.push(march.countt)
+                    db.query(event,['Anointing of the sick', 4],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var april = results[0]
+                        anointingCount.push(april.countt)
+                        db.query(event,['Anointing of the sick', 5],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var may = results[0]
+                            anointingCount.push(may.countt)
+                            db.query(event,['Anointing of the sick', 6],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var june = results[0]
+                                anointingCount.push(june.countt)
+                                db.query(event,['Anointing of the sick', 7],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var july = results[0]
+                                    anointingCount.push(july.countt)
+                                    db.query(event,['Anointing of the sick', 8],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var august = results[0]
+                                        anointingCount.push(august.countt)
+                                        db.query(event,['Anointing of the sick', 9],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var september = results[0]
+                                            anointingCount.push(september.countt)
+                                            db.query(event,['Anointing of the sick', 10],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var october = results[0]
+                                                anointingCount.push(october.countt)
+                                                db.query(event,['Anointing of the sick', 11],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var november = results[0]
+                                                    anointingCount.push(november.countt)
+                                                    db.query(event,['Anointing of the sick', 12],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                        var december = results[0]
+                                                        anointingCount.push(december.countt)
+                                                        console.log(anointingCount)
+        db.query(years,['Anointing of the sick', 2010],(err, results, fields) => {
+            if (err) console.log(err);
+            var ten = results[0]
+            anointingCountyear.push(ten.countt)
+            db.query(years,['Anointing of the sick', 2011],(err, results, fields) => {
+                if (err) console.log(err);
+                var  eleven= results[0]
+                anointingCountyear.push(eleven.countt)
+                db.query(years,['Anointing of the sick', 2012],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var twelve = results[0]
+                    anointingCountyear.push(twelve.countt)
+                    db.query(years,['Anointing of the sick', 2013],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var thirteen = results[0]
+                        anointingCountyear.push(thirteen.countt)
+                        db.query(years,['Anointing of the sick', 2014],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var fourteen = results[0]
+                            anointingCountyear.push(fourteen.countt)
+                            db.query(years,['Anointing of the sick', 2015],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var fifteen = results[0]
+                                anointingCountyear.push(fifteen.countt)
+                                db.query(years,['Anointing of the sick', 2016],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var sixteen = results[0]
+                                    anointingCountyear.push(sixteen.countt)
+                                    db.query(years,['Anointing of the sick', 2017],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var seventeen = results[0]
+                                        anointingCountyear.push(seventeen.countt)
+                                        db.query(years,['Anointing of the sick', 2018],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var eighteen = results[0]
+                                            anointingCountyear.push(eighteen.countt)
+
+                                            console.log(anointingCountyear)
+                    return res.render('admin/views/reports/services/anointing',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                        anointingCount:anointingCount,
+                        anointingCountyear:anointingCountyear,
+                    anointingpieapproval:anointingpieapproval,
+                    anointingrequirement:anointingrequirement})
+                                                    
+
+    }); }); }); }); }); });  //anointing
+}); }); }); }); }); }); }); }); }); //year 
+}); }); }); }); }); }); }); }); }); }); }); });     //anointing           
+    }); }); }); }); }); });//upto message
+});
+adminRouter.get('/reports-baptism', (req, res)=>{
+
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+    var years =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and year(date_eventdate) =?`
+    var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
+    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+    var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+        db.query(queryString1, (err, results, fields) => {
+            if (err) console.log(err);
+            var application = results[0];
+            db.query(queryString2, (err, results, fields) => {
+                if (err) console.log(err);
+                var reservation = results[0];
+                db.query(queryString3, (err, results, fields) => {
+                    if (err) console.log(err);
+                    var request = results[0];
+                    db.query(queryString4, (err, results, fields) => {
+                        if (err) console.log(err);
+                        var baptism = results[0];
+                        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var newmessages = results[0];
+                            console.log(newmessages)
+                            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var messages = results;
+                                for(i=0;i<messages.length;i++){ 
+                                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                                } 
+            //line graph
             
-                                return res.render('admin/views/reports/index',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages});
-                            }); });
-        }); }); });});
+            var baptismCount=[];
+            var specialbaptismCount=[];
+            var baptismCountyear=[];
+            var specialbaptismCountyear=[];
+            
+            //pie charts
+            //BAPTISM
+            var baptismpieapproval=[];
+            var baptismpierequirement=[];
+            var baptismpiepayment=[];
+            
+            
+            //SPECIAL BAPTISM
+            var spcbaptismpieapproval=[];
+            var spcbaptismrequirement=[];
+            var spcbaptismpiepayment=[];
+            
+            
+            //line graphs queries
+            var event =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and month(date_eventdate) =?`
+           
+            //pie charts queries
+            var eventpieapprovalquery =`select count(int_eventinfoID) as countt from tbl_eventinfo 
+            where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and char_approvalstatus=?`
+            var eventpierequirementquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+            join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID = tbl_requirementsinevents.int_eventinfoID
+            join tbl_requirements on tbl_requirementsinevents.int_requirementID =tbl_requirements.int_requirementID
+            where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and tbl_requirements.var_reqstatus=?`
+            var eventpiepaymentquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+            join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID
+            where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and tbl_payment.char_paymentstatus=?`
+
+          
+
+        db.query(eventpieapprovalquery,['Baptism', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending2 = results[0]
+            baptismpieapproval.push(pending2.countt)
+            db.query(eventpieapprovalquery,['Baptism', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved2 = results[0]
+                baptismpieapproval.push(approved2.countt)
+                db.query(eventpieapprovalquery,['Baptism', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved2 = results[0]
+                    baptismpieapproval.push(disapproved2.countt)
+                        //requirement
+                        db.query(eventpierequirementquery,['Baptism', "Submitted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var submitted2 = results[0]
+                            baptismpierequirement.push(submitted2.countt)
+                            db.query(eventpierequirementquery,['Baptism', "Accepted"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var accepted2 = results[0]
+                                baptismpierequirement.push(accepted2.countt)
+                                db.query(eventpierequirementquery,['Baptism', "Rejected"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var rejected2 = results[0]
+                                    baptismpierequirement.push(rejected2.countt)
+                                    //payment
+                                    db.query(eventpiepaymentquery,['Baptism', "Paid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var paid2 = results[0]
+                                        baptismpiepayment.push(paid2.countt)
+                                        db.query(eventpiepaymentquery,['Baptism', "Unpaid"],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var unpaid2 = results[0]
+                                            baptismpiepayment.push(unpaid2.countt)
+        db.query(eventpieapprovalquery,['Special Baptism', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending3 = results[0]
+            spcbaptismpieapproval.push(pending3.countt)
+            db.query(eventpieapprovalquery,['Special Baptism', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved3 = results[0]
+                spcbaptismpieapproval.push(approved3.countt)
+                db.query(eventpieapprovalquery,['Special Baptism', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved3 = results[0]
+                    spcbaptismpieapproval.push(disapproved3.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Special Baptism', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted3 = results[0]
+                        spcbaptismrequirement.push(submitted3.countt)
+                        db.query(eventpierequirementquery,['Special Baptism', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted3 = results[0]
+                            spcbaptismrequirement.push(accepted3.countt)
+                            db.query(eventpierequirementquery,['Special Baptism', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected3 = results[0]
+                                spcbaptismrequirement.push(rejected3.countt)
+                                //payment
+                                db.query(eventpiepaymentquery,['Special Baptism', "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid3 = results[0]
+                                    spcbaptismpiepayment.push(paid3.countt)
+                                    db.query(eventpiepaymentquery,['Special Baptism', "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid3 = results[0]
+                                        spcbaptismpiepayment.push(unpaid3.countt)
+        
+             db.query(event,['Baptism', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january1 = results[0]
+                baptismCount.push(january1.countt)
+                db.query(event,['Baptism', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february1 = results[0]
+                    baptismCount.push(february1.countt)
+                    db.query(event,['Baptism', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march1 = results[0]
+                        baptismCount.push(march1.countt)
+                        db.query(event,['Baptism', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april1 = results[0]
+                            baptismCount.push(april1.countt)
+                            db.query(event,['Baptism', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may1 = results[0]
+                                baptismCount.push(may1.countt)
+                                db.query(event,['Baptism', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june1 = results[0]
+                                    baptismCount.push(june1.countt)
+                                    db.query(event,['Baptism', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july1 = results[0]
+                                        baptismCount.push(july1.countt)
+                                        db.query(event,['Baptism', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august1 = results[0]
+                                            baptismCount.push(august1.countt)
+                                            db.query(event,['Baptism', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september1 = results[0]
+                                                baptismCount.push(september1.countt)
+                                                db.query(event,['Baptism', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october1 = results[0]
+                                                    baptismCount.push(october1.countt)
+                                                    db.query(event,['Baptism', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november1 = results[0]
+                                                        baptismCount.push(november1.countt)
+                                                        db.query(event,['Baptism', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december1 = results[0]
+                                                            baptismCount.push(december1.countt)
+                                                            console.log(baptismCount)
+            db.query(event,['Special Baptism', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january2 = results[0]
+                specialbaptismCount.push(january2.countt)
+                db.query(event,['Special Baptism', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february2 = results[0]
+                    specialbaptismCount.push(february2.countt)
+                    db.query(event,['Special Baptism', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march2 = results[0]
+                        specialbaptismCount.push(march2.countt)
+                        db.query(event,['Special Baptism', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april2 = results[0]
+                            specialbaptismCount.push(april2.countt)
+                            db.query(event,['Special Baptism', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may2 = results[0]
+                                specialbaptismCount.push(may2.countt)
+                                db.query(event,['Special Baptism', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june2 = results[0]
+                                    specialbaptismCount.push(june2.countt)
+                                    db.query(event,['Special Baptism', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july2 = results[0]
+                                        specialbaptismCount.push(july2.countt)
+                                        db.query(event,['Special Baptism', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august2 = results[0]
+                                            specialbaptismCount.push(august2.countt)
+                                            db.query(event,['Special Baptism', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september2 = results[0]
+                                                specialbaptismCount.push(september2.countt)
+                                                db.query(event,['Special Baptism', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october2 = results[0]
+                                                    specialbaptismCount.push(october2.countt)
+                                                    db.query(event,['Special Baptism', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november2 = results[0]
+                                                        specialbaptismCount.push(november2.countt)
+                                                        db.query(event,['Special Baptism', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december2 = results[0]
+                                                            specialbaptismCount.push(december2.countt)
+                                                            console.log(specialbaptismCount)
+        db.query(years,['Baptism', 2010],(err, results, fields) => {
+            if (err) console.log(err);
+            var ten = results[0]
+            baptismCountyear.push(ten.countt)
+            db.query(years,['Baptism', 2011],(err, results, fields) => {
+                if (err) console.log(err);
+                var  eleven= results[0]
+                baptismCountyear.push(eleven.countt)
+                db.query(years,['Baptism', 2012],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var twelve = results[0]
+                    baptismCountyear.push(twelve.countt)
+                    db.query(years,['Baptism', 2013],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var thirteen = results[0]
+                        baptismCountyear.push(thirteen.countt)
+                        db.query(years,['Baptism', 2014],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var fourteen = results[0]
+                            baptismCountyear.push(fourteen.countt)
+                            db.query(years,['Baptism', 2015],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var fifteen = results[0]
+                                baptismCountyear.push(fifteen.countt)
+                                db.query(years,['Baptism', 2016],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var sixteen = results[0]
+                                    baptismCountyear.push(sixteen.countt)
+                                    db.query(years,['Baptism', 2017],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var seventeen = results[0]
+                                        baptismCountyear.push(seventeen.countt)
+                                        db.query(years,['Baptism', 2018],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var eighteen = results[0]
+                                            baptismCountyear.push(eighteen.countt)
+
+                                            console.log(baptismCountyear)
+        db.query(years,['Special Baptism', 2010],(err, results, fields) => {
+            if (err) console.log(err);
+            var ten = results[0]
+            specialbaptismCountyear.push(ten.countt)
+            db.query(years,['Special Baptism', 2011],(err, results, fields) => {
+                if (err) console.log(err);
+                var  eleven= results[0]
+                specialbaptismCountyear.push(eleven.countt)
+                db.query(years,['Special Baptism', 2012],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var twelve = results[0]
+                    specialbaptismCountyear.push(twelve.countt)
+                    db.query(years,['Special Baptism', 2013],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var thirteen = results[0]
+                        specialbaptismCountyear.push(thirteen.countt)
+                        db.query(years,['Special Baptism', 2014],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var fourteen = results[0]
+                            specialbaptismCountyear.push(fourteen.countt)
+                            db.query(years,['Special Baptism', 2015],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var fifteen = results[0]
+                                specialbaptismCountyear.push(fifteen.countt)
+                                db.query(years,['Special Baptism', 2016],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var sixteen = results[0]
+                                    specialbaptismCountyear.push(sixteen.countt)
+                                    db.query(years,['Special Baptism', 2017],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var seventeen = results[0]
+                                        specialbaptismCountyear.push(seventeen.countt)
+                                        db.query(years,['Special Baptism', 2018],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var eighteen = results[0]
+                                            specialbaptismCountyear.push(eighteen.countt)
+
+                                            console.log(specialbaptismCountyear)
+                    // res.send(resulta)
+                    return res.render('admin/views/reports/services/baptism',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                    baptismCount:baptismCount, baptismCountyear:baptismCountyear, 
+                    specialbaptismCount:specialbaptismCount, specialbaptismCountyear:specialbaptismCountyear,
+                    baptismpieapproval:baptismpieapproval,
+                    baptismpierequirement:baptismpierequirement,
+                    baptismpiepayment:baptismpiepayment,
+                    
+                    //SPECIAL BAPTISM
+                    spcbaptismpieapproval:spcbaptismpieapproval,
+                    spcbaptismrequirement:spcbaptismrequirement,
+                    spcbaptismpiepayment:spcbaptismpiepayment,
+                    
+                
+                });
+                
+
+
+}); }); }); }); }); }); }); }); //regbap
+}); }); }); }); }); }); }); }); //spc bap
+}); }); }); }); }); }); }); }); }); //year
+}); }); }); }); }); }); }); }); }); //year
+}); }); }); }); }); }); }); }); }); }); }); }); //reg bap
+}); }); }); }); }); }); }); }); }); }); }); });  // spc bap
+                                
+
+
+    }); }); }); }); }); });//upto message
+
+})
+adminRouter.get('/reports-funeral', (req, res)=>{
+
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
+    var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
+    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+    var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+        db.query(queryString1, (err, results, fields) => {
+            if (err) console.log(err);
+            var application = results[0];
+            db.query(queryString2, (err, results, fields) => {
+                if (err) console.log(err);
+                var reservation = results[0];
+                db.query(queryString3, (err, results, fields) => {
+                    if (err) console.log(err);
+                    var request = results[0];
+                    db.query(queryString4, (err, results, fields) => {
+                        if (err) console.log(err);
+                        var baptism = results[0];
+                        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var newmessages = results[0];
+                            console.log(newmessages)
+                            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var messages = results;
+                                for(i=0;i<messages.length;i++){ 
+                                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                                } 
+            //line graph
+           
+            var funeralmassCount=[];
+            var funeralserviceCount=[];
+            var funeralmassCountyear=[];
+            var funeralserviceCountyear=[];
+            //pie charts
+           
+            //FUNERAL MASS
+            var funeralmasspieapproval=[];
+            var funeralmassrequirement=[];
+            var funeralmasspiepayment=[];
+            
+            //FUNERAL SERVICE
+            var funeralservicepieapproval=[];
+            var funeralservicerequirement=[];
+            
+            //line graphs queries
+            var event =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and month(date_eventdate) =?`
+            var years =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and year(date_eventdate) =?`
+            //pie charts queries
+            var eventpieapprovalquery =`select count(int_eventinfoID) as countt from tbl_eventinfo 
+            where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and char_approvalstatus=?`
+            var eventpierequirementquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+            join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID = tbl_requirementsinevents.int_eventinfoID
+            join tbl_requirements on tbl_requirementsinevents.int_requirementID =tbl_requirements.int_requirementID
+            where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and tbl_requirements.var_reqstatus=?`
+            var eventpiepaymentquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+            join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID
+            where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and tbl_payment.char_paymentstatus=?`
+
+
+        db.query(eventpieapprovalquery,['Funeral Mass', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending4 = results[0]
+            funeralmasspieapproval.push(pending4.countt)
+            db.query(eventpieapprovalquery,['Funeral Mass', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved4 = results[0]
+                funeralmasspieapproval.push(approved4.countt)
+                db.query(eventpieapprovalquery,['Funeral Mass', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved4 = results[0]
+                    funeralmasspieapproval.push(disapproved4.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Funeral Mass', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted4 = results[0]
+                        funeralmassrequirement.push(submitted4.countt)
+                        db.query(eventpierequirementquery,['Funeral Mass', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted4 = results[0]
+                            funeralmassrequirement.push(accepted4.countt)
+                            db.query(eventpierequirementquery,['Funeral Mass', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected4 = results[0]
+                                funeralmassrequirement.push(rejected4.countt)
+                                //payment
+                                db.query(eventpiepaymentquery,['Funeral Mass', "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid4 = results[0]
+                                    funeralmasspiepayment.push(paid4.countt)
+                                    db.query(eventpiepaymentquery,['Funeral Mass', "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid4 = results[0]
+                                        funeralmasspiepayment.push(unpaid4.countt)
+        db.query(eventpieapprovalquery,['Funeral Service', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending5 = results[0]
+            funeralservicepieapproval.push(pending5.countt)
+            db.query(eventpieapprovalquery,['Funeral Service', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved5 = results[0]
+                funeralservicepieapproval.push(approved5.countt)
+                db.query(eventpieapprovalquery,['Funeral Service', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved5 = results[0]
+                    funeralservicepieapproval.push(disapproved5.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Funeral Service', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted5 = results[0]
+                        funeralservicerequirement.push(submitted5.countt)
+                        db.query(eventpierequirementquery,['Funeral Service', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted5 = results[0]
+                            funeralservicerequirement.push(accepted5.countt)
+                            db.query(eventpierequirementquery,['Funeral Service', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected5 = results[0]
+                                funeralservicerequirement.push(rejected5.countt)
+              
+      
+            db.query(event,['Funeral Mass', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january3 = results[0]
+                funeralmassCount.push(january3.countt)
+                db.query(event,['Funeral Mass', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february3 = results[0]
+                    funeralmassCount.push(february3.countt)
+                    db.query(event,['Funeral Mass', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march3 = results[0]
+                        funeralmassCount.push(march3.countt)
+                        db.query(event,['Funeral Mass', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april3 = results[0]
+                            funeralmassCount.push(april3.countt)
+                            db.query(event,['Funeral Mass', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may3 = results[0]
+                                funeralmassCount.push(may3.countt)
+                                db.query(event,['Funeral Mass', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june3 = results[0]
+                                    funeralmassCount.push(june3.countt)
+                                    db.query(event,['Funeral Mass', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july3 = results[0]
+                                        funeralmassCount.push(july3.countt)
+                                        db.query(event,['Funeral Mass', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august3 = results[0]
+                                            funeralmassCount.push(august3.countt)
+                                            db.query(event,['Funeral Mass', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september3 = results[0]
+                                                funeralmassCount.push(september3.countt)
+                                                db.query(event,['Funeral Mass', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october3 = results[0]
+                                                    funeralmassCount.push(october3.countt)
+                                                    db.query(event,['Funeral Mass', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november3 = results[0]
+                                                        funeralmassCount.push(november3.countt)
+                                                        db.query(event,['Funeral Mass', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december3 = results[0]
+                                                            funeralmassCount.push(december3.countt)
+                                                            console.log(funeralmassCount)
+            db.query(event,['Funeral Service', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january4 = results[0]
+                funeralserviceCount.push(january4.countt)
+                db.query(event,['Funeral Service', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february4 = results[0]
+                    funeralserviceCount.push(february4.countt)
+                    db.query(event,['Funeral Service', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march4 = results[0]
+                        funeralserviceCount.push(march4.countt)
+                        db.query(event,['Funeral Service', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april4 = results[0]
+                            funeralserviceCount.push(april4.countt)
+                            db.query(event,['Funeral Service', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may4 = results[0]
+                                funeralserviceCount.push(may4.countt)
+                                db.query(event,['Funeral Service', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june4 = results[0]
+                                    funeralserviceCount.push(june4.countt)
+                                    db.query(event,['Funeral Service', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july4 = results[0]
+                                        funeralserviceCount.push(july4.countt)
+                                        db.query(event,['Funeral Service', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august4 = results[0]
+                                            funeralserviceCount.push(august4.countt)
+                                            db.query(event,['Funeral Service', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september4 = results[0]
+                                                funeralserviceCount.push(september4.countt)
+                                                db.query(event,['Funeral Service', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october4 = results[0]
+                                                    funeralserviceCount.push(october4.countt)
+                                                    db.query(event,['Funeral Service', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november4 = results[0]
+                                                        funeralserviceCount.push(november4.countt)
+                                                        db.query(event,['Funeral Service', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december4 = results[0]
+                                                            funeralserviceCount.push(december4.countt)
+                                                            console.log(funeralserviceCount)
+        db.query(years,['Funeral Mass', 2010],(err, results, fields) => {
+            if (err) console.log(err);
+            var ten = results[0]
+            funeralmassCountyear.push(ten.countt)
+            db.query(years,['Funeral Mass', 2011],(err, results, fields) => {
+                if (err) console.log(err);
+                var  eleven= results[0]
+                funeralmassCountyear.push(eleven.countt)
+                db.query(years,['Funeral Mass', 2012],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var twelve = results[0]
+                    funeralmassCountyear.push(twelve.countt)
+                    db.query(years,['Funeral Mass', 2013],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var thirteen = results[0]
+                        funeralmassCountyear.push(thirteen.countt)
+                        db.query(years,['Funeral Mass', 2014],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var fourteen = results[0]
+                            funeralmassCountyear.push(fourteen.countt)
+                            db.query(years,['Funeral Mass', 2015],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var fifteen = results[0]
+                                funeralmassCountyear.push(fifteen.countt)
+                                db.query(years,['Funeral Mass', 2016],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var sixteen = results[0]
+                                    funeralmassCountyear.push(sixteen.countt)
+                                    db.query(years,['Funeral Mass', 2017],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var seventeen = results[0]
+                                        funeralmassCountyear.push(seventeen.countt)
+                                        db.query(years,['Funeral Mass', 2018],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var eighteen = results[0]
+                                            funeralmassCountyear.push(eighteen.countt)
+
+                                            console.log(funeralmassCountyear)
+         db.query(years,['Funeral Service', 2010],(err, results, fields) => {
+            if (err) console.log(err);
+            var ten = results[0]
+            funeralserviceCountyear.push(ten.countt)
+            db.query(years,['Funeral Service', 2011],(err, results, fields) => {
+                if (err) console.log(err);
+                var  eleven= results[0]
+                funeralserviceCountyear.push(eleven.countt)
+                db.query(years,['Funeral Service', 2012],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var twelve = results[0]
+                    funeralserviceCountyear.push(twelve.countt)
+                    db.query(years,['Funeral Service', 2013],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var thirteen = results[0]
+                        funeralserviceCountyear.push(thirteen.countt)
+                        db.query(years,['Funeral Service', 2014],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var fourteen = results[0]
+                            funeralserviceCountyear.push(fourteen.countt)
+                            db.query(years,['Funeral Service', 2015],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var fifteen = results[0]
+                                funeralserviceCountyear.push(fifteen.countt)
+                                db.query(years,['Funeral Service', 2016],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var sixteen = results[0]
+                                    funeralserviceCountyear.push(sixteen.countt)
+                                    db.query(years,['Funeral Service', 2017],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var seventeen = results[0]
+                                        funeralserviceCountyear.push(seventeen.countt)
+                                        db.query(years,['Funeral Service', 2018],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var eighteen = results[0]
+                                            funeralserviceCountyear.push(eighteen.countt)
+
+                                            console.log(funeralserviceCountyear)
+                    // res.send(resulta)
+                    return res.render('admin/views/reports/services/funeral',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                         funeralmassCount:funeralmassCount, funeralserviceCount:funeralserviceCount,
+                         funeralmassCountyear:funeralmassCountyear, funeralserviceCountyear:funeralserviceCountyear,
+                    
+                    //FUNERAL MASS
+                    funeralmasspieapproval:funeralmasspieapproval,
+                    funeralmassrequirement:funeralmassrequirement,
+                    funeralmasspiepayment:funeralmasspiepayment,
+                    
+                    //FUNERAL SERVICE
+                    funeralservicepieapproval:funeralservicepieapproval,
+                    funeralservicerequirement:funeralservicerequirement
+                    
+                
+                });
+                
+
+
+}); }); }); }); }); }); }); }); //funeral mass
+}); }); }); }); }); }); }); }); }); 
+}); }); }); }); }); }); }); }); }); 
+}); }); }); }); }); }); //funeral service
+
+
+                                }); }); }); }); }); }); }); }); }); }); }); });  //funeral mass
+                            }); }); }); }); }); }); }); }); }); }); }); }); //funeral service
+                        
+
+
+
+    }); }); }); }); }); });//upto message
+})
+adminRouter.get('/reports-marriage', (req, res)=>{
     
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+    
+    var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
+    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+    var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+        db.query(queryString1, (err, results, fields) => {
+            if (err) console.log(err);
+            var application = results[0];
+            db.query(queryString2, (err, results, fields) => {
+                if (err) console.log(err);
+                var reservation = results[0];
+                db.query(queryString3, (err, results, fields) => {
+                    if (err) console.log(err);
+                    var request = results[0];
+                    db.query(queryString4, (err, results, fields) => {
+                        if (err) console.log(err);
+                        var baptism = results[0];
+                        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var newmessages = results[0];
+                            console.log(newmessages)
+                            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var messages = results;
+                                for(i=0;i<messages.length;i++){ 
+                                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                                } 
+            //line graph
+            var marriageCount=[];
+            var marriageCountyear=[];
+            //MARRIAGE
+            var marriagepieapproval=[];
+            var marriagerequirement=[];
+            var marriagepiepayment=[];
+            
+            //line graphs queries
+            var event =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and month(date_eventdate) =?`
+            var years =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and year(date_eventdate) =?`
+            //pie charts queries
+            var eventpieapprovalquery =`select count(int_eventinfoID) as countt from tbl_eventinfo 
+            where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and char_approvalstatus=?`
+            var eventpierequirementquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+            join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID = tbl_requirementsinevents.int_eventinfoID
+            join tbl_requirements on tbl_requirementsinevents.int_requirementID =tbl_requirements.int_requirementID
+            where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and tbl_requirements.var_reqstatus=?`
+            var eventpiepaymentquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+            join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID
+            where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and tbl_payment.char_paymentstatus=?`
+
+
+        db.query(eventpieapprovalquery,['Marriage', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending6 = results[0]
+            marriagepieapproval.push(pending6.countt)
+            db.query(eventpieapprovalquery,['Marriage', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved6 = results[0]
+                marriagepieapproval.push(approved6.countt)
+                db.query(eventpieapprovalquery,['Marriage', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved6 = results[0]
+                    marriagepieapproval.push(disapproved6.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Marriage', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted6 = results[0]
+                        marriagerequirement.push(submitted6.countt)
+                        db.query(eventpierequirementquery,['Marriage', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted6 = results[0]
+                            marriagerequirement.push(accepted6.countt)
+                            db.query(eventpierequirementquery,['Marriage', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected6 = results[0]
+                                marriagerequirement.push(rejected6.countt)
+                                //payment
+                                db.query(eventpiepaymentquery,['Marriage', "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid6 = results[0]
+                                    marriagepiepayment.push(paid6.countt)
+                                    db.query(eventpiepaymentquery,['Marriage', "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid6 = results[0]
+                                        marriagepiepayment.push(unpaid6.countt)
+        
+            db.query(event,['Marriage', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january5 = results[0]
+                marriageCount.push(january5.countt)
+                db.query(event,['Marriage', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february5 = results[0]
+                    marriageCount.push(february5.countt)
+                    db.query(event,['Marriage', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march5 = results[0]
+                        marriageCount.push(march5.countt)
+                        db.query(event,['Marriage', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april5 = results[0]
+                            marriageCount.push(april5.countt)
+                            db.query(event,['Marriage', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may5 = results[0]
+                                marriageCount.push(may5.countt)
+                                db.query(event,['Marriage', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june5 = results[0]
+                                    marriageCount.push(june5.countt)
+                                    db.query(event,['Marriage', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july5 = results[0]
+                                        marriageCount.push(july5.countt)
+                                        db.query(event,['Marriage', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august5 = results[0]
+                                            marriageCount.push(august5.countt)
+                                            db.query(event,['Marriage', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september5 = results[0]
+                                                marriageCount.push(september5.countt)
+                                                db.query(event,['Marriage', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october5 = results[0]
+                                                    marriageCount.push(october5.countt)
+                                                    db.query(event,['Marriage', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november5 = results[0]
+                                                        marriageCount.push(november5.countt)
+                                                        db.query(event,['Marriage', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december5 = results[0]
+                                                            marriageCount.push(december5.countt)
+                                                            console.log(marriageCount)       
+            db.query(years,['Marriage', 2010],(err, results, fields) => {
+            if (err) console.log(err);
+            var ten = results[0]
+            marriageCountyear.push(ten.countt)
+            db.query(years,['Marriage', 2011],(err, results, fields) => {
+                if (err) console.log(err);
+                var  eleven= results[0]
+                marriageCountyear.push(eleven.countt)
+                db.query(years,['Marriage', 2012],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var twelve = results[0]
+                    marriageCountyear.push(twelve.countt)
+                    db.query(years,['Marriage', 2013],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var thirteen = results[0]
+                        marriageCountyear.push(thirteen.countt)
+                        db.query(years,['Marriage', 2014],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var fourteen = results[0]
+                            marriageCountyear.push(fourteen.countt)
+                            db.query(years,['Marriage', 2015],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var fifteen = results[0]
+                                marriageCountyear.push(fifteen.countt)
+                                db.query(years,['Marriage', 2016],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var sixteen = results[0]
+                                    marriageCountyear.push(sixteen.countt)
+                                    db.query(years,['Marriage', 2017],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var seventeen = results[0]
+                                        marriageCountyear.push(seventeen.countt)
+                                        db.query(years,['Marriage', 2018],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var eighteen = results[0]
+                                            marriageCountyear.push(eighteen.countt)
+
+                                            console.log(marriageCountyear)
+                    // res.send(resulta)
+                    return res.render('admin/views/reports/services/marriage',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                        marriageCount:marriageCount,
+                        marriageCountyear:marriageCountyear,
+                    
+                    //MARRIAGE
+                    marriagepieapproval:marriagepieapproval,
+                    marriagerequirement:marriagerequirement,
+                    marriagepiepayment:marriagepiepayment,
+                    
+                
+                });
+
+}); }); }); }); }); }); }); }); //marriage
+}); }); }); }); }); }); }); }); }); //year 
+                        }); }); }); }); }); }); }); }); }); }); }); }); //marriage
+                   
+
+
+    }); }); }); }); }); });//upto message
+})
+adminRouter.get('/reports-facilityreservation', (req, res)=>{
+
+    
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
+    var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
+    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+    var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+        db.query(queryString1, (err, results, fields) => {
+            if (err) console.log(err);
+            var application = results[0];
+            db.query(queryString2, (err, results, fields) => {
+                if (err) console.log(err);
+                var reservation = results[0];
+                db.query(queryString3, (err, results, fields) => {
+                    if (err) console.log(err);
+                    var request = results[0];
+                    db.query(queryString4, (err, results, fields) => {
+                        if (err) console.log(err);
+                        var baptism = results[0];
+                        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var newmessages = results[0];
+                            console.log(newmessages)
+                            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var messages = results;
+                                for(i=0;i<messages.length;i++){ 
+                                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                                } 
+            //line graph
+          
+            var facilityCount=[];
+            var facilityCountyear=[];
+           
+            //FACILITY RESERVATION
+            var facilitypieapproval=[];
+            var facilityrequirement=[];
+            var facilitypiepayment=[];
+            
+            //line graphs queries
+            var facility =`select count(int_reservationID) as countt from tbl_facilityreservation where month(datetime_reservestart) =?`
+            var years =`select count(int_reservationID) as countt from tbl_facilityreservation where year(datetime_reservestart) =?`
+            
+            var facilitypieapprovalquery =`select count(int_reservationID) as countt from tbl_facilityreservation 
+            where char_reservestatus=?`
+            var facilitypierequirementquery =`select count(tbl_facilityreservation.int_reservationID) as countt from tbl_facilityreservation 
+            join tbl_requirementsfacility on tbl_facilityreservation.int_reservationID = tbl_requirementsfacility.int_reservationID
+            where tbl_requirementsfacility.char_reqstatus=?`
+            var facilitypiepaymentquery =`select count(tbl_facilityreservation.int_reservationID) as countt from tbl_facilityreservation 
+            join tbl_payment on tbl_facilityreservation.int_paymentID = tbl_payment.int_paymentID
+            where tbl_payment.char_paymentstatus=?`
+            
+
+        db.query(facilitypieapprovalquery,["Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending8 = results[0]
+            facilitypieapproval.push(pending8.countt)
+            db.query(facilitypieapprovalquery,["Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved8 = results[0]
+                facilitypieapproval.push(approved8.countt)
+                db.query(facilitypieapprovalquery,["Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved8 = results[0]
+                    facilitypieapproval.push(disapproved8.countt)
+                    //requirement
+                    db.query(facilitypierequirementquery,[ "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted8 = results[0]
+                        facilityrequirement.push(submitted8.countt)
+                        db.query(facilitypierequirementquery,[ "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted8 = results[0]
+                            facilityrequirement.push(accepted8.countt)
+                            db.query(facilitypierequirementquery,[ "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected8 = results[0]
+                                facilityrequirement.push(rejected8.countt)
+                                //payment
+                                db.query(facilitypiepaymentquery,[ "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid8 = results[0]
+                                    facilitypiepayment.push(paid8.countt)
+                                    db.query(facilitypiepaymentquery,[ "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid8 = results[0]
+                                        facilitypiepayment.push(unpaid8.countt)
+            
+            db.query(facility,[1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january6 = results[0]
+                facilityCount.push(january6.countt)
+                db.query(facility,[2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february6 = results[0]
+                    facilityCount.push(february6.countt)
+                    db.query(facility,[3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march6 = results[0]
+                        facilityCount.push(march6.countt)
+                        db.query(facility,[4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april6 = results[0]
+                            facilityCount.push(april6.countt)
+                            db.query(facility,[5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may6 = results[0]
+                                facilityCount.push(may6.countt)
+                                db.query(facility,[6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june6 = results[0]
+                                    facilityCount.push(june6.countt)
+                                    db.query(facility,[7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july6 = results[0]
+                                        facilityCount.push(july6.countt)
+                                        db.query(facility,[8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august6 = results[0]
+                                            facilityCount.push(august6.countt)
+                                            db.query(facility,[9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september6 = results[0]
+                                                facilityCount.push(september6.countt)
+                                                db.query(facility,[10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october6 = results[0]
+                                                    facilityCount.push(october6.countt)
+                                                    db.query(facility,[11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november6 = results[0]
+                                                        facilityCount.push(november6.countt)
+                                                        db.query(facility,[12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december6 = results[0]
+                                                            facilityCount.push(december6.countt)
+                                                            console.log(facilityCount)
+        db.query(years,[2010],(err, results, fields) => {
+            if (err) console.log(err);
+            var ten = results[0]
+            facilityCountyear.push(ten.countt)
+            db.query(years,[2011],(err, results, fields) => {
+                if (err) console.log(err);
+                var  eleven= results[0]
+                facilityCountyear.push(eleven.countt)
+                db.query(years,[2012],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var twelve = results[0]
+                    facilityCountyear.push(twelve.countt)
+                    db.query(years,[2013],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var thirteen = results[0]
+                        facilityCountyear.push(thirteen.countt)
+                        db.query(years,[2014],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var fourteen = results[0]
+                            facilityCountyear.push(fourteen.countt)
+                            db.query(years,[2015],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var fifteen = results[0]
+                                facilityCountyear.push(fifteen.countt)
+                                db.query(years,[2016],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var sixteen = results[0]
+                                    facilityCountyear.push(sixteen.countt)
+                                    db.query(years,[2017],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var seventeen = results[0]
+                                        facilityCountyear.push(seventeen.countt)
+                                        db.query(years,[2018],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var eighteen = results[0]
+                                            facilityCountyear.push(eighteen.countt)
+
+                                            console.log(facilityCountyear)
+            
+                    // res.send(resulta)
+                    return res.render('admin/views/reports/specialservices/facility',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                        
+                    facilityCount:facilityCount, 
+                    facilityCountyear:facilityCountyear, 
+                    
+                    //FACILITY RESERVATION
+                    facilitypieapproval:facilitypieapproval,
+                    facilityrequirement:facilityrequirement,
+                    facilitypiepayment:facilitypiepayment,
+                    
+                
+                });
+                
+}); }); }); }); }); }); }); }); //facility
+}); }); }); }); }); }); }); });});
+                    }); }); }); }); }); }); }); }); }); }); }); }); //facility
+              
+
+
+    }); }); }); }); }); });//upto message
+
+})
+adminRouter.get('/reports-documentrequest', (req, res)=>{
+
+
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
+    var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
+    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+    var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+        db.query(queryString1, (err, results, fields) => {
+            if (err) console.log(err);
+            var application = results[0];
+            db.query(queryString2, (err, results, fields) => {
+                if (err) console.log(err);
+                var reservation = results[0];
+                db.query(queryString3, (err, results, fields) => {
+                    if (err) console.log(err);
+                    var request = results[0];
+                    db.query(queryString4, (err, results, fields) => {
+                        if (err) console.log(err);
+                        var baptism = results[0];
+                        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var newmessages = results[0];
+                            console.log(newmessages)
+                            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var messages = results;
+                                for(i=0;i<messages.length;i++){ 
+                                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                                } 
+            //line graph
+            
+            var docuCount=[];
+            var docuCountyear=[];
+            
+            
+            //DOCUMENT
+            var docupieapproval=[];
+            var docurequirement=[];
+            var docupiepayment=[];
+           
+            //line graphs queries
+            var docu =`select count(int_requestID) as countt from tbl_documentrequest where month(date_docurequested) =?`
+            var years =`select count(int_requestID) as countt from tbl_documentrequest where year(date_docurequested) =?`
+            
+            //pie charts queries
+            var docupieapprovalquery =`select count(int_requestID) as countt from tbl_documentrequest
+            where char_docustatus=?`
+            var docupierequirementquery =`select count(tbl_documentrequest.int_requestID) as countt from tbl_documentrequest 
+            join tbl_requirementsdocument on tbl_documentrequest.int_requestID = tbl_requirementsdocument.int_requestID
+            where tbl_requirementsdocument.char_reqstatus=?`
+            var docupiepaymentquery =`select count(tbl_documentrequest.int_requestID) as countt from tbl_documentrequest 
+            join tbl_payment on tbl_documentrequest.int_paymentID = tbl_payment.int_paymentID
+            where tbl_payment.char_paymentstatus=?`
+
+        db.query(docupieapprovalquery,["Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending7 = results[0]
+            docupieapproval.push(pending7.countt)
+            db.query(docupieapprovalquery,["Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved7 = results[0]
+                docupieapproval.push(approved7.countt)
+                db.query(docupieapprovalquery,["Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved7 = results[0]
+                    docupieapproval.push(disapproved7.countt)
+                    //requirement
+                    db.query(docupierequirementquery,[ "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted7 = results[0]
+                        docurequirement.push(submitted7.countt)
+                        db.query(docupierequirementquery,[ "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted7 = results[0]
+                            docurequirement.push(accepted7.countt)
+                            db.query(docupierequirementquery,[ "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected7 = results[0]
+                                docurequirement.push(rejected7.countt)
+                                //payment
+                                db.query(docupiepaymentquery,[ "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid7 = results[0]
+                                    docupiepayment.push(paid7.countt)
+                                    db.query(docupiepaymentquery,[ "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid7 = results[0]
+                                        docupiepayment.push(unpaid7.countt)
+      
+            db.query(docu,[1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january7 = results[0]
+                docuCount.push(january7.countt)
+                db.query(docu,[2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february7 = results[0]
+                    docuCount.push(february7.countt)
+                    db.query(docu,[3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march7 = results[0]
+                        docuCount.push(march7.countt)
+                        db.query(docu,[4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april7 = results[0]
+                            docuCount.push(april7.countt)
+                            db.query(docu,[7],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may7 = results[0]
+                                docuCount.push(may7.countt)
+                                db.query(docu,[7],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june7 = results[0]
+                                    docuCount.push(june7.countt)
+                                    db.query(docu,[7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july7 = results[0]
+                                        docuCount.push(july7.countt)
+                                        db.query(docu,[8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august7 = results[0]
+                                            docuCount.push(august7.countt)
+                                            db.query(docu,[9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september7 = results[0]
+                                                docuCount.push(september7.countt)
+                                                db.query(docu,[10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october7 = results[0]
+                                                    docuCount.push(october7.countt)
+                                                    db.query(docu,[11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november7 = results[0]
+                                                        docuCount.push(november7.countt)
+                                                        db.query(docu,[12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december7 = results[0]
+                                                            docuCount.push(december7.countt)
+                                                            console.log(docuCount)
+            
+        db.query(years,[2010],(err, results, fields) => {
+            if (err) console.log(err);
+            var ten = results[0]
+            docuCountyear.push(ten.countt)
+            db.query(years,[2011],(err, results, fields) => {
+                if (err) console.log(err);
+                var  eleven= results[0]
+                docuCountyear.push(eleven.countt)
+                db.query(years,[2012],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var twelve = results[0]
+                    docuCountyear.push(twelve.countt)
+                    db.query(years,[2013],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var thirteen = results[0]
+                        docuCountyear.push(thirteen.countt)
+                        db.query(years,[2014],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var fourteen = results[0]
+                            docuCountyear.push(fourteen.countt)
+                            db.query(years,[2015],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var fifteen = results[0]
+                                docuCountyear.push(fifteen.countt)
+                                db.query(years,[2016],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var sixteen = results[0]
+                                    docuCountyear.push(sixteen.countt)
+                                    db.query(years,[2017],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var seventeen = results[0]
+                                        docuCountyear.push(seventeen.countt)
+                                        db.query(years,[2018],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var eighteen = results[0]
+                                            docuCountyear.push(eighteen.countt)
+
+                                            console.log(docuCountyear)
+                    return res.render('admin/views/reports/specialservices/document',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                    docuCount:docuCount, 
+                    docuCountyear:docuCountyear, 
+                    docupieapproval:docupieapproval,
+                    docurequirement:docurequirement,
+                    docupiepayment:docupiepayment,
+                    
+                
+                
+                });
+                
+}); }); }); }); }); }); }); }); //docu
+}); }); }); }); }); }); }); }); }); 
+
+                }); }); }); }); }); }); }); }); }); }); }); }); //document
+          
+
+
+
+    }); }); }); }); }); });//upto message
+})
+adminRouter.get('/reports-houseblessing', (req, res)=>{
+
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
+    var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
+    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+    var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+        db.query(queryString1, (err, results, fields) => {
+            if (err) console.log(err);
+            var application = results[0];
+            db.query(queryString2, (err, results, fields) => {
+                if (err) console.log(err);
+                var reservation = results[0];
+                db.query(queryString3, (err, results, fields) => {
+                    if (err) console.log(err);
+                    var request = results[0];
+                    db.query(queryString4, (err, results, fields) => {
+                        if (err) console.log(err);
+                        var baptism = results[0];
+                        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var newmessages = results[0];
+                            console.log(newmessages)
+                            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var messages = results;
+                                for(i=0;i<messages.length;i++){ 
+                                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                                } 
+            //line graph
+           
+            var houseCount=[];
+            var houseCountyear=[];
+            
+            // HOUSE
+            var housepieapproval=[];
+            var houserequirement=[];
+            var house =`select count(int_houseblessID) as countt from tbl_houseblessing where month(date_blessingdate) =?`
+            var years =`select count(int_houseblessID) as countt from tbl_houseblessing where year(date_blessingdate) =?`
+            
+            var housepieapprovalquery =`select count(int_houseblessID) as countt from tbl_houseblessing 
+            where char_approvalstatus=?`
+            var housepierequirementquery =`select count(tbl_houseblessing.int_houseblessID) as countt from tbl_houseblessing 
+            join tbl_requirementshouse on tbl_houseblessing.int_houseblessID = tbl_requirementshouse.int_houseblessID
+            where tbl_requirementshouse.var_reqstatus=?`
+            var housepiepaymentquery =`select count(tbl_houseblessing.int_houseblessID) as countt from tbl_houseblessing 
+            join tbl_payment on tbl_houseblessing.int_paymentID = tbl_payment.int_paymentID
+            where tbl_payment.char_paymentstatus=?`
+
+        db.query(housepieapprovalquery,["Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending9 = results[0]
+            housepieapproval.push(pending9.countt)
+            db.query(housepieapprovalquery,["Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved9 = results[0]
+                housepieapproval.push(approved9.countt)
+                db.query(housepieapprovalquery,["Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved9 = results[0]
+                    housepieapproval.push(disapproved9.countt)
+                    //requirement
+                    db.query(housepierequirementquery,[ "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted9 = results[0]
+                        houserequirement.push(submitted9.countt)
+                        db.query(housepierequirementquery,[ "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted9 = results[0]
+                            houserequirement.push(accepted9.countt)
+                            db.query(housepierequirementquery,[ "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected9 = results[0]
+                                houserequirement.push(rejected9.countt)
+                               
+
+            db.query(house,[1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january7 = results[0]
+                houseCount.push(january7.countt)
+                db.query(house,[2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february7 = results[0]
+                    houseCount.push(february7.countt)
+                    db.query(house,[3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march7 = results[0]
+                        houseCount.push(march7.countt)
+                        db.query(house,[4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april7 = results[0]
+                            houseCount.push(april7.countt)
+                            db.query(house,[7],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may7 = results[0]
+                                houseCount.push(may7.countt)
+                                db.query(house,[7],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june7 = results[0]
+                                    houseCount.push(june7.countt)
+                                    db.query(house,[7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july7 = results[0]
+                                        houseCount.push(july7.countt)
+                                        db.query(house,[8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august7 = results[0]
+                                            houseCount.push(august7.countt)
+                                            db.query(house,[9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september7 = results[0]
+                                                houseCount.push(september7.countt)
+                                                db.query(house,[10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october7 = results[0]
+                                                    houseCount.push(october7.countt)
+                                                    db.query(house,[11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november7 = results[0]
+                                                        houseCount.push(november7.countt)
+                                                        db.query(house,[12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december7 = results[0]
+                                                            houseCount.push(december7.countt)
+                                                            console.log(houseCount)
+        db.query(years,[2010],(err, results, fields) => {
+            if (err) console.log(err);
+            var ten = results[0]
+            houseCountyear.push(ten.countt)
+            db.query(years,[2011],(err, results, fields) => {
+                if (err) console.log(err);
+                var  eleven= results[0]
+                houseCountyear.push(eleven.countt)
+                db.query(years,[2012],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var twelve = results[0]
+                    houseCountyear.push(twelve.countt)
+                    db.query(years,[2013],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var thirteen = results[0]
+                        houseCountyear.push(thirteen.countt)
+                        db.query(years,[2014],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var fourteen = results[0]
+                            houseCountyear.push(fourteen.countt)
+                            db.query(years,[2015],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var fifteen = results[0]
+                                houseCountyear.push(fifteen.countt)
+                                db.query(years,[2016],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var sixteen = results[0]
+                                    houseCountyear.push(sixteen.countt)
+                                    db.query(years,[2017],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var seventeen = results[0]
+                                        houseCountyear.push(seventeen.countt)
+                                        db.query(years,[2018],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var eighteen = results[0]
+                                            houseCountyear.push(eighteen.countt)
+
+                                            console.log(houseCountyear)
+                    return res.render('admin/views/reports/specialservices/house',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                      houseCount:houseCount,
+                    
+                    housepieapproval:housepieapproval,
+                    houserequirement:houserequirement
+                });
+                
+
+}); }); }); }); }); }); //houseblessing
+            }); }); }); }); }); }); }); }); }); }); }); }); 
+        }); }); }); }); }); }); }); }); });//house 
+
+
+
+    }); }); }); }); }); });//upto message
+})
+adminRouter.get('/reports', (req, res)=>{
+
+    
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
+    var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
+    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
+    var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+        db.query(queryString1, (err, results, fields) => {
+            if (err) console.log(err);
+            var application = results[0];
+            db.query(queryString2, (err, results, fields) => {
+                if (err) console.log(err);
+                var reservation = results[0];
+                db.query(queryString3, (err, results, fields) => {
+                    if (err) console.log(err);
+                    var request = results[0];
+                    db.query(queryString4, (err, results, fields) => {
+                        if (err) console.log(err);
+                        var baptism = results[0];
+                        db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var newmessages = results[0];
+                            console.log(newmessages)
+                            db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var messages = results;
+                                for(i=0;i<messages.length;i++){ 
+                                    messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                                } 
+            //line graph
+            var anointingCount=[];
+            var baptismCount=[];
+            var specialbaptismCount=[];
+            var funeralmassCount=[];
+            var funeralserviceCount=[];
+            var marriageCount=[];
+            var facilityCount=[];
+            var docuCount=[];
+            var houseCount=[];
+            //pie charts
+            //BAPTISM
+            var baptismpieapproval=[];
+            var baptismpierequirement=[];
+            var baptismpiepayment=[];
+            
+            
+            //SPECIAL BAPTISM
+            var spcbaptismpieapproval=[];
+            var spcbaptismrequirement=[];
+            var spcbaptismpiepayment=[];
+            
+            //FUNERAL MASS
+            var funeralmasspieapproval=[];
+            var funeralmassrequirement=[];
+            var funeralmasspiepayment=[];
+            
+            //MARRIAGE
+            var marriagepieapproval=[];
+            var marriagerequirement=[];
+            var marriagepiepayment=[];
+            
+            //FACILITY RESERVATION
+            var facilitypieapproval=[];
+            var facilityrequirement=[];
+            var facilitypiepayment=[];
+            
+            //DOCUMENT
+            var docupieapproval=[];
+            var docurequirement=[];
+            var docupiepayment=[];
+            
+            //FUNERAL SERVICE
+            var funeralservicepieapproval=[];
+            var funeralservicerequirement=[];
+            
+            // HOUSE
+            var housepieapproval=[];
+            var houserequirement=[];
+            //ANOINTING
+            var anointingpieapproval=[];
+            var anointingrequirement=[];
+            
+            //line graphs queries
+            var event =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and month(date_eventdate) =?`
+            var facility =`select count(int_reservationID) as countt from tbl_facilityreservation where month(datetime_reservestart) =?`
+            var docu =`select count(int_requestID) as countt from tbl_documentrequest where month(date_docurequested) =?`
+            var house =`select count(int_houseblessID) as countt from tbl_houseblessing where month(date_blessingdate) =?`
+            
+            //pie charts queries
+            var eventpieapprovalquery =`select count(int_eventinfoID) as countt from tbl_eventinfo 
+            where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and char_approvalstatus=?`
+            var eventpierequirementquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+            join tbl_requirementsinevents on tbl_eventinfo.int_eventinfoID = tbl_requirementsinevents.int_eventinfoID
+            join tbl_requirements on tbl_requirementsinevents.int_requirementID =tbl_requirements.int_requirementID
+            where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and tbl_requirements.var_reqstatus=?`
+            var eventpiepaymentquery =`select count(tbl_eventinfo.int_eventinfoID) as countt from tbl_eventinfo 
+            join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID
+            where tbl_eventinfo.int_eventID = (select int_eventID from tbl_services where var_eventname = ?) 
+            and tbl_payment.char_paymentstatus=?`
+
+            var docupieapprovalquery =`select count(int_requestID) as countt from tbl_documentrequest
+            where char_docustatus=?`
+            var docupierequirementquery =`select count(tbl_documentrequest.int_requestID) as countt from tbl_documentrequest 
+            join tbl_requirementsdocument on tbl_documentrequest.int_requestID = tbl_requirementsdocument.int_requestID
+            where tbl_requirementsdocument.char_reqstatus=?`
+            var docupiepaymentquery =`select count(tbl_documentrequest.int_requestID) as countt from tbl_documentrequest 
+            join tbl_payment on tbl_documentrequest.int_paymentID = tbl_payment.int_paymentID
+            where tbl_payment.char_paymentstatus=?`
+
+            var facilitypieapprovalquery =`select count(int_reservationID) as countt from tbl_facilityreservation 
+            where char_reservestatus=?`
+            var facilitypierequirementquery =`select count(tbl_facilityreservation.int_reservationID) as countt from tbl_facilityreservation 
+            join tbl_requirementsfacility on tbl_facilityreservation.int_reservationID = tbl_requirementsfacility.int_reservationID
+            where tbl_requirementsfacility.char_reqstatus=?`
+            var facilitypiepaymentquery =`select count(tbl_facilityreservation.int_reservationID) as countt from tbl_facilityreservation 
+            join tbl_payment on tbl_facilityreservation.int_paymentID = tbl_payment.int_paymentID
+            where tbl_payment.char_paymentstatus=?`
+            
+            var housepieapprovalquery =`select count(int_houseblessID) as countt from tbl_houseblessing 
+            where char_approvalstatus=?`
+            var housepierequirementquery =`select count(tbl_houseblessing.int_houseblessID) as countt from tbl_houseblessing 
+            join tbl_requirementshouse on tbl_houseblessing.int_houseblessID = tbl_requirementshouse.int_houseblessID
+            where tbl_requirementshouse.var_reqstatus=?`
+            var housepiepaymentquery =`select count(tbl_houseblessing.int_houseblessID) as countt from tbl_houseblessing 
+            join tbl_payment on tbl_houseblessing.int_paymentID = tbl_payment.int_paymentID
+            where tbl_payment.char_paymentstatus=?`
+
+        db.query(eventpieapprovalquery,['Anointing of the sick', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending1 = results[0]
+            anointingpieapproval.push(pending1.countt)
+            db.query(eventpieapprovalquery,['Anointing of the sick', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved1 = results[0]
+                anointingpieapproval.push(approved1.countt)
+                db.query(eventpieapprovalquery,['Anointing of the sick', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved1 = results[0]
+                    anointingpieapproval.push(disapproved1.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Anointing of the sick', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted1 = results[0]
+                        anointingrequirement.push(submitted1.countt)
+                        db.query(eventpierequirementquery,['Anointing of the sick', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted1 = results[0]
+                            anointingrequirement.push(accepted1.countt)
+                            db.query(eventpierequirementquery,['Anointing of the sick', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected1 = results[0]
+                                anointingrequirement.push(rejected1.countt)
+        db.query(eventpieapprovalquery,['Baptism', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending2 = results[0]
+            baptismpieapproval.push(pending2.countt)
+            db.query(eventpieapprovalquery,['Baptism', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved2 = results[0]
+                baptismpieapproval.push(approved2.countt)
+                db.query(eventpieapprovalquery,['Baptism', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved2 = results[0]
+                    baptismpieapproval.push(disapproved2.countt)
+                        //requirement
+                        db.query(eventpierequirementquery,['Baptism', "Submitted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var submitted2 = results[0]
+                            baptismpierequirement.push(submitted2.countt)
+                            db.query(eventpierequirementquery,['Baptism', "Accepted"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var accepted2 = results[0]
+                                baptismpierequirement.push(accepted2.countt)
+                                db.query(eventpierequirementquery,['Baptism', "Rejected"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var rejected2 = results[0]
+                                    baptismpierequirement.push(rejected2.countt)
+                                    //payment
+                                    db.query(eventpiepaymentquery,['Baptism', "Paid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var paid2 = results[0]
+                                        baptismpiepayment.push(paid2.countt)
+                                        db.query(eventpiepaymentquery,['Baptism', "Unpaid"],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var unpaid2 = results[0]
+                                            baptismpiepayment.push(unpaid2.countt)
+        db.query(eventpieapprovalquery,['Special Baptism', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending3 = results[0]
+            spcbaptismpieapproval.push(pending3.countt)
+            db.query(eventpieapprovalquery,['Special Baptism', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved3 = results[0]
+                spcbaptismpieapproval.push(approved3.countt)
+                db.query(eventpieapprovalquery,['Special Baptism', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved3 = results[0]
+                    spcbaptismpieapproval.push(disapproved3.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Special Baptism', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted3 = results[0]
+                        spcbaptismrequirement.push(submitted3.countt)
+                        db.query(eventpierequirementquery,['Special Baptism', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted3 = results[0]
+                            spcbaptismrequirement.push(accepted3.countt)
+                            db.query(eventpierequirementquery,['Special Baptism', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected3 = results[0]
+                                spcbaptismrequirement.push(rejected3.countt)
+                                //payment
+                                db.query(eventpiepaymentquery,['Special Baptism', "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid3 = results[0]
+                                    spcbaptismpiepayment.push(paid3.countt)
+                                    db.query(eventpiepaymentquery,['Special Baptism', "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid3 = results[0]
+                                        spcbaptismpiepayment.push(unpaid3.countt)
+        db.query(eventpieapprovalquery,['Funeral Mass', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending4 = results[0]
+            funeralmasspieapproval.push(pending4.countt)
+            db.query(eventpieapprovalquery,['Funeral Mass', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved4 = results[0]
+                funeralmasspieapproval.push(approved4.countt)
+                db.query(eventpieapprovalquery,['Funeral Mass', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved4 = results[0]
+                    funeralmasspieapproval.push(disapproved4.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Funeral Mass', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted4 = results[0]
+                        funeralmassrequirement.push(submitted4.countt)
+                        db.query(eventpierequirementquery,['Funeral Mass', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted4 = results[0]
+                            funeralmassrequirement.push(accepted4.countt)
+                            db.query(eventpierequirementquery,['Funeral Mass', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected4 = results[0]
+                                funeralmassrequirement.push(rejected4.countt)
+                                //payment
+                                db.query(eventpiepaymentquery,['Funeral Mass', "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid4 = results[0]
+                                    funeralmasspiepayment.push(paid4.countt)
+                                    db.query(eventpiepaymentquery,['Funeral Mass', "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid4 = results[0]
+                                        funeralmasspiepayment.push(unpaid4.countt)
+        db.query(eventpieapprovalquery,['Funeral Service', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending5 = results[0]
+            funeralservicepieapproval.push(pending5.countt)
+            db.query(eventpieapprovalquery,['Funeral Service', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved5 = results[0]
+                funeralservicepieapproval.push(approved5.countt)
+                db.query(eventpieapprovalquery,['Funeral Service', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved5 = results[0]
+                    funeralservicepieapproval.push(disapproved5.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Funeral Service', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted5 = results[0]
+                        funeralservicerequirement.push(submitted5.countt)
+                        db.query(eventpierequirementquery,['Funeral Service', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted5 = results[0]
+                            funeralservicerequirement.push(accepted5.countt)
+                            db.query(eventpierequirementquery,['Funeral Service', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected5 = results[0]
+                                funeralservicerequirement.push(rejected5.countt)
+                                
+        db.query(eventpieapprovalquery,['Marriage', "Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending6 = results[0]
+            marriagepieapproval.push(pending6.countt)
+            db.query(eventpieapprovalquery,['Marriage', "Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved6 = results[0]
+                marriagepieapproval.push(approved6.countt)
+                db.query(eventpieapprovalquery,['Marriage', "Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved6 = results[0]
+                    marriagepieapproval.push(disapproved6.countt)
+                    //requirement
+                    db.query(eventpierequirementquery,['Marriage', "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted6 = results[0]
+                        marriagerequirement.push(submitted6.countt)
+                        db.query(eventpierequirementquery,['Marriage', "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted6 = results[0]
+                            marriagerequirement.push(accepted6.countt)
+                            db.query(eventpierequirementquery,['Marriage', "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected6 = results[0]
+                                marriagerequirement.push(rejected6.countt)
+                                //payment
+                                db.query(eventpiepaymentquery,['Marriage', "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid6 = results[0]
+                                    marriagepiepayment.push(paid6.countt)
+                                    db.query(eventpiepaymentquery,['Marriage', "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid6 = results[0]
+                                        marriagepiepayment.push(unpaid6.countt)
+        db.query(docupieapprovalquery,["Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending7 = results[0]
+            docupieapproval.push(pending7.countt)
+            db.query(docupieapprovalquery,["Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved7 = results[0]
+                docupieapproval.push(approved7.countt)
+                db.query(docupieapprovalquery,["Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved7 = results[0]
+                    docupieapproval.push(disapproved7.countt)
+                    //requirement
+                    db.query(docupierequirementquery,[ "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted7 = results[0]
+                        docurequirement.push(submitted7.countt)
+                        db.query(docupierequirementquery,[ "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted7 = results[0]
+                            docurequirement.push(accepted7.countt)
+                            db.query(docupierequirementquery,[ "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected7 = results[0]
+                                docurequirement.push(rejected7.countt)
+                                //payment
+                                db.query(docupiepaymentquery,[ "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid7 = results[0]
+                                    docupiepayment.push(paid7.countt)
+                                    db.query(docupiepaymentquery,[ "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid7 = results[0]
+                                        docupiepayment.push(unpaid7.countt)
+        db.query(facilitypieapprovalquery,["Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending8 = results[0]
+            facilitypieapproval.push(pending8.countt)
+            db.query(facilitypieapprovalquery,["Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved8 = results[0]
+                facilitypieapproval.push(approved8.countt)
+                db.query(facilitypieapprovalquery,["Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved8 = results[0]
+                    facilitypieapproval.push(disapproved8.countt)
+                    //requirement
+                    db.query(facilitypierequirementquery,[ "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted8 = results[0]
+                        facilityrequirement.push(submitted8.countt)
+                        db.query(facilitypierequirementquery,[ "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted8 = results[0]
+                            facilityrequirement.push(accepted8.countt)
+                            db.query(facilitypierequirementquery,[ "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected8 = results[0]
+                                facilityrequirement.push(rejected8.countt)
+                                //payment
+                                db.query(facilitypiepaymentquery,[ "Paid"],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var paid8 = results[0]
+                                    facilitypiepayment.push(paid8.countt)
+                                    db.query(facilitypiepaymentquery,[ "Unpaid"],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var unpaid8 = results[0]
+                                        facilitypiepayment.push(unpaid8.countt)
+        db.query(housepieapprovalquery,["Pending"],(err, results, fields) => {
+            if (err) console.log(err);
+            var pending9 = results[0]
+            housepieapproval.push(pending9.countt)
+            db.query(housepieapprovalquery,["Approved"],(err, results, fields) => {
+                if (err) console.log(err);
+                var approved9 = results[0]
+                housepieapproval.push(approved9.countt)
+                db.query(housepieapprovalquery,["Disapproved"],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var disapproved9 = results[0]
+                    housepieapproval.push(disapproved9.countt)
+                    //requirement
+                    db.query(housepierequirementquery,[ "Submitted"],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var submitted9 = results[0]
+                        houserequirement.push(submitted9.countt)
+                        db.query(housepierequirementquery,[ "Accepted"],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var accepted9 = results[0]
+                            houserequirement.push(accepted9.countt)
+                            db.query(housepierequirementquery,[ "Rejected"],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var rejected9 = results[0]
+                                houserequirement.push(rejected9.countt)
+                               
+
+
+
+
+
+
+
+            db.query(event,['Anointing of the sick', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january = results[0]
+                anointingCount.push(january.countt)
+                db.query(event,['Anointing of the sick', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february = results[0]
+                    anointingCount.push(february.countt)
+                    db.query(event,['Anointing of the sick', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march = results[0]
+                        anointingCount.push(march.countt)
+                        db.query(event,['Anointing of the sick', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april = results[0]
+                            anointingCount.push(april.countt)
+                            db.query(event,['Anointing of the sick', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may = results[0]
+                                anointingCount.push(may.countt)
+                                db.query(event,['Anointing of the sick', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june = results[0]
+                                    anointingCount.push(june.countt)
+                                    db.query(event,['Anointing of the sick', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july = results[0]
+                                        anointingCount.push(july.countt)
+                                        db.query(event,['Anointing of the sick', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august = results[0]
+                                            anointingCount.push(august.countt)
+                                            db.query(event,['Anointing of the sick', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september = results[0]
+                                                anointingCount.push(september.countt)
+                                                db.query(event,['Anointing of the sick', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october = results[0]
+                                                    anointingCount.push(october.countt)
+                                                    db.query(event,['Anointing of the sick', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november = results[0]
+                                                        anointingCount.push(november.countt)
+                                                        db.query(event,['Anointing of the sick', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december = results[0]
+                                                            anointingCount.push(december.countt)
+                                                            console.log(anointingCount)
+             db.query(event,['Baptism', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january1 = results[0]
+                baptismCount.push(january1.countt)
+                db.query(event,['Baptism', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february1 = results[0]
+                    baptismCount.push(february1.countt)
+                    db.query(event,['Baptism', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march1 = results[0]
+                        baptismCount.push(march1.countt)
+                        db.query(event,['Baptism', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april1 = results[0]
+                            baptismCount.push(april1.countt)
+                            db.query(event,['Baptism', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may1 = results[0]
+                                baptismCount.push(may1.countt)
+                                db.query(event,['Baptism', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june1 = results[0]
+                                    baptismCount.push(june1.countt)
+                                    db.query(event,['Baptism', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july1 = results[0]
+                                        baptismCount.push(july1.countt)
+                                        db.query(event,['Baptism', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august1 = results[0]
+                                            baptismCount.push(august1.countt)
+                                            db.query(event,['Baptism', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september1 = results[0]
+                                                baptismCount.push(september1.countt)
+                                                db.query(event,['Baptism', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october1 = results[0]
+                                                    baptismCount.push(october1.countt)
+                                                    db.query(event,['Baptism', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november1 = results[0]
+                                                        baptismCount.push(november1.countt)
+                                                        db.query(event,['Baptism', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december1 = results[0]
+                                                            baptismCount.push(december1.countt)
+                                                            console.log(baptismCount)
+            db.query(event,['Special Baptism', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january2 = results[0]
+                specialbaptismCount.push(january2.countt)
+                db.query(event,['Special Baptism', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february2 = results[0]
+                    specialbaptismCount.push(february2.countt)
+                    db.query(event,['Special Baptism', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march2 = results[0]
+                        specialbaptismCount.push(march2.countt)
+                        db.query(event,['Special Baptism', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april2 = results[0]
+                            specialbaptismCount.push(april2.countt)
+                            db.query(event,['Special Baptism', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may2 = results[0]
+                                specialbaptismCount.push(may2.countt)
+                                db.query(event,['Special Baptism', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june2 = results[0]
+                                    specialbaptismCount.push(june2.countt)
+                                    db.query(event,['Special Baptism', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july2 = results[0]
+                                        specialbaptismCount.push(july2.countt)
+                                        db.query(event,['Special Baptism', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august2 = results[0]
+                                            specialbaptismCount.push(august2.countt)
+                                            db.query(event,['Special Baptism', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september2 = results[0]
+                                                specialbaptismCount.push(september2.countt)
+                                                db.query(event,['Special Baptism', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october2 = results[0]
+                                                    specialbaptismCount.push(october2.countt)
+                                                    db.query(event,['Special Baptism', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november2 = results[0]
+                                                        specialbaptismCount.push(november2.countt)
+                                                        db.query(event,['Special Baptism', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december2 = results[0]
+                                                            specialbaptismCount.push(december2.countt)
+                                                            console.log(specialbaptismCount)
+            db.query(event,['Funeral Mass', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january3 = results[0]
+                funeralmassCount.push(january3.countt)
+                db.query(event,['Funeral Mass', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february3 = results[0]
+                    funeralmassCount.push(february3.countt)
+                    db.query(event,['Funeral Mass', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march3 = results[0]
+                        funeralmassCount.push(march3.countt)
+                        db.query(event,['Funeral Mass', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april3 = results[0]
+                            funeralmassCount.push(april3.countt)
+                            db.query(event,['Funeral Mass', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may3 = results[0]
+                                funeralmassCount.push(may3.countt)
+                                db.query(event,['Funeral Mass', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june3 = results[0]
+                                    funeralmassCount.push(june3.countt)
+                                    db.query(event,['Funeral Mass', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july3 = results[0]
+                                        funeralmassCount.push(july3.countt)
+                                        db.query(event,['Funeral Mass', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august3 = results[0]
+                                            funeralmassCount.push(august3.countt)
+                                            db.query(event,['Funeral Mass', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september3 = results[0]
+                                                funeralmassCount.push(september3.countt)
+                                                db.query(event,['Funeral Mass', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october3 = results[0]
+                                                    funeralmassCount.push(october3.countt)
+                                                    db.query(event,['Funeral Mass', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november3 = results[0]
+                                                        funeralmassCount.push(november3.countt)
+                                                        db.query(event,['Funeral Mass', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december3 = results[0]
+                                                            funeralmassCount.push(december3.countt)
+                                                            console.log(funeralmassCount)
+            db.query(event,['Funeral Service', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january4 = results[0]
+                funeralserviceCount.push(january4.countt)
+                db.query(event,['Funeral Service', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february4 = results[0]
+                    funeralserviceCount.push(february4.countt)
+                    db.query(event,['Funeral Service', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march4 = results[0]
+                        funeralserviceCount.push(march4.countt)
+                        db.query(event,['Funeral Service', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april4 = results[0]
+                            funeralserviceCount.push(april4.countt)
+                            db.query(event,['Funeral Service', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may4 = results[0]
+                                funeralserviceCount.push(may4.countt)
+                                db.query(event,['Funeral Service', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june4 = results[0]
+                                    funeralserviceCount.push(june4.countt)
+                                    db.query(event,['Funeral Service', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july4 = results[0]
+                                        funeralserviceCount.push(july4.countt)
+                                        db.query(event,['Funeral Service', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august4 = results[0]
+                                            funeralserviceCount.push(august4.countt)
+                                            db.query(event,['Funeral Service', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september4 = results[0]
+                                                funeralserviceCount.push(september4.countt)
+                                                db.query(event,['Funeral Service', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october4 = results[0]
+                                                    funeralserviceCount.push(october4.countt)
+                                                    db.query(event,['Funeral Service', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november4 = results[0]
+                                                        funeralserviceCount.push(november4.countt)
+                                                        db.query(event,['Funeral Service', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december4 = results[0]
+                                                            funeralserviceCount.push(december4.countt)
+                                                            console.log(funeralserviceCount)
+            db.query(event,['Marriage', 1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january5 = results[0]
+                marriageCount.push(january5.countt)
+                db.query(event,['Marriage', 2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february5 = results[0]
+                    marriageCount.push(february5.countt)
+                    db.query(event,['Marriage', 3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march5 = results[0]
+                        marriageCount.push(march5.countt)
+                        db.query(event,['Marriage', 4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april5 = results[0]
+                            marriageCount.push(april5.countt)
+                            db.query(event,['Marriage', 5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may5 = results[0]
+                                marriageCount.push(may5.countt)
+                                db.query(event,['Marriage', 6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june5 = results[0]
+                                    marriageCount.push(june5.countt)
+                                    db.query(event,['Marriage', 7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july5 = results[0]
+                                        marriageCount.push(july5.countt)
+                                        db.query(event,['Marriage', 8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august5 = results[0]
+                                            marriageCount.push(august5.countt)
+                                            db.query(event,['Marriage', 9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september5 = results[0]
+                                                marriageCount.push(september5.countt)
+                                                db.query(event,['Marriage', 10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october5 = results[0]
+                                                    marriageCount.push(october5.countt)
+                                                    db.query(event,['Marriage', 11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november5 = results[0]
+                                                        marriageCount.push(november5.countt)
+                                                        db.query(event,['Marriage', 12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december5 = results[0]
+                                                            marriageCount.push(december5.countt)
+                                                            console.log(marriageCount)       
+            db.query(facility,[1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january6 = results[0]
+                facilityCount.push(january6.countt)
+                db.query(facility,[2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february6 = results[0]
+                    facilityCount.push(february6.countt)
+                    db.query(facility,[3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march6 = results[0]
+                        facilityCount.push(march6.countt)
+                        db.query(facility,[4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april6 = results[0]
+                            facilityCount.push(april6.countt)
+                            db.query(facility,[5],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may6 = results[0]
+                                facilityCount.push(may6.countt)
+                                db.query(facility,[6],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june6 = results[0]
+                                    facilityCount.push(june6.countt)
+                                    db.query(facility,[7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july6 = results[0]
+                                        facilityCount.push(july6.countt)
+                                        db.query(facility,[8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august6 = results[0]
+                                            facilityCount.push(august6.countt)
+                                            db.query(facility,[9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september6 = results[0]
+                                                facilityCount.push(september6.countt)
+                                                db.query(facility,[10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october6 = results[0]
+                                                    facilityCount.push(october6.countt)
+                                                    db.query(facility,[11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november6 = results[0]
+                                                        facilityCount.push(november6.countt)
+                                                        db.query(facility,[12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december6 = results[0]
+                                                            facilityCount.push(december6.countt)
+                                                            console.log(facilityCount)
+            db.query(docu,[1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january7 = results[0]
+                docuCount.push(january7.countt)
+                db.query(docu,[2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february7 = results[0]
+                    docuCount.push(february7.countt)
+                    db.query(docu,[3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march7 = results[0]
+                        docuCount.push(march7.countt)
+                        db.query(docu,[4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april7 = results[0]
+                            docuCount.push(april7.countt)
+                            db.query(docu,[7],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may7 = results[0]
+                                docuCount.push(may7.countt)
+                                db.query(docu,[7],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june7 = results[0]
+                                    docuCount.push(june7.countt)
+                                    db.query(docu,[7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july7 = results[0]
+                                        docuCount.push(july7.countt)
+                                        db.query(docu,[8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august7 = results[0]
+                                            docuCount.push(august7.countt)
+                                            db.query(docu,[9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september7 = results[0]
+                                                docuCount.push(september7.countt)
+                                                db.query(docu,[10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october7 = results[0]
+                                                    docuCount.push(october7.countt)
+                                                    db.query(docu,[11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november7 = results[0]
+                                                        docuCount.push(november7.countt)
+                                                        db.query(docu,[12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december7 = results[0]
+                                                            docuCount.push(december7.countt)
+                                                            console.log(docuCount)
+            db.query(house,[1],(err, results, fields) => {
+                if (err) console.log(err);
+                var january7 = results[0]
+                houseCount.push(january7.countt)
+                db.query(house,[2],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var february7 = results[0]
+                    houseCount.push(february7.countt)
+                    db.query(house,[3],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var march7 = results[0]
+                        houseCount.push(march7.countt)
+                        db.query(house,[4],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var april7 = results[0]
+                            houseCount.push(april7.countt)
+                            db.query(house,[7],(err, results, fields) => {
+                                if (err) console.log(err);
+                                var may7 = results[0]
+                                houseCount.push(may7.countt)
+                                db.query(house,[7],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var june7 = results[0]
+                                    houseCount.push(june7.countt)
+                                    db.query(house,[7],(err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var july7 = results[0]
+                                        houseCount.push(july7.countt)
+                                        db.query(house,[8],(err, results, fields) => {
+                                            if (err) console.log(err);
+                                            var august7 = results[0]
+                                            houseCount.push(august7.countt)
+                                            db.query(house,[9],(err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var september7 = results[0]
+                                                houseCount.push(september7.countt)
+                                                db.query(house,[10],(err, results, fields) => {
+                                                    if (err) console.log(err);
+                                                    var october7 = results[0]
+                                                    houseCount.push(october7.countt)
+                                                    db.query(house,[11],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                        var november7 = results[0]
+                                                        houseCount.push(november7.countt)
+                                                        db.query(house,[12],(err, results, fields) => {
+                                                        if (err) console.log(err);
+                                                            var december7 = results[0]
+                                                            houseCount.push(december7.countt)
+                                                            console.log(houseCount)
+                    // res.send(resulta)
+                    return res.render('admin/views/reports/index',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                        anointingCount:anointingCount,baptismCount:baptismCount, specialbaptismCount:specialbaptismCount, funeralmassCount:funeralmassCount, funeralserviceCount:funeralserviceCount, marriageCount:marriageCount,
+                    facilityCount:facilityCount, docuCount:docuCount, houseCount:houseCount,
+                    baptismpieapproval:baptismpieapproval,
+                    baptismpierequirement:baptismpierequirement,
+                    baptismpiepayment:baptismpiepayment,
+                    
+                    //SPECIAL BAPTISM
+                    spcbaptismpieapproval:spcbaptismpieapproval,
+                    spcbaptismrequirement:spcbaptismrequirement,
+                    spcbaptismpiepayment:spcbaptismpiepayment,
+                    
+                    //FUNERAL MASS
+                    funeralmasspieapproval:funeralmasspieapproval,
+                    funeralmassrequirement:funeralmassrequirement,
+                    funeralmasspiepayment:funeralmasspiepayment,
+                    
+                    //MARRIAGE
+                    marriagepieapproval:marriagepieapproval,
+                    marriagerequirement:marriagerequirement,
+                    marriagepiepayment:marriagepiepayment,
+                    
+                    //FACILITY RESERVATION
+                    facilitypieapproval:facilitypieapproval,
+                    facilityrequirement:facilityrequirement,
+                    facilitypiepayment:facilitypiepayment,
+                    
+                    //DOCUMENT
+                    docupieapproval:docupieapproval,
+                    docurequirement:docurequirement,
+                    docupiepayment:docupiepayment,
+                    
+                    //FUNERAL SERVICE
+                    funeralservicepieapproval:funeralservicepieapproval,
+                    funeralservicerequirement:funeralservicerequirement,
+                    
+                    // HOUSE
+                    housepieapproval:housepieapproval,
+                    houserequirement:houserequirement,
+                    //ANOINTING
+                    anointingpieapproval:anointingpieapproval,
+                    anointingrequirement:anointingrequirement
+                
+                
+                
+                });
+                
+
+
+}); }); }); }); }); }); }); }); //funeral mass
+}); }); }); }); }); }); }); }); //marriage
+}); }); }); }); }); }); }); }); //regbap
+}); }); }); }); }); }); }); }); //spc bap
+}); }); }); }); }); }); }); }); //facility
+}); }); }); }); }); }); }); }); //docu
+}); }); }); }); }); });  //anointing
+}); }); }); }); }); }); //funeral service
+}); }); }); }); }); }); //houseblessing
+
+
+
+
+
+
+
+
+                                            }); }); }); }); }); }); }); }); }); }); }); });     //anointing           
+                                        }); }); }); }); }); }); }); }); }); }); }); }); //reg bap
+                                    }); }); }); }); }); }); }); }); }); }); }); });  // spc bap
+                                }); }); }); }); }); }); }); }); }); }); }); });  //funeral mass
+                            }); }); }); }); }); }); }); }); }); }); }); }); //funeral service
+                        }); }); }); }); }); }); }); }); }); }); }); }); //marriage
+                    }); }); }); }); }); }); }); }); }); }); }); }); //facility
+                }); }); }); }); }); }); }); }); }); }); }); }); //document
+            }); }); }); }); }); }); }); }); }); }); }); }); //house 
+
+
+
+    }); }); }); }); }); });//upto message
 }); 
 
 //=======================================================
@@ -1552,8 +4507,6 @@ adminRouter.get('/queries-houseblessing', (req, res)=>{
                 }); });
 }); 
 });
-
-
 adminRouter.get('/queries-guests', (req, res)=>{
     var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
         var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`

@@ -1,0 +1,88 @@
+extends ../../../../../templates/admin
+block prepend main
+	#wrap
+	div(style='clear:both')
+	.content
+		.container-fluid
+
+			.row
+				.col-lg-12.col-md-12
+						.card.shadow
+								.card-header.card-header-primary(style='background:#367587; color:white')
+									.row
+										.col-md-6
+											h3.card-title(style='background:#367587; color:white') Services
+
+								.card-body.table-responsive
+										table.table.table-hover.dt-responsive#example(style="width:100%;")
+												thead.text-primary
+														th ID
+														th Service Name
+														th Name
+														//- th Father's Name
+														//- th Mother's Name
+														th Event Date
+														th Event Time
+														th Approval Status
+														
+												tbody
+													each query in queries
+														tr
+															td=query.int_eventinfoID
+															td=query.var_eventname
+															td=query.var_lname +", "+ query.var_fname
+															//- td=query.var_fathername
+															//- td=query.var_mothername
+															td=query.date_eventdate
+															td=query.time_eventstart
+															td=query.char_approvalstatus
+												tfoot
+														th ID
+														th Service Name
+														th Name
+														//- th Father's Name
+														//- th Mother's Name
+														th Event Date
+														th Event Time
+														th Approval Status
+
+																
+	
+block addjs
+	script.
+		
+			$(document).ready(function() {
+				// itong datatable ay hindi galing sa template as in inimport siya beshy kasi hindi lumalabas yung
+				// mga export button kapag sa datatable na template
+				$('#example').DataTable( {
+						dom: 'Bfrtip',
+						buttons: [
+								'copy', 'csv', 'excel', 'pdf', 'print'
+						],
+						initComplete: function () {
+						this.api().columns().every( function () {
+								var column = this;
+								var select = $('<select><option value=""></option></select>')
+										.appendTo( $(column.footer()).empty() )
+										.on( 'change', function () {
+												var val = $.fn.dataTable.util.escapeRegex(
+														$(this).val()
+												);
+ 
+												column
+														.search( val ? '^'+val+'$' : '', true, false )
+														.draw();
+										} );
+ 
+								column.data().unique().sort().each( function ( d, j ) {
+										select.append( '<option value="'+d+'">'+d+'</option>' )
+								} );
+						} );
+					}
+				} );
+			} );
+		// ampanget kasi ng itsura ng pagination kaya dito tinanggal ko yung css niya kaya tatawagin lang to
+		// pag gumamit ng datatable na hindi from template. Kapag niremove mo yung css diyan tapos cinall mo yung datatable
+		// na nasa template, walang design yung pagination ng template kaya ampanget
+block filter
+	script(src='/admin/bundlesomecssremoved.js')

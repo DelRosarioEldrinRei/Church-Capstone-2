@@ -1,0 +1,317 @@
+extends ../../../../../templates/admin
+block prepend main
+	#mainContent
+		.row.masonry.pos-r
+			.masonry-sizer.col-md-6
+			.masonry-item.w-100
+				
+			// line charts
+		.row.gap-20.masonry.pos-r
+			
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h5.lh-1 Funeral Blessing
+						.layer.w-100.p-20
+							canvas#canvas2(height='150')
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h5.lh-1 Funeral Blessing
+						.layer.w-100.p-20
+							canvas#canvas22(height='150')
+		.row.gap-20.masonry.pos-r
+			// funeral mass
+			.masonry-item.col-6
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Funeral Mass
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart10(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Payment Status
+														.layer.w-100
+															canvas#oilChart11(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart12(height='250')
+		.row.gap-20.masonry.pos-r
+			// funeral service
+			.masonry-item.col-6
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Funeral Service
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-6
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart13(height='250')
+											.masonry-item.col-md-6
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart15(height='250')
+
+															p(hidden)#funeralmassCount #{funeralmassCount}
+															p(hidden)#funeralserviceCount #{funeralserviceCount}
+															p(hidden)#funeralmassCountyear #{funeralmassCountyear}
+															p(hidden)#funeralserviceCountyear #{funeralserviceCountyear}
+															
+															//FUNERAL MASS
+															p(hidden)#funeralmasspieapproval #{funeralmasspieapproval}
+															p(hidden)#funeralmassrequirement #{funeralmassrequirement}
+															p(hidden)#funeralmasspiepayment #{funeralmasspiepayment}
+															
+															//FUNERAL SERVICE
+															p(hidden)#funeralservicepieapproval #{funeralservicepieapproval}
+															p(hidden)#funeralservicerequirement #{funeralservicerequirement}
+															
+
+block addjs
+	
+	script(type='text/javascript').
+			window.onload = function() {
+			var funeralmass= document.getElementById('funeralmassCount').innerHTML;
+			var funeralservice= document.getElementById('funeralserviceCount').innerHTML;
+			var funeralmassyear= document.getElementById('funeralmassCountyear').innerHTML;
+			var funeralserviceyear= document.getElementById('funeralserviceCountyear').innerHTML;
+			
+			//FUNERAL MASS
+			var funeralmassapproval=document.getElementById('funeralmasspieapproval').innerHTML;
+			var funeralmassrrequirement=document.getElementById('funeralmassrequirement').innerHTML;
+			var funeralmasspayment=document.getElementById('funeralmasspiepayment').innerHTML;
+			
+			//FUNERAL SERVICE
+			var funeralserviceapproval=document.getElementById('funeralservicepieapproval').innerHTML;
+			var funeralservicerrequirement=document.getElementById('funeralservicerequirement').innerHTML;
+			
+			funeralmass = funeralmass.split(',')
+			funeralservice = funeralservice.split(',')
+			
+			//FUNERAL MASS
+			funeralmassapproval= funeralmassapproval.split(',')
+			funeralmassrrequirement= funeralmassrrequirement.split(',')
+			funeralmasspayment= funeralmasspayment.split(',')
+			
+			//FUNERAL SERVICE
+			funeralserviceapproval= funeralserviceapproval.split(',')
+			funeralservicerrequirement= funeralservicerrequirement.split(',')
+			
+			var blessing = {
+				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				datasets: [{
+						label: "Funeral Mass",
+						fill: false,
+						borderColor: "#108587",
+						backgroundColor: "#108587",
+						pointBackgroundColor: "#108587",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#108587",
+						data: [funeralmass[0], funeralmass[1], funeralmass[2], funeralmass[3], funeralmass[4], funeralmass[5], funeralmass[6], funeralmass[7], funeralmass[8], funeralmass[9], funeralmass[10], funeralmass[11]]
+				},  {
+						label: "Funeral Service",
+						fill: false,
+						borderColor: "#f2af3e",
+						backgroundColor: "#f2af3e",
+						pointBackgroundColor: "#f2af3e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#f2af3e",
+						data:[funeralservice[0], funeralservice[1], funeralservice[2], funeralservice[3], funeralservice[4], funeralservice[5], funeralservice[6], funeralservice[7], funeralservice[8], funeralservice[9], funeralservice[10], funeralservice[11]]
+				}]
+
+			}
+
+			var blessing1 = {
+				labels: ['2010','2011', '2012', '2013', '2014','2015', '2016', '2017', '2018'],
+				datasets: [{
+						label: "Funeral Mass",
+						fill: false,
+						borderColor: "#108587",
+						backgroundColor: "#108587",
+						pointBackgroundColor: "#108587",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#108587",
+						data: [funeralmassyear[0], funeralmassyear[1], funeralmassyear[2], funeralmassyear[3], funeralmassyear[4], funeralmassyear[5], funeralmassyear[6], funeralmassyear[7], funeralmassyear[8]]
+				},  {
+						label: "Funeral Service",
+						fill: false,
+						borderColor: "#f2af3e",
+						backgroundColor: "#f2af3e",
+						pointBackgroundColor: "#f2af3e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#f2af3e",
+						data:[funeralserviceyear[0], funeralserviceyear[1], funeralserviceyear[2], funeralserviceyear[3], funeralserviceyear[4], funeralserviceyear[5], funeralserviceyear[6], funeralserviceyear[7], funeralserviceyear[8]]
+				}]
+
+			}
+
+
+			
+					// first
+					
+					//second
+					var canvas = document.getElementById("canvas2");
+					var ctx2 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx2 , {
+							type: "line",
+							data: blessing,
+							responsive: true,
+					});
+					var canvas = document.getElementById("canvas22");
+					var ctx2 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx2 , {
+							type: "bar",
+							data: blessing1,
+							responsive: true,
+					});
+					
+                    
+			
+			// end of line charts
+
+			// funeral mass
+			var oilCanvas10 = document.getElementById("oilChart10");
+			var oilCanvas11 = document.getElementById("oilChart11");
+			var oilCanvas12 = document.getElementById("oilChart12");
+			var approval4 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [funeralmassapproval[0], funeralmassapproval[1], funeralmassapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var payment4 = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [funeralmasspayment[0], funeralmasspayment[1]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement4 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [funeralmassrrequirement[0], funeralmassrrequirement[1], funeralmassrrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+
+			var pieChart = new Chart(oilCanvas10, {
+				type: 'pie',
+				data: approval4
+			});
+			var pieChart = new Chart(oilCanvas11, {
+				type: 'pie',
+				data: payment4
+			});
+			var pieChart = new Chart(oilCanvas12, {
+				type: 'pie',
+				data: requirement4
+			});
+			// funeral service
+			var oilCanvas13 = document.getElementById("oilChart13");
+			var oilCanvas15 = document.getElementById("oilChart15");
+			var approval5 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [funeralserviceapproval[0], funeralserviceapproval[1], funeralserviceapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement5 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [funeralservicerrequirement[0], funeralservicerrequirement[1], funeralservicerrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+
+			var pieChart = new Chart(oilCanvas13, {
+				type: 'pie',
+				data: approval5
+			});
+			var pieChart = new Chart(oilCanvas15, {
+				type: 'pie',
+				data: requirement5
+			});
+			
+			}	

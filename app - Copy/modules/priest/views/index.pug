@@ -1,0 +1,35 @@
+extends ../../../templates/priest
+block main
+	.main.main-raised
+		section.form-box
+			.container
+				.row
+					.col-md-12.form-wizard
+						h1.font-weight-bold Event Proposal
+						h4.font-weight-bold Encourage, inspire, and be the change!
+				#contacts
+					.row
+						.col-md-8.ml-auto.mr-auto
+							form.contact-form
+								.form-group
+									label.label-control Event Name
+									label.bmd-label-floating
+									input.form-control(type="text")
+
+								.form-group
+									label.label-control Event Description
+									label.bmd-label-floating(for="message")
+									textarea#message.form-control(type="text", rows="3")
+								.row
+									.col-md-6
+										.form-group
+											label.label-control Desired Date
+											input.datepicker.form-control(type='date' name='desireddate1')
+									.col-md-6
+										.form-group
+											label.label-control Event Venue
+											input.form-control(type='text' name='desireddate1')
+
+								.row
+									.col-md-4.ml-auto.mr-auto.text-center.mt-3
+										button.btn.btn-outline-primary(type='button') Propose

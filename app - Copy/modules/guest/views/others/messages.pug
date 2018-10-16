@@ -1,0 +1,197 @@
+extends ../../../../templates/guests
+block addcss
+  link(rel='stylesheet', href='/css/message.css')
+block prepend main
+  style.
+    #header-style-1 {
+      height:3.5rem;
+      background-image: url(/imgchurch/bible2.png);
+    }
+  #headers
+    #header-style-1
+      .container
+        .header-caption
+          .row
+            .col-md-12.header-content(style="z-index: -1")
+              h3.header-title.animated.fadeInDown.invisible
+                span.text-primary Helium - 
+                | Bootstrap 4 UI Kit
+              h6.header-text.animated.fadeIn.invisible
+                | Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h6>
+              //- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+              //- a.page-scroll.btn.btn-lg.btn-secondary.animated.fadeInUp.invisible.destination(href="#") Explore
+  .messaging
+    .inbox_msg
+      .inbox_people
+        .headind_srch
+          .inbox.d-inline Inbox
+          |  / 
+          .sent.d-inline Sent
+          .learn-more.float-right
+            button.btn.std-btn.btn-sm.btn-common.m-0.compose(type='button') New message
+          //- .srch_bar
+          //-   .stylish-input-group
+          //-     input.search-bar(type='text', placeholder='Search')
+          //-     span.input-group-addon
+          //-       button(type='button')
+          //-         i.fa.fa-search(aria-hidden='true')
+        // inbox messages
+        .inbox_chat
+          each inbox in inboxs
+            .chat_list.active_chat
+              .chat_people
+                .chat_img
+                .chat_ib
+                  h5.msg_name
+                    p.msg_name.d-inline=inbox.var_userlname+", "+ inbox.var_userfname
+                    span.chat_date=inbox.datetime_sent
+                  h5=inbox.var_subject
+                  p=inbox.text_message
+          
+        // sent messages
+        .sent_messages
+          .chat_list.active_chat
+            .chat_people
+              .chat_img
+              .chat_ib
+                h5.msg_name
+                  p.msg_name.d-inline To: Mamamu
+                  span.chat_date Dec 25
+                h5 Title Goes Here
+                p
+                  | Test, which is a new approach to have all solutions astrology...
+          
+      //mesages inside (the right side)
+      .mesgs
+        .msg_history
+          .incoming_msg
+            //- .incoming_msg_img
+              //- img(src='https://ptetutori  als.com/images/user-profile.png', alt='sunil')
+            .received_msg
+              .received_withd_msg
+                span.time_date.text-right  November 2, 2017
+                h5.pt-1 John Doe
+                span.time_date.pt-0  To: email@gmail.com
+                .container
+                  hr.m-0
+                h5 Title of this Email Goes Here
+                p
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                p
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                p
+                  | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+                //- span.time_date  11:01 AM    |    June 9
+          //- .outgoing_msg
+          //-   .sent_msg
+          //-     p
+          //-       | Test which is a new approach to have all
+          //-       | solutions
+          //-     span.time_date  11:01 AM    |    June 9
+          //- .incoming_msg
+          //-   .incoming_msg_img
+          //-     img(src='https://ptetutorials.com/images/user-profile.png', alt='sunil')
+          //-   .received_msg
+          //-     .received_withd_msg
+          //-       p Test, which is a new approach to have
+          //-       span.time_date  11:01 AM    |    Yesterday
+          //- .outgoing_msg
+          //-   .sent_msg
+          //-     p Apollo University, Delhi, India Test
+          //-     span.time_date  11:01 AM    |    Today
+          //- .incoming_msg
+          //-   .incoming_msg_img
+          //-     img(src='https://ptetutorials.com/images/user-profile.png', alt='sunil')
+          //-   .received_msg
+          //-     .received_withd_msg
+          //-       p
+          //-         | We work directly with our designers and suppliers,
+          //-         | and sell direct to you, which means quality, exclusive
+          //-         | products, at a price anyone can afford.
+          //-       span.time_date  11:01 AM    |    Today
+        .type_msg.text-center
+          .learn-more.my-2
+            button.btn.std-btn.btn-common.m-0(type='button' data-toggle='modal', data-target='#exampleModal') Reply message
+        //- .type_msg
+          //- .input_msg_write
+          //-   input.write_msg(type='text', placeholder='Type a message')
+          //-   button.msg_send_btn(type='button')
+          //-     i.fa.fa-paper-plane-o(aria-hidden='true')
+      .mesgs_compose
+        h4 Compose Message
+          .text-right.float-right.text-danger
+            i.fa.fa-times.composeClose(aria-hidden='true')
+        .type_msg
+          .input_msg_write
+            input.write_msg(type='text', placeholder='To:')
+        .type_msg
+          .input_msg_write
+            input.write_msg(type='text', placeholder='Email Subject:')
+        .type_msg
+          .input_msg_write
+            textarea.write_msg(type='text', placeholder='Say Hi...')
+        .type_msg.text-center
+          .learn-more.my-2
+            button.btn.std-btn.btn-sm.btn-common.m-0.compose(type='button') Send
+  #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+    .modal-dialog.modal-lg(role='document')
+        .modal-content#each
+            .modal-header
+              h4 Reply Message
+              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                  span.p-3.text-danger(aria-hidden='true') ×
+            .modal-body
+              .input_msg_write
+                input.write_msg(type='text', placeholder='To:')
+              .type_msg
+                .input_msg_write
+                  input.write_msg(type='text', placeholder='Email Subject:')
+              .type_msg
+                .input_msg_write
+                  textarea.write_msg(type='text', placeholder='Say Hi...')
+              .type_msg.text-center
+                .learn-more.my-2
+                  button.btn.std-btn.btn-sm.btn-common.m-0.compose(type='button') Send
+block addjs
+  script.
+    $(document).ready(function() {
+      
+      $('.compose').click(function(){
+        $('.mesgs').fadeOut(function(){
+          $('.mesgs_compose').fadeIn('slow');
+        });
+        $(this).attr('disabled', 'disabled');
+        $(this).css('cursor', 'no-drop');
+      });
+
+      $('.composeClose').click(function(){
+        $('.mesgs_compose').fadeOut(function(){
+          $('.mesgs').fadeIn('slow');
+        });
+        $('.compose').removeAttr("disabled");
+        $('.compose').css('cursor', 'pointer');
+      });
+
+      $('.sent').click(function(){
+        $(this).css({'font-weight': '700', 'cursor': 'default'});
+        $('.inbox').css({'font-weight': '500', 'cursor': 'pointer'})
+
+        $('.inbox_chat').css('display', 'none');
+        $('.sent_messages').css('display', 'block');
+      });
+
+      $('.inbox').click(function(){
+        $(this).css({'font-weight': '700', 'cursor': 'default'});
+        $('.sent').css({'font-weight': '500', 'cursor': 'pointer'})
+        
+        $('.sent_messages').css('display', 'none');
+        $('.inbox_chat').css('display', 'block');
+      });
+
+      $('.chat_list').click(function(e){
+        $('.chat_list.active_chat').removeClass('active_chat');
+        $(this).addClass('active_chat');
+        e.preventDefault();
+      });
+
+    });

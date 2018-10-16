@@ -1,0 +1,65 @@
+extends ../../../templates/store
+block prepend main
+	.row
+		.col-md-7.ml-3
+			form
+				.container.card(style="border: 1px solid black")
+					.form-row.mt-3
+						.form-group.col-md-8
+							input.form-control(type='text', placeholder='Item Code')
+						.form-group.col-md-4
+							input.form-control(type='password', placeholder='QTY')
+					.form-group
+						input.form-control(type='text', placeholder='Item Name')
+					.form-row
+						.col-md-5
+							.form-group
+								input.form-control(type='text', placeholder='Price')
+						.col-md-5.text-right
+							button.btn.btn-primary.btn-sm(type='button') ADD
+			.card(style="border: 1px solid black")
+				h4.text-center Items
+				table.table.text-center
+					thead
+						tr
+							th(scope='col') 
+							th(scope='col') Item Code
+							th(scope='col') Item Name
+							th(scope='col') QTY
+							th(scope='col') Each/Up
+							th(scope='col') UOM
+							th(scope='col') Total
+					tbody
+						tr
+							th(scope='row')
+								button.btn.btn-outline-danger.btn-sm(type='button')
+									span(aria-hidden='true') X
+							td 1111
+							td eleven-eleven
+							td 11
+							td 11
+							td 11
+							td 121
+						tr.invisible
+							th(scope='row')
+								button.btn.btn-outline-danger.btn-sm(type='button')
+									span(aria-hidden='true') X
+							td 1111
+							td eleven-eleven
+							td 11
+							td 11
+							td 11
+							td 121
+						tr.invisible
+							th(scope='row')
+								button.btn.btn-outline-danger.btn-sm(type='button')
+									span(aria-hidden='true') X
+							td 1111
+							td eleven-eleven
+							td 11
+							td 11
+							td 11
+							td 121
+			.card(style="border: 1px solid black")
+				Su
+		.col-md-5

@@ -1,0 +1,199 @@
+extends ../../../../../templates/admin
+block prepend main
+	#mainContent
+		.row.masonry.pos-r
+			.masonry-sizer.col-md-6
+			.masonry-item.w-100
+				
+			// line charts
+		.row.gap-20.masonry.pos-r
+			
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h5.lh-1 Facility Reservation
+						.layer.w-100.p-20
+							canvas#canvas4(height='150')
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h5.lh-1 Facility Reservation
+						.layer.w-100.p-20
+							canvas#canvas44(height='150')
+			
+			//facility
+			.masonry-item.col-12
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Facility Reservation
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart30(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Payment Status
+														.layer.w-100
+															canvas#oilChart31(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart32(height='250')
+															p(hidden)#facilityCount #{facilityCount}
+															p(hidden)#facilityCountyear #{facilityCountyear}
+															
+															//FACILITY RESERVATION
+															p(hidden)#facilitypieapproval #{facilitypieapproval}
+															p(hidden)#facilityrequirement #{facilityrequirement}
+															p(hidden)#facilitypiepayment #{facilitypiepayment}
+															
+block addjs
+	
+	script(type='text/javascript').
+			window.onload = function() {
+			var facility= document.getElementById('facilityCount').innerHTML;
+			var facilityyear= document.getElementById('facilityCountyear').innerHTML;
+			
+			//FACILITY RESERVATION
+			var facilityapproval=document.getElementById('facilitypieapproval').innerHTML;
+			var facilityrrequirement=document.getElementById('facilityrequirement').innerHTML;
+			var facilitypayment=document.getElementById('facilitypiepayment').innerHTML;
+			facility = facility.split(',')
+			facilityyear = facilityyear.split(',')
+			
+			//FACILITY RESERVATION
+			facilityapproval= facilityapproval.split(',')
+			facilityrrequirement= facilityrrequirement.split(',')
+			facilitypayment= facilitypayment.split(',')
+			
+			var specialServices = {
+				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				datasets: [ {
+						label: "Facility Reservation",
+						fill: false,
+						borderColor: "#52b99f",
+						backgroundColor: "#52b99f",
+						pointBackgroundColor: "#52b99f",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#52b99f",
+						data: [facility[0], facility[1], facility[2], facility[3], facility[4], facility[5], facility[6], facility[7], facility[8], facility[9], facility[10], facility[11]]
+				}]
+
+			}
+			var specialServices1 = {
+				labels: ['2010','2011', '2012', '2013', '2014','2015', '2016', '2017', '2018'],
+				datasets: [ {
+						label: "Facility Reservation",
+						fill: false,
+						borderColor: "#52b99f",
+						backgroundColor: "#52b99f",
+						pointBackgroundColor: "#52b99f",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#52b99f",
+						data: [facilityyear[0], facilityyear[1], facilityyear[2], facilityyear[3], facilityyear[4], facilityyear[5], facilityyear[6], facilityyear[7], facilityyear[8]]
+				}]
+
+			}
+
+					var canvas = document.getElementById("canvas4");
+					var ctx4 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx4 , {
+							type: "line",
+							data: specialServices,
+							responsive: true,
+					});
+					var canvas = document.getElementById("canvas44");
+					var ctx44 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx44 , {
+							type: "bar",
+							data: specialServices1,
+							responsive: true,
+					});
+			
+			// end of line charts
+
+			// Facility
+			var oilCanvas30 = document.getElementById("oilChart30");
+			var oilCanvas31 = document.getElementById("oilChart31");
+			var oilCanvas32 = document.getElementById("oilChart32");
+			var approval9 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [facilityapproval[0],facilityapproval[2],facilityapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var payment9 = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [facilitypayment[0],facilitypayment[1]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement9 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [facilityrrequirement[0],facilityrrequirement[1],facilityrrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+
+			var pieChart = new Chart(oilCanvas30, {
+				type: 'pie',
+				data: approval9
+			});
+			var pieChart = new Chart(oilCanvas31, {
+				type: 'pie',
+				data: payment9
+			});
+			var pieChart = new Chart(oilCanvas32, {
+				type: 'pie',
+				data: requirement9
+			});
+			}

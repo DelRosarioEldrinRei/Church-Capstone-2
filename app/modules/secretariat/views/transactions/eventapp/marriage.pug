@@ -366,21 +366,19 @@ block addjs
 					var timeRequested = moment(data.results.time_eventstart,'HH:mm:ss').format('hh:mm A')
 					var age = moment().diff(data.results.date_birthday,'years');
 					$('#viewBodyAppend').append(`
-					<div class="form-group">
-						<label class="label-control"><strong> Groom's Name: </strong> ${data.results.var_lname}, ${data.results.var_fname}</label>
-					</div>
-					<div class="form-group">
-						<label class="label-control"><strong> Bride's Name: </strong> ${data.results.var_blname}, ${data.results.var_bfname}</label>
-					</div>
-					<div class="form-group">
-						<label class="label-control"> <strong> Desired Date: </strong> ${dateRequested}</label>
-					</div>
-					<div class="form-group">
-						<label class=" label-control"> <strong> Desired Time:  </strong> ${timeRequested}</label>
-					</div>
-					<div class="form-group">
-						<label class=" label-control"> <strong> Requirements:  </strong></label>
-					</div>
+					<table class="tableModal">
+						<tr>
+							<td class="tdModal h5"><strong> Groom's Name </strong> ${data.results.var_lname}, ${data.results.var_fname}</td>
+							<td class="tdModal h5"><strong> Desired Date:  </strong> ${dateRequested}</td>
+						</tr>
+						<tr>
+							<td class="tdModal h5"><strong> Bride's Name: </strong> ${data.results.var_blname}, ${data.results.var_bfname}</td>
+							<td class="tdModal h5"><strong> Desired Time: </strong> ${timeRequested}</td>
+						</tr>
+						<tr>
+							<td class="tdModal h5"><strong> Requirements: </strong></td>
+						</tr>
+					</table>
 					`)
 					console.log(data.requirements)
 					for(i=0;i<data.requirements.length;i++){
