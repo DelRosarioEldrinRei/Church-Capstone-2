@@ -1,0 +1,204 @@
+extends ../../../../../templates/admin
+block prepend main
+	#mainContent
+		.row.masonry.pos-r
+			.masonry-sizer.col-md-6
+			.masonry-item.w-100
+				
+			// line charts
+		.row.gap-20.masonry.pos-r
+			
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h5.lh-1 Marriage
+						.layer.w-100.p-20
+							canvas#canvas3(height='150')
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h5.lh-1 Marriage
+						.layer.w-100.p-20
+							canvas#canvas33(height='150')
+			
+			// marriage
+			.masonry-item.col-12
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Marriage
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart7(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Payment Status
+														.layer.w-100
+															canvas#oilChart8(height='250')
+											.masonry-item.col-md-4
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart9(height='250')
+			
+															p(hidden)#marriageCount #{marriageCount}
+															p(hidden)#marriageCountyear #{marriageCountyear}
+															
+															//MARRIAGE
+															p(hidden)#marriagepieapproval #{marriagepieapproval}
+															p(hidden)#marriagerequirement #{marriagerequirement}
+															p(hidden)#marriagepiepayment #{marriagepiepayment}
+															
+block addjs
+	
+	script(type='text/javascript').
+			window.onload = function() {
+			var marriage= document.getElementById('marriageCount').innerHTML;
+			var marriageyear= document.getElementById('marriageCountyear').innerHTML;
+			
+			//MARRIAGE
+			var marriageapproval=document.getElementById('marriagepieapproval').innerHTML;
+			var marriagerrequirement=document.getElementById('marriagerequirement').innerHTML;
+			var marriagepayment=document.getElementById('marriagepiepayment').innerHTML;
+			
+			marriage = marriage.split(',')
+			marriageyear = marriageyear.split(',')
+			
+			//MARRIAGE
+			marriageapproval= marriageapproval.split(',')
+			marriagerrequirement= marriagerrequirement.split(',')
+			marriagepayment= marriagepayment.split(',')
+			
+
+			var marriage = {
+				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				datasets: [{
+						label: "Marriage",
+						fill: false,
+						borderColor: "#52b99f",
+						backgroundColor: "#52b99f",
+						pointBackgroundColor: "#52b99f",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#52b99f",
+						data: [marriage[0], marriage[1], marriage[2], marriage[3], marriage[4], marriage[5], marriage[6], marriage[7], marriage[8], marriage[9], marriage[10], marriage[11]]
+				}]
+
+			}
+			var marriage1 = {
+				labels: ['2010','2011', '2012', '2013', '2014','2015', '2016', '2017', '2018'],
+				datasets: [{
+						label: "Marriage",
+						fill: false,
+						borderColor: "#52b99f",
+						backgroundColor: "#52b99f",
+						pointBackgroundColor: "#52b99f",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#52b99f",
+						data: [marriageyear[0], marriageyear[1], marriageyear[2], marriageyear[3], marriageyear[4], marriageyear[5], marriageyear[6], marriageyear[7], marriageyear[8]]
+				}]
+
+			}
+
+
+					//third
+					var canvas = document.getElementById("canvas3");
+					var ctx3 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx3 , {
+							type: "line",
+							data: marriage,
+							responsive: true,
+					});
+					var canvas = document.getElementById("canvas33");
+					var ctx33 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx33 , {
+							type: "bar",
+							data: marriage1,
+							responsive: true,
+					});
+			
+			// end of line charts
+
+			// marriage
+			var oilCanvas7 = document.getElementById("oilChart7");
+			var oilCanvas8 = document.getElementById("oilChart8");
+			var oilCanvas9 = document.getElementById("oilChart9");
+			var approval3 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [marriageapproval[0], marriageapproval[1], marriageapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var payment3 = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [marriagepayment[0], marriagepayment[1]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement3 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [marriagerrequirement[0], marriagerrequirement[1], marriagerrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+
+			var pieChart = new Chart(oilCanvas7, {
+				type: 'pie',
+				data: approval3
+			});
+			var pieChart = new Chart(oilCanvas8, {
+				type: 'pie',
+				data: payment3
+			});
+			var pieChart = new Chart(oilCanvas9, {
+				type: 'pie',
+				data: requirement3
+			});
+			}	

@@ -314,7 +314,7 @@ block prepend main
 															h5.lh-1 Requirement Status
 														.layer.w-100
 															canvas#oilChart18(height='250')
-			// anointing
+			// houseblessing
 			.masonry-item.col-5
 					// #Site Visits ====================
 					.bd.bgc-white
@@ -341,8 +341,8 @@ block prepend main
 															h5.lh-1 Requirement Status
 														.layer.w-100
 															canvas#oilChart20(height='250')
-			// anointing
-			.masonry-item.col-7
+			// document request
+			.masonry-item.col-12
 					// #Site Visits ====================
 					.bd.bgc-white
 						.peers.ai-s(class='fxw-nw@lg+')
@@ -352,7 +352,15 @@ block prepend main
 										h5.lh-1 Document Request
 									.layer.w-100
 										.row.gap-20.masonry.pos-r
-											.masonry-item.col-md-4
+											.masonry-item.col-md-3
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Document Requested Type
+														.layer.w-100
+															canvas#oilChart24(height='250')
+											.masonry-item.col-md-3
 												// #Monthly Stats ====================
 												.bd.bgc-white.shadow
 													.layers.shadow
@@ -360,7 +368,7 @@ block prepend main
 															h5.lh-1 Approval Status
 														.layer.w-100
 															canvas#oilChart21(height='250')
-											.masonry-item.col-md-4
+											.masonry-item.col-md-3
 												// #Monthly Stats ====================
 												.bd.bgc-white.shadow
 													.layers.shadow
@@ -369,14 +377,18 @@ block prepend main
 														.layer.w-100
 															canvas#oilChart22(height='250')
 												// #Monthly Stats ====================
-											.masonry-item.col-md-4
+											.masonry-item.col-md-3
 												.bd.bgc-white.shadow
 													.layers.shadow
 														.layer.w-100.pX-20.pT-20
 															h5.lh-1 Requirement Status
 														.layer.w-100
 															canvas#oilChart23(height='250')
-															//- each resulte in resulta
+															
+
+
+
+
 															p(hidden)#anointingCount #{anointingCount}
 															p(hidden)#baptismCount #{baptismCount}
 															p(hidden)#specialbaptismCount #{specialbaptismCount}
@@ -562,7 +574,7 @@ block addjs
 						pointBackgroundColor: "#ec533e",
 						pointHoverBackgroundColor: "#FFF",
 						pointHoverBorderColor: "#ec533e",
-						data: [spcbaptism[0], spcbaptism[1], spcbaptism[2], spcbaptism[3], spcbaptism[4], spcbaptism[5], spcbaptism[6], spcbaptism[7], spcbaptism[8], spcbaptism[9], spcbaptism[10], anointing[11]]
+						data: [spcbaptism[0], spcbaptism[1], spcbaptism[2], spcbaptism[3], spcbaptism[4], spcbaptism[5], spcbaptism[6], spcbaptism[7], spcbaptism[8], spcbaptism[9], spcbaptism[10], spcbaptism[11]]
 				}]
 
 			}
@@ -619,7 +631,7 @@ block addjs
 			var specialServices = {
 				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 				datasets: [{
-						label: "House Blessing",
+						label: "Facility Reservation",
 						fill: false,
 						borderColor: "#52b99f",
 						backgroundColor: "#52b99f",
@@ -628,7 +640,7 @@ block addjs
 						pointHoverBorderColor: "#52b99f",
 						data: [facility[0], facility[1], facility[2], facility[3], facility[4], facility[5], facility[6], facility[7], facility[8], facility[9], facility[10], facility[11]]
 				}, {
-						label: "Facility Reservation",
+						label: "Document Request",
 						fill: false,
 						borderColor: "#f2af3e",
 						backgroundColor: "#f2af3e",
@@ -637,7 +649,7 @@ block addjs
 						pointHoverBorderColor: "#f2af3e",
 						data: [docu[0], docu[1], docu[2], docu[3], docu[4], docu[5], docu[6], docu[7], docu[8], docu[9], docu[10], docu[11]]
 				}, {
-						label: "Document Request",
+						label: "House Blessing",
 						fill: false,
 						borderColor: "#ec533e",
 						backgroundColor: "#ec533e",
@@ -697,7 +709,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [36.2, 43.3, 20.2],
+									data: [facilityapproval[0],facilityapproval[1],facilityapproval[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -712,7 +724,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [55, 45.2],
+									data: [facilitypayment[0],facilitypayment[1]],
 									backgroundColor: [
 											"#6384FF",
 											"#ec533e",
@@ -727,7 +739,7 @@ block addjs
 					],
 					datasets: [
 							{
-									data: [55.3, 70.2, 18.2],
+									data: [facilityrrequirement[0],facilityrrequirement[1],facilityrrequirement[2]],
 									backgroundColor: [
 											"#f2af3e",
 											"#52b99f",
@@ -1137,6 +1149,7 @@ block addjs
 			var oilCanvas21 = document.getElementById("oilChart21");
 			var oilCanvas22 = document.getElementById("oilChart22");
 			var oilCanvas23 = document.getElementById("oilChart23");
+			var oilCanvas24 = document.getElementById("oilChart24");
 			var approval8 = {
 					labels: [
 							"Pending",
@@ -1184,6 +1197,20 @@ block addjs
 							}]
 			};
 
+			var docutype = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [docupayment[0], docupayment[1], docupayment[2]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}] };
+
 			var pieChart = new Chart(oilCanvas21, {
 				type: 'pie',
 				data: approval8
@@ -1195,6 +1222,10 @@ block addjs
 			var pieChart = new Chart(oilCanvas23, {
 				type: 'pie',
 				data: requirement8
+			});
+			var pieChart = new Chart(oilCanvas24, {
+				type: 'pie',
+				data: docutype
 			});
 					//- })
 				//- })

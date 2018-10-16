@@ -1,0 +1,180 @@
+extends ../../../../../templates/admin
+block prepend main
+	#mainContent
+		.row.masonry.pos-r
+			.masonry-sizer.col-md-6
+			.masonry-item.w-100
+				
+		.row.gap-20.masonry.pos-r
+		
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h5.lh-1 Anointing of the sick
+						.layer.w-100.p-20
+							canvas#linegraph(height='150')
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h5.lh-1 Anointing of the sick
+						.layer.w-100.p-20
+							canvas#bargraph(height='150')
+			
+			
+			
+			
+			// anointing
+			.masonry-item.col-6
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Anointing of the sick
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-6
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart17(height='250')
+											.masonry-item.col-md-6
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart18(height='250')
+															p(hidden)#anointingCount #{anointingCount}
+															p(hidden)#anointingCountyear #{anointingCountyear}
+															
+															//ANOINTING
+															p(hidden)#anointingpieapproval #{anointingpieapproval}
+															p(hidden)#anointingrequirement #{anointingrequirement}
+
+block addjs
+	
+	script(type='text/javascript').
+			window.onload = function() {
+			var anointing= document.getElementById('anointingCount').innerHTML;
+			var anointingyear= document.getElementById('anointingCountyear').innerHTML;
+			
+			var anointingapproval=document.getElementById('anointingpieapproval').innerHTML;
+			var anointingrrequirement=document.getElementById('anointingrequirement').innerHTML;
+
+
+			anointing = anointing.split(',')
+			anointingyear = anointingyear.split(',')
+			
+			//ANOINTING
+			anointingapproval= anointingapproval.split(',')
+			anointingrrequirement= anointingrrequirement.split(',')
+
+			var blessing = {
+				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				datasets: [{
+						label: "Number of requests",
+						fill: false,
+						borderColor: "#ec533e",
+						backgroundColor: "#ec533e",
+						pointBackgroundColor: "#ec533e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#ec533e",
+						data:  [anointing[0], anointing[1], anointing[2], anointing[3], anointing[4], anointing[5], anointing[6], anointing[7], anointing[8], anointing[9], anointing[10], anointing[11]]
+						
+
+				}]
+
+			}
+			var blessing1 = {
+				labels: ['2010','2011', '2012', '2013', '2014','2015', '2016', '2017', '2018'],
+				datasets: [{
+						label: "Number of requests",
+						fill: false,
+						borderColor: "#ec533e",
+						backgroundColor: "#ec533e",
+						pointBackgroundColor: "#ec533e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#ec533e",
+						data:  [anointingyear[0], anointingyear[1], anointingyear[2], anointingyear[3], anointingyear[4], anointingyear[5], anointingyear[6], anointingyear[7], anointingyear[8]]
+						
+
+				}]
+
+			}
+
+			
+					
+					var canvas = document.getElementById("linegraph");
+					var ctx2 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx2 , {
+							type: "line",
+							data: blessing,
+							responsive: true,
+					});
+					var canvas = document.getElementById("bargraph");
+					var ctx21 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx21 , {
+							type: "bar",
+							data: blessing1,
+							responsive: true,
+					});
+			
+			// end of line charts
+
+			
+			// anointing of the sick
+			var oilCanvas17 = document.getElementById("oilChart17");
+			var oilCanvas18 = document.getElementById("oilChart18");
+			var approval6 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [anointingapproval[0], anointingapproval[1], anointingapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement6 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [anointingrrequirement[0], anointingrrequirement[1], anointingrrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+
+			var pieChart = new Chart(oilCanvas17, {
+				type: 'pie',
+				data: approval6
+			});
+			var pieChart = new Chart(oilCanvas18, {
+				type: 'pie',
+				data: requirement6
+			});
+			
+			}	

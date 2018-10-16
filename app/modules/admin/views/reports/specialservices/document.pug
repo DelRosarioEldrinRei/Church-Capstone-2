@@ -1,0 +1,238 @@
+extends ../../../../../templates/admin
+block prepend main
+	#mainContent
+		.row.masonry.pos-r
+			.masonry-sizer.col-md-6
+			.masonry-item.w-100
+				
+			// line charts
+		.row.gap-20.masonry.pos-r
+			
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h5.lh-1 Document Request
+						.layer.w-100.p-20
+							canvas#canvas4(height='150')
+			.masonry-item.col-md-6
+				// #Monthly Stats ====================
+				.bd.bgc-white
+					.layers.shadow
+						.layer.w-100.pX-20.pT-20
+							h5.lh-1 Document Request
+						.layer.w-100.p-20
+							canvas#canvas44(height='150')
+			
+			
+			// document request
+			.masonry-item.col-12
+					// #Site Visits ====================
+					.bd.bgc-white
+						.peers.ai-s(class='fxw-nw@lg+')
+							.peer.peer-greed.p-20.shadow(class='w-70p@lg+ w-100@lg-')
+								.layers
+									.layer.w-100.mB-10
+										h5.lh-1 Document Request
+									.layer.w-100
+										.row.gap-20.masonry.pos-r
+											.masonry-item.col-md-3
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Document Requested Type
+														.layer.w-100
+															canvas#oilChart24(height='250')
+											.masonry-item.col-md-3
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Approval Status
+														.layer.w-100
+															canvas#oilChart21(height='250')
+											.masonry-item.col-md-3
+												// #Monthly Stats ====================
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Payment Status
+														.layer.w-100
+															canvas#oilChart22(height='250')
+												// #Monthly Stats ====================
+											.masonry-item.col-md-3
+												.bd.bgc-white.shadow
+													.layers.shadow
+														.layer.w-100.pX-20.pT-20
+															h5.lh-1 Requirement Status
+														.layer.w-100
+															canvas#oilChart23(height='250')
+															
+
+
+															p(hidden)#docuCount #{docuCount}
+															p(hidden)#docuCountyear #{docuCountyear}
+															
+															//DOCUMENT
+															p(hidden)#docupieapproval #{docupieapproval}
+															p(hidden)#docurequirement #{docurequirement}
+															p(hidden)#docupiepayment #{docupiepayment}
+															
+														
+block addjs
+	
+	script(type='text/javascript').
+			window.onload = function() {
+			var docu= document.getElementById('docuCount').innerHTML;
+			var docuyear= document.getElementById('docuCountyear').innerHTML;
+			
+			//DOCUMENT
+			var docuapproval=document.getElementById('docupieapproval').innerHTML;
+			var docurrequirement=document.getElementById('docurequirement').innerHTML;
+			var docupayment=document.getElementById('docupiepayment').innerHTML;
+			
+			docu = docu.split(',')
+			docuyear = docuyear.split(',')
+			
+			//DOCUMENT
+			docuapproval= docuapproval.split(',')
+			docurrequirement= docurrequirement.split(',')
+			docupayment= docupayment.split(',')
+			
+
+			var specialServices = {
+				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				datasets: [{
+						label: "Document Request",
+						fill: false,
+						borderColor: "#f2af3e",
+						backgroundColor: "#f2af3e",
+						pointBackgroundColor: "#f2af3e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#f2af3e",
+						data: [docu[0], docu[1], docu[2], docu[3], docu[4], docu[5], docu[6], docu[7], docu[8], docu[9], docu[10], docu[11]]
+				
+				}]
+
+			}
+			var specialServices1 = {
+				labels: ['2010','2011', '2012', '2013', '2014','2015', '2016', '2017', '2018'],
+				datasets: [{
+						label: "Document Request",
+						fill: false,
+						borderColor: "#f2af3e",
+						backgroundColor: "#f2af3e",
+						pointBackgroundColor: "#f2af3e",
+						pointHoverBackgroundColor: "#FFF",
+						pointHoverBorderColor: "#f2af3e",
+						data: [docuyear[0], docuyear[1], docuyear[2], docuyear[3], docuyear[4], docuyear[5], docuyear[6], docuyear[7], docuyear[8]]
+				
+				}]
+
+			}
+
+					//fourth
+					var canvas = document.getElementById("canvas4");
+					var ctx4 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx4 , {
+							type: "line",
+							data: specialServices,
+							responsive: true,
+					});
+					var canvas = document.getElementById("canvas44");
+					var ctx44 = canvas.getContext("2d");	
+					var myNewChart = new Chart(ctx44 , {
+							type: "bar",
+							data: specialServices1,
+							responsive: true,
+					});
+			
+			// end of line charts
+
+			// Document request
+			var oilCanvas21 = document.getElementById("oilChart21");
+			var oilCanvas22 = document.getElementById("oilChart22");
+			var oilCanvas23 = document.getElementById("oilChart23");
+			var oilCanvas24 = document.getElementById("oilChart24");
+			var approval8 = {
+					labels: [
+							"Pending",
+							"Approved",
+							"Disapproved",
+					],
+					datasets: [
+							{
+									data: [docuapproval[0], docuapproval[1], docuapproval[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+			var payment8 = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [docupayment[0], docupayment[1], docupayment[2]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}]
+			};
+			var requirement8 = {
+					labels: [
+							"Submitted",
+							"Accepted",
+							"Rejected",
+					],
+					datasets: [
+							{
+									data: [docurrequirement[0], docurrequirement[1], docurrequirement[2]],
+									backgroundColor: [
+											"#f2af3e",
+											"#52b99f",
+											"#ec533e",
+									]
+							}]
+			};
+
+			var docutype = {
+					labels: [
+							"Paid",
+							"Unpaid",
+					],
+					datasets: [
+							{
+									data: [docupayment[0], docupayment[1], docupayment[2]],
+									backgroundColor: [
+											"#6384FF",
+											"#ec533e",
+									]
+							}] };
+
+			var pieChart = new Chart(oilCanvas21, {
+				type: 'pie',
+				data: approval8
+			});
+			var pieChart = new Chart(oilCanvas22, {
+				type: 'pie',
+				data: payment8
+			});
+			var pieChart = new Chart(oilCanvas23, {
+				type: 'pie',
+				data: requirement8
+			});
+			var pieChart = new Chart(oilCanvas24, {
+				type: 'pie',
+				data: docutype
+			});
+					//- })
+				//- })
+			}	
