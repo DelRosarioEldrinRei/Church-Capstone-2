@@ -4,6 +4,52 @@ block prepend main
 		.dataTables_wrapper {
 			overflow: visible !important;
 		}
+		.tableModal {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+		}
+
+		.tdModal{
+			border: 2px solid #dddddd;
+			text-align: left;
+			padding: 12px;
+		}
+		.shadow3 {
+			box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+		}
+
+		body > div.mfp-wrap.mfp-close-btn-in.mfp-auto-cursor.mfp-with-zoom.mfp-ready > div {
+			z-index: 9999 !important;
+		}
+
+		.mfp-with-zoom .mfp-container,
+		.mfp-with-zoom.mfp-bg {
+			opacity: 0;
+			-webkit-backface-visibility: hidden;
+			/* ideally, transition speed should match zoom duration */
+			-webkit-transition: all 0.3s ease-out;
+			-moz-transition: all 0.3s ease-out;
+			-o-transition: all 0.3s ease-out;
+			transition: all 0.3s ease-out;
+			z-index: 99999;
+		}
+
+		.mfp-image, .mfp-container, .mfp-ready, .mfp-image-holder, .mfp-content, .mfp-preloader, .mfp-figure {
+			z-index: 99999;
+		}
+
+		.mfp-with-zoom.mfp-ready .mfp-container {
+			opacity: 1;
+		}
+		.mfp-with-zoom.mfp-ready.mfp-bg {
+			opacity: 0.8;
+		}
+
+		.mfp-with-zoom.mfp-removing .mfp-container,
+		.mfp-with-zoom.mfp-removing.mfp-bg {
+		opacity: 0;
+		}
 	#wrap
 	div(style='clear:both')
 	.content

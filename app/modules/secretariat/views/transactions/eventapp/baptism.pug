@@ -583,7 +583,7 @@ block addjs
 						</div>
 						<div class="form-group col-md-6">
 							<label >Current Requirement Status:</label>
-							<input id="reqstatus" type="text" class="form-control" value="">
+							<input id="reqstatus" type="text" class="form-control" value="" disabled>
 						</div>
 					</div>
 					<div class="form-row">
@@ -592,7 +592,7 @@ block addjs
 						</div>
 						<div class="form-group col-md-6">
 							<label>Fee:</label>
-							<input type="text" class="form-control" value="&#8369; ${data.results.dbl_amount.toFixed(2)}">
+							<input type="text" class="form-control" value="&#8369; ${data.results.dbl_amount.toFixed(2)}" disabled>
 						</div>
 					</div>
 				</form>
@@ -609,7 +609,7 @@ block addjs
 					console.log("cur reqstatus"+$('#reqstatusupdate').val())
 						if(data.results.char_paymentstatus=="Paid"){
 							$('#paystatus').append(`
-							<input type="text" class="form-control" value="Paid">
+							<input type="text" class="form-control" value="Paid" disabled>
 							<input id="paystatusupdate" type="hidden" value="Paid">`)
 								if(data.results.char_approvalstatus=="Cancelled"){
 									$('#eventstatusupdate').append(`

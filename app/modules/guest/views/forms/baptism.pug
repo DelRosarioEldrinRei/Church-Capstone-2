@@ -338,7 +338,13 @@ block addjs
 			}
 			}
 			else{
-				alert('Please complete the form')
+				swal({
+					title: "Form is not completed yet",
+					text: "Please fill out all the required fields",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
 			}
 		})
 		})
@@ -380,9 +386,15 @@ block addjs
 			$('#file-0b').val() != undefined){
 				$('#nextButton2').addClass('btn-next')
 			}
-				else{
-				alert('Please complete the form')
-				}
+			else{
+				swal({
+					title: "Form is not completed yet",
+					text: "Please fill out all the required fields",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
+			}
 		})
 		}
 		});
@@ -835,7 +847,13 @@ block addjs
 		var gender;
 		$('#nextButton1').click(function(){
 			if(eventDate == '' && timeStart == ''){
-				alert('Please input your desired time')
+				swal({
+					title: "Please schedule your date",
+					text: "You haven't chosen your desired schedule yet",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
 			}
 			else{
 				$('#nextButton1').addClass('btn-next')

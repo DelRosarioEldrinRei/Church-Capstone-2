@@ -16,6 +16,9 @@ block main
 		.form-wizard-tolal-steps-3 .form-wizard-step {
 			width: 49.33%;
 		}
+		.form-control {
+			margin-bottom: 0;
+		}
 	#headers
 		#header-style-1
 			.container
@@ -68,7 +71,7 @@ block main
 															#calendarAnointing
 													.help-block.with-errors
 									.learn-more.pull-right
-												button#nextButton1.btn.btn-next(type='button') Next
+												button#nextButton1.btn(type='button') Next
 							// Form Step 1
 							// Form Step 2
 							fieldset
@@ -76,24 +79,24 @@ block main
 									.d-none.d-sm-inline Anointing Details:
 									span Step 2 - 2
 									input.form-control#userID(type='hidden' name='userID' value=`${user.int_userID}`)
-									h5.label-control Name of the Ill:
+									h5.label-control Name of the ill:
+										.text-danger.d-inline  *
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.pt-0
 												input.form-control#lastname(type='text' placeholder="Last Name *" name='lastname', required='' pattern="[A-Za-z ]{2,}" data-error='Please enter lastname')
-												.help-block.with-errors
+												.text-danger.warning
 										.col-md-4.p-lg-0.px-md-3.px-sm-0
 											.form-group.p-0
 												input.form-control#firstname(type='text' placeholder="First Name *" name='firstname'  required='' pattern="[A-Za-z ]{3,}" data-error='Please enter firstname')
-												.help-block.with-errors
+												.text-danger.warning
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.pt-0
 												input.form-control#middlename(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z ]{3,}" )
-												.help-block.with-errors
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
-												h5.label-control Relationship with the Ill
+												h5.label-control Relationship with the ill
 													.text-danger.d-inline  *
 												select#relation(type="text" name='relation'  required=''  data-error='Please choose an option')
 													option(selected="" value="" disabled) Choose...
@@ -107,19 +110,19 @@ block main
 													option Parent
 													option Sibling
 													option Spouse
-												.help-block.with-errors(style="margin-top:2rem!important;")
+												.text-danger.warning
 										.col-md-4.p-lg-0.px-md-3.px-sm-0
 											.form-group
 												h5.label-control Birthday
 													.text-danger.d-inline  *
 												input.birthday.form-control#birthday(type='date' name='birthday'  required='', data-error='Please enter your birthday')
-												.help-block.with-errors
+												.text-danger.warning
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
 												h5.label-control Birthplace:
 													.text-danger.d-inline  *
 												input.form-control#birthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9 ]{3,}"  data-error='Please enter birthplace')
-												.help-block.with-errors
+												.text-danger.warning
 									//- .row
 									//- 	.col-md-4.px-lg-3.px-md-0.px-sm-0
 									//- 		.form-group
@@ -157,14 +160,14 @@ block main
 													.text-danger.d-inline  *
 												textarea#address.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" data-error='Please enter complete address')
 												label
-													.help-block.with-errors
+													.text-danger.warning6
 										.col-md-4.px-lg-3.px-md-3.px-sm-0
 											.form-group.p-0
 												h5(for='details') Details
 													.text-danger.d-inline  *
 												textarea#details.form-control.mb-0(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
 												label
-													.help-block.with-errors
+													.text-danger.warning7
 									.row
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
@@ -223,17 +226,21 @@ block main
 						button.btn.btn-submit#OK(type='button') OK
 block addjs
 	script(type='text/javascript').
-		
 		$(document).ready(function(){
 			$('#OK').click(function(){
 			window.href=`/guest`
 			})
 			$('#nextButton1').click(function(){
 			if(eventDate == ''){
-				alert('Please input your desired time')
+				swal({
+					title: "Please schedule your date",
+					text: "You haven't chosen your desired schedule yet",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
 			}
 			else{
-				
 				$('#nextButton1').addClass('btn-next')
 			}
 			})
@@ -301,7 +308,13 @@ block addjs
 					})
 				}
 				else{
-					alert('Please complete the form')
+					swal({
+						title: "Form is not completed yet",
+						text: "Please fill out all the required fields",
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: 'OK'
+					})
 				}
 				})		
 
@@ -410,6 +423,15 @@ block addjs
 				}
 			})
 		})
+		//- $("input[type=text]").keyup(function(){
+		//- 	if($(this).val() == '') {
+		//- 		$('.text-danger.warning1').text('Please fill out the required field.')
+		//- 	}
+		//- 	else {
+		//- 		$('.text-danger.warning1').text('')
+		//- 	}
+		//- });
+
 		//- $('.desiredDate').datetimepicker({
 		//- 	format: 'YYYY-MM-DD',
 		//- 	minDate: startDate,
