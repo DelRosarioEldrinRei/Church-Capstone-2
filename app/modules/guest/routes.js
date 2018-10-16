@@ -259,19 +259,55 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
             })
         }
     })
+    guestRouter.post('/message', (req, res)=>{
+        console.log(req.body.id)
+        var queryString1= `select * from tbl_message 
+        JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_message.int_eventinfoID
+        WHERE tbl_eventinfo.int_eventinfoID =?`
+        db.query(queryString1,[req.body.id], (err, results, fields) => {
+            if (err) console.log(err);       
+            console.log(results)
+            res.send(results[0])
+        }); 
+    }); 
+    guestRouter.post('/message/send', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        console.log(req.body)
+        var nowDate = new Date(); 
+            var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+            
+        var queryString3= `INSERT INTO tbl_message(int_senderID, int_receiverID, var_subject, text_message,datetime_sent) VALUES(?,?,?,?,?);`;
+                console.log(req.session.userID)
+                db.query(queryString3,[req.session.userID, req.body.int_receiverID, req.body.var_subject, req.body.text_message,date], (err, results, fields) => {
+                    if (err) console.log(err); 
+                    console.log(results)
+                    res.send(results)
+                }); 
+    }); 
     guestRouter.post('/reservation/query/update',(req,res)=>{
+        console.log(req.body)
         if(req.body.eventname == "Baptism" || req.body.eventname == "Special Baptism"){
+            console.log(req.body)
             var queryString = `UPDATE tbl_baptism,tbl_relation SET 
             tbl_relation.var_fname = ?,tbl_relation.var_mname = ?,tbl_relation.var_lname = ?,
             tbl_relation.char_gender = ?,tbl_relation.var_relation = ?,
             tbl_relation.date_birthday = ?,tbl_relation.var_birthplace =?,
-            tbl_relation.var_address,tbl_baptism.var_parentmarriageadd = ?,
+            tbl_relation.var_address = ?,tbl_baptism.var_parentmarriageadd = ?,
             tbl_baptism.var_fatherbplace = ?,tbl_baptism.var_fathername = ?,
             tbl_baptism.var_mothername = ?,tbl_baptism.var_mothername = ?,
-            tbl_baptism.var_contactnum =? WHERE tbl_baptism.int_eventinfo =?
+            tbl_baptism.var_contactnum =? WHERE tbl_baptism.int_eventinfoID =?
+            AND tbl_relation.int_eventinfoID = ?
             `
             console.log(req.body)
-            db.query(queryString,[req.body.firstname,req.body.middlename,req.body.lastname,req.body.id],(err,results,fields)=>{
+            db.query(queryString,[
+                req.body.firstname,req.body.middlename,req.body.lastname,
+                req.body.gender,req.body.relation,req.body.birthdate,
+                req.body.birthplace,req.body.address,req.body.parentmarriageaddress,
+                req.body.fatherbplace,req.body.fathername,
+                req.body.motherbplace,req.body.mothername,
+                req.body.contactnum,
+                req.body.id,req.body.id],(err,results,fields)=>{
                 if(err) throw err
                 console.log(results)
                 res.send(results)

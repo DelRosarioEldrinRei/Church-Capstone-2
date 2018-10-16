@@ -317,16 +317,8 @@ block addjs
 						$(`#reqAppend`).append(`
 						<h4><input type="checkbox" class="checkbox tdModal h5" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  </h4>
 						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-<<<<<<< HEAD
 						<input class="reject" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
 						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Accept
-=======
-<<<<<<< HEAD
-=======
-						<input class="custom-control-input" id="customRadio2" type="radio" name="Reject" value=${data.requirements[i].int_requirementID} />
-						<input class="custom-control-input" id="customRadio2" type="radio" name="Approved" value=${data.requirements[i].int_requirementID} />
->>>>>>> 04eaa6c3df62ce79193715061614491de8f062e4
->>>>>>> 2aacd7f5f02d30a04273dc9571348327ebf71839
 						`)
 						}
 						else if(data.requirements[i].var_reqstatus == "Approved"){
@@ -334,11 +326,8 @@ block addjs
 						$(`#reqAppend`).append(`
 						<h4><input type="checkbox" disabled=true checked="" class="checkbox tdModal" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  </h4>
 						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-<<<<<<< HEAD
 						<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
 						<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Approved
-=======
->>>>>>> 2aacd7f5f02d30a04273dc9571348327ebf71839
 						`) 
 						}
 						else if(data.requirements[i].var_reqstatus == "Rejected"){
