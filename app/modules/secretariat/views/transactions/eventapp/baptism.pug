@@ -201,12 +201,14 @@ block prepend main
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#reqStatus
-					.modal-body.pt-0
-						.form-group
-							.gallery#reqAppend
-					.modal-footer
-						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-						button.btn.btn-outline.btn-secondary.pull-left#updateReqButton(type='button') Update
+						.row
+							.col-md-6.mx-auto
+								.gallery#reqAppend
+							.col-md-6
+								#upStatus
+								#status
+					.modal-footer.mx-auto
+						button.btn.btn-outline.btn-primary.pull-left#updateReqButton(type='button') Update
 	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
@@ -359,55 +361,53 @@ block addjs
 
 						if(data.requirements[i].var_reqstatus == "Submitted"){
 						$(`#reqAppend`).append(`
-						<h4><input type="checkbox" class="checkbox tdModal h5" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  </h4>
-						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-<<<<<<< HEAD
-						<input class="custom-control-input" id="customRadio2" type="radio" name="Reject" value=${data.requirements[i].int_requirementID} />
-						<input class="custom-control-input" id="customRadio2" type="radio" name="Approved" value=${data.requirements[i].int_requirementID} />
-=======
-<<<<<<< HEAD
-						<input class="reject" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
-						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Accept
-=======
-<<<<<<< HEAD
-=======
-						<input class="custom-control-input" id="customRadio2" type="radio" name="Reject" value=${data.requirements[i].int_requirementID} />
-						<input class="custom-control-input" id="customRadio2" type="radio" name="Approved" value=${data.requirements[i].int_requirementID} />
->>>>>>> 04eaa6c3df62ce79193715061614491de8f062e4
->>>>>>> 2aacd7f5f02d30a04273dc9571348327ebf71839
->>>>>>> e5ad139f68faf94773ee85a2cc8efa556014ed48
+						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
 						`)
+						$('#status').append(`
+						<input class="reject" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} />
+							<h5 class="d-inline">Reject</h5>
+						<br>
+						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} />
+							<h5 class="d-inline">Accept</h5>
+						`)
+						
 						}
 						else if(data.requirements[i].var_reqstatus == "Approved"){
 						ctr++;
 						$(`#reqAppend`).append(`
-						<h4><input type="checkbox" disabled=true checked="" class="checkbox tdModal" value=${data.requirements[i].int_requirementID}>${data.requirements[i].var_reqname}  </h4>
-						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-<<<<<<< HEAD
-						<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
-						<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Approved
-=======
->>>>>>> 2aacd7f5f02d30a04273dc9571348327ebf71839
+						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
 						`) 
+						$('#status').append(`
+						<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> 
+							<h5 class="d-inline">Reject</h5>
+						<br>
+						<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} />
+							<h5 class="d-inline">Accept</h5>
+						`)
 						}
 						else if(data.requirements[i].var_reqstatus == "Rejected"){
 						$(`#reqAppend`).append(`
-						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 17rem;"/></a>
-						<input class="reject" checked="" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> Reject
-						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} /> Accept
+						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
+						`)
+						$('#status').append(`
+						<input class="reject" checked="" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} />
+							<h5class="d-inline">Reject</h5>
+						<br>
+						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} />
+							<h5 class="d-inline">Accep</h5>
 						`)
 						$(`input[name="${data.requirements[i].var_reqname}reject"][class="reject"]`).attr("checked",true);
 						console.log()
 						}
 					}
 					if(ctr == data.requirements.length){
-						$(`#reqStatus`).append(`
-						<h6 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h5> <span class="approvalpay badge btn btn-primary-lg bgc-green-100 c-green-700" value="Complete">Complete</span>
+						$(`#upStatus`).append(`
+						<h4 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h4> <span class="approvalpay badge btn btn-primary-lg bgc-green-100 c-green-700" value="Complete">Complete</span>
 						`)
 					}
 					else{
-						$(`#reqStatus`).append(`
-						<h6 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h5> <span class="approval badge btn btn-primary-lg bgc-amber-100 c-amber-700" value="Incomplete">Incomplete</span>
+						$(`#upStatus`).append(`
+						<h4 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h4> <span class="approval badge btn btn-primary-lg bgc-amber-100 c-amber-700" value="Incomplete">Incomplete</span>
 						`)
 					}
 					console.log(ctr)
@@ -558,15 +558,13 @@ block addjs
 									location.reload();
 								})
 							}
-
-
-
 							}
 							})
 					})
 					$('#updateReqModal').on('hidden.bs.modal',function(){
 						$('#reqAppend').empty()
-						$('#reqStatus').empty()
+						$('#upStatus').empty()
+						$('#status').empty()
 					})
 				})
 			})
