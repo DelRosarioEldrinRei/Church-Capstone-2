@@ -61,27 +61,51 @@ block prepend main
 				each event in events
 					.col-lg-4.col-md-6.col-xs-12
 						.featured-box-item
-							.featured-icon
-								i.fa.fa-bolt
-							.featured-content
-								h4
-									| #{event.var_eventname}
-								p
-									| #{event.var_eventdesc.substring(0, 100)}...
-								.learn-more
-										button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
-										// Modal
-										#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-											.modal-dialog.modal-lg(role='document')
-												.modal-content#each
-													.modal-header#headerAppend
-														button.close(type='button', data-dismiss='modal', aria-label='Close')
-															span.p-3(aria-hidden='true') ×
-													.modal-body#bodyAppend
-													.modal-body#reqAppend
-													.modal-footer
-														button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${event.int_eventID}`) Apply
+								.featured-icon
+										i.fa.fa-bolt
+								.featured-content
+										h4
+												| #{event.var_eventname}
+										p
+												| #{event.var_eventdesc.substring(0, 100)}...
+										.learn-more
+												button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
+					#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+						.modal-dialog.modal-lg(role='document')
+								.modal-content#each
+										.modal-header#headerAppend
+												button.close(type='button', data-dismiss='modal', aria-label='Close')
+														span.p-3(aria-hidden='true') ×
+										.modal-body
+											#bodyAppend
+											#reqAppend
+											.row
+												.col-md-12
+													.learn-more.text-center
+														button.btn.std-btn.btn-common#proceedButton(type='button' value=`${event.int_eventID}`) Apply
+					//- .col-lg-4.col-md-6.col-xs-12
+					//- 	.featured-box-item
+					//- 		.featured-icon
+					//- 			i.fa.fa-bolt
+					//- 		.featured-content
+					//- 			h4
+					//- 				| #{event.var_eventname}
+					//- 			p
+					//- 				| #{event.var_eventdesc.substring(0, 100)}...
+					//- 			.learn-more
+					//- 					button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
+					//- 					// Modal
+					//- 					#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+					//- 						.modal-dialog.modal-lg(role='document')
+					//- 							.modal-content#each
+					//- 								.modal-header#headerAppend
+					//- 									button.close(type='button', data-dismiss='modal', aria-label='Close')
+					//- 										span.p-3(aria-hidden='true') ×
+					//- 								.modal-body#bodyAppend
+					//- 								.modal-body#reqAppend
+					//- 								.modal-footer
+					//- 									button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+					//- 									button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${event.int_eventID}`) Apply
 		.container
 			.row
 				.col-md-12
@@ -89,26 +113,27 @@ block prepend main
 			.row
 				each service in services
 					.col-lg-4.col-md-6.col-xs-12
-						.featured-box-item
-							.featured-icon
-								i.fa.fa-bolt
-							.featured-content
-								h4
-									| #{service.var_servicename}
-								
-								.learn-more
-										button.btn.std-btn.btn-common.serviceButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${service.int_serviceutilitiesID}`) Inquire
-										// Modal
-										#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-											.modal-dialog.modal-lg(role='document')
-												.modal-content#each
-													.modal-header#headerAppend
-														button.close(type='button', data-dismiss='modal', aria-label='Close')
-															span.p-3(aria-hidden='true') ×
-													.modal-body#bodyAppend
-													.modal-body#reqAppend
-													.modal-footer
-														button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${service.int_utilitiesID}`) Apply
+								.featured-box-item
+									.featured-icon
+										i.fa.fa-bolt
+									.featured-content
+										h4
+											| #{service.var_servicename}
+										
+										.learn-more
+												button.btn.std-btn.btn-common.serviceButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${service.int_serviceutilitiesID}`) Inquire
+												// Modal
+												#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+													.modal-dialog.modal-lg(role='document')
+														.modal-content#each
+															.modal-header#headerAppend
+																button.close(type='button', data-dismiss='modal', aria-label='Close')
+																	span.p-3(aria-hidden='true') ×
+															.modal-body#bodyAppend
+															.modal-body#reqAppend
+															.modal-footer
+																button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+																button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${service.int_utilitiesID}`) Apply
 									
 	section#portfolio.section-padding
 		.container
@@ -133,126 +158,126 @@ block prepend main
 						.portfolio-item
 							.portfolio-img
 								img(src='/imgchurch/1.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
+							//- .portfoli-content
+							//- 	.sup-desc-wrap
+							//- 		.sup-desc-inner
+							//- 			.sup-link
+							//- 				a.left-link(href='#')
+							//- 					i.fa.fa-link
+							//- 				a.right-link(href='#')
+							//- 					i.fa.fa-heart
+							//- 			.sup-meta-wrap
+							//- 				a.sup-title(href='#')
+							//- 					h4 TITLE HERE
 											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
 					.col-lg-4.col-md-6.col-xs-12.mix.branding.planning(style='display: inline-block;', data-bound='')
 						.portfolio-item
 							.portfolio-img
 								img(src='/imgchurch/2.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
+							//- .portfoli-content
+							//- 	.sup-desc-wrap
+							//- 		.sup-desc-inner
+							//- 			.sup-link
+							//- 				a.left-link(href='#')
+							//- 					i.fa.fa-link
+							//- 				a.right-link(href='#')
+							//- 					i.fa.fa-heart
+							//- 			.sup-meta-wrap
+							//- 				a.sup-title(href='#')
+							//- 					h4 TITLE HERE
 											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
 					.col-lg-4.col-md-6.col-xs-12.mix.branding.research(style='display: inline-block;', data-bound='')
 						.portfolio-item
 							.portfolio-img
 								img(src='/imgchurch/3.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
+							//- .portfoli-content
+							//- 	.sup-desc-wrap
+							//- 		.sup-desc-inner
+							//- 			.sup-link
+							//- 				a.left-link(href='#')
+							//- 					i.fa.fa-link
+							//- 				a.right-link(href='#')
+							//- 					i.fa.fa-heart
+							//- 			.sup-meta-wrap
+							//- 				a.sup-title(href='#')
+							//- 					h4 TITLE HERE
 											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
 					.col-lg-4.col-md-6.col-xs-12.mix.marketing.research(style='display: inline-block;', data-bound='')
 						.portfolio-item
 							.portfolio-img
 								img(src='/imgchurch/4.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
+							//- .portfoli-content
+							//- 	.sup-desc-wrap
+							//- 		.sup-desc-inner
+							//- 			.sup-link
+							//- 				a.left-link(href='#')
+							//- 					i.fa.fa-link
+							//- 				a.right-link(href='#')
+							//- 					i.fa.fa-heart
+							//- 			.sup-meta-wrap
+							//- 				a.sup-title(href='#')
+							//- 					h4 TITLE HERE
 											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
 					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning(style='display: inline-block;', data-bound='')
 						.portfolio-item
 							.portfolio-img
 								img(src=src='/imgchurch/5.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
+							//- .portfoli-content
+							//- 	.sup-desc-wrap
+							//- 		.sup-desc-inner
+							//- 			.sup-link
+							//- 				a.left-link(href='#')
+							//- 					i.fa.fa-link
+							//- 				a.right-link(href='#')
+							//- 					i.fa.fa-heart
+							//- 			.sup-meta-wrap
+							//- 				a.sup-title(href='#')
+							//- 					h4 TITLE HERE
 											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
 					.col-lg-4.col-md-6.col-xs-12.mix.planning.research(style='display: inline-block;', data-bound='')
 						.portfolio-item
 							.portfolio-img
 								img(src=src='/imgchurch/6.jpg', alt='')
-							.portfoli-content
-								.sup-desc-wrap
-									.sup-desc-inner
-										.sup-link
-											a.left-link(href='#')
-												i.fa.fa-link
-											a.right-link(href='#')
-												i.fa.fa-heart
-										.sup-meta-wrap
-											a.sup-title(href='#')
-												h4 TITLE HERE
+							//- .portfoli-content
+							//- 	.sup-desc-wrap
+							//- 		.sup-desc-inner
+							//- 			.sup-link
+							//- 				a.left-link(href='#')
+							//- 					i.fa.fa-link
+							//- 				a.right-link(href='#')
+							//- 					i.fa.fa-heart
+							//- 			.sup-meta-wrap
+							//- 				a.sup-title(href='#')
+							//- 					h4 TITLE HERE
 											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-	#counter
-		.container
-			.row.count-to-sec
-				.col-lg-3.col-md-6.col-xs-12.count-one
-					span.icon
-						i.fa.fa-download  
-					h3.timer.count-value(data-to='561', data-speed='1000') 561
-					hr.width25-divider
-					small.count-title Downloads
-				.col-lg-3.col-md-6.col-xs-12.count-one
-					span.icon
-						i.fa.fa-user  
-					h3.timer.count-value(data-to='950', data-speed='1000') 950
-					hr.width25-divider
-					small.count-title Developers
-				.col-lg-3.col-md-6.col-xs-12.count-one
-					span.icon
-						i.fa.fa-desktop  
-					h3.timer.count-value(data-to='978', data-speed='1000') 978
-					hr.width25-divider
-					small.count-title Lines of code written
-				.col-lg-3.col-md-6.col-xs-12.count-one
-					span.icon
-						i.fa.fa-coffee  
-					h3.timer.count-value(data-to='1700', data-speed='1000') 1700
-					hr.width25-divider
-					small.count-title Cups of coffee consumed
-	#team.team-members-tow.section-padding.mx-5
+	//- #counter
+	//- 	.container
+	//- 		.row.count-to-sec
+	//- 			.col-lg-3.col-md-6.col-xs-12.count-one
+	//- 				span.icon
+	//- 					i.fa.fa-download  
+	//- 				h3.timer.count-value(data-to='561', data-speed='1000') 561
+	//- 				hr.width25-divider
+	//- 				small.count-title Downloads
+	//- 			.col-lg-3.col-md-6.col-xs-12.count-one
+	//- 				span.icon
+	//- 					i.fa.fa-user  
+	//- 				h3.timer.count-value(data-to='950', data-speed='1000') 950
+	//- 				hr.width25-divider
+	//- 				small.count-title Developers
+	//- 			.col-lg-3.col-md-6.col-xs-12.count-one
+	//- 				span.icon
+	//- 					i.fa.fa-desktop  
+	//- 				h3.timer.count-value(data-to='978', data-speed='1000') 978
+	//- 				hr.width25-divider
+	//- 				small.count-title Lines of code written
+	//- 			.col-lg-3.col-md-6.col-xs-12.count-one
+	//- 				span.icon
+	//- 					i.fa.fa-coffee  
+	//- 				h3.timer.count-value(data-to='1700', data-speed='1000') 1700
+	//- 				hr.width25-divider
+	//- 				small.count-title Cups of coffee consumed
+	//- #team.team-members-tow.section-padding.mx-5
 		.container
 			.row
 				.col-md-12
@@ -427,14 +452,14 @@ block addjs
 							`)
 							$('#bodyAppend').append(`
 							<p><strong>Service Description</strong></p>
-							<p>${data.firstQuery.var_eventdesc}</p>
+							<p class="pl-2 description">${data.firstQuery.var_eventdesc}</p>
 							<br>
 							
 						`)
 						for(i=0;i<data.secondQuery.length;i++){
 						$('#reqAppend').append(`
 							<p><strong>Requirements</strong></p>
-							<p>${data.secondQuery[i].var_reqname}</p>
+							<p class="pl-2 description">${data.secondQuery[i].var_reqname}</p>
 						`)
 						}
 						$('#inquireModal').modal('show');	
@@ -445,7 +470,7 @@ block addjs
 
 						})
 						$('#cancelButton').css('display', 'block');
-						$('#proceedButton').css('display', 'block');
+						//- $('#proceedButton').css('display', 'block');
 							$('#proceedButton').click(function(){
 								$.post('/login/query',{id:data.firstQuery.int_eventID}).done(data =>{
 									window.location=`/login? 
@@ -473,7 +498,7 @@ block addjs
 							`)
 							$('#bodyAppend').append(`
 							<p><strong>Service Description</strong></p>
-							<p>${data.firstQuery.var_servicedesc}</p>
+							<p class="pl-2 description>${data.firstQuery.var_servicedesc}</p>
 							<br>
 							
 						`)
@@ -491,7 +516,7 @@ block addjs
 
 						})
 						$('#cancelButton').css('display', 'block');
-						$('#proceedButton').css('display', 'block');
+						//- $('#proceedButton').css('display', 'block');
 							$('#proceedButton').click(function(){
 								$.post('/login/queryservice',{id:data.firstQuery.int_serviceutilitiesID}).done(data =>{
 									window.location=`/login? 
