@@ -259,6 +259,22 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                 res.send(results)
             })
         }
+        else if(req.body.eventname == "Marriage"){
+            var queryString = `SELECT * FROM tbl_eventinfo 
+            JOIN tbl_voucherevents ON tbl_eventinfo.int_eventinfoID = tbl_voucherevents.int_eventinfoID
+            JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            JOIN tbl_wedgroom ON tbl_wedgroom.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            JOIN tbl_wedbride ON tbl_wedbride.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+            JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+            WHERE tbl_eventinfo.int_eventinfoID = ?`
+            console.log(req.body)
+            db.query(queryString,[req.body.id],(err,results,fields)=>{
+                if(err) throw err
+                console.log(results)
+                res.send(results)
+            })
+        }
     })
     guestRouter.post('/message', (req, res)=>{
         console.log(req.body.id)
@@ -1317,13 +1333,12 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
 //==============================================================
 // M A R R I A G E
 //============================================================== 
-guestRouter.post('/marriage/query', (req, res) => {
-
-    var queryString1 =`SELECT * FROM tbl_user where int_userID = ?`
-    db.query(queryString1,[req.body.id], (err, results1, fields) => {
-        res.send({firstQuery:results1[0]});
-    });
-
+guestRouter.get('/marriage/query', (req, res) => {
+    var queryString = `SELECT * FROM tbl_eventinfo JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+    where tbl_eventinfo.char_approvalstatus = "Approved" AND tbl_services.var_eventname != "Baptism"`
+        db.query(queryString,(err,results,fields) =>{
+            res.send(results)
+        })
     })
     guestRouter.get('/marriage/utilities/query', (req, res)=>{
         var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = ${req.session.eventId}`
@@ -1369,53 +1384,49 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
     var queryString= `select int_eventID from tbl_services where var_eventname="Marriage";`
     db.query(queryString, (err, results, fields) => {
             if (err) console.log(err);
-            console.log(results);
             var eventID = results[0];
+            console.log(eventID.int_eventID)
             console.log(req.session.user);
             var desiredtime1= moment(req.body.desiredtime, 'hh:mm A').format('HH:mm:ss');
             var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
             db.query(paymentQuery,[eventID.int_eventID], (err, results, fields) => {
                 if (err) console.log(err);
                 var amount= results[0];
-            
-            var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
-            db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results, fields) => {
+                var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
+            db.query(paymentInsert,[amount.double_fee,'Unpaid'], (err, results2, fields) => {
                 if (err) console.log(err);
-                var paymentid= results;
-                var eventinfoID= results;
+                var paymentid= results2;
+                console.log(paymentid.insertId)
                 var datenow = new Date()
                 var dateDue1 = moment(datenow).add(7,'days')
                 var dateDue = moment(dateDue1).format('YYYY-MM-DD')
+                req.body.timeStart = moment(req.body.timeStart,'hh:mm a').format('hh:mm:ss')
                 var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID , date_eventdate, time_eventstart, char_approvalstatus, int_paymentID, char_requirements) VALUES(?,?,?,?,?,?,?)`;
                 db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID, req.body.eventDate, req.body.timeStart,"Pending", paymentid.insertId, "Incomplete"], (err, results, fields) => {
                     if (err) console.log(err);
+                    var eventinfoID= results;
+                    console.log(eventinfoID.insertId)
+                    var text="";
+                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
+                    for(i=0;i<8;i++)
+                    text += possible.charAt(Math.floor(Math.random()*possible.length));
                     var queryString01 =`insert into tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode)
                     VALUES(?,?,?,?,?)`
-                    db.query(queryString01,[eventinfoID.insertId,dateNow,dateDue,req.session.user.int_userID],(err,results,fields)=>{
+                    db.query(queryString01,[eventinfoID.insertId,dateDue,datenow,req.session.user.int_userID,text],(err,results,fields)=>{
                     var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID, var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?,?,?,?,?);`
                             db.query(queryString3, [eventinfoID.insertId, req.body.lastname, req.body.firstname, req.body.middlename,'Male', req.body.address, req.body.birthday, req.body.birthplace], (err, results, fields) => {
                                 if (err) console.log(err);
                                 groombapconChecking(eventinfoID);
-                            
                                 if(req.body.boolmarried == 1){
-                                    var queryString4 = `INSERT INTO tbl_wedcouple(int_eventinfoID, bool_livingin, bool_married, date_cprevweddate, var_cprevwedplace) VALUES(?,?,?, ?,?);`
-                                        db.query(queryString4 , [eventinfoID.insertId, req.body.boollivingin, req.body.boolmarried, req.body.cprevweddingdate, req.body.cprevweddingplace], (err, results, fields) => {
+                                    var queryString4 = `INSERT INTO tbl_wedcouple(int_eventinfoID, bool_livingin, bool_married, date_cprevweddate, var_cprevwedplace,int_wedstep) VALUES(?,?,?,?,?,?);`
+                                        db.query(queryString4 , [eventinfoID.insertId, req.body.boollivingin, req.body.boolmarried, req.body.cprevweddingdate, req.body.cprevweddingplace,2], (err, results, fields) => {
                                             if (err) console.log(err);                                                    
                                             sponsors(eventinfoID.insertId);
-                                            //hard coded list of requirements for renewal of vows
-
                                             requirementUpload(eventinfoID.insertId,req.files['birthCertGroom'][0].filename,req.files['validIDGroom'][0].filename,req.files['birthCertBride'][0].filename,req.files['validIDBride'][0].filename);
                                             defaultReq(eventinfoID.insertId);
                                             sponsors(eventinfoID.insertId);
-                                            // if (err){
-                                            //     console.log(err)
-                                            //     res.send({alertDesc:notsuccess})
-                                            // }
-                                            // else{
-                                            //     res.send({alertDesc:success})
-                                            // }
-
-                                            return res.redirect(`/guest`);
+                                            var eventid = eventinfoID.insertId
+                                            res.redirect('/guest/reservation')
                                         });
                                     }
                                 if(req.body.boolmarried == 0){
@@ -1425,14 +1436,8 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                                             requirementUpload(eventinfoID.insertId,req.files['birthCertGroom'][0].filename,req.files['validIDGroom'][0].filename,req.files['birthCertBride'][0].filename,req.files['validIDBride'][0].filename);
                                             defaultReq(eventinfoID.insertId);
                                             sponsors(eventinfoID.insertId);
-                                            // if (err){
-                                            //     console.log(err)
-                                            //     res.send({alertDesc:notsuccess})
-                                            // }
-                                            // else{
-                                            //     res.send({alertDesc:success})
-                                            // }
-                                            return res.redirect(`/guest`);
+                                            var eventid = eventinfoID.insertId
+                                            res.redirect('/guest/reservation')
                                         });
                                     }      
                                 });});})});});});
@@ -1504,34 +1509,34 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
         // var nowDate = new Date(); 
         // var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
                                         
-        var requirement = `insert into tbl_requirements(int_reqtypeID,var_reqstatus) values(?,?)`
+        var requirement = `insert into tbl_requirements(int_reqtypeID,var_reqstatus,datetime_reqreceived) values(?,?,?)`
         var reqevent=`INSERT INTO tbl_requirementsinevents(int_requirementID, int_eventinfoID) values (?,?)`
-            
-            db.query(requirement, [15,'To Be Submitted'], (err, results, fields) => {
-            var requirementID = results;
-            db.query(reqevent,[requirementID.insertId, eventinfoID],(err, results, fields)=>{      
+            var datenow = new Date()
+            db.query(requirement, [15,'To Be Submitted',datenow], (err, results1, fields) => {
+            var requirementID = results1;
+            db.query(reqevent,[results1.insertId, eventinfoID],(err, results, fields)=>{      
         
-            db.query(requirement, [16, 'To be submitted'], (err, results, fields) => {
+            db.query(requirement, [16, 'To be submitted',datenow], (err, results, fields) => {
             var requirementID14 = results;
             db.query(reqevent,[requirementID14.insertId, eventinfoID],(err, results, fields)=>{      
         
-            db.query(requirement, [17, 'To be submitted'], (err, results, fields) => {
+            db.query(requirement, [17, 'To be submitted',datenow], (err, results, fields) => {
             var requirementID15 = results;
             db.query(reqevent,[requirementID15.insertId, eventinfoID],(err, results, fields)=>{      
         
-            db.query(requirement, [18, 'To be submitted'], (err, results, fields) => {
+            db.query(requirement, [18, 'To be submitted',datenow], (err, results, fields) => {
             var requirementID16 = results;
             db.query(reqevent,[requirementID16.insertId, eventinfoID],(err, results, fields)=>{      
         
-            db.query(requirement, [23, 'To be submitted'], (err, results, fields) => {
+            db.query(requirement, [23, 'To be submitted',datenow], (err, results, fields) => {
             var requirementID17 = results;
             db.query(reqevent,[requirementID17.insertId, eventinfoID],(err, results, fields)=>{      
         
-            db.query(requirement, [24, 'To be submitted'], (err, results, fields) => {
+            db.query(requirement, [24, 'To be submitted',datenow], (err, results, fields) => {
             var requirementID18 = results;
             db.query(reqevent,[requirementID18.insertId, eventinfoID],(err, results, fields)=>{      
         
-            db.query(requirement, [25, 'To be submitted'], (err, results, fields) => {
+            db.query(requirement, [25, 'To be submitted',datenow], (err, results, fields) => {
             var requirementID19 = results;
             db.query(reqevent,[requirementID19.insertId, eventinfoID],(err, results, fields)=>{      
                         
@@ -1568,6 +1573,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                                     if(err) throw err
                                     db.query(queryString2,[results4.insertId,eventinfoID],(err,results,fields)=>{
                                         if(err) throw err
+
                                         console.log(req.files)
                                     })
                                 })
@@ -1579,11 +1585,11 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
         })
     }
     function additionalReq(eventinfoID){
-        var requirement1 = `insert into tbl_requirements(int_reqtypeID,  var_reqstatus) values(?,?)`
+        var requirement1 = `insert into tbl_requirements(int_reqtypeID,  var_reqstatus,datetime_reqreceived) values(?,?,?)`
         var reqevent1=`INSERT INTO tbl_requirementsinevents(int_requirementID, int_eventinfoID) values (?,?)`
-
+        var datenow = new Date()
         if(req.body.boolmarried == 1){
-            db.query(requirement1, [37, 'To be submitted'], (err, results, fields) => {
+            db.query(requirement1, [37, 'To be submitted',datenow], (err, results, fields) => {
                 if(err) console.log(err);
                 var requirementID = results;
                 db.query(reqevent1,[requirementID.insertId, eventinfoID],(err, results, fields)=>{      
@@ -1592,7 +1598,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
         }
 
         if(req.body.boolpregnant==1|| req.body.breligion != 'Catholic' || req.body.greligion !='Catholic'){
-            db.query(requirement1, [26, 'To be submitted'], (err, results, fields) => {
+            db.query(requirement1, [26, 'To be submitted',datenow], (err, results, fields) => {
                 if(err) console.log(err);
                 var requirementID = results;
                 db.query(reqevent1,[requirementID.insertId, eventinfoID],(err, results, fields)=>{      

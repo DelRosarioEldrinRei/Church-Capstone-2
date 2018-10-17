@@ -570,35 +570,25 @@ block main
                                     .learn-more.pull-right
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
                                         button.btn#proceedButton(type='button') Proceed
-        #exampleModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+    #viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
             .modal-dialog.modal-lg(role="document")
                 .modal-content
                     .modal-header
                         h5.modal-title Application Request Completed
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
+                            span.p-3(aria-hidden='true') ×
                     .modal-body
                         .col-md-12.px-lg-3.px-md-3.px-sm-0
                             .form-group.m-0
-                                p Your application request has been submitted. To complete the application process, you must pay on or before the deadline. You must also submit the following requirements before your canonical interview on 
+                                input.toggle.form-control(type='hidden' name='userID' value='1')
+                                p Your application request is ready to submit
                         .col-md-6.px-lg-3.px-md-3.px-sm-0
                             .form-group.m-0
-                                br
-                                label.label-control Deadline of payment
-                                | October 22, 2018
-                        .col-md-6.px-lg-3.px-md-3.px-sm-0
-                            .form-group.m-0
-                                label.label-control Application Fee: 
-                                | P7000.00
-                        .col-md-6.px-lg-3.px-md-3.px-sm-0
-                            .form-group.m-0
-                                label.label-control Voucher
-                                    a(href=`/guest/voucher` style= 'margin-left: 3px; color: red' target="_blank" ) Click here to save and print voucher
+                                label.label-control NEXT PROCEDURE
+                                    p This will redirect you to your reservations to print your voucher
                     .modal-footer
-                        button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                        button.btn.btn-submit#submit2Button(type='submit') Proceed
-                            // Form Step 3
-                        // Form Wizard
+                        button#confirmButton.filter.btn.btn-common(type="button") SUBMIT
+                        button#cancelButton.filter.btn.btn-common(type="button") CANCEL
 block addjs
     script.
         $('.textarea1').hide();
@@ -640,9 +630,6 @@ block addjs
         $('.exampleRadios5').click(function() {
             $('.textarea5').slideDown();
         });
-
-                //add and delete side
-
         $("#addPrincipalSponsor").click(function(event){
                 var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
                 $(principal).hide().appendTo("#principalSponsor").fadeIn(500);
@@ -672,15 +659,15 @@ block addjs
             });
             event.stopPropagation();
         });
-        $("#proceedButton").click(function(){
-            $('#exampleModal').modal('show')
-            console.log($('#lastname').val())
+        $("#proceedButton").click(function(){  
+            $('#viewModal').modal('show')
+            $('#confirmButton').click(function(){
+                $('#form').submit()
+            })
+            $('#cancelButton').click(function(){
+                $('#viewModal').modal('hide')
+            })
         });
-        $("#submit2Button").click(function(){
-            $('#form').submit()
-            //- window.location.replace("/guest/marriage1/form")
-        });
-
         // for Regular Baptism Date
         let startDate = moment().add(119, 'days')
         let endDate = moment().add(366, 'days')
@@ -711,7 +698,7 @@ block addjs
             var dateNow2;
             var gender;
             $.get('/guest/marriage/utilities/query').done(data=>{
-                console.log(data[0].int_reservationmindays)
+                console.log("reservation min days"+data[0].int_reservationmindays)
                 dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data[0].int_reservationmindays,'days').format('YYYY-MM-DD')
                 $('#calendarMarriage').fullCalendar({
                     header: {
@@ -791,9 +778,29 @@ block addjs
                         $('#calendarMarriage').fullCalendar('gotoDate', date);
                     }
                     else{
-                        return  
+                        return 
                     }
                     }
+                    
+                })
+                $.get('/guest/marriage/query').done(data=>{
+                        for(i=0;i<data.length;i++){
+                        var dateEvent = moment(data[i].date_eventdate).format('MM/DD/YYYY');
+                        var time_start = data[i].time_eventstart = moment(data[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
+                        var time_end = moment(data[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+                        //- console.log(time_end)
+                        //- console.log(dateEvent)
+                        //- console.log(data[i].time_eventstart)
+                        //- console.log(data[i].char_approvalstatus)
+                            $('#calendarSpecial').fullCalendar('renderEvent', {
+                            title: 'OCCUPIED EVENT',
+                            start: `${dateEvent} ${time_start}`,
+                            end: `${dateEvent} ${time_end}`,
+                            allDay: false,
+                            color:'#4c2508',
+                            textColor: "white",
+                            });
+                        }
                 })
             })
         });

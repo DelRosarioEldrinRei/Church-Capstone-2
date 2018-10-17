@@ -145,17 +145,17 @@ block prepend main
 																				i.ti-pencil(style="color:white;")
 																			a.updateReqButton(href='#')
 																				i.ti-new-window(style="color:white;")
-								#paymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
-									.modal-dialog.modal-lg(role="document")
-										.modal-content
-											.modal-header(style='background:#367587')
-												h5.modal-title(style='color:white') Update Payment Status
-												button.close(type='button', data-dismiss='modal', aria-label='Close')
-													span(aria-hidden='true' style='color:white') ×
-											.modal-body#paymentAppend
-											.modal-footer
-												button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
-												button.btn#updatePayment(type="button" style='background:#367587; color:white') Update
+	#paymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content
+				.modal-header(style='background:#367587')
+					h5.modal-title(style='color:white') Update Payment Status
+					button.close(type='button', data-dismiss='modal', aria-label='Close')
+						span(aria-hidden='true' style='color:white') ×
+				.modal-body#paymentAppend
+				.modal-footer
+					button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
+					button.btn#updatePayment(type="button" style='background:#367587; color:white') Update
 
 	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")

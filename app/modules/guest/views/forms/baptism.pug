@@ -330,10 +330,11 @@ block addjs
 					confirmButtonClass: 'btn btn-success',
 					cancelButtonClass: 'btn btn-danger',
 					buttonsStyling: true,
+				}).then(function(){
+					return
 				})
 			}
 			else{
-
 					$('#nextButton2').addClass('btn-next')
 			}
 			}
@@ -356,9 +357,7 @@ block addjs
 			console.log(baptismType1)
 			$('#calendarSpecial').fullCalendar('changeView', 'month')
 			$('#special').slideDown();
-			$('#regular').slideUp();
-			
-		if(baptismType1 == "Special"){
+			$('#regular').slideUp();	
 		$('#nextButton2').click(function(){
 			console.log($('#file-0b').val())
 			if ($("#customRadio1").prop("checked")) {
@@ -396,7 +395,7 @@ block addjs
 				})
 			}
 		})
-		}
+		
 		});
 		$('#submitButton').click(function() {
 			var baptismtype;
@@ -548,12 +547,12 @@ block addjs
 															absolutePosition: {x:225, y:127},
 															},
 															{
-															text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
+															text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:140},
 															},
 															{
-															text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
+															text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:153},
 															},
@@ -651,19 +650,14 @@ block addjs
 															absolutePosition: {x:225, y:514},
 															},
 															{
-															text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
+															text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:527},
 															},
 															{
-															text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
+															text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
 															style: 'styleLabelMiddle',
 															absolutePosition: {x:225, y:540},
-															},
-															{
-															text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
-															style: 'styleLabelMiddleTA',
-															absolutePosition: {x:505, y:530},
 															},
 															//table Contents
 															// .toUpperCase() yung event name before ilagay sa pdfmake
