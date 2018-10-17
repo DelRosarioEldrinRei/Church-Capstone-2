@@ -547,7 +547,7 @@ block main
                                     br
                                     .learn-more.pull-right
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-                                        button.btn.btn-next(type='button') Next
+                                        button.btn#nextButton1(type='button') Next
                                 // Form Step 4
                                 // Form Step 5\
                                 fieldset
@@ -703,6 +703,22 @@ block addjs
         });
 
         $(document).ready(function(){
+            $('#nextButton1').click(function(){
+			if(eventDate == ''){
+				swal({
+					title: "Please schedule your date",
+					text: "You haven't chosen your desired schedule yet",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
+			}
+			else{
+				$('#nextButton1').addClass('btn-next')
+			}
+			})
+
+
             var dateNow2
             var eventDate ='';
             var timeStart ='';

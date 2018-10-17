@@ -69,7 +69,7 @@ block main
 																#calendarFuneral
 														.help-block.with-errors
 										.learn-more.pull-right
-													button#next.btn.btn-next(type='button') Next
+													button#nextButton1.btn(type='button') Next
 								// Form Step 1
 								// Form Step 2
 								fieldset
@@ -207,6 +207,20 @@ block addjs
 			$('#textarea2').slideDown();
 		});
 		$(document).ready(function(){
+				$('#nextButton1').click(function(){
+			if(eventDate == ''){
+				swal({
+					title: "Please schedule your date",
+					text: "You haven't chosen your desired schedule yet",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
+			}
+			else{
+				$('#nextButton1').addClass('btn-next')
+			}
+			})
 				$('#submitButton').click(function(){
 						var idNow = $(this).val();
 						console.log(idNow)
