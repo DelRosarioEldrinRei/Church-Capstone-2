@@ -79,7 +79,7 @@ block main
                                           #calendarEstablishment
                                   .help-block.with-errors
                   .learn-more.pull-right
-                        button.btn#nextButton1(type='button') Next
+                        button.btn.btn-next(type='button') Next
                   
                 // Form Step 1
                 // Form Step 2
@@ -170,20 +170,6 @@ block main
 block addjs
   script.
     $(document).ready(function(){
-      $('#nextButton1').click(function(){
-			if(eventDate == ''){
-				swal({
-					title: "Please schedule your date",
-					text: "You haven't chosen your desired schedule yet",
-					type: 'warning',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: 'OK'
-				})
-			}
-			else{
-				$('#nextButton1').addClass('btn-next')
-			}
-			})
       $('#submitButton').click(function(){
           var idNow = $(this).val();
           console.log(idNow)
