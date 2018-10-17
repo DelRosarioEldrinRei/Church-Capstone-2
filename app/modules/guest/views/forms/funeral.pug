@@ -196,6 +196,16 @@ block main
 										button.btn.btn-submit#submitButton(type='submit'  value= `${user.int_userID}`) Submit
 block addjs
 	script.
+		$('#textarea2').hide();
+		$('#exampleRadios1').click(function() {
+			$('#textarea2').slideUp();
+		});
+		$('#blessingloc2').click(function() {
+			$('#textarea2').slideUp();
+		});
+		$('.exampleRadios3').click(function() {
+			$('#textarea2').slideDown();
+		});
 		$(document).ready(function(){
 				$('#submitButton').click(function(){
 						var idNow = $(this).val();

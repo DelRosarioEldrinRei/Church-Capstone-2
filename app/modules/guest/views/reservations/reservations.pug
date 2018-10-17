@@ -589,7 +589,7 @@ block addjs
 					if(data[0].char_approvalstatus == "Cancelled"){
 						if(data[0].char_paymentstatus == "Paid"){
 						$('#refund').append(`
-						<button id="refundslip" type="button" class="btn btn-common">Refund Slip</button>
+						<button id="refundslip" type="button" class="btn btn-common">Print Refund Slip</button>
 						`)
 						
 						$('#refundslip').click(function(){
@@ -902,7 +902,7 @@ block addjs
 						}
 						else if(data[0].char_approvalstatus == "Pending" && data[0].char_paymentstatus == "Unpaid"){
 						$('#refund').append(`
-						<button id="voucher" type="button" class="btn btn-common">Voucher</button>
+						<button id="voucher" type="button" class="btn btn-common">Print Voucher</button>
 						`)	
 						$('#voucher').click(function(){
 							console.log(data[0].int_voucherID)

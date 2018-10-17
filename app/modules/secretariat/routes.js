@@ -1073,7 +1073,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     });
     secretariatRouter.post('/transaction-funeralservice/query/updateStatus', (req, res)=>{
         var queryString1 =`SELECT * from tbl_eventinfo 
-        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
         JOIN tbl_utilities ON tbl_utilities.int_eventID = tbl_eventinfo.int_eventID
         JOIN tbl_blessing ON tbl_blessing.int_eventinfoID = tbl_eventinfo.int_eventinfoID

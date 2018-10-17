@@ -1855,10 +1855,10 @@ adminRouter.get('/reports-anointing', (req, res)=>{
                         if (err) console.log(err);
                         var submitted1 = results[0]
                         anointingrequirement.push(submitted1.countt)
-                        db.query(eventpierequirementquery,['Anointing of the sick', "Accepted"],(err, results, fields) => {
+                        db.query(eventpierequirementquery,['Anointing of the sick', "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted1 = results[0]
-                            anointingrequirement.push(accepted1.countt)
+                            var approvedd1 = results[0]
+                            anointingrequirement.push(approvedd1.countt)
                             db.query(eventpierequirementquery,['Anointing of the sick', "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected1 = results[0]
@@ -2049,10 +2049,10 @@ adminRouter.get('/reports-baptism', (req, res)=>{
                             if (err) console.log(err);
                             var submitted2 = results[0]
                             baptismpierequirement.push(submitted2.countt)
-                            db.query(eventpierequirementquery,['Baptism', "Accepted"],(err, results, fields) => {
+                            db.query(eventpierequirementquery,['Baptism', "Approved"],(err, results, fields) => {
                                 if (err) console.log(err);
-                                var accepted2 = results[0]
-                                baptismpierequirement.push(accepted2.countt)
+                                var approvedd2 = results[0]
+                                baptismpierequirement.push(approvedd2.countt)
                                 db.query(eventpierequirementquery,['Baptism', "Rejected"],(err, results, fields) => {
                                     if (err) console.log(err);
                                     var rejected2 = results[0]
@@ -2083,10 +2083,10 @@ adminRouter.get('/reports-baptism', (req, res)=>{
                         if (err) console.log(err);
                         var submitted3 = results[0]
                         spcbaptismrequirement.push(submitted3.countt)
-                        db.query(eventpierequirementquery,['Special Baptism', "Accepted"],(err, results, fields) => {
+                        db.query(eventpierequirementquery,['Special Baptism', "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted3 = results[0]
-                            spcbaptismrequirement.push(accepted3.countt)
+                            var approvedd3 = results[0]
+                            spcbaptismrequirement.push(approvedd3.countt)
                             db.query(eventpierequirementquery,['Special Baptism', "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected3 = results[0]
@@ -2388,10 +2388,10 @@ adminRouter.get('/reports-funeral', (req, res)=>{
                         if (err) console.log(err);
                         var submitted4 = results[0]
                         funeralmassrequirement.push(submitted4.countt)
-                        db.query(eventpierequirementquery,['Funeral Mass', "Accepted"],(err, results, fields) => {
+                        db.query(eventpierequirementquery,['Funeral Mass', "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted4 = results[0]
-                            funeralmassrequirement.push(accepted4.countt)
+                            var approvedd4 = results[0]
+                            funeralmassrequirement.push(approvedd4.countt)
                             db.query(eventpierequirementquery,['Funeral Mass', "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected4 = results[0]
@@ -2422,10 +2422,10 @@ adminRouter.get('/reports-funeral', (req, res)=>{
                         if (err) console.log(err);
                         var submitted5 = results[0]
                         funeralservicerequirement.push(submitted5.countt)
-                        db.query(eventpierequirementquery,['Funeral Service', "Accepted"],(err, results, fields) => {
+                        db.query(eventpierequirementquery,['Funeral Service', "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted5 = results[0]
-                            funeralservicerequirement.push(accepted5.countt)
+                            var approvedd5 = results[0]
+                            funeralservicerequirement.push(approvedd5.countt)
                             db.query(eventpierequirementquery,['Funeral Service', "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected5 = results[0]
@@ -2713,10 +2713,10 @@ adminRouter.get('/reports-marriage', (req, res)=>{
                         if (err) console.log(err);
                         var submitted6 = results[0]
                         marriagerequirement.push(submitted6.countt)
-                        db.query(eventpierequirementquery,['Marriage', "Accepted"],(err, results, fields) => {
+                        db.query(eventpierequirementquery,['Marriage', "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted6 = results[0]
-                            marriagerequirement.push(accepted6.countt)
+                            var approvedd6 = results[0]
+                            marriagerequirement.push(approvedd6.countt)
                             db.query(eventpierequirementquery,['Marriage', "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected6 = results[0]
@@ -2912,10 +2912,10 @@ adminRouter.get('/reports-facilityreservation', (req, res)=>{
                         if (err) console.log(err);
                         var submitted8 = results[0]
                         facilityrequirement.push(submitted8.countt)
-                        db.query(facilitypierequirementquery,[ "Accepted"],(err, results, fields) => {
+                        db.query(facilitypierequirementquery,[ "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted8 = results[0]
-                            facilityrequirement.push(accepted8.countt)
+                            var approvedd8 = results[0]
+                            facilityrequirement.push(approvedd8.countt)
                             db.query(facilitypierequirementquery,[ "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected8 = results[0]
@@ -3115,10 +3115,10 @@ adminRouter.get('/reports-documentrequest', (req, res)=>{
                         if (err) console.log(err);
                         var submitted7 = results[0]
                         docurequirement.push(submitted7.countt)
-                        db.query(docupierequirementquery,[ "Accepted"],(err, results, fields) => {
+                        db.query(docupierequirementquery,[ "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted7 = results[0]
-                            docurequirement.push(accepted7.countt)
+                            var approvedd7 = results[0]
+                            docurequirement.push(approvedd7.countt)
                             db.query(docupierequirementquery,[ "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected7 = results[0]
@@ -3310,10 +3310,10 @@ adminRouter.get('/reports-houseblessing', (req, res)=>{
                         if (err) console.log(err);
                         var submitted9 = results[0]
                         houserequirement.push(submitted9.countt)
-                        db.query(housepierequirementquery,[ "Accepted"],(err, results, fields) => {
+                        db.query(housepierequirementquery,[ "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted9 = results[0]
-                            houserequirement.push(accepted9.countt)
+                            var approvedd9 = results[0]
+                            houserequirement.push(approvedd9.countt)
                             db.query(housepierequirementquery,[ "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected9 = results[0]
@@ -3572,10 +3572,10 @@ adminRouter.get('/reports', (req, res)=>{
                         if (err) console.log(err);
                         var submitted1 = results[0]
                         anointingrequirement.push(submitted1.countt)
-                        db.query(eventpierequirementquery,['Anointing of the sick', "Accepted"],(err, results, fields) => {
+                        db.query(eventpierequirementquery,['Anointing of the sick', "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted1 = results[0]
-                            anointingrequirement.push(accepted1.countt)
+                            var approvedd1 = results[0]
+                            anointingrequirement.push(approvedd1.countt)
                             db.query(eventpierequirementquery,['Anointing of the sick', "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected1 = results[0]
@@ -3597,10 +3597,10 @@ adminRouter.get('/reports', (req, res)=>{
                             if (err) console.log(err);
                             var submitted2 = results[0]
                             baptismpierequirement.push(submitted2.countt)
-                            db.query(eventpierequirementquery,['Baptism', "Accepted"],(err, results, fields) => {
+                            db.query(eventpierequirementquery,['Baptism', "Approved"],(err, results, fields) => {
                                 if (err) console.log(err);
-                                var accepted2 = results[0]
-                                baptismpierequirement.push(accepted2.countt)
+                                var approvedd2 = results[0]
+                                baptismpierequirement.push(approvedd2.countt)
                                 db.query(eventpierequirementquery,['Baptism', "Rejected"],(err, results, fields) => {
                                     if (err) console.log(err);
                                     var rejected2 = results[0]
@@ -3631,10 +3631,10 @@ adminRouter.get('/reports', (req, res)=>{
                         if (err) console.log(err);
                         var submitted3 = results[0]
                         spcbaptismrequirement.push(submitted3.countt)
-                        db.query(eventpierequirementquery,['Special Baptism', "Accepted"],(err, results, fields) => {
+                        db.query(eventpierequirementquery,['Special Baptism', "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted3 = results[0]
-                            spcbaptismrequirement.push(accepted3.countt)
+                            var approvedd3 = results[0]
+                            spcbaptismrequirement.push(approvedd3.countt)
                             db.query(eventpierequirementquery,['Special Baptism', "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected3 = results[0]
@@ -3665,10 +3665,10 @@ adminRouter.get('/reports', (req, res)=>{
                         if (err) console.log(err);
                         var submitted4 = results[0]
                         funeralmassrequirement.push(submitted4.countt)
-                        db.query(eventpierequirementquery,['Funeral Mass', "Accepted"],(err, results, fields) => {
+                        db.query(eventpierequirementquery,['Funeral Mass', "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted4 = results[0]
-                            funeralmassrequirement.push(accepted4.countt)
+                            var approvedd4 = results[0]
+                            funeralmassrequirement.push(approvedd4.countt)
                             db.query(eventpierequirementquery,['Funeral Mass', "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected4 = results[0]
@@ -3699,10 +3699,10 @@ adminRouter.get('/reports', (req, res)=>{
                         if (err) console.log(err);
                         var submitted5 = results[0]
                         funeralservicerequirement.push(submitted5.countt)
-                        db.query(eventpierequirementquery,['Funeral Service', "Accepted"],(err, results, fields) => {
+                        db.query(eventpierequirementquery,['Funeral Service', "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted5 = results[0]
-                            funeralservicerequirement.push(accepted5.countt)
+                            var approvedd5 = results[0]
+                            funeralservicerequirement.push(approvedd5.countt)
                             db.query(eventpierequirementquery,['Funeral Service', "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected5 = results[0]
@@ -3725,10 +3725,10 @@ adminRouter.get('/reports', (req, res)=>{
                         if (err) console.log(err);
                         var submitted6 = results[0]
                         marriagerequirement.push(submitted6.countt)
-                        db.query(eventpierequirementquery,['Marriage', "Accepted"],(err, results, fields) => {
+                        db.query(eventpierequirementquery,['Marriage', "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted6 = results[0]
-                            marriagerequirement.push(accepted6.countt)
+                            var approvedd6 = results[0]
+                            marriagerequirement.push(approvedd6.countt)
                             db.query(eventpierequirementquery,['Marriage', "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected6 = results[0]
@@ -3759,10 +3759,10 @@ adminRouter.get('/reports', (req, res)=>{
                         if (err) console.log(err);
                         var submitted7 = results[0]
                         docurequirement.push(submitted7.countt)
-                        db.query(docupierequirementquery,[ "Accepted"],(err, results, fields) => {
+                        db.query(docupierequirementquery,[ "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted7 = results[0]
-                            docurequirement.push(accepted7.countt)
+                            var approvedd7 = results[0]
+                            docurequirement.push(approvedd7.countt)
                             db.query(docupierequirementquery,[ "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected7 = results[0]
@@ -3793,10 +3793,10 @@ adminRouter.get('/reports', (req, res)=>{
                         if (err) console.log(err);
                         var submitted8 = results[0]
                         facilityrequirement.push(submitted8.countt)
-                        db.query(facilitypierequirementquery,[ "Accepted"],(err, results, fields) => {
+                        db.query(facilitypierequirementquery,[ "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted8 = results[0]
-                            facilityrequirement.push(accepted8.countt)
+                            var approvedd8 = results[0]
+                            facilityrequirement.push(approvedd8.countt)
                             db.query(facilitypierequirementquery,[ "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected8 = results[0]
@@ -3827,10 +3827,10 @@ adminRouter.get('/reports', (req, res)=>{
                         if (err) console.log(err);
                         var submitted9 = results[0]
                         houserequirement.push(submitted9.countt)
-                        db.query(housepierequirementquery,[ "Accepted"],(err, results, fields) => {
+                        db.query(housepierequirementquery,[ "Approved"],(err, results, fields) => {
                             if (err) console.log(err);
-                            var accepted9 = results[0]
-                            houserequirement.push(accepted9.countt)
+                            var approvedd9 = results[0]
+                            houserequirement.push(approvedd9.countt)
                             db.query(housepierequirementquery,[ "Rejected"],(err, results, fields) => {
                                 if (err) console.log(err);
                                 var rejected9 = results[0]

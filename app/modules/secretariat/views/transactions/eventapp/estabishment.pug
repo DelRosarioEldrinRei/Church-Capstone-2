@@ -1,5 +1,52 @@
 extends ../../../../../templates/secretariat
 block prepend main
+	style.
+		.tableModal {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+		}
+
+		.tdModal{
+			border: 2px solid #dddddd;
+			text-align: left;
+			padding: 12px;
+		}
+		.shadow3 {
+			box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+		}
+
+		body > div.mfp-wrap.mfp-close-btn-in.mfp-auto-cursor.mfp-with-zoom.mfp-ready > div {
+			z-index: 9999 !important;
+		}
+
+		.mfp-with-zoom .mfp-container,
+		.mfp-with-zoom.mfp-bg {
+			opacity: 0;
+			-webkit-backface-visibility: hidden;
+			/* ideally, transition speed should match zoom duration */
+			-webkit-transition: all 0.3s ease-out;
+			-moz-transition: all 0.3s ease-out;
+			-o-transition: all 0.3s ease-out;
+			transition: all 0.3s ease-out;
+			z-index: 99999;
+		}
+
+		.mfp-image, .mfp-container, .mfp-ready, .mfp-image-holder, .mfp-content, .mfp-preloader, .mfp-figure {
+			z-index: 99999;
+		}
+
+		.mfp-with-zoom.mfp-ready .mfp-container {
+			opacity: 1;
+		}
+		.mfp-with-zoom.mfp-ready.mfp-bg {
+			opacity: 0.8;
+		}
+
+		.mfp-with-zoom.mfp-removing .mfp-container,
+		.mfp-with-zoom.mfp-removing.mfp-bg {
+		opacity: 0;
+		}
 	#wrap
 	//- #calendar
 	div(style='clear:both')
@@ -13,34 +60,36 @@ block prepend main
 							
 							// Tab panes
 							.tab-content
-								#funeralservice.tab-pane.active
+								#establishment.tab-pane.active
 									.card
 											.card-header.card-header-primary(style='background:#367587; color:white')
-													h4.card-title(style='background:#367587; color:white') Funeral Service
+													h4.card-title(style='background:#367587; color:white') Anointing of the Sick
 													
 											.card-body.table-responsive
 													table.table.table-hover.dataTable
 															thead.text-primary
 																	//- th ID
-																	th Deceased
-																	th Event Date
+																	th Owner
+																	th Location
+																	th Blessing Date
 																	th Requirement Status
 																	th Approval Status
 																	th.text-center(style=" width:11rem") Actions
 															tbody
-																each funeral in funerals
+																each establishment in establishments
 																	tr
-																		//- td=funeral.int_eventinfoID
-																		input.form-control#int_userID(type='hidden' name='clientID' value=funeral.int_userID)
-																		td=funeral.var_lname + ", " + funeral.var_fname + " " + funeral.var_mname
-																		td=funeral.date_eventdate
-																		//- td=funeral.char_approvalstatus
+																		//- td=establishment.int_eventinfoID
+																		input.form-control#int_userID(type='hidden' name='clientID' value=establishment.int_userID)
+																		td=establishment.var_owner
+																		td=establishment.var_estloc
+																		td=establishment.date_blessingdate+' '+establishment.time_blessingstart
+																		//- td=establishment.char_approvalstatus
 																		td
-																			span.approvalreq(value=`${funeral.var_reqstatus}`) #{funeral.var_reqstatus}
+																			span.approvalreq(value=`${establishment.var_reqstatus}`) #{establishment.var_reqstatus}
 																		td
-																			span.approval(value=`${funeral.char_approvalstatus}`) #{funeral.char_approvalstatus}
+																			span.approval(value=`${establishment.char_approvalstatus}`) #{establishment.char_approvalstatus}
 																		td.td-actions.text-center
-																			button.btn.btn-primary.actionButton(type='button' value=`${funeral.int_eventinfoID}`)
+																			button.btn.btn-primary.actionButton(type='button' value=`${establishment.int_eventinfoID}`)
 																				i.ti-settings
 																					#toolbar-options.hidden
 																						a.viewButton(href='#')
@@ -69,8 +118,7 @@ block prepend main
 					button.close(type='button', data-dismiss='modal', aria-label='Close')
 						span(aria-hidden='true' style='background:#367587; color:white') ×
 				.modal-body#updateBodyAppend
-				.modal-footer
-					button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+				.modal-footer.mx-auto
 					button.btn.btn-primary#updateStatusButton(type="button") Update
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
@@ -81,7 +129,6 @@ block prepend main
 							span(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#viewBodyAppend
 					.modal-footer
-						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 	#myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-label='Close')
 			span(aria-hidden='true' style='background:#367587; color:white') ×
@@ -133,6 +180,7 @@ block addjs
 					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700')
 				}
 			}
+
 			var idNow;
 			$('.actionButton').click(function(){
 				idNow = $(this).val();
@@ -140,7 +188,7 @@ block addjs
 			});
 			$(document).on('click', '.viewButton', function(){
 				console.log(idNow)
-				$.post('/secretariat/transaction-funeralservice/query',{id:idNow}).done(data =>{
+				$.post('/secretariat/transaction-establishment/query',{id:idNow}).done(data =>{
 					var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
 					var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
 					var age = moment().diff(data.date_birthday,'years');
@@ -229,7 +277,7 @@ block addjs
 				})
 			})
 			$('.updateReqButton').click(function(){
-				$.post('/secretariat/transaction-funeralservice/query/updateStatus',{id:idNow}).done(data=>{
+				$.post('/secretariat/transaction-establishment/query/updateStatus',{id:idNow}).done(data=>{
 					$('#updateReqModal').modal('show')
 					var ctr=0;
 					for(i=0;i<data.requirements.length;i++){
@@ -388,7 +436,7 @@ block addjs
 																	type:'success'
 																}).then(function(){
 																	for(i=0;i<idsr.length;i++){
-																		$.post('/secretariat/transaction-funeralservice/updateRequirementsReject',{
+																		$.post('/secretariat/transaction-establishment/updateRequirementsReject',{
 																		id:idsr[i],
 																		eventid:idNow
 																		}).done(data=>{
@@ -409,7 +457,7 @@ block addjs
 							}
 							else if(idsa.length > 0){
 							for(i=0;i<idsa.length;i++){
-								$.post('/secretariat/transaction-funeralservice/updateRequirements',{
+								$.post('/secretariat/transaction-establishment/updateRequirements',{
 								id:idsa[i],
 								eventid:idNow
 								}).done(data=>{
@@ -445,7 +493,7 @@ block addjs
 			})
 			
 			$('.updateButton').click(function(){
-				$.post('/secretariat/transaction-funeralservice/query/updateStatus',{id:idNow}).done(data=>{
+				$.post('/secretariat/transaction-establishment/query/updateStatus',{id:idNow}).done(data=>{
 				$('#updateBodyAppend').append(`
 				<form>
 					<input id="eventid" type="hidden" value="${data.results.int_eventinfoID}"></input>
@@ -556,7 +604,7 @@ block addjs
 							}).then((result)=>{
 							if(result.value){
 							console.log(eventstatus)
-							$.post('/secretariat/transaction-funeralservice/updateStatus',{
+							$.post('/secretariat/transaction-establishment/updateStatus',{
 							
 							id:data.results.int_eventinfoID,
 							eventstatus:eventstatus,
@@ -618,7 +666,7 @@ block addjs
 																	type:'success'
 																}).then(function(){
 																	for(i=0;i<idsr.length;i++){
-																		$.post('/secretariat/transaction-funeralservice/updateRequirementsReject',{
+																		$.post('/secretariat/transaction-establishment/updateRequirementsReject',{
 																		id:idsr[i],
 																		eventid:idNow
 																		}).done(data=>{
@@ -666,7 +714,7 @@ block addjs
 						}).then((result)=>{
 						if(result.value){
 						data.time_eventstart = moment(data.time_eventstart,'HH:mm:ss').format('HH:mm:ss')
-						$.post('/secretariat/transaction-funeralservice/update',{
+						$.post('/secretariat/transaction-establishment/update',{
 						dateRequested:data.date_eventdate,
 						timeRequested:data.time_eventstart,
 						eventstatus:$('#eventstatusupdate').val(),
