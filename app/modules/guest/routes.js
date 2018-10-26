@@ -894,11 +894,15 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         db.query(queryString1, (err, results1, fields) => {
             var queryString2= `SELECT time_availabletime FROM tbl_utilities_availabletime where int_serviceID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
             db.query(queryString2, (err, results2, fields) => {
-                for(i=0;i<results2.length;i++){ 
-                results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
+                if(results2 != undefined){
+                    for(i=0;i<results2.length;i++){ 
+                    results2[i].time_availabletime = moment(results2[i].time_availabletime,'HH:mm:ss').format('hh:mm A');
+                    }
+                }
+                else{
+                    return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1,utilities:results2})
                 }
                 if (err) throw err;
-        return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1,utilities:results2})
             });    
             });
         
