@@ -218,7 +218,7 @@ block main
 														.text-danger.d-inline  *
 													input#file-0b.file(type='file',accept='image/*',name="image")
 										.learn-more.pull-right
-											button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+											button#prevButton1.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 											button#nextButton2.btn(type='button') Next
 
 							// Form Step 2
@@ -243,7 +243,7 @@ block main
 										.row#additionalSponsor
 								br
 								.learn-more.pull-right
-									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+									button#prevButton2.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									button.btn.btn-submit#submitButton(type='button') Submit
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
@@ -369,20 +369,20 @@ block addjs
 			}
 			console.log(gender)
 			if(
-			gender != undefined &&
-			$('#firstname').val() != ''  &&
-			$('#lastname').val() != ''  &&
-			$('#birthdate').val() != '' &&
-			$('#birthplace').val() != '' &&
-			$('#fatherfullname').val() != '' &&
-			$('#fatherbirthplace').val() != '' &&
-			$('#motherfullname').val() != '' &&
-			$('#motherbirthplace').val() != '' &&
-			$('#relation').val() != '' &&
-			$('#contactnumber').val() != '' &&
-			$('.marriageaddress').val() != '' &&
-			$('.address').val() != '' &&
-			$('#file-0b').val() != '' &&
+			gender != undefined ||
+			$('#firstname').val() != ''  ||
+			$('#lastname').val() != ''  ||
+			$('#birthdate').val() != '' ||
+			$('#birthplace').val() != '' ||
+			$('#fatherfullname').val() != '' ||
+			$('#fatherbirthplace').val() != '' ||
+			$('#motherfullname').val() != '' ||
+			$('#motherbirthplace').val() != '' ||
+			$('#relation').val() != '' ||
+			$('#contactnumber').val() != '' ||
+			$('.marriageaddress').val() != '' ||
+			$('.address').val() != '' ||
+			$('#file-0b').val() != '' ||
 			$('#file-0b').val() != undefined){
 				$('#nextButton2').addClass('btn-next')
 			}
@@ -851,6 +851,13 @@ block addjs
 			else{
 				$('#nextButton1').addClass('btn-next')
 			}
+		})
+		$('#prevButton1').click(function(){
+			$('#nextButton1').removeClass('btn-next')
+		})
+		$('#prevButton2').click(function(){
+			$('#nextButton2').removeClass('btn-next')
+			
 		})
 		//- dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(7,'days').format('YYYY-MM-DD')
 		$.get('/guest/baptism/query').done(data=>{
