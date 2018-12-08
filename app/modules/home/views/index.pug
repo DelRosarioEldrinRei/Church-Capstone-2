@@ -83,29 +83,53 @@ block prepend main
 												.col-md-12
 													.learn-more.text-center
 														button.btn.std-btn.btn-common#proceedButton(type='button' value=`${event.int_eventID}`) Apply
-					//- .col-lg-4.col-md-6.col-xs-12
-					//- 	.featured-box-item
-					//- 		.featured-icon
-					//- 			i.fa.fa-bolt
-					//- 		.featured-content
-					//- 			h4
-					//- 				| #{event.var_eventname}
-					//- 			p
-					//- 				| #{event.var_eventdesc.substring(0, 100)}...
-					//- 			.learn-more
-					//- 					button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
-					//- 					// Modal
-					//- 					#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-					//- 						.modal-dialog.modal-lg(role='document')
-					//- 							.modal-content#each
-					//- 								.modal-header#headerAppend
-					//- 									button.close(type='button', data-dismiss='modal', aria-label='Close')
-					//- 										span.p-3(aria-hidden='true') ×
-					//- 								.modal-body#bodyAppend
-					//- 								.modal-body#reqAppend
-					//- 								.modal-footer
-					//- 									button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-					//- 									button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${event.int_eventID}`) Apply
+					#inquireModal1.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+						.modal-dialog.modal-lg(role='document')
+								.modal-content#each
+										.modal-header#headerAppend1
+												button.close(type='button', data-dismiss='modal', aria-label='Close')
+														span.p-3(aria-hidden='true') ×
+										.modal-body
+											#bodyAppend1
+											#reqAppend
+											.row
+												.col-md-12
+													.learn-more.text-center
+														//- button.btn.std-btn.btn-common#proceedButton(type='button' value=`${event.int_eventID}`) Apply
+										
+			.row
+				
+				.col-lg-4.col-md-6.col-xs-12
+					.featured-box-item
+							.featured-icon
+									i.fa.fa-bolt
+							.featured-content
+									h4 Baptism
+									p Regular Baptism
+									p Special Baptism
+									.learn-more
+											button.btn.std-btn.btn-common.inquireButtonnew(type='button', data-toggle='modal', data-target='#exampleModal' value='Baptism') Inquire
+				.col-lg-4.col-md-6.col-xs-12
+					.featured-box-item
+							.featured-icon
+									i.fa.fa-bolt
+							.featured-content
+									h4 Blessing Request
+									p Anointing of the sick
+									p Funeral Blessing
+									p House Blessing
+									.learn-more
+											button.btn.std-btn.btn-common.inquireButtonnew(type='button', data-toggle='modal', data-target='#exampleModal' value='Blessing Request') Inquire
+				.col-lg-4.col-md-6.col-xs-12
+					.featured-box-item
+							.featured-icon
+									i.fa.fa-bolt
+							.featured-content
+									h4 Marriage
+									
+									.learn-more
+											button.btn.std-btn.btn-common.inquireButtonnew1(type='button', data-toggle='modal', data-target='#exampleModal' value='Marriage') Inquire
+					
 		.container
 			.row
 				.col-md-12
@@ -250,128 +274,128 @@ block prepend main
 							//- 				a.sup-title(href='#')
 							//- 					h4 TITLE HERE
 											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-	//- #counter
-	//- 	.container
-	//- 		.row.count-to-sec
-	//- 			.col-lg-3.col-md-6.col-xs-12.count-one
-	//- 				span.icon
-	//- 					i.fa.fa-download  
-	//- 				h3.timer.count-value(data-to='561', data-speed='1000') 561
-	//- 				hr.width25-divider
-	//- 				small.count-title Downloads
-	//- 			.col-lg-3.col-md-6.col-xs-12.count-one
-	//- 				span.icon
-	//- 					i.fa.fa-user  
-	//- 				h3.timer.count-value(data-to='950', data-speed='1000') 950
-	//- 				hr.width25-divider
-	//- 				small.count-title Developers
-	//- 			.col-lg-3.col-md-6.col-xs-12.count-one
-	//- 				span.icon
-	//- 					i.fa.fa-desktop  
-	//- 				h3.timer.count-value(data-to='978', data-speed='1000') 978
-	//- 				hr.width25-divider
-	//- 				small.count-title Lines of code written
-	//- 			.col-lg-3.col-md-6.col-xs-12.count-one
-	//- 				span.icon
-	//- 					i.fa.fa-coffee  
-	//- 				h3.timer.count-value(data-to='1700', data-speed='1000') 1700
-	//- 				hr.width25-divider
-	//- 				small.count-title Cups of coffee consumed
-	//- #team.team-members-tow.section-padding.mx-5
-		.container
+		//- #counter
+		//- 	.container
+		//- 		.row.count-to-sec
+		//- 			.col-lg-3.col-md-6.col-xs-12.count-one
+		//- 				span.icon
+		//- 					i.fa.fa-download  
+		//- 				h3.timer.count-value(data-to='561', data-speed='1000') 561
+		//- 				hr.width25-divider
+		//- 				small.count-title Downloads
+		//- 			.col-lg-3.col-md-6.col-xs-12.count-one
+		//- 				span.icon
+		//- 					i.fa.fa-user  
+		//- 				h3.timer.count-value(data-to='950', data-speed='1000') 950
+		//- 				hr.width25-divider
+		//- 				small.count-title Developers
+		//- 			.col-lg-3.col-md-6.col-xs-12.count-one
+		//- 				span.icon
+		//- 					i.fa.fa-desktop  
+		//- 				h3.timer.count-value(data-to='978', data-speed='1000') 978
+		//- 				hr.width25-divider
+		//- 				small.count-title Lines of code written
+		//- 			.col-lg-3.col-md-6.col-xs-12.count-one
+		//- 				span.icon
+		//- 					i.fa.fa-coffee  
+		//- 				h3.timer.count-value(data-to='1700', data-speed='1000') 1700
+		//- 				hr.width25-divider
+		//- 				small.count-title Cups of coffee consumed
+		//- #team.team-members-tow.section-padding.mx-5
+			.container
+				.row
+					.col-md-12
+						h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Our Team
 			.row
-				.col-md-12
-					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Our Team
-		.row
-			.col-sm-6.col-md-3
-				// Team Item Starts
-				.team-item
-					figure.team-profile
-						img(src='/img/team/2.jpg', alt='')
-						figcaption.our-team
-							.details
-								p.content-white
-									| "Cram Is Gold" swswswswswswswswswswssws
-									| "b a k a l a k o"
-								hr.small-divider.border-white
-								.social
-									a.facebook(href='#')
-										i.fa.fa-facebook
-									a.twitter(href='#')
-										i.fa.fa-twitter
-									a.google-plus(href='#')
-										i.fa.fa-instagram
-					.info
-						h2
-							| Joshua Rae Macaya
-						p
-							| Database Engineer/ Main Dev
-				// Team Item Ends
-			.col-sm-6.col-md-3
-				// Team Item Starts
-				.team-item
-					figure.team-profile
-						img(src='/img/team/1.jpg', alt='')
-						figcaption.our-team
-							.details
-								p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-								hr.small-divider.border-white
-								.social
-									a.facebook(href='#')
-										i.fa.fa-facebook
-									a.twitter(href='#')
-										i.fa.fa-twitter
-									a.google-plus(href='#')
-										i.fa.fa-instagram
-					.info
-						h2
-							| Jonalyn Fe Ebrada
-						p
-							| Project Manager
-				// Team Item Starts
-			.col-sm-6.col-md-3
-				// Team Item Starts
-				.team-item
-					figure.team-profile
-						img(src='/img/team/3.jpg', alt='')
-						figcaption.our-team
-							.details
-								p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-								hr.small-divider.border-white
-								.social
-									a.facebook(href='#')
-										i.fa.fa-facebook
-									a.twitter(href='#')
-										i.fa.fa-twitter
-									a.google-plus(href='#')
-										i.fa.fa-instagram
-					.info
-						h2
-							| Norme Ann Joyce Peñaverde
-						p
-							| Software Tester
-				// Team Item Ends
-			.col-sm-6.col-md-3
-				// Team Item Starts
-				.team-item
-					figure.team-profile
-						img(src='/img/team/4.jpg', alt='')
-						figcaption.our-team
-							.details
-								p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-								hr.small-divider.border-white
-								.social
-									a.facebook(href='#')
-										i.fa.fa-facebook
-									a.twitter(href='#')
-										i.fa.fa-twitter
-									a.google-plus(href='#')
-										i.fa.fa-instagram
-					.info
-						h2
-							| Eldrin Rei Del Rosario
-						p
-							| Web Designer
+				.col-sm-6.col-md-3
+					// Team Item Starts
+					.team-item
+						figure.team-profile
+							img(src='/img/team/2.jpg', alt='')
+							figcaption.our-team
+								.details
+									p.content-white
+										| "Cram Is Gold" swswswswswswswswswswssws
+										| "b a k a l a k o"
+									hr.small-divider.border-white
+									.social
+										a.facebook(href='#')
+											i.fa.fa-facebook
+										a.twitter(href='#')
+											i.fa.fa-twitter
+										a.google-plus(href='#')
+											i.fa.fa-instagram
+						.info
+							h2
+								| Joshua Rae Macaya
+							p
+								| Database Engineer/ Main Dev
+					// Team Item Ends
+				.col-sm-6.col-md-3
+					// Team Item Starts
+					.team-item
+						figure.team-profile
+							img(src='/img/team/1.jpg', alt='')
+							figcaption.our-team
+								.details
+									p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+									hr.small-divider.border-white
+									.social
+										a.facebook(href='#')
+											i.fa.fa-facebook
+										a.twitter(href='#')
+											i.fa.fa-twitter
+										a.google-plus(href='#')
+											i.fa.fa-instagram
+						.info
+							h2
+								| Jonalyn Fe Ebrada
+							p
+								| Project Manager
+					// Team Item Starts
+				.col-sm-6.col-md-3
+					// Team Item Starts
+					.team-item
+						figure.team-profile
+							img(src='/img/team/3.jpg', alt='')
+							figcaption.our-team
+								.details
+									p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+									hr.small-divider.border-white
+									.social
+										a.facebook(href='#')
+											i.fa.fa-facebook
+										a.twitter(href='#')
+											i.fa.fa-twitter
+										a.google-plus(href='#')
+											i.fa.fa-instagram
+						.info
+							h2
+								| Norme Ann Joyce Peñaverde
+							p
+								| Software Tester
+					// Team Item Ends
+				.col-sm-6.col-md-3
+					// Team Item Starts
+					.team-item
+						figure.team-profile
+							img(src='/img/team/4.jpg', alt='')
+							figcaption.our-team
+								.details
+									p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+									hr.small-divider.border-white
+									.social
+										a.facebook(href='#')
+											i.fa.fa-facebook
+										a.twitter(href='#')
+											i.fa.fa-twitter
+										a.google-plus(href='#')
+											i.fa.fa-instagram
+						.info
+							h2
+								| Eldrin Rei Del Rosario
+							p
+								| Web Designer
 	section#contact.contact-form.section-padding
 		.container
 			.row
@@ -432,8 +456,338 @@ block prepend main
 							li
 								a.fa.fa-linkedin(href='#')
 block addjs
-	script.
+	script(type='text/javascript').
 		$(document).ready(function(){
+			$('.inquireButtonnew').click(function(){
+				var idNow = $(this).val();
+				console.log(idNow)
+				
+						if(idNow== "Marriage"){
+							window.location='/index/marriagedetails'
+						}//if marriage
+								
+						if (idNow== 'Blessing Request')	{
+							$.post('/index/blessingrequest')
+								.done(data =>{
+									console.log(data.anointing)
+									console.log(data.funeralmass)
+									console.log(data.funeralservice)
+									console.log(data.houseblessing)
+
+									var anointdays = data.anointing.var_availabledays.split(',');
+									var anointavailabledays=[];
+										for(i=0; i<anointdays.length; i++){
+											if(anointdays[i]==0){anointavailabledays.push(' Sunday')}
+											if(anointdays[i]==1){anointavailabledays.push(' Monday')}
+											if(anointdays[i]==2){anointavailabledays.push(' Tuesday')}
+											if(anointdays[i]==3){anointavailabledays.push(' Wednesday')}
+											if(anointdays[i]==4){anointavailabledays.push(' Thursday')}
+											if(anointdays[i]==5){anointavailabledays.push(' Friday')}
+											if(anointdays[i]==6){anointavailabledays.push(' Saturday')}
+									}
+									var funeralmassdays = data.funeralmass.var_availabledays.split(',');
+									var funeralmassavailabledays=[];
+										for(i=0; i<funeralmassdays.length; i++){
+											if(funeralmassdays[i]==0){funeralmassavailabledays.push(' Sunday')}
+											if(funeralmassdays[i]==1){funeralmassavailabledays.push(' Monday')}
+											if(funeralmassdays[i]==2){funeralmassavailabledays.push(' Tuesday')}
+											if(funeralmassdays[i]==3){funeralmassavailabledays.push(' Wednesday')}
+											if(funeralmassdays[i]==4){funeralmassavailabledays.push(' Thursday')}
+											if(funeralmassdays[i]==5){funeralmassavailabledays.push(' Friday')}
+											if(funeralmassdays[i]==6){funeralmassavailabledays.push(' Saturday')}
+									}
+
+									var funeralservicedays = data.funeralservice.var_availabledays.split(',');
+									var funeralserviceavailabledays=[];
+										for(i=0; i<funeralservicedays.length; i++){
+											if(funeralservicedays[i]==0){funeralserviceavailabledays.push(' Sunday')}
+											if(funeralservicedays[i]==1){funeralserviceavailabledays.push(' Monday')}
+											if(funeralservicedays[i]==2){funeralserviceavailabledays.push(' Tuesday')}
+											if(funeralservicedays[i]==3){funeralserviceavailabledays.push(' Wednesday')}
+											if(funeralservicedays[i]==4){funeralserviceavailabledays.push(' Thursday')}
+											if(funeralservicedays[i]==5){funeralserviceavailabledays.push(' Friday')}
+											if(funeralservicedays[i]==6){funeralserviceavailabledays.push(' Saturday')}
+									}
+
+									var houseblessingdays = data.houseblessing.var_availabledays.split(',');
+									var houseblessingavailabledays=[];
+										for(i=0; i<houseblessingdays.length; i++){
+											if(houseblessingdays[i]==0){houseblessingavailabledays.push(' Sunday')}
+											if(houseblessingdays[i]==1){houseblessingavailabledays.push(' Monday')}
+											if(houseblessingdays[i]==2){houseblessingavailabledays.push(' Tuesday')}
+											if(houseblessingdays[i]==3){houseblessingavailabledays.push(' Wednesday')}
+											if(houseblessingdays[i]==4){houseblessingavailabledays.push(' Thursday')}
+											if(houseblessingdays[i]==5){houseblessingavailabledays.push(' Friday')}
+											if(houseblessingdays[i]==6){houseblessingavailabledays.push(' Saturday')}
+									}
+
+									console.log(anointavailabledays)
+									console.log(funeralmassavailabledays)
+									console.log(funeralserviceavailabledays)
+									console.log(houseblessingavailabledays)
+
+									anointavailstart = moment(data.anointing.time_availablestart,'hh:mm a').format('hh:mm A')
+									anointavailend = moment(data.anointing.time_availableend,'hh:mm a').format('hh:mm A')
+									funeralmassvailstart = moment(data.funeralmass.time_availablestart,'hh:mm a').format('hh:mm A')
+									funeralmassvailend = moment(data.funeralmass.time_availableend,'hh:mm a').format('hh:mm A')
+									funeralservicevailstart = moment(data.funeralservice.time_availablestart,'hh:mm a').format('hh:mm A')
+									funeralservicevailend = moment(data.funeralservice.time_availableend,'hh:mm a').format('hh:mm A')
+									houseblessingavailstart = moment(data.houseblessing.time_availablestart,'hh:mm a').format('hh:mm A')
+									houseblessingavailend = moment(data.houseblessing.time_availableend,'hh:mm a').format('hh:mm A')
+									
+
+									$('#headerAppend1').append(`
+										<h5 id="exampleModalLabel" class="modal-title">${data.anointing.var_eventname}</h5>
+									`)
+									//SEPARATE BASED ON THE TYPE, THANKS :)
+									$('#bodyAppend1').append(`
+
+										<h5 id="exampleModalLabel" class="modal-title">${data.anointing.var_eventname}</h5>
+										<p><strong>Service Description</strong></p>
+										<p class="pl-2 description">${data.anointing.var_eventdesc}</p>
+										<br>
+
+										<p><strong>Service Availability</strong></p>
+										<p class="pl-2 description">${anointavailabledays}
+										<br>${anointavailstart} - ${anointavailend}</p>
+										<br>
+
+										<p><strong>Payment Details</strong></p>
+										<p class="pl-2 description">Application Fee: P${data.anointing.double_fee}</p>
+										<br>
+										<button class="btn std-btn btn-common" id="proceedAnointing" type="button" value=${data.anointing.int_eventID}>Apply</button>
+
+
+										<hr>
+
+
+										<h5 id="exampleModalLabel" class="modal-title">${data.funeralmass.var_eventname}</h5>
+										<p><strong>Service Description</strong></p>
+										<p class="pl-2 description">${data.funeralmass.var_eventdesc}</p>
+										<br>
+
+										<p><strong>Service Availability</strong></p>
+										<p class="pl-2 description">${funeralmassavailabledays}
+										<br>${funeralmassvailstart} - ${funeralmassvailend}</p>
+										<br>
+
+										<p><strong>Payment Details</strong></p>
+										<p class="pl-2 description">Application Fee: P${data.funeralmass.double_fee}</p>
+										<br>
+										<button class="btn std-btn btn-common" id="proceedFuneralmass" type="button" value=${data.funeralmass.int_eventID}>Apply</button>
+
+
+										<hr>
+
+										<h5 id="exampleModalLabel" class="modal-title">${data.funeralservice.var_eventname}</h5>
+										<p><strong>Service Description</strong></p>
+										<p class="pl-2 description">${data.funeralservice.var_eventdesc}</p>
+										<br>
+
+										<p><strong>Service Availability</strong></p>
+										<p class="pl-2 description">${funeralserviceavailabledays}
+										<br>${funeralservicevailstart} - ${funeralservicevailend}</p>
+										<br>
+
+										<p><strong>Payment Details</strong></p>
+										<p class="pl-2 description">Application Fee: P${data.funeralservice.double_fee} </p>
+										<br>
+										<button class="btn std-btn btn-common" id="proceedFuneralservice" type="button" value=${data.funeralservice.int_eventID}>Apply</button>
+
+
+										<hr>
+
+										<h5 id="exampleModalLabel" class="modal-title">${data.houseblessing.var_eventname}</h5>
+										<p><strong>Service Description</strong></p>
+										<p class="pl-2 description">${data.houseblessing.var_eventdesc}</p>
+										<br>
+										
+
+										<p><strong>Service Availability</strong></p>
+										<p class="pl-2 description">${houseblessingavailabledays}
+										<br>${houseblessingavailstart} - ${houseblessingavailend}</p>
+										<br>
+
+										<p><strong>Payment Details</strong></p>
+										<p class="pl-2 description">Application Fee: P${data.houseblessing.double_fee}</p>
+										<br>
+										<button class="btn std-btn btn-common" id="proceedHouseblessing" type="button" value=${data.houseblessing.int_eventID}>Apply</button>
+
+
+										<hr>
+									`)
+
+									$('#inquireModal1').modal('show');	
+									$('#inquireModal1').on('hidden.bs.modal',function(){
+										$('#bodyAppend1').empty()
+										$('#headerAppend1').empty()
+										$('#reqAppend1').empty()
+
+									})
+									$('#cancelButton1').css('display', 'block');
+									//- $('#proceedButton').css('display', 'block');
+										$('#proceedAnointing').click(function(){
+											$.post('/login/query',{id:data.anointing.int_eventID}).done(data =>{
+												window.location=`/login? 
+												redirect="${$(this).val()}"`
+											})
+										})
+										$('#proceedFuneralmass').click(function(){
+											$.post('/login/query',{id:data.funeralmass.int_eventID}).done(data =>{
+												window.location=`/login? 
+												redirect="${$(this).val()}"`
+											})
+										})
+										$('#proceedFuneralservice').click(function(){
+											$.post('/login/query',{id:data.funeralservice.int_eventID}).done(data =>{
+												window.location=`/login? 
+												redirect="${$(this).val()}"`
+											})
+										})
+										$('#proceedHouseblessing').click(function(){
+											$.post('/login/query',{id:data.houseblessing.int_eventID}).done(data =>{
+												window.location=`/login? 
+												redirect="${$(this).val()}"`
+											})
+										})
+
+
+							})//post data
+						}//if blessing
+						
+						if (idNow== 'Baptism')	{
+							$.post('/index/baptismdesc')
+								.done(data =>{
+									console.log(data.regularbap)
+									console.log(data.specialbap)
+									
+									var regavailabledays=[];
+									var spcavailabledays=[];
+									
+									var rdays = data.regularbap.var_availabledays.split(',');
+									console.log(rdays)
+										for(i=0; i<rdays.length; i++){
+											if(rdays[i]==0){regavailabledays.push(' Sunday')}
+											if(rdays[i]==1){regavailabledays.push(' Monday')}
+											if(rdays[i]==2){regavailabledays.push(' Tuesday')}
+											if(rdays[i]==3){regavailabledays.push(' Wednesday')}
+											if(rdays[i]==4){regavailabledays.push(' Thursday')}
+											if(rdays[i]==5){regavailabledays.push(' Friday')}
+											if(rdays[i]==6){regavailabledays.push(' Saturday')}
+									}
+									var sdays = data.specialbap.var_availabledays.split(',');
+									console.log(sdays)
+										for(i=0; i<sdays.length; i++){
+											if(sdays[i]==0){spcavailabledays.push(' Sunday')}
+											if(sdays[i]==1){spcavailabledays.push(' Monday')}
+											if(sdays[i]==2){spcavailabledays.push(' Tuesday')}
+											if(sdays[i]==3){spcavailabledays.push(' Wednesday')}
+											if(sdays[i]==4){spcavailabledays.push(' Thursday')}
+											if(sdays[i]==5){spcavailabledays.push(' Friday')}
+											if(sdays[i]==6){spcavailabledays.push(' Saturday')}
+									}
+
+									console.log(regavailabledays)
+									console.log(spcavailabledays)
+									regavailstart = moment(data.regularbap.time_availablestart,'hh:mm a').format('hh:mm A')
+									regavailend = moment(data.regularbap.time_availableend,'hh:mm a').format('hh:mm A')
+									spcavailstart = moment(data.regularbap.time_availablestart,'hh:mm a').format('hh:mm A')
+									spcavailend = moment(data.regularbap.time_availableend,'hh:mm a').format('hh:mm A')
+									
+									// LEAVE THIS HEADER AS IT IS
+									$('#headerAppend1').append(`
+										<h5 id="exampleModalLabel" class="modal-title">${data.regularbap.var_eventname}</h5>
+									`)
+									//SEPARATE BASED ON THE TYPE, THANKS :)
+									$('#bodyAppend1').append(`
+
+										<h5 id="exampleModalLabel" class="modal-title">${data.regularbap.var_eventname}</h5>
+										<p><strong>Service Description</strong></p>
+										<p class="pl-2 description">${data.regularbap.var_eventdesc}</p>
+										<br>
+
+										<p><strong>Service Availability</strong></p>
+										<p class="pl-2 description">${regavailabledays}
+										<br>${regavailstart} - ${regavailend}</p>
+										<br>
+
+										<p><strong>Payment Details</strong></p>
+										<p class="pl-2 description">Application Fee: P${data.regularbap.double_fee} 
+										<br>Additional Rate: P${data.regularbap.double_addrate}/sponsor </p>
+										<br>
+										<button class="btn std-btn btn-common" id="proceedRegularbap" type="button" value=${data.regularbap.int_eventID}>Apply</button>
+
+
+										<hr>
+
+
+										<h5 id="exampleModalLabel1" class="modal-title">${data.specialbap.var_eventname}</h5>
+										<p><strong>Service Description</strong></p>
+										<p class="pl-2 description">${data.specialbap.var_eventdesc}</p>
+										<br>
+
+										<p><strong>Service Availability</strong></p>
+										<p class="pl-2 description">${spcavailabledays}
+										<br>${spcavailstart} - ${spcavailend}</p>
+										<br>	
+
+										<p><strong>Payment Details</strong></p>
+										<p class="pl-2 description">Application Fee: P${data.specialbap.double_fee} 
+										<br>Additional Rate: P${data.specialbap.double_addrate}/sponsor </p>
+										<br>
+										<button class="btn std-btn btn-common" id="proceedSpecialbap" type="button" value=${data.specialbap.int_eventID}>Apply</button>
+									`)
+
+								
+									// REQUIREMENTS (REGULAR AND SPECIAL)
+									for(i=0;i<data.regbapreq.length;i++){
+										$('#reqAppend').append(`
+											<p><strong>Requirements1</strong></p>
+											<p class="pl-2 description">${data.spcbapreq[i].var_reqname}</p>
+										`)
+									}
+									for(i=0;i<data.spcbapreq.length;i++){
+										$('#reqAppend').append(`
+											<p><strong>Requirements2</strong></p>
+											<p class="pl-2 description">${data.spcbapreq[i].var_reqname}</p>
+										`)
+									}
+
+									$('#inquireModal1').modal('show');	
+									$('#inquireModal1').on('hidden.bs.modal',function(){
+										$('#bodyAppend1').empty()
+										$('#headerAppend1').empty()
+										$('#reqAppend1').empty()
+
+									})
+									$('#cancelButton1').css('display', 'block');
+									
+										$('#proceedButton').click(function(){
+											$.post('/login/query',{id:data.firstQuery.int_eventID}).done(data =>{
+												window.location=`/login? 
+												redirect="${$(this).val()}"`
+											})
+										})
+
+										$('#proceedRegularbap').click(function(){
+											$.post('/login/query',{id:data.regularbap.int_eventID}).done(data =>{
+												window.location=`/login? 
+												redirect="${$(this).val()}"`
+											})
+										})
+										$('#proceedSpecialbap').click(function(){
+											$.post('/login/query',{id:data.specialbap.int_eventID}).done(data =>{
+												window.location=`/login? 
+												redirect="${$(this).val()}"`
+											})
+										})
+								})//post done		
+						}//if baptism
+						
+								
+			})
+
+		
 			$('.inquireButton').click(function(){
 				var idNow = $(this).val();
 				console.log(idNow)
@@ -477,8 +831,7 @@ block addjs
 									redirect="${$(this).val()}"`
 								})
 							})
-						})
-								
+						})								
 			})
 			$('.serviceButton').click(function(){
 				var idNow = $(this).val();
@@ -525,4 +878,8 @@ block addjs
 							})
 						})
 			})
+
+
+
+
 		})

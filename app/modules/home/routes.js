@@ -29,6 +29,65 @@ indexRouter.post('/query', (req, res) => {
   })
 })
 
+indexRouter.post('/baptismdesc', (req, res) => {
+  //REGULAR BAPTISM
+  var regularbap =`select * from tbl_services 
+  join tbl_utilities on tbl_services.int_eventID = tbl_utilities.int_eventID  where var_eventname='Baptism'`  
+    db.query(regularbap, (err, regularbap, fields) => {
+      if (err) console.log(err);
+      
+  var regbapreq =`select var_reqname from tbl_requirementtype where int_eventID = 
+    (select int_eventID from tbl_services where var_eventname= 'Baptism')`  
+    db.query(regbapreq, (err, regbapreq, fields) => {
+      if (err) console.log(err);
+  
+
+  //SPECIAL BAPTISM
+  var specialbap =`select * from tbl_services
+  join tbl_utilities on tbl_services.int_eventID = tbl_utilities.int_eventID  where var_eventname='Special Baptism'`    
+    db.query(specialbap, (err, specialbap, fields) => {
+      if (err) console.log(err);
+  var spcbapreq =`select var_reqname from tbl_requirementtype where int_eventID = 
+      (select int_eventID from tbl_services where var_eventname= 'Special Baptism')`  
+        db.query(spcbapreq, (err, spcbapreq, fields) => {
+          if (err) console.log(err);
+ 
+
+      res.send({regularbap:regularbap[0], regbapreq:regbapreq,  specialbap:specialbap[0], spcbapreq:spcbapreq, });
+      });
+    })
+  })
+
+})
+})
+
+indexRouter.post('/blessingrequest', (req, res) => {
+
+  var anointing =`SELECT * FROM tbl_services 
+  join tbl_requirementtype on tbl_services.int_eventID = tbl_requirementtype.int_eventID
+  join tbl_utilities on tbl_services.int_eventID =tbl_utilities.int_eventID where tbl_services.var_eventname= ? `
+  db.query(anointing,['Anointing of the sick'], (err, anointing, fields) => {
+  
+  var funeralmass =`SELECT * FROM tbl_services 
+  join tbl_requirementtype on tbl_services.int_eventID = tbl_requirementtype.int_eventID
+  join tbl_utilities on tbl_services.int_eventID =tbl_utilities.int_eventID where tbl_services.var_eventname= ? `
+  db.query(funeralmass,['Funeral Mass'], (err, funeralmass, fields) => {
+
+  var funeralservice =`SELECT * FROM tbl_services 
+  join tbl_requirementtype on tbl_services.int_eventID = tbl_requirementtype.int_eventID
+  join tbl_utilities on tbl_services.int_eventID =tbl_utilities.int_eventID where tbl_services.var_eventname= ? `
+  db.query(funeralservice,['Funeral Service'], (err, funeralservice, fields) => {
+  
+  var houseblessing =`SELECT * FROM tbl_services 
+  join tbl_requirementtype on tbl_services.int_eventID = tbl_requirementtype.int_eventID
+  join tbl_utilities on tbl_services.int_eventID =tbl_utilities.int_eventID where tbl_services.var_eventname= ? `
+  db.query(houseblessing,['House Blessing'], (err, houseblessing, fields) => {
+    
+    
+  res.send({anointing:anointing[0],funeralmass:funeralmass[0],funeralservice:funeralservice[0],houseblessing:houseblessing[0],});
+
+  })})})})
+})
 indexRouter.post('/queryservice', (req, res) => {
   var queryString1 =`SELECT * FROM tbl_serviceutilities where int_serviceutilitiesID = ? `
   db.query(queryString1,[req.body.id], (err, results1, fields) => {
@@ -85,11 +144,6 @@ indexRouter.get('/services', (req, res) => {
     if (err) console.log(err);
     res.render('home/views/services',{ events : results1 });
   });
-});
-
-indexRouter.get('/store', (req, res) => {
-
-    res.render('home/views/index1', req.query);
 });
 
 
