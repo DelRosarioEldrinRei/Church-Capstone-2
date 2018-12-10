@@ -38,7 +38,7 @@ block main
                         form#form(action="/guest/marriage/form" method="post" enctype="multipart/form-data")
                                 h3 Marriage Application Request
                                 p Fill all form field to go next step
-                                // Form progress
+                                // Form progress FORM WIZARD HEADERS
                                 .form-wizard-steps.form-wizard-tolal-steps-5
                                     .form-wizard-progress
                                         .form-wizard-progress-line(data-now-value='12.25' data-number-of-steps='3' style='width: 12.25%;')
@@ -73,7 +73,7 @@ block main
                                         p.d-none.d-sm-block Sponsors
                                     // Step 4
                                 // Form progress
-                                // Form Step 1
+                                // Form Step 1 STEPS
                                 fieldset
                                     h4
                                         .d-none.d-sm-inline Schedule Date: 
@@ -91,7 +91,7 @@ block main
                                         .learn-more.pull-right
                                             button.btn.btn-next(type='button') Next
                                 // Form Step 1
-                                // Form Step 2
+                                // Form Step 2 GROOM
                                 fieldset
                                     h4
                                         .d-none.d-sm-inline Groom's Form: 
@@ -189,34 +189,38 @@ block main
                                                                     option Married
                                                                     option Divorced
                                                                     option Widower
-                                                        .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3
+                                                        .col-md-6.px-lg-3.px-md-0.px-sm-0
                                                             .form-group
-                                                                h6.label-control Religion
+                                                                h6.label-control Occupation:
                                                                     .text-danger.d-inline  *
-                                                                select(type="text" name='greligion')
-                                                                    option Catholic
-                                                                    option Non-Catholic
-                                                                    option Non-Christion
-                                                                    option No religion
-                                                .col-md-6.px-lg-3.pr-md-3.px-sm-0
+                                                                input.form-control(type='text' name='goccupation' placeholder="Ex. Driver")
+                                                                .help-block.with-errors
+                                            
+                                                .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3
                                                     .form-group
                                                         h6(for='exampleFormControlTextarea1') Address:
                                                             .text-danger.d-inline  *
                                                         textarea#exampleFormControlTextarea1.form-control(rows='1' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                             .row
-                                                .col-md-6.px-lg-3.px-md-0.px-sm-0
+                                                .col-md-3.px-lg-3.px-md-0.px-sm-0.pl-sm-3
+                                                    .form-group
+                                                        h6.label-control Religion
+                                                            .text-danger.d-inline  *
+                                                        select#greligion(type="text" name='greligion' )
+                                                            option Catholic
+                                                            option Non-Catholic
+                                                            option Non-Christion
+                                                            option No religion            
+                                                .col-md-9.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Current Parish:
                                                             .text-danger.d-inline  *
-                                                        input.form-control(type='text' name='gcurrentparish' placeholder=" Ex. Ina ng Lupang Pangako Parish")
+                                                        input.form-control#gcurrentparish(type='text' name='gcurrentparish' placeholder=" Ex. Ina ng Lupang Pangako Parish")
                                                         .help-block.with-errors
-                                                .col-md-6.px-lg-3.px-md-0.px-sm-0
-                                                    .form-group
-                                                        h6.label-control Occupation:
-                                                            .text-danger.d-inline  *
-                                                        input.form-control(type='text' name='goccupation' placeholder="Ex. Driver")
-                                                        .help-block.with-errors
+                                           
+                                                
+                                                
                                             .row
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
@@ -224,7 +228,7 @@ block main
                                                             .text-danger.d-inline  *
                                                         .form-check
                                                             label.form-check-label
-                                                                input.exampleRadios1.form-check-input(type="radio" name="gbaptized" value="1")
+                                                                input.exampleRadios1.form-check-input#gbapyes(type="radio" name="gbaptized" value="1")
                                                                 | Yes
                                                                 span.circle
                                                                     span.check
@@ -232,15 +236,15 @@ block main
                                                                 .form-group
                                                                     h6.label-control Parish where you were baptized:
                                                                         .text-danger.d-inline  *
-                                                                    input.form-control(type='text' name='gbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z., ]{2,}" )
+                                                                    input.form-control#gbapplace(type='text' name='gbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z., ]{2,}" )
                                                                 .form-group
                                                                     h6.label-control Date when you were baptized:
                                                                         .text-danger.d-inline  *
-                                                                    input.datepicker2.form-control(type='date' name='gbapdate')
+                                                                    input.datepicker2.form-control#gbapdate(type='date' name='gbapdate')
                                                                     
                                                         .form-check
                                                             label.form-check-label
-                                                                input.radioup.form-check-input(type="radio" name="gbaptized" value="0")
+                                                                input.radioup.form-check-input#gbapno(type="radio" name="gbaptized" value="0")
                                                                 | No
                                                                 span.circle
                                                                     span.check
@@ -250,7 +254,7 @@ block main
                                                             .text-danger.d-inline  *
                                                         .form-check
                                                             label.form-check-label
-                                                                input.exampleRadios2.form-check-input(type="radio" name="gconfirmed" value="1")
+                                                                input.exampleRadios2.form-check-input#gconyes(type="radio" name="gconfirmed" value="1" disabled)
                                                                 | Yes
                                                                 span.circle
                                                                     span.check
@@ -258,15 +262,15 @@ block main
                                                                 .form-group
                                                                     h6.label-control Parish Where You Were Confirmed:
                                                                         .text-danger.d-inline  *
-                                                                    input.form-control(type='text' name='gconplace' placeholder=" Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z., ]{2,}" )
+                                                                    input.form-control#gconplace(type='text' name='gconplace' placeholder=" Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z., ]{2,}" )
                                                                 .form-group
                                                                     h6.label-control Date When You Were Confirmed:
                                                                         .text-danger.d-inline  *
-                                                                    input.datepicker2.form-control(type='date' name='gcondate')
+                                                                    input.datepicker2.form-control#gcondate(type='date' name='gcondate')
                                                                 
                                                         .form-check
                                                             label.form-check-label
-                                                                input.radioup2.form-check-input(type="radio" name="gconfirmed" value="0" )
+                                                                input.radioup2.form-check-input#gconno(type="radio" name="gconfirmed" value="0" disabled)
                                                                 | No
                                                                 span.circle
                                                                     span.check
@@ -285,7 +289,7 @@ block main
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
                                         button.btn.btn-next(type='button') Next
                                 // Form Step 2
-                                // Form Step 3
+                                // Form Step 3 BRIDE
                                 fieldset
                                     h4
                                         .d-none.d-sm-inline Bride's Form: 
@@ -370,7 +374,7 @@ block main
                                                             option Non-Christion
                                                             option No religion
                                             .row
-                                                .col-md-6.px-lg-3.px-md-3.px-sm-0
+                                                .col-md-6.px-lg-3.px-md-0.px-sm-3
                                                     .row
                                                         .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3
                                                             .form-group
@@ -381,48 +385,38 @@ block main
                                                                     option Married
                                                                     option Divorced
                                                                     option Widower
-                                                        .col-md-6.px-lg-0.px-md-0.px-sm-0.pl-sm-3
+                                                        .col-md-6.px-lg-3.px-md-0.px-sm-0
                                                             .form-group
-                                                                h6.label-control Religion
+                                                                h6.label-control Occupation:
                                                                     .text-danger.d-inline  *
-                                                                select(type="text" name='breligion')
-                                                                    option Catholic
-                                                                    option Non-Catholic
-                                                                    option Non-Christion
-                                                                    option No religion
-                                                .col-md-6.px-lg-3.px-md-3.px-sm-0
+                                                                input.form-control(type='text' name='boccupation' placeholder="Ex. Driver")
+                                                                .help-block.with-errors
+                                            
+                                                .col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3
                                                     .form-group
                                                         h6(for='exampleFormControlTextarea1') Address:
                                                             .text-danger.d-inline  *
                                                         textarea#exampleFormControlTextarea1.form-control(rows='1' name='baddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' pattern="[A-Za-z0-9,.- ]{2,}" )
                                                         .help-block.with-errors
                                             .row
-                                                .col-md-4.px-lg-3.px-md-0.px-sm-0
-                                                    .form-group.m-0
-                                                        h6.label-control Are You 5months or Above Pregnant?
+                                                .col-md-3.px-lg-3.px-md-0.px-sm-0.pl-sm-3
+                                                    .form-group
+                                                        h6.label-control Religion
                                                             .text-danger.d-inline  *
-                                                        .form-check.ml-3
-                                                            label.form-check-label
-                                                                input.form-check-input(type="radio" name="boolpregnant" id="exampleRadios2" value="1")
-                                                                | Yes
-                                                                span.circle
-                                                                    span.check
-                                                        .form-check.ml-3
-                                                            label.form-check-label
-                                                                input.form-check-input(type="radio" name="boolpregnant" id="exampleRadios2" value="0")
-                                                                | No
-                                                                span.circle
-                                                                    span.check
-                                                .col-md-4.p-lg-0.px-md-3.px-sm-0.pr-lg-0
+                                                        select#breligion(type="text" name='breligion' )
+                                                            option Catholic
+                                                            option Non-Catholic
+                                                            option Non-Christion
+                                                            option No religion            
+                                                .col-md-9.px-lg-3.px-md-0.px-sm-0
                                                     .form-group
                                                         h6.label-control Current Parish:
                                                             .text-danger.d-inline  *
-                                                        input.form-control(type='text' name='bcurrentparish' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z.-, ]{2,}" )
-                                                .col-md-4.px-lg-3.px-md-0.px-sm-0
-                                                    .form-group
-                                                        h6.label-control Occupation:
-                                                            .text-danger.d-inline  *
-                                                        input.form-control(type='text' name='boccupation' placeholder="Ex. Teacher")
+                                                        input.form-control#bcurrentparish(type='text' name='bcurrentparish' placeholder=" Ex. Ina ng Lupang Pangako Parish")
+                                                        .help-block.with-errors
+                                           
+                                                
+                                                
                                             .row
                                                 .col-md-6.px-lg-3.pr-md-3.px-sm-0
                                                     .form-group
@@ -431,7 +425,7 @@ block main
                                                         .ml-4
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.exampleRadios4.form-check-input(type="radio" name="bbaptized" value="1")
+                                                                    input.exampleRadios4.form-check-input#bbapyes(type="radio" name="bbaptized" value="1")
                                                                     | Yes
                                                                     span.circle
                                                                         span.check
@@ -439,15 +433,15 @@ block main
                                                                     .form-group
                                                                         h6.label-control Parish Where You Were Baptized:
                                                                             .text-danger.d-inline  *
-                                                                        input.form-control(type='text' name='bbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
+                                                                        input.form-control#bbapplace(type='text' name='bbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
                                                                     .form-group
                                                                         h6.label-control Date When You Were Baptized:
                                                                             .text-danger.d-inline  *
-                                                                        input.datepicker2.form-control(type='date' name='bbapdate')
+                                                                        input.datepicker2.form-control#bbapdate(type='date' name='bbapdate')
                                                                     
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.radioup4.form-check-input(type="radio" name="bbaptized" value="0" )
+                                                                    input.radioup4.form-check-input#bbapno(type="radio" name="bbaptized" value="0" )
                                                                     | No
                                                                     span.circle
                                                                         span.check
@@ -458,7 +452,7 @@ block main
                                                         .ml-4
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.exampleRadios5.form-check-input(type="radio" name="bconfirmed" value="1")
+                                                                    input.exampleRadios5.form-check-input#bconyes(type="radio" name="bconfirmed" value="1" disabled)
                                                                     | Yes
                                                                     span.circle
                                                                         span.check
@@ -466,15 +460,15 @@ block main
                                                                     .form-group
                                                                         h6.label-control Parish where you were Confirmed:
                                                                             .text-danger.d-inline  *
-                                                                        input.form-control(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z.,- ]{2,}" )
+                                                                        input.form-control#bconplace(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' pattern="[A-Za-z.,- ]{2,}" )
                                                                     .form-group
                                                                         h6.label-control Date when you were Confirmed:
                                                                             .text-danger.d-inline  *
-                                                                        input.datepicker2.form-control(type='date' name='bcondate')
+                                                                        input.datepicker2.form-control#bcondate(type='date' name='bcondate')
                                                                     
                                                             .form-check
                                                                 label.form-check-label
-                                                                    input.radioup5.form-check-input(type="radio" name="bconfirmed" value="0" )
+                                                                    input.radioup5.form-check-input#bconno(type="radio" name="bconfirmed" value="0" disabled)
                                                                     | No
                                                                     span.circle
                                                                         span.check
@@ -493,7 +487,7 @@ block main
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
                                         button.btn.btn-next(type='button') Next
                                 // Form Step 3
-                                // Form Step 4
+                                // Form Step 4 COUPLE
                                 fieldset
                                     h4
                                         .d-none.d-sm-inline Couple's Form: 
@@ -549,8 +543,8 @@ block main
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
                                         button.btn.btn-next(type='button') Next
                                 // Form Step 4
-                                // Form Step 5\
-                                fieldset
+                                // Form Step 5 SPONSOR
+                                fieldset 
                                     h4
                                         .d-none.d-sm-inline Sponsors Information	
                                         span Step 5 - 5
@@ -570,6 +564,9 @@ block main
                                     .learn-more.pull-right
                                         button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
                                         button.btn#proceedButton(type='button') Proceed
+    
+    
+    //MODAL
     #viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
             .modal-dialog.modal-lg(role="document")
                 .modal-content
@@ -803,4 +800,106 @@ block addjs
                         }
                 })
             })
+
+            $('#greligion').change(function(){
+               $('.textarea2').slideUp();
+               $('.textarea1').slideUp();
+               $('#gcurrentparish').prop('disabled', $(this).val() != "Catholic");
+               $('#gbapno').prop('disabled', $(this).val() != "Catholic");
+               $('#gbapyes').prop('disabled', $(this).val() != "Catholic");
+               $('#gconno').prop('disabled', $(this).val() != "Catholic");
+               $('#gconyes').prop('disabled', $(this).val() != "Catholic");
+               $("#gbapyes").prop('checked', false)
+               $("#gbapno").prop('checked', false)
+               $("#gconyes").prop('checked', false)
+               $("#gconno").prop('checked', false)
+               $('#gbapplace').val('');
+               $('#gbapdate').val('');
+               $('#gconplace').val('');
+               $('#gcondate').val('');
+            });
+
+            $("#gbapyes").click(function(){
+               if($(this).prop("checked") == false){
+                  $("#gconno").prop('disabled', true);
+                  $("#gconyes").prop('disabled', true);
+                  $('#gconplace').val('');
+                  $('#gcondate').val('');
+                  $('.textarea1').slideUp();
+                  }
+               else if($(this).prop("checked") == true){
+                  $("#gconno").prop('disabled', false);
+                  $("#gconyes").prop('disabled', false);
+                  
+                  }
+            });
+
+            $("#gbapno").click(function(){
+               if($(this).prop("checked") == true){
+                  $("#gconno").prop('disabled', true);
+                  $("#gconyes").prop('disabled', true);
+                  $('#gconplace').val('');
+                  $('#gcondate').val('');
+                  $("#gconyes").prop('checked', false)
+                  $("#gconno").prop('checked', false)
+                  $('.textarea2').slideUp();
+                  }
+               else if($(this).prop("checked") == false){
+                  $("#gconno").prop('disabled', false);
+                  $("#gconyes").prop('disabled', false);
+                  
+                  }
+            });
+
+
+            $('#breligion').change(function(){
+               $('.textarea4').slideUp();
+               $('.textarea5').slideUp();
+               $('#bcurrentparish').prop('disabled', $(this).val() != "Catholic");
+               $('#bbapno').prop('disabled', $(this).val() != "Catholic");
+               $('#bbapyes').prop('disabled', $(this).val() != "Catholic");
+               $('#bconno').prop('disabled', $(this).val() != "Catholic");
+               $('#bconyes').prop('disabled', $(this).val() != "Catholic");
+               $("#bbapyes").prop('checked', false)
+               $("#bbapno").prop('checked', false)
+               $("#bconyes").prop('checked', false)
+               $("#bconno").prop('checked', false)
+               $('#bbapplace').val('');
+               $('#bbapdate').val('');
+               $('#bconplace').val('');
+               $('#bcondate').val('');
+            });
+
+            $("#bbapyes").click(function(){
+               if($(this).prop("checked") == false){
+                  $("#bconno").prop('disabled', true);
+                  $("#bconyes").prop('disabled', true);
+                  $('#bconplace').val('');
+                  $('#bcondate').val('');
+                  $('.textarea4').slideUp();
+                  }
+               else if($(this).prop("checked") == true){
+                  $("#bconno").prop('disabled', false);
+                  $("#bconyes").prop('disabled', false);
+                  
+                  }
+            });
+
+            $("#bbapno").click(function(){
+               if($(this).prop("checked") == true){
+                  $("#bconno").prop('disabled', true);
+                  $("#bconyes").prop('disabled', true);
+                  $('#bconplace').val('');
+                  $('#bcondate').val('');
+                  $("#bconyes").prop('checked', false)
+                  $("#bconno").prop('checked', false)
+                  $('.textarea5').slideUp();
+                  }
+               else if($(this).prop("checked") == false){
+                  $("#bconno").prop('disabled', false);
+                  $("#bconyes").prop('disabled', false);
+                  
+                  }
+            });
+
         });

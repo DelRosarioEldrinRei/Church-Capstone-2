@@ -128,7 +128,7 @@ block prepend main
 									h4 Marriage
 									
 									.learn-more
-											button.btn.std-btn.btn-common.inquireButtonnew1(type='button', data-toggle='modal', data-target='#exampleModal' value='Marriage') Inquire
+											button.btn.std-btn.btn-common.inquireButtonnew(type='button', data-toggle='modal', data-target='#exampleModal' value='Marriage') Inquire
 					
 		.container
 			.row
@@ -541,79 +541,58 @@ block addjs
 									`)
 									//SEPARATE BASED ON THE TYPE, THANKS :)
 									$('#bodyAppend1').append(`
-
 										<h5 id="exampleModalLabel" class="modal-title">${data.anointing.var_eventname}</h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.anointing.var_eventdesc}</p>
 										<br>
-
 										<p><strong>Service Availability</strong></p>
 										<p class="pl-2 description">${anointavailabledays}
 										<br>${anointavailstart} - ${anointavailend}</p>
 										<br>
-
 										<p><strong>Payment Details</strong></p>
 										<p class="pl-2 description">Application Fee: P${data.anointing.double_fee}</p>
 										<br>
 										<button class="btn std-btn btn-common" id="proceedAnointing" type="button" value=${data.anointing.int_eventID}>Apply</button>
-
-
 										<hr>
-
-
 										<h5 id="exampleModalLabel" class="modal-title">${data.funeralmass.var_eventname}</h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.funeralmass.var_eventdesc}</p>
 										<br>
-
 										<p><strong>Service Availability</strong></p>
 										<p class="pl-2 description">${funeralmassavailabledays}
 										<br>${funeralmassvailstart} - ${funeralmassvailend}</p>
 										<br>
-
 										<p><strong>Payment Details</strong></p>
 										<p class="pl-2 description">Application Fee: P${data.funeralmass.double_fee}</p>
 										<br>
 										<button class="btn std-btn btn-common" id="proceedFuneralmass" type="button" value=${data.funeralmass.int_eventID}>Apply</button>
-
-
 										<hr>
-
 										<h5 id="exampleModalLabel" class="modal-title">${data.funeralservice.var_eventname}</h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.funeralservice.var_eventdesc}</p>
 										<br>
-
 										<p><strong>Service Availability</strong></p>
 										<p class="pl-2 description">${funeralserviceavailabledays}
 										<br>${funeralservicevailstart} - ${funeralservicevailend}</p>
 										<br>
-
 										<p><strong>Payment Details</strong></p>
 										<p class="pl-2 description">Application Fee: P${data.funeralservice.double_fee} </p>
 										<br>
 										<button class="btn std-btn btn-common" id="proceedFuneralservice" type="button" value=${data.funeralservice.int_eventID}>Apply</button>
-
-
 										<hr>
-
 										<h5 id="exampleModalLabel" class="modal-title">${data.houseblessing.var_eventname}</h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.houseblessing.var_eventdesc}</p>
 										<br>
 										
-
 										<p><strong>Service Availability</strong></p>
 										<p class="pl-2 description">${houseblessingavailabledays}
 										<br>${houseblessingavailstart} - ${houseblessingavailend}</p>
 										<br>
-
 										<p><strong>Payment Details</strong></p>
 										<p class="pl-2 description">Application Fee: P${data.houseblessing.double_fee}</p>
 										<br>
 										<button class="btn std-btn btn-common" id="proceedHouseblessing" type="button" value=${data.houseblessing.int_eventID}>Apply</button>
-
-
 										<hr>
 									`)
 
@@ -700,37 +679,28 @@ block addjs
 									`)
 									//SEPARATE BASED ON THE TYPE, THANKS :)
 									$('#bodyAppend1').append(`
-
 										<h5 id="exampleModalLabel" class="modal-title">${data.regularbap.var_eventname}</h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.regularbap.var_eventdesc}</p>
 										<br>
-
 										<p><strong>Service Availability</strong></p>
 										<p class="pl-2 description">${regavailabledays}
 										<br>${regavailstart} - ${regavailend}</p>
 										<br>
-
 										<p><strong>Payment Details</strong></p>
 										<p class="pl-2 description">Application Fee: P${data.regularbap.double_fee} 
 										<br>Additional Rate: P${data.regularbap.double_addrate}/sponsor </p>
 										<br>
 										<button class="btn std-btn btn-common" id="proceedRegularbap" type="button" value=${data.regularbap.int_eventID}>Apply</button>
-
-
 										<hr>
-
-
 										<h5 id="exampleModalLabel1" class="modal-title">${data.specialbap.var_eventname}</h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.specialbap.var_eventdesc}</p>
 										<br>
-
 										<p><strong>Service Availability</strong></p>
 										<p class="pl-2 description">${spcavailabledays}
 										<br>${spcavailstart} - ${spcavailend}</p>
 										<br>	
-
 										<p><strong>Payment Details</strong></p>
 										<p class="pl-2 description">Application Fee: P${data.specialbap.double_fee} 
 										<br>Additional Rate: P${data.specialbap.double_addrate}/sponsor </p>
