@@ -10,7 +10,7 @@
 .modal-dialog.modal-lg {
     position:absolute;
     top:45% !important;
-    left: 16%;
+    left: 22%;
     transform: translate(0, -50%) !important;
     -ms-transform: translate(0, -50%) !important;
     -webkit-transform: translate(0, -50%) !important;

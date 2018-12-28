@@ -59,17 +59,17 @@ block prepend main
 					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Services
 			.row
 				each event in events
-					.col-lg-4.col-md-6.col-xs-12
-						.featured-box-item
-								.featured-icon
-										i.fa.fa-bolt
-								.featured-content
-										h4
-												| #{event.var_eventname}
-										p
-												| #{event.var_eventdesc.substring(0, 100)}...
-										.learn-more
-												button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
+					//- .col-lg-4.col-md-6.col-xs-12
+					//- 	.featured-box-item
+					//- 			.featured-icon
+					//- 					i.fa.fa-bolt
+					//- 			.featured-content
+					//- 					h4
+					//- 							| #{event.var_eventname}
+					//- 					p
+					//- 							| #{event.var_eventdesc.substring(0, 100)}...
+					//- 					.learn-more
+					//- 							button.btn.std-btn.btn-common.inquireButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${event.int_eventID}`) Inquire
 					#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 						.modal-dialog.modal-lg(role='document')
 								.modal-content#each
@@ -77,12 +77,11 @@ block prepend main
 												button.close(type='button', data-dismiss='modal', aria-label='Close')
 														span.p-3(aria-hidden='true') ×
 										.modal-body
-											#bodyAppend
-											#reqAppend
+											#bodyAppend1
+											#bodyAppend2
 											.row
 												.col-md-12
 													.learn-more.text-center
-														button.btn.std-btn.btn-common#proceedButton(type='button' value=`${event.int_eventID}`) Apply
 					#inquireModal1.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 						.modal-dialog.modal-lg(role='document')
 								.modal-content#each
@@ -90,36 +89,45 @@ block prepend main
 												button.close(type='button', data-dismiss='modal', aria-label='Close')
 														span.p-3(aria-hidden='true') ×
 										.modal-body
-											#bodyAppend1
-											#reqAppend
+											#modalAppend1
+											#modalAppend2
+											#modalAppend3
+											#modalAppend4
 											.row
 												.col-md-12
 													.learn-more.text-center
-														//- button.btn.std-btn.btn-common#proceedButton(type='button' value=`${event.int_eventID}`) Apply
-										
+
 			.row
-				
 				.col-lg-4.col-md-6.col-xs-12
 					.featured-box-item
 							.featured-icon
 									i.fa.fa-bolt
 							.featured-content
 									h4 Baptism
-									p Regular Baptism
-									p Special Baptism
+									p
+										strong Types Includes:
+										br
+										p.pl-2.description 1. Regular Baptism
+											br
+											| 2.  Special Baptism
 									.learn-more
-											button.btn.std-btn.btn-common.inquireButtonnew(type='button', data-toggle='modal', data-target='#exampleModal' value='Baptism') Inquire
+											button.btn.std-btn.btn-common.inquireButtonnew(type='button', data-toggle='modal', data-target='#inquireModal' value='Baptism') Inquire
 				.col-lg-4.col-md-6.col-xs-12
 					.featured-box-item
 							.featured-icon
 									i.fa.fa-bolt
 							.featured-content
 									h4 Blessing Request
-									p Anointing of the sick
-									p Funeral Blessing
-									p House Blessing
+									p
+										strong Types Includes:
+										br
+										p.pl-2.description 1. Anointing of the sick
+											br
+											| 2.  Funeral Blessings
+											br
+											| 3.  House Blessing
 									.learn-more
-											button.btn.std-btn.btn-common.inquireButtonnew(type='button', data-toggle='modal', data-target='#exampleModal' value='Blessing Request') Inquire
+											button.btn.std-btn.btn-common.inquireButtonnew(type='button', data-toggle='modal', data-target='#inquireModal1' value='Blessing Request') Inquire
 				.col-lg-4.col-md-6.col-xs-12
 					.featured-box-item
 							.featured-icon
@@ -131,33 +139,33 @@ block prepend main
 											button.btn.std-btn.btn-common.inquireButtonnew(type='button', data-toggle='modal', data-target='#exampleModal' value='Marriage') Inquire
 					
 		.container
-			.row
-				.col-md-12
-					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Special Services
-			.row
-				each service in services
-					.col-lg-4.col-md-6.col-xs-12
-								.featured-box-item
-									.featured-icon
-										i.fa.fa-bolt
-									.featured-content
-										h4
-											| #{service.var_servicename}
+			//- .row
+			//- 	.col-md-12
+			//- 		h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Special Services
+			//- .row
+			//- 	each service in services
+			//- 		.col-lg-4.col-md-6.col-xs-12
+			//- 					.featured-box-item
+			//- 						.featured-icon
+			//- 							i.fa.fa-bolt
+			//- 						.featured-content
+			//- 							h4
+			//- 								| #{service.var_servicename}
 										
-										.learn-more
-												button.btn.std-btn.btn-common.serviceButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${service.int_serviceutilitiesID}`) Inquire
-												// Modal
-												#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-													.modal-dialog.modal-lg(role='document')
-														.modal-content#each
-															.modal-header#headerAppend
-																button.close(type='button', data-dismiss='modal', aria-label='Close')
-																	span.p-3(aria-hidden='true') ×
-															.modal-body#bodyAppend
-															.modal-body#reqAppend
-															.modal-footer
-																button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-																button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${service.int_utilitiesID}`) Apply
+			//- 							.learn-more
+			//- 									button.btn.std-btn.btn-common.serviceButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${service.int_serviceutilitiesID}`) Inquire
+			//- 									// Modal
+			//- 									#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+			//- 										.modal-dialog.modal-lg(role='document')
+			//- 											.modal-content#each
+			//- 												.modal-header#headerAppend
+			//- 													button.close(type='button', data-dismiss='modal', aria-label='Close')
+			//- 														span.p-3(aria-hidden='true') ×
+			//- 												.modal-body#bodyAppend
+			//- 												.modal-body#reqAppend
+			//- 												.modal-footer
+			//- 													button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+			//- 													button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${service.int_utilitiesID}`) Apply
 									
 	section#portfolio.section-padding
 		.container
@@ -534,13 +542,12 @@ block addjs
 									funeralservicevailend = moment(data.funeralservice.time_availableend,'hh:mm a').format('hh:mm A')
 									houseblessingavailstart = moment(data.houseblessing.time_availablestart,'hh:mm a').format('hh:mm A')
 									houseblessingavailend = moment(data.houseblessing.time_availableend,'hh:mm a').format('hh:mm A')
-									
 
 									$('#headerAppend1').append(`
-										<h5 id="exampleModalLabel" class="modal-title">${data.anointing.var_eventname}</h5>
+										<h5 id="exampleModalLabel" class="modal-title">Blessing Request</h5>
 									`)
-									//SEPARATE BASED ON THE TYPE, THANKS :)
-									$('#bodyAppend1').append(`
+
+									var append1 = `
 										<h5 id="exampleModalLabel" class="modal-title">${data.anointing.var_eventname}</h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.anointing.var_eventdesc}</p>
@@ -550,10 +557,15 @@ block addjs
 										<br>${anointavailstart} - ${anointavailend}</p>
 										<br>
 										<p><strong>Payment Details</strong></p>
-										<p class="pl-2 description">Application Fee: P${data.anointing.double_fee}</p>
+										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.anointing.double_fee)} </span></p>
 										<br>
-										<button class="btn std-btn btn-common" id="proceedAnointing" type="button" value=${data.anointing.int_eventID}>Apply</button>
-										<hr>
+										<p style="text-align: center;">
+											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common" id="proceedAnointing" type="button" value=${data.anointing.int_eventID}>Apply</button>
+											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+										</p>
+										`
+									var append2 = `
 										<h5 id="exampleModalLabel" class="modal-title">${data.funeralmass.var_eventname}</h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.funeralmass.var_eventdesc}</p>
@@ -563,10 +575,15 @@ block addjs
 										<br>${funeralmassvailstart} - ${funeralmassvailend}</p>
 										<br>
 										<p><strong>Payment Details</strong></p>
-										<p class="pl-2 description">Application Fee: P${data.funeralmass.double_fee}</p>
+										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.funeralmass.double_fee)} </span></p>
 										<br>
-										<button class="btn std-btn btn-common" id="proceedFuneralmass" type="button" value=${data.funeralmass.int_eventID}>Apply</button>
-										<hr>
+										<p style="text-align: center;">
+											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common" id="proceedFuneralmass" type="button" value=${data.funeralmass.int_eventID}>Apply</button>
+											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+										</p>
+										`
+									var append3 = `
 										<h5 id="exampleModalLabel" class="modal-title">${data.funeralservice.var_eventname}</h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.funeralservice.var_eventdesc}</p>
@@ -576,29 +593,80 @@ block addjs
 										<br>${funeralservicevailstart} - ${funeralservicevailend}</p>
 										<br>
 										<p><strong>Payment Details</strong></p>
-										<p class="pl-2 description">Application Fee: P${data.funeralservice.double_fee} </p>
+										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.funeralservice.double_fee)} </span></p>
 										<br>
+										<p style="text-align: center;">
+										<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
 										<button class="btn std-btn btn-common" id="proceedFuneralservice" type="button" value=${data.funeralservice.int_eventID}>Apply</button>
-										<hr>
+										<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+										</p>
+										`
+									var append4 = `
 										<h5 id="exampleModalLabel" class="modal-title">${data.houseblessing.var_eventname}</h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.houseblessing.var_eventdesc}</p>
 										<br>
-										
 										<p><strong>Service Availability</strong></p>
 										<p class="pl-2 description">${houseblessingavailabledays}
 										<br>${houseblessingavailstart} - ${houseblessingavailend}</p>
 										<br>
 										<p><strong>Payment Details</strong></p>
-										<p class="pl-2 description">Application Fee: P${data.houseblessing.double_fee}</p>
+										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.houseblessing.double_fee)} </span></p>
 										<br>
-										<button class="btn std-btn btn-common" id="proceedHouseblessing" type="button" value=${data.houseblessing.int_eventID}>Apply</button>
-										<hr>
-									`)
+										<p style="text-align: center;">
+											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common" id="proceedHouseblessing" type="button" value=${data.houseblessing.int_eventID}>Apply</button>
+											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+										</p>
+										`
+
+										$('#modalAppend1').empty().append(append1)
+
+										var index = 1	;
+										$(document).on('click', '.blessingPrevNext', function(event){
+											console.log('hello')
+											event.preventDefault();
+											if(index == 0){
+												index++;
+												$('#modalAppend1').empty().append(append1)
+												$('#modalAppend2').empty()
+												$('#modalAppend3').empty()
+												$('#modalAppend4').empty()
+											}
+											else if(index == 1){
+												index++;
+												$('#modalAppend1').empty()
+												$('#modalAppend2').empty().append(append2)
+												$('#modalAppend3').empty()
+												$('#modalAppend4').empty()
+											}
+											else if(index == 2){
+												index++;
+												$('#modalAppend1').empty()
+												$('#modalAppend2').empty()
+												$('#modalAppend3').empty().append(append3)
+												$('#modalAppend4').empty()
+											}
+											else if(index == 3){
+												index++;
+												$('#modalAppend1').empty()
+												$('#modalAppend2').empty()
+												$('#modalAppend3').empty()
+												$('#modalAppend4').empty().append(append4)
+												index = 0;
+											}
+											//- else {
+											//- 	index = 0;
+											//- }
+											console.log(index);
+										});
 
 									$('#inquireModal1').modal('show');	
 									$('#inquireModal1').on('hidden.bs.modal',function(){
-										$('#bodyAppend1').empty()
+										$('#modalAppend1').empty()
+										$('#modalAppend2').empty()
+										$('#modalAppend3').empty()
+										$('#modalAppend4').empty()
 										$('#headerAppend1').empty()
 										$('#reqAppend1').empty()
 
@@ -674,12 +742,19 @@ block addjs
 									spcavailend = moment(data.regularbap.time_availableend,'hh:mm a').format('hh:mm A')
 									
 									// LEAVE THIS HEADER AS IT IS
-									$('#headerAppend1').append(`
+									$('#headerAppend').append(`
 										<h5 id="exampleModalLabel" class="modal-title">${data.regularbap.var_eventname}</h5>
 									`)
-									//SEPARATE BASED ON THE TYPE, THANKS :)
-									$('#bodyAppend1').append(`
-										<h5 id="exampleModalLabel" class="modal-title">${data.regularbap.var_eventname}</h5>
+
+									var requirements = `<p class='requirements'><strong>Requirements</strong></p>`
+
+									// REQUIREMENTS (REGULAR AND SPECIAL)
+									for(i=0;i<data.regbapreq.length;i++){
+										requirements +=	`<p class="pl-2 description">${data.spcbapreq[i].var_reqname}</p>`
+									}
+
+									var appendOne = `
+										<h5 id="exampleModalLabel" class="modal-title">Type: <span>${data.regularbap.var_eventname}</span></h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.regularbap.var_eventdesc}</p>
 										<br>
@@ -688,12 +763,20 @@ block addjs
 										<br>${regavailstart} - ${regavailend}</p>
 										<br>
 										<p><strong>Payment Details</strong></p>
-										<p class="pl-2 description">Application Fee: P${data.regularbap.double_fee} 
-										<br>Additional Rate: P${data.regularbap.double_addrate}/sponsor </p>
+										<p class="pl-2 description">Application Fee: <span class='text-danger'> ₱ ${data.regularbap.double_fee} </span>
+										<br>Additional Rate: <span class='text-danger'> ₱ ${data.regularbap.double_addrate}/sponsor </span></p>
 										<br>
-										<button class="btn std-btn btn-common" id="proceedRegularbap" type="button" value=${data.regularbap.int_eventID}>Apply</button>
-										<hr>
-										<h5 id="exampleModalLabel1" class="modal-title">${data.specialbap.var_eventname}</h5>
+										${requirements}
+										<br>
+										<p style="text-align: center;">
+											<button class="btn std-btn btn-common prevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common" id="proceedRegularbap" type="button" value=${data.regularbap.int_eventID}>Apply</button>
+											<button class="btn std-btn btn-common prevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+										</p>
+									`
+
+									var appendTwo = `
+										<h5 id="exampleModalLabel1" class="modal-title">Type: <span>${data.specialbap.var_eventname}</span></h5>
 										<p><strong>Service Description</strong></p>
 										<p class="pl-2 description">${data.specialbap.var_eventdesc}</p>
 										<br>
@@ -702,33 +785,26 @@ block addjs
 										<br>${spcavailstart} - ${spcavailend}</p>
 										<br>	
 										<p><strong>Payment Details</strong></p>
-										<p class="pl-2 description">Application Fee: P${data.specialbap.double_fee} 
-										<br>Additional Rate: P${data.specialbap.double_addrate}/sponsor </p>
+										<p class="pl-2 description">Application Fee: <span class='text-danger'> ₱ ${data.specialbap.double_fee} </span>
+										<br>Additional Rate: <span class='text-danger'> ₱ ${data.specialbap.double_addrate}/sponsor <s[pan]></p>
 										<br>
-										<button class="btn std-btn btn-common" id="proceedSpecialbap" type="button" value=${data.specialbap.int_eventID}>Apply</button>
-									`)
+										${requirements}
+										<br>
+										<p style="text-align: center;">
+											<button class="btn std-btn btn-common prevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common" id="proceedSpecialbap" type="button" value=${data.specialbap.int_eventID}>Apply</button>
+											<button class="btn std-btn btn-common prevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+										</p>
+									`
 
-								
-									// REQUIREMENTS (REGULAR AND SPECIAL)
-									for(i=0;i<data.regbapreq.length;i++){
-										$('#reqAppend').append(`
-											<p><strong>Requirements1</strong></p>
-											<p class="pl-2 description">${data.spcbapreq[i].var_reqname}</p>
-										`)
-									}
-									for(i=0;i<data.spcbapreq.length;i++){
-										$('#reqAppend').append(`
-											<p><strong>Requirements2</strong></p>
-											<p class="pl-2 description">${data.spcbapreq[i].var_reqname}</p>
-										`)
-									}
+									//SEPARATE BASED ON THE TYPE, THANKS :)
+									$('#bodyAppend1').append(appendOne)
 
-									$('#inquireModal1').modal('show');	
-									$('#inquireModal1').on('hidden.bs.modal',function(){
+									$('#inquireModal').modal('show');	
+									$('#inquireModal').on('hidden.bs.modal',function(){
 										$('#bodyAppend1').empty()
-										$('#headerAppend1').empty()
-										$('#reqAppend1').empty()
-
+										$('#bodyAppend2').empty()
+										$('#headerAppend').empty()
 									})
 									$('#cancelButton1').css('display', 'block');
 									
@@ -739,12 +815,30 @@ block addjs
 											})
 										})
 
+										var index = 1	;
+										$(document).on('click', '.prevNext', function(event){
+											event.preventDefault();
+											if(index == 0){
+												index++;
+												
+												$('#bodyAppend1').empty().append(appendOne)
+												$('#bodyAppend2').empty()
+											}
+											else {
+												index--;
+												$('#bodyAppend2').empty().append(appendTwo);
+												$('#bodyAppend1').empty()
+											}
+											console.log(index);
+										});
+
 										$('#proceedRegularbap').click(function(){
 											$.post('/login/query',{id:data.regularbap.int_eventID}).done(data =>{
 												window.location=`/login? 
 												redirect="${$(this).val()}"`
 											})
 										})
+
 										$('#proceedSpecialbap').click(function(){
 											$.post('/login/query',{id:data.specialbap.int_eventID}).done(data =>{
 												window.location=`/login? 
@@ -848,8 +942,8 @@ block addjs
 							})
 						})
 			})
-
-
-
-
+			////////////////////////////////////////////
+			function isNullOrEmpty(val){
+				return (val == null || val == '' || val == undefined) ? 'free' : `₱ ${val}` ;
+			}
 		})
