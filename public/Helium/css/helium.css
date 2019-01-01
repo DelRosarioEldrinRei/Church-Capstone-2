@@ -8,15 +8,18 @@
 }
 
 .modal-dialog.modal-lg {
-    position:absolute;
+    /* position:absolute;
     top:45% !important;
-    left: 16%;
+    left: 22%; */
+    position: fixed;
+    left: 50%;
+    margin-left: -22%;
     transform: translate(0, -50%) !important;
     -ms-transform: translate(0, -50%) !important;
     -webkit-transform: translate(0, -50%) !important;
-    margin:auto 5%;
+    /* margin:auto 5%;
     width:90%;
-    height:80%;
+    height:80%; */
   }
 
 .modal-dialog {
