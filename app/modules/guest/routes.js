@@ -1031,6 +1031,12 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                 }
             }
         });
+        guestRouter.get('/baptism/form/success', (req, res)=>{
+
+            return res.render('guest/views/forms/success');
+            
+        });
+
 
 //==============================================================
 //  C O N F I R M A T I O N
