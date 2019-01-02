@@ -6,6 +6,7 @@ html
 		title Sign Up
 		link(href='/css/loader.css', rel='stylesheet')
 		link(href='/admin/style.css', rel='stylesheet')
+		link(href='/css/formValidation.css', rel='stylesheet')
 		link(rel='icon', href='/imgchurch/favicon.ico', type='image/x-icon')
 		style.
 			.shadow {
@@ -31,7 +32,7 @@ html
 					h3.c-grey-900.mB-10 
 						img.rounded-circle.shadow2(src='/Helium/img/INLPP.png', alt=''  style="width: 3.5rem")
 						|  Register
-					form#needs-validation.form(method='POST', action='/signup' novalidate)
+					form#needs-validation.form(method='POST', action='/signup')
 						.form-group
 							.form-row
 								.form-group.col-md-4.m-0
@@ -85,7 +86,7 @@ html
 								.form-group.col-md-6
 									label.h6 Username:
 										.text-danger.d-inline *
-									input.form-control(type='text' name='username' placeholder="Ex. Mark234" required)
+									input.form-control#usernameID(type='text' name='username' placeholder="Ex. Mark234" required)
 									.invalid-feedback Please provide a username.
 								.form-group.col-md-6
 									label.h6 Email Address:
@@ -120,12 +121,110 @@ html
 								.peers.ai-c.jc-sb.fxw-nw
 									.peer
 										a.peer.peer-greed(href="/login") Have an account? Log-in
-
+					input#errChecker(type='text' hidden)
 	script(type='text/javascript', src='/js/jquery.min.js')
+	script(type='text/javascript', src='/js/formValidation.js')
+	script(type='text/javascript', src='/js/bootstrapformvalidation.js')
 	script(type='text/javascript', src='/admin/vendor.js')
 	script(type='text/javascript', src='/admin/bundle.js')
 	script(type='text/javascript', src='/js/loader.js')
 	script.
+		function validateForm(){
+				$('#needs-validation').formValidation({
+					framework: 'bootstrap',
+					icon: {
+						valid: 'fa fa-check',
+						invalid: 'fa fa-times',
+						validating: 'fa fa-spinner'
+					},
+					fields: {
+						username: {
+							validators: {
+								notEmpty: {
+									message: 'Please Enter Your Username',
+								}
+							}
+						},
+							remote: {
+								url: `/view`,
+								message: 'ID and ID Number has been taken',
+								validKey: 'ID',
+								type: 'POST',
+								data: function(){
+									var idtype = $('#usernameID').val()
+									var err = $('#errChecker').val()
+									return {
+										idType: idtype
+									}
+									alert(err)
+								}
+							},
+						lastname: {
+							validators: {
+									notEmpty: {
+											message: `Please Enter Your Last Name`
+									}
+							}
+						},
+						firstname: {
+							validators: {
+									notEmpty: {
+											message: `Please Enter Your First Name`
+									}
+							}
+						},
+						gender: {
+							validators: {
+									notEmpty: {
+											message: `Please Enter Your Gender`
+									}
+							}
+						},
+						address: {
+							validators: {
+									notEmpty: {
+											message: `Please Enter Your Address`
+									}
+							}
+						},
+						email: {
+							validators: {
+									notEmpty: {
+											message: `Please Enter Your Email`
+									}
+							}
+						},
+						password: {
+							validators: {
+									notEmpty: {
+											message: `Please Enter Your Password`
+									}
+							}
+						},
+						confirmpassword: {
+							validators: {
+									notEmpty: {
+											message: `Please Re-enter Your Password`
+									}
+							}
+						},
+					},
+				})
+				.on('err.field.fv', function(e, data) {
+					// Get the first invalid field
+					var invalidFields = data.fv.getInvalidFields().length;
+					$('#errChecker').val(invalidFields)
+				})
+				.on('success.field.fv', function(e, data) {
+					// Get the first invalid field
+					var invalidFields = data.fv.getInvalidFields().length;
+					$('#errChecker').val(invalidFields)
+				});
+			}
+			$( document ).ready(function() {
+				console.log( "ready!" );
+				validateForm()
+			});
 		(function() {
 			'use strict';
 
