@@ -142,11 +142,9 @@ html
 							validators: {
 								notEmpty: {
 									message: 'Please Enter Your Username',
-								}
-							}
-						},
+								},	
 							remote: {
-								url: `/view`,
+								url: `/signup/view`,
 								message: 'ID and ID Number has been taken',
 								validKey: 'ID',
 								type: 'POST',
@@ -158,7 +156,9 @@ html
 									}
 									alert(err)
 								}
-							},
+							}
+							}
+						},
 						lastname: {
 							validators: {
 									notEmpty: {

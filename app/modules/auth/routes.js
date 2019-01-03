@@ -211,12 +211,12 @@ signupRouter.route('/')
 //     })
 // });
 
-signupRouter.post('/view/',(req, res) => {
+signupRouter.post('/view',(req, res) => {
     console.log('aaa')
     //Check if username is
     console.log(req.body)
     var usernameQuery = `SELECT * FROM tbl_user WHERE var_username = ?`;
-    db.query(usernameQuery, [req.body.idType], function (err, results, fields) {
+    db.query(usernameQuery, [req.body.username], function (err, results, fields) {
         if (err) return console.log(err);
         console.log(results)
         console.log('aaa')
