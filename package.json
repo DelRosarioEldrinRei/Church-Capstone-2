@@ -32,6 +32,7 @@
     "express-session": "^1.15.4",
     "fine-uploader": "^5.16.2",
     "font-awesome": "^4.7.0",
+    "formvalidation": "^0.6.2-dev",
     "fullcalendar": "^3.9.0",
     "hoek": "^5.0.3",
     "jquery": "^3.3.1",

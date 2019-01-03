@@ -122,8 +122,7 @@ loginRouter.route('/')
                 }
             }
 
-            if(user.char_usertype=="Guest"){         
-                
+            if(user.char_usertype=="Guest"){
                 if(req.session.eventId == 3){
                 delete user.var_password;
                 req.session.user = user;
@@ -186,14 +185,51 @@ signupRouter.route('/')
     var queryString = `INSERT INTO tbl_user(var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype, var_userstatus) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
     db.query(queryString, [req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.contactnumber, req.body.username, req.body.email, req.body.password, "Guest", "Active"], (err, results, fields) => {
         if (err) throw err;
-        
-        res.redirect('/login?signUpSuccess');
-    });
+
+// username validation for signup
+// signupRouter.route('/username/query')
+// .post((req,res)=>{
+//     var queryString = `SELECT var_username FROM tbl_user =?`
+//         console.log(req.body)
+//         db.query(queryString,[req.body.usernameData],(err,results,fields)=>{
+//             if (err) console.log(err);
+//             res.send(results[0])
+//         })
+//         res.redirect('/login?signUpSuccess');
+//     });
+})
 
     // res.redirect('/guest')
 
     });
 // })
+
+// signupRouter.get('/username/query',(req, res) => {
+//     db.query('SELECT * FROM tbl_user WHERE var_username = ?', (err, results, fields) => {
+//         if(err) console.log(err)
+//         res.render('auth/views/signup', {usernameData: results})
+//     })
+// });
+
+signupRouter.post('/view/',(req, res) => {
+    console.log('aaa')
+    //Check if username is
+    console.log(req.body)
+    var usernameQuery = `SELECT * FROM tbl_user WHERE var_username = ?`;
+    db.query(usernameQuery, [req.body.idType], function (err, results, fields) {
+        if (err) return console.log(err);
+        console.log(results)
+        console.log('aaa')
+        if(results.length > 0){
+            console.log('ID and ID Number is Existing')
+            res.send({ "ID": false });
+        }
+        else{
+            console.log('ID and ID Number is Available')
+            res.send({ "ID": true });
+        }
+    })
+})
 
 logoutRouter.get('/', (req, res) => {
     req.session.destroy(err => {
