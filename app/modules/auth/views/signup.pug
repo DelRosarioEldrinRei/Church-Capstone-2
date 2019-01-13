@@ -91,7 +91,7 @@ html
 								.form-group.col-md-6
 									label.h6 Email Address:
 										.text-danger.d-inline *
-									input.form-control(type='text' name='email' placeholder="Ex. markfrancisco@gmail.com" required)
+									input.form-control(id='email' type='text' name='email' placeholder="Ex. markfrancisco@gmail.com" required)
 									.invalid-feedback Please provide a valid email address.
 							.form-group
 								label.h6 Password:
@@ -144,17 +144,16 @@ html
 									message: 'Please Enter Your Username',
 								},	
 							remote: {
-								url: `/signup/view`,
-								message: 'ID and ID Number has been taken',
+								url: `/signup/username/query`,
+								message: 'Username has been taken',
 								validKey: 'ID',
 								type: 'POST',
 								data: function(){
 									var idtype = $('#usernameID').val()
-									var err = $('#errChecker').val()
+									//- var err = $('#errChecker').val()
 									return {
 										idType: idtype
 									}
-									alert(err)
 								}
 							}
 							}
@@ -191,7 +190,20 @@ html
 							validators: {
 									notEmpty: {
 											message: `Please Enter Your Email`
-									}
+									},
+									remote: {
+										url: `/signup/email/query`,
+											message: 'Email has been taken',
+											validKey: 'ID',
+											type: 'POST',
+											data: function(){
+												var idtype = $('#email').val()
+												//- var err = $('#errChecker').val()
+												return {
+													idType: idtype
+												}
+											}
+										}
 							}
 						},
 						password: {

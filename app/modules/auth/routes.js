@@ -211,12 +211,32 @@ signupRouter.route('/')
 //     })
 // });
 
-signupRouter.post('/view',(req, res) => {
+signupRouter.post('/username/query',(req, res) => {
     console.log('aaa')
     //Check if username is
     console.log(req.body)
     var usernameQuery = `SELECT * FROM tbl_user WHERE var_username = ?`;
     db.query(usernameQuery, [req.body.username], function (err, results, fields) {
+        if (err) return console.log(err);
+        console.log(results)
+        console.log('aaa')
+        if(results.length > 0){
+            console.log('ID and ID Number is Existing')
+            res.send({ "ID": false });
+        }
+        else{
+            console.log('ID and ID Number is Available')
+            res.send({ "ID": true });
+        }
+    })
+})
+
+signupRouter.post('/email/query',(req, res) => {
+    console.log('aaa')
+    //Check if username is
+    console.log(req.body)
+    var usernameQuery = `SELECT * FROM tbl_user WHERE var_useremail = ?`;
+    db.query(usernameQuery, [req.body.email], function (err, results, fields) {
         if (err) return console.log(err);
         console.log(results)
         console.log('aaa')

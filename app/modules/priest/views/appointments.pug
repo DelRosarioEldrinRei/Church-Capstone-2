@@ -1,27 +1,30 @@
 extends ../../../templates/priest
 block prepend main
+	style.
+		#schedule {
+			font-weight: 700;
+		}
+		#appoint {
+			cursor: pointer;
+		}
 	#raised-section.main.main-raised
 		section.form-box
-			//- .container
-			//- 	.row
-			//- 		.col-md-12.form-wizard
-			//- 			h1.font-weight-bold Schedules
-			//- 			h4.font-weight-bold
-			//- 	.row		
-			//- 		.col-md-12.form-wizard
-			//- 			h1.font-weight-bold Schedules
-			//- 			h4.font-weight-bold
-			//- 				#calendarPriest
-			.container.p-0
+			.container
 				.row
-					.col-md-5.form-wizard.px-0
-						h2.font-weight-bold Schedules
-							.form-group
-								h6.label-control
-									#calendarPriest
-					.col-md-7.form-wizard.pr-0
-						h2.font-weight-bold Appointments
-						h4.font-weight-bold
+					.col-md-12.form-wizard.text-center.px-0
+						h2.d-inline#schedule
+							i.fas.fa-calendar-alt
+							|  Schedules
+						h2.d-inline  ||  
+						h2.d-inline#appoint
+							i.far.fa-calendar-check
+							|  Appointments
+				.row.sched
+					.col-md-12.form-wizard.px-0.mx-auto
+						.form-group
+							#calendarPriest
+				.row.appo
+					.col-md-12.form-wizard.pr-0
 						.table-responsive
 							table.table.text-center
 								thead
@@ -50,8 +53,7 @@ block prepend main
 												button.btn.btn-danger.btn-sm.cancelButton(type='button',value=`${detail.int_eventinfoID}`) 
 													| Cancel
 												| &nbsp;
-												
-								
+
 	#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		.modal-dialog(role='document')
 			.modal-content
@@ -73,6 +75,22 @@ block prepend main
 block addjs
 	script.
 		$(document).ready(function() {
+			$('#schedule').click(function(){
+				$(this).css({'font-weight': '700', 'cursor': 'default'})
+				$('#appoint').css({'font-weight': '300', 'cursor': 'pointer'})
+
+				$('.appo').css('display', 'none');
+				$('.sched').css('display', 'block');
+			});
+
+			$('#appoint').click(function(){
+				$(this).css({'font-weight': '700', 'cursor': 'default'})
+				$('#schedule').css({'font-weight': '300', 'cursor': 'pointer'})
+
+				$('.sched').css('display', 'none');
+				$('.appo').css('display', 'block');
+			});
+
 			$('.cancelButton').click(function(){
 				var id = $(this).val();
 				console.log(id)
@@ -148,10 +166,8 @@ block addjs
 						}
 					})
 				})
-				
-				
-				
-				$('#calendarPriest').fullCalendar({
+
+			$('#calendarPriest').fullCalendar({
 				header: {
 				left: 'title',
 				center: 'agendaDay,month',

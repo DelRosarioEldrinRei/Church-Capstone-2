@@ -56,22 +56,22 @@ html(lang='en')
 								a.navbar-brand.pt-md-1.pl-md-5.pt-sm-0(href='/index/#headers')
 									img.rounded-circle.shadow(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem;")
 							#main-navbar.collapse.navbar-collapse
-								ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix
+								ul.navbar-nav.mr-auto.w-100.justify-content-end.clearfix.text-uppercase
 									li.nav-item: a.nav-link(href="/index/#headers")
 										| Home
 									li.nav-item: a.nav-link(href="#services")
 										| Services
 									li.nav-item: a.nav-link(href="#portfolio")
 										| Events
-									li.nav-item: a.nav-link(href="#team")
-										| Team
+									//- li.nav-item: a.nav-link(href="#team")
+									//- 	| Team
 									li.nav-item: a.nav-link(href="#contact")
 										| Contact
 									li.nav-item: a.nav-link(href="/login")
 										| Login
 									li.nav-item: a.nav-link(href="/signup")
 										| Signup
-						ul.mobile-menu.navbar-nav
+						ul.mobile-menu.navbar-nav.text-uppercase
 							li
 								a.page-scroll(href='/index/#headers', role='menuitem', tabindex='-1')
 									| Home
@@ -80,10 +80,10 @@ html(lang='en')
 									| Services
 							li
 								a.page-scroll(href='#portfolio', role='menuitem', tabindex='-1')
-									| Events
-							li
-								a.page-scroll(href='#team', role='menuitem', tabindex='-1')
-									| Team
+							//- 		| Events
+							//- li
+							//- 	a.page-scroll(href='#team', role='menuitem', tabindex='-1')
+							//- 		| Team
 							li
 								a.page-scroll(href='#contact', role='menuitem', tabindex='-1')
 									| Contact
