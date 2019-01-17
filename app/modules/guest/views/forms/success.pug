@@ -1,0 +1,32 @@
+extends ../../../../templates/guests
+block main
+	style.
+		@media screen and (max-width: 576px) {
+			.col-md-4, .col-md-6, .col-md-9 {
+				padding-left: 0;
+				padding-right: 0;
+			}
+			.form-wizard-step {
+				padding-bottom: 10px !important;
+			}
+		}
+		#header-style-1 {
+			background-image: url(/imgchurch/baptism.jpg)
+		}
+		.fc-content {
+			font-family: sans-serif !important;
+		}
+	#headers
+		#header-style-1
+			.container
+				.header-caption
+					.row
+						.col-md-12.header-content
+							h3.header-title.animated.fadeInDown.invisible
+							h6.header-text.animated.fadeIn.invisible
+	#raised-section.main.main-raised
+		section.form-box
+			.container
+				.row
+					.col-md-12.form-wizard.shadow3
+							button VOUCHER

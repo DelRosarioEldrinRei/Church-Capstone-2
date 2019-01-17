@@ -8,7 +8,8 @@ html(lang='en')
 		link(rel='icon', href='/imgchurch/favicon.ico', type='image/x-icon')
 		link(rel="stylesheet", href="/css/bootstrap4.1.min.css")
 		link(rel='stylesheet' href='/css/fullcalendar.min.css')
-		link(rel='stylesheet', href='/Helium/css/font-awesome.min.css')
+		//- link(rel='stylesheet', href='/Helium/css/font-awesome.min.css')
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 		//- link(rel='stylesheet', href='/css/modal-anim.css')
 		link(rel='stylesheet', href='/css/loader.css')
 		link(rel='stylesheet', href='/css/form-wizard.css')
@@ -32,13 +33,13 @@ html(lang='en')
 			.spinner
 		#wrapper
 		header
-			nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.py-0
+			nav.navbar.navbar-expand-lg.navbar-dark.bg-secondary.py-0
 				.container
 					a.navbar-brand(href="/priest")
 						img.rounded-circle.shadow.p-0(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem")
 					button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
 						span.navbar-toggler-icon
-					#navbarNav.collapse.navbar-collapse
+					#navbarNav.collapse.navbar-collapse.text-uppercase
 						ul.navbar-nav.ml-auto
 							li.nav-item: a.nav-link(href="/priest/appointments")
 								| Home

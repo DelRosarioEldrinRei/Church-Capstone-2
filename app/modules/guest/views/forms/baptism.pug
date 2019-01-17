@@ -55,7 +55,7 @@ block main
 								// Step 3
 							// Form progress
 							// Form Step 1
-							fieldset
+							fieldset#f1
 								h4
 									.d-none.d-sm-inline.pull-left Baptism Details: 
 									span Step 1 - 3
@@ -68,13 +68,14 @@ block main
 											.col-md-3.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													.custom-control.custom-radio.mt-2
-														input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
-														label.custom-control-label(for='radio1') 
-															h6 Regular
-													.custom-control.custom-radio
-														input#radio2.custom-control-input(type='radio', name='baptismtype' value="Special")
-														label.custom-control-label(for='radio2') 
-															h6 Special
+														input#eventid(type='hidden' value=`${eventid}`)
+													//- 	input#radio1.custom-control-input(type='radio', name='baptismtype' value="Regular")
+													//- 	label.custom-control-label(for='radio1') 
+													//- 		h6 Regular
+													//- .custom-control.custom-radio
+													//- 	input#radio2.custom-control-input(type='radio', name='baptismtype' value="Special")
+													//- 	label.custom-control-label(for='radio2') 
+													//- 		h6 Special
 											.col-md-9.px-lg-3.px-md-3.px-sm-0
 												#regular
 													.col-md-12.px-lg-3.px-md-9.px-sm-0
@@ -96,7 +97,7 @@ block main
 											button#nextButton1.btn(type='button') Next
 							// Form Step 1
 							// Form Step 2
-							fieldset
+							fieldset#f2
 								h4
 									.d-none.d-sm-inline Personal Information: 
 									span Step 2 - 3
@@ -223,7 +224,7 @@ block main
 
 							// Form Step 2
 							// Form Step 3
-							fieldset
+							fieldset#f3
 								h4
 									.d-none.d-sm-inline Sponsors Information:
 									span Step 3 - 3
@@ -244,7 +245,8 @@ block main
 								br
 								.learn-more.pull-right
 									button#prevButton2.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-									button.btn.btn-submit#submitButton(type='button') Submit
+									// para lumabas yung modal pang check ng summary at iedit pa
+									button.btn.btn-submit#presubmitButton(type='button') Submit
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -256,18 +258,148 @@ block main
 						.col-md-12.px-lg-3.px-md-3.px-sm-0
 							.form-group.m-0
 								input.toggle.form-control(type='hidden' name='userID' value='1')
-								p Your application request has been submitted
 						.col-md-6.px-lg-3.px-md-3.px-sm-0
 							.form-group.m-0
-								label.label-control Voucher
-									p Please Print the Voucher and pay until before the due date
-									button.btn.std-btn#voucherButton Click to view and downlad
+								label.label-control
 					.modal-footer
-						a.filter.btn.btn-common(href=`/guest`) OK
+						a.filter.btn.btn-common(href=`/guest/baptism/form/success`) OK
+						// Form Wizard
+	#summaryModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header
+						h5.modal-title Summary
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span.p-3(aria-hidden='true') ×
+				.modal-body
+					h4
+						.d-none.d-sm-inline Personal Information: 
+						span Step 2 - 3
+					.form-group
+						br
+						input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
+						.container
+							h6.label-control Name of the Child:
+								.text-danger.d-inline  *
+							.row
+								.col-md-4.px-lg-3.px-md-0.px-sm-0
+									.form-group.pt-0
+										input.form-control#lastname(type='text' placeholder="Last Name *" name='lastname' required=''  )
+										.help-block.with-errors
+								.col-md-4.p-lg-0.px-md-3.px-sm-0
+									.form-group.pt-0
+										input.form-control#firstname(type='text' placeholder="First Name *" name='firstname' required=''  )
+										.help-block.with-errors
+								.col-md-4.px-lg-3.px-md-0.px-sm-0
+									.form-group.pt-0
+										input.form-control#middlename(type='text' placeholder="Middle Name" name='middlename'  )
+										.help-block.with-errors
+							.row
+								.col-md-4.px-lg-3.px-md-0.px-sm-0
+									.form-group.m-0
+										h6.label-control Gender
+											.text-danger.d-inline  *
+										.custom-control.custom-radio
+											input#customRadio1.custom-control-input(type='radio', name='gender' value="Male")
+											label.custom-control-label(for='customRadio1') 
+												| Male
+										.custom-control.custom-radio
+											input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
+											label.custom-control-label(for='customRadio2') 
+												| Female
+
+								.col-md-4.p-lg-0.px-md-3.px-sm-0
+									.form-group
+										h6.label-control Birthday
+											.text-danger.d-inline  *
+										input#birthdate.birthday.form-control(type='date' name='birthday' required='')
+								.col-md-4.px-lg-3.px-md-0.px-sm-0
+									.form-group
+										h6.label-control Birthplace:
+											.text-danger.d-inline  *
+										input#birthplace.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required=''  ) 
+										.help-block.with-errors
+							.row
+								.col-md-6.px-lg-3.px-md-3.px-sm-0
+									.form-group
+										h6.label-control Relationship with the Child
+											.text-danger.d-inline  *
+										select#relation(type="text" name='relation' required='')
+											option(selected="" value="" disabled) Choose...
+											option Aunt/Uncle
+											option Parent
+											option Grandparent
+											option Sibling
+								.col-md-6.px-lg-3.px-md-3.px-sm-0
+									.form-group
+										h6.label-control Contact Number
+											.text-danger.d-inline  *
+										input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" required='' pattern="[0-9]{11}" )
+							.row
+								.col-md-6.px-lg-3.px-md-3.px-sm-0
+									.form-group
+										h6.label-control Father's Full Name:
+											.text-danger.d-inline  *
+										input#fatherfullname.form-control(type='text' name='fathername' placeholder="Ex. Juan Dela Cruz" required='' )
+										.help-block.with-errors
+								.col-md-6.px-lg-3.px-md-3.px-sm-0
+									.form-group
+										h6.label-control Father's Birthplace:
+											.text-danger.d-inline  *
+										input#fatherbirthplace.form-control(type='text' name='fatherbirthplace' placeholder="Ex. Caloocan, Quezon City" required='' )
+										.help-block.with-errors
+							.row
+								.col-md-6.px-lg-3.px-md-3.px-sm-0
+									.form-group
+										h6.label-control Mother's Full Name:
+											.text-danger.d-inline  *
+										input#motherfullname.form-control(type='text' name='mothername' placeholder="Ex. Maria Dela Cruz" required='' )
+										.help-block.with-errors
+								.col-md-6.px-lg-3.px-md-3.px-sm-0
+									.form-group
+										h6.label-control Mother's Birthplace:
+											.text-danger.d-inline  *
+										input#motherbirthplace.form-control(type='text' name='motherbirthplace' placeholder="Ex. San Isidro, Quezon City" required=''  )
+										.help-block.with-errors
+							//- .row
+							//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
+							//- 		.form-group
+							//- 			h6.label-control Relationship with the Child
+							//- 			select#relation(type="text" name='relation' required='')
+							//- 				option(selected="" value="" disabled) Choose...
+							//- 				option Aunt/Uncle
+							//- 				option Parent
+							//- 				option Grandparent
+							//- 				option Sibling
+							//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
+							//- 		.form-group
+							//- 			h6.label-control Family's Contact number
+							//- 			input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" required='' pattern="[0-9]{11}" )
+							.row
+								.col-md-6.px-lg-3.px-md-3.px-sm-0
+									.form-group
+										h6(for='exampleFormControlTextarea1') Address:
+											.text-danger.d-inline  *
+										textarea#exampleFormControlTextarea1.address.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City" required='' )
+								.col-md-6.px-lg-3.px-md-3.px-sm-0
+									.form-group
+										h6(for='exampleFormControlTextarea1') Parents' Marriage Address:
+											.text-danger.d-inline  *
+										textarea#exampleFormControlTextarea1.parentsmarriage.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' )
+							.row
+								.col-md-7.px-lg-3.px-md-3.px-sm-0.mx-auto
+									.form-group
+										h6.label-control Birth Certificate
+											.text-danger.d-inline  *
+										input#file-0b.file(type='file',accept='image/*',name="image")
+					.modal-footer
+						a.filter.btn.btn-common(href=`/guest/baptism/form/success`) OK
 						// Form Wizard
 block addjs
 	script.
 		var baptismType1 = "";
+		var eventid =$("#eventid").val();
+		console.log($("#eventid").val())
 		$('#textarea1').hide();
 		$('#textarea2').hide();
 		$('#radioup').click(function() {
@@ -285,12 +417,14 @@ block addjs
 		$('#regular').hide();
 		$('#special').hide();
 		
-		$('#radio1').click(function() {
+		if(eventid == 3) {
+			
 			baptismType1 = "Regular";
 			console.log(baptismType1)
 			$('#regular').slideDown();
 			$('#special').slideUp();
 		if(baptismType1 == "Regular"){
+
 		$('#nextButton2').click(function(){
 		$.get('/guest/baptism/query').done(data=>{
 		console.log(data.utilities[0].int_agemax)
@@ -324,7 +458,7 @@ block addjs
 			){
 			if(age >= data.utilities[0].int_agemax){
 				swal({
-					title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, re-input or go back to home?`,
+					title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, do you want to apply on special baptism or re-input age?`,
 					showCancelButton: true,
 					confirmButtonColor: '#3085d6',
 					cancelButtonColor: '#d33',
@@ -336,7 +470,8 @@ block addjs
 				})
 			}
 			else{
-					$('#nextButton2').addClass('btn-next')
+				$('#nextButton2').addClass('btn-next')
+				$('#nextButton2').click();
 			}
 			}
 			else{
@@ -351,15 +486,15 @@ block addjs
 		})
 		})
 		}
-		})
+		}
 
-		$('#radio2').click(function() {
+		if(eventid == 9) {
 			baptismType1 = "Special"
 			console.log(baptismType1)
 			$('#calendarSpecial').fullCalendar('changeView', 'month')
 			$('#special').slideDown();
 			$('#regular').slideUp();	
-		$('#nextButton2').click(function(){
+		$(document).on('click','#nextButton2',function(){
 			console.log($('#file-0b').val())
 			if ($("#customRadio1").prop("checked")) {
 			gender = $("#customRadio1").val();
@@ -385,6 +520,8 @@ block addjs
 			$('#file-0b').val() != '' ||
 			$('#file-0b').val() != undefined){
 				$('#nextButton2').addClass('btn-next')
+				$('#nextButton2').click();
+				
 			}
 			else{
 				swal({
@@ -397,7 +534,10 @@ block addjs
 			}
 		})
 		
-		});
+		}
+		$('#presubmitButton').click(function() {
+			$("summaryModal").modal('show');
+		})
 		$('#submitButton').click(function() {
 			var baptismtype;
 			if ($("#radio1").prop("checked")) {
@@ -406,10 +546,9 @@ block addjs
 			else if($("#radio2").prop("checked")){
 			baptismtype = $("#radio2").val();
 			}
-			if($('.sponsorname').val() != '' &&
-			$('.sponsorname').val() != ''){
+			if($('.sponsorname').val() != ''){
 					var sponsors = $('.sponsorname')
-						var formData = new FormData();
+					var formData = new FormData();
 					formData.append('baptismtype', baptismtype)
 					formData.append('lastname', $('#lastname').val())
 					formData.append('firstname', $('#firstname').val())
@@ -417,7 +556,7 @@ block addjs
 					formData.append('relation', $('#relation').val())
 					formData.append('gender',gender)
 					formData.append('eventDate',eventDate)
-					formData.append('timeStart',timeStart)
+					formData.append('timeStart',timeStart)	
 					formData.append('address', $('.address').val())
 					formData.append('birthday', $('#birthdate').val())
 					formData.append('birthplace', $('#birthplace').val())
@@ -854,10 +993,11 @@ block addjs
 		})
 		$('#prevButton1').click(function(){
 			$('#nextButton1').removeClass('btn-next')
+			$('#nextButton1').click(false)
 		})
 		$('#prevButton2').click(function(){
 			$('#nextButton2').removeClass('btn-next')
-			
+			$('#nextButton2').click(false);
 		})
 		//- dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(7,'days').format('YYYY-MM-DD')
 		$.get('/guest/baptism/query').done(data=>{

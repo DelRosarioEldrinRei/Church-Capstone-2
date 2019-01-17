@@ -32,7 +32,7 @@ html
 					h3.c-grey-900.mB-10 
 						img.rounded-circle.shadow2(src='/Helium/img/INLPP.png', alt=''  style="width: 3.5rem")
 						|  Register
-					form#needs-validation.form(method='POST', action='/signup')
+					form.form(method='POST', action='/signup' novalidate)
 						.form-group
 							.form-row
 								.form-group.col-md-4.m-0
@@ -91,7 +91,7 @@ html
 								.form-group.col-md-6
 									label.h6 Email Address:
 										.text-danger.d-inline *
-									input.form-control(type='text' name='email' placeholder="Ex. markfrancisco@gmail.com" required)
+									input.form-control(id='email' type='text' name='email' placeholder="Ex. markfrancisco@gmail.com" required)
 									.invalid-feedback Please provide a valid email address.
 							.form-group
 								label.h6 Password:
@@ -116,7 +116,7 @@ html
 
 								.invalid-feedback You must agree to our terms and conditions
 								.text-center
-									button.btn.btn-primary.mt-3(type='submit') Submit
+									button.btn.btn-primary.mt-3(id='hello' type='submit') Submit
 							.form-group
 								.peers.ai-c.jc-sb.fxw-nw
 									.peer
@@ -130,7 +130,7 @@ html
 	script(type='text/javascript', src='/js/loader.js')
 	script.
 		function validateForm(){
-				$('#needs-validation').formValidation({
+				$('form').formValidation({
 					framework: 'bootstrap',
 					icon: {
 						valid: 'fa fa-check',
@@ -142,23 +142,22 @@ html
 							validators: {
 								notEmpty: {
 									message: 'Please Enter Your Username',
-								}
-							}
-						},
+								},	
 							remote: {
-								url: `/view`,
-								message: 'ID and ID Number has been taken',
+								url: `/signup/username/query`,
+								message: 'Username has been taken',
 								validKey: 'ID',
 								type: 'POST',
 								data: function(){
 									var idtype = $('#usernameID').val()
-									var err = $('#errChecker').val()
+									//- var err = $('#errChecker').val()
 									return {
 										idType: idtype
 									}
-									alert(err)
 								}
-							},
+							}
+							}
+						},
 						lastname: {
 							validators: {
 									notEmpty: {
@@ -191,7 +190,20 @@ html
 							validators: {
 									notEmpty: {
 											message: `Please Enter Your Email`
-									}
+									},
+									remote: {
+										url: `/signup/email/query`,
+											message: 'Email has been taken',
+											validKey: 'ID',
+											type: 'POST',
+											data: function(){
+												var idtype = $('#email').val()
+												//- var err = $('#errChecker').val()
+												return {
+													idType: idtype
+												}
+											}
+										}
 							}
 						},
 						password: {
@@ -224,18 +236,22 @@ html
 			$( document ).ready(function() {
 				console.log( "ready!" );
 				validateForm()
-			});
-		(function() {
-			'use strict';
 
-			window.addEventListener('load', function() {
-				var form = document.getElementById('needs-validation');
-				form.addEventListener('submit', function(event) {
-					if (form.checkValidity() === false) {
-						event.preventDefault();
-						event.stopPropagation();
-					}
-					form.classList.add('was-validated');
-				}, false);
-			}, false);
-		})();
+				$('#hello').click(function() {
+					$('#needs-validation').submit();
+				});
+			});
+		//- (function() {
+		//- 	'use strict';
+
+		//- 	window.addEventListener('load', function() {
+		//- 		var form = document.getElementById('needs-validation');
+		//- 		form.addEventListener('submit', function(event) {
+		//- 			if (form.checkValidity() === false) {
+		//- 				event.preventDefault();
+		//- 				event.stopPropagation();
+		//- 			}
+		//- 			form.classList.add('was-validated');
+		//- 		}, false);
+		//- 	}, false);
+		//- })();

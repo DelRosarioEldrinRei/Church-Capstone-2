@@ -763,8 +763,8 @@ block addjs
 										<br>${regavailstart} - ${regavailend}</p>
 										<br>
 										<p><strong>Payment Details</strong></p>
-										<p class="pl-2 description">Application Fee: <span class='text-danger'> ₱ ${data.regularbap.double_fee} </span>
-										<br>Additional Rate: <span class='text-danger'> ₱ ${data.regularbap.double_addrate}/sponsor </span></p>
+										<p class="pl-2 description">Application Fee: <span class='text-danger'> ₱ ${data.regularbap.double_fee.toFixed(2)} </span>
+										<br>Additional Rate: <span class='text-danger'> ₱ ${data.regularbap.double_addrate.toFixed(2)}/sponsor </span></p>
 										<br>
 										${requirements}
 										<br>
@@ -785,8 +785,8 @@ block addjs
 										<br>${spcavailstart} - ${spcavailend}</p>
 										<br>	
 										<p><strong>Payment Details</strong></p>
-										<p class="pl-2 description">Application Fee: <span class='text-danger'> ₱ ${data.specialbap.double_fee} </span>
-										<br>Additional Rate: <span class='text-danger'> ₱ ${data.specialbap.double_addrate}/sponsor <s[pan]></p>
+										<p class="pl-2 description">Application Fee: <span class='text-danger'> ₱ ${data.specialbap.double_fee.toFixed(2)} </span>
+										<br>Additional Rate: <span class='text-danger'> ₱ ${data.specialbap.double_addrate.toFixed(2)}/sponsor <s[pan]></p>
 										<br>
 										${requirements}
 										<br>
@@ -826,21 +826,24 @@ block addjs
 											}
 											else {
 												index--;
-												$('#bodyAppend2').empty().append(appendTwo);
 												$('#bodyAppend1').empty()
+												$('#bodyAppend2').empty().append(appendTwo);
 											}
-											console.log(index);
 										});
 
-										$('#proceedRegularbap').click(function(){
-											$.post('/login/query',{id:data.regularbap.int_eventID}).done(data =>{
+										$(document).on('click','#proceedSpecialbap',function(){
+											console.log("WORKING")
+											$.post('/login/query',{id:data.specialbap.int_eventID}).done(data =>{
+												console.log("WORKING")
 												window.location=`/login? 
 												redirect="${$(this).val()}"`
 											})
+										//- })'#proceedSpecialbap').click(function(){
 										})
 
-										$('#proceedSpecialbap').click(function(){
-											$.post('/login/query',{id:data.specialbap.int_eventID}).done(data =>{
+										$(document).on('click','#proceedRegularbap',function(){
+											console.log("WORKING")
+											$.post('/login/query',{id:data.regularbap.int_eventID}).done(data =>{
 												window.location=`/login? 
 												redirect="${$(this).val()}"`
 											})

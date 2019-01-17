@@ -1,0 +1,228 @@
+doctype
+html
+  head
+    link(rel="stylesheet", href="/css/bootstrap4.1.min.css")
+    style.
+      @page {
+        bleed: 1cm;
+        size: A4 portrait;
+        size:  auto;   /* auto is the initial value */
+        margin-bottom: 50pt;
+        margin-top: 0cm;
+        font-size: 12pt;
+
+        #content, #page {
+        width: 100%;
+        margin: 0;
+        float: none;
+        }
+      }
+
+
+      @media print {
+        .page {
+          border: initial;
+          border-radius: initial;
+          width: initial;
+          min-height: initial;
+          box-shadow: initial;
+          background: initial;
+          page-break-after: always;
+        }
+
+        table{
+          page-break-inside: auto;
+        }
+
+        tr.last-row {
+            background-color: #555!important;
+        }
+
+        tr.last-row > th, tr.last-row > td {
+          background-color: unset!important;
+        }
+
+        div.page-break{
+          page-break-before: auto;
+        }
+      }
+
+      .gray{
+        color: #333;
+      }
+
+      .gray-ish{
+        color: #666;
+      }
+
+      .almost-gray{
+        color: #999;
+      }
+
+      body{
+        background-color: #eee;
+        padding-top: 25px;
+        -webkit-print-color-adjust: exact !important;
+        height: 100%;
+        margin-top: 40px;
+      }
+
+      div.container{
+        background-color: white;
+        border-radius: 10px;
+        height: 100%;
+        position: relative;
+        /* margin-top: 20px; */
+      }
+
+      div.invoice-header{
+        background-color: #444;
+        color: white;
+        border-bottom: 3px solid #cb9c57;
+      }
+
+      div.invoice-header > div > p{
+        font-size: 1.2rem;
+        font-weight: 350;
+      }
+
+      div.invoice-header > div > h1{
+        font-size: 4rem;
+      }
+
+      div.invoice-table{
+        border-top: 3px solid #cb9c57;
+        border-bottom: 3px solid #cb9c57;
+      }
+
+      div.invoice-table > table.table > thead, div.invoice-table > table.table > thead.thead > tr, div.invoice-table > table.table > thead.thead > tr > th {
+        border-top: none;
+      }
+
+      div.total-field{
+        position: relative;
+      }
+
+      h5.due-date{
+        position: absolute;
+        bottom: 10px;
+        right: 15px;
+      }
+
+      div.sub-table{
+        border-left: 3px solid #cb9c57;
+        padding-left: 0;
+      }
+
+      div.sub-table > table{
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+
+      tr.last-row{
+        margin-top: 25px;
+        background-color: #555;
+        color: white;
+        border-top: 3px solid #cb9c57;
+      }
+
+      p.footer{
+          bottom: 0;
+          width: 100%;
+          background-color: #333;
+          color: white;
+          padding-top: 15px;
+          border-top: 3px solid red;
+      }
+  body
+    .container
+      .row.invoice-header.px-3.py-2
+        .col-4.pr-0
+          p.invisible(style='font-size: 1rem;') INA NG LUPANG PANGAKO PARISH (Guest Copy)
+          img.d-inline.invisible(src='C:\Users\LenovoLappy\Desktop\logo.png' height='75')
+          h1.d-inline.float-right(style='font-size:3.6rem;') VOUCHER
+        .col-4.text-right
+          p.invisible 500-0239
+          p.invisible churcheventapp@gmail.com
+          p.invisible inanglupangpangako.com
+        .col-4.text-right
+          p.invisible Urban, Bgy. Payatas B 1119
+          p.invisible Quezon City, Manila
+          p.invisible VOUCHER ID 42352
+      .invoice-content.row.px-5.pt-3
+        .col-3
+          h6.d-inline.gray-ish.mb-3 To:
+          p.d-inline.float-center.gray-ish.invisible Juan Dela Cruz
+          p.gray-ish.invisible 4-A Del rosario st. Marulas Valenzuela City
+          // <p class="gray-ish">VAT ID: 12091803</p>
+        .col-3
+          h6.d-inline.gray-ish Voucher ID:
+          p.d-inline.gray-ish.invisible # 123456789
+          br
+          h6.d-inline.gray-ish Date Issued:
+          p.d-inline.gray-ish.invisible 01 / 01 / 2020 
+          br
+          h6.d-inline.gray-ish Due Date:
+          p.d-inline.gray-ish.invisible 15 / 01 / 2020 
+        .col-6.text-right.total-field
+          h5.almost-gray Total Amount
+          h2.gray-ish.invisible
+            span.curency &#x20B1;
+            |  634.57
+          // <h5 class="almost-gray due-date">Due Date: 15 / 01 / 2020</h5>
+      .row.mt-3
+        .col-10.offset-1.invoice-table.pt-1
+          table.table.table-hover.table-striped
+            thead.thead.splitForPrint
+              tr
+                th(scope='col gray-ish' width='591') Event Name
+                th.text-center(scope='col gray-ish') Rate
+                th.text-right(scope='col gray-ish') Amount
+            tbody
+              tr
+                th(scope='row')  &nbsp;
+                td.text-center  &nbsp; 
+                td.text-right  &nbsp;
+              tr
+                th(scope='row')  &nbsp;
+                td.text-center  &nbsp;
+                td.text-right  &nbsp;
+              tr
+                th(scope='row')  &nbsp;
+                td.text-center  &nbsp;
+                td.text-right  &nbsp;
+              tr
+                th(scope='row')  &nbsp;
+                td.text-center  &nbsp;
+                td.text-right  &nbsp;
+              tr
+                th(scope='row')  &nbsp;
+                td.text-center  &nbsp;
+                td.text-right  &nbsp;
+              tr
+                th(scope='row')  &nbsp;
+                td.text-center  &nbsp;
+                td.text-right  &nbsp;
+              tr
+                th(scope='row')  &nbsp;
+                td.text-center  &nbsp;
+                td.text-right  &nbsp;
+        .container
+          .invoice-content.row.px-5.pt-3
+            .col-12(style='height:120px;')
+              h6.d-inline.gray-ish.mb-3 Summary:
+              p.ml-3.pt-2 Helloo
+      .row.invoice_details
+        // invoiced to details
+        .col-4.offset-1.pt-3
+        // Invoice assets and total
+        .offset-1.col-5.mb-3.pr-4.sub-table
+          table.table.table-borderless
+            tbody
+              tr.last-row
+                th(scope='row')
+                  h4 Total
+                td.text-right  &nbsp;
+      p.text-center.pb-3
+        em  This voucher is valid until &nbsp; &nbsp; &nbsp; days.
+
