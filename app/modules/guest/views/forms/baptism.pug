@@ -63,6 +63,8 @@ block main
 									br
 									h6.label-control.ml-3.mb-0 Baptism Type & Date
 										.text-danger.d-inline  *
+									br
+									input.form-control#baptismtype(type='hidden' value=`${eventid}`)
 									.container
 										.row
 											.col-md-3.px-lg-3.px-md-0.px-sm-0
@@ -265,6 +267,7 @@ block main
 block addjs
 	script.
 		var baptismType1 = "";
+		console.log($("#baptismtype").val())
 		$('#textarea1').hide();
 		$('#textarea2').hide();
 		$('#radioup').click(function() {
@@ -291,6 +294,7 @@ block addjs
 
 		$('#nextButton2').click(function(){
 		$.get('/guest/baptism/query').done(data=>{
+		console.log($("#baptismtype").val())
 		console.log(data.utilities[0].int_agemax)
 		console.log(baptismType1)
 			console.log($('#file-0b').val())
@@ -854,8 +858,8 @@ block addjs
 			}
 		})
 		$('#prevButton1').click(function(){
-			$('#nextButton1').removeClass('btn-next')
-			$('#nextButton1').click(false)
+			//- $('#nextButton1').removeClass('btn-next')
+			//- $('#nextButton1').click(false)
 		})
 		$('#prevButton2').click(function(){
 			$('#nextButton2').removeClass('btn-next')

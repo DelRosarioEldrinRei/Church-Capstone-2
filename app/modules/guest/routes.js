@@ -887,7 +887,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
             })
     })
     guestRouter.get('/baptism/form', (req, res)=>{
-        console.log(req.query)
+        console.log(req.query[0])
         console.log(req.session.eventId)
        
         var queryString1= `SELECT int_agemax, int_agemin, double_fee FROM tbl_utilities where int_eventID=(SELECT int_eventID from tbl_services where var_eventname ="Baptism")`
@@ -900,7 +900,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                     }
                 }
                 else{
-                    return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1,utilities:results2})
+                    return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1,utilities:results2,eventid:req.session.eventId})
                 }
                 if (err) throw err;
             });    

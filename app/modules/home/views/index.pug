@@ -738,8 +738,8 @@ block addjs
 									console.log(spcavailabledays)
 									regavailstart = moment(data.regularbap.time_availablestart,'hh:mm a').format('hh:mm A')
 									regavailend = moment(data.regularbap.time_availableend,'hh:mm a').format('hh:mm A')
-									spcavailstart = moment(data.regularbap.time_availablestart,'hh:mm a').format('hh:mm A')
-									spcavailend = moment(data.regularbap.time_availableend,'hh:mm a').format('hh:mm A')
+									spcavailstart = moment(data.specialbap.time_availablestart,'hh:mm a').format('hh:mm A')
+									spcavailend = moment(data.specialbap.time_availableend,'hh:mm a').format('hh:mm A')
 									
 									// LEAVE THIS HEADER AS IT IS
 									$('#headerAppend').append(`
