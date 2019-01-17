@@ -1036,6 +1036,11 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
             return res.render('guest/views/forms/success');
             
         });
+        guestRouter.get('/voucherforchild', (req, res)=>{
+
+            return res.render('guest/views/voucherforchild');
+            
+        });
 
 
 //==============================================================

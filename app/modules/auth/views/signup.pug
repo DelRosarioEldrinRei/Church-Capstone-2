@@ -32,7 +32,7 @@ html
 					h3.c-grey-900.mB-10 
 						img.rounded-circle.shadow2(src='/Helium/img/INLPP.png', alt=''  style="width: 3.5rem")
 						|  Register
-					form#needs-validation.form(method='POST', action='/signup')
+					form.form(method='POST', action='/signup' novalidate)
 						.form-group
 							.form-row
 								.form-group.col-md-4.m-0
@@ -116,7 +116,7 @@ html
 
 								.invalid-feedback You must agree to our terms and conditions
 								.text-center
-									button.btn.btn-primary.mt-3(type='submit') Submit
+									button.btn.btn-primary.mt-3(id='hello' type='submit') Submit
 							.form-group
 								.peers.ai-c.jc-sb.fxw-nw
 									.peer
@@ -130,7 +130,7 @@ html
 	script(type='text/javascript', src='/js/loader.js')
 	script.
 		function validateForm(){
-				$('#needs-validation').formValidation({
+				$('form').formValidation({
 					framework: 'bootstrap',
 					icon: {
 						valid: 'fa fa-check',
@@ -236,18 +236,22 @@ html
 			$( document ).ready(function() {
 				console.log( "ready!" );
 				validateForm()
-			});
-		(function() {
-			'use strict';
 
-			window.addEventListener('load', function() {
-				var form = document.getElementById('needs-validation');
-				form.addEventListener('submit', function(event) {
-					if (form.checkValidity() === false) {
-						event.preventDefault();
-						event.stopPropagation();
-					}
-					form.classList.add('was-validated');
-				}, false);
-			}, false);
-		})();
+				$('#hello').click(function() {
+					$('#needs-validation').submit();
+				});
+			});
+		//- (function() {
+		//- 	'use strict';
+
+		//- 	window.addEventListener('load', function() {
+		//- 		var form = document.getElementById('needs-validation');
+		//- 		form.addEventListener('submit', function(event) {
+		//- 			if (form.checkValidity() === false) {
+		//- 				event.preventDefault();
+		//- 				event.stopPropagation();
+		//- 			}
+		//- 			form.classList.add('was-validated');
+		//- 		}, false);
+		//- 	}, false);
+		//- })();
