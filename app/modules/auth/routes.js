@@ -165,6 +165,12 @@ loginRouter.route('/')
                     console.log(req.session);
                     return res.redirect('/guest/establishment/form');
                 }
+                else if(req.session.eventId == 9){
+                    delete user.var_password;
+                    req.session.user = user;
+                    console.log(req.session);
+                    return res.redirect(`/guest/baptism/form?${req.session.eventId}`);
+                }
                 else{
                     delete user.var_password;
                     req.session.user = user;
@@ -185,6 +191,7 @@ signupRouter.route('/')
     var queryString = `INSERT INTO tbl_user(var_userlname, var_userfname, var_usermname, char_usergender, var_useraddress, var_usercontactnum, var_username, var_useremail, var_password, char_usertype, var_userstatus) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
     db.query(queryString, [req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, req.body.contactnumber, req.body.username, req.body.email, req.body.password, "Guest", "Active"], (err, results, fields) => {
         if (err) throw err;
+        return res.redirect('/guest')
 
 // username validation for signup
 // signupRouter.route('/username/query')
