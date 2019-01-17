@@ -165,6 +165,12 @@ loginRouter.route('/')
                     console.log(req.session);
                     return res.redirect('/guest/establishment/form');
                 }
+                else if(req.session.eventId == 9){
+                    delete user.var_password;
+                    req.session.user = user;
+                    console.log(req.session);
+                    return res.redirect(`/guest/baptism/form?${req.session.eventId}`);
+                }
                 else{
                     delete user.var_password;
                     req.session.user = user;

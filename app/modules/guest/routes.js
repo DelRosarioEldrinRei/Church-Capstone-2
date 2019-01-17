@@ -900,7 +900,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                     }
                 }
                 else{
-                    return res.render('guest/views/forms/baptism',{user: req.session.user, agelimits: results1,utilities:results2})
+                    return res.render('guest/views/forms/baptism',{eventid:req.session.eventId,user: req.session.user, agelimits: results1,utilities:results2})
                 }
                 if (err) throw err;
             });    
