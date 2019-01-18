@@ -1,5 +1,9 @@
 extends ../../../templates/secretariat
 block prepend main
+  style.
+    .ti-size {
+      font-size: 22px;
+    }
   // ### $App Screen Content ###
   #mainContent
     .row.gap-20.masonry.pos-r
@@ -53,8 +57,42 @@ block prepend main
     .container-fluid.mt-3
       .row
         .col-md-12.mx-auto
-          #full-calendar.shadow
-      #calendar-edit.modal.fade
+          ul.nav.nav-tabs
+            //- li.nav-item
+            //-   a.nav-link.active(data-toggle='tab', href='#first') First Calendar
+            //- li.nav-item
+            //-   a.nav-link(data-toggle='tab', href='#second') Second Calendar
+            //- li.nav-item
+            //-   a.nav-link(data-toggle='tab', href='#third') Third Calendar
+
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false')
+                span.icon-holder
+                  i.c-blue-500.ti-home.ti-size
+              .dropdown-menu
+                a.dropdown-item(href='#') All
+                .dropdown-divider
+                a.dropdown-item(href='#') Services
+                .dropdown-divider
+                a.dropdown-item(href='#') Masses
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false')
+                span.icon-holder
+                  i.c-blue-500.ti-user.ti-size
+              .dropdown-menu
+                a.dropdown-item(href='#') Priest1
+                .dropdown-divider
+                a.dropdown-item(href='#') Priest2
+                .dropdown-divider
+                a.dropdown-item(href='#') Priest3
+
+
+          .tab-content
+            // IMPORTANT!!! CALENDARS THAT IVE PUT IN HERE ARE LOCATED AT THE BOTTOM THANKS! :)
+            #first.shadow.tab-pane.active
+            #second.tab-pane.shadow
+            #third.tab-pane.shadow
+      //- #calendar-edit.modal.fade
         .modal-dialog(role='document')
           .modal-content
             .bd.p-15
@@ -84,4 +122,10 @@ block prepend main
                   textarea.form-control.bdc-grey-200(rows='5')
                 .text-right
                   button.btn.btn-primary.cur-p(data-dismiss='modal') Done
+                
+block addjs
+  script.
+    $('#first').fullCalendar()
+    $('#second').fullCalendar()
+    $('#third').fullCalendar()
 
