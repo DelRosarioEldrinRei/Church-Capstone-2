@@ -248,7 +248,7 @@ block main
 								.learn-more.pull-right
 									button#prevButton2.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									// para lumabas yung modal pang check ng summary at iedit pa
-									button.btn.btn-submit#presubmitButton(type='button') Submit
+									button#presubmitButton.btn.btn-submit Submit
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -266,137 +266,16 @@ block main
 					.modal-footer
 						a.filter.btn.btn-common(href=`/guest/baptism/form/success`) OK
 						// Form Wizard
-	#summaryModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
-			.modal-dialog.modal-lg(role="document")
-				.modal-content
-					.modal-header
-						h5.modal-title Summary
-						button.close(type='button', data-dismiss='modal', aria-label='Close')
-							span.p-3(aria-hidden='true') ×
-				.modal-body
-					h4
-						.d-none.d-sm-inline Personal Information: 
-						span Step 2 - 3
-					.form-group
-						br
-						input.form-control(type='hidden' name='userID' value=`${user.int_userID}`)
-						.container
-							h6.label-control Name of the Child:
-								.text-danger.d-inline  *
-							.row
-								.col-md-4.px-lg-3.px-md-0.px-sm-0
-									.form-group.pt-0
-										input.form-control#lastname(type='text' placeholder="Last Name *" name='lastname' required=''  )
-										.help-block.with-errors
-								.col-md-4.p-lg-0.px-md-3.px-sm-0
-									.form-group.pt-0
-										input.form-control#firstname(type='text' placeholder="First Name *" name='firstname' required=''  )
-										.help-block.with-errors
-								.col-md-4.px-lg-3.px-md-0.px-sm-0
-									.form-group.pt-0
-										input.form-control#middlename(type='text' placeholder="Middle Name" name='middlename'  )
-										.help-block.with-errors
-							.row
-								.col-md-4.px-lg-3.px-md-0.px-sm-0
-									.form-group.m-0
-										h6.label-control Gender
-											.text-danger.d-inline  *
-										.custom-control.custom-radio
-											input#customRadio1.custom-control-input(type='radio', name='gender' value="Male")
-											label.custom-control-label(for='customRadio1') 
-												| Male
-										.custom-control.custom-radio
-											input#customRadio2.custom-control-input(type='radio', name='gender' value="Female")
-											label.custom-control-label(for='customRadio2') 
-												| Female
-
-								.col-md-4.p-lg-0.px-md-3.px-sm-0
-									.form-group
-										h6.label-control Birthday
-											.text-danger.d-inline  *
-										input#birthdate.birthday.form-control(type='date' name='birthday' required='')
-								.col-md-4.px-lg-3.px-md-0.px-sm-0
-									.form-group
-										h6.label-control Birthplace:
-											.text-danger.d-inline  *
-										input#birthplace.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required=''  ) 
-										.help-block.with-errors
-							.row
-								.col-md-6.px-lg-3.px-md-3.px-sm-0
-									.form-group
-										h6.label-control Relationship with the Child
-											.text-danger.d-inline  *
-										select#relation(type="text" name='relation' required='')
-											option(selected="" value="" disabled) Choose...
-											option Aunt/Uncle
-											option Parent
-											option Grandparent
-											option Sibling
-								.col-md-6.px-lg-3.px-md-3.px-sm-0
-									.form-group
-										h6.label-control Contact Number
-											.text-danger.d-inline  *
-										input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" required='' pattern="[0-9]{11}" )
-							.row
-								.col-md-6.px-lg-3.px-md-3.px-sm-0
-									.form-group
-										h6.label-control Father's Full Name:
-											.text-danger.d-inline  *
-										input#fatherfullname.form-control(type='text' name='fathername' placeholder="Ex. Juan Dela Cruz" required='' )
-										.help-block.with-errors
-								.col-md-6.px-lg-3.px-md-3.px-sm-0
-									.form-group
-										h6.label-control Father's Birthplace:
-											.text-danger.d-inline  *
-										input#fatherbirthplace.form-control(type='text' name='fatherbirthplace' placeholder="Ex. Caloocan, Quezon City" required='' )
-										.help-block.with-errors
-							.row
-								.col-md-6.px-lg-3.px-md-3.px-sm-0
-									.form-group
-										h6.label-control Mother's Full Name:
-											.text-danger.d-inline  *
-										input#motherfullname.form-control(type='text' name='mothername' placeholder="Ex. Maria Dela Cruz" required='' )
-										.help-block.with-errors
-								.col-md-6.px-lg-3.px-md-3.px-sm-0
-									.form-group
-										h6.label-control Mother's Birthplace:
-											.text-danger.d-inline  *
-										input#motherbirthplace.form-control(type='text' name='motherbirthplace' placeholder="Ex. San Isidro, Quezon City" required=''  )
-										.help-block.with-errors
-							//- .row
-							//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
-							//- 		.form-group
-							//- 			h6.label-control Relationship with the Child
-							//- 			select#relation(type="text" name='relation' required='')
-							//- 				option(selected="" value="" disabled) Choose...
-							//- 				option Aunt/Uncle
-							//- 				option Parent
-							//- 				option Grandparent
-							//- 				option Sibling
-							//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
-							//- 		.form-group
-							//- 			h6.label-control Family's Contact number
-							//- 			input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" required='' pattern="[0-9]{11}" )
-							.row
-								.col-md-6.px-lg-3.px-md-3.px-sm-0
-									.form-group
-										h6(for='exampleFormControlTextarea1') Address:
-											.text-danger.d-inline  *
-										textarea#exampleFormControlTextarea1.address.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City" required='' )
-								.col-md-6.px-lg-3.px-md-3.px-sm-0
-									.form-group
-										h6(for='exampleFormControlTextarea1') Parents' Marriage Address:
-											.text-danger.d-inline  *
-										textarea#exampleFormControlTextarea1.parentsmarriage.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' )
-							.row
-								.col-md-7.px-lg-3.px-md-3.px-sm-0.mx-auto
-									.form-group
-										h6.label-control Birth Certificate
-											.text-danger.d-inline  *
-										input#file-0b.file(type='file',accept='image/*',name="image")
-					.modal-footer
-						a.filter.btn.btn-common(href=`/guest/baptism/form/success`) OK
-						// Form Wizard
+	#summaryModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+		.modal-dialog.modal-lg(role='document')
+			.modal-content
+				.modal-header Confirm Summary 
+					button.close(type='button', data-dismiss='modal', aria-label='Close')
+						span.p-3(aria-hidden='true') ×
+				.modal-body#summaryAppend
+				.modal-footer
+					button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+					button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button') Apply
 block addjs
 	script.
 		var baptismType1 = "";
@@ -426,8 +305,7 @@ block addjs
 			$('#regular').slideDown();
 			$('#special').slideUp();
 		}
-		if(baptismType1 == "Regular"){
-
+		if(eventid == 3){
 		$('#nextButton2').click(function(){
 		$.get('/guest/baptism/query').done(data=>{
 		console.log($("#baptismtype").val())
@@ -475,7 +353,7 @@ block addjs
 			}
 			else{
 				$('#nextButton2').addClass('btn-next')
-				$('#nextButton2').click();
+				//- $('#nextButton2').click();
 			}
 			}
 			else{
@@ -539,7 +417,149 @@ block addjs
 		
 		}
 		$('#presubmitButton').click(function() {
-			$("summaryModal").modal('show');
+			$("#summaryModal").modal('show');
+			var lastname = $('#lastname').val();
+			console.log(lastname)
+			$("#summaryAppend").append(`
+				<h6 class="label-control">Name of the Child:
+				<div class="row">
+					<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group pt-0">
+					<h6 class="label-control">Last name
+						<label class="form-control" id="prelastname">
+							${$('#lastname').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+					<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+					<div class="form-group pt-0">
+					<h6 class="label-control">First name
+						<label class="form-control" id="prefirstname">
+							${$('#firstname').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+					<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group pt-0">
+					<h6 class="label-control">Middle Name
+						<label class="form-control" id="prelastname">
+							${$('#middlename').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				</div>
+				</h6>
+				<div class="row">
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Gender
+						<label class="form-control" id="pregender">
+							${gender}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Relation
+						<label class="form-control" id="pregender">
+							${$("#relation").val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>			
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Contact Number
+						<label class="form-control" id="pregender">
+							${$("#contactnumber").val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				</div>
+				<div class="row">
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Desired Date
+						<label class="form-control" id="pregender">
+							${eventDate}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Time 
+						<label class="form-control" id="pregender">
+							${moment(timeStart,'hh:mm:ss').format('hh:mm a')} - ${moment(timeEnd2,'hh:mm:ss').format('hh:mm a')}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>	
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Birth Date 
+						<label class="form-control" id="pregender">
+							${$('#birthdate').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>	
+				</div>
+				<div class="row">
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Parent's Marriage Location
+						<label class="form-control" id="pregender">
+							${$('.parentsmarriage').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Mother Full name
+						<label class="form-control" id="pregender">
+							${$('#motherfullname').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>	
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Father Full Name
+						<label class="form-control" id="pregender">
+							${$('#fatherfullname').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>	
+				</div>
+			`)
+
+
+			//- <label class="form-control" id="prelastname">
+			//- 	${$('#lastname').val()}
+			//- </label>
+		})
+		$('#summaryModal').on('hidden.bs.modal',function(){
+			$('#summaryAppend').empty()
 		})
 		$('#submitButton').click(function() {
 			var baptismtype;
@@ -561,7 +581,7 @@ block addjs
 					formData.append('eventDate',eventDate)
 					formData.append('timeStart',timeStart)	
 					formData.append('address', $('.address').val())
-					formData.append('birthday', $('#birthdate').val())
+					formData.append('birthday', $('#birthdate').val()) 
 					formData.append('birthplace', $('#birthplace').val())
 					formData.append('marriageaddress', $('.parentsmarriage').val())
 					formData.append('fatherbirthplace', $('#fatherbirthplace').val())
@@ -1131,8 +1151,8 @@ block addjs
 					}
 				})
 				eventDate = date.format('YYYY-MM-DD')
-				timeStart = "10:00 am"
-				timeEnd2 = "12:00 pm"
+				timeStart = data.utilities[0].time_availablestart
+				timeEnd2 = data.utilities[0].time_availableend
 				console.log(eventDate)
 				swal({
 						title: 'You have selected this date, are you sure?',
@@ -1155,7 +1175,7 @@ block addjs
 							).then((value)=>{
 							console.log('DESIRED TIME')
 							$('#calendarRegular').fullCalendar('renderEvent', {
-								title: 'YOUR DESIRED TIME',
+								title: '',
 								start: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeStart}`,
 								end: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeEnd2}`,
 								allDay: false,
