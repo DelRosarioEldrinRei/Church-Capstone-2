@@ -1,0 +1,185 @@
+extends ../../../templates/secretariat
+block prepend main
+	style.
+		body > div.mfp-wrap.mfp-close-btn-in.mfp-auto-cursor.mfp-with-zoom.mfp-ready > div {
+			z-index: 9999 !important;
+		}
+
+		.mfp-with-zoom .mfp-container,
+		.mfp-with-zoom.mfp-bg {
+		opacity: 0;
+		-webkit-backface-visibility: hidden;
+		/* ideally, transition speed should match zoom duration */
+		-webkit-transition: all 0.3s ease-out;
+		-moz-transition: all 0.3s ease-out;
+		-o-transition: all 0.3s ease-out;
+		transition: all 0.3s ease-out;
+		z-index: 99999;
+		}
+
+		.mfp-image, .mfp-container, .mfp-ready, .mfp-image-holder, .mfp-content, .mfp-preloader, .mfp-figure {
+			z-index: 99999;
+		}
+
+		.mfp-with-zoom.mfp-ready .mfp-container {
+			opacity: 1;
+		}
+		.mfp-with-zoom.mfp-ready.mfp-bg {
+			opacity: 0.8;
+		}
+
+		.mfp-with-zoom.mfp-removing .mfp-container,
+		.mfp-with-zoom.mfp-removing.mfp-bg {
+		opacity: 0;
+		}
+
+		.size {
+			width: 100px;
+			height: 100px;
+		}
+	#wrap
+	//- #calendar
+	div(style='clear:both')
+	.content
+		.container-fluid
+			.row
+				.col-lg-12.col-md-12
+					// Tab panes
+					.tab-content
+						#nonwedding.tab-pane.active.mx-3
+							br
+							// Inner Nav tabs
+							
+							// Tab panes
+							.tab-content
+								#cancel.tab-pane.active
+									.card
+											.card-header.card-header-primary(style='background:#367587; color:white')
+													h4.card-title(style='background:#367587; color:white') Cancelled Transaction
+											.card-body.table-responsive
+													table.table.table-hover.dataTable
+															thead.text-primary
+																	//- th ID
+																	th Guest
+																	th Desired Schedule
+																	th Date Applied
+																	th Date Cancelled
+																	th.text-center Actions
+															tbody
+																	each cancel in cancels
+																		tr
+																			//- td=cancel.int_eventinfoID
+																			td=cancel.var_userlname + ", " + cancel.var_userfname
+																			
+																			td=cancel.date_eventdate + ' ' + cancel.time_eventstart
+																			td=cancel.date_applied
+																			td=cancel.date_approval
+																			//- td=cancel.char_weddingtype
+																			
+																			td.td-actions.text-center
+																				button.btn.btn-primary.actionButton(type='button' value=`${cancel.int_eventinfoID}`)
+																					i.ti-settings
+																						#toolbar-options.hidden
+																							a.viewButton(href='#')
+																								i.ti-file(style="color:white;")
+																							a.updateButton(href='#')
+																								i.ti-pencil(style="color:white;")
+																							a.updateReqButton(href='#')
+																								i.ti-new-window(style="color:white;")
+
+
+
+	
+	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document" style="z-index: 9998;")
+				.modal-content
+					.modal-header(style='background:#367587; color:white')
+						h5.modal-title(style='background:#367587; color:white') cancel
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true' style='background:#367587; color:white') ×
+					.modal-body#viewBodyAppend
+					.modal-body    
+						.form-group
+							.gallery#reqAppend
+					.modal-footer
+						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+	
+block addjs
+	script.
+		$(document).ready(function() {
+			var ctr = 0;
+			for(var i =0; i<= $('.approvalreq').length; i++){
+
+
+				if($('.approvalreq').eq(i).attr('value') == "Submitted"){
+					$('.approvalreq').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
+				}
+				else if($('.approvalreq').eq(i).attr('value') == "Complete"){
+					$('.approvalreq').eq(i).addClass('badge btn btn-primary-lg bgc-green-100 c-green-700')
+				}
+				else if($('.approvalreq').eq(i).attr('value') == "Incomplete"){
+					$('.approvalreq').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
+				}
+				if($('.approvalpay').eq(i).attr('value') == "Paid"){
+					$('.approvalpay').eq(i).addClass('badge btn btn-primary-lg bgc-green-100 c-green-700')
+				}
+				else if($('.approvalpay').eq(i).attr('value') == "Unpaid"){
+					$('.approvalpay').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
+				}
+				else if($('.approvalpay').eq(i).attr('value') == "Incomplete"){
+					$('.approvalpay').eq(i).addClass('badge btn btn-primary-lg bgc-amber-50 c-amber-800')
+				}
+				if($('.approval').eq(i).attr('value') == "Pending"){
+					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
+				}
+				else if($('.approval').eq(i).attr('value') == "Cancelled"){
+					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700 ')
+				}
+				else if($('.approval').eq(i).attr('value') == "Approved"){
+					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-green-100 c-green-700')
+				}
+				else if($('.approval').eq(i).attr('value') == "Disapproved"){
+					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700')
+				}
+			}
+			$('.actionButton').click(function(){
+				idNow = $(this).val();
+				console.log(idNow)
+			})
+			$('.viewButton').click(function(){
+				console.log(idNow)
+				$.post('/secretariat/transaction-cancel/query',{id:idNow}).done(data =>{
+					var dateRequested = moment(data.results.date_eventdate).format('MMMM DD, YYYY')
+					
+					var timeRequested = moment(data.results.time_eventstart,'HH:mm:ss').format('hh:mm A')
+					
+					$('#viewBodyAppend').append(`
+					<div class="row">
+						<div class="col-md-6">
+							<h6 class="label-control">Desired Date:</h6>
+							<input type="text" class="form-control" value="${dateRequested}" disabled> 
+						</div>
+						<div class="col-md-6">
+							<h6 class="label-control"> Desired Time:</h6>
+							<input type="text" class="form-control" value="${timeRequested}" disabled> 
+						</div>
+					</div>
+					
+					`)
+					console.log(data.requirements)
+					//- for(i=0;i<data.requirements.length;i++){
+					//- $(`#reqAppend`).append(`
+					//- 	<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="size" src="${data.requirements[i].var_reqpath}"/></a>
+					//- `)
+					//- }
+					$('#viewModal').modal('show')
+					$('#viewModal').on('hidden.bs.modal',function(){
+						$('#viewBodyAppend').empty()
+						$('#reqAppend').empty()
+					})
+
+				})
+			})
+			//requirements
+			
+		})

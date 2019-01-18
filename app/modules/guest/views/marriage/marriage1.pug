@@ -194,130 +194,95 @@ block main
 				.row
 					.col-md-6
 				.items
-					input#item1(type='checkbox', checked='' disabled)
-					label.information0(for='item1') Reservation
-					input#item2(type='checkbox' checked='' disabled)
-					label.information1(for='item2') Application Request
-					input#item3(type='checkbox' checked='' disabled)
-					label.information2(for='item3') Payment
-					input#item4(type='checkbox' checked='' disabled)
-					label.information3(for='item4') Cannonical Interview
-					input#item5(type='checkbox' checked='' disabled)
-					label.information4(for='item5') Submission of Requirements
-					input#item6(type='checkbox' disabled)
-					label.information5(	='item6') Issue of Marriage Banns
-					input#item7(type='checkbox' disabled)
-					label.information6(for='item7') Pre - Cana
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details0.display_off
+					each step in steps
+						input#item(type='checkbox', checked='' disabled value=`${step.var_weddingstepname}`)
+						label.information(for='item1')=step.var_weddingstepname
+					
+		.col-md-6.col-sm-12.information_details.display_off
 			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Reservation
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details1.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Application Request
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details2.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Payment
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details3.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Cannonical Interview
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details4.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Submission of Requirements
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details5.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Issue of Marriage Bans
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
-		.col-md-6.col-sm-12.information_details6.display_off
-			.custom_container_details
-				h1 Information:
-				.items.pb-0
-					h2.done1(aria-hidden='true') Pre - Cana
-						p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-				.items.pt-0
-					input#item8(type='checkbox', checked='')
-					label(for='item8') Reservation
-					input#item9(type='checkbox', checked='')
-					label(for='item9') Application Request
-					h2.done(aria-hidden='true') Done
-					h2.undone(aria-hidden='true') Not Done
+				h1#headerAppend
+					p#detailsAppend
+					p hey
+				//- .items.pt-0
+				//- 	input#item8(type='checkbox', checked='')
+				//- 	label(for='item8') Reservation
+				//- 	input#item9(type='checkbox', checked='')
+				//- 	label(for='item9') Application Request
+				//- 	h2.done(aria-hidden='true') Done
+				//- 	h2.undone(aria-hidden='true') Not Done
+
+	#information.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content
+				.modal-header(style='background:#367587; color:white')
+					h5.modal-title(style='background:#367587; color:white') Reservation
+					button.close(type='button', data-dismiss='modal', aria-label='Close')
+						span(aria-hidden='true' style='background:#367587; color:white') ×
+				.modal-body#reservationBodyAppend
+				.modal-footer
+					//- button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+					//- button.btn.btn-primary#requirementSubmitButton(type="button") Update
 block addjs
 	script.
 		var information = [0,1,2,3,4,5,6]
 			$(document).ready(function(){
-				for(var i=0; i <= 6; i++){
-					$('.information' + i).click(function() {
-						var y = $(this).attr("class").match(/\d+/)[0]
-						for(var x=0; x <=6; x++) {
-							if (y == x){
-								$('.information_details' + x).toggleClass("animated fadeInDown faster display_off")
-								var cloneInformation = information.slice();
-								cloneInformation.splice(x,1);
-								$.each(cloneInformation, function( index, value){
-									$('.information_details' + value).addClass("display_off")
-								});
-							}
-						}
-					});
-				}
+				//- for(var i=0; i <= 6; i++){
+				//- 	$('.information' + i).click(function() {
+				//- 		var y = $(this).attr("class").match(/\d+/)[0]
+				//- 		for(var x=0; x <=6; x++) {
+				//- 			if (y == x){
+				//- 				$('.information_details' + x).toggleClass("animated fadeInDown faster display_off")
+				//- 				var cloneInformation = information.slice();
+				//- 				cloneInformation.splice(x,1);
+				//- 				$.each(cloneInformation, function( index, value){
+				//- 					$('.information_details' + value).addClass("display_off")
+				//- 				});
+				//- 			}
+				//- 		}
+				//- 	});
+				//- }
+				//- $('.information').click(function(){
+				//- 	console.log('inaantok na ako')
+				//- 	$('.information_details').toggleClass("animated fadeInDown faster display_off")
+				//- 	$('.information_details').addClass("display_off")
+
+				//- })
+
+
+
+
+				$('.information').click(function(){
+				
+			
+								
+					$('#reservationBodyAppend').append(`
+							
+							<div class="send-header">
+								
+									<div class="col-md-6">
+										
+										<div class="row">
+											<div class="col-md-5">
+												<label class="label-control"><strong>Payment Received</label></strong>															
+											</div>
+											<div  class="col-md-7">
+												<input type='number' id="payment" class="form-control" placeholder="0.00"  style="text-align: right">
+											</div>
+										</div> 
+									</div>
+
+							
+							<div id="compose-area"></div>
+						
+						`)
+						
+						$('#information').modal('show')
+						$('#information').on('hidden.bs.modal',function(){
+							$('#selectBox').val('default')
+							$('#reservationBodyAppend').empty()
+						})
+						
+			})
+
+				
 			});
