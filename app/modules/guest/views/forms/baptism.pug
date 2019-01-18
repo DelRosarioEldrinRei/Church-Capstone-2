@@ -400,12 +400,8 @@ block main
 block addjs
 	script.
 		var baptismType1 = "";
-<<<<<<< HEAD
-		console.log($("#baptismtype").val())
-=======
 		var eventid =$("#eventid").val();
 		console.log($("#eventid").val())
->>>>>>> 40d05d43bbfd5dbea4416a0443ee6b98792624f8
 		$('#textarea1').hide();
 		$('#textarea2').hide();
 		$('#radioup').click(function() {
@@ -429,6 +425,7 @@ block addjs
 			console.log(baptismType1)
 			$('#regular').slideDown();
 			$('#special').slideUp();
+		}
 		if(baptismType1 == "Regular"){
 
 		$('#nextButton2').click(function(){
@@ -492,7 +489,6 @@ block addjs
 			}
 		})
 		})
-		}
 		}
 
 		if(eventid == 9) {
@@ -1003,8 +999,8 @@ block addjs
 			//- $('#nextButton1').click(false)
 		})
 		$('#prevButton2').click(function(){
-			$('#nextButton2').removeClass('btn-next')
-			$('#nextButton2').click(false);
+			//- $('#nextButton2').removeClass('btn-next')
+			//- $('#nextButton2').click(false);
 		})
 		//- dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(7,'days').format('YYYY-MM-DD')
 		$.get('/guest/baptism/query').done(data=>{
