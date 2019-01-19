@@ -219,7 +219,7 @@ block main
 												.form-group
 													h6.label-control Birth Certificate
 														.text-danger.d-inline  *
-													input#file-0b.file.fileuploaded(type='file',accept='image/*',name='file')
+													input#file-0b.file(type='file',accept='image/*',name="image")
 										.learn-more.pull-right
 											button#prevButton1.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 											button#nextButton2.btn(type='button') Next
@@ -248,7 +248,7 @@ block main
 								.learn-more.pull-right
 									button#prevButton2.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									// para lumabas yung modal pang check ng summary at iedit pa
-									button#presubmitButton.btn.btn-submit Submit
+									button#submitButton.btn.btn-submit Submit
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -275,10 +275,10 @@ block main
 				.modal-body#summaryAppend
 				.modal-body
 					img#req(src='')
-
+				.modal-body#sponsors
 				.modal-footer
-					button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Go back to edit
-					button.btn.std-btn.btn-common.btn-info.mb-0#submitButton(type='button') Submit
+					button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+					button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button') Apply
 block addjs
 	script.
 		var baptismType1 = "";
@@ -419,46 +419,136 @@ block addjs
 		})
 		
 		}
-		   function readURL(input) {
-				if (input.files && input.files[0]) {
-					var reader = new FileReader();
-
-					reader.onload = function (e) {
-						$('#req').attr('src', e.target.result);
-					}
-
-					reader.readAsDataURL(input.files[0]);
-				}
-			}
-					
-			$("#file-0b").change(function () {
-				readURL(this);
-			});
-
 		$('#presubmitButton').click(function() {
 			$("#summaryModal").modal('show');
 			var lastname = $('#lastname').val();
 			console.log(lastname)
 			$("#summaryAppend").append(`
+				<h6 class="label-control">Name of the Child:
 				<div class="row">
 					<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group pt-0">
-					<h6 class="label-control">
-					Full name of the child: ${$('#lastname').val()}, ${$('#firstname').val()} ${$('#middlename').val()} 
+					<h6 class="label-control">Last name
+						<label  id="prelastname">
+							${$('#lastname').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+					<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+					<div class="form-group pt-0">
+					<h6 class="label-control">First name
+						<label  id="prefirstname">
+							${$('#firstname').val()}
+						</label>
 					</h6>
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>
 					<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group pt-0">
+					<h6 class="label-control">Middle Name
+						<label  id="prelastname">
+							${$('#middlename').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				</div>
+				</h6>
+				<div class="row">
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group m-0">
-					<h6 class="label-control">Mother's Full name: ${$('#motherfullname').val()}	
+					<h6 class="label-control">Gender
+						<label  id="pregender">
+							${gender}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Relation
+						<label  id="pregender">
+							${$("#relation").val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>			
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Contact Number
+						<label  id="pregender">
+							${$("#contactnumber").val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				</div>
+				<div class="row">
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Desired Date
+						<label  id="pregender">
+							${eventDate}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Time 
+						<label  id="pregender">
+							${moment(timeStart,'hh:mm:ss').format('hh:mm a')} - ${moment(timeEnd2,'hh:mm:ss').format('hh:mm a')}
+						</label>
 					</h6>
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>	
 				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group m-0">
-					<h6 class="label-control">Father's Full Name: ${$('#fatherfullname').val()}
+					<h6 class="label-control">Birth Date 
+						<label  id="pregender">
+							${$('#birthdate').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>	
+				</div>
+				<div class="row">
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Parent's Marriage Location
+						<label  id="pregender">
+							${$('.parentsmarriage').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Mother Full name
+						<label  id="pregender">
+							${$('#motherfullname').val()}
+						</label>
+					</h6>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>	
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Father Full Name
+						<label  id="pregender">
+							${$('#fatherfullname').val()}
+						</label>
 					</h6>
 						<div class="help-block with-errors"></div>
 					</div>
@@ -536,21 +626,40 @@ block addjs
 				
 				</div>
 			`)
-			console.log("Sponsors:" + $(".sponsorname"))
-			//- <label class="form-control" id="prelastname">
+
+		for(i=0;i<$('.sponsors').length;i++){
+			console.log("shit")
+		}
+			//- <label  id="prelastname">
 			//- 	${$('#lastname').val()}
 			//- </label>
 		})
+		function readURL(input) {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
+
+					reader.onload = function (e) {
+						$('#req').attr('src', e.target.result);
+					}
+
+					reader.readAsDataURL(input.files[0]);
+				}
+			}
+					
+			$("#file-0b").change(function () {
+				readURL(this);
+			});
+
 		$('#summaryModal').on('hidden.bs.modal',function(){
 			$('#summaryAppend').empty()
 		})
 		$('#submitButton').click(function() {
 			var baptismtype;
-			if ($("#radio1").prop("checked")) {
-			baptismtype = $("#radio1").val();
+			if (eventid ==3) {
+			baptismtype = "Regular"
 			}
-			else if($("#radio2").prop("checked")){
-			baptismtype = $("#radio2").val();
+			else if(eventid ==9){
+			baptismtype = "Special"
 			}
 			if($('.sponsorname').val() != ''){
 					var sponsors = $('.sponsorname')
@@ -617,10 +726,10 @@ block addjs
 													var sponsorText = [];
 													var sponsorX = [65,393,507];
 													var sponsorY = 243;
-													console.log(${data.sponsors})
+													console.log(`${data.sponsors}`)
 													for(i=0;i<data.sponsors[i].length;i++){
 														sponsorText.push({
-															text: ${data.sponsor[i].var_sponsorname},
+															text: `${data.sponsor[i].var_sponsorname}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:sponsorX[0], y:sponsorY},
 														})
@@ -704,39 +813,39 @@ block addjs
 															// .toUpperCase() yung event name before ilagay sa pdfmake
 															//ito yung ifoforeach mu rae
 															{ 
-															text: ${data.voucherinfo[0].var_eventname},
+															text: `${data.voucherinfo[0].var_eventname}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:217},
 															},
 															{
-															text: ₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)},
+															text: `? ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:217},
 															},
 															{
-															text:`₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
+															text:`? ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:507, y:217},
 															},
 															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
 															{
-															text: Number of Sponsors : ${data.sponsors.length},
+															text: `Number of Sponsors : ${data.sponsors.length}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:243},
 															},
 															{
-															text: '₱ 50/head',
+															text: '? 50/head',
 															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:243},
 															},
 															{
-															text: ₱ ${(data.sponsors.length*50).toFixed(2)},
+															text: `? ${(data.sponsors.length*50).toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:506, y:243},
 															},
 															//total amount
 															{
-															text: ₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)},
+															text: `? ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
 															style: 'styleLabelTA',
 															absolutePosition: {x:476, y:354},
 															},
@@ -807,39 +916,39 @@ block addjs
 															// .toUpperCase() yung event name before ilagay sa pdfmake
 															//ito yung ifoforeach mu rae
 															{
-															text: ${data.voucherinfo[0].var_eventname},
+															text: `${data.voucherinfo[0].var_eventname}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:604},
 															},
 															{
-															text:  ₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)},
+															text:  `? ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:604},
 															},
 															{
-															text: ₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)},
+															text: `? ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:507, y:604},
 															},
 															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
 															{
-															text: Number of Sponsors : ${data.sponsors.length},
+															text: `Number of Sponsors : ${data.sponsors.length}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:630},
 															},
 															{
-															text: '₱ 50/head',
+															text: '? 50/head',
 															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:630},
 															},
 															{
-															text: ₱ ${(data.sponsors.length*50).toFixed(2)},
+															text: `? ${(data.sponsors.length*50).toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:506, y:630},
 															},
 															//total amount
 															{
-															text: ₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)},
+															text: `? ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
 															style: 'styleLabelTA',
 															absolutePosition: {x:476, y:741},
 															},
@@ -850,7 +959,7 @@ block addjs
 															absolutePosition: {x:338, y:776},
 															},
 															//- {
-															//- text:`${data[0].int_voucherID}` + ${data.int_userID} + ${data.int_eventinfoID},
+															//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
 															//- style: 'styleLabelFill',
 															//- absolutePosition: {x:520, y:28},
 															//- text: 'Date: ' + dateRequested,
