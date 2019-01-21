@@ -692,8 +692,8 @@ block addjs
 					$(this).remove();
 				});
 				event.stopPropagation();
-			});
 
+			});
 			$("#addAdditionalSponsor").click(function(event){
 				
 				var item2 = `
@@ -703,7 +703,12 @@ block addjs
 							<div class="input-group-prepend"><span class="btnDelete p-1 input-group-text rounded"><i class="fa fa-trash"></i></span></div>
 						</div>
 					</div>`
+
 				$(item2).hide().appendTo("#additionalSponsor").fadeIn(500);
+				
+				//- for(i=0;i<$('.sponsorclass').length;i++){
+
+				//- }
 			});
 
 			$("#additionalSponsor").on("click", ".btnDelete", function(event){
@@ -1202,7 +1207,8 @@ block addjs
 					})//nextbride		
 
 				$("#confirmButton").click(function(){
-
+						var ctrSponsor = $('.sponsorclass').length + 1;
+						console.log($('.sponsorclass'))
 						$('#bodyAppend1').append(`You fell under the category of Non-ordinary marriage, it must be because: `)
 						$('#bodyAppend1').append(`<li>- The groom or the bride is not a Roman Catholic`)
 						$('#bodyAppend1').append(`<li>- The groom or the bride is divorced/widowed/widower`)
@@ -1216,7 +1222,7 @@ block addjs
 						$('#bodyAppend1').append(`<br><br>Note that the Canonical Interview will be scheduled after the payment process.`)
 
 						$('#bodyAppend1').append(`<br><br><strong><h6>Payment Summary:</h6>Service Fee: </strong>`+ data.double_fee)
-						$('#bodyAppend1').append(`<br> <strong>Additional Rate per secondary sponsors:</strong> `+ data.double_addrate)
+						$('#bodyAppend1').append(`<br> <strong>Additional Rate per secondary sponsors:</strong> `+ data.double_addrate*ctrSponsor)
 						$('#bodyAppend1').append(`<br><strong> Total Amount: </strong>(not yet computed)`+ data.double_fee)
 						$('#bodyAppend1').append(`<br><br> You have to pay at least the half of the total amount within ` +data.int_downpaymentdays + ` days and pay the rest after `+  data.int_fullpaymentdays +' days.')
 						

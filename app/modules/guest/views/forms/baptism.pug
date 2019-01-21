@@ -248,7 +248,7 @@ block main
 								.learn-more.pull-right
 									button#prevButton2.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									// para lumabas yung modal pang check ng summary at iedit pa
-									button#submitButton.btn.btn-submit Submit
+									button#presubmitButton.btn.btn-submit Submit
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -274,15 +274,17 @@ block main
 						span.p-3(aria-hidden='true') ×
 				.modal-body#summaryAppend
 				.modal-body
-					img#req(src='')
+					//- img#req(src='')
 				.modal-body#sponsors
 				.modal-footer
 					button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-					button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button') Apply
+					button.btn.std-btn.btn-common.btn-info.mb-0#submitButton(type='button') Apply
 block addjs
 	script.
 		var baptismType1 = "";
 		var eventid =$("#eventid").val();
+		var sponsorfee=0;
+		var ratefee=0;
 		console.log($("#eventid").val())
 		$('#textarea1').hide();
 		$('#textarea2').hide();
@@ -311,6 +313,9 @@ block addjs
 		if(eventid == 3){
 		$('#nextButton2').click(function(){
 		$.get('/guest/baptism/query').done(data=>{
+		sponsorfee=data.utilities[0].double_addrate
+		ratefee=data.utilities[0].double_fee
+		console.log(ratefee)
 		console.log($("#baptismtype").val())
 		console.log(data.utilities[0].int_agemax)
 		console.log(baptismType1)
@@ -422,70 +427,110 @@ block addjs
 		$('#presubmitButton').click(function() {
 			$("#summaryModal").modal('show');
 			var lastname = $('#lastname').val();
+			var sponsorsadded = $(`input[name='sponsorname']`).length - 2
 			console.log(lastname)
 			$("#summaryAppend").append(`
-				<h6 class="label-control">Name of the Child:
+				<h6 class="label-control">Name of the Child: </h6>
+				<br />
 				<div class="row">
 					<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group pt-0">
-					<h6 class="label-control">Last name
-						<label  id="prelastname">
-							${$('#lastname').val()}
-						</label>
-					</h6>
+					<h6 class="label-control">Last Name: </h6>
+					<label  id="prelastname">
+						${$('#lastname').val()}
+					</label>
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>
 					<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
 					<div class="form-group pt-0">
-					<h6 class="label-control">First name
-						<label  id="prefirstname">
-							${$('#firstname').val()}
-						</label>
-					</h6>
+					<h6 class="label-control">First Name: </h6> 
+					<label  id="prefirstname">
+						${$('#firstname').val()}
+					</label>
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>
 					<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group pt-0">
-					<h6 class="label-control">Middle Name
-						<label  id="prelastname">
-							${$('#middlename').val()}
-						</label>
-					</h6>
+					<h6 class="label-control">Middle Name: </h6>
+					<label  id="prelastname">
+						${$('#middlename').val()}
+					</label>
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>
 				</div>
-				</h6>
 				<div class="row">
 				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group m-0">
-					<h6 class="label-control">Gender
-						<label  id="pregender">
-							${gender}
-						</label>
-					</h6>
+					<h6 class="label-control">Birth Date: </h6>
+					<label  id="pregender">
+						${$('#birthdate').val()}
+					</label>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>	
+				</div>
+				<hr>
+				<div class="row">
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Mother Full Name: </h6>
+					<label  id="pregender">
+						${$('#motherfullname').val()}
+					</label>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>	
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Father Full Name: </h6>
+					<label  id="pregender">
+						${$('#fatherfullname').val()}
+					</label>
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>	
+				</div>
+				<div class="row">
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Gender: </h6> ${gender}
+
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>
 				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group m-0">
-					<h6 class="label-control">Relation
-						<label  id="pregender">
-							${$("#relation").val()}
-						</label>
-					</h6>
+					<h6 class="label-control">Relation: </h6> ${$("#relation").val()}
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>			
 				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group m-0">
-					<h6 class="label-control">Contact Number
-						<label  id="pregender">
-							${$("#contactnumber").val()}
-						</label>
-					</h6>
+					<h6 class="label-control">Contact Number: </h6> ${$("#contactnumber").val()}
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Desired Date:	</h6> ${eventDate}
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Desired Time: </h6> ${moment(timeStart,'hh:mm:ss').format('hh:mm a')} - ${moment(timeEnd2,'hh:mm:ss').format('hh:mm a')}
+						<div class="help-block with-errors"></div>
+					</div>
+					</div>
+				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+					<div class="form-group m-0">
+					<h6 class="label-control">Number of Additional Sponsors: </h6> ${sponsorsadded}
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>
@@ -493,143 +538,21 @@ block addjs
 				<div class="row">
 				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group m-0">
-					<h6 class="label-control">Desired Date
-						<label  id="pregender">
-							${eventDate}
-						</label>
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Time 
-						<label  id="pregender">
-							${moment(timeStart,'hh:mm:ss').format('hh:mm a')} - ${moment(timeEnd2,'hh:mm:ss').format('hh:mm a')}
-						</label>
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>	
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Birth Date 
-						<label  id="pregender">
-							${$('#birthdate').val()}
-						</label>
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>	
-				</div>
-				<div class="row">
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Parent's Marriage Location
-						<label  id="pregender">
-							${$('.parentsmarriage').val()}
-						</label>
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Mother Full name
-						<label  id="pregender">
-							${$('#motherfullname').val()}
-						</label>
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>	
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Father Full Name
-						<label  id="pregender">
-							${$('#fatherfullname').val()}
-						</label>
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>	
-				</div>
-				<div class="row">
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Gender: ${gender}
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Relation: ${$("#relation").val()}
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>			
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Contact Number: ${$("#contactnumber").val()}
-					</h6>
+					<h6 class="label-control">Sponsors Fee: </h6> ${"P " + (sponsorsadded*sponsorfee).toFixed(2)}
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>
 				</div>
+				<hr>
 				<div class="row">
 				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group m-0">
-					<h6 class="label-control">Desired Date: ${eventDate}
-					</h6>
+					<h6 class="label-control"> Total Fee</h6> ${"P " + ((sponsorsadded*sponsorfee) + ratefee).toFixed(2)}
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Desired Time: ${moment(timeStart,'hh:mm:ss').format('hh:mm a')} - ${moment(timeEnd2,'hh:mm:ss').format('hh:mm a')}
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>	
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Birth Date: ${$('#birthdate').val()}
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>	
-				</div>
-				<div class="row">
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Parent's Marriage Address: ${$('.parentsmarriage').val()}
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Mother's birthplace: ${$('#motherbirthplace').val()}
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>
-				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-					<div class="form-group m-0">
-					<h6 class="label-control">Father's birthplace: ${$('#fatherbirthplace').val()}
-					</h6>
-						<div class="help-block with-errors"></div>
-					</div>
-					</div>
-				
-				
 				</div>
 			`)
-
-		for(i=0;i<$('.sponsors').length;i++){
-			console.log("shit")
-		}
 			//- <label  id="prelastname">
 			//- 	${$('#lastname').val()}
 			//- </label>
@@ -696,8 +619,9 @@ block addjs
 							processData:false,
 							contentType:false,
 							success: function(data){
+								location.href=`/guest/reservation`
 								console.log(formData)
-								$('#viewModal').modal('show');
+								//- $('#viewModal').modal('show');
 								console.log(data.int_voucherID)
 								$(document).on(	'click', '#voucherButton', function(){ // yung #voucherButton yung id nung button
 
@@ -1051,7 +975,7 @@ block addjs
 							}
 					})
 			}
-			$('#viewModal').modal('show');
+			//- $('#viewModal').modal('show');
 			
 		});
 		$("#addPrincipalSponsor").click(function(event){
@@ -1068,7 +992,7 @@ block addjs
 				var item2 = `
 				<div class="col-md-6 px-lg-3 px-md-3 px-sm-0 mt-3">
 					<div class="input-group m-0">
-						<input class="form-control" type="text" name="sponsorname" placeholder="Enter Full Name"/>
+						<input class="form-control" class="addedsponsor" type="text" name="sponsorname" placeholder="Enter Full Name"/>
 						<div class="input-group-prepend">
 							<span class="btnDelete p-1 input-group-text rounded">
 								<i class="fa fa-trash"></i>

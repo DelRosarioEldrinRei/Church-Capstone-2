@@ -784,17 +784,17 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                 var eventID = results[0];
                 // var eventID = results[0];
                 console.log(req.session.user);
-                var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
-                db.query(paymentQuery,[eventID], (err, results, fields) => {
-                    if (err) throw err;
-                    var amount= results[0];
-                    var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
-                        db.query(paymentInsert,[amount.double_fee,'Paid'], (err, results, fields) => {
-                            if (err) throw err;
-                            var paymentid= results;
+                // var paymentQuery= `select double_fee from tbl_utilities where int_eventID = ?`
+                // db.query(paymentQuery,[eventID], (err, results, fields) => {
+                //     if (err) throw err;
+                //     var amount= results[0];
+                //     var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus) values(?,?)`;
+                //         db.query(paymentInsert,[amount.double_fee,'Paid'], (err, results, fields) => {
+                //             if (err) throw err;
+                //             var paymentid= results;
             var desiredtime1= moment(req.body.desiredtime1, 'h:mm a').format('HH:mm:ss');
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus,int_paymentID) VALUES(?,?,?,?,?,?)`
-                db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1, desiredtime1, "Pending",paymentid.insertId], (err, results, fields) => {
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus) VALUES(?,?,?,?,?)`
+                db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1, desiredtime1, "Pending"], (err, results, fields) => {
                     if (err) console.log(err);
                     var eventinfoID= results;
                         if (err) console.log(err);
@@ -851,9 +851,9 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                     })
                 })
                 });    
-            });            
+        //     });            
             
-        });
+        // });
 
 //==============================================================
 // B A P T I S M
@@ -923,6 +923,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                     if (err) throw err;
                     console.log(desiredtime)
                     console.log(desireddate)
+                    
                     queries(eventID.int_eventID, desiredtime, desireddate);
                 // });
             });
@@ -984,29 +985,32 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                                                             if (err) throw err;
                                                             var queryString4 = `INSERT INTO tbl_baptism(int_eventinfoID, var_parentmarriageadd, var_fatherbplace, var_motherbplace, var_fathername, var_mothername, var_contactnum) VALUES(?,?,?, ?,?,? ,?);`
                                                             console.log(dtime)
+                                                            
                                                             db.query(queryString4 , [eventinfoID.insertId, req.body.marriageaddress, req.body.fatherbirthplace, req.body.motherbirthplace, req.body.fathername, req.body.mothername, req.body.contactnumber], (err, results, fields) => {
-                                                                var text="";
-                                                                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
-                                                                for(i=0;i<8;i++){
-                                                                    text += possible.charAt(Math.floor(Math.random()*possible.length));
-                                                                }
-                                                                var datenow = new Date();
-                                                                var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-                                                                var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
-                                                                var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
-                                                                console.log(dateNow)
-                                                                console.log(dateDue1)
-                                                                sponsors(eventinfoID.insertId);
-                                                                var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode) VALUES(?,?,now(),?,?)`
-                                                                db.query(queryString9,[eventinfoID.insertId,dateDue1,req.session.user.int_userID,text],(err,results,fields)=>{
-                                                                    var queryString10 = `SELECT * FROM tbl_voucherevents WHERE int_eventinfoID = ?`
-                                                                    db.query(queryString10,[eventinfoID.insertId],(err,results,fields)=>{
-                                                                        if (err) throw err;
-                                                                        console.log(results[0])
-                                                                        res.send(results[0]);
+                                                               
+                                                                // var text="";
+                                                                // var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
+                                                                // for(i=0;i<8;i++){
+                                                                //     text += possible.charAt(Math.floor(Math.random()*possible.length));
+                                                                // }
+                                                                // var datenow = new Date();
+                                                                // var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+                                                                // var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
+                                                                // var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
+                                                                // console.log(dateNow)
+                                                                // console.log(dateDue1)
+                                                                // sponsors(eventinfoID.insertId);
+                                                                res.redirect('/guest/reservation')
+                                                                // var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode) VALUES(?,?,now(),?,?)`
+                                                                // db.query(queryString9,[eventinfoID.insertId,dateDue1,req.session.user.int_userID,text],(err,results,fields)=>{
+                                                                //     var queryString10 = `SELECT * FROM tbl_voucherevents WHERE int_eventinfoID = ?`
+                                                                //     db.query(queryString10,[eventinfoID.insertId],(err,results,fields)=>{
+                                                                //         if (err) throw err;
+                                                                //         console.log(results[0])
+                                                                //         res.send(results[0]);
 
-                                                                    })
-                                                                })
+                                                                //     })
+                                                                // })
                                                                 
                                                         })
                                                     })
