@@ -245,6 +245,7 @@ block addjs
 			}
 			})
 			$('#submitButton').click(function(){
+					$(this).attr('disabled', 'disabled');
 				if(
 			$('#firstname').val() != ''  &&
 			$('#lastname').val() != ''  &&

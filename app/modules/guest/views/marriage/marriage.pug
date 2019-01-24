@@ -1230,6 +1230,7 @@ block addjs
 						
 
 						$('#submitButton').click(function(){
+							$(this).attr('disabled', 'disabled');
 							$('#form').submit()
 						})
 						$('#confirmationModal').modal('hide')

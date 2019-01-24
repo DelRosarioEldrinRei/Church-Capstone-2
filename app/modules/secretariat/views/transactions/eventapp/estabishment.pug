@@ -346,6 +346,12 @@ block addjs
 						}
 						else if($('.reject').is(':checked') == true){
 							idsr.push($('.reject').val())
+						} else {
+							return Swal.fire({
+								type: 'error',
+								title: 'Oops...',
+								text: 'You haven\'t chosen yet!',
+							})
 						}
 						//- console.log($(`input[name="${data.requirements[i].var_reqname}accept"]`).is(':checked'))
 						//- console.log($(`input[name="${data.requirements[i].var_reqname}reject"]`).is(':checked'))
