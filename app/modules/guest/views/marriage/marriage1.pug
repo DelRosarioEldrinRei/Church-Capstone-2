@@ -197,111 +197,21 @@ block main
 					each step in steps
 						input(id=`item${step.int_weddingsteps}` type='checkbox', checked='' disabled) 
 						label(class=`information${step.int_weddingsteps-1}`  for=`item${step.int_weddingsteps}`) #{step.var_weddingstepname}
-						//- input#item2(type='checkbox' checked='' disabled)
-						//- label.information1(for='item2') Application Request
-						//- input#item3(type='checkbox' checked='' disabled)
-						//- label.information2(for='item3') Payment
-						//- input#item4(type='checkbox' checked='' disabled)
-						//- label.information3(for='item4') Cannonical Interview
-						//- input#item5(type='checkbox' checked='' disabled)
-						//- label.information4(for='item5') Submission of Requirements
-						//- input#item6(type='checkbox' disabled)
-						//- label.information5(	='item6') Issue of Marriage Banns
-						//- input#item7(type='checkbox' disabled)
-						//- label.information6(for='item7') Pre - Cana
 					h2.done(aria-hidden='true') Done
 					h2.undone(aria-hidden='true') Not Done
 		each step in steps
 			.col-md-6.col-sm-12.display_off(class=`information_details${step.int_weddingsteps-1}`)
-				.custom_container_details
-					h1 Payment Received:
-					.items.pb-0
-						h2.done1(aria-hidden='true') #{step.var_weddingstepname}
-							p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-					.items.pt-0
-						//added 7 para unique padin id niya. May nakaconfigure na kasing id sa taas
-						input(id=`item${step.int_weddingsteps+7}` type='checkbox')
-						label(for=`item${step.int_weddingsteps+7}`) #{step.var_weddingstepname}
-						h2.done(aria-hidden='true') Done
-						h2.undone(aria-hidden='true') Not Done
-		//- .col-md-6.col-sm-12.information_details1.display_off
-		//- 	.custom_container_details
-		//- 		h1 Information:
-		//- 		.items.pb-0
-		//- 			h2.done1(aria-hidden='true') Application Request
-		//- 				p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-		//- 		.items.pt-0
-		//- 			input#item8(type='checkbox', checked='')
-		//- 			label(for='item8') Reservation
-		//- 			input#item9(type='checkbox', checked='')
-		//- 			label(for='item9') Application Request
-		//- 			h2.done(aria-hidden='true') Done
-		//- 			h2.undone(aria-hidden='true') Not Done
-		//- .col-md-6.col-sm-12.information_details2.display_off
-		//- 	.custom_container_details
-		//- 		h1 Information:
-		//- 		.items.pb-0
-		//- 			h2.done1(aria-hidden='true') Payment
-		//- 				p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-		//- 		.items.pt-0
-		//- 			input#item8(type='checkbox', checked='')
-		//- 			label(for='item8') Reservation
-		//- 			input#item9(type='checkbox', checked='')
-		//- 			label(for='item9') Application Request
-		//- 			h2.done(aria-hidden='true') Done
-		//- 			h2.undone(aria-hidden='true') Not Done
-		//- .col-md-6.col-sm-12.information_details3.display_off
-		//- 	.custom_container_details
-		//- 		h1 Information:
-		//- 		.items.pb-0
-		//- 			h2.done1(aria-hidden='true') Cannonical Interview
-		//- 				p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-		//- 		.items.pt-0
-		//- 			input#item8(type='checkbox', checked='')
-		//- 			label(for='item8') Reservation
-		//- 			input#item9(type='checkbox', checked='')
-		//- 			label(for='item9') Application Request
-		//- 			h2.done(aria-hidden='true') Done
-		//- 			h2.undone(aria-hidden='true') Not Done
-		//- .col-md-6.col-sm-12.information_details4.display_off
-		//- 	.custom_container_details
-		//- 		h1 Information:
-		//- 		.items.pb-0
-		//- 			h2.done1(aria-hidden='true') Submission of Requirements
-		//- 				p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-		//- 		.items.pt-0
-		//- 			input#item8(type='checkbox', checked='')
-		//- 			label(for='item8') Reservation
-		//- 			input#item9(type='checkbox', checked='')
-		//- 			label(for='item9') Application Request
-		//- 			h2.done(aria-hidden='true') Done
-		//- 			h2.undone(aria-hidden='true') Not Done
-		//- .col-md-6.col-sm-12.information_details5.display_off
-		//- 	.custom_container_details
-		//- 		h1 Information:
-		//- 		.items.pb-0
-		//- 			h2.done1(aria-hidden='true') Issue of Marriage Bans
-		//- 				p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-		//- 		.items.pt-0
-		//- 			input#item8(type='checkbox', checked='')
-		//- 			label(for='item8') Reservation
-		//- 			input#item9(type='checkbox', checked='')
-		//- 			label(for='item9') Application Request
-		//- 			h2.done(aria-hidden='true') Done
-		//- 			h2.undone(aria-hidden='true') Not Done
-		//- .col-md-6.col-sm-12.information_details6.display_off
-		//- 	.custom_container_details
-		//- 		h1 Information:
-		//- 		.items.pb-0
-		//- 			h2.done1(aria-hidden='true') Pre - Cana
-		//- 				p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
-		//- 		.items.pt-0
-		//- 			input#item8(type='checkbox', checked='')
-		//- 			label(for='item8') Reservation
-		//- 			input#item9(type='checkbox', checked='')
-		//- 			label(for='item9') Application Request
-		//- 			h2.done(aria-hidden='true') Done
-		//- 			h2.undone(aria-hidden='true') Not Done
+				//- .custom_container_details
+				//- 	h1 Payment Received:
+				//- 	.items.pb-0
+				//- 		h2.done1(aria-hidden='true') #{step.var_weddingstepname}
+				//- 			p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
+				//- 	.items.pt-0
+				//- 		//added 7 para unique padin id niya. May nakaconfigure na kasing id sa taas
+				//- 		input(id=`item${step.int_weddingsteps+7}` type='checkbox')
+				//- 		label(for=`item${step.int_weddingsteps+7}`) #{step.var_weddingstepname}
+				//- 		h2.done(aria-hidden='true') Done
+				//- 		h2.undone(aria-hidden='true') Not Done
 block addjs
 	script.
 		var information = [0,1,2,3,4,5,6]
@@ -312,6 +222,27 @@ block addjs
 						for(var x=0; x <=6; x++) {
 							if (y == x){
 								$('.information_details' + x).toggleClass("animated fadeInDown faster display_off")
+								
+								if(x == 0){
+									$('.information_details' + x).empty().append(`
+									<div class="custom_container_details">
+										<h1>Payment Received:</h1>
+										<div class="items pb-0">
+											<h2 class="done1" aria-hidden="true"> Reservation
+												<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.</p>
+											</h2>
+										</div>
+										<div class="items pt-0">
+											<!--added 7 para unique padin id niya. May nakaconfigure na kasing id sa taas-->
+											<input id="item8" type="checkbox">
+											<label for="item8">Reservation</label>
+											<h2 class="done" aria-hidden="true">Done</h2>
+											<h2 class="undone" aria-hidden="true">Not Done</h2>
+										</div>
+									</div>
+									`)
+								}
+
 								var cloneInformation = information.slice();
 								cloneInformation.splice(x,1);
 								$.each(cloneInformation, function( index, value){
