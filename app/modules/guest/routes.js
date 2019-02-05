@@ -230,14 +230,15 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
 
     });
     guestRouter.post('/reservation/query',(req,res)=>{
+        console.log(req.body)
         if(req.body.eventname == "Baptism" || req.body.eventname == "Special Baptism"){
-            var queryString = `SELECT * FROM tbl_eventinfo 
-            JOIN tbl_voucherevents ON tbl_eventinfo.int_eventinfoID = tbl_voucherevents.int_eventinfoID
-            JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
-            JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
-            JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
-            JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
-            WHERE tbl_eventinfo.int_eventinfoID = ?`
+                var queryString = `SELECT * FROM tbl_eventinfo 
+                
+                JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+                JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+                WHERE tbl_eventinfo.int_eventinfoID = ?`
             console.log(req.body)
             db.query(queryString,[req.body.id],(err,results,fields)=>{
                 if(err) throw err
@@ -261,7 +262,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         }
         else if(req.body.eventname == "Marriage"){
             var queryString = `SELECT * FROM tbl_eventinfo 
-            JOIN tbl_voucherevents ON tbl_eventinfo.int_eventinfoID = tbl_voucherevents.int_eventinfoID
+            
             JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_wedgroom ON tbl_wedgroom.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_wedbride ON tbl_wedbride.int_eventinfoID = tbl_eventinfo.int_eventinfoID
