@@ -171,6 +171,7 @@ block addjs
   script.
     $(document).ready(function(){
       $('#submitButton').click(function(){
+          $(this).attr('disabled', 'disabled');
           var idNow = $(this).val();
           console.log(idNow)
           $.post('/guest/establishment/query',{

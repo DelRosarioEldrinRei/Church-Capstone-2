@@ -1,9 +1,6 @@
 extends ../../../templates/secretariat
 block prepend main
   style.
-    .ti-size {
-      font-size: 22px;
-    }
   // ### $App Screen Content ###
   #mainContent
     .row.gap-20.masonry.pos-r
@@ -67,8 +64,7 @@ block prepend main
 
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false')
-                span.icon-holder
-                  i.c-blue-500.ti-home.ti-size
+                | Secretariat Schedules
               .dropdown-menu
                 a.dropdown-item(href='#') All
                 .dropdown-divider
@@ -77,8 +73,7 @@ block prepend main
                 a.dropdown-item(href='#') Masses
             li.nav-item.dropdown
               a.nav-link.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false')
-                span.icon-holder
-                  i.c-blue-500.ti-user.ti-size
+                | Priests Schedules
               .dropdown-menu
                 a.dropdown-item(href='#') Priest1
                 .dropdown-divider

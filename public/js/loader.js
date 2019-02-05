@@ -4,7 +4,19 @@ window.addEventListener('load', () => {
     loader.classList.add('fadeOut');
   }, 100);
   $(document).ready(function(){
-    $('#wrapper').fadeIn(500);  
+    $('#wrapper').fadeIn(500); 
+    setTimeout(() => {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+      Toast.fire({
+        type: 'success',
+        title: 'Signed in successfully'
+      })
+    }, 500);
   });
 });
 

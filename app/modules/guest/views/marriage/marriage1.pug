@@ -195,94 +195,61 @@ block main
 					.col-md-6
 				.items
 					each step in steps
-						input#item(type='checkbox', checked='' disabled value=`${step.var_weddingstepname}`)
-						label.information(for='item1')=step.var_weddingstepname
-					
-		.col-md-6.col-sm-12.information_details.display_off
-			.custom_container_details
-				h1#headerAppend
-					p#detailsAppend
-					p hey
-				//- .items.pt-0
-				//- 	input#item8(type='checkbox', checked='')
-				//- 	label(for='item8') Reservation
-				//- 	input#item9(type='checkbox', checked='')
-				//- 	label(for='item9') Application Request
-				//- 	h2.done(aria-hidden='true') Done
-				//- 	h2.undone(aria-hidden='true') Not Done
-
-	#information.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
-		.modal-dialog.modal-lg(role="document")
-			.modal-content
-				.modal-header(style='background:#367587; color:white')
-					h5.modal-title(style='background:#367587; color:white') Reservation
-					button.close(type='button', data-dismiss='modal', aria-label='Close')
-						span(aria-hidden='true' style='background:#367587; color:white') ×
-				.modal-body#reservationBodyAppend
-				.modal-footer
-					//- button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-					//- button.btn.btn-primary#requirementSubmitButton(type="button") Update
+						input(id=`item${step.int_weddingsteps}` type='checkbox', checked='' disabled) 
+						label(class=`information${step.int_weddingsteps-1}`  for=`item${step.int_weddingsteps}`) #{step.var_weddingstepname}
+					h2.done(aria-hidden='true') Done
+					h2.undone(aria-hidden='true') Not Done
+		each step in steps
+			.col-md-6.col-sm-12.display_off(class=`information_details${step.int_weddingsteps-1}`)
+				//- .custom_container_details
+				//- 	h1 Payment Received:
+				//- 	.items.pb-0
+				//- 		h2.done1(aria-hidden='true') #{step.var_weddingstepname}
+				//- 			p Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.
+				//- 	.items.pt-0
+				//- 		//added 7 para unique padin id niya. May nakaconfigure na kasing id sa taas
+				//- 		input(id=`item${step.int_weddingsteps+7}` type='checkbox')
+				//- 		label(for=`item${step.int_weddingsteps+7}`) #{step.var_weddingstepname}
+				//- 		h2.done(aria-hidden='true') Done
+				//- 		h2.undone(aria-hidden='true') Not Done
 block addjs
 	script.
 		var information = [0,1,2,3,4,5,6]
 			$(document).ready(function(){
-				//- for(var i=0; i <= 6; i++){
-				//- 	$('.information' + i).click(function() {
-				//- 		var y = $(this).attr("class").match(/\d+/)[0]
-				//- 		for(var x=0; x <=6; x++) {
-				//- 			if (y == x){
-				//- 				$('.information_details' + x).toggleClass("animated fadeInDown faster display_off")
-				//- 				var cloneInformation = information.slice();
-				//- 				cloneInformation.splice(x,1);
-				//- 				$.each(cloneInformation, function( index, value){
-				//- 					$('.information_details' + value).addClass("display_off")
-				//- 				});
-				//- 			}
-				//- 		}
-				//- 	});
-				//- }
-				//- $('.information').click(function(){
-				//- 	console.log('inaantok na ako')
-				//- 	$('.information_details').toggleClass("animated fadeInDown faster display_off")
-				//- 	$('.information_details').addClass("display_off")
-
-				//- })
-
-
-
-
-				$('.information').click(function(){
-				
-			
+				for(var i=0; i <= 6; i++){
+					$('.information' + i).click(function() {
+						var y = $(this).attr("class").match(/\d+/)[0]
+						for(var x=0; x <=6; x++) {
+							if (y == x){
+								$('.information_details' + x).toggleClass("animated fadeInDown faster display_off")
 								
-					$('#reservationBodyAppend').append(`
-							
-							<div class="send-header">
-								
-									<div class="col-md-6">
-										
-										<div class="row">
-											<div class="col-md-5">
-												<label class="label-control"><strong>Payment Received</label></strong>															
-											</div>
-											<div  class="col-md-7">
-												<input type='number' id="payment" class="form-control" placeholder="0.00"  style="text-align: right">
-											</div>
-										</div> 
+								if(x == 0){
+									$('.information_details' + x).empty().append(`
+									<div class="custom_container_details">
+										<h1>Payment Received:</h1>
+										<div class="items pb-0">
+											<h2 class="done1" aria-hidden="true"> Reservation
+												<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.</p>
+											</h2>
+										</div>
+										<div class="items pt-0">
+											<!--added 7 para unique padin id niya. May nakaconfigure na kasing id sa taas-->
+											<input id="item8" type="checkbox">
+											<label for="item8">Reservation</label>
+											<h2 class="done" aria-hidden="true">Done</h2>
+											<h2 class="undone" aria-hidden="true">Not Done</h2>
+										</div>
 									</div>
+									`)
+								}
 
-							
-							<div id="compose-area"></div>
-						
-						`)
-						
-						$('#information').modal('show')
-						$('#information').on('hidden.bs.modal',function(){
-							$('#selectBox').val('default')
-							$('#reservationBodyAppend').empty()
-						})
-						
-			})
-
-				
+								var cloneInformation = information.slice();
+								cloneInformation.splice(x,1);
+								$.each(cloneInformation, function( index, value){
+									$('.information_details' + value).addClass("display_off")
+								});
+							}
+						}
+					});
+				}
 			});

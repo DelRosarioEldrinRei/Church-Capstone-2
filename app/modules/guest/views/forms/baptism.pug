@@ -577,6 +577,7 @@ block addjs
 			$('#summaryAppend').empty()
 		})
 		$('#submitButton').click(function() {
+			$(this).attr('disabled', 'disabled');
 			var baptismtype;
 			if (eventid ==3) {
 			baptismtype = "Regular"

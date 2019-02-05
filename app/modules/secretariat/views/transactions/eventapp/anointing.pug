@@ -285,10 +285,10 @@ block addjs
 						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
 						`)
 						$('#status').append(`
-						<input class="reject" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} />
+						<input class="reject" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
 							<h5 class="d-inline">Reject</h5>
 						<br>
-						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} />
+						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
 							<h5 class="d-inline">Accept</h5>
 						`)
 						
@@ -299,10 +299,10 @@ block addjs
 						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
 						`) 
 						$('#status').append(`
-						<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} /> 
+						<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} /> 
 							<h5 class="d-inline">Reject</h5>
 						<br>
-						<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} />
+						<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
 							<h5 class="d-inline">Accept</h5>
 						`)
 						}
@@ -311,10 +311,10 @@ block addjs
 						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
 						`)
 						$('#status').append(`
-						<input class="reject" checked="" type="radio" name="${data.requirements[i].var_reqname}reject" value=${data.requirements[i].int_requirementID} />
+						<input class="reject" checked="" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
 							<h5class="d-inline">Reject</h5>
 						<br>
-						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}accept" value=${data.requirements[i].int_requirementID} />
+						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
 							<h5 class="d-inline">Accep</h5>
 						`)
 						$(`input[name="${data.requirements[i].var_reqname}reject"][class="reject"]`).attr("checked",true);
@@ -339,14 +339,19 @@ block addjs
 						var requirements = [];
 						for(i=0;i<data.requirements.length;i++){
 						requirements.push(data.requirements[i])
-						if($(`input[name="${data.requirements[i].var_reqname}accept"]`).is(':checked') == true){
-							idsa.push($(`input[name="${data.requirements[i].var_reqname}accept"]`).val())
+						if($('.accept').is(':checked') == true){
+							idsa.push($('.accept').val())
 						}
-						else if($(`input[name="${data.requirements[i].var_reqname}reject"]`).is(':checked') == true){
-							idsr.push($(`input[name="${data.requirements[i].var_reqname}reject"]`).val())
+						else if($('.reject').is(':checked') == true){
+							idsr.push($('.reject').val())
+						} else {
+							return Swal.fire({
+								type: 'error',
+								title: 'Oops...',
+								text: 'You haven\'t chosen yet!',
+							})
 						}
-						console.log($(`input[name="${data.requirements[i].var_reqname}accept"]`).is(':checked'))
-						console.log($(`input[name="${data.requirements[i].var_reqname}reject"]`).is(':checked'))
+
 						}
 						console.log(idsa)
 						console.log(idsr)

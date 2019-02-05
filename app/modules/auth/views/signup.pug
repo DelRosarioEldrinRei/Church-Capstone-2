@@ -25,6 +25,12 @@ html
 			.fa-check::before {
 				color: #28a745 !important;
 			}
+			.fa-times::before {
+				color: red !important;
+			}
+			small {
+				font-size: 90% !important;
+			}
 	body.app
 		#loader
 			.spinner
@@ -97,7 +103,7 @@ html
 								.form-group.col-md-6
 									label.h6 Email Address:
 										.text-danger.d-inline *
-									input.form-control(id='email' type='text' name='email' placeholder="Ex. markfrancisco@gmail.com" required)
+									input.form-control(id='email' type='email' name='email' placeholder="Ex. markfrancisco@gmail.com" required)
 									.invalid-feedback Please provide a valid email address.
 							.form-group
 								label.h6 Password:
@@ -204,7 +210,6 @@ html
 											type: 'POST',
 											data: function(){
 												var idtype = $('#email').val()
-												//- var err = $('#errChecker').val()
 												return {
 													idType: idtype
 												}
@@ -216,7 +221,11 @@ html
 							validators: {
 									notEmpty: {
 											message: `Please Enter Your Password`
-									}
+									},
+									identical: {
+										field: 'confirmpassword',
+										message: 'The password and its confirm are not the same.'
+									},
 							}
 						},
 						confirmpassword: {

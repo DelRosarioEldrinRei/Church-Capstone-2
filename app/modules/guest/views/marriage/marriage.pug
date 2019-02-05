@@ -266,7 +266,7 @@ block main
 																.form-group
 																	h6.label-control Date when you were baptized:
 																		.text-danger.d-inline  *
-																	input.datepicker2.form-control#gbapdate(type='date' name='gbapdate')
+																	input.marriage.form-control#gbapdate(type='date' name='gbapdate')
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
 														h6.label-control Confirmed?
@@ -294,7 +294,7 @@ block main
 															.form-group
 																h6.label-control Date When You Were Confirmed:
 																	.text-danger.d-inline  *
-																input.datepicker2.form-control#gcondate(type='date' name='gcondate')
+																input.marriage.form-control#gcondate(type='date' name='gcondate')
 											.row
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
@@ -519,7 +519,7 @@ block main
 																.form-group
 																	h6.label-control Date When You Were Baptized:
 																		.text-danger.d-inline  *
-																	input.datepicker2.form-control#bbapdate(type='date' name='bbapdate')
+																	input.marriage.form-control#bbapdate(type='date' name='bbapdate')
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
 														h6.label-control Confirmed?
@@ -548,7 +548,7 @@ block main
 																.form-group
 																	h6.label-control Date when you were Confirmed:
 																		.text-danger.d-inline  *
-																	input.datepicker2.form-control#bcondate(type='date' name='bcondate')
+																	input.marriage.form-control#bcondate(type='date' name='bcondate')
 											.row
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
@@ -1230,6 +1230,7 @@ block addjs
 						
 
 						$('#submitButton').click(function(){
+							$(this).attr('disabled', 'disabled');
 							$('#form').submit()
 						})
 						$('#confirmationModal').modal('hide')
