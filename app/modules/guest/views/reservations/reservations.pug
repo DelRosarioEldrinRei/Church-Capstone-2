@@ -122,599 +122,605 @@ block addjs
 				$(document).on('click','.viewButton',function(){
 				var idNow = $(this).val()
 				console.log(idNow)
-				console.log($('.eventname').attr('value'))
+				//- console.log($('.eventname').attr('value'))
 				var eventname = $('.eventname').attr('value')
-				$.post('/guest/reservation/query',{id:idNow,eventname:eventname}).done(data=>{
+				$.post('/guest/reservation/query',{id:idNow}).done(data=>{
 					if(data[0].var_eventname == "Marriage"){
+						window.location=`/guest/weddingDetails/${data[0].int_eventinfoID}`
+						//- $.post(`/guest/weddingDetails/${data[0].int_eventinfoID}`)
+					}
+
+					//DONT DELETE MARRIAGE1 (PARA LANG DI HUMABA, HIRAP PAG NAKACOMMENT SYA, DI MAMINIMIZE)
+					else if(data[0].var_eventname == "Marriage1"){
 						var dateRequested = moment(data[0].date_eventdate).format('MM/DD/YYYY')
 						var gbirthday = moment(data[0].date_birthday).format('MM/DD/YYYY')
 						var bbirthday = moment(data[0].date_bbirthday).format('MM/DD/YYYY')
-					var timeRequested = moment(data[0].time_eventstart,'HH:mm:ss').format('hh:mm A')
-					console.log(timeRequested)
-					var age = moment().diff(data.date_birthday,'years');
-					$('#viewBodyAppend').append(`
-					<div class="row">
-						<div class="col-md-6">
-							<h6 class="label-control">Desired Date:</h6>
-							<input type="text" class="form-control" value="${dateRequested}" disabled> 
-						</div>
-						<div class="col-md-6">
-							<h6 class="label-control"> Desired Time:</h6>
-							<input type="text" class="form-control" value="${timeRequested}" disabled> 
-						</div>
-					</div>
-					<h6>Groom</h6>
-				
-					<div class="row">
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Full Name</h6><input class="form-control" id="lastname" type="text" name="glastname" value= "${data[0].var_lname}, ${data[0].var_fname}" disabled/>
-								<div class="help-block with-errors"></div>
+						var timeRequested = moment(data[0].time_eventstart,'HH:mm:ss').format('hh:mm A')
+						console.log(timeRequested)
+						var age = moment().diff(data.date_birthday,'years');
+						$('#viewBodyAppend').append(`
+							<div class="row">
+								<div class="col-md-6">
+									<h6 class="label-control">Desired Date:</h6>
+									<input type="text" class="form-control" value="${dateRequested}" disabled> 
+								</div>
+								<div class="col-md-6">
+									<h6 class="label-control"> Desired Time:</h6>
+									<input type="text" class="form-control" value="${timeRequested}" disabled> 
+								</div>
 							</div>
-						</div>
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Birthday:</h6><input class="form-control" type="text" name="gbirthday" value= ${gbirthday} disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-4 pr-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Birthplace:</h6><input class="form-control" type="text" name="gbirthplace" value=${data[0].var_birthplace} disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 for="exampleFormControlTextarea1">Address:</h6><input class="form-control" rows="2" name="gaddress" value='${data[0].var_address}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
-							<div class="form-group">
-								<h6 class="label-control">Civil Status:</h6><input class="form-control" type="text" name="gcivilstatus" value='${data[0].var_gcivilstatus}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-4 px-lg-3 pr-md-3 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Occupation:</h6><input class="form-control" type="text" name="goccupation" value='${data[0].var_goccupation}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
+							<h6>Groom</h6>
 						
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Nationality:</h6><input class="form-control" type="text" name="gnationality" value='${data[0].var_gnationality}'disabled/>
-								<div class="help-block with-errors"></div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Full Name</h6><input class="form-control" id="lastname" type="text" name="glastname" value= "${data[0].var_lname}, ${data[0].var_fname}" disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Birthday:</h6><input class="form-control" type="text" name="gbirthday" value= ${gbirthday} disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 pr-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Birthplace:</h6><input class="form-control" type="text" name="gbirthplace" value=${data[0].var_birthplace} disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-					
-					<div class="row">
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
-							<div class="form-group">
-								<h6 class="label-control">Religion:</h6><input class="form-control" type="text" name="greligion" value='${data[0].var_greligion}'disabled/>
-								<div class="help-block with-errors"></div>
+							<div class="row">
+								<div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 for="exampleFormControlTextarea1">Address:</h6><input class="form-control" rows="2" name="gaddress" value='${data[0].var_address}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-8 px-lg-3 pr-md-3 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Current Parish:</h6><input class="form-control" type="text" name="gcurrparish" value='${data[0].var_gcurrparish}'disabled/>
-								<div class="help-block with-errors"></div>
+
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+									<div class="form-group">
+										<h6 class="label-control">Civil Status:</h6><input class="form-control" type="text" name="gcivilstatus" value='${data[0].var_gcivilstatus}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 pr-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Occupation:</h6><input class="form-control" type="text" name="goccupation" value='${data[0].var_goccupation}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Nationality:</h6><input class="form-control" type="text" name="gnationality" value='${data[0].var_gnationality}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
 							</div>
-						</div>
+							
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+									<div class="form-group">
+										<h6 class="label-control">Religion:</h6><input class="form-control" type="text" name="greligion" value='${data[0].var_greligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-8 px-lg-3 pr-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Current Parish:</h6><input class="form-control" type="text" name="gcurrparish" value='${data[0].var_gcurrparish}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-3 px-sm-3">
+									<div class="form-group">
+										<h6 class="label-control">Father's Full Name:</h6><input class="form-control" type="text" name="gfathername" value='${data[0].var_gfathername}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Father's Birthplace:</h6><input class="form-control" type="text" name="gfatherbplace" value='${data[0].var_gfatherbplace}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Father's Religion:</h6><input class="form-control" type="text" name="gfatherreligion" value='${data[0].var_gfatherreligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Full Name:</h6><input class="form-control" type="text" name="gmothername" value='${data[0].var_gmothername}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Birthplace:</h6><input class="form-control" type="text" name="gmotherbplace" value='${data[0].var_gmotherbplace}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Religion:</h6><input class="form-control" type="text" name="gmotherreligion" value='${data[0].var_gmotherreligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+
+
+
+							<hr>
+							<h6>Bride</h6>
 						
-					</div>
-					<div class="row">
-						<div class="col-md-4 px-lg-3 px-md-3 px-sm-3">
-							<div class="form-group">
-								<h6 class="label-control">Father's Full Name:</h6><input class="form-control" type="text" name="gfathername" value='${data[0].var_gfathername}'disabled/>
-								<div class="help-block with-errors"></div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Full Name</h6><input class="form-control" id="lastname" type="text" name="blastname" value= "${data[0].var_blname}, ${data[0].var_bfname}" disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Birthday:</h6><input class="form-control" type="text" name="bbirthday" value= ${bbirthday} disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 pr-lg-3 px-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Birthplace:</h6><input class="form-control" type="text" name="bbirthplace" value=${data[0].var_bbirthplace} disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Father's Birthplace:</h6><input class="form-control" type="text" name="gfatherbplace" value='${data[0].var_gfatherbplace}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Father's Religion:</h6><input class="form-control" type="text" name="gfatherreligion" value='${data[0].var_gfatherreligion}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Mother's Full Name:</h6><input class="form-control" type="text" name="gmothername" value='${data[0].var_gmothername}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Mother's Birthplace:</h6><input class="form-control" type="text" name="gmotherbplace" value='${data[0].var_gmotherbplace}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Mother's Religion:</h6><input class="form-control" type="text" name="gmotherreligion" value='${data[0].var_gmotherreligion}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-					</div>
 
+							<div class="row">
+								<div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 for="exampleFormControlTextarea1">Address:</h6><input class="form-control" rows="2" name="baddress" value='${data[0].var_baddress}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
 
-
-					<hr>
-					<h6>Bride</h6>
-				
-					<div class="row">
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Full Name</h6><input class="form-control" id="lastname" type="text" name="blastname" value= "${data[0].var_blname}, ${data[0].var_bfname}" disabled/>
-								<div class="help-block with-errors"></div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+									<div class="form-group">
+										<h6 class="label-control">Civil Status:</h6><input class="form-control" type="text" name="bcivilstatus" value='${data[0].var_bcivilstatus}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 pr-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Occupation:</h6><input class="form-control" type="text" name="boccupation" value='${data[0].var_boccupation}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Nationality:</h6><input class="form-control" type="text" name="bnationality" value='${data[0].var_bnationality}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Birthday:</h6><input class="form-control" type="text" name="bbirthday" value= ${bbirthday} disabled/>
-								<div class="help-block with-errors"></div>
+							
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+									<div class="form-group">
+										<h6 class="label-control">Religion:</h6><input class="form-control" type="text" name="breligion" value='${data[0].var_breligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-8 px-lg-3 pr-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Current Parish:</h6><input class="form-control" type="text" name="bcurrparish" value='${data[0].var_bcurrparish}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								
 							</div>
-						</div>
-						<div class="col-md-4 pr-lg-3 px-md-3 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Birthplace:</h6><input class="form-control" type="text" name="bbirthplace" value=${data[0].var_bbirthplace} disabled/>
-								<div class="help-block with-errors"></div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-3 px-sm-3">
+									<div class="form-group">
+										<h6 class="label-control">Father's Full Name:</h6><input class="form-control" type="text" name="bfathername" value='${data[0].var_bfathername}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Father's Birthplace:</h6><input class="form-control" type="text" name="bfatherbplace" value='${data[0].var_bfatherbplace}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Father's Religion:</h6><input class="form-control" type="text" name="bfatherreligion" value='${data[0].var_bfatherreligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 for="exampleFormControlTextarea1">Address:</h6><input class="form-control" rows="2" name="baddress" value='${data[0].var_baddress}'disabled/>
-								<div class="help-block with-errors"></div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Full Name:</h6><input class="form-control" type="text" name="bmothername" value='${data[0].var_bmothername}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Birthplace:</h6><input class="form-control" type="text" name="bmotherbplace" value='${data[0].var_bmotherbplace}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Religion:</h6><input class="form-control" type="text" name="bmotherreligion" value='${data[0].var_bmotherreligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
-							<div class="form-group">
-								<h6 class="label-control">Civil Status:</h6><input class="form-control" type="text" name="bcivilstatus" value='${data[0].var_bcivilstatus}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-4 px-lg-3 pr-md-3 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Occupation:</h6><input class="form-control" type="text" name="boccupation" value='${data[0].var_boccupation}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Nationality:</h6><input class="form-control" type="text" name="bnationality" value='${data[0].var_bnationality}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="row">
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
-							<div class="form-group">
-								<h6 class="label-control">Religion:</h6><input class="form-control" type="text" name="breligion" value='${data[0].var_breligion}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-8 px-lg-3 pr-md-3 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Current Parish:</h6><input class="form-control" type="text" name="bcurrparish" value='${data[0].var_bcurrparish}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						
-					</div>
-					<div class="row">
-						<div class="col-md-4 px-lg-3 px-md-3 px-sm-3">
-							<div class="form-group">
-								<h6 class="label-control">Father's Full Name:</h6><input class="form-control" type="text" name="bfathername" value='${data[0].var_bfathername}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Father's Birthplace:</h6><input class="form-control" type="text" name="bfatherbplace" value='${data[0].var_bfatherbplace}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Father's Religion:</h6><input class="form-control" type="text" name="bfatherreligion" value='${data[0].var_bfatherreligion}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Mother's Full Name:</h6><input class="form-control" type="text" name="bmothername" value='${data[0].var_bmothername}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Mother's Birthplace:</h6><input class="form-control" type="text" name="bmotherbplace" value='${data[0].var_bmotherbplace}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-						<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
-							<div class="form-group">
-								<h6 class="label-control">Mother's Religion:</h6><input class="form-control" type="text" name="bmotherreligion" value='${data[0].var_bmotherreligion}'disabled/>
-								<div class="help-block with-errors"></div>
-							</div>
-						</div>
-					</div>
-					`)
-					if(data[0].char_approvalstatus == "Pending" && data[0].char_paymentstatus == "Unpaid"){
-						$('#refund').append(`
-						<button id="voucher" type="button" class="btn btn-common">Voucher</button>
-						`)	
-						$('#voucher').click(function(){
-							console.log(data[0].int_voucherID)
-							$.post('/guest/voucherEvents',{voucherId:data[0].int_voucherID}).done(data=>{
-								for(i=0;i<data.sponsors.length;i++){
-										console.log("sponsors"+data.sponsors[i])
-										}
-										console.log(data.voucherinfo[0])
-										console.log("info"+data.voucherinfo[0])
-										$(document).off('click', '#voucherButton')
-											function toDataURL(url, callback) {
-												var xhr = new XMLHttpRequest();
-												xhr.onload = function() {
-													var reader = new FileReader();
-													reader.onloadend = function() {
-													callback(reader.result);
-													}
-													reader.readAsDataURL(xhr.response);
-												};
-												xhr.open('GET', url);
-												xhr.responseType = 'blob';
-												xhr.send();
+							`)
+						if(data[0].char_approvalstatus == "Pending" && data[0].char_paymentstatus == "Unpaid"){
+							$('#refund').append(`
+							<button id="voucher" type="button" class="btn btn-common">Voucher</button>
+							`)	
+							$('#voucher').click(function(){
+								console.log(data[0].int_voucherID)
+								$.post('/guest/voucherEvents',{voucherId:data[0].int_voucherID}).done(data=>{
+									for(i=0;i<data.sponsors.length;i++){
+											console.log("sponsors"+data.sponsors[i])
 											}
-											toDataURL('/document_templates/voucherTemplate3witheventname.png', function(dataUrl) {
-												toDataURL('/document_templates/logo.png', function(logo) {
-													var sponsorText = [];
-													var sponsorX = [65,393,507];
-													var sponsorY = 243;
-													console.log(`${data.sponsors}`)
-													for(i=0;i<data.sponsors[i].length;i++){
-														sponsorText.push({
-															text: `${data.sponsor[i].var_sponsorname}`,
-															style: 'styleLabelEvent',
-															absolutePosition: {x:sponsorX[0], y:sponsorY},
-														})
-													}
-													var docDefinition = {
-														pageMargins: [ 0, 35, 0, 0 ],
-														content: [
-															{
-																image: dataUrl,
-																width: 610,
-																//- height: 100,
-															},
-															{
-																image: logo,
-																width: 45,
-																height: 40,
-																absolutePosition: {x:13, y:60},
-															},
-															{
-																image: logo,
-																width: 45,
-																height: 40,
-																absolutePosition: {x:13, y:447},
-															},
-															//mga laman sa taas
-															{
-															text:'500-0239',
-															style: 'styleLabelTop',
-															absolutePosition: {x:350, y:45},
-															},
-															{
-															text:'churcheventapp@gmail.com',
-															style: 'styleLabelTop',
-															absolutePosition: {x:257, y:68},
-															},
-															{
-															text:'inanglupangpangako.com',
-															style: 'styleLabelTop',
-															absolutePosition: {x:269, y:90},
-															},
-															{
-															text:'Urban, Brgy. Payatas B. 1119',
-															style: 'styleLabelTop',
-															absolutePosition: {x:444, y:45},
-															},
-															{
-															text:'Quezon City, Manila',
-															style: 'styleLabelTop',
-															absolutePosition: {x:487, y:68},
-															},
-															//- {
-															//- text:`#${data.var_vouchercode}`,
-															//- style: 'styleLabelTop',
-															//- absolutePosition: {x:495, y:90},
-															//- },
-															//Middle part
-															{
-															text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
-															style: 'styleLabelMiddle',
-															absolutePosition: {x:51, y:127},
-															},
-															{
-															text:`${data.voucherinfo[0].var_useraddress}`,
-															style: 'styleLabelMiddle',
-															absolutePosition: {x:51, y:140},
-															},
-															{
-															text:`# ${data.voucherinfo[0].var_vouchercode}`,
-															style: 'styleLabelMiddle',
-															absolutePosition: {x:225, y:127},
-															},
-															{
-															text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
-															style: 'styleLabelMiddle',
-															absolutePosition: {x:225, y:140},
-															},
-															{
-															text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
-															style: 'styleLabelMiddle',
-															absolutePosition: {x:225, y:153},
-															},
-															//table Contents
-															// .toUpperCase() yung event name before ilagay sa pdfmake
-															//ito yung ifoforeach mu rae
-															{ 
-															text: `${data.voucherinfo[0].var_eventname}`,
-															style: 'styleLabelEventName',
-															absolutePosition: {x:65, y:217},
-															},
-															{
-															text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
-															style: 'styleLabelEvent',
-															absolutePosition: {x:393, y:217},
-															},
-															{
-															text:`₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
-															style: 'styleLabelEvent',
-															absolutePosition: {x:507, y:217},
-															},
-															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
-															{
-															text: `Number of Sponsors : ${data.sponsors.length}`,
-															style: 'styleLabelEventName',
-															absolutePosition: {x:65, y:243},
-															},
-															{
-															text: '₱ 50/head',
-															style: 'styleLabelEvent',
-															absolutePosition: {x:393, y:243},
-															},
-															{
-															text: `₱ ${(data.sponsors.length*50).toFixed(2)}`,
-															style: 'styleLabelEvent',
-															absolutePosition: {x:506, y:243},
-															},
-															//total amount
-															{
-															text: `₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
-															style: 'styleLabelTA',
-															absolutePosition: {x:476, y:354},
-															},
-															//remaining days
-															{
-															text: '14',
-															style: 'styleLabelRemaining',
-															absolutePosition: {x:338, y:389},
-															},
-															//IBABANG VOUCHER 387 sa y-axis dinagdag
-															{
-															text:'500-0239',
-															style: 'styleLabelTop',
-															absolutePosition: {x:350, y:432},
-															},
-															{
-															text:'churcheventapp@gmail.com',
-															style: 'styleLabelTop',
-															absolutePosition: {x:257, y:455},
-															},
-															{
-															text:'inanglupangpangako.com',
-															style: 'styleLabelTop',
-															absolutePosition: {x:269, y:477},
-															},
-															{
-															text:'Urban, Brgy. Payatas B. 1119',
-															style: 'styleLabelTop',
-															absolutePosition: {x:444, y:432},
-															},
-															{
-															text:'Quezon City, Manila',
-															style: 'styleLabelTop',
-															absolutePosition: {x:487, y:455},
-															},
-															//Middle part
-															{
-															text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
-															style: 'styleLabelMiddle',
-															absolutePosition: {x:51, y:514},
-															},
-															{
-															text:`${data.voucherinfo[0].var_useraddress}`,
-															style: 'styleLabelMiddle',
-															absolutePosition: {x:51, y:527},
-															},
-															{
-															text:`# ${data.voucherinfo[0].var_vouchercode}`,
-															style: 'styleLabelMiddle',
-															absolutePosition: {x:225, y:514},
-															},
-															{
-															text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
-															style: 'styleLabelMiddle',
-															absolutePosition: {x:225, y:527},
-															},
-															{
-															text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
-															style: 'styleLabelMiddle',
-															absolutePosition: {x:225, y:540},
-															},
-															//table Contents
-															// .toUpperCase() yung event name before ilagay sa pdfmake
-															//ito yung ifoforeach mu rae
-															{
-															text: `${data.voucherinfo[0].var_eventname}`,
-															style: 'styleLabelEventName',
-															absolutePosition: {x:65, y:604},
-															},
-															{
-															text:  `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
-															style: 'styleLabelEvent',
-															absolutePosition: {x:393, y:604},
-															},
-															{
-															text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
-															style: 'styleLabelEvent',
-															absolutePosition: {x:507, y:604},
-															},
-															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
-															{
-															text: `Number of Sponsors : ${data.sponsors.length}`,
-															style: 'styleLabelEventName',
-															absolutePosition: {x:65, y:630},
-															},
-															{
-															text: '₱ 50/head',
-															style: 'styleLabelEvent',
-															absolutePosition: {x:393, y:630},
-															},
-															{
-															text: `₱ ${(data.sponsors.length*50).toFixed(2)}`,
-															style: 'styleLabelEvent',
-															absolutePosition: {x:506, y:630},
-															},
-															//total amount
-															{
-															text: `₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
-															style: 'styleLabelTA',
-															absolutePosition: {x:476, y:741},
-															},
-															//remaining days
-															{
-															text: '14',
-															style: 'styleLabelRemaining',
-															absolutePosition: {x:338, y:776},
-															},
-															//- {
-															//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
-															//- style: 'styleLabelFill',
-															//- absolutePosition: {x:520, y:28},
-															//- text: 'Date: ' + dateRequested,
-															//- },
-														],
-														styles: {
-															styleLabel: {
-																font: 'EdwardianScript',
-																fontSize:85,
-															},
-															styleHeader: {
-																font: 'OldEnglishText',
-																fontSize: 45,
-																alignment: 'center',
-																margin: [0, 15, 0, 0],
-															},
-															styleHeader2: {
-																font: 'EdwardianScript',
-																fontSize: 33,
-																alignment: 'center',
-																margin: [0, 5, 0, 5],
-															},
-															styleLabel: {
-																font: 'EdwardianScript',
-																fontSize: 26,
-															},
-															styleLabelTop: {
-																font: 'Roboto',
-																fontSize: 11,
-																color: 'white',
-															},
-															styleLabelMiddle: {
-																font: 'Roboto',
-																fontSize: 9,
-															},
-															styleLabelMiddleTA: {
-																font: 'Roboto',
-																fontSize: 18,
-															},
-															styleLabelEventName: {
-																font: 'Roboto',
-																fontSize: 10,
-																bold: true,
-															},
-															styleLabelEvent: {
-																font: 'Roboto',
-																fontSize: 10,
-															},
-															styleLabelFill: {
-																font: 'Roboto',
-																fontSize: 20,
-															},
-															styleLabelTA: {
-																font: 'Roboto',
-																fontSize: 15,
-																color: 'white',
-																bold: true,
-															},
-															styleLabelRemaining: {
-																font: 'Roboto',
-																fontSize: 9,
-																italic: true,
-															},
-														},
-													}
-													pdfMake.fonts = {
-														Roboto: {
-															normal: 'Roboto-Regular.ttf',
-															bold: 'Roboto-Medium.ttf',
-															italic: 'Roboto-Italic.ttf',
-															bolditalics: 'Roboto-MediumItalic.ttf',
-														},
-														EdwardianScript: {
-															normal: 'Edwardian-script-itc-Regular.TTF'
-														},
-														OldEnglishText: {
-															normal: 'Old-english-text-mt-Regular.ttf'
-														},
-														TimesNewRoman: {
-															normal: 'Times-new-roman-Regular.ttf'
+											console.log(data.voucherinfo[0])
+											console.log("info"+data.voucherinfo[0])
+											$(document).off('click', '#voucherButton')
+												function toDataURL(url, callback) {
+													var xhr = new XMLHttpRequest();
+													xhr.onload = function() {
+														var reader = new FileReader();
+														reader.onloadend = function() {
+														callback(reader.result);
 														}
-													}
-													pdfMake.createPdf(docDefinition).open();
-													pdfMake.createPdf(docDefinition).download();
-												});
-											})
+														reader.readAsDataURL(xhr.response);
+													};
+													xhr.open('GET', url);
+													xhr.responseType = 'blob';
+													xhr.send();
+												}
+												toDataURL('/document_templates/voucherTemplate3witheventname.png', function(dataUrl) {
+													toDataURL('/document_templates/logo.png', function(logo) {
+														var sponsorText = [];
+														var sponsorX = [65,393,507];
+														var sponsorY = 243;
+														console.log(`${data.sponsors}`)
+														for(i=0;i<data.sponsors[i].length;i++){
+															sponsorText.push({
+																text: `${data.sponsor[i].var_sponsorname}`,
+																style: 'styleLabelEvent',
+																absolutePosition: {x:sponsorX[0], y:sponsorY},
+															})
+														}
+														var docDefinition = {
+															pageMargins: [ 0, 35, 0, 0 ],
+															content: [
+																{
+																	image: dataUrl,
+																	width: 610,
+																	//- height: 100,
+																},
+																{
+																	image: logo,
+																	width: 45,
+																	height: 40,
+																	absolutePosition: {x:13, y:60},
+																},
+																{
+																	image: logo,
+																	width: 45,
+																	height: 40,
+																	absolutePosition: {x:13, y:447},
+																},
+																//mga laman sa taas
+																{
+																text:'500-0239',
+																style: 'styleLabelTop',
+																absolutePosition: {x:350, y:45},
+																},
+																{
+																text:'churcheventapp@gmail.com',
+																style: 'styleLabelTop',
+																absolutePosition: {x:257, y:68},
+																},
+																{
+																text:'inanglupangpangako.com',
+																style: 'styleLabelTop',
+																absolutePosition: {x:269, y:90},
+																},
+																{
+																text:'Urban, Brgy. Payatas B. 1119',
+																style: 'styleLabelTop',
+																absolutePosition: {x:444, y:45},
+																},
+																{
+																text:'Quezon City, Manila',
+																style: 'styleLabelTop',
+																absolutePosition: {x:487, y:68},
+																},
+																//- {
+																//- text:`#${data.var_vouchercode}`,
+																//- style: 'styleLabelTop',
+																//- absolutePosition: {x:495, y:90},
+																//- },
+																//Middle part
+																{
+																text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
+																style: 'styleLabelMiddle',
+																absolutePosition: {x:51, y:127},
+																},
+																{
+																text:`${data.voucherinfo[0].var_useraddress}`,
+																style: 'styleLabelMiddle',
+																absolutePosition: {x:51, y:140},
+																},
+																{
+																text:`# ${data.voucherinfo[0].var_vouchercode}`,
+																style: 'styleLabelMiddle',
+																absolutePosition: {x:225, y:127},
+																},
+																{
+																text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
+																style: 'styleLabelMiddle',
+																absolutePosition: {x:225, y:140},
+																},
+																{
+																text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
+																style: 'styleLabelMiddle',
+																absolutePosition: {x:225, y:153},
+																},
+																//table Contents
+																// .toUpperCase() yung event name before ilagay sa pdfmake
+																//ito yung ifoforeach mu rae
+																{ 
+																text: `${data.voucherinfo[0].var_eventname}`,
+																style: 'styleLabelEventName',
+																absolutePosition: {x:65, y:217},
+																},
+																{
+																text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
+																style: 'styleLabelEvent',
+																absolutePosition: {x:393, y:217},
+																},
+																{
+																text:`₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
+																style: 'styleLabelEvent',
+																absolutePosition: {x:507, y:217},
+																},
+																// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+																{
+																text: `Number of Sponsors : ${data.sponsors.length}`,
+																style: 'styleLabelEventName',
+																absolutePosition: {x:65, y:243},
+																},
+																{
+																text: '₱ 50/head',
+																style: 'styleLabelEvent',
+																absolutePosition: {x:393, y:243},
+																},
+																{
+																text: `₱ ${(data.sponsors.length*50).toFixed(2)}`,
+																style: 'styleLabelEvent',
+																absolutePosition: {x:506, y:243},
+																},
+																//total amount
+																{
+																text: `₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
+																style: 'styleLabelTA',
+																absolutePosition: {x:476, y:354},
+																},
+																//remaining days
+																{
+																text: '14',
+																style: 'styleLabelRemaining',
+																absolutePosition: {x:338, y:389},
+																},
+																//IBABANG VOUCHER 387 sa y-axis dinagdag
+																{
+																text:'500-0239',
+																style: 'styleLabelTop',
+																absolutePosition: {x:350, y:432},
+																},
+																{
+																text:'churcheventapp@gmail.com',
+																style: 'styleLabelTop',
+																absolutePosition: {x:257, y:455},
+																},
+																{
+																text:'inanglupangpangako.com',
+																style: 'styleLabelTop',
+																absolutePosition: {x:269, y:477},
+																},
+																{
+																text:'Urban, Brgy. Payatas B. 1119',
+																style: 'styleLabelTop',
+																absolutePosition: {x:444, y:432},
+																},
+																{
+																text:'Quezon City, Manila',
+																style: 'styleLabelTop',
+																absolutePosition: {x:487, y:455},
+																},
+																//Middle part
+																{
+																text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
+																style: 'styleLabelMiddle',
+																absolutePosition: {x:51, y:514},
+																},
+																{
+																text:`${data.voucherinfo[0].var_useraddress}`,
+																style: 'styleLabelMiddle',
+																absolutePosition: {x:51, y:527},
+																},
+																{
+																text:`# ${data.voucherinfo[0].var_vouchercode}`,
+																style: 'styleLabelMiddle',
+																absolutePosition: {x:225, y:514},
+																},
+																{
+																text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
+																style: 'styleLabelMiddle',
+																absolutePosition: {x:225, y:527},
+																},
+																{
+																text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
+																style: 'styleLabelMiddle',
+																absolutePosition: {x:225, y:540},
+																},
+																//table Contents
+																// .toUpperCase() yung event name before ilagay sa pdfmake
+																//ito yung ifoforeach mu rae
+																{
+																text: `${data.voucherinfo[0].var_eventname}`,
+																style: 'styleLabelEventName',
+																absolutePosition: {x:65, y:604},
+																},
+																{
+																text:  `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
+																style: 'styleLabelEvent',
+																absolutePosition: {x:393, y:604},
+																},
+																{
+																text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
+																style: 'styleLabelEvent',
+																absolutePosition: {x:507, y:604},
+																},
+																// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+																{
+																text: `Number of Sponsors : ${data.sponsors.length}`,
+																style: 'styleLabelEventName',
+																absolutePosition: {x:65, y:630},
+																},
+																{
+																text: '₱ 50/head',
+																style: 'styleLabelEvent',
+																absolutePosition: {x:393, y:630},
+																},
+																{
+																text: `₱ ${(data.sponsors.length*50).toFixed(2)}`,
+																style: 'styleLabelEvent',
+																absolutePosition: {x:506, y:630},
+																},
+																//total amount
+																{
+																text: `₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
+																style: 'styleLabelTA',
+																absolutePosition: {x:476, y:741},
+																},
+																//remaining days
+																{
+																text: '14',
+																style: 'styleLabelRemaining',
+																absolutePosition: {x:338, y:776},
+																},
+																//- {
+																//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
+																//- style: 'styleLabelFill',
+																//- absolutePosition: {x:520, y:28},
+																//- text: 'Date: ' + dateRequested,
+																//- },
+															],
+															styles: {
+																styleLabel: {
+																	font: 'EdwardianScript',
+																	fontSize:85,
+																},
+																styleHeader: {
+																	font: 'OldEnglishText',
+																	fontSize: 45,
+																	alignment: 'center',
+																	margin: [0, 15, 0, 0],
+																},
+																styleHeader2: {
+																	font: 'EdwardianScript',
+																	fontSize: 33,
+																	alignment: 'center',
+																	margin: [0, 5, 0, 5],
+																},
+																styleLabel: {
+																	font: 'EdwardianScript',
+																	fontSize: 26,
+																},
+																styleLabelTop: {
+																	font: 'Roboto',
+																	fontSize: 11,
+																	color: 'white',
+																},
+																styleLabelMiddle: {
+																	font: 'Roboto',
+																	fontSize: 9,
+																},
+																styleLabelMiddleTA: {
+																	font: 'Roboto',
+																	fontSize: 18,
+																},
+																styleLabelEventName: {
+																	font: 'Roboto',
+																	fontSize: 10,
+																	bold: true,
+																},
+																styleLabelEvent: {
+																	font: 'Roboto',
+																	fontSize: 10,
+																},
+																styleLabelFill: {
+																	font: 'Roboto',
+																	fontSize: 20,
+																},
+																styleLabelTA: {
+																	font: 'Roboto',
+																	fontSize: 15,
+																	color: 'white',
+																	bold: true,
+																},
+																styleLabelRemaining: {
+																	font: 'Roboto',
+																	fontSize: 9,
+																	italic: true,
+																},
+															},
+														}
+														pdfMake.fonts = {
+															Roboto: {
+																normal: 'Roboto-Regular.ttf',
+																bold: 'Roboto-Medium.ttf',
+																italic: 'Roboto-Italic.ttf',
+																bolditalics: 'Roboto-MediumItalic.ttf',
+															},
+															EdwardianScript: {
+																normal: 'Edwardian-script-itc-Regular.TTF'
+															},
+															OldEnglishText: {
+																normal: 'Old-english-text-mt-Regular.ttf'
+															},
+															TimesNewRoman: {
+																normal: 'Times-new-roman-Regular.ttf'
+															}
+														}
+														pdfMake.createPdf(docDefinition).open();
+														pdfMake.createPdf(docDefinition).download();
+													});
+												})
+								})
 							})
-						})
 						}
 					}
 					else if(data[0].var_eventname == "Baptism" || data[0].var_eventname == "Special Baptism"){

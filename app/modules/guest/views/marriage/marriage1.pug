@@ -188,6 +188,7 @@ block main
 		Checkbox Trickery with CSS:
 		http://codersblock.com/blog/checkbox-trickery-with-css/
 	.row
+		input.form-control#eventinfoID(type='text' name='userID' value=`${eventinfo.int_eventinfoID}`)
 		.col-md-6.col-sm-12
 			.custom_container
 				h1 Wedding Steps:
@@ -195,12 +196,18 @@ block main
 					.col-md-6
 				.items
 					each step in steps
-						input(id=`item${step.int_weddingsteps}` type='checkbox', checked='' disabled) 
-						label(class=`information${step.int_weddingsteps-1}`  for=`item${step.int_weddingsteps}`) #{step.var_weddingstepname}
+						- if(stepnumber.int_weddingsteps > step.int_weddingsteps)
+							input(id=`item${step.int_weddingsteps}` type='checkbox', checked='' disabled) 
+							label(class=`information${step.int_weddingsteps-1}`  for=`item${step.int_weddingsteps}`) #{step.var_weddingstepname}
+						- if(stepnumber.int_weddingsteps <= step.int_weddingsteps)
+							input(id=`item${step.int_weddingsteps}` type='checkbox', disabled) 
+							label(class=`information${step.int_weddingsteps-1}`  for=`item${step.int_weddingsteps}`) #{step.var_weddingstepname}
 					h2.done(aria-hidden='true') Done
 					h2.undone(aria-hidden='true') Not Done
+					//- label=eventinfo.int_eventinfoID
 		each step in steps
 			.col-md-6.col-sm-12.display_off(class=`information_details${step.int_weddingsteps-1}`)
+	//- input.form-control(type='text' name='userID' value=`${eventinfo.int_eventinfoID}`)
 				//- .custom_container_details
 				//- 	h1 Payment Received:
 				//- 	.items.pb-0
@@ -212,6 +219,14 @@ block main
 				//- 		label(for=`item${step.int_weddingsteps+7}`) #{step.var_weddingstepname}
 				//- 		h2.done(aria-hidden='true') Done
 				//- 		h2.undone(aria-hidden='true') Not Done
+	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header(style='background:#367587; color:white')
+						h4.modal-title(style='background:#367587; color:white') View Application Form
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span.p-3(aria-hidden='true' style='background:#367587; color:white') ×
+					.modal-body#viewBodyAppend
 block addjs
 	script.
 		var information = [0,1,2,3,4,5,6]
@@ -222,27 +237,211 @@ block addjs
 						for(var x=0; x <=6; x++) {
 							if (y == x){
 								$('.information_details' + x).toggleClass("animated fadeInDown faster display_off")
-								
+								var id = $('#eventinfoID').val()
+								console.log(id)
 								if(x == 0){
-									$('.information_details' + x).empty().append(`
-									<div class="custom_container_details">
-										<h1>Payment Received:</h1>
-										<div class="items pb-0">
-											<h2 class="done1" aria-hidden="true"> Reservation
-												<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid nihil eius recusandae blanditiis aperiam, delectus veritatis excepturi minus, magni voluptatum quia nam incidunt inventore id aut eaque minima tenetur.</p>
-											</h2>
+									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
+										console.log(id)
+										console.log(data.eventdetails.int_eventinfoID)
+										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
+										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
+										$('.information_details' + data.stepclicked).empty().append(`
+										<div class="custom_container_details">
+											<h1>Reservation Details</h1>
+											<div class="items pb-0">
+												<h2 class="done1" aria-hidden="true">
+													<p>Step completed on <strong>${dateApplied}</strong></p>
+													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
+													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
+													
+												</h2>
+											</div>
+											<div class="items pb-0" id='priestdiv'>	
+											</div>
 										</div>
-										<div class="items pt-0">
-											<!--added 7 para unique padin id niya. May nakaconfigure na kasing id sa taas-->
-											<input id="item8" type="checkbox">
-											<label for="item8">Reservation</label>
-											<h2 class="done" aria-hidden="true">Done</h2>
-											<h2 class="undone" aria-hidden="true">Not Done</h2>
+										`)
+										if(data.eventdetails.int_userpriestID == null){
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong></p>
+											<p>No priest assigned yet. Priest will be assigned after the payment process. Thank you.</p>
+											</div>
+											`)
+										}
+										else{
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong> //insert priest name here</p>
+											</div>
+											`)
+										}
+
+
+									});
+								}
+								//pre-nuptial investigation
+								if(x == 1){
+									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
+										console.log(id)
+										console.log(data.eventdetails.int_eventinfoID)
+										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
+										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
+										$('.information_details' + data.stepclicked).empty().append(`
+										<div class="custom_container_details">
+											<h1>Initial Pre-Nuptial Investigation</h1>
+											<div class="items pb-0">
+												<h2 class="done1" aria-hidden="true">
+													<p>Step completed on <strong>${dateApplied}</strong></p>
+													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
+													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
+													<button type='button' class='btn' id='viewAppform'>view</button>
+												</h2>
+											</div>
+											
 										</div>
-									</div>
-									`)
+										`)
+
+									});
+								}
+								//payment
+								if(x == 2){
+									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
+										console.log(id)
+										console.log(data.eventdetails.int_eventinfoID)
+										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
+										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
+										$('.information_details' + data.stepclicked).empty().append(`
+										<div class="custom_container_details">
+											<h1>Payment</h1>
+											<div class="items pb-0">
+												<h2 class="done1" aria-hidden="true">
+												
+													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
+													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
+													<button type='button' class='btn' id='viewAppform'>view</button>
+												</h2>
+											</div>
+											
+										</div>
+										`)
+
+									});
+								}
+								//canonical
+								if(x == 3){
+									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
+										console.log(id)
+										console.log(data.eventdetails.int_eventinfoID)
+										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
+										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
+										$('.information_details' + data.stepclicked).empty().append(`
+										<div class="custom_container_details">
+											<h1>Canonical Interview</h1>
+											<div class="items pb-0">
+												<h2 class="done1" aria-hidden="true">
+												
+													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
+													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
+													<button type='button' class='btn' id='viewAppform'>view</button>
+												</h2>
+											</div>
+											
+										</div>
+										`)
+
+									});
 								}
 
+								//completion of req
+								if(x == 4){
+									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
+										console.log(id)
+										console.log(data.eventdetails.int_eventinfoID)
+										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
+										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
+										$('.information_details' + data.stepclicked).empty().append(`
+										<div class="custom_container_details">
+											<h1>Completion of Requirements</h1>
+											<div class="items pb-0">
+												<h2 class="done1" aria-hidden="true">
+													<p>Step completed on <strong>${dateApplied}</strong></p>
+													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
+													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
+													<button type='button' class='btn' id='viewAppform'>view</button>
+												</h2>
+											</div>
+											
+										</div>
+										`)
+
+									});
+								}
+
+								//pre-cana and other schedules
+								if(x == 5){
+									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
+										console.log(id)
+										console.log(data.eventdetails.int_eventinfoID)
+										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
+										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
+										$('.information_details' + data.stepclicked).empty().append(`
+										<div class="custom_container_details">
+											<h1>Pre-Cana Seminar</h1>
+											<div class="items pb-0">
+												<h2 class="done1" aria-hidden="true">
+													
+													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
+													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
+													<button type='button' class='btn' id='viewAppform'>view</button>
+												</h2>
+											</div>
+											
+										</div>
+										`)
+
+									});
+								}
+								//finalization
+								if(x == 6){
+									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
+										console.log(id)
+										console.log(data.eventdetails.int_eventinfoID)
+										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
+										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
+										$('.information_details' + data.stepclicked).empty().append(`
+										<div class="custom_container_details">
+											<h1>Finalization</h1>
+											<div class="items pb-0">
+												<h2 class="done1" aria-hidden="true">
+													
+													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
+													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
+													<button type='button' class='btn' id='viewAppform'>view</button>
+												</h2>
+											</div>
+											
+										</div>
+										`)
+
+									});
+								}
+
+
+								
+								//- <div class="items pt-0">
+								//- 	<!--added 7 para unique padin id niya. May nakaconfigure na kasing id sa taas-->
+								//- 	<input id="item8" type="checkbox">
+								//- 	<label for="item8">Reservation</label>
+								//- 	<h2 class="done" aria-hidden="true">Done</h2>
+								//- 	<h2 class="undone" aria-hidden="true">Not Done</h2>
+								//- </div>
 								var cloneInformation = information.slice();
 								cloneInformation.splice(x,1);
 								$.each(cloneInformation, function( index, value){
@@ -252,4 +451,262 @@ block addjs
 						}
 					});
 				}
+
+				$('.btn').click(function(){
+					var id = $('#eventinfoID').val()
+					console.log(id)
+			
+				})
 			});
+
+			$(document).on('click','#viewAppform',function(){
+				var id = $('#eventinfoID').val()
+				console.log(id)
+				//- console.log($('.eventname').attr('value'))
+				$.post('/guest/weddingDetails/viewQuery',{id:id}).done(data=>{
+				console.log(data)
+						var dateRequested = moment(data[0].date_eventdate).format('MM/DD/YYYY')
+						var gbirthday = moment(data[0].date_birthday).format('MM/DD/YYYY')
+						var bbirthday = moment(data[0].date_bbirthday).format('MM/DD/YYYY')
+						var timeRequested = moment(data[0].time_eventstart,'HH:mm:ss').format('hh:mm A')
+						console.log(timeRequested)
+						var age = moment().diff(data.date_birthday,'years');
+						$('#viewBodyAppend').append(`
+							<div class="row">
+								<div class="col-md-6">
+									<h6 class="label-control">Desired Date:</h6>
+									<input type="text" class="form-control" value="${dateRequested}" disabled> 
+								</div>
+								<div class="col-md-6">
+									<h6 class="label-control"> Desired Time:</h6>
+									<input type="text" class="form-control" value="${timeRequested}" disabled> 
+								</div>
+							</div>
+							<h6>Groom</h6>
+						
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Full Name</h6><input class="form-control" id="lastname" type="text" name="glastname" value= "${data[0].var_lname}, ${data[0].var_fname}" disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Birthday:</h6><input class="form-control" type="text" name="gbirthday" value= ${gbirthday} disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 pr-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Birthplace:</h6><input class="form-control" type="text" name="gbirthplace" value=${data[0].var_birthplace} disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 for="exampleFormControlTextarea1">Address:</h6><input class="form-control" rows="2" name="gaddress" value='${data[0].var_address}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+									<div class="form-group">
+										<h6 class="label-control">Civil Status:</h6><input class="form-control" type="text" name="gcivilstatus" value='${data[0].var_gcivilstatus}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 pr-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Occupation:</h6><input class="form-control" type="text" name="goccupation" value='${data[0].var_goccupation}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Nationality:</h6><input class="form-control" type="text" name="gnationality" value='${data[0].var_gnationality}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+									<div class="form-group">
+										<h6 class="label-control">Religion:</h6><input class="form-control" type="text" name="greligion" value='${data[0].var_greligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-8 px-lg-3 pr-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Current Parish:</h6><input class="form-control" type="text" name="gcurrparish" value='${data[0].var_gcurrparish}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-3 px-sm-3">
+									<div class="form-group">
+										<h6 class="label-control">Father's Full Name:</h6><input class="form-control" type="text" name="gfathername" value='${data[0].var_gfathername}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Father's Birthplace:</h6><input class="form-control" type="text" name="gfatherbplace" value='${data[0].var_gfatherbplace}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Father's Religion:</h6><input class="form-control" type="text" name="gfatherreligion" value='${data[0].var_gfatherreligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Full Name:</h6><input class="form-control" type="text" name="gmothername" value='${data[0].var_gmothername}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Birthplace:</h6><input class="form-control" type="text" name="gmotherbplace" value='${data[0].var_gmotherbplace}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Religion:</h6><input class="form-control" type="text" name="gmotherreligion" value='${data[0].var_gmotherreligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+
+
+
+							<hr>
+							<h6>Bride</h6>
+						
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Full Name</h6><input class="form-control" id="lastname" type="text" name="blastname" value= "${data[0].var_blname}, ${data[0].var_bfname}" disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Birthday:</h6><input class="form-control" type="text" name="bbirthday" value= ${bbirthday} disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 pr-lg-3 px-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Birthplace:</h6><input class="form-control" type="text" name="bbirthplace" value=${data[0].var_bbirthplace} disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 for="exampleFormControlTextarea1">Address:</h6><input class="form-control" rows="2" name="baddress" value='${data[0].var_baddress}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+									<div class="form-group">
+										<h6 class="label-control">Civil Status:</h6><input class="form-control" type="text" name="bcivilstatus" value='${data[0].var_bcivilstatus}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 pr-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Occupation:</h6><input class="form-control" type="text" name="boccupation" value='${data[0].var_boccupation}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Nationality:</h6><input class="form-control" type="text" name="bnationality" value='${data[0].var_bnationality}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+									<div class="form-group">
+										<h6 class="label-control">Religion:</h6><input class="form-control" type="text" name="breligion" value='${data[0].var_breligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-8 px-lg-3 pr-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Current Parish:</h6><input class="form-control" type="text" name="bcurrparish" value='${data[0].var_bcurrparish}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-3 px-sm-3">
+									<div class="form-group">
+										<h6 class="label-control">Father's Full Name:</h6><input class="form-control" type="text" name="bfathername" value='${data[0].var_bfathername}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Father's Birthplace:</h6><input class="form-control" type="text" name="bfatherbplace" value='${data[0].var_bfatherbplace}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Father's Religion:</h6><input class="form-control" type="text" name="bfatherreligion" value='${data[0].var_bfatherreligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Full Name:</h6><input class="form-control" type="text" name="bmothername" value='${data[0].var_bmothername}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Birthplace:</h6><input class="form-control" type="text" name="bmotherbplace" value='${data[0].var_bmotherbplace}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+								<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+									<div class="form-group">
+										<h6 class="label-control">Mother's Religion:</h6><input class="form-control" type="text" name="bmotherreligion" value='${data[0].var_bmotherreligion}'disabled/>
+										<div class="help-block with-errors"></div>
+									</div>
+								</div>
+							</div>
+							`)
+					$('#viewModal').modal('show')
+					$('#viewModal').on('hidden.bs.modal',function(){
+						$('#viewBodyAppend').empty()
+					})
+				})
+				})

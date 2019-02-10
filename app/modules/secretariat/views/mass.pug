@@ -1,0 +1,119 @@
+extends ../../../templates/secretariat
+block prepend main
+	style.
+		body > div.mfp-wrap.mfp-close-btn-in.mfp-auto-cursor.mfp-with-zoom.mfp-ready > div {
+			z-index: 9999 !important;
+		}
+
+		.mfp-with-zoom .mfp-container,
+		.mfp-with-zoom.mfp-bg {
+		opacity: 0;
+		-webkit-backface-visibility: hidden;
+		/* ideally, transition speed should match zoom duration */
+		-webkit-transition: all 0.3s ease-out;
+		-moz-transition: all 0.3s ease-out;
+		-o-transition: all 0.3s ease-out;
+		transition: all 0.3s ease-out;
+		z-index: 99999;
+		}
+
+		.mfp-image, .mfp-container, .mfp-ready, .mfp-image-holder, .mfp-content, .mfp-preloader, .mfp-figure {
+			z-index: 99999;
+		}
+
+		.mfp-with-zoom.mfp-ready .mfp-container {
+			opacity: 1;
+		}
+		.mfp-with-zoom.mfp-ready.mfp-bg {
+			opacity: 0.8;
+		}
+
+		.mfp-with-zoom.mfp-removing .mfp-container,
+		.mfp-with-zoom.mfp-removing.mfp-bg {
+		opacity: 0;
+		}
+
+		.size {
+			width: 100px;
+			height: 100px;
+		}
+	#wrap
+	//- #calendar
+	div(style='clear:both')
+	.content
+		.container-fluid
+			.row
+				.col-lg-12.col-md-12
+					// Tab panes
+					.tab-content
+						#nonwedding.tab-pane.active.mx-3
+							br
+							// Inner Nav tabs
+							
+							// Tab panes
+							.tab-content
+								#mass.tab-pane.active
+									.card
+											.card-header.card-header-primary(style='background:#367587; color:white')
+													h4.card-title(style='background:#367587; color:white') Mass Schedule
+											.card-body.table-responsive
+													table.table.table-hover.dataTable
+															thead.text-primary
+																	//- th ID
+																	
+																	th Mass Start
+																	th Mass Duration
+																	th Day
+																	th Venue
+																	th Type
+																	th.text-center Actions
+															tbody
+																	each mass in masss
+																		tr
+																			//- td=mass.int_eventinfoID
+																			td=mass.time_massstart
+																			td=mass.time_massduration
+																			td=mass.int_massday
+																			td=mass.var_massvenue
+																			td=mass.char_masstype
+																			//- td=mass.char_weddingtype
+																			
+																			td.td-actions.text-center
+																				button.btn.btn-primary.actionButton(type='button' value=`${mass.massID}`)
+																					i.ti-settings
+																						#toolbar-options.hidden
+																							a.viewButton(href='#')
+																								i.ti-file(style="color:white;")
+																							a.updateButton(href='#')
+																								i.ti-pencil(style="color:white;")
+																							a.updateReqButton(href='#')
+																								i.ti-new-window(style="color:white;")
+
+
+
+	
+	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document" style="z-index: 9998;")
+				.modal-content
+					.modal-header(style='background:#367587; color:white')
+						h5.modal-title(style='background:#367587; color:white') mass
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true' style='background:#367587; color:white') ×
+					.modal-body#viewBodyAppend
+					.modal-body    
+						.form-group
+							.gallery#reqAppend
+					.modal-footer
+						button.btn.btn-outline.btn-secondary.pull-left#massButton(type='button', data-dismiss='modal') Close
+	
+block addjs
+	script.
+		$(document).ready(function() {
+			var ctr = 0;
+			$('.actionButton').click(function(){
+				idNow = $(this).val();
+				console.log(idNow)
+			})
+			
+			
+		})
