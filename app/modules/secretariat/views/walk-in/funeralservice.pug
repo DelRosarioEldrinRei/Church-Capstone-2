@@ -1,0 +1,228 @@
+extends ../../../../templates/secretariat
+block prepend main
+	style.
+			.fa {
+				font-size: 25px !important;
+			}
+			.fa-check::before {
+				color: #28a745 !important;
+			}
+			.fa-times::before {
+				color: red !important;
+			}
+			small {
+				font-size: 90% !important;
+			}
+	main.bgc-grey-100
+		#mainContent
+			.row.masonry.pos-r
+				.masonry-sizer.col-md-12
+				.masonry-item.col-md-12
+					.bgc-white.p-20.bd
+						h6.c-grey-900 Funeral Service
+						.mT-30
+							form
+								.form-group
+									label Schedule Date
+										.text-danger.d-inline  *
+									input.form-control.start-date(id='scheduledate' name='scheduledate' type='text', placeholder='Enter Desired Date', data-provide='datepicker')
+								.row
+									.col-md-4
+										.form-group
+											label Name of the Deceased
+												.text-danger.d-inline  *
+											input.form-control(id='lname' name='lname' type='text' placeholder='Last Name *')
+									.col-md-4
+										.form-group
+											label(style='visibility:hidden;') First Name
+											input.form-control(id='fname' name='fname' type='text' placeholder='First Name *')
+									.col-md-4
+										.form-group
+											label(style='visibility:hidden;') Middle Name
+											input.form-control(id='mname' name='mname' type='text' placeholder='Middle Name')
+								.row
+									legend.col-sm-2 Gender
+										.text-danger.d-inline  *
+									.col-sm-2
+										.form-check
+											label.form-check-label
+												input.form-check-input(id='gender1' name='gender' type='radio' value='Male', checked='checked') 
+												| Male
+										.form-check
+											label.form-check-label
+												input.form-check-input(id='gender2' name='gender' type='radio' value='Female')
+												| Female
+									.col-md-4
+										.form-group
+											label Birthday
+												.text-danger.d-inline  *
+											input.form-control.start-date(id='bday' name='bday' type='text', data-provide='datepicker' placeholder='Enter Your Birthday')
+									.col-md-4
+										.form-group
+											label Birthplace
+											.text-danger.d-inline  *
+											input.form-control(id='bplace' name='bplace' type='text' placeholder='Ex. Payatas, Quezon City')
+								.row
+									.col-md-6
+										.form-group
+											label Relationship with the Deceased
+												.text-danger.d-inline  *
+											select.form-control(id='relationship' name='relationship')
+												option(selected="" value="" disabled) Choose...
+												option Aunt/Uncle
+												option Child
+												option BF/GF
+												option Friend
+												option Grandchild
+												option Grandparent
+												option Nephew/Niece
+												option Parent
+												option Sibling
+												option Spouse
+									.col-md-6
+										.form-group
+											label Address
+												.text-danger.d-inline  *
+											input.form-control(id='address' name='address' type='textarea' placeholder='Ex. Urban, Bgy. Payatas B 1119 QC')
+								.row
+									.col-md-6
+										.form-group
+											label Place where the blessing will happen
+												.text-danger.d-inline  *
+											.form-check
+												label.form-check-label
+													input.form-check-input(id='place1' name='place' type='radio' value='Male' checked='') 
+													| Same as his/her address
+											.form-check
+												label.form-check-label
+													input.form-check-input(id='place2' name='place' type='radio' value='Male') 
+													| Hospital/Center
+												input.form-control(id='hospitalname' name='hospitalname' type='text' placeholder="Please enter the room number, the hospital name & address")
+											.form-check
+												label.form-check-label
+													input.form-check-input(id='place3' name='place' type='radio' value='Male') 
+													| Other
+												input.form-control(id='othervenue' name='othervenue' type='text' placeholder="Please enter complete address")
+									.col-md-6
+										.form-group
+											label Cause of Death
+												.text-danger.d-inline  *
+											input.form-control(id='cause' name='cause' type='textarea' placeholder='Please enter cause of death')
+								.row
+									.col-md-12
+										.form-group
+											label Birth Certificate
+												.text-danger.d-inline  *
+											input.form-control(id='birthcertificate' name='birthcertificate' type='file')
+								.text-center
+									button.btn.btn-primary(type='submit') Submit
+							input#errChecker(type='text' hidden)
+block addjs
+	script.
+		// Place where the blessing will happen logic
+		$('#hospitalname').hide();
+		$('#othervenue').hide();
+
+		$('#place1').click(function() {
+			$('#hospitalname').slideUp();
+			$('#othervenue').slideUp();
+		});
+		$('#place2').click(function() {
+			$('#hospitalname').slideDown();
+			$('#othervenue').slideUp();
+		});
+		$('#place3').click(function() {
+			$('#hospitalname').slideUp();
+			$('#othervenue').slideDown();
+		});
+
+		//Realtime Validation
+		function validateForm(){
+			$('form').formValidation({
+				framework: 'bootstrap',
+				icon: {
+					valid: 'fa fa-check',
+					invalid: 'fa fa-times',
+					validating: 'fa fa-spinner'
+				},
+				fields: {
+					scheduledate: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Desired Date`
+								}
+						}
+					},
+					lname: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Last Name`
+								}
+						}
+					},
+					fname: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your First Name`
+								}
+						}
+					},
+					relationship: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Relation With the Ill`
+								}
+						}
+					},
+					bday: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Birthday`
+								}
+						}
+					},
+					bplace: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Birthplace`
+								}
+						}
+					},
+					address: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Address`
+								}
+						}
+					},
+					cause: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Cause of Death`
+								}
+						}
+					},
+					birthcertificate: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Birth Certificate`
+								}
+						}
+					},
+				},
+			})
+			.on('err.field.fv', function(e, data) {
+				// Get the first invalid field
+				var invalidFields = data.fv.getInvalidFields().length;
+				$('#errChecker').val(invalidFields)
+			})
+			.on('success.field.fv', function(e, data) {
+				// Get the first invalid field
+				var invalidFields = data.fv.getInvalidFields().length;
+				$('#errChecker').val(invalidFields)
+			});
+		}
+
+		$(document).ready(function() {
+			validateForm()
+		});

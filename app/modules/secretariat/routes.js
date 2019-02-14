@@ -2746,7 +2746,35 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
 
 
+    secretariatRouter.get('/walkin-anointing', (req, res)=>{
+        return res.render('secretariat/views/walk-in/anointing');
+        
+    });
 
+    secretariatRouter.get('/walkin-regbaptism', (req, res)=>{
+        return res.render('secretariat/views/walk-in/regbaptism');
+        
+    });
+
+    secretariatRouter.get('/walkin-spebaptism', (req, res)=>{
+        return res.render('secretariat/views/walk-in/spebaptism');
+        
+    });
+
+    secretariatRouter.get('/walkin-funeralmass', (req, res)=>{
+        return res.render('secretariat/views/walk-in/funeralmass');
+        
+    });
+
+    secretariatRouter.get('/walkin-funeralservice', (req, res)=>{
+        return res.render('secretariat/views/walk-in/funeralservice');
+        
+    });
+
+    secretariatRouter.get('/walkin-marriage', (req, res)=>{
+        return res.render('secretariat/views/walk-in/marriage');
+        
+    });
 
 
 
