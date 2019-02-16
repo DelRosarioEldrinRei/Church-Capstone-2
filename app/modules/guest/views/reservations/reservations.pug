@@ -1346,42 +1346,49 @@ block addjs
 															},
 															{
 															text:  `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
-															style: 'styleLabelEvent',
 															absolutePosition: {x:393, y:604},
+															style: 'styleLabelEvent',
 															},
 															{
 															text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:507, y:604},
 															},
-															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+															//- // second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
 															{
 															text: `Number of Additional Sponsors : ${data.sponsors.length - 2}`,
 															style: 'styleLabelEventName',
-															absolutePosition: {x:65, y:243},
+															absolutePosition: {x:65, y:630},
 															},
 															{
 															text: '₱ 50/head',
 															style: 'styleLabelEvent',
-															absolutePosition: {x:393, y:243},
+															absolutePosition: {x:393, y:630},
 															},
 															{
 															text: `₱ ${((data.sponsors.length-2)*50).toFixed(2)}`,
 															style: 'styleLabelEvent',
-															absolutePosition: {x:506, y:243},
+															absolutePosition: {x:506, y:630},
 															},
 															//total amount
 															{
 															text: `₱ ${(((data.sponsors.length-2)*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
 															style: 'styleLabelTA',
-															absolutePosition: {x:476, y:354},
+															absolutePosition: {x:476, y:741},
 															},
-															//remaining days
+															//- //remaining days
 															{
 															text: '14',
 															style: 'styleLabelRemaining',
 															absolutePosition: {x:338, y:776},
 															},
+															//- {
+															//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
+															//- style: 'styleLabelFill',
+															//- absolutePosition: {x:520, y:28},
+															//- text: 'Date: ' + dateRequested,
+															//- },
+														],
 														styles: {
 															styleLabel: {
 																font: 'EdwardianScript',

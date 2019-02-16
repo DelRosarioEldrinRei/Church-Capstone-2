@@ -95,17 +95,18 @@ block prepend main
 																			td.td-actions.text-center
 																				button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)
 																					i.ti-settings
-																						#toolbar-options.hidden
-																							a.viewButton(href='#')
-																								i.ti-file(style="color:white;")
-																							a.updateButton(href='#')
-																								i.ti-pencil(style="color:white;")
-																							a.updateReqButton(href='#')
-																								i.ti-new-window(style="color:white;")
-
-																							if(marriage.char_paymentstatus=='Paid'&&marriage.int_userpriestID !=null)
-																								a.scheduleButton(href='#')
-																									i.ti-calendar(style="color:white;")
+																						-if(marriage.char_paymentstatus=='Paid' && marriage.int_userpriestID !=null)
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-file(style="color:white;")
+																								a.updateButton(href='#')
+																									i.ti-pencil(style="color:white;")
+																								a.updateReqButton(href='#')
+																									i.ti-new-window(style="color:white;")
+																								- if(marriage.char_paymentstatus=='Paid' && marriage.int_userpriestID !=null)
+																									a.scheduleButton(href='#')
+																										i.ti-calendar(style="color:white;") #{marriage.int_userpriestID}
+																								
 
 
 

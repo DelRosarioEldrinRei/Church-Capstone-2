@@ -1923,16 +1923,35 @@ guestRouter.post('/weddingDetails/canonicalQuery',(req,res)=>{
         JOIN tbl_wedcouple ON tbl_wedcouple.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
         JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
-        join tbl_schedule on tbl_eventinfo.int_eventinfoID = tbl_schedule.int_eventinfoID
-        join tbl_wedschedule on tbl_schedule.int_scheduleID = tbl_wedschedule.int_scheduleID
-        WHERE tbl_eventinfo.int_eventinfoID = ? and tbl_wedschedule.int_weddingsteps = 4`
+        WHERE tbl_eventinfo.int_eventinfoID = ?`
     
         db.query(queryString,[req.body.id],(err,results,fields)=>{
             var eventdetails = results[0];
             if(err) console.log(err)
             console.log(results)
-            res.send({eventdetails: eventdetails, stepclicked: req.body.x})
-})})
+
+            var interviewdetails = `SELECT * FROM tbl_eventinfo 
+        
+            JOIN tbl_wedcouple ON tbl_wedcouple.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            join tbl_schedule on tbl_eventinfo.int_eventinfoID = tbl_schedule.int_eventinfoID
+            join tbl_wedschedule on tbl_schedule.int_scheduleID = tbl_wedschedule.int_scheduleID
+            WHERE tbl_eventinfo.int_eventinfoID = ? and tbl_wedschedule.int_weddingsteps = 4`
+        
+            db.query(interviewdetails,[req.body.id],(err,results,fields)=>{
+                
+                if(results.length==0){
+                    var interview = 'null'
+                }
+                else{
+                    var interview = results[0];
+                if(err) console.log(err)
+                console.log(interview)
+
+                }
+                
+    
+            res.send({eventdetails: eventdetails, interview:interview, stepclicked: req.body.x})
+})})})
 
 guestRouter.post('/weddingDetails/requirementsQuery',(req,res)=>{
     console.log(req.body)
@@ -1957,23 +1976,23 @@ guestRouter.post('/weddingDetails/requirementsQuery',(req,res)=>{
             JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
             JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_requirementsinevents.int_eventinfoID
             JOIN tbl_requirementtype ON tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
-            WHERE tbl_eventinfo.int_eventinfoID = ? and tbl_requirements.var_reqstatus <> ?  and tbl_requirementtype.char_reqtype ='Default'`
+            WHERE tbl_eventinfo.int_eventinfoID = ? and tbl_requirements.var_reqstatus = ? `
         //additional
         var additional = `SELECT * FROM tbl_requirements 
             JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
             JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_requirementsinevents.int_eventinfoID
             JOIN tbl_requirementtype ON tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
-            WHERE tbl_eventinfo.int_eventinfoID = ? and tbl_requirements.var_reqstatus <> ?  and tbl_requirementtype.char_reqtype ='Additional'`
-            db.query(queryString2,[req.body.id, 'Submitted'],(err,def,fields) => {
+            WHERE tbl_eventinfo.int_eventinfoID = ? and tbl_requirements.var_reqstatus = ? `
+            db.query(queryString2,[req.body.id, 'Approved'],(err,app,fields) => {
                 if (err) console.log(err);
-                db.query(additional,[req.body.id, 'Submitted'],(err,add,fields) => {
+                db.query(additional,[req.body.id, 'To be submitted'],(err,pen,fields) => {
                     if (err) console.log(err);
-                    console.log(def)
-                    console.log(add)
+                    console.log(app)
+                    console.log(pen)
 
 
 
-            res.send({eventdetails: eventdetails,defrequirements:def,addrequirements:add, stepclicked: req.body.x})
+            res.send({eventdetails: eventdetails,apprequirements:app,penrequirements:pen, stepclicked: req.body.x})
 })})})})
 //===============================================================================================//
 // F A C I L I T I E S 

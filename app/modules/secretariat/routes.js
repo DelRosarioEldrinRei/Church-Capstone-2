@@ -2244,6 +2244,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
                 var marriages=results;
+                console.log(marriages)
                 
 
                 for(var i = 0; i < marriages.length; i++){
