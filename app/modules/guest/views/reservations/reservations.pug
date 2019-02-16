@@ -881,11 +881,11 @@ block addjs
 													style: 'styleLabelTop',
 													absolutePosition: {x:487, y:68},
 													},
-													//- {
-													//- text:`#${data.var_vouchercode}`,
-													//- style: 'styleLabelTop',
-													//- absolutePosition: {x:495, y:90},
-													//- },
+													{
+													text:`${data.voucherinfo[0].var_vouchercode}`,
+													style: 'styleLabelTop',
+													absolutePosition: {x:495, y:90},
+													},
 													//Middle part
 													{
 													text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
@@ -966,11 +966,7 @@ block addjs
 													style: 'styleLabelTop',
 													absolutePosition: {x:487, y:455},
 													},
-													{
-													text:'Voucher ID 42352',
-													style: 'styleLabelTop',
-													absolutePosition: {x:495, y:477},
-													},
+													
 													//Middle part
 													{
 													text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
@@ -1126,11 +1122,12 @@ block addjs
 						`)	
 						$('#voucher').click(function(){
 							console.log(data[0].int_voucherID)
+							
 							$.post('/guest/voucherEvents',{voucherId:data[0].int_voucherID}).done(data=>{
 								for(i=0;i<data.sponsors.length;i++){
 										console.log("sponsors"+data.sponsors[i])
 										}
-										console.log(data.voucherinfo[0])
+										console.log(data.voucherinfo[0].var_vouchercode)
 										console.log("info"+data.voucherinfo[0])
 										$(document).off('click', '#voucherButton')
 											function toDataURL(url, callback) {
@@ -1205,11 +1202,11 @@ block addjs
 															style: 'styleLabelTop',
 															absolutePosition: {x:487, y:68},
 															},
-															//- {
-															//- text:`#${data.var_vouchercode}`,
-															//- style: 'styleLabelTop',
-															//- absolutePosition: {x:495, y:90},
-															//- },
+															{
+															text:`${data.voucherinfo[0].var_vouchercode}`,
+															style: 'styleLabelTop',
+															absolutePosition: {x:495, y:90},
+															},
 															//Middle part
 															{
 															text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
@@ -1256,7 +1253,7 @@ block addjs
 															},
 															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
 															{
-															text: `Number of Sponsors : ${data.sponsors.length}`,
+															text: `Number of Additional Sponsors : ${data.sponsors.length - 2}`,
 															style: 'styleLabelEventName',
 															absolutePosition: {x:65, y:243},
 															},
@@ -1266,13 +1263,13 @@ block addjs
 															absolutePosition: {x:393, y:243},
 															},
 															{
-															text: `₱ ${(data.sponsors.length*50).toFixed(2)}`,
+															text: `₱ ${((data.sponsors.length-2)*50).toFixed(2)}`,
 															style: 'styleLabelEvent',
 															absolutePosition: {x:506, y:243},
 															},
 															//total amount
 															{
-															text: `₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
+															text: `₱ ${(((data.sponsors.length-2)*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
 															style: 'styleLabelTA',
 															absolutePosition: {x:476, y:354},
 															},
@@ -1359,25 +1356,25 @@ block addjs
 															},
 															// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
 															{
-															text: `Number of Sponsors : ${data.sponsors.length}`,
+															text: `Number of Additional Sponsors : ${data.sponsors.length - 2}`,
 															style: 'styleLabelEventName',
-															absolutePosition: {x:65, y:630},
+															absolutePosition: {x:65, y:243},
 															},
 															{
 															text: '₱ 50/head',
 															style: 'styleLabelEvent',
-															absolutePosition: {x:393, y:630},
+															absolutePosition: {x:393, y:243},
 															},
 															{
-															text: `₱ ${(data.sponsors.length*50).toFixed(2)}`,
+															text: `₱ ${((data.sponsors.length-2)*50).toFixed(2)}`,
 															style: 'styleLabelEvent',
-															absolutePosition: {x:506, y:630},
+															absolutePosition: {x:506, y:243},
 															},
 															//total amount
 															{
-															text: `₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
+															text: `₱ ${(((data.sponsors.length-2)*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
 															style: 'styleLabelTA',
-															absolutePosition: {x:476, y:741},
+															absolutePosition: {x:476, y:354},
 															},
 															//remaining days
 															{
@@ -1385,13 +1382,6 @@ block addjs
 															style: 'styleLabelRemaining',
 															absolutePosition: {x:338, y:776},
 															},
-															//- {
-															//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
-															//- style: 'styleLabelFill',
-															//- absolutePosition: {x:520, y:28},
-															//- text: 'Date: ' + dateRequested,
-															//- },
-														],
 														styles: {
 															styleLabel: {
 																font: 'EdwardianScript',
