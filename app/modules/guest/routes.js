@@ -199,8 +199,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
     WHERE tbl_voucherevents.int_voucherID = ?`
     db.query(queryString,[req.body.voucherId],(err,results1,fields)=>{
         var eventid = results1[0].int_eventinfoID
-        console.log(results1[0].date_issued)
-        console.log(results1[0].date_due)
+        console.log(results1)
         var queryString2 = `SELECT tbl_sponsors.var_sponsorname,tbl_sponsors.int_eventinfoID from tbl_sponsors 
         JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_sponsors.int_eventinfoID
         WHERE tbl_eventinfo.int_eventinfoID = ?`
@@ -243,6 +242,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                     JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
                     JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
                     JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+                    JOIN tbl_voucherevents ON tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
                     WHERE tbl_eventinfo.int_eventinfoID = ?`
                 console.log(req.body)
                 db.query(queryString,[req.body.id],(err,results,fields)=>{
@@ -994,29 +994,30 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                                                             
                                                             db.query(queryString4 , [eventinfoID.insertId, req.body.marriageaddress, req.body.fatherbirthplace, req.body.motherbirthplace, req.body.fathername, req.body.mothername, req.body.contactnumber], (err, results, fields) => {
                                                                
-                                                                // var text="";
-                                                                // var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
-                                                                // for(i=0;i<8;i++){
-                                                                //     text += possible.charAt(Math.floor(Math.random()*possible.length));
-                                                                // }
-                                                                // var datenow = new Date();
-                                                                // var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-                                                                // var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
-                                                                // var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
-                                                                // console.log(dateNow)
-                                                                // console.log(dateDue1)
-                                                                // sponsors(eventinfoID.insertId);
-                                                                res.redirect('/guest/reservation')
-                                                                // var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode) VALUES(?,?,now(),?,?)`
-                                                                // db.query(queryString9,[eventinfoID.insertId,dateDue1,req.session.user.int_userID,text],(err,results,fields)=>{
-                                                                //     var queryString10 = `SELECT * FROM tbl_voucherevents WHERE int_eventinfoID = ?`
-                                                                //     db.query(queryString10,[eventinfoID.insertId],(err,results,fields)=>{
-                                                                //         if (err) throw err;
-                                                                //         console.log(results[0])
-                                                                //         res.send(results[0]);
+                                                                var text="";
+                                                                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
+                                                                for(i=0;i<8;i++){
+                                                                    text += possible.charAt(Math.floor(Math.random()*possible.length));
+                                                                }
+                                                                var datenow = new Date();
+                                                                var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+                                                                var dateDue = moment(dateNow,'YYYY-MM-DD').add(7,'days');
+                                                                var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
+                                                                console.log(dateNow)
+                                                                console.log(dateDue1)
+                                                                sponsors(eventinfoID.insertId);
+                                                                var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode) VALUES(?,?,now(),?,?)`
+                                                                db.query(queryString9,[eventinfoID.insertId,dateDue1,req.session.user.int_userID,text],(err,results,fields)=>{
+                                                                    if(err) throw err 
+                                                                    res.redirect('/guest/reservation')
+                                                                    //var queryString10 = `SELECT * FROM tbl_voucherevents WHERE int_eventinfoID = ?`
+                                                                    // db.query(queryString10,[eventinfoID.insertId],(err,results,fields)=>{
+                                                                    //     if (err) throw err;
+                                                                    //     console.log(results[0])
+                                                                    //     res.send(results[0]);
 
-                                                                //     })
-                                                                // })
+                                                                    // })
+                                                                })
                                                                 
                                                         })
                                                     })
