@@ -2455,32 +2455,120 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         });
     });
 
+    //initial getting ng sched ni priest
     secretariatRouter.post('/transaction-marriage/availablepriests', (req, res)=>{
-        
-        var queryString1 =`SELECT * from tbl_user where char_usertype = 'Priest' 
-        or char_usertype = 'Parish Priest'`
-        db.query(queryString1, (err, results, fields) => {
+        //auto assign, available, not available. 
+        console.log(req.body)
+        var getEventInfo = `SELECT * from tbl_eventinfo where int_eventinfoID = ?`
+        db.query(getEventInfo, [req.body.id],(err, results, fields) => {
             if (err) console.log(err);
-            console.log(results)
-            
-            res.send({availablepriests:results})
-            // console.log(results[0])
-        });
-    });
+            var eventInfo = results[0]
+            console.log(eventInfo)
 
-    secretariatRouter.post('/transaction-marriage/availablepriests', (req, res)=>{
-        
-        var queryString1 =`SELECT * from tbl_user where char_usertype = 'Priest' 
-        or char_usertype = 'Parish Priest'`
-        db.query(queryString1, (err, results, fields) => {
+        var getNext =`SELECT * from tbl_priestsequence
+        join tbl_user on tbl_priestsequence.int_priestID = tbl_user.int_userID
+        where tbl_priestsequence.int_eventID = 5 and tbl_priestsequence.char_seqstatus = 'Next'`
+        db.query(getNext, (err, results, fields) => {
             if (err) console.log(err);
-            console.log(results)
+            var nextPriest = results[0]
+            console.log('Next Priest')
+            console.log(nextPriest)
+
+        //check if available si next priest
+        var getNextSchedule =`SELECT * from tbl_schedule where int_userID = ? and date_sched=? and time_schedstart = ?`
+        db.query(getNextSchedule, [nextPriest.int_userID, eventInfo.date_eventdate, eventInfo.time_eventstart], (err, results1, fields) => {
+            if (err) console.log(err);
+            var nextPriestSchedule = results1;
+            console.log('----------------------------------------------------')
+            console.log('Next priest schedule, kung meron')
+            console.log(nextPriestSchedule)
+            console.log('----------------------------------------------------')
+            var allpriests =`select * from tbl_user 
+            join tbl_priestsequence on tbl_user.int_userID = tbl_priestsequence.int_priestID 
+            where tbl_priestsequence.int_eventid = 5`
+            db.query(allpriests, [eventInfo.date_eventdate, eventInfo.time_eventstart], (err, results1, fields) => {
+                if (err) console.log(err);
+                var allpriests = results1;
             
-            res.send({availablepriests:results})
+            if(nextPriestSchedule.length ==0){
+                console.log('----------------------------------------------------')
+                console.log('NEXT PRIEST IS AVAILABLE')
+                console.log('----------------------------------------------------')
+                
+                res.send({availablepriests:allpriests, nextpriest: nextPriest})
+            }
+
+            if(nextPriestSchedule.length !=0){
+                console.log('----------------------------------------------------')
+                console.log('NEXT PRIEST IS NOT AVAILABLE, take over next sa sequence')
+                console.log('----------------------------------------------------')
+                //we got to do something about 'what if, di rin available si next sa next, and what if walang available 
+                //so much to work on grrrr 
+
+                var nexttonext =  `select * from tbl_user join tbl_priestsequence 
+                on tbl_user.int_userID = tbl_priestsequence.int_priestID
+                where tbl_priestsequence.int_seqnumber = ?`
+
+                db.query(nexttonext, [nextPriest.int_seqnumber+1],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var nexttonextpriest = results[0]
+
+                    res.send({availablepriests:allpriests, nextpriest: nexttonextpriest})
+
+
+                })
+
+            }
+
+
+           
+        })//available, not available
             // console.log(results[0])
-        });
-    });
+        });//getNextSchedule
+    });//getnext
     
+    });//geteventinfo
+
+    
+
+
+    });//post
+
+    secretariatRouter.post('/transaction-marriage/checkifpriestavailable',(req,res)=>{
+        console.log(req.body)
+        var value = req.body.priestID.split(',');
+        var getEventDetails = `select * from tbl_eventinfo where int_eventinfoID = ?`
+        db.query(getEventDetails,[value[1]],(err,results,fields) =>{
+            if(err) console.log(err)
+            var eventdetails = results[0]
+            console.log('----------------------------------------------------')
+            console.log('Event Details')
+            console.log(eventdetails)
+            console.log('----------------------------------------------------')
+
+
+            var check =`select * from tbl_user 
+            join tbl_priestsequence on tbl_user.int_userID = tbl_priestsequence.int_priestID 
+            join tbl_schedule on tbl_user.int_userID = tbl_schedule.int_userID 
+            where tbl_user.int_userID =? and tbl_schedule.date_sched = ? and tbl_schedule.time_schedstart = ?`
+            db.query(check,[value[0],eventdetails.date_eventdate, eventdetails.time_eventstart ],(err,results,fields) =>{
+                if(err) console.log(err)
+                var checkresults =  results
+                if(checkresults.length==0){
+                    console.log('chosen priest is available')
+                    var result = 0
+                    res.send({result:result})
+                }
+                if(checkresults.length!=0){
+                    console.log('chosen priest is not available')
+                    var result = 1
+                    res.send({result:result})
+                }
+
+            
+        })})
+    })
+
     secretariatRouter.post('/transaction-marriage/assignpriest', (req, res)=>{
         var success =0
         var notsuccess =1
@@ -2506,6 +2594,9 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                     
                                     var priestaddrate = `select * from tbl_utilities 
                                     join tbl_eventinfo on tbl_utilities.int_eventID = tbl_eventinfo.int_eventID
+                                    join tbl_relation on tbl_eventinfo.int_eventinfoID = tbl_relation.int_eventinfoID
+                                    join tbl_wedbride on tbl_eventinfo.int_eventinfoID = tbl_wedbride.int_eventinfoID
+                                    join tbl_wedgroom on tbl_eventinfo.int_eventinfoID = tbl_wedgroom.int_eventinfoID
                                     join tbl_payment on tbl_eventinfo.int_paymentID = tbl_eventinfo.int_paymentID
                                     where tbl_eventinfo.int_eventID = 5 and tbl_eventinfo.int_eventinfoID =?`
                                     db.query(priestaddrate, [req.body.id],(err, results, fields) => {
@@ -2525,15 +2616,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                             WHERE int_paymentID =?`
                                             db.query(priestrequested, [newamount, newbalance, newstatus,  priestutilities.int_paymentID], (err, results, fields) => {
                                                 if (err) console.log(err);
-
-                                                var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, date_sched, time_schedstart,  var_venue) values(?,?,?,?,?)`
-                                                db.query(schedtag, [req.body.priestid, req.body.id, priestutilities.date_eventdate,  priestutilities.time_eventstart, 'INLPP'], (err, results, fields) => {
-                                                    console.log(err)
-                                                
-                                                
-                                                
-                                                
-                                                    
+                                                addschedules()
                                                     if (err){
                                                         console.log(err)
                                                         res.send({alertDesc:notsuccess})
@@ -2542,23 +2625,22 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                                         res.send({alertDesc:success})
                                                     }   
                                                 })
-
-                                            })
                                     })
                                 })
                             }
                             else{
                                 var priestaddrate = `select * from tbl_utilities 
-                                    join tbl_eventinfo on tbl_utilities.int_eventID = tbl_eventinfo.int_eventID
-                                    join tbl_payment on tbl_eventinfo.int_paymentID = tbl_eventinfo.int_paymentID
-                                    where tbl_eventinfo.int_eventID = 5 and tbl_eventinfo.int_eventinfoID =?`
+                                join tbl_eventinfo on tbl_utilities.int_eventID = tbl_eventinfo.int_eventID
+                                join tbl_relation on tbl_eventinfo.int_eventinfoID = tbl_relation.int_eventinfoID
+                                join tbl_wedbride on tbl_eventinfo.int_eventinfoID = tbl_wedbride.int_eventinfoID
+                                join tbl_wedgroom on tbl_eventinfo.int_eventinfoID = tbl_wedgroom.int_eventinfoID
+                                join tbl_payment on tbl_eventinfo.int_paymentID = tbl_eventinfo.int_paymentID
+                                where tbl_eventinfo.int_eventID = 5 and tbl_eventinfo.int_eventinfoID =?`
                                     db.query(priestaddrate, [req.body.id],(err, results, fields) => {
                                         var priestutilities = results[0]
                                         console.log(priestutilities)
-                                        var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, date_sched, time_schedstart,  var_venue) values(?,?,?,?,?)`
-                                        db.query(schedtag, [req.body.priestid, req.body.id, priestutilities.date_eventdate,  priestutilities.time_eventstart, 'INLPP'], (err, results, fields) => {
-                                                            
-                                        if (err) console.log(err);
+                                        
+                                        addschedules(priestutilities)
                                         if (err){
                                             console.log(err)
                                             res.send({alertDesc:notsuccess})
@@ -2566,7 +2648,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                         else{
                                             res.send({alertDesc:success})
                                         }   
-                                    })
+                                  
                                     })
                             }
                 })})
@@ -2574,8 +2656,42 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
             // console.log(results[0])
         });
-    });
 
+
+        function addschedules(priestutilities){
+
+            //if confirmed and if baptised
+
+            var schedname = 'Marriage of Mr. '+ priestutilities.var_lname +' and Ms. ' + priestutilities.var_blname
+            var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,  var_venue) values(?,?,?,?,?,?)`
+            db.query(schedtag, [req.body.priestid, req.body.id, schedname,priestutilities.date_eventdate,  priestutilities.time_eventstart, 'INLPP'], (err, results, fields) => {
+                console.log(err) 
+                var canonicalid = results; 
+                var canonicalwedsched = `insert into tbl_wedschedule(int_scheduleID, int_weddingsteps, bool_conpriest, bool_conguest) values(?,?,?,?)`
+                    db.query(canonicalwedsched, [canonicalid.insertId, 7, 0,1], (err, results, fields) => {
+                    
+                var schedname = 'Canonical Interview of Mr. '+ priestutilities.var_lname +' and Ms. ' + priestutilities.var_blname
+                var canonicalsched = `insert into tbl_schedule(int_userID,int_eventinfoID, var_schedulename,date_sched, time_schedstart,  var_venue) values(?,?,?,?,?,?)`
+                db.query(canonicalsched, [req.body.priestid,req.body.id,schedname,'0000-00-00',  '00:00:00', 'INLPP'], (err, results, fields) => {
+                    console.log(err)   
+                    var canonicalid = results;    
+                    var canonicalwedsched = `insert into tbl_wedschedule(int_scheduleID, int_weddingsteps, bool_conpriest, bool_conguest) values(?,?,?,?)`
+                    db.query(canonicalwedsched, [canonicalid.insertId, 4, 0,0], (err, results, fields) => {
+                    
+                        if(priestutilities.bool_gbaptized==0 ||priestutilities.bool_gconfirmed==0 ||priestutilities.bool_bbaptized==0 ||priestutilities.bool_bconfirmed==0 ){
+                            
+                            var schedname = 'Confirmation/RCIA for the marriage of Mr. '+ priestutilities.var_lname +' and Ms. ' + priestutilities.var_blname
+                            var confirmrciasched = `insert into tbl_schedule(int_userID,int_eventinfoID, var_schedulename,date_sched, time_schedstart,  var_venue) values(?,?,?,?,?,?)`
+                            db.query(confirmrciasched, [req.body.priestid,req.body.id,schedname,'0000-00-00',  '00:00:00', 'INLPP'], (err, results, fields) => {
+                                console.log(err)   
+                                var confirmrciaid = results;    
+                                var confirmrciawedsched = `insert into tbl_wedschedule(int_scheduleID, int_weddingsteps, bool_conpriest, bool_conguest) values(?,?,?,?)`
+                                db.query(confirmrciawedsched, [confirmrciaid.insertId, 6, 0,0], (err, results, fields) => {
+                                })})
+                        }
+                })})})})
+        }
+    });
 
     secretariatRouter.post('/transaction-marriage/getcabinets',(req,res)=>{
         var queryString2 = `select * from tbl_filecabinets`
@@ -2712,7 +2828,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 }        
         })})})})
     })
-
+    
 
     secretariatRouter.post('/transaction-marriage/schedules',(req,res)=>{
         console.log(req.body)
@@ -2733,17 +2849,58 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             if (err) console.log(err);
                 var eventdetails = results[0]
 
-                var queryString2 = `select * from tbl_schedule
-                join tbl_wedschedule on tbl_schedule.int_scheduleID = tbl_wedschedule.int_scheduleID 
-                where tbl_schedule.int_eventinfoID = ?`
+                var queryString2 = `select * from tbl_schedule 
+                join tbl_wedschedule on tbl_schedule.int_scheduleID = tbl_wedschedule.int_scheduleID
+                join tbl_wedsteps on tbl_wedschedule.int_weddingsteps = tbl_wedsteps.int_weddingsteps
+                where int_eventinfoID = ?`
                 db.query(queryString2,[req.body.id],(err,results,fields) =>{
                     if(err) console.log(err)
                     console.log(results)
-                    res.send({schedules:results[0], eventdetails:eventdetails})
+                    res.send({schedules:results, eventdetails:eventdetails})
         })})
     })
 
+    secretariatRouter.post('/transaction-marriage/updateschedules',(req,res)=>{
+        console.log(req.body)
+       
+        
+        var queryString2 = `select * from tbl_schedule 
+        join tbl_wedschedule on tbl_schedule.int_scheduleID = tbl_wedschedule.int_scheduleID
+        join tbl_wedsteps on tbl_wedschedule.int_weddingsteps = tbl_wedsteps.int_weddingsteps
+        where tbl_schedule.int_scheduleID = ?`
+        db.query(queryString2,[req.body.schedid],(err,results,fields) =>{
+            if(err) console.log(err)
+            console.log(results)
 
+            res.send({schedule:results[0]})     
+        })
+    })
+    secretariatRouter.post('/transaction-marriage/updateschedulefinal',(req,res)=>{
+        console.log(req.body)
+        var success =0
+        var notsuccess =1
+       
+        
+        var queryString2 = `UPDATE tbl_schedule SET date_sched = ?, time_schedstart = ?
+        where int_scheduleID =  ?`
+        db.query(queryString2,[req.body.updatedate, req.body.updatetime, req.body.schedid],(err,results,fields) =>{
+            if(err) console.log(err)
+            console.log(results)
+            var queryString2 = `UPDATE tbl_wedschedule SET bool_conpriest = ?, bool_conguest = ?
+            where int_scheduleID =  ?`
+            db.query(queryString2,[req.body.conpriest, req.body.conguest, req.body.schedid],(err,results,fields) =>{
+                if(err) console.log(err)
+                console.log(results)
+
+                if (err){
+                    console.log(err)
+                    res.send({alertDesc:notsuccess})
+                }
+                else{
+                    res.send({alertDesc:success})
+                }    
+        })})
+    })
 
 
     secretariatRouter.get('/walkin-anointing', (req, res)=>{
