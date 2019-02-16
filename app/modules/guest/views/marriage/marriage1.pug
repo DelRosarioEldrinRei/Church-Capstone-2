@@ -272,7 +272,7 @@ block addjs
 										else{
 											$('#priestdiv').empty().append(`
 											<div class="items pb-0">
-											<p><strong> Priest Assigned: </strong> //insert priest name here</p>
+											<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
 											</div>
 											`)
 										}
@@ -332,8 +332,8 @@ block addjs
 								}
 								//canonical
 								if(x == 3){
-									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
-										console.log(id)
+									$.post('/guest/weddingDetails/canonicalQuery',{id:id, x:x}).done(data=>{
+										console.log(data)
 										console.log(data.eventdetails.int_eventinfoID)
 										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
 										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
@@ -346,8 +346,11 @@ block addjs
 												
 													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
 													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
-													<button type='button' class='btn' id='viewAppform'>view</button>
+													<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
 												</h2>
+											</div>
+											<div class="items pb-0">
+												<p><strong> Canonical Interview Schedule: </strong>${data.eventdetails.date_sched}</p>
 											</div>
 											
 										</div>
@@ -358,7 +361,7 @@ block addjs
 
 								//completion of req
 								if(x == 4){
-									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
+									$.post('/guest/weddingDetails/requirementsQuery',{id:id, x:x}).done(data=>{
 										console.log(id)
 										console.log(data.eventdetails.int_eventinfoID)
 										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
@@ -372,12 +375,50 @@ block addjs
 													<p>Step completed on <strong>${dateApplied}</strong></p>
 													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
 													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
-													<button type='button' class='btn' id='viewAppform'>view</button>
+													<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
 												</h2>
+											</div>
+
+											<div class="items pb-0">
+												<p><strong> Default Requirements: </strong></p>
+												<div class="form-group" id="requirements"></div>	
+											</div>
+											<div class="items pb-0">
+												<p><strong> Additional Requirements: </strong></p>
+												<div class="form-group" id="requirements1"></div>	
 											</div>
 											
 										</div>
 										`)
+
+										for(i=0;i<data.defrequirements.length;i++){
+					
+											if(data.defrequirements[i].var_reqstatus != "Approved"){
+												$(`#requirements`).append(`
+												<input type="checkbox"  class="checkbox" value='${data.defrequirements[i].int_requirementID},0'>${data.defrequirements[i].var_reqname}  <br>
+												`)
+											}
+											
+											else if(data.defrequirements[i].var_reqstatus == "Approved"){
+												$(`#requirements`).append(`
+												<input type="checkbox" disabled=true checked="" class="checkbox" value='${data.defrequirements[i].int_requirementID},1'>${data.defrequirements[i].var_reqname} <br> 
+												`) 
+											}
+										}
+										for(i=0;i<data.addrequirements.length;i++){
+										
+											if(data.addrequirements[i].var_reqstatus != "Approved"){
+												$(`#requirements1`).append(`
+												<input type="checkbox"  class="checkbox" value='${data.addrequirements[i].int_requirementID},0'>${data.addrequirements[i].var_reqname}  <br>
+												`)
+											}
+											
+											else if(data.addrequirements[i].var_reqstatus == "Approved"){
+												$(`#requirements1`).append(`
+												<input type="checkbox" disabled=true checked="" class="checkbox" value='${data.addrequirements[i].int_requirementID},1'>${data.addrequirements[i].var_reqname} <br> 
+												`) 
+											}
+										}
 
 									});
 								}

@@ -72,7 +72,11 @@ block prepend main
 								label.label-control Event Type
 									select.form-control(type="text" name='eventtype')
 										option Open for everyone
-										option Exclusive
+										option Exclusive (for servants)
+										option Special Mass
+										option Seminar
+
+
 
 						.row
 							.col-md-12.text-center.my-3
@@ -214,7 +218,10 @@ block addjs
 						<label class="label-control">Event Type
 							<select type="text" id="eventtype" value="${data.char_eventtype}" class="form-control">
 							<option>Open for everyone</option>
-							<option>Exclusive</option>
+							<option>Exclusive (for servants)</option>
+							<option>Special Mass</option>
+							<option>Seminar</option>
+							
 							</select>
 						</label>
 					</div>`)

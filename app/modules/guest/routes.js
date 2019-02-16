@@ -1899,6 +1899,7 @@ guestRouter.post('/weddingDetails/viewQuery',(req,res)=>{
         
         JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_wedgroom ON tbl_wedgroom.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_wedcouple ON tbl_wedcouple.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_wedbride ON tbl_wedbride.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
         JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
@@ -1910,6 +1911,69 @@ guestRouter.post('/weddingDetails/viewQuery',(req,res)=>{
             res.send(results)
 })})
 
+
+guestRouter.post('/weddingDetails/canonicalQuery',(req,res)=>{
+    console.log(req.body)
+    var queryString = `SELECT * FROM tbl_eventinfo 
+        
+        JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_wedgroom ON tbl_wedgroom.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_wedbride ON tbl_wedbride.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_wedcouple ON tbl_wedcouple.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        join tbl_schedule on tbl_eventinfo.int_eventinfoID = tbl_schedule.int_eventinfoID
+        join tbl_wedschedule on tbl_schedule.int_scheduleID = tbl_wedschedule.int_scheduleID
+        WHERE tbl_eventinfo.int_eventinfoID = ? and tbl_wedschedule.int_weddingsteps = 4`
+    
+        db.query(queryString,[req.body.id],(err,results,fields)=>{
+            var eventdetails = results[0];
+            if(err) console.log(err)
+            console.log(results)
+            res.send({eventdetails: eventdetails})
+})})
+
+guestRouter.post('/weddingDetails/requirementsQuery',(req,res)=>{
+    console.log(req.body)
+    var queryString = `SELECT * FROM tbl_eventinfo 
+        
+        JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_wedgroom ON tbl_wedgroom.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_wedbride ON tbl_wedbride.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_wedcouple ON tbl_wedcouple.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        
+        WHERE tbl_eventinfo.int_eventinfoID = ?`
+    
+        db.query(queryString,[req.body.id],(err,results,fields)=>{
+            var eventdetails = results[0];
+            if(err) console.log(err)
+            console.log(results)
+
+            //default
+        var queryString2 = `SELECT * FROM tbl_requirements 
+            JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
+            JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_requirementsinevents.int_eventinfoID
+            JOIN tbl_requirementtype ON tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
+            WHERE tbl_eventinfo.int_eventinfoID = ? and tbl_requirements.var_reqstatus <> ?  and tbl_requirementtype.char_reqtype ='Default'`
+        //additional
+        var additional = `SELECT * FROM tbl_requirements 
+            JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
+            JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_requirementsinevents.int_eventinfoID
+            JOIN tbl_requirementtype ON tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
+            WHERE tbl_eventinfo.int_eventinfoID = ? and tbl_requirements.var_reqstatus <> ?  and tbl_requirementtype.char_reqtype ='Additional'`
+            db.query(queryString2,[req.body.id, 'Submitted'],(err,def,fields) => {
+                if (err) console.log(err);
+                db.query(additional,[req.body.id, 'Submitted'],(err,add,fields) => {
+                    if (err) console.log(err);
+                    console.log(def)
+                    console.log(add)
+
+
+
+            res.send({eventdetails: eventdetails,defrequirements:def,addrequirements:add})
+})})})})
 //===============================================================================================//
 // F A C I L I T I E S 
 //===============================================================================================//
