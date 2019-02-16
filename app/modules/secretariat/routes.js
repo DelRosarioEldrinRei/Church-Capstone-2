@@ -2616,7 +2616,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                             WHERE int_paymentID =?`
                                             db.query(priestrequested, [newamount, newbalance, newstatus,  priestutilities.int_paymentID], (err, results, fields) => {
                                                 if (err) console.log(err);
-                                                addschedules()
+                                                addschedules(priestutilities)
                                                     if (err){
                                                         console.log(err)
                                                         res.send({alertDesc:notsuccess})

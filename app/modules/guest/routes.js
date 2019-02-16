@@ -1930,7 +1930,7 @@ guestRouter.post('/weddingDetails/canonicalQuery',(req,res)=>{
             var eventdetails = results[0];
             if(err) console.log(err)
             console.log(results)
-            res.send({eventdetails: eventdetails})
+            res.send({eventdetails: eventdetails, stepclicked: req.body.x})
 })})
 
 guestRouter.post('/weddingDetails/requirementsQuery',(req,res)=>{
@@ -1972,7 +1972,7 @@ guestRouter.post('/weddingDetails/requirementsQuery',(req,res)=>{
 
 
 
-            res.send({eventdetails: eventdetails,defrequirements:def,addrequirements:add})
+            res.send({eventdetails: eventdetails,defrequirements:def,addrequirements:add, stepclicked: req.body.x})
 })})})})
 //===============================================================================================//
 // F A C I L I T I E S 
