@@ -101,7 +101,7 @@ block main
 		}
 
 		/* hide inputs offscreen, but at the same vertical positions as the correpsonding labels, so that tabbing scrolls the viewport as expected */
-		input {
+		input[type="checkbox"] {
 			display: block;
 			height: 53px;
 			margin: 0 0 -53px -9999px;
@@ -299,15 +299,31 @@ block addjs
 													<button type='button' class='btn' id='viewAppform'>view</button>
 												</h2>
 											</div>
+											<div class="items pb-0" id='priestdiv'>	
+											</div>
 											
 										</div>
 										`)
-
+									if(data.eventdetails.int_userpriestID == null){
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong></p>
+											<p>No priest assigned yet. Priest will be assigned after the payment process. Thank you.</p>
+											</div>
+											`)
+										}
+										else{
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
+											</div>
+											`)
+										}
 									});
 								}
 								//payment
 								if(x == 2){
-									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
+									$.post('/guest/weddingDetails/paymentQuery',{id:id, x:x}).done(data=>{
 										console.log(id)
 										console.log(data.eventdetails.int_eventinfoID)
 										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
@@ -321,12 +337,28 @@ block addjs
 												
 													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
 													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
-													<button type='button' class='btn' id='viewAppform'>view</button>
+											
 												</h2>
 											</div>
-											
+											<div class="items pb-0" id='priestdiv'>	
+											</div>
 										</div>
 										`)
+										if(data.eventdetails.int_userpriestID == null){
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong></p>
+											<p>No priest assigned yet. Priest will be assigned after the payment process. Thank you.</p>
+											</div>
+											`)
+										}
+										else{
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
+											</div>
+											`)
+										}
 
 									});
 								}
@@ -336,6 +368,7 @@ block addjs
 										console.log(data)
 										console.log(data.eventdetails.int_eventinfoID)
 										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var canonicalsched = moment(data.interview.date_sched).format('MMMM DD, YYYY')
 										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
 										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
 										$('.information_details' + data.stepclicked).empty().append(`
@@ -346,16 +379,42 @@ block addjs
 												
 													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
 													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
-													<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
+													
 												</h2>
 											</div>
-											<div class="items pb-0">
-												<p><strong> Canonical Interview Schedule: </strong>${data.eventdetails.date_sched}</p>
+											<div class="items pb-0" id='canonicaldetails'></div>
+											<div class="items pb-0" id='priestdiv'>
 											</div>
 											
 										</div>
 										`)
-
+										if(data.interview =='null'){
+											$('#canonicaldetails').append(`
+												<p><strong> Canonical Interview Schedule: </strong>No scheduled date yet</p>
+											`)
+										
+										}
+										else  if(data.interview !='null'){
+											$('#canonicaldetails').append(`
+												<p><strong> Canonical Interview Schedule: </strong>${canonicalsched}</p>
+											`)
+										
+										}
+										if(data.eventdetails.int_userpriestID == null){
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong></p>
+											<p>No priest assigned yet. Priest will be assigned after the payment process. Thank you.</p>
+											</div>
+											`)
+										}
+										else{
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
+											</div>
+											`)
+										}
 									});
 								}
 
@@ -372,52 +431,57 @@ block addjs
 											<h1>Completion of Requirements</h1>
 											<div class="items pb-0">
 												<h2 class="done1" aria-hidden="true">
-													<p>Step completed on <strong>${dateApplied}</strong></p>
+													
 													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
 													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
-													<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
+													
 												</h2>
 											</div>
 
 											<div class="items pb-0">
-												<p><strong> Default Requirements: </strong></p>
+												<p><strong>Submitted Requirements: </strong></p>
 												<div class="form-group" id="requirements"></div>	
 											</div>
 											<div class="items pb-0">
-												<p><strong> Additional Requirements: </strong></p>
+												<p><strong>To be submitted Requirements: </strong></p>
 												<div class="form-group" id="requirements1"></div>	
 											</div>
 											
+											<div class="items pb-0" id='priestdiv'>	
+											</div>
 										</div>
 										`)
 
-										for(i=0;i<data.defrequirements.length;i++){
+										for(i=0;i<data.apprequirements.length;i++){
 					
-											if(data.defrequirements[i].var_reqstatus != "Approved"){
 												$(`#requirements`).append(`
-												<input type="checkbox"  class="checkbox" value='${data.defrequirements[i].int_requirementID},0'>${data.defrequirements[i].var_reqname}  <br>
+												<p>${data.apprequirements[i].var_reqname}</p>
 												`)
-											}
 											
-											else if(data.defrequirements[i].var_reqstatus == "Approved"){
-												$(`#requirements`).append(`
-												<input type="checkbox" disabled=true checked="" class="checkbox" value='${data.defrequirements[i].int_requirementID},1'>${data.defrequirements[i].var_reqname} <br> 
-												`) 
-											}
+											
 										}
-										for(i=0;i<data.addrequirements.length;i++){
+										for(i=0;i<data.penrequirements.length;i++){
 										
-											if(data.addrequirements[i].var_reqstatus != "Approved"){
-												$(`#requirements1`).append(`
-												<input type="checkbox"  class="checkbox" value='${data.addrequirements[i].int_requirementID},0'>${data.addrequirements[i].var_reqname}  <br>
-												`)
-											}
 											
-											else if(data.addrequirements[i].var_reqstatus == "Approved"){
-												$(`#requirements1`).append(`
-												<input type="checkbox" disabled=true checked="" class="checkbox" value='${data.addrequirements[i].int_requirementID},1'>${data.addrequirements[i].var_reqname} <br> 
-												`) 
-											}
+											$(`#requirements1`).append(`
+												<p>${data.penrequirements[i].var_reqname}</p>
+												`)
+											
+										}
+										if(data.eventdetails.int_userpriestID == null){
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong></p>
+											<p>No priest assigned yet. Priest will be assigned after the payment process. Thank you.</p>
+											</div>
+											`)
+										}
+										else{
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
+											</div>
+											`)
 										}
 
 									});
@@ -439,7 +503,7 @@ block addjs
 													
 													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
 													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
-													<button type='button' class='btn' id='viewAppform'>view</button>
+											
 												</h2>
 											</div>
 											
@@ -464,7 +528,7 @@ block addjs
 													
 													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
 													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
-													<button type='button' class='btn' id='viewAppform'>view</button>
+											
 												</h2>
 											</div>
 											
