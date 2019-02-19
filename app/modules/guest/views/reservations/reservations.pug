@@ -1358,17 +1358,17 @@ block addjs
 															{
 															text: `Number of Additional Sponsors : ${data.sponsors.length - 2}`,
 															style: 'styleLabelEventName',
-															absolutePosition: {x:65, y:243},
+															absolutePosition: {x:65, y:630},
 															},
 															{
 															text: '₱ 50/head',
 															style: 'styleLabelEvent',
-															absolutePosition: {x:393, y:243},
+															absolutePosition: {x:393, y:630},
 															},
 															{
 															text: `₱ ${((data.sponsors.length-2)*50).toFixed(2)}`,
 															style: 'styleLabelEvent',
-															absolutePosition: {x:506, y:243},
+															absolutePosition: {x:506, y:630},
 															},
 															//total amount
 															{
@@ -1382,6 +1382,13 @@ block addjs
 															style: 'styleLabelRemaining',
 															absolutePosition: {x:338, y:776},
 															},
+															//- {
+															//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
+															//- style: 'styleLabelFill',
+															//- absolutePosition: {x:520, y:28},
+															//- text: 'Date: ' + dateRequested,
+															//- },
+														],
 														styles: {
 															styleLabel: {
 																font: 'EdwardianScript',

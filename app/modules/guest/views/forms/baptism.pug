@@ -219,7 +219,7 @@ block main
 												.form-group
 													h6.label-control Birth Certificate
 														.text-danger.d-inline  *
-													input#file-0b.file(type='file',accept='image/*',name="image")
+													input#file-0b.file(type='file',accept='image/*',name="image"  onchange="validateFileType()")
 										.learn-more.pull-right
 											button#prevButton1.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 											button#nextButton2.btn(type='button') Next
@@ -281,10 +281,26 @@ block main
 					button.btn.std-btn.btn-common.btn-info.mb-0#submitButton(type='button') Apply
 block addjs
 	script.
+				function validateFileType(){
+
+					var fileName = document.getElementById("file-0b").value;
+					console.log(fileName)
+					var idxDot = fileName.lastIndexOf(".") + 1;
+					var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+					if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+						//TO DO
+					}else{
+						alert("Only jpg/jpeg and png files are allowed!");
+						$("#file-0b").val(null)
+					}  
+				}
+
+		
 		var baptismType1 = "";
 		var eventid =$("#eventid").val();
 		var sponsorfee=0;
 		var ratefee=0;
+		
 		console.log($("#eventid").val())
 		$('#textarea1').hide();
 		$('#textarea2').hide();
@@ -422,7 +438,6 @@ block addjs
 				})
 			}
 		})
-		
 		}
 		$('#presubmitButton').click(function() {
 			$("#summaryModal").modal('show');
