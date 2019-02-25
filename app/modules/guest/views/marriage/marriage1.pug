@@ -225,8 +225,19 @@ block main
 					.modal-header(style='background:#367587; color:white')
 						h4.modal-title(style='background:#367587; color:white') View Application Form
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
-							span.p-3(aria-hidden='true' style='background:#367587; color:white') ×
+							span.p-2(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#viewBodyAppend
+	#paymenthistoryModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header(style='background:#802b00; color:white')
+						h4.modal-title(style='background:#802b00; color:white') Payment History
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span.p-2(aria-hidden='true' style='background:#802b00; color:white') ×
+					.modal-body#paymenthistoryBodyAppend
+					.modal-footer
+						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
+						
 block addjs
 	script.
 		var information = [0,1,2,3,4,5,6]
@@ -325,10 +336,22 @@ block addjs
 								if(x == 2){
 									$.post('/guest/weddingDetails/paymentQuery',{id:id, x:x}).done(data=>{
 										console.log(id)
+										console.log(data)
 										console.log(data.eventdetails.int_eventinfoID)
 										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
 										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
 										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
+
+										var downpaymentdeadline = moment(data.eventdetails.date_downpaymentdeadline).format('MMMM DD, YYYY')
+										var fullpaymentdeadline = moment(data.eventdetails.date_fullpaymentdeadline).format('MMMM DD, YYYY')
+										var nowDate = new Date(); 
+										var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'-'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+										console.log(data)
+										var datelang = nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate()
+										var additionalfee =data.eventdetails.dbl_amount-data.eventdetails.double_fee
+										var strdownpayment= "0." + data.eventdetails.int_downpaymentpercent
+										var downpayment= data.eventdetails.dbl_amount*parseFloat(strdownpayment)
+										var fullpayment= data.eventdetails.dbl_amount
 										$('.information_details' + data.stepclicked).empty().append(`
 										<div class="custom_container_details">
 											<h1>Payment</h1>
@@ -337,18 +360,37 @@ block addjs
 												
 													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
 													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
+													<div class="row">
+														<div class="col-md-12">
+															<div class="form-group">
+																<p><strong>Downpayment: </label></strong>₱${data.eventdetails.dbl_downpaymentamount}
+																<p><strong>Downpayment Deadline:</strong></label> ${downpaymentdeadline}
+																
+															</div>
+														</div>
+													</div>
+													<div id="paymenthistorybutton"></div>
+													<div>
+													<button type='button' class='btn' id='voucher'>Voucher</button>
+													</div>
 											
 												</h2>
+												
+												
 											</div>
 											<div class="items pb-0" id='priestdiv'>	
 											</div>
 										</div>
 										`)
+										if(data.paymenthistory!=null)
+											$('#paymenthistorybutton').append(`
+													<button type='button' class='btn' id='paymenthistory'>Payment History</button>
+											`)
 										if(data.eventdetails.int_userpriestID == null){
 											$('#priestdiv').empty().append(`
 											<div class="items pb-0">
 											<p><strong> Priest Assigned: </strong></p>
-											<p>No priest assigned yet. Priest will be assigned after the payment process. Thank you.</p>
+											<p>No priest assigned yet. Priest will be assigned after the downpayment process. Thank you.</p>
 											</div>
 											`)
 										}
@@ -359,6 +401,355 @@ block addjs
 											</div>
 											`)
 										}
+
+
+										//voucher
+										$('#voucher').click(function(){
+											
+											$.post('/guest/voucherEvents',{voucherId:data.eventdetails.int_voucherID}).done(data=>{
+												for(i=0;i<data.sponsors.length;i++){
+														console.log("sponsors"+data.sponsors[i])
+														}
+														console.log(data.voucherinfo[0])
+														console.log("info"+data.voucherinfo[0])
+														$(document).off('click', '#voucherButton')
+															function toDataURL(url, callback) {
+																var xhr = new XMLHttpRequest();
+																xhr.onload = function() {
+																	var reader = new FileReader();
+																	reader.onloadend = function() {
+																	callback(reader.result);
+																	}
+																	reader.readAsDataURL(xhr.response);
+																};
+																xhr.open('GET', url);
+																xhr.responseType = 'blob';
+																xhr.send();
+															}
+															toDataURL('/document_templates/voucherTemplate3witheventname.png', function(dataUrl) {
+																toDataURL('/document_templates/logo.png', function(logo) {
+																	var sponsorText = [];
+																	var sponsorX = [65,393,507];
+																	var sponsorY = 243;
+																	console.log(`${data.sponsors}`)
+																	for(i=0;i<data.sponsors[i].length;i++){
+																		sponsorText.push({
+																			text: `${data.sponsor[i].var_sponsorname}`,
+																			style: 'styleLabelEvent',
+																			absolutePosition: {x:sponsorX[0], y:sponsorY},
+																		})
+																	}
+																	var docDefinition = {
+																		pageMargins: [ 0, 35, 0, 0 ],
+																		content: [
+																			{
+																				image: dataUrl,
+																				width: 610,
+																				//- height: 100,
+																			},
+																			{
+																				image: logo,
+																				width: 45,
+																				height: 40,
+																				absolutePosition: {x:13, y:60},
+																			},
+																			{
+																				image: logo,
+																				width: 45,
+																				height: 40,
+																				absolutePosition: {x:13, y:447},
+																			},
+																			//mga laman sa taas
+																			{
+																			text:'500-0239',
+																			style: 'styleLabelTop',
+																			absolutePosition: {x:350, y:45},
+																			},
+																			{
+																			text:'churcheventapp@gmail.com',
+																			style: 'styleLabelTop',
+																			absolutePosition: {x:257, y:68},
+																			},
+																			{
+																			text:'inanglupangpangako.com',
+																			style: 'styleLabelTop',
+																			absolutePosition: {x:269, y:90},
+																			},
+																			{
+																			text:'Urban, Brgy. Payatas B. 1119',
+																			style: 'styleLabelTop',
+																			absolutePosition: {x:444, y:45},
+																			},
+																			{
+																			text:'Quezon City, Manila',
+																			style: 'styleLabelTop',
+																			absolutePosition: {x:487, y:68},
+																			},
+																			//- {
+																			//- text:`#${data.var_vouchercode}`,
+																			//- style: 'styleLabelTop',
+																			//- absolutePosition: {x:495, y:90},
+																			//- },
+																			//Middle part
+																			{
+																			text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
+																			style: 'styleLabelMiddle',
+																			absolutePosition: {x:51, y:127},
+																			},
+																			{
+																			text:`${data.voucherinfo[0].var_useraddress}`,
+																			style: 'styleLabelMiddle',
+																			absolutePosition: {x:51, y:140},
+																			},
+																			{
+																			text:`# ${data.voucherinfo[0].var_vouchercode}`,
+																			style: 'styleLabelMiddle',
+																			absolutePosition: {x:225, y:127},
+																			},
+																			{
+																			text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
+																			style: 'styleLabelMiddle',
+																			absolutePosition: {x:225, y:140},
+																			},
+																			{
+																			text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
+																			style: 'styleLabelMiddle',
+																			absolutePosition: {x:225, y:153},
+																			},
+																			//table Contents
+																			// .toUpperCase() yung event name before ilagay sa pdfmake
+																			//ito yung ifoforeach mu rae
+																			{ 
+																			text: `${data.voucherinfo[0].var_eventname}`,
+																			style: 'styleLabelEventName',
+																			absolutePosition: {x:65, y:217},
+																			},
+																			{
+																			text: `₱ ${(data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50).toFixed(2)}`,
+																			style: 'styleLabelEvent',
+																			absolutePosition: {x:393, y:217},
+																			},
+																			{
+																			text:`₱ ${(data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50).toFixed(2)}`,
+																			style: 'styleLabelEvent',
+																			absolutePosition: {x:507, y:217},
+																			},
+																			// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+																			{
+																			text: `Number of Sponsors : ${data.sponsors.length}`,
+																			style: 'styleLabelEventName',
+																			absolutePosition: {x:65, y:243},
+																			},
+																			{
+																			text: '₱ 50/head',
+																			style: 'styleLabelEvent',
+																			absolutePosition: {x:393, y:243},
+																			},
+																			{
+																			text: `₱ ${((data.sponsors.length-2)*50).toFixed(2)}`,
+																			style: 'styleLabelEvent',
+																			absolutePosition: {x:506, y:243},
+																			},
+																			//total amount
+																			{
+																			text: `₱ ${(((data.sponsors.length-2)*50) + (data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50)).toFixed(2)}`,
+																			style: 'styleLabelTA',
+																			absolutePosition: {x:476, y:354},
+																			},
+																			//remaining days
+																			{
+																			text: '14',
+																			style: 'styleLabelRemaining',
+																			absolutePosition: {x:338, y:389},
+																			},
+																			//IBABANG VOUCHER 387 sa y-axis dinagdag
+																			{
+																			text:'500-0239',
+																			style: 'styleLabelTop',
+																			absolutePosition: {x:350, y:432},
+																			},
+																			{
+																			text:'churcheventapp@gmail.com',
+																			style: 'styleLabelTop',
+																			absolutePosition: {x:257, y:455},
+																			},
+																			{
+																			text:'inanglupangpangako.com',
+																			style: 'styleLabelTop',
+																			absolutePosition: {x:269, y:477},
+																			},
+																			{
+																			text:'Urban, Brgy. Payatas B. 1119',
+																			style: 'styleLabelTop',
+																			absolutePosition: {x:444, y:432},
+																			},
+																			{
+																			text:'Quezon City, Manila',
+																			style: 'styleLabelTop',
+																			absolutePosition: {x:487, y:455},
+																			},
+																			//Middle part
+																			{
+																			text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
+																			style: 'styleLabelMiddle',
+																			absolutePosition: {x:51, y:514},
+																			},
+																			{
+																			text:`${data.voucherinfo[0].var_useraddress}`,
+																			style: 'styleLabelMiddle',
+																			absolutePosition: {x:51, y:527},
+																			},
+																			{
+																			text:`# ${data.voucherinfo[0].var_vouchercode}`,
+																			style: 'styleLabelMiddle',
+																			absolutePosition: {x:225, y:514},
+																			},
+																			{
+																			text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
+																			style: 'styleLabelMiddle',
+																			absolutePosition: {x:225, y:527},
+																			},
+																			{
+																			text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
+																			style: 'styleLabelMiddle',
+																			absolutePosition: {x:225, y:540},
+																			},
+																			//table Contents
+																			// .toUpperCase() yung event name before ilagay sa pdfmake
+																			//ito yung ifoforeach mu rae
+																			{
+																			text: `${data.voucherinfo[0].var_eventname}`,
+																			style: 'styleLabelEventName',
+																			absolutePosition: {x:65, y:604},
+																			},
+																			{
+																			text:  `₱ ${(data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50).toFixed(2)}`,
+																			style: 'styleLabelEvent',
+																			absolutePosition: {x:393, y:604},
+																			},
+																			{
+																			text: `₱ ${(data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50).toFixed(2)}`,
+																			style: 'styleLabelEvent',
+																			absolutePosition: {x:507, y:604},
+																			},
+																			// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+																			{
+																			text: `Number of Sponsors : ${data.sponsors.length}`,
+																			style: 'styleLabelEventName',
+																			absolutePosition: {x:65, y:630},
+																			},
+																			{
+																			text: '₱ 50/head',
+																			style: 'styleLabelEvent',
+																			absolutePosition: {x:393, y:630},
+																			},
+																			{
+																			text: `₱ ${((data.sponsors.length-2)*50).toFixed(2)}`,
+																			style: 'styleLabelEvent',
+																			absolutePosition: {x:506, y:630},
+																			},
+																			//total amount
+																			{
+																			text: `₱ ${(((data.sponsors.length-2)*50) + (data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50)).toFixed(2)}`,
+																			style: 'styleLabelTA',
+																			absolutePosition: {x:476, y:741},
+																			},
+																			//remaining days
+																			{
+																			text: '14',
+																			style: 'styleLabelRemaining',
+																			absolutePosition: {x:338, y:776},
+																			},
+																			//- {
+																			//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
+																			//- style: 'styleLabelFill',
+																			//- absolutePosition: {x:520, y:28},
+																			//- text: 'Date: ' + dateRequested,
+																			//- },
+																		],
+																		styles: {
+																			styleLabel: {
+																				font: 'EdwardianScript',
+																				fontSize:85,
+																			},
+																			styleHeader: {
+																				font: 'OldEnglishText',
+																				fontSize: 45,
+																				alignment: 'center',
+																				margin: [0, 15, 0, 0],
+																			},
+																			styleHeader2: {
+																				font: 'EdwardianScript',
+																				fontSize: 33,
+																				alignment: 'center',
+																				margin: [0, 5, 0, 5],
+																			},
+																			styleLabel: {
+																				font: 'EdwardianScript',
+																				fontSize: 26,
+																			},
+																			styleLabelTop: {
+																				font: 'Roboto',
+																				fontSize: 11,
+																				color: 'white',
+																			},
+																			styleLabelMiddle: {
+																				font: 'Roboto',
+																				fontSize: 9,
+																			},
+																			styleLabelMiddleTA: {
+																				font: 'Roboto',
+																				fontSize: 18,
+																			},
+																			styleLabelEventName: {
+																				font: 'Roboto',
+																				fontSize: 10,
+																				bold: true,
+																			},
+																			styleLabelEvent: {
+																				font: 'Roboto',
+																				fontSize: 10,
+																			},
+																			styleLabelFill: {
+																				font: 'Roboto',
+																				fontSize: 20,
+																			},
+																			styleLabelTA: {
+																				font: 'Roboto',
+																				fontSize: 15,
+																				color: 'white',
+																				bold: true,
+																			},
+																			styleLabelRemaining: {
+																				font: 'Roboto',
+																				fontSize: 9,
+																				italic: true,
+																			},
+																		},
+																	}
+																	pdfMake.fonts = {
+																		Roboto: {
+																			normal: 'Roboto-Regular.ttf',
+																			bold: 'Roboto-Medium.ttf',
+																			italic: 'Roboto-Italic.ttf',
+																			bolditalics: 'Roboto-MediumItalic.ttf',
+																		},
+																		EdwardianScript: {
+																			normal: 'Edwardian-script-itc-Regular.TTF'
+																		},
+																		OldEnglishText: {
+																			normal: 'Old-english-text-mt-Regular.ttf'
+																		},
+																		TimesNewRoman: {
+																			normal: 'Times-new-roman-Regular.ttf'
+																		}
+																	}
+																	pdfMake.createPdf(docDefinition).open();
+																	pdfMake.createPdf(docDefinition).download();
+																});
+															})
+											})
+										})
 
 									});
 								}
@@ -564,7 +955,7 @@ block addjs
 				})
 			});
 
-			$(document).on('click','#viewAppform',function(){
+		$(document).on('click','#viewAppform',function(){
 				var id = $('#eventinfoID').val()
 				console.log(id)
 				//- console.log($('.eventname').attr('value'))
@@ -812,6 +1203,56 @@ block addjs
 					$('#viewModal').modal('show')
 					$('#viewModal').on('hidden.bs.modal',function(){
 						$('#viewBodyAppend').empty()
+					})
+				})
+				})
+		$(document).on('click','#paymenthistory',function(){
+				var id = $('#eventinfoID').val()
+				console.log(id)
+				//- console.log($('.eventname').attr('value'))
+				$.post('/guest/weddingDetails/paymenthistoryQuery',{id:id}).done(data=>{
+				console.log(data)
+						var dateRequested = moment(data.eventdetails.date_eventdate).format('MM/DD/YYYY')
+						var gbirthday = moment(data.eventdetails.date_birthday).format('MM/DD/YYYY')
+						var bbirthday = moment(data.eventdetails.date_bbirthday).format('MM/DD/YYYY')
+						var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
+						console.log(timeRequested)
+						var age = moment().diff(data.eventdetails.date_birthday,'years');
+						$('#paymenthistoryBodyAppend').append(`
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table table-hover dataTable fixed_header" >
+										<thead class="text-primary">
+											<th >OR No. </th>
+											<th>Date</th> 
+											<th>User Account</th> 
+											<th>Payer</th>
+											<th style ="text-align: right">Amount</th>
+											<th style ="text-align: right">Balance</th>
+										</thead>
+										<tbody id='paymentsummary'></tbody>
+									</table>
+								</div>
+							</div>
+							`)
+							for(i=0; i<data.paymenthistory.length; i++){
+										console.log('for')
+										var datepaid = moment(data.paymenthistory[i].date_paymentdate).format('MMMM DD, YYYY')
+										$('#paymentsummary').append(`
+											<tr>
+												<td>${data.paymenthistory[i].int_ORnumber}
+												<td>${datepaid}
+												<td>${data.paymenthistory[i].var_username}
+												<td>${data.paymenthistory[i].var_paidby}
+												<td style ="text-align: right">₱${data.paymenthistory[i].dbl_paymentamount}
+												<td style ="text-align: right">₱${data.paymenthistory[i].dbl_remainingbalance}
+											</tr>
+										
+										`)
+							}
+					$('#paymenthistoryModal').modal('show')
+					$('#paymenthistoryModal').on('hidden.bs.modal',function(){
+						$('#paymenthistoryBodyAppend').empty()
 					})
 				})
 				})

@@ -300,8 +300,16 @@ block addjs
 							contentType:false,
 							success: function(data){
 								console.log(formData)
-								$('#viewModal').modal('show');
-								console.log(data.int_voucherID)
+								swal({
+										title: "Success",
+										text: 'Your request has been submitted; however, the time is still tentative. We will notify you once the scheduled time is changed. Thank you and God bless.',
+										icon: 'success',
+										buttons:{
+											Okay:'okay'
+										}
+									}).then((value)=>{
+										window.location='/guest/reservation'
+									})
 							}
 
 						})
