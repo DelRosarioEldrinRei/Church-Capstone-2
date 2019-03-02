@@ -153,6 +153,72 @@ indexRouter.route('/document')
     res.render('home/views/document', req.query);
 })
 
+//================================================================
+//forms
+//================================================================
+indexRouter.get('/anointingform', (req, res) => {
+  var queryString= `select int_eventID from tbl_services where var_eventname="Anointing of the sick"`
+        db.query(queryString, (err, results, fields) => {
+            if (err) console.log(err);
+            console.log(results);
+            return res.render('home/views/forms/anointing',{ID:results})
+        });
+});
+indexRouter.get('/anointing/utilities/query', (req, res)=>{
+  var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = (select int_eventID from tbl_services where var_eventname="Anointing of the sick")`
+  db.query(queryString3,(err,results,fields)=>{
+      console.log(results)
+  res.send(results)
+})
+})
+indexRouter.post('/anointing/query', (req, res) => {
+
+  var queryString1 =`SELECT * FROM tbl_user where int_userID = ?`
+  db.query(queryString1,[req.body.id], (err, results1, fields) => {
+      res.send({firstQuery:results1[0]});
+  });
+
+})
+
+
+
+
+indexRouter.get('/funeralform', (req, res) => {
+  res.render('home/views/forms/funeral')
+});
+
+indexRouter.get('/establishmentform', (req, res) => {
+  res.render('home/views/forms/establishment')
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 indexRouter.use(function (err, req, res, next) {
   console.error(err.stack)
   res.status(500)

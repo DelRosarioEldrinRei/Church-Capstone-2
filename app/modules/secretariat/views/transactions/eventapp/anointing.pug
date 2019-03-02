@@ -73,6 +73,7 @@ block prepend main
 																	th Event Date
 																	th Requirement Status
 																	th Approval Status
+																	th Event Status
 																	th.text-center(style=" width:11rem") Actions
 															tbody
 																each anointing in anointings
@@ -86,14 +87,14 @@ block prepend main
 																			span.approvalreq(value=`${anointing.var_reqstatus}`) #{anointing.var_reqstatus}
 																		td
 																			span.approval(value=`${anointing.char_approvalstatus}`) #{anointing.char_approvalstatus}
+																		td
+																			span.eventstatus(value=`${anointing.var_eventstatus}`) #{anointing.var_eventstatus}
 																		td.td-actions.text-center
 																			button.btn.btn-primary.actionButton(type='button' value=`${anointing.int_eventinfoID}`)
 																				i.ti-settings
 																					#toolbar-options.hidden
 																						a.viewButton(href='#')
 																							i.ti-file(style="color:white;")
-																						a.updateButton(href='#')
-																							i.ti-pencil(style="color:white;")
 																						a.updateReqButton(href='#')
 																							i.ti-new-window(style="color:white;")
 								#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
@@ -151,6 +152,8 @@ block addjs
 	script(type='text/javascript').
 		
 		$(document).ready(function(){
+
+		
 			var ctr = 0;
 			for(var i =0; i<= $('.approvalreq').length; i++){
 
@@ -177,6 +180,17 @@ block addjs
 				else if($('.approval').eq(i).attr('value') == "Disapproved"){
 					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700')
 				}
+
+				if($('.eventstatus').eq(i).attr('value') == "Pending"){
+					$('.eventstatus').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
+				}
+				else if($('.eventstatus').eq(i).attr('value') == "Cancelled"){
+					$('.eventstatus').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700 ')
+				}
+				else if($('.eventstatus').eq(i).attr('value') == "On Going"){
+					$('.eventstatus').eq(i).addClass('badge btn btn-primary-lg bgc-green-100 c-green-700')
+				}
+				
 			}
 
 			var idNow;
@@ -358,7 +372,7 @@ block addjs
 						console.log(requirements)
 							swal({
 							title:'Are You Sure?', 
-							text:'You want to update the Status of the Requirements?', 
+							text:'You want to update the status of the requirements?', 
 							type:'warning',
 							showCancelButton: true,
 							confirmButtonColor: '#3085d6',
@@ -381,7 +395,7 @@ block addjs
 
 											}
 											$('#messageAppend').append(`
-											<h4 class="c-grey-900 mB-20">Send Message</h4>
+												<h4 class="c-grey-900 mB-20">Send Message</h4>
 												<div class="send-header">
 													<div class="form-group">
 													<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
@@ -439,7 +453,7 @@ block addjs
 																	type:'success'
 																}).then(function(){
 																	for(i=0;i<idsr.length;i++){
-																		$.post('/secretariat/transaction-anointing/updateRequirementsReject',{
+																		$.post('/secretariat/updateRequirementsReject',{
 																		id:idsr[i],
 																		eventid:idNow
 																		}).done(data=>{
@@ -459,21 +473,21 @@ block addjs
 
 							}
 							else if(idsa.length > 0){
-							for(i=0;i<idsa.length;i++){
-								$.post('/secretariat/transaction-anointing/updateRequirements',{
-								id:idsa[i],
-								eventid:idNow
-								}).done(data=>{
+								for(i=0;i<idsa.length;i++){
+									$.post('/secretariat/transaction-anointing/updateRequirements',{
+									id:idsa[i],
+									eventid:idNow
+									}).done(data=>{
 
-								})
-							}
-							swal({
-								title:'Success',
-								text:'Status updated', 
-								type:'success'
-								}).then(function(){
-									location.reload();
-								})
+									})
+								}
+								swal({
+									title:'Success',
+									text:'Status updated', 
+									type:'success'
+									}).then(function(){
+										location.reload();
+									})
 							}
 							else{
 								swal({
@@ -495,215 +509,7 @@ block addjs
 				})
 			})
 			
-			$('.updateButton').click(function(){
-				$.post('/secretariat/transaction-anointing/query/updateStatus',{id:idNow}).done(data=>{
-				$('#updateBodyAppend').append(`
-				<form>
-					<input id="eventid" type="hidden" value="${data.results.int_eventinfoID}"></input>
-					<input id="userid" type="hidden" value="${data.results.int_userID}"></input>
-					
-					<div class="form-row">
-						<div class="form-group col-md-6">
-							<label>Current Approval Status:</label>
-							<select class="form-control" id="eventstatusupdate"></select>
-						</div>
-						<div class="form-group col-md-6">
-							<label >Current Requirement Status:</label>
-							<input id="reqstatus" type="text" class="form-control" value="" disabled>
-						</div>
-					</div>
-					
-				</form>
-				`)
-				var ctr2 =0;
-				for(i=0;i<data.requirements.length;i++){
-					console.log(data.requirements[i].var_reqname)
-					if(data.requirements[i].var_reqstatus == "Approved"){
-					ctr2++;
-					}	
-				}
-				if(ctr2 == data.requirements.length){
-					$('#reqstatus').val("Complete")
-					console.log("cur reqstatus"+$('#reqstatusupdate').val())
-						
-								if(data.results.char_approvalstatus=="Cancelled"){
-									$('#eventstatusupdate').append(`
-									<option selected="selected">Cancelled</option>
-									<option>Approved</option>
-									`)
-								}
-								if(data.results.char_approvalstatus=="Approved"){
-									$('#eventstatusupdate').append(`
-									<option selected="selected" disabled>Approved</option>
-									`)
-								}
-								if(data.results.char_approvalstatus=="Pending"){
-									$('#eventstatusupdate').append(`
-									<option selected="selected">Pending</option>
-									<option>Cancelled</option>
-									<option>Disapproved</option>
-									`)
-								}
-								if(data.results.char_approvalstatus=="Disapproved"){
-									$('#eventstatusupdate').append(`
-									<option selected="selected">Disapproved</option>
-									<option>Approved</option>
-									<option>Cancelled</option>
-									`)
-								}
-						
-				}
-				else{
-					$('#reqstatus').val("Incomplete")
-					if(data.results.char_approvalstatus=="Cancelled"){
-						$('#eventstatusupdate').append(`
-						<option selected="selected">Cancelled</option>
-						<option>Approved</option>
-						`)
-					}
-					if(data.results.char_approvalstatus=="Approved"){
-						$('#eventstatusupdate').append(`
-						<option selected="selected" disabled>Approved</option>
-						`)
-					}
-					if(data.results.char_approvalstatus=="Pending"){
-						$('#eventstatusupdate').append(`
-						<option selected="selected">Pending</option>
-						<option>Cancelled</option>
-						<option>Disapproved</option>
-						`)
-					}
-					if(data.results.char_approvalstatus=="Disapproved"){
-						$('#eventstatusupdate').append(`
-						<option selected="selected">Disapproved</option>
-						<option>Approved</option>
-						<option>Cancelled</option>
-						`)
-					}
-				}
-				
-				
-				
-				$('#updateModal').modal('show')
-				$('#updateModal').on('hidden.bs.modal',function(){
-					$('#updateBodyAppend').empty()
-				})
-				$('#updateStatusButton').click(function(){	
-				var eventstatus = $('#eventstatusupdate').val()
-				
-				var reqstatus = $('#reqstatusupdate').val()
-				
-					console.log("eventstatus "+eventstatus)
-
-					console.log("reqstatus "+reqstatus)
-					swal({
-							title:'Are You Sure?', 
-							text:'You want to update the Status of the Requirements?', 
-							type:'warning',
-							showCancelButton: true,
-							confirmButtonColor: '#3085d6',
-							cancelButtonColor: '#d33',
-							confirmButtonText: 'Confirm'
-							}).then((result)=>{
-							if(result.value){
-							console.log(eventstatus)
-							$.post('/secretariat/transaction-anointing/updateStatus',{
-							
-							id:data.results.int_eventinfoID,
-							eventstatus:eventstatus,
-							
-							reqstatus:reqstatus,
-							}).done(data=>{
-								if(eventstatus == "Disapproved"){
-									$.post('/secretariat/message',{int_userID:$('#int_userID').val()})
-										.done(data =>{
-											
-											$('#messageAppend').append(`
-											<h4 class="c-grey-900 mB-20">Send Message</h4>
-												<div class="send-header">
-													<div class="form-group">
-													<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
-													<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}, ${data.var_userfname}">
-													</div>
-													<div class="form-group">
-													<h6 class="label-control" id="eventstatus">Rejected Requirements: 
-													<input class="form-control" id='var_subject' value='Declined request'">
-													</h6>
-													</div>
-													<div class="form-group">
-													<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you declined the guest's request." rows='6'></textarea>
-													</div>
-												</div>
-												<div id="compose-area"></div>
-											`)
-											$('#updateReqModal').modal('hide')
-											$('#messageModal').modal('show')
-											$('#messageModal').on('hidden.bs.modal',function(){
-												$('#selectBox').val('default')
-												$('#messageAppend').empty()
-											})
-											
-											$('#sendMessage').click(function(){
-												swal({
-												title:'Are you sure?', 
-												text:'This message will be sent to the guest and his/her request will be declined.', 
-												type:'warning',
-												showCancelButton: false,
-												confirmButtonColor: '#3085d6',
-												cancelButtonColor: '#d33',
-												confirmButtonText: 'Confirm'
-												}).then((result)=>{
-													if(result.value){										
-														$.post('/secretariat/message/send',{
-															int_receiverID:$('#int_receiverID').val(),
-															int_receiverID:$('#int_receiverID').val(),
-															var_subject:$('#var_subject').val(),
-															text_message:$('#text_message').val(),
-															id1:idNow
-														})
-														.done(data=>{
-															if(data){
-																swal({
-																	title:'Success',
-																	text:'Status updated and message sent!', 
-																	type:'success'
-																}).then(function(){
-																	for(i=0;i<idsr.length;i++){
-																		$.post('/secretariat/transaction-anointing/updateRequirementsReject',{
-																		id:idsr[i],
-																		eventid:idNow
-																		}).done(data=>{
-																		location.reload()
-																		})
-																	}
-																})
-																$('#messageModal').modal('hide');
-																$('#messageAppend').empty();
-																location.reload();
-															}
-														})
-													}
-											})
-											})
-										})
-								}
-								else{
-								swal({
-								title:'Success',
-								text:'Status updated', 
-								type:'success'
-								}).then(function(){
-									location.reload();
-								})
-								}
-							})
-							
-							}
-							})
-					
-				})
-			})
-			})
+			
 			
 					$('#sendMessage').click(function(){
 						swal({

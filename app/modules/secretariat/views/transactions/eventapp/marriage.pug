@@ -37,6 +37,15 @@ block prepend main
 			width: 100px;
 			height: 100px;
 		}
+		.fixed_header tbody{
+		display:block;
+		overflow:auto;
+		height:200px;
+	
+		}
+		.fixed_header thead tr{
+		display:block;
+		}
 	#wrap
 	//- #calendar
 	div(style='clear:both')
@@ -95,17 +104,17 @@ block prepend main
 																			td.td-actions.text-center
 																				button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)
 																					i.ti-settings
-																						-if(marriage.char_paymentstatus=='Paid' && marriage.int_userpriestID !=null)
-																							#toolbar-options.hidden
-																								a.viewButton(href='#')
-																									i.ti-file(style="color:white;")
-																								a.updateButton(href='#')
-																									i.ti-pencil(style="color:white;")
-																								a.updateReqButton(href='#')
-																									i.ti-new-window(style="color:white;")
-																								- if(marriage.char_paymentstatus=='Paid' && marriage.int_userpriestID !=null)
-																									a.scheduleButton(href='#')
-																										i.ti-calendar(style="color:white;") #{marriage.int_userpriestID}
+																						#toolbar-options.hidden
+																							a.viewButton(href='#')
+																								i.ti-file(style="color:white;")
+																							a.updateButton(href='#')
+																								i.ti-pencil(style="color:white;")
+																							a.updateReqButton(href='#')
+																								i.ti-new-window(style="color:white;")
+																							- if(marriage.char_paymentstatus=='Paid' && marriage.int_userpriestID !=null)
+																								a.scheduleButton(href='#')
+																									i.ti-calendar(style="color:white;") #{marriage.int_userpriestID}
+																						
 																								
 
 
@@ -149,13 +158,24 @@ block prepend main
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
 					.modal-header(style='background:#367587')
-						h5.modal-title(style='color:white') Update Payment Status
+						h5.modal-title(style='color:white') Payment Status
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true' style='color:white') ×
 					.modal-body#paymentAppend
 					.modal-footer
 						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
-						button.btn#updatePayment(type="button" style='background:#367587; color:white') Update
+						button.btn#updatePaymentButton(type="button" style='background:#367587; color:white') Update Payment
+	#updatepaymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header(style='background:#367587')
+						h5.modal-title(style='color:white') Payment Status
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true' style='color:white') ×
+					.modal-body#updatepaymentAppend
+					.modal-footer
+						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
+						button.btn#updatePayment(type="button" style='background:#367587; color:white') Update Payment
 	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 									.modal-dialog.modal-lg(role="document")
 										.modal-content
@@ -196,18 +216,18 @@ block prepend main
 					.modal-header(style='background:#367587; color:white')
 						h4.modal-title(style='background:#367587; color:white') Change Folder Location
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
-							span.p-3(aria-hidden='true' style='background:#367587; color:white') ×
+							span.p-2(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#changeBodyAppend
 					.modal-footer
 						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
 						button.btn#changeLocButton(type="button" style='background:#367587; color:white') Change
 	#folderlocModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
-			.modal-dialog(role="document")
+			.modal-dialog.modal-lg(role="document")
 				.modal-content
 					.modal-header(style='background:#367587; color:white')
 						h4.modal-title(style='background:#367587; color:white') Folder Location
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
-							span.p-3(aria-hidden='true' style='background:#367587; color:white') ×
+							span.p-2(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#folderBodyAppend
 					.modal-footer
 						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
@@ -218,7 +238,7 @@ block prepend main
 					.modal-header(style='background:#367587; color:white')
 						h4.modal-title(style='background:#367587; color:white') Update Schedule
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
-							span.p-3(aria-hidden='true' style='background:#367587; color:white') ×
+							span.p-2(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#updateschedbody
 					.modal-footer
 						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
@@ -878,177 +898,312 @@ block addjs
 
 
 				//update payment
-				$('.updateButton').click(function(){
-					console.log(idNow)
-					$.post('/secretariat/transaction-marriage/paymentquery',{id1:idNow})
-								.done(data =>{
-									var dateapplied = moment(data.date_applied).format('MMMM DD, YYYY')
-									var scheduledate = moment(data.date_eventdate).format('MMMM DD, YYYY')
-									var scheduletime = moment(data.time_eventstart, 'hh:mm:ss').format('hh:mm A')
-									var downpaymentdeadline = moment(data.date_downpaymentdeadline).format('MMMM DD, YYYY')
-									var fullpaymentdeadline = moment(data.date_fullpaymentdeadline).format('MMMM DD, YYYY')
-									var nowDate = new Date(); 
-									var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
-									console.log(data)
-									var additionalfee =data.dbl_amount-data.double_fee
-									var strdownpayment= "0." + data.int_downpaymentpercent
-									var downpayment= data.dbl_amount*parseFloat(strdownpayment)
-									var fullpayment= data.dbl_amount
-									
-									$('#paymentAppend').append(`
+			$('.updateButton').click(function(){
+				console.log(idNow)
+				$.post('/secretariat/transaction-marriage/paymentquery',{id1:idNow})
+							.done(data =>{
+								var dateapplied = moment(data.results.date_applied).format('MMMM DD, YYYY')
+								var scheduledate = moment(data.results.date_eventdate).format('MMMM DD, YYYY')
+								var scheduletime = moment(data.results.time_eventstart, 'hh:mm:ss').format('hh:mm A')
+								var downpaymentdeadline = moment(data.results.date_downpaymentdeadline).format('MMMM DD, YYYY')
+								var fullpaymentdeadline = moment(data.results.date_fullpaymentdeadline).format('MMMM DD, YYYY')
+								var nowDate = new Date(); 
+								var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'-'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+								console.log(data)
+								var datelang = nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate()
+								var additionalfee =data.results.dbl_amount-data.results.double_fee
+								var strdownpayment= "0." + data.results.int_downpaymentpercent
+								var downpayment= data.results.dbl_amount*parseFloat(strdownpayment)
+								var fullpayment= data.results.dbl_amount
+								
+								$('#paymentAppend').append(`
+										
+										<div class="send-header">
 											
-											<div class="send-header">
-												
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label class="label-control"><strong> Couple: </strong> Mr. ${data.var_lname} and Ms. ${data.var_blname} </label>
-															<label class="label-control"><strong> Applied by: </strong> ${data.var_userlname}, ${data.var_userfname} </label>
-															<br><label class="label-control"><strong>Tentative Schedule: </strong> ${scheduledate} - ${scheduletime} </label>
-															
-														</div>
-													</div>
-													<div class="col-md-6">
-														<div class="form-group">	
-															<label class="label-control"><strong> Voucher Code: </strong> ${data.var_vouchercode}</label>
-															<br><label class="label-control"><strong> Date Appplied: </strong> ${dateapplied}</label>
-															<br><label class="label-control"><strong> Payment Status</strong> ${data.char_paymentstatus}</label>
-															
-														</div>
-													</div>
-												</div>
-													
-												<hr>
-												<div class="row">
-													
-													<div class="col-md-6">
-														<div class="form-group">
-																<label class="label-control"><strong>Expected Downpayment: </label></strong> ${data.dbl_downpaymentamount}
-																<br><label class="label-control"><strong>Full payment: </label></strong> ${fullpayment}
-														</div>
-													</div>
-													
-													<div class="col-md-6">
-														<div class="form-group">
-															<label class="label-control"><strong>Downpayment Deadline:</strong></label> ${downpaymentdeadline}
-															<br><label class="label-control"><strong>Fullpayment Deadline:</strong></label> ${downpaymentdeadline}
-														</div>
-													</div>
-												</div>
-												<hr>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<table style ="width: 100%">
-																<tr>
-																	<th>Service Fee:
-																	<td style ="text-align: right">${data.double_fee}
-																</tr>
-																<tr>
-																	<th>Additional Fee:
-																	<td style ="text-align: right"><u>_____${additionalfee}</u>
-																</tr>
-																<tr>
-																	<th>TOTAL AMOUNT:
-																	<td style ="text-align: right"><strong>${data.dbl_amount}</strong>
-																</tr>
-																
-															</table>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label class="label-control"><strong> Couple: </strong> Mr. ${data.results.var_lname} and Ms. ${data.results.var_blname} </label>
+														<label class="label-control"><strong> Applied by: </strong> ${data.results.var_userlname}, ${data.results.var_userfname} </label>
+														<br><label class="label-control"><strong>Tentative Schedule: </strong> ${scheduledate} - ${scheduletime} </label>
 														
-														</div>
 													</div>
-													<div class="col-md-6">
-														<div class="row">
-															<div class="col-md-5">
-																<label class="label-control"><strong>Remaining Balance:</label></strong>															
-															</div>
-															<div class="col-md-7" style="text-align: right; color: red;">
-																${data.dbl_balance}.00
-															</div>
-														</div>
-														<div class="row">
-															<div class="col-md-5">
-																<label class="label-control"><strong>Payment Received</label></strong>															
-															</div>
-															<div  class="col-md-7">
-																<input type='number' id="payment" class="form-control" placeholder="0.00"  style="text-align: right">
-															</div>
-														</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">	
+														<label class="label-control"><strong> Voucher Code: </strong> ${data.results.var_vouchercode}</label>
+														<br><label class="label-control"><strong> Date Appplied: </strong> ${dateapplied}</label>
+														<br><label class="label-control"><strong> Payment Status</strong> ${data.results.char_paymentstatus}</label>
+														
 													</div>
+												</div>
+											</div>
+												
+											<hr>
+											<div class="row">
+												
+												<div class="col-md-6">
+													<div class="form-group">
+															<label class="label-control"><strong>Expected Downpayment: </label></strong> ${data.results.dbl_downpaymentamount}
+															<br><label class="label-control"><strong>Full payment: </label></strong> ${fullpayment}
+													</div>
+												</div>
+												
+												<div class="col-md-6">
+													<div class="form-group">
+														<label class="label-control"><strong>Downpayment Deadline:</strong></label> ${downpaymentdeadline}
+														<br><label class="label-control"><strong>Fullpayment Deadline:</strong></label> ${fullpaymentdeadline}
+													</div>
+												</div>
+											</div>
 
+										
+												
+											</div>
+											<div id="paymenthistorydiv"></div>
 											
-											<div id="compose-area"></div>
+											
+											<hr>
+											<div class="row">
+												<div class="col-md-6"></div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<table style ="width: 100%">
+															<tr>
+																<th>TOTAL AMOUNT:
+																<td style ="text-align: right"><strong>${data.results.dbl_amount}</strong>
+															</tr>
+															<tr>
+																<th>Remaining Balance:
+																<td style ="text-align: right;color: red;"> ${data.results.dbl_balance}
+														</table>
+													
+													</div>
+												</div>
+											</div>
+												
+
+										
+										<div id="compose-area"></div>
+									
+									`)
+									
+									if(data.paymenthistory!=null){
+										console.log('not null')
+										$('#paymenthistorydiv').append(`
+										<div class="col-md-12">
+													<div class="table-responsive">
+														<table class="table table-hover dataTable fixed_header" >
+															<thead class="text-primary">
+																<th >OR No. </th>
+																<th>Date</th> 
+																<th>User Account</th> 
+																<th>Payer</th>
+																<th style ="text-align: right">Amount</th>
+																<th style ="text-align: right">Balance</th>
+															</thead>
+															<tbody id='paymentsummary'></tbody>
+														</table>
+													</div>
+												</div>
+										`)
+										for(i=0; i<data.paymenthistory.length; i++){
+										console.log('for')
+										var datepaid = moment(data.paymenthistory[i].date_paymentdate).format('MMMM DD, YYYY')
+										$('#paymentsummary').append(`
+											<tr>
+												<td>${data.paymenthistory[i].int_ORnumber}
+												<td>${datepaid}
+												<td>${data.paymenthistory[i].var_username}
+												<td>${data.paymenthistory[i].var_paidby}
+												<td style ="text-align: right">₱${data.paymenthistory[i].dbl_paymentamount}
+												<td style ="text-align: right">₱${data.paymenthistory[i].dbl_remainingbalance}
+											</tr>
 										
 										`)
+
+									}
+									}
+									
+									//- <div class="form-group">
+									//- 	<input id="payid" type="hidden" value="${data.int_paymentID}"></input>
+									//- 	<h6 class="label-control"><strong>Current Payment Status: </strong></h6>
+									//- 	<select id="paystatus" onchange='payment(${data.int_eventinfoID});' type="text">
+									//- 	</select>
+									//- </div>
+									//Payment
+
+
+
+
+									if(data.char_paymentstatus == "Paid"){
+										$('#paystatus').append(`
+											<option selected="selected">Paid</option>
+										`)
+											$("#paystatus").prop('disabled', true);
+									}
+									else if(data.char_paymentstatus == "Unpaid"){
+										$('#paystatus').append(`
+											<option>Paid</option>
+											<option selected="selected" disabled>Unpaid</option>
+										`)
+									}
+									$('#paymentModal').modal('show')
+									$('#paymentModal').on('hidden.bs.modal',function(){
 										
-										//- <div class="form-group">
-										//- 	<input id="payid" type="hidden" value="${data.int_paymentID}"></input>
-										//- 	<h6 class="label-control"><strong>Current Payment Status: </strong></h6>
-										//- 	<select id="paystatus" onchange='payment(${data.int_eventinfoID});' type="text">
-										//- 	</select>
-										//- </div>
-										//Payment
-										if(data.char_paymentstatus == "Paid"){
-											$('#paystatus').append(`
-												<option selected="selected">Paid</option>
-											`)
-												$("#paystatus").prop('disabled', true);
-										}
-										else if(data.char_paymentstatus == "Unpaid"){
-											$('#paystatus').append(`
-												<option>Paid</option>
-												<option selected="selected" disabled>Unpaid</option>
-											`)
-										}
-										$('#paymentModal').modal('show')
-										$('#paymentModal').on('hidden.bs.modal',function(){
-											$('#selectBox').val('default')
-											$('#paymentAppend').empty()
-										})
+										$('#selectBox').val('default')
+										$('#paymentAppend').empty()
 										
-										$('#updatePayment').click(function(){
-											swal({
-											title:'Are you sure?', 
-											text:'You will not be able to revert this.', 
-											type:'warning',
-											showCancelButton: false,
-											confirmButtonColor: '#3085d6',
-											cancelButtonColor: '#d33',
-											confirmButtonText: 'Confirm'
-											}).then((result)=>{
-												if(result.value){										
-													var payment= $('#payment').val()
-													$.post('/secretariat/transaction-marriage/changepaymentstatus',{id1:idNow, payment:payment, status:"Paid"})
-														.done(data =>{
-															if(data.balance==0){
-																swal({
-																	title:'Success',
-																	text:'No more remaining balance!!', 
-																	type:'success'
-																}).then(function(){
-																	location.reload()
-																})
-															}
-															else{
-																swal({
-																	title:'Success',
-																	html:`Payment status updated! 
-																	<br>The guest has a remaining balance of <strong>${data.balance}<strong>`, 
-																	type:'success'
-																}).then(function(){
-																	location.reload()
-																})	
-															}
-												})
-												$('#paymentModal').modal('hide');
-												$('#paymentAppend').empty();
+									})
+
+							$('#updatePaymentButton').click(function(){
+								
+									
+								$.post('/secretariat/transaction-marriage/updatepaymentquery',{id1:idNow})
+									.done(data =>{
+										console.log(data)
+										$('#updatepaymentAppend').empty();
+										var ornumber = data.ornumber.max+1
+											$('#updatepaymentAppend').append(`
+										
+													<div class="send-header">
+														
+														<div class="row">
+															<div class="col-md-12">
+																<div class="form-group">
+																	<table style ="width: 100%">
+																		<tr>
+																			<th >Voucher Code:
+																			<td > ${data.results.var_vouchercode}
+																		</tr>
+																		
+																		<tr>
+																			<th >Total Amount:
+																			<td ><strong>${data.results.dbl_amount}</strong>
+																		</tr>
+																		<tr>
+																			<th >Remaining Balance:
+																			<td style ="text-align: left;color: red;"> ${data.results.dbl_balance}
+																	</table>
+																
+																</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-md-2 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+																<div class="form-group">
+																	<h6 class="label-control">OR Number:</h6><input class="form-control" type="text" id='ornumber'  value= ${ornumber} disabled/>
+																	<div class="help-block with-errors"></div>
+																</div>
+															</div>
+															<div class="col-md-3 px-lg-3 pr-md-3 px-sm-0">
+																<div class="form-group">
+																	<h6 class="label-control">Date:</h6><input class="form-control" type="text" value= ${datelang} id='paymentdate' disabled />
+																	<div class="help-block with-errors"></div>
+																</div>
+															</div>
+															<div class="col-md-4 px-lg-3 pr-md-3 px-sm-0">
+																<div class="form-group">
+																	<h6 class="label-control">Paid By:</h6><input class="form-control" type="text" placeholder="Name of the payer"  id='payer' />
+																	<div class="help-block with-errors"></div>
+																</div>
+															</div>
+															
+															<div class="col-md-3 px-lg-3 px-md-0 px-sm-0">
+																<div class="form-group">
+																	<h6 class="label-control">Amount:</h6><input class="form-control" type="number" id="payment"/>
+																	<div class="help-block with-errors"></div>
+																</div>
+															</div>
+														</div>
+													</div>
+															`)
 
 														
-												}
-										})
-										})
-
 								})
+								
+								$('#paymentAppend').empty();
+								$('#paymentModal').modal('hide');
+								$('#updatepaymentModal').modal('show');
+								
+
+										
+								
+								})
+
+							$('#updatePayment').click(function(){
+
+								if($('#payment').val()> data.results.dbl_balance){
+									console.log('greater than yung inenter na amount')
+									swal({
+										title: `Enter valid amount`,
+										type:'warning',
+										showCancelButton: false,
+										confirmButtonColor: '#3085d6',
+										cancelButtonColor: '#d33',
+										confirmButtonText: 'Okay'
+									}).then((result)=>{
+									})
+								}//if
+								else if($('#payment').val()==''||$('#payer').val()==''){
+									swal({
+										title: `Enter values`,
+										type:'warning',
+										showCancelButton: false,
+										confirmButtonColor: '#3085d6',
+										cancelButtonColor: '#d33',
+										confirmButtonText: 'Okay'
+									}).then((result)=>{
+									})
+								}
+
+								else{
+									swal({
+									title:'Are you sure?', 
+									text:'You will not be able to revert this.', 
+									type:'warning',
+									showCancelButton: false,
+									confirmButtonColor: '#3085d6',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Confirm'
+									}).then((result)=>{
+										if(result.value){										
+											var payment= $('#payment').val()
+											var payer = $('#payer').val()
+											var paymentdate = $('#paymentdate').val()
+											var ornumber = $('#ornumber').val()
+											$.post('/secretariat/transaction-marriage/changepaymentstatus',{id1:idNow, payment:payment, status:"Paid", payer:payer, paymentdate: paymentdate, ornumber:ornumber})
+												.done(data =>{
+													if(data.balance==0){
+														swal({
+															title:'Success',
+															text:'No more remaining balance!!', 
+															type:'success'
+														}).then(function(){
+															location.reload()
+														})
+													}
+													else{
+														swal({
+															title:'Success',
+															html:`Payment status updated! 
+															<br>The guest has a remaining balance of <strong>${data.balance}<strong>`, 
+															type:'success'
+														}).then(function(){
+															location.reload()
+														})	
+													}
+										})
+										$('#updatepaymentModal').modal('hide');
+										$('#updatepaymentAppend').empty();
+
+												
+										}
+									})
+								}//else
+								})
+
+							})
 				})
 				$('.assignPriest').click(function(){
 					var id = $(this).val();
@@ -1408,23 +1563,6 @@ block addjs
 				})
 				
 				})
-			
-		function setcabinet($i){
-				console.log($i)
-				$("#divisions").empty();
-				$('#divisions').append(`
-						<option>No division selected</option>
-					`)
-				$.post('/secretariat/transaction-marriage/getdivisions',{ cabinetID:$i}).done(data=>{
-					console.log(data)
-					for(i=0;i<data.divisions.length;i++){
-					$('#divisions').append(`
-						<option value='${$i}-${data.divisions[i].int_divisionID}'>${data.divisions[i].var_divisionname}</option>
-					`)
-					}//for		
-				})//donedatacabinets
-			}//function cabinets
-
 		function checkifavailable($i){
 				console.log($i)
 				$("#divisions").empty();
@@ -1448,6 +1586,24 @@ block addjs
 					
 				})//donedatacabinets
 			}//function checkifavailable
+			
+		function setcabinet($i){
+				console.log($i)
+				$("#divisions").empty();
+				$('#divisions').append(`
+						<option>No division selected</option>
+					`)
+				$.post('/secretariat/transaction-marriage/getdivisions',{ cabinetID:$i}).done(data=>{
+					console.log(data)
+					for(i=0;i<data.divisions.length;i++){
+					$('#divisions').append(`
+						<option value='${$i}-${data.divisions[i].int_divisionID}'>${data.divisions[i].var_divisionname}</option>
+					`)
+					}//for		
+				})//donedatacabinets
+			}//function cabinets
+
+		
 
 		function setdivision($i){
 				console.log($i)

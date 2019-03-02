@@ -1,4 +1,4 @@
-extends ../../../../templates/guests
+extends ../../../../templates/home
 block main
 	style.
 		@media screen and (max-width: 576px) {
@@ -37,7 +37,7 @@ block main
 			.container
 				.row
 					.col-md-12.form-wizard.shadow3
-							//- form(action="/guest/anointing/form" enctype="multipart/form-data" method="post" data-toggle='validator')
+							//- form(action="/index/anointing/form" enctype="multipart/form-data" method="post" data-toggle='validator')
 							h3 Anointing Application
 							p Fill all form fields
 							.form-wizard-steps.form-wizard-tolal-steps-3
@@ -78,7 +78,7 @@ block main
 								h4
 									.d-none.d-sm-inline Anointing Details:
 									span Step 2 - 2
-									input.form-control#userID(type='hidden' name='userID' value=`${user.int_userID}`)
+									//- input.form-control#userID(type='hidden' name='userID' value=`${user.int_userID}`)
 									h5.label-control Name of the ill:
 										.text-danger.d-inline  *
 									.row
@@ -206,7 +206,7 @@ block main
 														.help-block.with-errors
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-									button.btn.btn-submit#submitButton(type='button' value= `${user.int_userID}` ) Submit
+									//- button.btn.btn-submit#submitButton(type='button' value= `${user.int_userID}` ) Submit
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -228,7 +228,7 @@ block addjs
 	script(type='text/javascript').
 		$(document).ready(function(){
 			$('#OK').click(function(){
-			window.location=`/guest`
+			window.location=`/index`
 			})
 			$('#nextButton1').click(function(){
 			if(eventDate == ''){
@@ -259,7 +259,7 @@ block addjs
 				){
 					var idNow = $(this).val();
 					console.log(idNow)
-					$.post('/guest/anointing/query',{
+					$.post('/index/anointing/query',{
 						firstname: $('#firstname').val(),id:idNow
 					}).done(data=>{
 						if($('#customRadio1').prop("checked")){
@@ -280,7 +280,6 @@ block addjs
 							var formData= new FormData();
 							formData.append('desireddate1', eventDate),
 							formData.append('desiredtime1', timeStart),
-							formData.append('desiredtimeend', timeEnd2),
 							formData.append('userID', $('#userID').val()),
 							formData.append('lastname', $('#lastname').val()),
 							formData.append('firstname', $('#firstname').val()),
@@ -295,22 +294,14 @@ block addjs
 							formData.append('image', $('#file-0b')[0].files[0]);
 						$.ajax({
 							type: 'POST',
-							url: '/guest/anointing/form',
+							url: '/index/anointing/form',
 							data: formData,
 							processData:false,
 							contentType:false,
 							success: function(data){
 								console.log(formData)
-								swal({
-										title: "Success",
-										text: 'Your request has been submitted; however, the time is still tentative. We will notify you once the scheduled time is changed. Thank you and God bless.',
-										icon: 'success',
-										buttons:{
-											Okay:'okay'
-										}
-									}).then((value)=>{
-										window.location='/guest/reservation'
-									})
+								$('#viewModal').modal('show');
+								console.log(data.int_voucherID)
 							}
 
 						})
@@ -351,7 +342,7 @@ block addjs
 		var dateNow = new Date()
 		var dateNow2;
 		var gender;
-		$.get('/guest/anointing/utilities/query').done(data=>{
+		$.get('/index/anointing/utilities/query').done(data=>{
 			console.log(data[0].int_reservationmindays)
 			dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data[0].int_reservationmindays,'days').format('YYYY-MM-DD')
 			//- availablestart= moment(data[0].time_availablestart).format('HH:mm:ss')
@@ -440,29 +431,5 @@ block addjs
 				}
 			})
 		})
-		//- $("input[type=text]").keyup(function(){
-		//- 	if($(this).val() == '') {
-		//- 		$('.text-danger.warning1').text('Please fill out the required field.')
-		//- 	}
-		//- 	else {
-		//- 		$('.text-danger.warning1').text('')
-		//- 	}
-		//- });
-
-		//- $('.desiredDate').datetimepicker({
-		//- 	format: 'YYYY-MM-DD',
-		//- 	minDate: startDate,
-		//- 	maxDate: endDate,
-		//- 	icons: {
-		//- 			time: "fa fa-clock-o",
-		//- 			date: "fa fa-calendar",
-		//- 			up: "fa fa-chevron-up",
-		//- 			down: "fa fa-chevron-down",
-		//- 			previous: 'fa fa-chevron-left',
-		//- 			next: 'fa fa-chevron-right',
-		//- 			today: 'fa fa-screenshot',
-		//- 			clear: 'fa fa-trash',
-		//- 			close: 'fa fa-remove',
-		//- 	},
-		//- });	
-				})
+		
+		})

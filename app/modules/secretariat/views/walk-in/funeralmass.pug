@@ -22,14 +22,20 @@ block prepend main
 						h6.c-grey-900 Funeral Mass
 						.mT-30
 							form
-								.form-group
-									label Schedule Date
-										.text-danger.d-inline  *
-									input.form-control.start-date(id='scheduledate' name='scheduledate' type='text', placeholder='Enter Desired Date', data-provide='datepicker')
+								.row
+									.col-md-6
+										.form-group
+											label Schedule Date
+												.text-danger.d-inline  *
+											input.form-control.start-date(id='desireddate' name='desireddate' type='text', placeholder='Enter Desired Date', data-provide='datepicker')
+									.col-md-6
+										.form-group
+											label  Schedule Time
+											input.form-control(id='desiredtime' name='desireddate' type='text' placeholder='10:00 am')
 								.row
 									.col-md-4
 										.form-group
-											label Name of the Deceased
+											label Name of the Ill
 												.text-danger.d-inline  *
 											input.form-control(id='lname' name='lname' type='text' placeholder='Last Name *')
 									.col-md-4
@@ -41,49 +47,37 @@ block prepend main
 											label(style='visibility:hidden;') Middle Name
 											input.form-control(id='mname' name='mname' type='text' placeholder='Middle Name')
 								.row
-									legend.col-sm-2 Gender
-										.text-danger.d-inline  *
-									.col-sm-2
-										.form-check
-											label.form-check-label
-												input.form-check-input(id='gender1' name='gender' type='radio' value='Male', checked='checked') 
-												| Male
-										.form-check
-											label.form-check-label
-												input.form-check-input(id='gender2' name='gender' type='radio' value='Female')
-												| Female
-									.col-md-4
+									
+									.col-md-3.px-lg-3.px-md-3.px-sm-0
+											.form-group.m-0.p-0
+												h6.label-control Gender
+													.text-danger.d-inline  *
+												.custom-control.custom-radio
+													input#gendermale.custom-control-input(type='radio', name='gender' value="Male"  checked)
+													label.custom-control-label(for='gendermale') 
+														label Male
+												.custom-control.custom-radio
+													input#genderfemale.custom-control-input(type='radio', name='gender' value="Female")
+													label.custom-control-label(for='genderfemale') 
+														label Female
+									.col-md-3
 										.form-group
 											label Birthday
 												.text-danger.d-inline  *
 											input.form-control.start-date(id='bday' name='bday' type='text', data-provide='datepicker' placeholder='Enter Your Birthday')
-									.col-md-4
+									.col-md-6
 										.form-group
 											label Birthplace
 											.text-danger.d-inline  *
 											input.form-control(id='bplace' name='bplace' type='text' placeholder='Ex. Payatas, Quezon City')
 								.row
-									.col-md-6
+									
+									.col-md-12
 										.form-group
-											label Relationship with the Deceased
+											label Address
 												.text-danger.d-inline  *
-											select.form-control(id='relationship' name='relationship')
-												option(selected="" value="" disabled) Choose...
-												option Aunt/Uncle
-												option Child
-												option BF/GF
-												option Friend
-												option Grandchild
-												option Grandparent
-												option Nephew/Niece
-												option Parent
-												option Sibling
-												option Spouse
-									.col-md-6
-										.form-group
-											label Cause of Death
-												.text-danger.d-inline  *
-											input.form-control(id='cause' name='cause' type='textarea' placeholder='Please enter cause of death')
+											input.form-control(id='address' name='address' type='textarea' placeholder='Ex. Urban, Bgy. Payatas B 1119 QC')
+									
 								.row
 									.col-md-6
 										.form-group
@@ -96,8 +90,8 @@ block prepend main
 											.form-check
 												label.form-check-label
 													input.form-check-input(id='place2' name='place' type='radio' value='Male') 
-													| Hospital/Center
-												input.form-control(id='hospitalname' name='hospitalname' type='text' placeholder="Please enter the room number, the hospital name & address")
+													| Ina ng Lupang Pangako Parish
+										
 											.form-check
 												label.form-check-label
 													input.form-check-input(id='place3' name='place' type='radio' value='Male') 
@@ -105,11 +99,72 @@ block prepend main
 												input.form-control(id='othervenue' name='othervenue' type='text' placeholder="Please enter complete address")
 									.col-md-6
 										.form-group
-											label Birth Certificate
+											label Cause of Death
 												.text-danger.d-inline  *
-											input.form-control(id='birthcertificate' name='birthcertificate' type='file')
+											input.form-control(id='details' name='cause' type='textarea' placeholder='Please enter cause of death')
+								.row
+									.col-md-6
+										.form-group
+											label File Details
+												.text-danger.d-inline  *
+											.form-check
+												label.form-check-label
+													input.form-check-input(id='nofile' name='file' type='radio' value='Male' checked='') 
+													| No file submitted
+											.form-check
+												label.form-check-label
+													input.form-check-input(id='withfile' name='file' type='radio' value='Male') 
+													| File(s) submitted
+									.col-md-6#withfiledrpdwn
+										
+										label File Location
+										.row
+											.col-md-6
+												#cabinetdiv.form-group
+												label
+													| Cabinet
+													select#cabinets.form-control(onchange='setcabinet(value);')
+													
+											.col-md-6
+												.form-group
+												label
+													| Division
+													select#divisions.form-control
+								.row
+									.col-md-3
+										.form-group
+											label Payment Details
+											.form-group
+												input.checkbox#paid(type="checkbox" disabled )
+												| Paid
+									.col-md-9#paymentdetails
+										.form-group
+											.row
+												.col-md-2
+													.form-group
+														h6.label-control OR Number:
+														input#ornumber.form-control(type='text', disabled='')
+														.help-block.with-errors
+												.col-md-3
+													.form-group
+														h6.label-control Date:
+														input#paymentdate.form-control(type='text',disabled='')
+														.help-block.with-errors
+												.col-md-5
+													.form-group
+														h6.label-control Paid By:
+														input#payer.form-control(type='text', placeholder='Name of the payer')
+														.help-block.with-errors
+												.col-md-2.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Amount:
+														input#payment.form-control(type='number')
+														.help-block.with-errors
+
+
+									
 								.text-center
-									button.btn.btn-primary(type='submit') Submit
+									button.btn.btn-primary#submitApplication(type='button') Submit
 							input#errChecker(type='text' hidden)
 block addjs
 	script.
@@ -118,16 +173,40 @@ block addjs
 		$('#othervenue').hide();
 
 		$('#place1').click(function() {
+			if($(this).prop("checked") == true){
 			$('#hospitalname').slideUp();
 			$('#othervenue').slideUp();
+			$("#paid").prop('disabled', true);
+			}
 		});
 		$('#place2').click(function() {
+			if($(this).prop("checked") == true){
 			$('#hospitalname').slideDown();
 			$('#othervenue').slideUp();
+			$("#paid").prop('disabled', false);
+			}
 		});
 		$('#place3').click(function() {
+			if($(this).prop("checked") == true){
 			$('#hospitalname').slideUp();
 			$('#othervenue').slideDown();
+			$("#paid").prop('disabled', true);
+			}
+		});
+		
+		$('#desiredtime').datetimepicker({
+				format: 'LT',
+				icons: {
+					time: "fa fa-clock-o",
+					date: "fa fa-calendar",
+					up: "fa fa-chevron-up",
+					down: "fa fa-chevron-down",
+					previous: 'fa fa-chevron-left',
+					next: 'fa fa-chevron-right',
+					today: 'fa fa-screenshot',
+					clear: 'fa fa-trash',
+					close: 'fa fa-remove'
+				}
 		});
 
 		//Realtime Validation
@@ -219,4 +298,168 @@ block addjs
 
 		$(document).ready(function() {
 			validateForm()
+
+			$('#submitApplication').click(function(){
+				console.log('SUBMIT BUTTON CLICKED')
+				swal({
+				title:'Are you sure?', 
+				text:'This record will be considered as an approved request, and will then be added to the schedule of the priest. We will wait for the confirmation of the priest.',
+				type:'warning',
+				showCancelButton: false,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Confirm'
+				}).then((result)=>{
+					if(result.value){
+						if($('#withfile').prop("checked")){
+							var boolfile=1
+						}
+						if($('#nofile').prop("checked")){
+							var boolfile=0
+						}
+						if($('#paid').prop("checked")){
+							var boolpaid=1
+						}
+						else{
+							var boolpaid=0
+						}
+						if($('#nofile').prop("checked")){
+							gender= $('#gendermale').val()
+						}
+						if($('#gendermale').prop("checked")){
+							gender= $('#gendermale').val()
+						}
+						if($('#genderfemale').prop("checked")){
+							gender= $('#genderfemale').val()
+						}
+						if($('#place1').prop("checked")){
+							venue= $('#address').val()
+							var funeraltype='Funeral Service'
+						}
+						if($("#place2").prop("checked")){
+							venue= 'Ina ng Lupang Pangako Parish'
+							var funeraltype='Funeral Mass'
+						}
+						if($("#place3").prop("checked")){
+							venue= $('#othervenue').val()
+							var funeraltype='Funeral Service'
+						}
+						$.post('/secretariat/walkin-funeralblessing', {
+							desireddate:$('#desireddate').val(),
+							desiredtime:$('#desiredtime').val(),
+							lastname: $('#lname').val(),
+							firstname: $('#fname').val(),
+							middlename: $('#mname').val(),
+							birthday: $('#bday').val(),
+							gender:gender,
+							birthplace: $('#bplace').val(),
+							address: $('#address').val(),
+							venue: venue,
+							details: $('#details').val(),
+							cabinet: $('#cabinets').val(),
+							division: $('#divisions').val(),
+							boolfile: boolfile,
+							funeraltype:funeraltype,
+							boolpaid:boolpaid,
+							ornumber:$('#ornumber').val(),
+							paymentdate:$('#paymentdate').val(),
+							payer:$('#payer').val(),
+							payment:$('#payment').val(),
+						}).done(data =>{
+							swal({
+							title:'Success',
+							text:'Request added', 
+							type:'success'
+							}).then(function(){
+								location.reload();
+							})
+							$('#updateModal').modal('hide');
+							$('#updateAppend').empty();
+							
+						})//done
+					}
+				})
+			})
 		});
+		$('#withfiledrpdwn').hide();
+
+		$('#nofile').click(function() {
+			$('#withfiledrpdwn').slideUp();
+			$('#cabinets').val();
+			$('#divisions').val();
+			$('#folderID').val();
+		});
+		$(document).on('click','#withfile',function(){
+			$('#withfiledrpdwn').slideDown();
+			$.post('/secretariat/getcabinets').done(data =>{
+				$('#cabinets').append(`
+						<option>No division selected</option>
+					`)
+				$('#divisions').append(`
+						<option>No division selected</option>
+					`)
+				for(i=0;i<data.cabinets.length;i++){
+					$('#cabinets').append(`
+						<option value=${data.cabinets[i].int_cabinetID}>${data.cabinets[i].var_cabinetname}</option>
+					`)
+				}
+			})
+		});
+
+		function setcabinet($i){
+				console.log($i)
+				$("#divisions").empty();
+				$('#divisions').append(`
+						<option>No division selected</option>
+					`)
+				$.post('/secretariat/transaction-marriage/getdivisions',{ cabinetID:$i}).done(data=>{
+					console.log(data)
+					for(i=0;i<data.divisions.length;i++){
+					$('#divisions').append(`
+						<option value='${$i}-${data.divisions[i].int_divisionID}'>${data.divisions[i].var_divisionname}</option>
+					`)
+					}//for		
+				})//donedatacabinets
+			}//function cabinets
+		function setdivision($i){
+
+			console.log($i)
+				$("#folders").empty();
+
+				$.post('/secretariat/transaction-marriage/getfolders',{ location:$i}).done(data=>{
+					console.log(data)
+					var newID= data.folders.max +1
+					$('#folderID').val(`${newID}`)
+
+					//- $('#folders').append(`
+					//- 	<option value=${data.folders.max}>${data.folders.max}</option>
+					//- `)
+						
+				})//donedatacabinets
+		}//function cabinets
+		$('#paymentdetails').hide();
+		$(document).on('click','#paid',function(){
+			if($(this).prop("checked") == true){
+				$('#paymentdetails').slideDown();
+				$.post('/secretariat/getOR').done(data =>{
+					var ornumber = data.ornumber.max+1
+					var nowDate = new Date(); 
+					var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'-'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+					console.log(data)
+					var datelang = nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate()
+					$('#ornumber').val(ornumber)
+					$('#paymentdate').val(datelang)	
+			})
+			}
+
+			if($(this).prop("checked") == false){
+				$('#ornumber').val();
+				$('#paymentdate').val();
+				$('#payer').val();
+				$('#payment').val();
+				$('#paymentdetails').slideUp();
+			}
+
+			
+		});
+

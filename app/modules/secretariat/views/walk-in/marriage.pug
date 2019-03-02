@@ -23,11 +23,17 @@ block prepend main
 						h6.c-grey-900 Marriage
 						.mT-30
 							form
-								.form-group
-									label Schedule Date
-										.text-danger.d-inline  *
-									input.form-control.start-date(id='scheduledate' name='scheduledate' type='text', placeholder='Enter Desired Date', data-provide='datepicker')
-								.mT-30
+								.row
+									.col-md-6
+										.form-group
+											label Schedule Date
+												.text-danger.d-inline  *
+											input.form-control.start-date(id='desireddate' name='desireddate' type='text', placeholder='Enter Desired Date', data-provide='datepicker')
+									.col-md-6
+										.form-group
+											label  Schedule Time
+											input.form-control(id='desiredtime' name='desireddate' type='text' placeholder='10:00 am').row
+								
 								h6.c-grey-900 Groom
 								.mT-30
 								.row
@@ -472,9 +478,21 @@ block prepend main
 							input#errChecker(type='text' hidden)
 block addjs
 	script.
-		// Place where the blessing will happen logic
-		$('#hospitalname').hide();
-		$('#othervenue').hide();
+		
+		$('#desiredtime').datetimepicker({
+				format: 'LT',
+				icons: {
+					time: "fa fa-clock-o",
+					date: "fa fa-calendar",
+					up: "fa fa-chevron-up",
+					down: "fa fa-chevron-down",
+					previous: 'fa fa-chevron-left',
+					next: 'fa fa-chevron-right',
+					today: 'fa fa-screenshot',
+					clear: 'fa fa-trash',
+					close: 'fa fa-remove'
+				}
+		});
 
 		$('#place1').click(function() {
 			$('#hospitalname').slideUp();

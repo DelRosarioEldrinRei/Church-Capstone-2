@@ -25,39 +25,11 @@ block prepend main
     .container.my-5
       h3 Notifications
       hr
-      .blog-posts-small
-        .blog-post-small.first-post
-          img(src='/document_templates/logo.png')
-          a(href='#') Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatibus autem qui eligendi consequatur expedita quas, nobis earum, modi, aut aspernatur veniam hic quasi cum repudiandae tenetur sit eius rerum.
-          p 
-            a.post-date(href='#') Sep. 03, 2016
-      .blog-posts-small
-        .blog-post-small.first-post
-          img(src='/document_templates/logo.png')
-          a(href='#') Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatibus autem qui eligendi consequatur expedita quas, nobis earum, modi, aut aspernatur veniam hic quasi cum repudiandae tenetur sit eius rerum.
-          p 
-            a.post-date(href='#') Sep. 03, 2016
-      .blog-posts-small
-        .blog-post-small.first-post
-          img(src='/document_templates/logo.png')
-          a(href='#') Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatibus autem qui eligendi consequatur expedita quas, nobis earum, modi, aut aspernatur veniam hic quasi cum repudiandae tenetur sit eius rerum.
-          p 
-            a.post-date(href='#') Sep. 03, 2016
-      .blog-posts-small
-        .blog-post-small.first-post
-          img(src='/document_templates/logo.png')
-          a(href='#') Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatibus autem qui eligendi consequatur expedita quas, nobis earum, modi, aut aspernatur veniam hic quasi cum repudiandae tenetur sit eius rerum.
-          p 
-            a.post-date(href='#') Sep. 03, 2016
-      .blog-posts-small
-        .blog-post-small.first-post
-          img(src='/document_templates/logo.png')
-          a(href='#') Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatibus autem qui eligendi consequatur expedita quas, nobis earum, modi, aut aspernatur veniam hic quasi cum repudiandae tenetur sit eius rerum.
-          p 
-            a.post-date(href='#') Sep. 03, 2016
-      .blog-posts-small
-        .blog-post-small.first-post
-          img(src='/document_templates/logo.png')
-          a(href='#') Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatibus autem qui eligendi consequatur expedita quas, nobis earum, modi, aut aspernatur veniam hic quasi cum repudiandae tenetur sit eius rerum.
-          p 
-            a.post-date(href='#') Sep. 03, 2016
+      each notification in notifications
+        .blog-posts-small
+          .blog-post-small.first-post
+            img(src='/document_templates/logo.png')
+            p.m-0 #{notification.var_notifdesc} 
+              //- a.voucherLink.text-danger(href=`/guest/voucherLink?notifId=${notification.int_notifID}` style= 'margin-left: 3px' target="_blank") Click Here To Save and Print Voucher.
+            p 
+              a.post-date #{notification.datetime_received} 

@@ -90,19 +90,19 @@ loginRouter.route('/')
                 delete user.var_password;
                 req.session.secretariat = user;
                 console.log(req.session);
-                return res.redirect('/secretariat');
+                return res.redirect('/secretariat?loggedin');
             }
             if(user.char_usertype == "Coordinator"){
                 delete user.var_password;
                 req.session.coordinator = user;
                 console.log(req.session);
-                return res.redirect('/coordinator');
+                return res.redirect('/coordinator?loggedin');
             }
             if(user.char_usertype == "Catechist"){
                 delete user.var_password;
                 req.session.catechist = user;
                 console.log(req.session);
-                return res.redirect('/catechist');
+                return res.redirect('/catechist?loggedin');
             }
             if(user.char_usertype == "CoordinatorCatechist"){
                 delete user.var_password;
@@ -110,7 +110,7 @@ loginRouter.route('/')
                 console.log(req.session);
                 return res.redirect('/coorcatechist');
             }
-            if(user.char_usertype == "Priest"){
+            if(user.char_usertype == "Priest"||user.char_usertype == "Parish Priest"){
                 delete user.var_password;
                 req.session.priest = user;
                 console.log(req.session);
@@ -118,7 +118,7 @@ loginRouter.route('/')
                     return res.redirect('/priest/updateaccount')
                 }
                 else{
-                return res.redirect('/priest');
+                return res.redirect('/priest?loggedin');
                 }
             }
 
@@ -175,7 +175,7 @@ loginRouter.route('/')
                     delete user.var_password;
                     req.session.user = user;
                     console.log(req.session);
-                    return res.redirect('/guest')
+                    return res.redirect('/guest?loggedin')
                     }  
 
             }

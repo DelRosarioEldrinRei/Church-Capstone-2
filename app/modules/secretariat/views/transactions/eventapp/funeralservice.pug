@@ -26,6 +26,7 @@ block prepend main
 																	th Event Date
 																	th Requirement Status
 																	th Approval Status
+																	th Event Status
 																	th.text-center(style=" width:11rem") Actions
 															tbody
 																each funeral in funerals
@@ -39,14 +40,14 @@ block prepend main
 																			span.approvalreq(value=`${funeral.var_reqstatus}`) #{funeral.var_reqstatus}
 																		td
 																			span.approval(value=`${funeral.char_approvalstatus}`) #{funeral.char_approvalstatus}
+																		td
+																			span.eventstatus(value=`${funeral.var_eventstatus}`) #{funeral.var_eventstatus}
 																		td.td-actions.text-center
 																			button.btn.btn-primary.actionButton(type='button' value=`${funeral.int_eventinfoID}`)
 																				i.ti-settings
 																					#toolbar-options.hidden
 																						a.viewButton(href='#')
 																							i.ti-file(style="color:white;")
-																						a.updateButton(href='#')
-																							i.ti-pencil(style="color:white;")
 																						a.updateReqButton(href='#')
 																							i.ti-new-window(style="color:white;")
 								#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
@@ -131,6 +132,15 @@ block addjs
 				}
 				else if($('.approval').eq(i).attr('value') == "Disapproved"){
 					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700')
+				}
+				if($('.eventstatus').eq(i).attr('value') == "Pending"){
+					$('.eventstatus').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
+				}
+				else if($('.eventstatus').eq(i).attr('value') == "Cancelled"){
+					$('.eventstatus').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700 ')
+				}
+				else if($('.eventstatus').eq(i).attr('value') == "On Going"){
+					$('.eventstatus').eq(i).addClass('badge btn btn-primary-lg bgc-green-100 c-green-700')
 				}
 			}
 			var idNow;
@@ -624,7 +634,7 @@ block addjs
 																	type:'success'
 																}).then(function(){
 																	for(i=0;i<idsr.length;i++){
-																		$.post('/secretariat/transaction-funeralservice/updateRequirementsReject',{
+																		$.post('/secretariat/updateRequirementsReject',{
 																		id:idsr[i],
 																		eventid:idNow
 																		}).done(data=>{

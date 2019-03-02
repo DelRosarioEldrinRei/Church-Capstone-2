@@ -602,7 +602,8 @@ block main
 																	option Widower
 																	input.datepicker.form-control#eventdate(type='hidden' name='eventDate' placeholder="Ex. Ina ng Lupang Pangako Parish")
 																	input.datepicker.form-control#timestart(type='hidden' name='timeStart' placeholder="Ex. Ina ng Lupang Pangako Parish")
-																	input.datepicker.form-control#numsponsors(type='hidden' name='timeStart' value='0')
+																	input.datepicker.form-control#timeEnd2(type='hidden' name='timeEnd2' placeholder="Ex. Ina ng Lupang Pangako Parish")
+																	
 														.col-md-4.px-lg-3.px-md-0.px-sm-0
 															.form-group
 																h6.label-control Occupation:
@@ -1218,6 +1219,7 @@ block addjs
 							if(value.value) {
 								$('#eventdate').val(`${eventDate}`)
 								$('#timestart').val(`${timeStart}`)
+								$('#timeEnd2').val(`${timeEnd2}`)
 								$("#calendarMarriage").fullCalendar('removeEvents',[1])
 								swal(
 									'Sucess!',
