@@ -1,4 +1,4 @@
-extends ../../../../templates/guests
+extends ../../../../templates/home
 block main
   style.
     @media screen and (max-width: 576px) {
@@ -175,7 +175,7 @@ block addjs
           var idNow = $(this).val();
           console.log(idNow)
           $.post('/guest/establishment/query',{
-            id:idNow,
+            firstname: $('#firstname').val(),id:idNow,
           }).done(data=>{
             if($('#ourhomeradio').prop("checked")){
               owner= $('#owner').val(),
@@ -197,7 +197,6 @@ block addjs
               var formData= new FormData();
               formData.append('desireddate1', eventDate),
               formData.append('desiredtime1', timeStart),
-              formData.append('desiredtimeend', timeEnd2),
               formData.append('userID', $('#userID').val()),
               formData.append('image', $('#file-0b')[0].files[0]),
               formData.append('owner', owner),
@@ -222,7 +221,7 @@ block addjs
                     Okay:'okay'
                   }
                 }).then((value)=>{
-                  window.location='/guest/reservation'
+                  window.location='/guest'
                 })
               }
 

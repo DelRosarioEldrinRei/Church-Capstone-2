@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2019 at 02:30 AM
+-- Generation Time: Mar 01, 2019 at 03:53 PM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -49,6 +49,15 @@ CREATE TABLE `tbl_blessing` (
   `var_blessingvenue` varchar(100) NOT NULL,
   `var_blessingdetails` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_blessing`
+--
+
+INSERT INTO `tbl_blessing` (`int_eventinfoID`, `var_blessingvenue`, `var_blessingdetails`) VALUES
+(41, 'Payatas B Quezon City', 'asdf'),
+(44, 'asdf', 'adsf'),
+(45, 'Ina ng Lupang Pangako', 'asdf');
 
 -- --------------------------------------------------------
 
@@ -117,14 +126,28 @@ CREATE TABLE `tbl_eventinfo` (
   `int_eventID` int(10) NOT NULL,
   `date_eventdate` date DEFAULT NULL,
   `time_eventstart` time DEFAULT NULL,
-  `char_approvalstatus` char(20) NOT NULL,
+  `time_eventend` time NOT NULL,
+  `var_eventstatus` varchar(25) DEFAULT 'Pending',
+  `char_approvalstatus` char(20) NOT NULL DEFAULT 'Pending',
   `int_paymentID` int(11) DEFAULT NULL,
   `int_userpriestID` int(11) DEFAULT NULL,
   `bool_priestrequested` tinyint(4) DEFAULT NULL,
   `char_requirements` varchar(25) DEFAULT NULL,
-  `date_approval` date NOT NULL,
+  `date_approval` date DEFAULT NULL,
   `date_applied` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_eventinfo`
+--
+
+INSERT INTO `tbl_eventinfo` (`int_eventinfoID`, `int_userID`, `int_eventID`, `date_eventdate`, `time_eventstart`, `time_eventend`, `var_eventstatus`, `char_approvalstatus`, `int_paymentID`, `int_userpriestID`, `bool_priestrequested`, `char_requirements`, `date_approval`, `date_applied`) VALUES
+(41, 11, 1, '2019-03-01', '10:30:00', '12:30:00', 'Pending', 'Pending', NULL, NULL, NULL, 'Submitted', '2019-03-01', '2019-03-01'),
+(42, 11, 12, '2019-03-26', '11:30:00', '12:30:00', 'Pending', 'Pending', NULL, NULL, NULL, 'Submitted', NULL, '2019-03-01'),
+(43, 11, 12, '2019-03-28', '11:30:00', '12:30:00', 'Pending', 'Pending', NULL, NULL, NULL, 'Submitted', NULL, '2019-03-01'),
+(44, 11, 4, '2019-03-12', '12:30:00', '13:30:00', 'Pending', 'Pending', NULL, NULL, NULL, 'Submitted', NULL, '2019-03-01'),
+(45, 11, 7, '2019-03-05', '13:30:00', '14:30:00', 'Cancelled', 'Cancelled', 14, NULL, NULL, 'Submitted', '2019-03-01', '2019-03-01'),
+(47, 11, 5, '2019-03-01', '16:00:00', '19:00:00', 'Cancelled', 'Cancelled', 16, NULL, NULL, 'Incomplete', '2019-03-01', '2019-03-01');
 
 -- --------------------------------------------------------
 
@@ -248,15 +271,20 @@ CREATE TABLE `tbl_files` (
 
 CREATE TABLE `tbl_houseblessing` (
   `int_houseblessID` int(11) NOT NULL,
-  `int_userID` int(11) NOT NULL,
+  `int_eventinfoID` int(11) NOT NULL,
   `var_owner` varchar(100) NOT NULL,
   `var_estloc` varchar(100) NOT NULL,
   `var_ownercontactnum` varchar(13) NOT NULL,
-  `var_owneremailadd` varchar(50) NOT NULL,
-  `date_blessingdate` date NOT NULL,
-  `time_blessingstart` time NOT NULL,
-  `char_approvalstatus` char(11) NOT NULL
+  `var_owneremailadd` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_houseblessing`
+--
+
+INSERT INTO `tbl_houseblessing` (`int_houseblessID`, `int_eventinfoID`, `var_owner`, `var_estloc`, `var_ownercontactnum`, `var_owneremailadd`) VALUES
+(11, 42, 'Ebrada, Jonalyn Fe', 'Payatas B Quezon City', '09277475753', 'jonalynfeebrada11@gmail.com'),
+(12, 43, 'asdf', 'asdf', '09277475753', 'adsf@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -351,7 +379,8 @@ CREATE TABLE `tbl_message` (
 --
 
 INSERT INTO `tbl_message` (`int_messageID`, `int_senderID`, `int_receiverID`, `var_subject`, `text_message`, `datetime_sent`, `datetime_seen`, `var_messagestatus`, `int_eventinfoID`) VALUES
-(1, 11, 6, 'Cancellation', 'asdf', '2019-02-05 11:24:21', NULL, 'Delivered', NULL);
+(2, 6, 11, '', 'asdf', '2019-03-01 20:05:36', NULL, 'Delivered', NULL),
+(3, 6, 11, '', 'asdfasdf', '2019-03-01 20:06:43', NULL, 'Delivered', NULL);
 
 -- --------------------------------------------------------
 
@@ -362,11 +391,37 @@ INSERT INTO `tbl_message` (`int_messageID`, `int_senderID`, `int_receiverID`, `v
 CREATE TABLE `tbl_notification` (
   `int_notifID` int(10) NOT NULL,
   `int_userID` int(10) NOT NULL,
-  `var_notifdesc` varchar(55) DEFAULT NULL,
+  `var_notifdesc` varchar(500) DEFAULT NULL,
   `datetime_seen` datetime DEFAULT NULL,
   `int_eventinfoID` int(11) DEFAULT NULL,
   `datetime_received` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_notification`
+--
+
+INSERT INTO `tbl_notification` (`int_notifID`, `int_userID`, `var_notifdesc`, `datetime_seen`, `int_eventinfoID`, `datetime_received`) VALUES
+(3, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:38:16'),
+(4, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:39:04'),
+(5, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:39:12'),
+(6, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:39:15'),
+(7, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:39:15'),
+(8, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:39:17'),
+(9, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:39:18'),
+(10, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:39:19'),
+(11, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:39:19'),
+(12, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:41:19'),
+(13, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:55:36'),
+(14, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:56:06'),
+(15, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:57:28'),
+(16, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:57:50'),
+(17, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:58:14'),
+(18, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 20:58:56'),
+(19, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 21:00:32'),
+(20, 6, 'An event was automatcally cancelled by the system.', NULL, 47, '2019-03-01 21:02:48'),
+(21, 11, 'Your application was automatically cancelled because you did not meet the payment deadline. If you have any concerns, you may send us a message or go directly to the office. Thank you.', NULL, 45, '2019-03-01 21:21:35'),
+(22, 11, 'Your application was automatically cancelled because you did not meet the payment deadline. If you have any concerns, you may send us a message or go directly to the office. Thank you.', NULL, 45, '2019-03-01 21:21:35');
 
 -- --------------------------------------------------------
 
@@ -383,9 +438,31 @@ CREATE TABLE `tbl_payment` (
   `datetime_paymentreceived` datetime DEFAULT NULL,
   `date_downpaymentdeadline` date NOT NULL,
   `date_fullpaymentdeadline` date NOT NULL,
-  `var_vouchercode` varchar(45) DEFAULT NULL,
   `date_refundissued` date DEFAULT NULL,
   `date_refunddue` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_payment`
+--
+
+INSERT INTO `tbl_payment` (`int_paymentID`, `dbl_amount`, `dbl_balance`, `dbl_downpaymentamount`, `char_paymentstatus`, `datetime_paymentreceived`, `date_downpaymentdeadline`, `date_fullpaymentdeadline`, `date_refundissued`, `date_refunddue`) VALUES
+(14, 300, 300, NULL, 'Unpaid', NULL, '2019-03-01', '2019-03-01', NULL, NULL),
+(16, 7050, 7050, 3525, 'Unpaid', NULL, '2019-03-31', '2019-05-30', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_paymenthistory`
+--
+
+CREATE TABLE `tbl_paymenthistory` (
+  `int_ORnumber` int(11) NOT NULL,
+  `int_paymentID` int(11) NOT NULL,
+  `date_paymentdate` date NOT NULL,
+  `var_paidby` varchar(100) NOT NULL,
+  `dbl_paymentamount` double NOT NULL,
+  `dbl_remainingbalance` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -449,6 +526,16 @@ CREATE TABLE `tbl_relation` (
   `var_birthplace` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_relation`
+--
+
+INSERT INTO `tbl_relation` (`int_relationID`, `int_eventinfoID`, `var_relation`, `var_lname`, `var_fname`, `var_mname`, `char_gender`, `var_address`, `date_birthday`, `var_birthplace`) VALUES
+(25, 41, 'BF/GF', 'asdf', 'asdf', 'sdfa', 'Male', 'asdf', '1998-11-11', 'asdf'),
+(26, 44, 'null', 'asdf', 'asdf', 'adsf', 'Male', 'asdf', '1998-11-11', 'asdfa'),
+(27, 45, 'null', 'asd', 'fasdf', 'asdf', 'Male', 'asdf', '1998-11-11', 'asdf'),
+(29, 47, NULL, 'asdf', 'asdf', 'asdf', 'Male', 'asdf', '1998-11-11', 'asdf');
+
 -- --------------------------------------------------------
 
 --
@@ -462,6 +549,26 @@ CREATE TABLE `tbl_requirements` (
   `datetime_reqreceived` datetime DEFAULT NULL,
   `var_reqstatus` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_requirements`
+--
+
+INSERT INTO `tbl_requirements` (`int_requirementID`, `int_reqtypeID`, `var_reqpath`, `datetime_reqreceived`, `var_reqstatus`) VALUES
+(71, 44, '/img/req/image-1551373279979.jpg', '2019-03-01 01:01:20', 'Submitted'),
+(72, 48, '/img/req/image-1551373583375.jpg', '2019-03-01 01:06:23', 'Submitted'),
+(73, 47, '/img/req/image-1551373850386.jpg', '2019-03-01 01:10:50', 'Submitted'),
+(74, 7, '/img/req/image-1551373881600.jpg', '2019-03-01 01:11:21', 'Submitted'),
+(85, 13, '/img/req/birthCertGroom-1551374680605.jpg', '2019-03-01 01:24:41', 'Submitted'),
+(86, 49, NULL, NULL, 'To be submitted'),
+(87, 50, NULL, NULL, 'To be submitted'),
+(88, 23, NULL, NULL, 'To be submitted'),
+(89, 46, '/img/req/validIDGroom-1551374680604.jpg', '2019-03-01 01:24:41', 'Submitted'),
+(90, 24, NULL, NULL, 'To be submitted'),
+(91, 45, '/img/req/validIDBride-1551374680609.jpg', '2019-03-01 01:24:41', 'Submitted'),
+(92, 14, '/img/req/birthCertBride-1551374680610.jpg', '2019-03-01 01:24:41', 'Submitted'),
+(93, 25, NULL, NULL, 'To be submitted'),
+(94, 26, NULL, '2019-03-01 01:24:42', 'To be submitted');
 
 -- --------------------------------------------------------
 
@@ -501,7 +608,7 @@ CREATE TABLE `tbl_requirementsfacility` (
 
 CREATE TABLE `tbl_requirementshouse` (
   `int_requirementhouseID` int(11) NOT NULL,
-  `int_houseblessID` int(11) NOT NULL,
+  `int_eventinfoID` int(11) NOT NULL,
   `int_servicereqtypeID` int(11) NOT NULL,
   `var_reqpath` varchar(200) NOT NULL,
   `datetime_reqreceived` datetime NOT NULL,
@@ -519,6 +626,26 @@ CREATE TABLE `tbl_requirementsinevents` (
   `int_requirementID` int(11) NOT NULL,
   `int_eventinfoID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_requirementsinevents`
+--
+
+INSERT INTO `tbl_requirementsinevents` (`int_requirementsineventsID`, `int_requirementID`, `int_eventinfoID`) VALUES
+(70, 71, 41),
+(71, 72, 43),
+(72, 73, 44),
+(73, 74, 45),
+(84, 88, 47),
+(85, 86, 47),
+(86, 87, 47),
+(87, 90, 47),
+(88, 85, 47),
+(89, 93, 47),
+(90, 89, 47),
+(91, 91, 47),
+(92, 94, 47),
+(93, 92, 47);
 
 -- --------------------------------------------------------
 
@@ -693,13 +820,6 @@ CREATE TABLE `tbl_specialevent` (
   `var_eventpicpath` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `tbl_specialevent`
---
-
-INSERT INTO `tbl_specialevent` (`int_specialeventID`, `int_userID`, `var_spceventname`, `text_eventdesc`, `time_eventstart`, `time_eventend`, `var_eventvenue`, `char_eventtype`, `var_approvalstatus`, `var_eventpicpath`) VALUES
-(3, 6, 'Pre-Cana Seminar', 'Seminar before the wedding', '2019-02-17 06:00:00', '2019-02-19 07:00:00', 'INLPP', 'Seminar', 'Approved', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -711,6 +831,15 @@ CREATE TABLE `tbl_sponsors` (
   `int_eventinfoID` int(10) NOT NULL,
   `var_sponsorname` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_sponsors`
+--
+
+INSERT INTO `tbl_sponsors` (`int_sponsorID`, `int_eventinfoID`, `var_sponsorname`) VALUES
+(33, 47, 'asdf'),
+(34, 47, 'asdf'),
+(35, 47, 'asdf');
 
 -- --------------------------------------------------------
 
@@ -802,7 +931,7 @@ INSERT INTO `tbl_utilities` (`int_utilitiesID`, `int_eventID`, `int_serviceutili
 (2, 2, NULL, 14, 90, 0, '01:00:00', '11:00:00', '0', '12:00:00', '12:00:00', 1, 300, 50, NULL, 0, 10, NULL, 0, NULL, 0, 1, 11, 0, 'Enabled', 0),
 (3, 3, NULL, 14, 90, 0, '01:00:00', '11:00:00', '0', '12:00:00', '12:00:00', 1, 300, 50, NULL, 0, 7, NULL, 0, NULL, 0, 1, 0, 11, 'Enabled', 30),
 (4, 4, NULL, 3, 7, 0, '01:00:00', '00:00:00', '2,3,4,5,6', '09:00:00', '17:00:00', 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, 'Enabled', 0),
-(5, 5, NULL, 365, 730, 60, '01:30:00', '00:00:00', '2,3,4,5,6', '08:00:00', '15:00:00', 1, 7000, 50, 500, 15, 60, 50, 1, 30, 50, 1, 18, 0, 'Enabled', 2),
+(5, 5, NULL, 180, 730, 30, '01:30:00', '00:00:00', '2,3,4,5,6', '08:00:00', '15:00:00', 1, 7000, 50, 500, 30, 90, 50, 1, 30, 50, 1, 18, 0, 'Enabled', 2),
 (7, 7, NULL, 3, 7, 0, '01:00:00', '00:00:00', '2,3,4,5,6', '09:00:00', '15:00:00', 1, 300, 0, NULL, NULL, 2, NULL, 0, NULL, NULL, 0, NULL, NULL, 'Enabled', 0),
 (9, 9, NULL, 14, 90, 0, '01:00:00', '00:00:00', '2,3,4,5,6', '08:00:00', '16:00:00', 1, 1000, 50, NULL, NULL, 10, 50, 0, NULL, 50, 0, 18, NULL, 'Enabled', 5),
 (11, 11, NULL, 14, 90, 0, '01:00:00', '00:00:00', '2,3,4,5,6', '08:00:00', '16:00:00', 1, 1000, 50, NULL, NULL, 10, NULL, 0, NULL, NULL, 1, 11, 0, 'Enabled', 5),
@@ -930,6 +1059,14 @@ CREATE TABLE `tbl_voucherevents` (
   `var_vouchercode` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_voucherevents`
+--
+
+INSERT INTO `tbl_voucherevents` (`int_voucherID`, `int_eventinfoID`, `date_issued`, `date_due`, `int_userID`, `var_vouchercode`) VALUES
+(14, 45, '2019-03-08', '2019-03-01', 11, 'gGrwDAxz'),
+(16, 47, '2019-05-30', '2019-03-01', 11, 'e6Lm59em');
+
 -- --------------------------------------------------------
 
 --
@@ -964,6 +1101,13 @@ CREATE TABLE `tbl_wedbride` (
   `date_bcondate` date DEFAULT NULL,
   `var_bconplace` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_wedbride`
+--
+
+INSERT INTO `tbl_wedbride` (`int_eventinfoID`, `var_blname`, `var_bfname`, `var_bmname`, `char_bgender`, `var_baddress`, `date_bbirthday`, `var_bbirthplace`, `var_bnationality`, `var_bcivilstatus`, `var_breligion`, `var_boccupation`, `bool_bpregnant`, `var_bfathername`, `var_bfatherbplace`, `var_bfatherreligion`, `var_bmothername`, `var_bmotherbplace`, `var_bmotherreligion`, `var_bcurrparish`, `bool_bbaptized`, `date_bbapdate`, `var_bbapplace`, `bool_bconfirmed`, `date_bcondate`, `var_bconplace`) VALUES
+(47, 'asdf', 'asdf', '', 'Female', 'adsf', '1998-11-11', 'asdf', 'Filipino', 'Single', 'Catholic', 'asdf', 0, 'asdf', 'Catholic', 'adsf', 'asdf', 'Catholic', 'a', NULL, 0, NULL, NULL, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1010,6 +1154,13 @@ CREATE TABLE `tbl_wedcouple` (
   `var_priestname` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_wedcouple`
+--
+
+INSERT INTO `tbl_wedcouple` (`int_eventinfoID`, `bool_livingin`, `bool_married`, `date_cprevweddate`, `var_cprevwedplace`, `int_weddingsteps`, `var_wedcase`, `var_folderloc`, `var_priestname`) VALUES
+(47, 0, 0, NULL, NULL, 3, '', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -1036,6 +1187,13 @@ CREATE TABLE `tbl_wedgroom` (
   `date_gcondate` date DEFAULT NULL,
   `var_gconplace` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_wedgroom`
+--
+
+INSERT INTO `tbl_wedgroom` (`int_eventinfoID`, `var_gnationality`, `var_gcivilstatus`, `var_greligion`, `var_goccupation`, `var_gfathername`, `var_gfatherreligion`, `var_gfatherbplace`, `var_gmothername`, `var_gmotherreligion`, `var_gmotherbplace`, `var_gcurrparish`, `bool_gbaptized`, `date_gbapdate`, `var_gbapplace`, `bool_gconfirmed`, `date_gcondate`, `var_gconplace`) VALUES
+(47, 'Filipino', 'Single', 'Catholic', 'adsf', 'asdf', 'Catholic', 'asdf', 'asdf', 'Catholic', 'adsf', 'Ina ng Lupang Pangako Parish', 0, NULL, NULL, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1174,7 +1332,7 @@ ALTER TABLE `tbl_files`
 --
 ALTER TABLE `tbl_houseblessing`
   ADD PRIMARY KEY (`int_houseblessID`),
-  ADD KEY `int_userID` (`int_userID`);
+  ADD KEY `int_eventinfoID` (`int_eventinfoID`);
 
 --
 -- Indexes for table `tbl_itemdetails`
@@ -1219,8 +1377,13 @@ ALTER TABLE `tbl_notification`
 -- Indexes for table `tbl_payment`
 --
 ALTER TABLE `tbl_payment`
-  ADD PRIMARY KEY (`int_paymentID`),
-  ADD UNIQUE KEY `var_vouhercode_UNIQUE` (`var_vouchercode`);
+  ADD PRIMARY KEY (`int_paymentID`);
+
+--
+-- Indexes for table `tbl_paymenthistory`
+--
+ALTER TABLE `tbl_paymenthistory`
+  ADD PRIMARY KEY (`int_ORnumber`);
 
 --
 -- Indexes for table `tbl_priestsequence`
@@ -1271,7 +1434,7 @@ ALTER TABLE `tbl_requirementsfacility`
 ALTER TABLE `tbl_requirementshouse`
   ADD PRIMARY KEY (`int_requirementhouseID`),
   ADD KEY `int_servicereqtypeID` (`int_servicereqtypeID`),
-  ADD KEY `int_houseblessID` (`int_houseblessID`);
+  ADD KEY `int_houseblessID` (`int_eventinfoID`);
 
 --
 -- Indexes for table `tbl_requirementsinevents`
@@ -1443,7 +1606,7 @@ ALTER TABLE `tbl_documentsevents`
 -- AUTO_INCREMENT for table `tbl_eventinfo`
 --
 ALTER TABLE `tbl_eventinfo`
-  MODIFY `int_eventinfoID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `int_eventinfoID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `tbl_facility`
@@ -1473,19 +1636,19 @@ ALTER TABLE `tbl_filedivisions`
 -- AUTO_INCREMENT for table `tbl_filefolders`
 --
 ALTER TABLE `tbl_filefolders`
-  MODIFY `int_folderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `int_folderID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_files`
 --
 ALTER TABLE `tbl_files`
-  MODIFY `int_fileID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `int_fileID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_houseblessing`
 --
 ALTER TABLE `tbl_houseblessing`
-  MODIFY `int_houseblessID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `int_houseblessID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tbl_itemdetails`
@@ -1509,19 +1672,25 @@ ALTER TABLE `tbl_mass`
 -- AUTO_INCREMENT for table `tbl_message`
 --
 ALTER TABLE `tbl_message`
-  MODIFY `int_messageID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `int_messageID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_notification`
 --
 ALTER TABLE `tbl_notification`
-  MODIFY `int_notifID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `int_notifID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `tbl_payment`
 --
 ALTER TABLE `tbl_payment`
-  MODIFY `int_paymentID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `int_paymentID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `tbl_paymenthistory`
+--
+ALTER TABLE `tbl_paymenthistory`
+  MODIFY `int_ORnumber` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_priestsequence`
@@ -1539,13 +1708,13 @@ ALTER TABLE `tbl_quality`
 -- AUTO_INCREMENT for table `tbl_relation`
 --
 ALTER TABLE `tbl_relation`
-  MODIFY `int_relationID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `int_relationID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `tbl_requirements`
 --
 ALTER TABLE `tbl_requirements`
-  MODIFY `int_requirementID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `int_requirementID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT for table `tbl_requirementsdocument`
@@ -1569,7 +1738,7 @@ ALTER TABLE `tbl_requirementshouse`
 -- AUTO_INCREMENT for table `tbl_requirementsinevents`
 --
 ALTER TABLE `tbl_requirementsinevents`
-  MODIFY `int_requirementsineventsID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `int_requirementsineventsID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT for table `tbl_requirementtype`
@@ -1581,7 +1750,7 @@ ALTER TABLE `tbl_requirementtype`
 -- AUTO_INCREMENT for table `tbl_schedule`
 --
 ALTER TABLE `tbl_schedule`
-  MODIFY `int_scheduleID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `int_scheduleID` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_servicereqtype`
@@ -1605,13 +1774,13 @@ ALTER TABLE `tbl_serviceutilities`
 -- AUTO_INCREMENT for table `tbl_specialevent`
 --
 ALTER TABLE `tbl_specialevent`
-  MODIFY `int_specialeventID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `int_specialeventID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_sponsors`
 --
 ALTER TABLE `tbl_sponsors`
-  MODIFY `int_sponsorID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `int_sponsorID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `tbl_user`
@@ -1653,7 +1822,7 @@ ALTER TABLE `tbl_voucher`
 -- AUTO_INCREMENT for table `tbl_voucherevents`
 --
 ALTER TABLE `tbl_voucherevents`
-  MODIFY `int_voucherID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `int_voucherID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tbl_wedcases`
@@ -1665,7 +1834,7 @@ ALTER TABLE `tbl_wedcases`
 -- AUTO_INCREMENT for table `tbl_wedschedule`
 --
 ALTER TABLE `tbl_wedschedule`
-  MODIFY `int_wedschedID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `int_wedschedID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_wedsteps`
@@ -1741,12 +1910,6 @@ ALTER TABLE `tbl_files`
   ADD CONSTRAINT `tbl_files_ibfk_1` FOREIGN KEY (`int_requirementID`) REFERENCES `tbl_requirements` (`int_requirementID`);
 
 --
--- Constraints for table `tbl_houseblessing`
---
-ALTER TABLE `tbl_houseblessing`
-  ADD CONSTRAINT `tbl_houseblessing_ibfk_1` FOREIGN KEY (`int_userID`) REFERENCES `tbl_user` (`int_userID`);
-
---
 -- Constraints for table `tbl_itemdetails`
 --
 ALTER TABLE `tbl_itemdetails`
@@ -1805,7 +1968,7 @@ ALTER TABLE `tbl_requirementsfacility`
 --
 ALTER TABLE `tbl_requirementshouse`
   ADD CONSTRAINT `tbl_requirementshouse_ibfk_2` FOREIGN KEY (`int_servicereqtypeID`) REFERENCES `tbl_servicereqtype` (`int_servicereqtypeID`),
-  ADD CONSTRAINT `tbl_requirementshouse_ibfk_3` FOREIGN KEY (`int_houseblessID`) REFERENCES `tbl_houseblessing` (`int_houseblessID`);
+  ADD CONSTRAINT `tbl_requirementshouse_ibfk_3` FOREIGN KEY (`int_eventinfoID`) REFERENCES `tbl_eventinfo` (`int_eventinfoID`);
 
 --
 -- Constraints for table `tbl_requirementsinevents`

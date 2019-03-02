@@ -101,37 +101,27 @@ block prepend main
 											label Details
 												.text-danger.d-inline  *
 											input.form-control(id='details' name='details' type='textarea' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)")
-								.row
-									.col-md-6
-										.form-group
-											label File Details
-												.text-danger.d-inline  *
-											.form-check
-												label.form-check-label
-													input.form-check-input(id='nofile' name='file' type='radio' value='Male' checked='') 
-													| No file submitted
-											.form-check
-												label.form-check-label
-													input.form-check-input(id='withfile' name='file' type='radio' value='Male') 
-													| File(s) submitted
-									.col-md-6#withfiledrpdwn
-										
-										label File Location
-										.row
-											.col-md-6
-												#cabinetdiv.form-group
-												label
-													| Cabinet
-													select#cabinets.form-control(onchange='setcabinet(value);')
-													
-											.col-md-6
-												.form-group
-												label
-													| Division
-													select#divisions.form-control
-													
+								//- .row
+								//- 	.col-md-4
+								//- 		#cabinetdiv.form-group
+								//- 		label
+								//- 			| Cabinet
+								//- 			select#cabinets.form-control(onchange='setcabinet(value);')
+								//- 			each cabinet in cabinets
+								//- 				option(value=`${cabinet.var_cabinetname}`)=cabinet.var_cabinetname
 											
-
+											
+								//- 	.col-md-4
+								//- 		.form-group
+								//- 		label
+								//- 			| Division
+								//- 			select#divisions.form-control(onchange='setdivision(value);')
+								//- 			option  No division selected
+								//- 	.col-md-4
+								//- 		.form-group
+								//- 		label
+								//- 			| Folder Number
+								//- 			input#folderID.form-control(type='text', placeholder='No folder ID yet')
 
 								.text-center
 									button.btn.btn-primary#submitApplication(type='button') Submit
@@ -140,7 +130,6 @@ block addjs
 	script.
 		// Place where the blessing will happen logic
 		$('#hospitalname').hide();
-		$('#withfiledrpdwn').hide();
 		$('#othervenue').hide();
 
 		$('#place1').click(function() {
@@ -154,29 +143,6 @@ block addjs
 		$('#place3').click(function() {
 			$('#hospitalname').slideUp();
 			$('#othervenue').slideDown();
-		});
-		$('#nofile').click(function() {
-			$('#withfiledrpdwn').slideUp();
-			$('#cabinets').empty();
-			$('#divisions').empty();
-			$('#folderID').empty();
-		});
-		
-		$(document).on('click','#withfile',function(){
-			$('#withfiledrpdwn').slideDown();
-			$.post('/secretariat/getcabinets').done(data =>{
-				$('#cabinets').append(`
-						<option>No division selected</option>
-					`)
-				$('#divisions').append(`
-						<option>No division selected</option>
-					`)
-				for(i=0;i<data.cabinets.length;i++){
-					$('#cabinets').append(`
-						<option value=${data.cabinets[i].int_cabinetID}>${data.cabinets[i].var_cabinetname}</option>
-					`)
-				}
-			})
 		});
 
 		$('#desiredtime').datetimepicker({
@@ -283,15 +249,6 @@ block addjs
 				confirmButtonText: 'Confirm'
 				}).then((result)=>{
 					if(result.value){
-						if($('#withfile').prop("checked")){
-							var boolfile=1
-						}
-						if($('#nofile').prop("checked")){
-							var boolfile=0
-						}
-						if($('#nofile').prop("checked")){
-							gender= $('#gendermale').val()
-						}
 						if($('#gendermale').prop("checked")){
 							gender= $('#gendermale').val()
 						}
@@ -319,9 +276,6 @@ block addjs
 							address: $('#address').val(),
 							venue: venue,
 							details: $('#details').val(),
-							cabinet: $('#cabinets').val(),
-							division: $('#divisions').val(),
-							boolfile: boolfile,
 						}).done(data =>{
 							swal({
 							title:'Success',
@@ -337,34 +291,8 @@ block addjs
 					}
 				})
 			})
+
+
+		
+
 		});//documentready
-		function setcabinet($i){
-				console.log($i)
-				$("#divisions").empty();
-				$('#divisions').append(`
-						<option>No division selected</option>
-					`)
-				$.post('/secretariat/transaction-marriage/getdivisions',{ cabinetID:$i}).done(data=>{
-					console.log(data)
-					for(i=0;i<data.divisions.length;i++){
-					$('#divisions').append(`
-						<option value='${$i}-${data.divisions[i].int_divisionID}'>${data.divisions[i].var_divisionname}</option>
-					`)
-					}//for		
-				})//donedatacabinets
-			}//function cabinets
-		function setdivision($i){
-				console.log($i)
-				$("#folders").empty();
-
-				$.post('/secretariat/transaction-marriage/getfolders',{ location:$i}).done(data=>{
-					console.log(data)
-					var newID= data.folders.max +1
-					$('#folderID').val(`${newID}`)
-
-					//- $('#folders').append(`
-					//- 	<option value=${data.folders.max}>${data.folders.max}</option>
-					//- `)
-						
-				})//donedatacabinets
-			}//function cabinets

@@ -166,7 +166,17 @@ block prepend main
 			//- 												.modal-footer
 			//- 													button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
 			//- 													button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${service.int_utilitiesID}`) Apply
-									
+	#confirmationModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header#headerAppend(style='background:#367587; color:white')
+						h5.modal-title(style='background:#367587; color:white') Confirmation 
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true' style='background:#367587; color:white; margin-right: 5px') ×
+					.modal-body#bodyAppend
+					.modal-footer
+						button#confirmButton.filter.btn.btn-success(type="button") Yes, these are correct. 
+						button#cancelButton.filter.btn.btn-danger(type="button") Cancel							
 	section#portfolio.section-padding
 		.container
 			.row
@@ -673,30 +683,23 @@ block addjs
 									})
 									$('#cancelButton1').css('display', 'block');
 									//- $('#proceedButton').css('display', 'block');
-										$('#proceedAnointing').click(function(){
-											$.post('/login/query',{id:data.anointing.int_eventID}).done(data =>{
-												window.location=`/login? 
-												redirect="${$(this).val()}"`
-											})
-										})
-										$('#proceedFuneralmass').click(function(){
-											$.post('/login/query',{id:data.funeralmass.int_eventID}).done(data =>{
-												window.location=`/login? 
-												redirect="${$(this).val()}"`
-											})
-										})
-										$('#proceedFuneralservice').click(function(){
-											$.post('/login/query',{id:data.funeralservice.int_eventID}).done(data =>{
-												window.location=`/login? 
-												redirect="${$(this).val()}"`
-											})
-										})
-										$('#proceedHouseblessing').click(function(){
-											$.post('/login/query',{id:data.houseblessing.int_eventID}).done(data =>{
-												window.location=`/login? 
-												redirect="${$(this).val()}"`
-											})
-										})
+						$('#proceedAnointing').click(function(){
+							window.location=`/index/anointingform`
+							
+						})
+						$('#proceedFuneralmass').click(function(){
+							window.location=`/index/funeralform`
+						})
+						$('#proceedFuneralservice').click(function(){
+							window.location=`/index/funeralform`
+						})
+						$('#proceedHouseblessing').click(function(){
+							window.location=`/index/houseblessingform`
+							//- $.post('/login/query',{id:data.houseblessing.int_eventID}).done(data =>{
+							//- 	window.location=`/login? 
+							//- 	redirect="${$(this).val()}"`
+							//- })
+						})
 
 
 							})//post data
