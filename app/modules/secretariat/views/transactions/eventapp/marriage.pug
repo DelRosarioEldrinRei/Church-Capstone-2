@@ -307,6 +307,7 @@ block addjs
 								<input type="text" class="form-control" value="${timeRequested}" disabled> 
 							</div>
 						</div>
+						<br>
 						<h6>Groom</h6>
 					
 						<div class="row">
@@ -325,7 +326,7 @@ block addjs
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="col-md-8 p-lg-0 px-md-3 px-sm-0">
+							<div class="col-md-8 px-lg-3 px-md-3 px-sm-0">
 								<div class="form-group">
 									<h6 class="label-control">Birthplace:</h6><input class="form-control" type="text" name="gbirthplace" value=${data.results.var_birthplace} disabled/>
 									<div class="help-block with-errors"></div>
@@ -421,8 +422,7 @@ block addjs
 						</div>
 
 
-
-						<hr>
+						<br>
 						<h6>Bride</h6>
 					
 						<div class="row">
@@ -441,7 +441,7 @@ block addjs
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
-							<div class="col-md-8 p-lg-0 px-md-3 px-sm-0">
+							<div class="col-md-8 px-lg-3 px-md-3 px-sm-0">
 								<div class="form-group">
 									<h6 class="label-control">Birthplace:</h6><input class="form-control" type="text" name="bbirthplace" value=${data.results.var_bbirthplace} disabled/>
 									<div class="help-block with-errors"></div>
@@ -450,9 +450,16 @@ block addjs
 						</div>
 						
 						<div class="row">
-							<div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
+							<div class="col-md-8 px-lg-3 px-md-0 px-sm-0">
 								<div class="form-group">
 									<h6 for="exampleFormControlTextarea1">Address:</h6><input class="form-control" rows="2" name="baddress" value='${data.results.var_baddress}'disabled/>
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+							<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+								<div class="form-group">
+									<h6 for="exampleFormControlTextarea1">5 Months Pregnant?</h6>
+									<input class="form-control" rows="2" name="baddress" value='${(data.results.bool_bpregnant) ? 'Yes' : 'No'}'disabled/>
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -531,6 +538,18 @@ block addjs
 							<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 								<div class="form-group">
 									<h6 class="label-control">Mother's Religion:</h6><input class="form-control" type="text" name="bmotherreligion" value='${data.results.var_bmotherreligion}'disabled/>
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+						</div>
+						
+						<br>
+						<h6>Couple</h6>
+
+						<div class="row">
+							<div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
+								<div class="form-group">
+									<h6 class="label-control">Living Together?</h6><input class="form-control" type="text" name="bmothername" value='${(data.results.bool_livingin) ? 'Yes' : 'No'}'disabled/>
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>

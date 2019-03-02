@@ -179,6 +179,7 @@ block prepend main
 							span(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#viewBodyAppend
 					.modal-footer
+						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 	#myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		button.close(type='button', data-dismiss='modal', aria-label='Close')
 			span(aria-hidden='true' style='background:#367587; color:white') ×
@@ -282,48 +283,42 @@ block addjs
 							</div>
 						</div>
 						<label>Name of the Child:</label>
-						<div class="form-row mx-1">
-							<div class="form-group col-md-6">
+						<div class="form-row">
+							<div class="form-group col-md-4">
 								<label>Last Name:</label>
 								<input type="text" class="form-control" value="${data.var_lname}" disabled>
 							</div>
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-4">
 								<label>First Name:</label>
 								<input type="text" class="form-control" value="${data.var_fname}" disabled>
 							</div>
+							<div class="form-group col-md-4">
+								<label>Middle Name:</label>
+								<input type="text" class="form-control" value="${(data.var_mname) ? data.var_mname : 'N/A'}" disabled>
+							</div>
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-4">
-								<label>Relationship with the Child:</label>
-								<input type="text" class="form-control" value="${data.var_relation}" disabled>
-							</div>
 							<div class="form-group col-md-4">
 								<label>Gender:</label>
 								<input type="text" class="form-control" value="${data.char_gender}" disabled>
 							</div>
 							<div class="form-group col-md-4">
-								<label>Contact No:</label>
-								<input type="text" class="form-control" value="${data.var_contactnum}" disabled>
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col-md-6">
 								<label>Birth Date:</label>
 								<input type="text" class="form-control" value="${moment(data.date_birthday).format('MM/DD/YYYY')}" disabled>
 							</div>
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-4">
 								<label>Birth Place:</label>
 								<input type="text" class="form-control" value="${data.var_birthplace}" disabled>
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-md-6">
-								<label>Mother's Name:</label>
-								<input type="text" class="form-control" value="${data.var_mothername}" disabled>
+								<label>Relationship with the Child:</label>
+								<input type="text" class="form-control" value="${data.var_relation}" disabled>
 							</div>
 							<div class="form-group col-md-6">
-								<label>Mother's Birthplace:</label>
-								<input type="text" class="form-control" value="${data.var_motherbplace}" disabled>
+								<label>Contact No:</label>
+								<input type="text" class="form-control" value="${data.var_contactnum}" disabled>
 							</div>
 						</div>
 						<div class="form-row">
@@ -334,6 +329,16 @@ block addjs
 							<div class="form-group col-md-6">
 								<label>Father's Birthplace:</label>
 								<input type="text" class="form-control" value="${data.var_fatherbplace}" disabled>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label>Mother's Name:</label>
+								<input type="text" class="form-control" value="${data.var_mothername}" disabled>
+							</div>
+							<div class="form-group col-md-6">
+								<label>Mother's Birthplace:</label>
+								<input type="text" class="form-control" value="${data.var_motherbplace}" disabled>
 							</div>
 						</div>
 						<div class="form-group">
