@@ -278,7 +278,7 @@ block main
 				.modal-body#sponsors
 				.modal-footer
 					button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-					button.btn.std-btn.btn-common.btn-info.mb-0#submitButton(type='button') Apply
+					button.btn.std-btn.btn-common.btn-info.mb-0#submitButton(type='button') Submit
 block addjs
 	script.
 				function validateFileType(){
@@ -400,6 +400,9 @@ block addjs
 			$('#special').slideDown();
 			$('#regular').slideUp();	
 		$(document).on('click','#nextButton2',function(){
+			$.get('/guest/baptism/query').done(data=>{
+			sponsorfee=data.utilities[0].double_addrate
+			ratefee=data.utilities[0].double_fee
 			console.log($('#file-0b').val())
 			if ($("#customRadio1").prop("checked")) {
 			gender = $("#customRadio1").val();
@@ -425,7 +428,6 @@ block addjs
 			$('#file-0b').val() != '' ||
 			$('#file-0b').val() != undefined){
 				$('#nextButton2').addClass('btn-next')
-				$('#nextButton2').click();
 				
 			}
 			else{
@@ -437,6 +439,7 @@ block addjs
 					confirmButtonText: 'OK'
 				})
 			}
+		})
 		})
 		}
 		$('#presubmitButton').click(function() {
@@ -601,7 +604,8 @@ block addjs
 			baptismtype = "Special"
 			}
 			if($('.sponsorname').val() != ''){
-					var sponsors = $('.sponsorname')
+				var sponsorsadded = $(`input[name='sponsorname']`).length - 2
+					var sponsors = $(`input[name='sponsorname']`)
 					var formData = new FormData();
 					formData.append('baptismtype', baptismtype)
 					formData.append('lastname', $('#lastname').val())
@@ -611,6 +615,7 @@ block addjs
 					formData.append('gender',gender)
 					formData.append('eventDate',eventDate)
 					formData.append('timeStart',timeStart)	
+					formData.append('timeEnd',moment(timeEnd2,'hh:mm a').format('hh:mm:ss'))	
 					formData.append('address', $('.address').val())
 					formData.append('birthday', $('#birthdate').val()) 
 					formData.append('birthplace', $('#birthplace').val())
@@ -620,6 +625,7 @@ block addjs
 					formData.append('fathername', $('#fatherfullname').val())
 					formData.append('mothername', $('#motherfullname').val())
 					formData.append('contactnumber', $('#contactnumber').val())
+					formData.append('sponsoramount',(sponsorsadded*50))
 					var sponsorname =[];
 					for(i=0;i<sponsors.length;i++){
 					sponsorname.push($(sponsors[i]).val())
@@ -666,7 +672,7 @@ block addjs
 													var sponsorText = [];
 													var sponsorX = [65,393,507];
 													var sponsorY = 243;
-													console.log(`${data.sponsors}`)
+													console.log(`${data.sponsors.length}`)
 													for(i=0;i<data.sponsors[i].length;i++){
 														sponsorText.push({
 															text: `${data.sponsor[i].var_sponsorname}`,
@@ -1240,7 +1246,7 @@ block addjs
 			//- console.log(data.queries[i].time_eventstart)
 			//- console.log(data.queries[i].char_approvalstatus)
 				$('#calendarSpecial').fullCalendar('renderEvent', {
-				title: 'OCCUPIED EVENT',
+				title: 'OCCUPIED',
 				start: `${dateEvent} ${time_start}`,
 				end: `${dateEvent} ${time_end}`,
 				allDay: false,

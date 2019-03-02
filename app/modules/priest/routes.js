@@ -19,14 +19,14 @@ priestRouter.get('/updateaccount', (req, res)=>{
         });
 
 priestRouter.get('/', (req, res)=>{
-    var queryString1 =`SELECT * FROM tbl_notification 
-    JOIN tbl_eventinfo ON tbl_eventinfo.int_eventinfoID = tbl_notification.int_eventinfoID
+    console.log(req.session.priest.int_userID)
+    var queryString1 =`SELECT * FROM tbl_eventinfo
     JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
-    where tbl_eventinfo.char_approvalstatus =? AND tbl_notification.int_userID = ?`
-    db.query(queryString1,["Approved",req.session.userID], (err, results, fields) => {
+    where tbl_eventinfo.int_userpriestID = ? AND tbl_eventinfo.bool_priestapproval = 0`
+    db.query(queryString1,[req.session.priest.int_userID], (err, results, fields) => {
         if (err) console.log(err);
         details=results;
-        for(var i = 0; i < details.length; i++){
+        for(i=0; i < details.length; i++){
             details[i].date_eventdate = moment(details[i].date_eventdate).format('YYYY-MM-DD');
         }
         return res.render('priest/views/appointments',{ details : details});
@@ -58,7 +58,7 @@ priestRouter.get('/priestSchedule', (req, res)=>{
     var queryString = `select * from tbl_eventinfo
     JOIN tbl_user ON tbl_user.int_userID = tbl_eventinfo.int_userpriestID
     JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
-    WHERE tbl_user.int_userID = ? AND tbl_services.var_eventname != "Baptism"`
+    WHERE tbl_user.int_userID = ? AND tbl_services.var_eventname != "Baptism" AND tbl_eventinfo.bool_priestapproval=1`
     db.query(queryString,[req.session.userID],(err,results,fields)=>{
         console.log(results)
         console.log(req.session.userID)
@@ -92,15 +92,12 @@ priestRouter.get('/priestRegularSchedule', (req, res)=>{
 // });
 
 priestRouter.post('/queryConfirmAppointment', (req,res)=>{
-    var queryString1 = `UPDATE tbl_eventinfo SET int_userpriestID = ? where int_eventinfoID = ?`
-    db.query(queryString1,[req.session.userID,req.body.id],(err,results,fields)=>{
+    var queryString1 = `UPDATE tbl_eventinfo SET bool_priestapproval=? where int_eventinfoID = ?`
+    db.query(queryString1,[1,req.body.id],(err,results,fields)=>{
+
         if(err) throw err;
-        var queryString2 = `DELETE from tbl_notification where int_eventinfoID = ?`
-        db.query(queryString2,[req.body.id],(err,results,fields)=>{
-            if(err) throw err;
-            console.log(req.body.id)
-            return res.redirect('/priest');
-        })
+        return res.redirect('/priest');
+        
     })
     // var success =0
     // var notsuccess =1

@@ -110,7 +110,7 @@ loginRouter.route('/')
                 console.log(req.session);
                 return res.redirect('/coorcatechist');
             }
-            if(user.char_usertype == "Priest"){
+            if(user.char_usertype == "Priest" || user.char_usertype == "Parish Priest"){
                 delete user.var_password;
                 req.session.priest = user;
                 console.log(req.session);

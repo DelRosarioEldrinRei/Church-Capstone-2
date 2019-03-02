@@ -68,8 +68,8 @@ block main
 											td=reservation.date_eventdate
 											td=reservation.time_eventstart
 											td.td-actions
-												button.btn-info.btn-sm.viewButton(type='button',rel='tooltip', value=reservation.int_eventinfoID) View
-												button.btn-success.btn-sm.updateButton(type='button',rel='tooltip', value=reservation.int_eventinfoID) Edit
+												button.btn-info.btn-sm.viewButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) View
+												button.btn-success.btn-sm.updateButton(type='button',rel='tooltip', value=`${reservation.int_eventinfoID}`) Edit
 												button.btn.btn-danger.btn-sm.cancelButton(type='button',rel='tooltip',value=`${reservation.int_eventinfoID}`) Cancel
 												| &nbsp;
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
@@ -133,8 +133,8 @@ block addjs
 					//- console.log($('.eventname').attr('value'))
 					var eventname = $('.eventname').attr('value')
 					$.post('/guest/reservation/query',{id:idNow}).done(data=>{
-						if(data[0].var_eventname == "Marriage"){
-							window.location=`/guest/weddingDetails/${data[0].int_eventinfoID}`
+						if(data.var_eventname == "Marriage"){
+							window.location=`/guest/weddingDetails/${data.int_eventinfoID}`
 							//- $.post(`/guest/weddingDetails/${data[0].int_eventinfoID}`)
 						}
 
@@ -384,7 +384,7 @@ block addjs
 								<button id="voucher" type="button" class="btn btn-common">Voucher</button>
 								`)	
 								$('#voucher').click(function(){
-									console.log(data[0].int_voucherID)
+									console.log(data.int_voucherID)
 									$.post('/guest/voucherEvents',{voucherId:data[0].int_voucherID}).done(data=>{
 										for(i=0;i<data.sponsors.length;i++){
 												console.log("sponsors"+data.sponsors[i])
@@ -411,9 +411,9 @@ block addjs
 															var sponsorX = [65,393,507];
 															var sponsorY = 243;
 															console.log(`${data.sponsors}`)
-															for(i=0;i<data.sponsors[i].length;i++){
+															for(i=0;i<data.sponsors.length;i++){
 																sponsorText.push({
-																	text: `${data.sponsor[i].var_sponsorname}`,
+																	text: `${data.sponsors[i].var_sponsorname}`,
 																	style: 'styleLabelEvent',
 																	absolutePosition: {x:sponsorX[0], y:sponsorY},
 																})
@@ -1130,11 +1130,9 @@ block addjs
 							`)	
 							$('#voucher').click(function(){
 								console.log(data[0].int_voucherID)
-								
 								$.post('/guest/voucherEvents',{voucherId:data[0].int_voucherID}).done(data=>{
-									for(i=0;i<data.sponsors.length;i++){
-											console.log("sponsors"+data.sponsors[i])
-											}
+								console.log("sponsors "+data.sponsors.length)
+								
 											console.log(data.voucherinfo[0].var_vouchercode)
 											console.log("info"+data.voucherinfo[0])
 											$(document).off('click', '#voucherButton')
@@ -1157,9 +1155,9 @@ block addjs
 														var sponsorX = [65,393,507];
 														var sponsorY = 243;
 														console.log(`${data.sponsors}`)
-														for(i=0;i<data.sponsors[i].length;i++){
+														for(i=0;i<data.sponsors.length;i++){
 															sponsorText.push({
-																text: `${data.sponsor[i].var_sponsorname}`,
+																text: `${data.sponsors[i].var_sponsorname}`,
 																style: 'styleLabelEvent',
 																absolutePosition: {x:sponsorX[0], y:sponsorY},
 															})
