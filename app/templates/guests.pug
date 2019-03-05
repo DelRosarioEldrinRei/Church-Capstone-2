@@ -26,6 +26,7 @@ html(lang='en')
 		//- link(rel="stylesheet" href="/css/timedropper.min.css")
 		link(rel="stylesheet" href="/css/bootstrap-datetimepicker-solo.css")
 		link(href='/themes/explorer-fa/theme.css', media='all', rel='stylesheet')
+		link(href='/css/formValidation.css', rel='stylesheet')
 		block addcss
 		style.
 			.fa-trash {
@@ -112,6 +113,18 @@ html(lang='en')
 				}
 				.description {
 					border-left: 7px solid #cb9c57; font-size: 15px;
+					}
+				.fa {
+					font-size: 20px !important;
+				}
+				.fa-check::before {
+					color: #28a745 !important;
+				}
+				.fa-times::before {
+					color: red !important;
+				}
+				small {
+					font-size: 90% !important;
 				}
 	body
 		#loader
@@ -276,6 +289,8 @@ html(lang='en')
 		script(src='/js/pdfmake.js')
 		script(src='/js/vfs_fonts.js')
 		script(src='/js/jquery.inputmask.bundle.js')
+		script(type='text/javascript', src='/js/formValidation.js')
+		script(type='text/javascript', src='/js/bootstrapformvalidation.js')
 		script.
 
 			$('.datepicker').datetimepicker({

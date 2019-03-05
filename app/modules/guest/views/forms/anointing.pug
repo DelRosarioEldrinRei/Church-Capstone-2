@@ -19,6 +19,9 @@ block main
 		.form-control {
 			margin-bottom: 0;
 		}
+		.hidden {
+				display:none;
+		}
 	#headers
 		#header-style-1
 			.container
@@ -37,6 +40,7 @@ block main
 			.container
 				.row
 					.col-md-12.form-wizard.shadow3
+						form
 							//- form(action="/guest/anointing/form" enctype="multipart/form-data" method="post" data-toggle='validator')
 							h3 Anointing Application
 							p Fill all form fields
@@ -84,21 +88,20 @@ block main
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.pt-0
-												input.form-control#lastname(type='text' placeholder="Last Name *" name='lastname', required='' pattern="[A-Za-z ]{2,}" data-error='Please enter lastname')
-												.text-danger.warning
-										.col-md-4.p-lg-0.px-md-3.px-sm-0
+												input.form-control#lastname(type='text' placeholder="Last Name *" name='lastname')
+												//- .invalid-feedback Please re-enter your password valid Last Name.
+										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.p-0
-												input.form-control#firstname(type='text' placeholder="First Name *" name='firstname'  required='' pattern="[A-Za-z ]{3,}" data-error='Please enter firstname')
-												.text-danger.warning
+												input.form-control#firstname(type='text' placeholder="First Name *" name='firstname')
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.pt-0
-												input.form-control#middlename(type='text' placeholder="Middle Name" name='middlename' pattern="[A-Za-z ]{3,}" )
+												input.form-control#middlename(type='text' placeholder="Middle Name" name='middlename')
 									.row
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
 												h5.label-control Relationship with the ill
 													.text-danger.d-inline  *
-												select#relation(type="text" name='relation'  required=''  data-error='Please choose an option')
+												select#relation(type="text" name='relation' data-error='Please choose an option')
 													option(selected="" value="" disabled) Choose...
 													option Aunt/Uncle
 													option Child
@@ -110,19 +113,22 @@ block main
 													option Parent
 													option Sibling
 													option Spouse
-												.text-danger.warning
 										.col-md-4.p-lg-0.px-md-3.px-sm-0
 											.form-group
 												h5.label-control Birthday
 													.text-danger.d-inline  *
-												input.birthday.form-control#birthday(type='date' name='birthday'  required='', data-error='Please enter your birthday')
-												.text-danger.warning
+												input.birthday.form-control#birthday(type='date' name='birthday')
+												p
+													span.emsg.hidden
+														i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+														|  Please Enter Your Birthday.
+													span.emsgcorrect.hidden
+														i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group
 												h5.label-control Birthplace:
 													.text-danger.d-inline  *
-												input.form-control#birthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City"  required=''  pattern="[A-Za-z0-9 ]{3,}"  data-error='Please enter birthplace')
-												.text-danger.warning
+												input.form-control#birthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City")
 									//- .row
 									//- 	.col-md-4.px-lg-3.px-md-0.px-sm-0
 									//- 		.form-group
@@ -158,16 +164,12 @@ block main
 											.form-group.p-0
 												h5(for='address') Address
 													.text-danger.d-inline  *
-												textarea#address.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC"  required='' pattern="[A-Za-z0-9]{3,}" data-error='Please enter complete address')
-												label
-													.text-danger.warning6
+												textarea#address.form-control.mb-0(rows='2' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC")
 										.col-md-4.px-lg-3.px-md-3.px-sm-0
 											.form-group.p-0
 												h5(for='details') Details
 													.text-danger.d-inline  *
-												textarea#details.form-control.mb-0(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)"  required='' pattern="[A-Za-z]{3,}" data-error='Please enter anointing details')
-												label
-													.text-danger.warning7
+												textarea#details.form-control.mb-0(rows='2' name='details' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)")
 									.row
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
@@ -182,12 +184,18 @@ block main
 																span.check
 													.form-check
 														label.form-check-label
-															input#exampleRadios1.form-check-input(type="radio" name="venue" value="hospital" pattern="[A-Za-z0-9 ]{2,}" )
+															input#exampleRadios1.form-check-input(type="radio" name="venue" value="hospital")
 															| Hospital/Center
 															span.circle
 																span.check
 														#textarea1.form-group
-															textarea.form-control#hospitalname(placeholder="Please enter the room number, the hospital name & address" rows="3" name='hospitalname' pattern="[A-Za-z0-9 ]{3,}" )
+															textarea.form-control#hospitalname.venuevalidation(placeholder="Please enter the room number, the hospital name & address" rows="3" name='hospitalname')
+															p
+																span.emsgvenue.hidden
+																	i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+																	|  Please Enter Venue.
+																span.emsgcorrectvenue.hidden
+																	i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 													.form-check
 														label.form-check-label
 															input#exampleRadios3.form-check-input(type="radio" name="venue" value="other")
@@ -195,18 +203,24 @@ block main
 															span.circle
 																span.check
 														#textarea2.form-group
-															textarea.form-control#othervenue(placeholder="Please enter complete address" rows="3" name='othervenue' pattern="[A-Za-z0-9 ]{3,}" )
-										
+															textarea.form-control#othervenue.venuevalidation(placeholder="Please enter complete address" rows="3" name='othervenue')
+															p
+																span.emsgvenue1.hidden
+																	i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+																	|  Please Enter Venue.
+																span.emsgcorrectvenue1.hidden
+																	i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 										.col-md-6.px-lg-3.px-md-3.px-sm-0
 											.form-group
 													h6.label-control Birth Certificate
 														.text-danger.d-inline  *
-													input#file-0b.file(type='file',accept='image/*',name="image" required data-error='Please upload your birth certificate')
+													input#file-0b.file(type='file',accept='image/*',name="image")
 													label
 														.help-block.with-errors
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-									button.btn.btn-submit#submitButton(type='button' value= `${user.int_userID}` ) Submit
+									button.btn.btn-submit#submitButton(type='submit' value= `${user.int_userID}` ) Submit
+						input#errChecker(type='text' hidden)
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -227,6 +241,58 @@ block main
 block addjs
 	script(type='text/javascript').
 		$(document).ready(function(){
+			validateForm()
+			// for birthday validation start
+			$('#birthday').on('keypress keydown keyup focus focusout',function(e){
+				if ($(this).val().length == 0) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrect').addClass('hidden');
+						$('.emsg').removeClass('hidden');
+						$('.emsg').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsg').addClass('hidden');
+					$('.emsgcorrect').removeClass('hidden');
+					$('.emsgcorrect').show();
+				}
+				e.stopPropagation();
+			});
+			var $regexname = /^([a-zs0-9-, ]{8,})+$/i;
+			$('.venuevalidation').on('keypress keydown keyup',function(e){
+				if (!$(this).val().match($regexname)) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrectvenue').addClass('hidden');
+						$('.emsgvenue').removeClass('hidden');
+						$('.emsgvenue').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsgvenue').addClass('hidden');
+					$('.emsgcorrectvenue').removeClass('hidden');
+					$('.emsgcorrectvenue').show();
+				}
+				e.stopPropagation();
+			});
+
+			var $regexname1 = /^([a-zs0-9-, ]{8,})+$/i;
+			$('.venuevalidation').on('keypress keydown keyup',function(e){
+				if (!$(this).val().match($regexname1)) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrectvenue1').addClass('hidden');
+						$('.emsgvenue1').removeClass('hidden');
+						$('.emsgvenue1').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsgvenue1').addClass('hidden');
+					$('.emsgcorrectvenue1').removeClass('hidden');
+					$('.emsgcorrectvenue1').show();
+				}
+				e.stopPropagation();
+			});
+			// end here
+
 			$('#OK').click(function(){
 			window.location=`/guest`
 			})
@@ -466,3 +532,118 @@ block addjs
 		//- 	},
 		//- });	
 				})
+
+		function validateForm(){
+			$('form').formValidation({
+				framework: 'bootstrap',
+				icon: {
+					valid: 'fa fa-check',
+					invalid: 'fa fa-times',
+					validating: 'fa fa-spinner'
+				},
+				fields: {
+					lastname: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Last Name`
+								},
+								regexp: {
+									regexp: /^([a-zs ]{2,})+$/i,
+									message: 'Only Aphabetical Characters, Minimum of 2.'
+								},
+						}
+					},
+					firstname: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Last Name`
+								},
+								regexp: {
+									regexp: /^([a-zs ]{2,})+$/i,
+									message: 'Only Aphabetical Characters, Minimum of 2.'
+								},
+						}
+					},
+					middlename: {
+						validators: {
+							regexp: {
+								regexp: /^([a-zs ]{2,})+$/i,
+								message: 'Only Aphabetical Characters, Minimum of 2.'
+							},
+						}
+					},
+					relation: {
+						validators: {
+						notEmpty: {
+										message: `Please Enter Your Relationship with the Ill`
+								},
+							}
+						},
+					//- birthday: {
+					//- 	validators: {
+					//- 	notEmpty: {
+					//- 					message: `Please Enter Your Birthday`
+					//- 			},
+					//- 		}
+					//- 	},
+					birthplace: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Your Birthplace`
+									},
+									regexp: {
+										regexp: /^([a-zs ]{6,})+$/i,
+										message: 'Only Aphabetical Characters, Minimum of 6.'
+									},
+								}
+							},
+					address: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Your Address`
+									},
+									regexp: {
+										regexp: /^([a-zs0-9-, ]{8,})+$/i,
+										message: 'Please Enter A Valid Address'
+									},
+								}
+							},
+					details: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Details`
+									},
+									regexp: {
+										regexp: /^([a-zs ]{6,})+$/i,
+										message: 'Only Aphabetical Characters, Minimum of 6.'
+									},
+								}
+							},
+					image: {
+							validators: {
+								notEmpty: {
+									message: `Please Enter Details`
+									},
+								}
+							},
+					//- venue: {
+					//- 		validators: {
+					//- 				regexp: {
+					//- 					regexp: /^([a-zs ]{6,})+$/i,
+					//- 					message: 'Only Aphabetical Characters, Minimum of 6.'
+					//- 				},
+					//- 			}
+					//- 		},
+					},
+				})
+			.on('err.field.fv', function(e, data) {
+				// Get the first invalid field
+				var invalidFields = data.fv.getInvalidFields().length;
+				$('#errChecker').val(invalidFields)
+			})
+			.on('success.field.fv', function(e, data) {
+				// Get the first invalid field
+				var invalidFields = data.fv.getInvalidFields().length;
+				$('#errChecker').val(invalidFields)
+			});
+		}
