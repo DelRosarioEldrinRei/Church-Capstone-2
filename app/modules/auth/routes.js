@@ -129,11 +129,17 @@ loginRouter.route('/')
                 console.log(req.session.user);
                 return res.redirect(`/guest/baptism/form?${req.session.eventId}`);
                 }
-                else if(req.session.eventId == 4){
+                else if(req.session.eventId == 4 ||req.session.eventId == 7){
                     delete user.var_password;
                     req.session.user = user;
                     console.log(req.session);
                     return res.redirect('/guest/funeral/form');
+                }
+                else if(req.session.eventId == 1){
+                    delete user.var_password;
+                    req.session.user = user;
+                    console.log(req.session);
+                    return res.redirect('/guest/anointing/form');
                 }
                 else if(req.session.eventId == 5){
                     delete user.var_password;
@@ -159,7 +165,7 @@ loginRouter.route('/')
                     console.log(req.session);
                     return res.redirect('/guest/facilities/form');
                 }
-                else if(req.session.serviceId == 3){
+                else if(req.session.eventId == 12){
                     delete user.var_password;
                     req.session.user = user;
                     console.log(req.session);

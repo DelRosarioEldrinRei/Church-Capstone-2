@@ -683,22 +683,138 @@ block addjs
 									})
 									$('#cancelButton1').css('display', 'block');
 									//- $('#proceedButton').css('display', 'block');
+						
 						$('#proceedAnointing').click(function(){
-							window.location=`/index/anointingform`
+							const swalWithBootstrapButtons = Swal.mixin({
+							confirmButtonClass: 'btn btn-success',
+							cancelButtonClass: 'btn btn-danger',
+							buttonsStyling: false,
+							})
+
+							swalWithBootstrapButtons.fire({
+							title: 'Do you have an account?',
+							//- text: "Do you have an account?",
+							type: 'info',
+							showCancelButton: true,
+							confirmButtonText: 'Yes, I have',
+							cancelButtonText: 'No, don\'t have',
+							reverseButtons: true
+							}).then((result) => {
+								//for yes
+							if (result.value) {
+								console.log('ey')
+								$.post('/login/query',{id:1}).done(data =>{
+									window.location=`/login? 
+									redirect="1"`
+								})
+							}
+							//for no
+							else {
+								window.location=`/index/anointingform`
+								
+							}
+							})
+							$('#inquireModal1').modal('hide');	
+							
 							
 						})
 						$('#proceedFuneralmass').click(function(){
-							window.location=`/index/funeralform`
+							console.log('FUNERAL MASS CLICKED')
+							const swalWithBootstrapButtons = Swal.mixin({
+							confirmButtonClass: 'btn btn-success',
+							cancelButtonClass: 'btn btn-danger',
+							buttonsStyling: false,
+							})
+
+							swalWithBootstrapButtons.fire({
+							title: 'Do you have an account?',
+							//- text: "Do you have an account?",
+							type: 'info',
+							showCancelButton: true,
+							confirmButtonText: 'Yes, I have',
+							cancelButtonText: 'No, don\'t have',
+							reverseButtons: true
+							}).then((result) => {
+								//for yes
+							if (result.value) {
+								console.log('ey')
+								$.post('/login/query',{id:7}).done(data =>{
+									window.location=`/login? 
+									redirect="7"`
+								})
+							}
+							//for no
+							else {
+								window.location=`/index/funeralform`
+								
+							}
+							})
+							$('#inquireModal1').modal('hide');	
+							
 						})
 						$('#proceedFuneralservice').click(function(){
-							window.location=`/index/funeralform`
+							const swalWithBootstrapButtons = Swal.mixin({
+							confirmButtonClass: 'btn btn-success',
+							cancelButtonClass: 'btn btn-danger',
+							buttonsStyling: false,
+							})
+
+							swalWithBootstrapButtons.fire({
+							title: 'Do you have an account?',
+							//- text: "Do you have an account?",
+							type: 'info',
+							showCancelButton: true,
+							confirmButtonText: 'Yes, I have',
+							cancelButtonText: 'No, don\'t have',
+							reverseButtons: true
+							}).then((result) => {
+								//for yes
+							if (result.value) {
+								console.log('ey')
+								$.post('/login/query',{id:4}).done(data =>{
+									window.location=`/login? 
+									redirect="4"`
+								})
+							}
+							//for no
+							else {
+								window.location=`/index/funeralform`
+								
+							}
+							})
+							$('#inquireModal1').modal('hide');	
 						})
 						$('#proceedHouseblessing').click(function(){
-							window.location=`/index/houseblessingform`
-							//- $.post('/login/query',{id:data.houseblessing.int_eventID}).done(data =>{
-							//- 	window.location=`/login? 
-							//- 	redirect="${$(this).val()}"`
-							//- })
+							const swalWithBootstrapButtons = Swal.mixin({
+							confirmButtonClass: 'btn btn-success',
+							cancelButtonClass: 'btn btn-danger',
+							buttonsStyling: false,
+							})
+
+							swalWithBootstrapButtons.fire({
+							title: 'Do you have an account?',
+							//- text: "Do you have an account?",
+							type: 'info',
+							showCancelButton: true,
+							confirmButtonText: 'Yes, I have',
+							cancelButtonText: 'No, don\'t have',
+							reverseButtons: true
+							}).then((result) => {
+								//for yes
+							if (result.value) {
+								console.log('ey')
+								$.post('/login/query',{id:12}).done(data =>{
+									window.location=`/login? 
+									redirect="12"`
+								})
+							}
+							//for no
+							else {
+								window.location=`/index/establishmentform`
+								
+							}
+							})
+							$('#inquireModal1').modal('hide');	
 						})
 
 
