@@ -89,10 +89,7 @@ block prepend main
 												button.close(type='button', data-dismiss='modal', aria-label='Close')
 														span.p-3(aria-hidden='true') ×
 										.modal-body
-											#modalAppend1
-											#modalAppend2
-											#modalAppend3
-											#modalAppend4
+											#modalAppend
 											.row
 												.col-md-12
 													.learn-more.text-center
@@ -630,7 +627,8 @@ block addjs
 										</p>
 										`
 
-										$('#modalAppend1').empty().append(append1)
+										$('#modalAppend').empty().append(append1)
+										anointingClick()
 
 										var index = 1	;
 										$(document).on('click', '.blessingPrevNext', function(event){
@@ -638,184 +636,184 @@ block addjs
 											event.preventDefault();
 											if(index == 0){
 												index++;
-												$('#modalAppend1').empty().append(append1)
-												$('#modalAppend2').empty()
-												$('#modalAppend3').empty()
-												$('#modalAppend4').empty()
+												$('#modalAppend').empty().append(append1)
 											}
 											else if(index == 1){
 												index++;
-												$('#modalAppend1').empty()
-												$('#modalAppend2').empty().append(append2)
-												$('#modalAppend3').empty()
-												$('#modalAppend4').empty()
+												$('#modalAppend').empty().append(append2)
 											}
 											else if(index == 2){
 												index++;
-												$('#modalAppend1').empty()
-												$('#modalAppend2').empty()
-												$('#modalAppend3').empty().append(append3)
-												$('#modalAppend4').empty()
+												$('#modalAppend').empty().append(append3)
 											}
 											else if(index == 3){
 												index++;
-												$('#modalAppend1').empty()
-												$('#modalAppend2').empty()
-												$('#modalAppend3').empty()
-												$('#modalAppend4').empty().append(append4)
+												$('#modalAppend').empty().append(append4)
 												index = 0;
 											}
-											//- else {
-											//- 	index = 0;
-											//- }
+											else {
+												index = 0;
+											}
 											console.log(index);
+
+											anointingClick()
+											funeralMassClick()
+											funeralServiceClick()
+											houseBlessingClick()
 										});
 
 									$('#inquireModal1').modal('show');	
 									$('#inquireModal1').on('hidden.bs.modal',function(){
-										$('#modalAppend1').empty()
-										$('#modalAppend2').empty()
-										$('#modalAppend3').empty()
-										$('#modalAppend4').empty()
+										$('#modalAppend').empty()
 										$('#headerAppend1').empty()
 										$('#reqAppend1').empty()
 
 									})
 									$('#cancelButton1').css('display', 'block');
 									//- $('#proceedButton').css('display', 'block');
-						
-						$('#proceedAnointing').click(function(){
-							const swalWithBootstrapButtons = Swal.mixin({
-							confirmButtonClass: 'btn btn-success',
-							cancelButtonClass: 'btn btn-danger',
-							buttonsStyling: false,
-							})
-
-							swalWithBootstrapButtons.fire({
-							title: 'Do you have an account?',
-							//- text: "Do you have an account?",
-							type: 'info',
-							showCancelButton: true,
-							confirmButtonText: 'Yes, I have',
-							cancelButtonText: 'No, don\'t have',
-							reverseButtons: true
-							}).then((result) => {
-								//for yes
-							if (result.value) {
-								console.log('ey')
-								$.post('/login/query',{id:1}).done(data =>{
-									window.location=`/login? 
-									redirect="1"`
+						function anointingClick(){
+							$('#proceedAnointing').click(function(){
+								const swalWithBootstrapButtons = Swal.mixin({
+								confirmButtonClass: 'btn btn-success',
+								cancelButtonClass: 'btn btn-danger',
+								buttonsStyling: false,
 								})
-							}
-							//for no
-							else {
-								window.location=`/index/anointingform`
-								
-							}
-							})
-							$('#inquireModal1').modal('hide');	
-							
-							
-						})
-						$('#proceedFuneralmass').click(function(){
-							console.log('FUNERAL MASS CLICKED')
-							const swalWithBootstrapButtons = Swal.mixin({
-							confirmButtonClass: 'btn btn-success',
-							cancelButtonClass: 'btn btn-danger',
-							buttonsStyling: false,
-							})
 
-							swalWithBootstrapButtons.fire({
-							title: 'Do you have an account?',
-							//- text: "Do you have an account?",
-							type: 'info',
-							showCancelButton: true,
-							confirmButtonText: 'Yes, I have',
-							cancelButtonText: 'No, don\'t have',
-							reverseButtons: true
-							}).then((result) => {
-								//for yes
-							if (result.value) {
-								console.log('ey')
-								$.post('/login/query',{id:7}).done(data =>{
-									window.location=`/login? 
-									redirect="7"`
+								swalWithBootstrapButtons.fire({
+								title: 'Do you have an account?',
+								//- text: "Do you have an account?",
+								type: 'info',
+								showCancelButton: true,
+								confirmButtonText: 'Yes, I have',
+								cancelButtonText: 'No, don\'t have',
+								reverseButtons: true
+								}).then((result) => {
+									//for yes
+								if (result.value) {
+									console.log('ey')
+									$.post('/login/query',{id:1}).done(data =>{
+										window.location=`/login? 
+										redirect="1"`
+									})
+								}
+								//for no
+								else {
+									window.location=`/index/anointingform`
+									
+								}
 								})
-							}
-							//for no
-							else {
-								window.location=`/index/funeralform`
+								$('#inquireModal1').modal('hide');	
 								
-							}
+								
 							})
-							$('#inquireModal1').modal('hide');	
-							
-						})
-						$('#proceedFuneralservice').click(function(){
-							const swalWithBootstrapButtons = Swal.mixin({
-							confirmButtonClass: 'btn btn-success',
-							cancelButtonClass: 'btn btn-danger',
-							buttonsStyling: false,
-							})
+						}
 
-							swalWithBootstrapButtons.fire({
-							title: 'Do you have an account?',
-							//- text: "Do you have an account?",
-							type: 'info',
-							showCancelButton: true,
-							confirmButtonText: 'Yes, I have',
-							cancelButtonText: 'No, don\'t have',
-							reverseButtons: true
-							}).then((result) => {
-								//for yes
-							if (result.value) {
-								console.log('ey')
-								$.post('/login/query',{id:4}).done(data =>{
-									window.location=`/login? 
-									redirect="4"`
+						function funeralMassClick(){
+							$('#proceedFuneralmass').click(function(){
+								console.log('FUNERAL MASS CLICKED')
+								const swalWithBootstrapButtons = Swal.mixin({
+								confirmButtonClass: 'btn btn-success',
+								cancelButtonClass: 'btn btn-danger',
+								buttonsStyling: false,
 								})
-							}
-							//for no
-							else {
-								window.location=`/index/funeralform`
-								
-							}
-							})
-							$('#inquireModal1').modal('hide');	
-						})
-						$('#proceedHouseblessing').click(function(){
-							const swalWithBootstrapButtons = Swal.mixin({
-							confirmButtonClass: 'btn btn-success',
-							cancelButtonClass: 'btn btn-danger',
-							buttonsStyling: false,
-							})
 
-							swalWithBootstrapButtons.fire({
-							title: 'Do you have an account?',
-							//- text: "Do you have an account?",
-							type: 'info',
-							showCancelButton: true,
-							confirmButtonText: 'Yes, I have',
-							cancelButtonText: 'No, don\'t have',
-							reverseButtons: true
-							}).then((result) => {
-								//for yes
-							if (result.value) {
-								console.log('ey')
-								$.post('/login/query',{id:12}).done(data =>{
-									window.location=`/login? 
-									redirect="12"`
+								swalWithBootstrapButtons.fire({
+								title: 'Do you have an account?',
+								//- text: "Do you have an account?",
+								type: 'info',
+								showCancelButton: true,
+								confirmButtonText: 'Yes, I have',
+								cancelButtonText: 'No, don\'t have',
+								reverseButtons: true
+								}).then((result) => {
+									//for yes
+								if (result.value) {
+									console.log('ey')
+									$.post('/login/query',{id:7}).done(data =>{
+										window.location=`/login? 
+										redirect="7"`
+									})
+								}
+								//for no
+								else {
+									window.location=`/index/funeralform`
+									
+								}
 								})
-							}
-							//for no
-							else {
-								window.location=`/index/establishmentform`
+								$('#inquireModal1').modal('hide');	
 								
-							}
 							})
-							$('#inquireModal1').modal('hide');	
-						})
+						}
+
+						function funeralServiceClick(){
+							$('#proceedFuneralservice').click(function(){
+								const swalWithBootstrapButtons = Swal.mixin({
+								confirmButtonClass: 'btn btn-success',
+								cancelButtonClass: 'btn btn-danger',
+								buttonsStyling: false,
+								})
+
+								swalWithBootstrapButtons.fire({
+								title: 'Do you have an account?',
+								//- text: "Do you have an account?",
+								type: 'info',
+								showCancelButton: true,
+								confirmButtonText: 'Yes, I have',
+								cancelButtonText: 'No, don\'t have',
+								reverseButtons: true
+								}).then((result) => {
+									//for yes
+								if (result.value) {
+									console.log('ey')
+									$.post('/login/query',{id:4}).done(data =>{
+										window.location=`/login? 
+										redirect="4"`
+									})
+								}
+								//for no
+								else {
+									window.location=`/index/funeralform`
+									
+								}
+								})
+								$('#inquireModal1').modal('hide');	
+							})
+						}
+
+						function houseBlessingClick(){
+							$('#proceedHouseblessing').click(function(){
+								const swalWithBootstrapButtons = Swal.mixin({
+								confirmButtonClass: 'btn btn-success',
+								cancelButtonClass: 'btn btn-danger',
+								buttonsStyling: false,
+								})
+
+								swalWithBootstrapButtons.fire({
+								title: 'Do you have an account?',
+								//- text: "Do you have an account?",
+								type: 'info',
+								showCancelButton: true,
+								confirmButtonText: 'Yes, I have',
+								cancelButtonText: 'No, don\'t have',
+								reverseButtons: true
+								}).then((result) => {
+									//for yes
+								if (result.value) {
+									console.log('ey')
+									$.post('/login/query',{id:12}).done(data =>{
+										window.location=`/login? 
+										redirect="12"`
+									})
+								}
+								//for no
+								else {
+									window.location=`/index/establishmentform`
+									
+								}
+								})
+								$('#inquireModal1').modal('hide');	
+							})
+						}
 
 
 							})//post data
