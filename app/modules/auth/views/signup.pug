@@ -154,7 +154,11 @@ html
 							validators: {
 								notEmpty: {
 									message: 'Please Enter Your Username',
-								},	
+								},
+								regexp: {
+										regexp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+										message: 'Minimum six characters, at least one uppercase letter, one lowercase letter, one number and one special character. Valid Special Characters [@$!%*?&]'
+								},
 							remote: {
 								url: `/signup/username/query`,
 								message: 'Username has been taken',
@@ -221,7 +225,7 @@ html
 											message: `Please Enter Your Address`
 									},
 									regexp: {
-										regexp: /^([a-zs0-9-, ]{8,})+$/i,
+										regexp: /^([a-zs0-9-,. ]{8,})+$/i,
 										message: 'Please Enter A Valid Address'
 									},
 							}
@@ -255,8 +259,8 @@ html
 										message: 'The password and its confirm are not the same.'
 									},
 									regexp: {
-									regexp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-									message: 'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.'
+										regexp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+										message: 'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.'
 									},
 							}
 						},

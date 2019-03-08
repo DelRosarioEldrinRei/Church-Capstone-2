@@ -214,7 +214,7 @@ block main
 											.form-group
 													h6.label-control Birth Certificate
 														.text-danger.d-inline  *
-													input#file-0b.file(type='file',accept='image/*',name="image")
+													input#file-0b.file(type='file',accept='image/*',name="image" onchange="validateFileType()")
 													label
 														.help-block.with-errors
 								.learn-more.pull-right
@@ -242,6 +242,19 @@ block addjs
 	script(type='text/javascript').
 		$(document).ready(function(){
 			validateForm()
+
+				function validateFileType(){
+					var fileName = document.getElementById("file-0b").value;
+					console.log(fileName)
+					var idxDot = fileName.lastIndexOf(".") + 1;
+					var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+					if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+						//TO DO
+					}else{
+						alert("Only jpg/jpeg and png files are allowed!");
+						$("#file-0b").val(null)
+					}  
+				}
 			// for birthday validation start
 			$('#birthday').on('keypress keydown keyup focus focusout',function(e){
 				if ($(this).val().length == 0) {
@@ -275,22 +288,22 @@ block addjs
 				e.stopPropagation();
 			});
 
-			var $regexname1 = /^([a-zs0-9-, ]{8,})+$/i;
-			$('.venuevalidation').on('keypress keydown keyup',function(e){
-				if (!$(this).val().match($regexname1)) {
-					// there is a mismatch, hence show the error message
-						$('.emsgcorrectvenue1').addClass('hidden');
-						$('.emsgvenue1').removeClass('hidden');
-						$('.emsgvenue1').show();
-					}
-				else{
-					// else, do not display message
-					$('.emsgvenue1').addClass('hidden');
-					$('.emsgcorrectvenue1').removeClass('hidden');
-					$('.emsgcorrectvenue1').show();
-				}
-				e.stopPropagation();
-			});
+			//- var $regexname1 = /^([a-zs0-9-, ]{8,})+$/i;
+			//- $('.venuevalidation').on('keypress keydown keyup',function(e){
+			//- 	if (!$(this).val().match($regexname1)) {
+			//- 		// there is a mismatch, hence show the error message
+			//- 			$('.emsgcorrectvenue1').addClass('hidden');
+			//- 			$('.emsgvenue1').removeClass('hidden');
+			//- 			$('.emsgvenue1').show();
+			//- 		}
+			//- 	else{
+			//- 		// else, do not display message
+			//- 		$('.emsgvenue1').addClass('hidden');
+			//- 		$('.emsgcorrectvenue1').removeClass('hidden');
+			//- 		$('.emsgcorrectvenue1').show();
+			//- 	}
+			//- 	e.stopPropagation();
+			//- });
 			// end here
 
 			$('#OK').click(function(){
@@ -603,7 +616,7 @@ block addjs
 									message: `Please Enter Your Address`
 									},
 									regexp: {
-										regexp: /^([a-zs0-9-, ]{8,})+$/i,
+										regexp: /^([a-zs0-9-,. ]{8,})+$/i,
 										message: 'Please Enter A Valid Address'
 									},
 								}
