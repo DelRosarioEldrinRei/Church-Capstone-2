@@ -132,8 +132,8 @@ block prepend main
 																					span.approvalpay(value=`${marriage.char_paymentstatus}`) #{marriage.char_paymentstatus}
 																				td
 																					span.approval(value=`${marriage.char_approvalstatus}`) #{marriage.char_approvalstatus}
-																				td
-																					span.eventstatus(value=`${marriage.var_eventstatus}`) #{marriage.var_eventstatus}
+																				//- td
+																				//- 	span.eventstatus(value=`${marriage.var_eventstatus}`) #{marriage.var_eventstatus}
 																				- if(marriage.int_userpriestID !=null)
 																					td
 																						span #{marriage.var_priestname}
