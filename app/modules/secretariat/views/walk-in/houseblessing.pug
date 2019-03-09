@@ -19,7 +19,7 @@ block prepend main
 				.masonry-sizer.col-md-12
 				.masonry-item.col-md-12
 					.bgc-white.p-20.bd
-						h6.c-grey-900 Anointing of the Sick
+						h6.c-grey-900 Establishment/House Blessing
 						.mT-30
 							form
 								.row
@@ -31,98 +31,58 @@ block prepend main
 									.col-md-6
 										.form-group
 											label  Schedule Time
+											.text-danger.d-inline  *
 											input.form-control(id='desiredtime' name='desireddate' type='text' placeholder='10:00 am')
 								.row
-									.col-md-4
+									.col-md-8
 										.form-group
-											label Name of the Ill
+											label Owner
 												.text-danger.d-inline  *
-											input.form-control(id='lname' name='lname' type='text' placeholder='Last Name *')
+											input.form-control(id='owner' name='owner' type='text' placeholder='Owner\'s Name')
 									.col-md-4
 										.form-group
-											label(style='visibility:hidden;') First Name
-											input.form-control(id='fname' name='fname' type='text' placeholder='First Name *')
-									.col-md-4
-										.form-group
-											label(style='visibility:hidden;') Middle Name
-											input.form-control(id='mname' name='mname' type='text' placeholder='Middle Name')
-								.row
-									
-									.col-md-3.px-lg-3.px-md-3.px-sm-0
-											.form-group.m-0.p-0
-												h6.label-control Gender
-													.text-danger.d-inline  *
-												.custom-control.custom-radio
-													input#gendermale.custom-control-input(type='radio', name='gender' value="Male"  checked)
-													label.custom-control-label(for='gendermale') 
-														label Male
-												.custom-control.custom-radio
-													input#genderfemale.custom-control-input(type='radio', name='gender' value="Female")
-													label.custom-control-label(for='genderfemale') 
-														label Female
-									.col-md-3
-										.form-group
-											label Birthday
-												.text-danger.d-inline  *
-											input.form-control.start-date(id='bday' name='bday' type='text', data-provide='datepicker' placeholder='Enter Your Birthday')
-									.col-md-6
-										.form-group
-											label Birthplace
+											label Contact Number
 											.text-danger.d-inline  *
-											input.form-control(id='bplace' name='bplace' type='text' placeholder='Ex. Payatas, Quezon City')
+											input.form-control(id='contactnumber' name='contactnumber' type='text' placeholder='Contact Number')
 								.row
-									
-									.col-md-12
+									.col-md-8
 										.form-group
-											label Address
+											label Establishment Location
 												.text-danger.d-inline  *
-											input.form-control(id='address' name='address' type='textarea' placeholder='Ex. Urban, Bgy. Payatas B 1119 QC')
+											input.form-control(id='estloc' name='estloc' type='text' placeholder='Location')
+									.col-md-4
+										.form-group
+											label Email Address
+											.text-danger.d-inline  *
+											input.form-control(id='emailaddress' name='emailaddress' type='text' placeholder='Email Address')
 								.row
 									.col-md-6
 										.form-group
-											label Place where the blessing will happen
+											label File Details
 												.text-danger.d-inline  *
 											.form-check
 												label.form-check-label
-													input.form-check-input(id='place1' name='place' type='radio' value='Male' checked='') 
-													| Same as his/her address
+													input.form-check-input(id='nofile' name='file' type='radio' value='Male' checked='') 
+													| No file submitted
 											.form-check
 												label.form-check-label
-													input.form-check-input(id='place2' name='place' type='radio' value='Male') 
-													| Hospital/Center
-												input.form-control(id='hospitalname' name='hospitalname' type='text' placeholder="Please enter the room number, the hospital name & address")
-											.form-check
-												label.form-check-label
-													input.form-check-input(id='place3' name='place' type='radio' value='Male') 
-													| Other
-												input.form-control(id='othervenue' name='othervenue' type='text' placeholder="Please enter complete address")
-									.col-md-6
-										.form-group
-											label Details
-												.text-danger.d-inline  *
-											input.form-control(id='details' name='details' type='textarea' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)")
-								//- .row
-								//- 	.col-md-4
-								//- 		#cabinetdiv.form-group
-								//- 		label
-								//- 			| Cabinet
-								//- 			select#cabinets.form-control(onchange='setcabinet(value);')
-								//- 			each cabinet in cabinets
-								//- 				option(value=`${cabinet.var_cabinetname}`)=cabinet.var_cabinetname
-											
-											
-								//- 	.col-md-4
-								//- 		.form-group
-								//- 		label
-								//- 			| Division
-								//- 			select#divisions.form-control(onchange='setdivision(value);')
-								//- 			option  No division selected
-								//- 	.col-md-4
-								//- 		.form-group
-								//- 		label
-								//- 			| Folder Number
-								//- 			input#folderID.form-control(type='text', placeholder='No folder ID yet')
-
+													input.form-check-input(id='withfile' name='file' type='radio' value='Male') 
+													| File(s) submitted
+									.col-md-6#withfiledrpdwn
+										
+										label File Location
+										.row
+											.col-md-6
+												#cabinetdiv.form-group
+												label
+													| Cabinet
+													select#cabinets.form-control(onchange='setcabinet(value);')
+													
+											.col-md-6
+												.form-group
+												label
+													| Division
+													select#divisions.form-control
 								.text-center
 									button.btn.btn-primary#submitApplication(type='button') Submit
 							input#errChecker(type='text' hidden)
@@ -172,53 +132,40 @@ block addjs
 					desireddate: {
 						validators: {
 								notEmpty: {
-										message: `Please Enter Your Desired Date`
+										message: `Please schedule date`
 								}
 						}
 					},
-					lname: {
+					desiretime: {
 						validators: {
 								notEmpty: {
-										message: `Please Enter Your Last Name`
+										message: `Please scheduled time`
 								}
 						}
 					},
-					fname: {
+					owner: {
 						validators: {
 								notEmpty: {
-										message: `Please Enter Your First Name`
+										message: `Please enter owner's full name`
+								}
+						}
+					},
+					contactnumber: {
+						validators: {
+								notEmpty: {
+										message: `Please enter contact number`
 								}
 						}
 					},
 					
-					bday: {
+					emailaddress: {
 						validators: {
 								notEmpty: {
-										message: `Please Enter Your Birthday`
+										message: `Please email address`
 								}
 						}
 					},
-					bplace: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Birthplace`
-								}
-						}
-					},
-					address: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Address`
-								}
-						}
-					},
-					details: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Details`
-								}
-						}
-					},
+					
 					
 				},
 			})
@@ -233,6 +180,61 @@ block addjs
 				$('#errChecker').val(invalidFields)
 			});
 		}
+		$('#withfiledrpdwn').hide();
+		$('#nofile').click(function() {
+			$('#withfiledrpdwn').slideUp();
+			$('#cabinets').empty();
+			$('#divisions').empty();
+			$('#folderID').empty();
+		});
+		
+		$(document).on('click','#withfile',function(){
+			$('#withfiledrpdwn').slideDown();
+			$.post('/secretariat/getcabinets').done(data =>{
+				$('#cabinets').append(`
+						<option>No division selected</option>
+					`)
+				$('#divisions').append(`
+						<option>No division selected</option>
+					`)
+				for(i=0;i<data.cabinets.length;i++){
+					$('#cabinets').append(`
+						<option value=${data.cabinets[i].int_cabinetID}>${data.cabinets[i].var_cabinetname}</option>
+					`)
+				}
+			})
+		});
+
+		function setcabinet($i){
+				console.log($i)
+				$("#divisions").empty();
+				$('#divisions').append(`
+						<option>No division selected</option>
+					`)
+				$.post('/secretariat/transaction-marriage/getdivisions',{ cabinetID:$i}).done(data=>{
+					console.log(data)
+					for(i=0;i<data.divisions.length;i++){
+					$('#divisions').append(`
+						<option value='${$i}-${data.divisions[i].int_divisionID}'>${data.divisions[i].var_divisionname}</option>
+					`)
+					}//for		
+				})//donedatacabinets
+			}//function cabinets
+		function setdivision($i){
+				console.log($i)
+				$("#folders").empty();
+
+				$.post('/secretariat/transaction-marriage/getfolders',{ location:$i}).done(data=>{
+					console.log(data)
+					var newID= data.folders.max +1
+					$('#folderID').val(`${newID}`)
+
+					//- $('#folders').append(`
+					//- 	<option value=${data.folders.max}>${data.folders.max}</option>
+					//- `)
+						
+				})//donedatacabinets
+			}//function cabinets
 
 		$(document).ready(function() {
 			validateForm()
@@ -249,33 +251,23 @@ block addjs
 				confirmButtonText: 'Confirm'
 				}).then((result)=>{
 					if(result.value){
-						if($('#gendermale').prop("checked")){
-							gender= $('#gendermale').val()
+						if($('#withfile').prop("checked")){
+							var boolfile=1
 						}
-						if($('#genderfemale').prop("checked")){
-							gender= $('#genderfemale').val()
+						if($('#nofile').prop("checked")){
+							var boolfile=0
 						}
-						if($('#place1').prop("checked")){
-							venue= $('#address').val()
-						}
-						if($("#place2").prop("checked")){
-							venue= $('#hospitalname').val()
-						}
-						if($("#place3").prop("checked")){
-							venue= $('#othervenue').val()
-						}
-						$.post('/secretariat/walkin-anointing', {
+						$.post('/secretariat/walkin-houseblessing', {
 							desireddate:$('#desireddate').val(),
 							desiredtime:$('#desiredtime').val(),
-							lastname: $('#lname').val(),
-							firstname: $('#fname').val(),
-							middlename: $('#mname').val(),
-							birthday: $('#bday').val(),
-							gender:gender,
-							birthplace: $('#bplace').val(),
-							address: $('#address').val(),
-							venue: venue,
-							details: $('#details').val(),
+							owner: $('#owner').val(),
+							estloc: $('#estloc').val(),
+							emailaddress: $('#emailaddress').val(),
+							contactnumber: $('#contactnumber').val(),
+							cabinet: $('#cabinets').val(),
+							division: $('#divisions').val(),
+							boolfile: boolfile,
+							
 						}).done(data =>{
 							swal({
 							title:'Success',

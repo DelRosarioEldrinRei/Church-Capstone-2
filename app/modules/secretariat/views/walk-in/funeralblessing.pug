@@ -19,7 +19,7 @@ block prepend main
 				.masonry-sizer.col-md-12
 				.masonry-item.col-md-12
 					.bgc-white.p-20.bd
-						h6.c-grey-900 Anointing of the Sick
+						h6.c-grey-900 Funeral Mass
 						.mT-30
 							form
 								.row
@@ -77,6 +77,7 @@ block prepend main
 											label Address
 												.text-danger.d-inline  *
 											input.form-control(id='address' name='address' type='textarea' placeholder='Ex. Urban, Bgy. Payatas B 1119 QC')
+									
 								.row
 									.col-md-6
 										.form-group
@@ -89,8 +90,8 @@ block prepend main
 											.form-check
 												label.form-check-label
 													input.form-check-input(id='place2' name='place' type='radio' value='Male') 
-													| Hospital/Center
-												input.form-control(id='hospitalname' name='hospitalname' type='text' placeholder="Please enter the room number, the hospital name & address")
+													| Ina ng Lupang Pangako Parish
+										
 											.form-check
 												label.form-check-label
 													input.form-check-input(id='place3' name='place' type='radio' value='Male') 
@@ -98,9 +99,9 @@ block prepend main
 												input.form-control(id='othervenue' name='othervenue' type='text' placeholder="Please enter complete address")
 									.col-md-6
 										.form-group
-											label Details
+											label Cause of Death
 												.text-danger.d-inline  *
-											input.form-control(id='details' name='details' type='textarea' placeholder="Please enter his/her illness or the reason of the anointing. (Ex. Operation/Surgery)")
+											input.form-control(id='details' name='cause' type='textarea' placeholder='Please enter cause of death')
 								.row
 									.col-md-6
 										.form-group
@@ -129,10 +130,39 @@ block prepend main
 												label
 													| Division
 													select#divisions.form-control
-													
-											
+								.row
+									.col-md-3
+										.form-group
+											label Payment Details
+											.form-group
+												input.checkbox#paid(type="checkbox" disabled )
+												| Paid
+									.col-md-9#paymentdetails
+										.form-group
+											.row
+												.col-md-2
+													.form-group
+														h6.label-control OR Number:
+														input#ornumber.form-control(type='text', disabled='')
+														.help-block.with-errors
+												.col-md-3
+													.form-group
+														h6.label-control Date:
+														input#paymentdate.form-control(type='text',disabled='')
+														.help-block.with-errors
+												.col-md-5
+													.form-group
+														h6.label-control Paid By:
+														input#payer.form-control(type='text', placeholder='Name of the payer')
+														.help-block.with-errors
+												.col-md-2.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Amount:
+														input#payment.form-control(type='number')
+														.help-block.with-errors
 
 
+									
 								.text-center
 									button.btn.btn-primary#submitApplication(type='button') Submit
 							input#errChecker(type='text' hidden)
@@ -140,45 +170,30 @@ block addjs
 	script.
 		// Place where the blessing will happen logic
 		$('#hospitalname').hide();
-		$('#withfiledrpdwn').hide();
 		$('#othervenue').hide();
 
 		$('#place1').click(function() {
+			if($(this).prop("checked") == true){
 			$('#hospitalname').slideUp();
 			$('#othervenue').slideUp();
+			$("#paid").prop('disabled', true);
+			}
 		});
 		$('#place2').click(function() {
+			if($(this).prop("checked") == true){
 			$('#hospitalname').slideDown();
 			$('#othervenue').slideUp();
+			$("#paid").prop('disabled', false);
+			}
 		});
 		$('#place3').click(function() {
+			if($(this).prop("checked") == true){
 			$('#hospitalname').slideUp();
 			$('#othervenue').slideDown();
-		});
-		$('#nofile').click(function() {
-			$('#withfiledrpdwn').slideUp();
-			$('#cabinets').empty();
-			$('#divisions').empty();
-			$('#folderID').empty();
+			$("#paid").prop('disabled', true);
+			}
 		});
 		
-		$(document).on('click','#withfile',function(){
-			$('#withfiledrpdwn').slideDown();
-			$.post('/secretariat/getcabinets').done(data =>{
-				$('#cabinets').append(`
-						<option>No division selected</option>
-					`)
-				$('#divisions').append(`
-						<option>No division selected</option>
-					`)
-				for(i=0;i<data.cabinets.length;i++){
-					$('#cabinets').append(`
-						<option value=${data.cabinets[i].int_cabinetID}>${data.cabinets[i].var_cabinetname}</option>
-					`)
-				}
-			})
-		});
-
 		$('#desiredtime').datetimepicker({
 				format: 'LT',
 				icons: {
@@ -193,6 +208,7 @@ block addjs
 					close: 'fa fa-remove'
 				}
 		});
+
 		//Realtime Validation
 		function validateForm(){
 			$('form').formValidation({
@@ -203,7 +219,7 @@ block addjs
 					validating: 'fa fa-spinner'
 				},
 				fields: {
-					desireddate: {
+					scheduledate: {
 						validators: {
 								notEmpty: {
 										message: `Please Enter Your Desired Date`
@@ -224,7 +240,13 @@ block addjs
 								}
 						}
 					},
-					
+					relationship: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Relation With the Ill`
+								}
+						}
+					},
 					bday: {
 						validators: {
 								notEmpty: {
@@ -246,14 +268,20 @@ block addjs
 								}
 						}
 					},
-					details: {
+					cause: {
 						validators: {
 								notEmpty: {
-										message: `Please Enter Your Details`
+										message: `Please Enter Cause of Death`
 								}
 						}
 					},
-					
+					birthcertificate: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Birth Certificate`
+								}
+						}
+					},
 				},
 			})
 			.on('err.field.fv', function(e, data) {
@@ -270,7 +298,7 @@ block addjs
 
 		$(document).ready(function() {
 			validateForm()
-			
+
 			$('#submitApplication').click(function(){
 				console.log('SUBMIT BUTTON CLICKED')
 				swal({
@@ -289,6 +317,12 @@ block addjs
 						if($('#nofile').prop("checked")){
 							var boolfile=0
 						}
+						if($('#paid').prop("checked")){
+							var boolpaid=1
+						}
+						else{
+							var boolpaid=0
+						}
 						if($('#nofile').prop("checked")){
 							gender= $('#gendermale').val()
 						}
@@ -300,14 +334,17 @@ block addjs
 						}
 						if($('#place1').prop("checked")){
 							venue= $('#address').val()
+							var funeraltype='Funeral Service'
 						}
 						if($("#place2").prop("checked")){
-							venue= $('#hospitalname').val()
+							venue= 'Ina ng Lupang Pangako Parish'
+							var funeraltype='Funeral Mass'
 						}
 						if($("#place3").prop("checked")){
 							venue= $('#othervenue').val()
+							var funeraltype='Funeral Service'
 						}
-						$.post('/secretariat/walkin-anointing', {
+						$.post('/secretariat/walkin-funeralblessing', {
 							desireddate:$('#desireddate').val(),
 							desiredtime:$('#desiredtime').val(),
 							lastname: $('#lname').val(),
@@ -322,13 +359,20 @@ block addjs
 							cabinet: $('#cabinets').val(),
 							division: $('#divisions').val(),
 							boolfile: boolfile,
+							funeraltype:funeraltype,
+							boolpaid:boolpaid,
+							ornumber:$('#ornumber').val(),
+							paymentdate:$('#paymentdate').val(),
+							payer:$('#payer').val(),
+							payment:$('#payment').val(),
 						}).done(data =>{
 							swal({
 							title:'Success',
 							text:'Request added', 
 							type:'success'
 							}).then(function(){
-								window.location=`/secretariat/transaction-anointing`
+								if(funeraltype=='Funeral Mass') window.location=`/secretariat/transaction-funeralmass`
+								if(funeraltype=='Funeral Service') window.location=`/secretariat/transaction-funeralservice`
 							})
 							$('#updateModal').modal('hide');
 							$('#updateAppend').empty();
@@ -337,7 +381,32 @@ block addjs
 					}
 				})
 			})
-		});//documentready
+		});
+		$('#withfiledrpdwn').hide();
+
+		$('#nofile').click(function() {
+			$('#withfiledrpdwn').slideUp();
+			$('#cabinets').val();
+			$('#divisions').val();
+			$('#folderID').val();
+		});
+		$(document).on('click','#withfile',function(){
+			$('#withfiledrpdwn').slideDown();
+			$.post('/secretariat/getcabinets').done(data =>{
+				$('#cabinets').append(`
+						<option>No division selected</option>
+					`)
+				$('#divisions').append(`
+						<option>No division selected</option>
+					`)
+				for(i=0;i<data.cabinets.length;i++){
+					$('#cabinets').append(`
+						<option value=${data.cabinets[i].int_cabinetID}>${data.cabinets[i].var_cabinetname}</option>
+					`)
+				}
+			})
+		});
+
 		function setcabinet($i){
 				console.log($i)
 				$("#divisions").empty();
@@ -354,7 +423,8 @@ block addjs
 				})//donedatacabinets
 			}//function cabinets
 		function setdivision($i){
-				console.log($i)
+
+			console.log($i)
 				$("#folders").empty();
 
 				$.post('/secretariat/transaction-marriage/getfolders',{ location:$i}).done(data=>{
@@ -367,4 +437,30 @@ block addjs
 					//- `)
 						
 				})//donedatacabinets
-			}//function cabinets
+		}//function cabinets
+		$('#paymentdetails').hide();
+		$(document).on('click','#paid',function(){
+			if($(this).prop("checked") == true){
+				$('#paymentdetails').slideDown();
+				$.post('/secretariat/getOR').done(data =>{
+					var ornumber = data.ornumber.max+1
+					var nowDate = new Date(); 
+					var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'-'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+					console.log(data)
+					var datelang = nowDate.getFullYear()+'-'+(nowDate.getMonth()+1)+'-'+nowDate.getDate()
+					$('#ornumber').val(ornumber)
+					$('#paymentdate').val(datelang)	
+			})
+			}
+
+			if($(this).prop("checked") == false){
+				$('#ornumber').val();
+				$('#paymentdate').val();
+				$('#payer').val();
+				$('#payment').val();
+				$('#paymentdetails').slideUp();
+			}
+
+			
+		});
+

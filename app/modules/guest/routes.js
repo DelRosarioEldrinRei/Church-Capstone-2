@@ -48,7 +48,148 @@ var upload = multer({ storage: storage})
             console.log(results)
             });
     });
+
     guestRouter.post('/query', (req, res) => {
+        var queryString1 =`SELECT * FROM tbl_services where int_eventID = ? `
+        db.query(queryString1,[req.body.id], (err, results1, fields) => {
+          var queryString2 =`select var_reqname from tbl_requirementtype where int_eventID = ?`
+          
+        db.query(queryString2,[req.body.id], (err, results2, fields) => {
+          if (err) console.log(err);
+          res.send({firstQuery:results1[0],secondQuery:results2});
+          });
+        })
+      })
+      
+      guestRouter.post('/baptismdesc', (req, res) => {
+        //REGULAR BAPTISM
+        var regularbap =`select * from tbl_services 
+        join tbl_utilities on tbl_services.int_eventID = tbl_utilities.int_eventID  where var_eventname='Baptism'`  
+          db.query(regularbap, (err, regularbap, fields) => {
+            if (err) console.log(err);
+            
+        var regbapreq =`select var_reqname from tbl_requirementtype where int_eventID = 
+          (select int_eventID from tbl_services where var_eventname= 'Baptism')`  
+          db.query(regbapreq, (err, regbapreq, fields) => {
+            if (err) console.log(err);
+        
+      
+        //SPECIAL BAPTISM
+        var specialbap =`select * from tbl_services
+        join tbl_utilities on tbl_services.int_eventID = tbl_utilities.int_eventID  where var_eventname='Special Baptism'`    
+          db.query(specialbap, (err, specialbap, fields) => {
+            if (err) console.log(err);
+        var spcbapreq =`select var_reqname from tbl_requirementtype where int_eventID = 
+            (select int_eventID from tbl_services where var_eventname= 'Special Baptism')`  
+              db.query(spcbapreq, (err, spcbapreq, fields) => {
+                if (err) console.log(err);
+       
+      
+            res.send({regularbap:regularbap[0], regbapreq:regbapreq,  specialbap:specialbap[0], spcbapreq:spcbapreq, });
+            });
+          })
+        })
+      
+      })
+      })
+
+      guestRouter.post('/baptism/beforeloggingin', (req, res) => {
+                console.log(req.body.id)
+                req.session.eventId = req.body.id
+                res.send('hello')
+        })
+      
+      guestRouter.post('/blessingrequest', (req, res) => {
+      
+        var anointing =`SELECT * FROM tbl_services 
+        join tbl_requirementtype on tbl_services.int_eventID = tbl_requirementtype.int_eventID
+        join tbl_utilities on tbl_services.int_eventID =tbl_utilities.int_eventID where tbl_services.var_eventname= ? `
+        db.query(anointing,['Anointing of the sick'], (err, anointing, fields) => {
+        
+        var funeralmass =`SELECT * FROM tbl_services 
+        join tbl_requirementtype on tbl_services.int_eventID = tbl_requirementtype.int_eventID
+        join tbl_utilities on tbl_services.int_eventID =tbl_utilities.int_eventID where tbl_services.var_eventname= ? `
+        db.query(funeralmass,['Funeral Mass'], (err, funeralmass, fields) => {
+      
+        var funeralservice =`SELECT * FROM tbl_services 
+        join tbl_requirementtype on tbl_services.int_eventID = tbl_requirementtype.int_eventID
+        join tbl_utilities on tbl_services.int_eventID =tbl_utilities.int_eventID where tbl_services.var_eventname= ? `
+        db.query(funeralservice,['Funeral Service'], (err, funeralservice, fields) => {
+        
+        var houseblessing =`SELECT * FROM tbl_services 
+        join tbl_requirementtype on tbl_services.int_eventID = tbl_requirementtype.int_eventID
+        join tbl_utilities on tbl_services.int_eventID =tbl_utilities.int_eventID where tbl_services.var_eventname= ? `
+        db.query(houseblessing,['House Blessing'], (err, houseblessing, fields) => {
+          
+          
+        res.send({anointing:anointing[0],funeralmass:funeralmass[0],funeralservice:funeralservice[0],houseblessing:houseblessing[0],});
+      
+        })})})})
+      })
+      guestRouter.post('/queryservice', (req, res) => {
+        var queryString1 =`SELECT * FROM tbl_serviceutilities where int_serviceutilitiesID = ? `
+        db.query(queryString1,[req.body.id], (err, results1, fields) => {
+          var queryString2 =`select var_reqname from tbl_servicereqtype where int_serviceutilitiesID = ?`
+          
+        db.query(queryString2,[req.body.id], (err, results2, fields) => {
+          if (err) console.log(err);
+          res.send({firstQuery:results1[0],secondQuery:results2});
+          });
+        })
+      })
+      
+    //   guestRouter.get('/marriagedetails', (req, res) => {
+    //     var queryString1 =`SELECT * FROM tbl_wedsteps`
+    //     db.query(queryString1, (err, results, fields) => {
+    //       if (err) console.log(err);
+    //       var steps= results;
+    //       console.log(steps)
+    //       var queryString2 =`select * from tbl_requirementtype where int_eventID = (select int_eventID from tbl_services where var_eventname='Marriage')`
+    //       db.query(queryString2, (err, results, fields) => {
+    //         if (err) console.log(err);
+    //         var requirements= results;
+      
+    //         var queryString3 =`SELECT var_eventdesc FROM tbl_services where var_eventname = 'Marriage'`
+    //         db.query(queryString3, (err, results, fields) => {
+    //           var desc =results;
+              
+    //         var queryString4 =`SELECT var_eventdesc FROM tbl_services where var_eventname = 'Marriage'`
+    //         db.query(queryString4, (err, results, fields) => {
+    //           var events =results;
+              
+        
+      
+    //         return res.render('home/views/marriage1', {steps: steps, requirements: requirements, description:desc, events: events});
+    //       });
+    //       });
+    //     });
+    //     });
+    //   });
+      
+      guestRouter.get('/schedule', (req, res) => {
+      
+        res.render('home/views/schedule', req.query);
+      });
+      guestRouter.get('/facilities', (req, res) => {
+      
+        res.render('home/views/facilities', req.query);
+      });
+      
+      guestRouter.get('/services', (req, res) => {
+        var queryString1 =`SELECT * FROM tbl_services where var_eventname = "Anointing of the sick" or var_eventname = "Funeral Service" or var_eventname = "Baptism" var_eventname = "Marriage" order by char_type`
+        db.query(queryString1, (err, results1, fields) => {
+          
+          if (err) console.log(err);
+          res.render('home/views/services',{ events : results1 });
+        });
+      });
+      
+      
+      guestRouter.route('/document')
+      .get(authMiddleware.noAuthed, (req, res) => {
+          res.render('home/views/document', req.query);
+      })
+    guestRouter.post('/queryy', (req, res) => {
 
         var queryString1 =`SELECT * FROM tbl_services where int_eventID = ? `
         db.query(queryString1,[req.body.id], (err, results1, fields) => {
@@ -68,7 +209,7 @@ var upload = multer({ storage: storage})
     
     })
     
-    guestRouter.post('/queryservice', (req, res) => {
+    guestRouter.post('/queryyservice', (req, res) => {
         var queryString1 =`SELECT * FROM tbl_serviceutilities where int_serviceutilitiesID = ? `
         db.query(queryString1,[req.body.id], (err, results1, fields) => {
         var queryString2 =`select var_reqname from tbl_servicereqtype where int_serviceutilitiesID = ?`
@@ -79,7 +220,7 @@ var upload = multer({ storage: storage})
         });
         })
     })
-    guestRouter.get('/service', (req, res)=>{
+    guestRouter.get('/servicee', (req, res)=>{
         console.log(req.session)
         var queryString =`select var_eventname from tbl_services where int_eventID =${req.session.eventId}`
         db.query(queryString, (err, results, fields) => {
@@ -327,7 +468,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         console.log(req.body)
         var selecteventname = `SELECT * FROM tbl_eventinfo 
             JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
-            JOIN tbl_voucherevents ON tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            
             where tbl_eventinfo.int_eventinfoID = ?`
             db.query(selecteventname,[req.body.id],(err,eventinfodetails,fields)=>{
                 if(err) console.log(err)
@@ -413,8 +554,12 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         console.log(req.body)
         var queryString1 =`UPDATE tbl_relation  SET var_relation = ?, var_lname = ?, var_fname=?, var_mname=?, char_gender=?, var_address=?, date_birthday=?, var_birthplace=?  where int_eventinfoID = ?`
         db.query(queryString1, [req.body.relation, req.body.lastname,req.body.firstname,req.body.middlename, req.body.gender, req.body.address, req.body.birthday, req.body.birthplace, req.body.id],(err, results, fields) => {
-            console.log(queryString1)
-            console.log(err)
+            
+            //lagay dito ng update tblblessing
+            if(err) console.log(err)
+            var queryString1 =`UPDATE tbl_blessing  SET var_blessingdetails = ?, var_blessingvenue = ?  where int_eventinfoID = ?`
+            db.query(queryString1, [req.body.details, req.body.venue,req.body.id],(err, results, fields) => {
+            
             if (err)
             {
                 console.log(err)
@@ -426,7 +571,31 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                 res.send({alertDesc:success})
             }
         
-    })})
+    })})})
+    guestRouter.post('/reservation/query/baptism', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        console.log(req.body)
+        var queryString1 =`UPDATE tbl_relation  SET var_relation = ?, var_lname = ?, var_fname=?, var_mname=?, char_gender=?, var_address=?, date_birthday=?, var_birthplace=?  where int_eventinfoID = ?`
+        db.query(queryString1, [req.body.relation, req.body.lastname,req.body.firstname,req.body.middlename, req.body.gender, req.body.address, req.body.birthday, req.body.birthplace, req.body.id],(err, results, fields) => {
+            
+            if(err) console.log(err)
+
+            var queryString1 =`UPDATE tbl_baptism  SET var_parentmarriageadd = ?, var_mothername = ?, var_motherbplace = ?,  var_fathername = ?, var_fatherbplace = ?, var_contactnum=? where int_eventinfoID = ?`
+            db.query(queryString1, [req.body.marriageaddress, req.body.mothername,req.body.motherplace,req.body.fathername,req.body.fatherplace, req.body.contactnumber,req.body.id],(err, results, fields) => {
+            
+            if (err)
+            {
+                console.log(err)
+                res.send({alertDesc:notsuccess})
+
+            }
+            else
+            {
+                res.send({alertDesc:success})
+            }
+        
+    })})})
     guestRouter.post('/reservation/query/updatehouseblessing', (req, res)=>{
         var success =0
         var notsuccess =1
@@ -460,78 +629,6 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
             res.send(results)
         });
 
-    });
-    guestRouter.get('/reservation/:int_eventinfoID', (req, res)=>{
-        var queryString1 =`SELECT * FROM tbl_eventinfo
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
-        WHERE tbl_eventinfo.int_eventinfoID = ${req.params.int_eventinfoID}`
-        db.query(queryString1, (err, results, fields) => {
-            if (err) console.log(err);
-            var details = results[0];
-            if(details.var_eventname == 'Anointing of the sick' || details.var_eventname == 'Funeral Service' || details.var_eventname =='Funeral Mass'){
-                var queryString2 =`SELECT * from tbl_relation 
-                join tbl_blessing on tbl_relation.int_eventinfoID = tbl_blessing.int_eventinfoID 
-                where tbl_relation.int_eventinfoID = ${req.params.int_eventinfoID}`
-                db.query(queryString2, (err, results, fields) => {
-                    if (err) console.log(err);
-                    var moredetails = results[0];
-                    console.log(details, moredetails)
-                    moredetails.date_birthday = moment(moredetails.date_birthday).format('YYYY-MM-DD');
-                    
-                    res.render('guest/views/reservations/info/blessingdetails',{ details : details, moredetails:moredetails, user: req.session.user});
-                });
-            }
-            if(details.var_eventname == 'Establishment Blessing'){
-                var queryString4 =`select * from tbl_houseblessing where int_eventinfoID = ${req.params.int_eventinfoID}`
-                db.query(queryString4, (err, results, fields) => {
-                    if (err) console.log(err);
-                    var moredetails = results[0];
-                    console.log(details, moredetails)
-                    res.render('guest/views/reservations/info/establishmentdetails',{ details : details, moredetails:moredetails, user: req.session.user});
-                });
-            }
-            if(details.var_eventname == 'Baptism' || details.var_eventname =='Confirmation' || details.var_eventname == 'RCIA'){
-                var queryString3 =`SELECT * from tbl_relation 
-                join tbl_baptism on tbl_relation.int_eventinfoID = tbl_baptism.int_eventinfoID
-                join tbl_sponsors on tbl_relation.int_eventinfoID = tbl_sponsors.int_eventinfoID 
-                where tbl_relation.int_eventinfoID = ${req.params.int_eventinfoID}`
-                db.query(queryString3, (err, results, fields) => {
-                    if (err) console.log(err);
-                    var moredetails = results[0];                
-                    moredetails.date_birthday = moment(moredetails.date_birthday).format('YYYY-MM-DD');
-                    moredetails.date_desireddate= moment(moredetails.date_desireddate).format('YYYY-MM-DD');   
-                    moredetails.time_desiredtime= moment(moredetails.time_desiredtime, 'HH:mm:ss').format('hh:mm A');
-                    console.log(details, moredetails)
-                    res.render('guest/views/reservations/info/baptismdetails',{ details : details, moredetails:moredetails, user: req.session.user});                
-                });
-            }        
-            if(details.var_eventname == 'Marriage'){
-                // D O N T  D E L E T E 
-                // var queryString3 =`SELECT * from tbl_relation 
-                // join tbl_wedgroom on tbl_relation.int_eventinfoID = tbl_wedgroom.int_eventinfoID
-                // join tbl_wedbride on tbl_relation.int_eventinfoID = tbl_wedbride.int_eventinfoID
-                // join tbl_wedcouple on tbl_relation.int_eventinfoID = tbl_wedcouple.int_eventinfoID
-                // join tbl_sponsors on tbl_relation.int_eventinfoID = tbl_sponsors.int_eventinfoID 
-                // where tbl_relation.int_eventinfoID = ${req.params.int_eventinfoID}`
-                // db.query(queryString3, (err, results, fields) => {
-                //     if (err) console.log(err);
-                //     var moredetails = results[0];                
-                //     moredetails.date_birthday = moment(moredetails.date_birthday).format('YYYY-MM-DD');
-                //     moredetails.date_bbirthday = moment(moredetails.date_bbirthday).format('YYYY-MM-DD');
-                //     moredetails.date_gbapdate = moment(moredetails.date_gbapdate).format('YYYY-MM-DD');
-                //     moredetails.date_gcondate = moment(moredetails.date_gcondate).format('YYYY-MM-DD');
-                //     moredetails.date_bbapdate = moment(moredetails.date_bbapdate).format('YYYY-MM-DD');
-                //     moredetails.date_bcondate = moment(moredetails.date_bcondate).format('YYYY-MM-DD');
-                //     moredetails.date_desireddate = moment(moredetails.date_desireddate).format('YYYY-MM-DD');   
-                //     moredetails.time_desiredtime= moment(moredetails.time_desiredtime, 'HH:mm:ss').format('hh:mm A');
-                //     console.log(details, moredetails)
-                var wedSteps=`select * from tbl_wedsteps`
-                db.query(wedSteps, (err, results, fields) => {
-               
-                    res.render('guest/views/marriage/weddingDetails',{ wedSteps: wedSteps, user: req.session.user});
-                });       
-            }
-        });
     });
     guestRouter.post('/reservation/queryCancel', (req,res)=>{
         var success =0
@@ -849,7 +946,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
 // A N O I N T I N G
 //==============================================================
     guestRouter.get('/anointing/utilities/query', (req, res)=>{
-        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = ${req.session.eventId}`
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 1`
         db.query(queryString3,(err,results,fields)=>{
             console.log(results)
         res.send(results)
@@ -1260,7 +1357,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
 
     })
     guestRouter.get('/establishment/utilities/query', (req, res)=>{
-        var queryString3 = `SELECT * FROM tbl_utilities where int_serviceutilitiesID = ${req.session.eventId}`
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 12`
         db.query(queryString3,(err,results,fields)=>{
             console.log(results)
         res.send(results)
@@ -1294,6 +1391,16 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                                     console.log(eventinfoID)
                             var queryString3 = `INSERT INTO tbl_houseblessing(int_eventinfoID,var_owner, var_estloc, var_ownercontactnum, var_owneremailadd) VALUES(?,?,?,?,?);`
                             db.query(queryString3, [eventinfoID.insertId, req.body.owner, req.body.locations, req.body.contactnumber, req.body.email], (err, results, fields) => {
+                                var requirementQuery = `select int_reqtypeID from tbl_requirementtype where int_eventID = ?`
+                            db.query(requirementQuery, [eventID.int_eventID], (err, results, fields) => {
+                                if (err) console.log(err);
+                                var reqq = results[0];
+                                var queryString7 = `INSERT INTO tbl_requirements(int_reqtypeID,var_reqpath, datetime_reqreceived, var_reqstatus) VALUES (?,?,?,?);`
+                                    db.query(queryString7,[reqq.int_reqtypeID,'None',date, 'Submitted'],(err, results, fields)=>{    
+                                        if (err) console.log(err);
+                                        var requirementID = results;
+                                        var reqevent=`INSERT INTO tbl_requirementsinevents(int_requirementID, int_eventinfoID) values (?,?)`
+                                        db.query(reqevent,[requirementID.insertId, eventinfoID.insertId],(err, results, fields)=>{
                                 if (err) console.log(err);                         
                                 if (err){
                                     console.log(err)
@@ -1302,7 +1409,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
                                 else{
                                     res.send({alertDesc:success})
                                 }                         
-                            });})
+                            });})})})})
                         }
                         if(req.body.blessloc=='2'){
                             var desiredtime1= moment(req.body.desiredtime1, 'h:mm a').format('HH:mm:ss');
@@ -1353,7 +1460,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
 // F U N E R A L  B L E S S I N G
 //=============================================================
     guestRouter.get('/funeral/utilities/query', (req, res)=>{
-        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = ${req.session.eventId}`
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 4`
         db.query(queryString3,(err,results,fields)=>{
             console.log(results)
         res.send(results)
@@ -1507,7 +1614,7 @@ guestRouter.get('/marriage/query', (req, res) => {
         })
     })
     guestRouter.get('/marriage/utilities/query', (req, res)=>{
-        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = ${req.session.eventId}`
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 5`
         db.query(queryString3,(err,results,fields)=>{
             console.log('=================================')
             console.log('marriage utilities query')
@@ -1628,7 +1735,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                                             defaultReq(eventinfoID.insertId);
                                             sponsors(eventinfoID.insertId);
                                             var eventid = eventinfoID.insertId
-                                            res.redirect('/guest/reservation')
+                                            res.redirect(`/guest/weddingDetails/${eventinfoID.insertId}`)
                                         });
                                     }
                                 else{
@@ -1639,7 +1746,7 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                                             defaultReq(eventinfoID.insertId);
                                             sponsors(eventinfoID.insertId);
                                             var eventid = eventinfoID.insertId
-                                            res.redirect('/guest/reservation')
+                                            res.redirect(`/guest//weddingDetails/${eventinfoID.insertId}`)
                                         });
                                     }      
                                 });});})});});});});
@@ -1728,20 +1835,9 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
                 if(err) throw err;
             });
         }
-        // var paymentquery = `select * from tbl_utilities where int_eventID =9`
-        //         db.query(paymentquery, (err, results, fields) => {
-        //             if(err) throw err;
-        //             console.log(results[0])
-        //             var amount = (req.body.sponsorname.length+1)*results[0].double_addrate + results[0].double_fee
-        //             console.log(amount)
-                    
-        //             var updateamount = `UPDATE tbl_payment SET dbl_amount =? where int_paymentID = (
-        //                 select int_paymentID from tbl_eventinfo where int_eventinfoID =?) ;`
-        //             db.query(updateamount,[amount,req.body.eventinfoID],(err,results,fields) =>{
-        //                 if(err) throw err
-        //             });
-        //     });
+        
     }
+    
     function defaultReq(eventinfoID){
         // var nowDate = new Date(); 
         // var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
@@ -1978,22 +2074,6 @@ guestRouter.post('/marriage/form',imageUpload1, (req, res) => {
 
     }
 });    
-
-// guestRouter.post('/weddingDetails', (req, res)=>{
-//     // var wedSteps=`select * from tbl_wedsteps`
-//     // db.query(wedSteps, (err, steps, fields) => {
-//     //     if (err) console.log(err);
-//     //     console.log(req.body)
-//         var eventinfo=`select * from tbl_eventinfo where int_eventinfoID= ? and int_userID=?`
-//             db.query(eventinfo, [req.body.id, req.session.user.int_userID] ,(err, results, fields) => {
-//             if (err) console.log(err);
-        
-//         console.log(results[0].int_eventinfoID)
-    
-//     return res.redirect('/guest/weddingDetails/form',{id:results[0].int_eventinfoID })
-// });
-// // });
-// });
 
 guestRouter.get('/weddingDetails/:int_eventinfoID', (req, res)=>{
     var wedSteps=`select * from tbl_wedsteps`

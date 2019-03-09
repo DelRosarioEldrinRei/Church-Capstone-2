@@ -76,7 +76,7 @@ block main
 									h4
 										.d-none.d-sm-inline Blessing Details:
 										span Step 2 - 2
-										input.form-control#userID(type='hidden' name='userID' value=`${user.int_userID}`)
+										
 										h6.label-control Name of the deceased
 											.text-danger.d-inline  *
 										.row
@@ -193,7 +193,7 @@ block main
 													//- 	input(type='file', name='deathCertificate' accept='image/*' required)
 									.learn-more.pull-right
 										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-										button.btn.btn-submit#submitButton(type='submit'  value= `${user.int_userID}`) Submit
+										button.btn.btn-submit#submitButton(type='submit' ) Submit
 block addjs
 	script.
 		$('#textarea2').hide();
@@ -235,7 +235,6 @@ block addjs
 								var formData= new FormData();
 								formData.append('desireddate1', eventDate),
 								formData.append('desiredtime1', timeStart),	
-								formData.append('userID', $('#userID').val()),
 								formData.append('lastname', $('#lastname').val()),
 								formData.append('firstname', $('#firstname').val()),
 								formData.append('middlename', $('#middlename').val()),
