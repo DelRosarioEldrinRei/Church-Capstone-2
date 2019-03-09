@@ -861,8 +861,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             })
         })
     })
-
-    
     secretariatRouter.post('/message', (req, res)=>{
         var queryString1= `select * from tbl_user  where int_userID=?`
         db.query(queryString1,[req.body.int_userID], (err, results, fields) => {
@@ -871,23 +869,143 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             res.send(results[0])
         }); 
     }); 
-    
     secretariatRouter.post('/transaction-baptism/paymentquery', (req, res)=>{
+        console.log(req.body.id1)
         var queryString1 =`SELECT * from tbl_eventinfo 
        
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        join tbl_utilities on tbl_eventinfo.int_eventID = tbl_utilities.int_eventID
+        JOIN tbl_baptism on tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_relation on tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID   
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
-        JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
-        JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
-        JOIN tbl_voucherevents on tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_voucherevents ON tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         where tbl_eventinfo.int_eventinfoID = ?`
         db.query(queryString1,[req.body.id1], (err, results, fields) => {
             if (err) console.log(err);
-            results[0].date_issued = moment(results[0].date_issued,'YYYT-MM-DD HH:mm:ss').format('YYYY/MM/DD hh:mm a')
-            res.send(results[0])
-            console.log(results[0])
+            var queryString2 =`SELECT * from tbl_eventinfo 
+            join tbl_user on tbl_eventinfo.int_userID =  tbl_user.int_userID
+            JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+            JOIN tbl_paymenthistory ON tbl_paymenthistory.int_paymentID = tbl_payment.int_paymentID
+            where tbl_eventinfo.int_eventinfoID = ?`
+            db.query(queryString2,[req.body.id1], (err, results1, fields) => {
+                if (err) console.log(err);
+                if(results1.length==0){
+                    var paymenthistory = null
+                }
+                else{
+                    var paymenthistory = results1
+                }
+            res.send({results:results[0], paymenthistory:paymenthistory})
+            // console.log(results[0])
+        }); });
+    });
+    secretariatRouter.post('/transaction-baptism/updatepaymentquery', (req, res)=>{
+        console.log(req.body.id1)
+        var queryString1 =`SELECT * from tbl_eventinfo 
+       
+        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        join tbl_utilities on tbl_eventinfo.int_eventID = tbl_utilities.int_eventID
+        JOIN tbl_baptism on tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_relation on tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID   
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        JOIN tbl_voucherevents ON tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        where tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString1,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            var queryString2 =`select MAX(int_ORnumber) as max from tbl_paymenthistory`
+
+            db.query(queryString2,(err,results1,fields) =>{
+                if(err) console.log(err)
+                console.log(results1)
+
+
+
+
+            res.send({results:results[0], ornumber:results1[0]})
+            // console.log(results[0])
         });
+    });
+    });
+
+    secretariatRouter.post('/transaction-baptism/changepaymentstatus', (req, res)=>{
+        var success =0
+        var notsuccess =1
+        // var status='';
+        console.log(req.body)
+        // var value = req.body.id1.split(',');
+        // console.log(value);
+        // for(var i=0; i>value.length; i++){
+            // if(value[1]=='1'){var status= 'Paid'}
+            // if(value[1]=='2'){var status= 'Unpaid'}
+            // if(value[1]=='3'){var status= 'Disapproved'}
+        // }
+
+        var nowDate = new Date(); 
+        var date = nowDate.getFullYear()+'/'+(nowDate.getMonth()+1)+'/'+nowDate.getDate() +" "+ nowDate.getHours() +":" + nowDate.getMinutes() +":" +nowDate.getSeconds(); 
+        console.log('status: '+ req.body.status)
+        var queryString= `select * from tbl_eventinfo join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID
+        where tbl_eventinfo.int_eventinfoID =?`
+
+        var queryString1 = `UPDATE tbl_payment SET char_paymentstatus = ?, datetime_paymentreceived = ?, dbl_balance=?
+                where int_paymentID =  ?;`;
+        
+        var updateHistory = `insert into tbl_paymenthistory(int_paymentID, date_paymentdate, var_paidby, dbl_paymentamount, dbl_remainingbalance) values(?,?,?,?,?) `
+        
+        db.query(queryString,[req.body.id1], (err, results, fields) => {
+            eventinfo=results[0];
+            if (err) console.log(err);       
+            console.log(results)
+            var balance =eventinfo.dbl_balance-req.body.payment
+            db.query(updateHistory,[eventinfo.int_paymentID, req.body.paymentdate, req.body.payer, req.body.payment, balance], (err, results, fields) => {
+                history=results[0];
+
+            
+            if(balance == 0){
+                 var status = 'Paid'
+                 
+                    if (err) console.log(err); 
+                
+            }
+            else if (balance !=0)var status = 'Incomplete'
+            db.query(queryString1,[status, date, balance, eventinfo.int_paymentID], (err, results, fields) => {
+                if (err) console.log(err); 
+                var selectstatus =`SELECT * from tbl_eventinfo 
+                    JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+                    JOIN tbl_baptism ON tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                    WHERE tbl_eventinfo.int_eventinfoID = ?`
+                
+                    var approvalUpdate = `UPDATE tbl_eventinfo SET char_approvalstatus = "Approved", date_approval=?
+                    WHERE int_eventinfoID =?`
+
+
+                    db.query(selectstatus,[req.body.id1], (err, results, fields) => {
+                        if (err) console.log(err);
+                        if(results[0].char_requirements=='Complete' && results[0].char_paymentstatus=='Paid'){
+                            db.query(approvalUpdate,[nowDate, req.body.id1], (err, results, fields) => {
+                                if (err) console.log(err);
+                                if (err){
+                                    console.log(err)
+                                    res.send({alertDesc:notsuccess})
+                                }
+                                else{
+                                    res.send({alertDesc:success, balance:balance})
+                                }        
+                            })
+                        }
+                        else{
+                            if (err){
+                                console.log(err)
+                                res.send({alertDesc:notsuccess})
+                            }
+                            else{
+                                res.send({alertDesc:success,balance:balance})
+                            }       
+                        }
+                    })
+        }); }); }); 
+        
     });
 
 
@@ -1839,7 +1957,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
 
 
-
+    //confirmation huwaaaat
     secretariatRouter.get('/transaction-confirmation', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
@@ -3001,6 +3119,46 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
                     var eventinfoID= results;
                         if (err) console.log(err);
                         
+                        if(req.body.baptismtype=='Baptism') var baptype = 3
+                        if(req.body.baptismtype=='Special Baptism') var baptype = 9
+                        var queryString5= `select int_eventID from tbl_services where var_eventname=?`
+                        db.query(queryString5,  [req.body.baptismtype],(err, results, fields) => {
+                            if (err) console.log(err);
+                            var eventID = results[0];  
+                            var desiredtime1= moment(req.body.desiredtime1, 'hh:mm A').format('HH:mm:ss');
+                            var desiredtimeend= moment(req.body.desiredtimeend, 'hh:mm A').format('HH:mm:ss');
+                            var paymentQuery= `select * from tbl_utilities where int_eventID = ?`
+                            db.query(paymentQuery,[eventID.int_eventID], (err, results, fields) => {
+                                if (err) console.log(err);
+                                console.log(results)
+                                var fee= results[0].double_fee;
+                                var otherfee= results[0].double_addrate* req.body.numofaddsponsors
+                                var totalfee= fee+otherfee
+                                
+                                console.log(totalfee)
+                                var datenow = new Date()
+                                var downpaymentdeadline = moment(datenow).add(results[0].int_fullpaymentdays,'days')
+                                var fullpaymentdeadline = moment(datenow).add(results[0].int_fullpaymentdays,'days')
+                                var downdateDeadline = moment(downpaymentdeadline).format('YYYY-MM-DD')
+                                var fulldateDeadline = moment(fullpaymentdeadline).format('YYYY-MM-DD')
+                                console.log(downpaymentdeadline)
+                                console.log(fullpaymentdeadline)
+                                console.log(downdateDeadline)
+                                console.log(fulldateDeadline)
+                            
+
+                                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
+                                    var text="";
+                                    for(i=0;i<8;i++)
+                                    text += possible.charAt(Math.floor(Math.random()*possible.length));
+                                    var queryString01 =`insert into tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode)
+                                    VALUES(?,?,?,?,?)`
+                                    db.query(queryString01,[eventinfoID.insertId,fulldateDeadline,datenow,6,text],(err,results,fields)=>{
+                                        console.log('voucher results')
+                                        console.log(results)
+
+
+
                         var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID,var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?, ?,?,?,?);`
                         db.query(queryString3, [eventinfoID.insertId, req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, birthday, req.body.birthplace], (err, results, fields) => {
                             if (err) console.log(err);
@@ -3073,7 +3231,7 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
                                         })
                                     })
                                 }
-                            })})})})
+                            })})})})})})})
                                                     
         }
 
@@ -3104,6 +3262,7 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
                     console.log(fullpaymentdeadline)
                     console.log(downdateDeadline)
                     console.log(fulldateDeadline)
+                    
                     var paymentInsert = `insert into tbl_payment(dbl_amount, dbl_balance, char_paymentstatus, date_downpaymentdeadline, date_fullpaymentdeadline) values(?,?,?,?,?)`;
                 db.query(paymentInsert,[totalfee,totalfee,'Unpaid', downdateDeadline,fulldateDeadline], (err, results2, fields) => {
                     if (err) console.log(err);
@@ -3221,6 +3380,47 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
                     if (err) console.log(err);
                     var eventinfoID= results;
                         if (err) console.log(err);
+
+                        if(req.body.funeraltype=="Funeral Mass"){
+
+                            var queryString5= `select int_eventID from tbl_services where var_eventname='Funeral Mass'`
+                            db.query(queryString5,  (err, results, fields) => {
+                                if (err) console.log(err);
+                                var eventID = results[0];  
+                                var desiredtime1= moment(req.body.desiredtime1, 'hh:mm A').format('HH:mm:ss');
+                                var desiredtimeend= moment(req.body.desiredtimeend, 'hh:mm A').format('HH:mm:ss');
+                                var paymentQuery= `select * from tbl_utilities where int_eventID = ?`
+                                db.query(paymentQuery,[eventID.int_eventID], (err, results, fields) => {
+                                    if (err) console.log(err);
+                                    console.log(results)
+                                    var fee= results[0].double_fee;
+                                    var otherfee= results[0].double_addrate* req.body.numofaddsponsors
+                                    var totalfee= fee+otherfee
+                                    
+                                    console.log(totalfee)
+                                    var datenow = new Date()
+                                    var downpaymentdeadline = moment(datenow).add(results[0].int_fullpaymentdays,'days')
+                                    var fullpaymentdeadline = moment(datenow).add(results[0].int_fullpaymentdays,'days')
+                                    var downdateDeadline = moment(downpaymentdeadline).format('YYYY-MM-DD')
+                                    var fulldateDeadline = moment(fullpaymentdeadline).format('YYYY-MM-DD')
+                                    console.log(downpaymentdeadline)
+                                    console.log(fullpaymentdeadline)
+                                    console.log(downdateDeadline)
+                                    console.log(fulldateDeadline)
+                                
+
+                                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz09123456789"
+                                        var text="";
+                                        for(i=0;i<8;i++)
+                                        text += possible.charAt(Math.floor(Math.random()*possible.length));
+                                        var queryString01 =`insert into tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode)
+                                        VALUES(?,?,?,?,?)`
+                                        db.query(queryString01,[eventinfoID.insertId,fulldateDeadline,datenow,6,text],(err,results,fields)=>{
+                                            console.log('voucher results')
+                                            console.log(results)
+
+                                        })})})
+                        }
                         
                         var queryString3 = `INSERT INTO tbl_relation(int_eventinfoID,var_lname, var_fname, var_mname, char_gender, var_address, date_birthday, var_birthplace) VALUES(?,?,?,?, ?,?,?,?);`
                         db.query(queryString3, [eventinfoID.insertId, req.body.lastname, req.body.firstname, req.body.middlename, req.body.gender, req.body.address, birthday, req.body.birthplace], (err, results, fields) => {
@@ -3299,6 +3499,8 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
        
 
                         if(req.body.funeraltype=='Funeral Mass'){
+                            
+                          
                             if(req.body.boolpaid==0){
                                 console.log('Not Paid')
                                 var queryString5= `select int_eventID from tbl_services where var_eventname="Funeral Mass";`
@@ -3329,56 +3531,57 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
                                             queries(paymentid.insertId)
                                         })})})
                             }
-                                    if(req.body.boolpaid==1){
-                                        console.log('Paid')
-                                        var queryString5= `select int_eventID from tbl_services where var_eventname="Funeral Mass";`
-                                        db.query(queryString5, (err, results, fields) => {
-                                            if (err) console.log(err);
-                                            var eventID = results[0];  
-                                            var desiredtime1= moment(req.body.desiredtime1, 'hh:mm A').format('HH:mm:ss');
-                                            var desiredtimeend= moment(req.body.desiredtimeend, 'hh:mm A').format('HH:mm:ss');
-                                            var paymentQuery= `select * from tbl_utilities where int_eventID = ?`
-                                            db.query(paymentQuery,[eventID.int_eventID], (err, results, fields) => {
+                            if(req.body.boolpaid==1){
+                                console.log('Paid')
+                                var queryString5= `select int_eventID from tbl_services where var_eventname="Funeral Mass";`
+                                db.query(queryString5, (err, results, fields) => {
+                                    if (err) console.log(err);
+                                    var eventID = results[0];  
+                                    var desiredtime1= moment(req.body.desiredtime1, 'hh:mm A').format('HH:mm:ss');
+                                    var desiredtimeend= moment(req.body.desiredtimeend, 'hh:mm A').format('HH:mm:ss');
+                                    var paymentQuery= `select * from tbl_utilities where int_eventID = ?`
+                                    db.query(paymentQuery,[eventID.int_eventID], (err, results, fields) => {
+                                        if (err) console.log(err);
+                                        var amount= results[0];
+                                        var datenow = new Date()
+                                        var downpaymentdeadline = moment(datenow).add(results[0].int_downpaymentdays,'days')
+                                        var fullpaymentdeadline = moment(datenow).add(results[0].int_fullpaymentdays,'days')
+                                        var downdateDeadline = moment(downpaymentdeadline).format('YYYY-MM-DD')
+                                        var fulldateDeadline = moment(fullpaymentdeadline).format('YYYY-MM-DD')
+                                        console.log(downpaymentdeadline)
+                                        console.log(fullpaymentdeadline)
+                                        console.log(downdateDeadline)
+                                        console.log(fulldateDeadline)
+                                            var nowDate = new Date(); 
+                                        if(req.body.payment == amount.double_fee){
+                                            var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus,datetime_paymentreceived, dbl_balance, date_downpaymentdeadline, date_fullpaymentdeadline) values(?,?,?,?.?,?)`;
+                                            db.query(paymentInsert,[amount.double_fee,'Paid',datenow, '0', downdateDeadline,fulldateDeadline], (err, results, fields) => {
                                                 if (err) console.log(err);
-                                                var amount= results[0];
-                                                var datenow = new Date()
-                                                var downpaymentdeadline = moment(datenow).add(results[0].int_downpaymentdays,'days')
-                                                var fullpaymentdeadline = moment(datenow).add(results[0].int_fullpaymentdays,'days')
-                                                var downdateDeadline = moment(downpaymentdeadline).format('YYYY-MM-DD')
-                                                var fulldateDeadline = moment(fullpaymentdeadline).format('YYYY-MM-DD')
-                                                console.log(downpaymentdeadline)
-                                                console.log(fullpaymentdeadline)
-                                                console.log(downdateDeadline)
-                                                console.log(fulldateDeadline)
-                                                    var nowDate = new Date(); 
-                                                if(req.body.payment == amount.double_fee){
-                                                    var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus,datetime_paymentreceived, dbl_balance, date_downpaymentdeadline, date_fullpaymentdeadline) values(?,?,?,?.?,?)`;
-                                                    db.query(paymentInsert,[amount.double_fee,'Paid',datenow, '0', downdateDeadline,fulldateDeadline], (err, results, fields) => {
-                                                        if (err) console.log(err);
-                                                        var paymentid= results;
-                                                        console.log(paymentid)
-                                                    
-                                                        queries(paymentid.insertId)
-                                                    })
-                                                }
-                                                else{
-                                                    var balance = amount.double_fee 
-                                                    var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus, datetime_paymentreceived, dbl_balance, date_downpaymentdeadline, date_fullpaymentdeadline) values(?,?,?,?,?,?)`;
-                                                    db.query(paymentInsert,[amount.double_fee,'Unpaid',datenow, balance, downdateDeadline,fulldateDeadline], (err, results, fields) => {
-                                                        if (err) console.log(err);
-                                                        var paymentid= results;
-                                                        console.log(paymentid)
-                                                        // var updateHistory = `insert into tbl_paymenthistory(int_paymentID, date_paymentdate, var_paidby, dbl_paymentamount, dbl_remainingbalance) values(?,?,?,?,?) `
-                                                        // db.query(updateHistory,[paymentid.insertId, req.body.paymentdate, req.body.payer, req.body.payment, balance], (err, results, fields) => {
-                                                        //     history=results[0];
+                                                var paymentid= results;
+                                                console.log(paymentid)
+                                            
+                                                queries(paymentid.insertId)
+                                            })
+                                        }
+                                        else{
+                                            var balance = amount.double_fee 
+                                            var paymentInsert = `insert into tbl_payment(dbl_amount, char_paymentstatus, datetime_paymentreceived, dbl_balance, date_downpaymentdeadline, date_fullpaymentdeadline) values(?,?,?,?,?,?)`;
+                                            db.query(paymentInsert,[amount.double_fee,'Unpaid',datenow, balance, downdateDeadline,fulldateDeadline], (err, results, fields) => {
+                                                if (err) console.log(err);
+                                                var paymentid= results;
+                                                console.log(paymentid)
+                                                // var updateHistory = `insert into tbl_paymenthistory(int_paymentID, date_paymentdate, var_paidby, dbl_paymentamount, dbl_remainingbalance) values(?,?,?,?,?) `
+                                                // db.query(updateHistory,[paymentid.insertId, req.body.paymentdate, req.body.payer, req.body.payment, balance], (err, results, fields) => {
+                                                //     history=results[0];
 
-                                                        queries(paymentid.insertId)
-                                                    })
-                                                // })
-                                                }//else
-                                                })})
-                                        
-                                    }
+                                                queries(paymentid.insertId)
+                                            })
+                                        // })
+                                        }//else
+                                        })})
+                                
+                            }
+                     
                         }//funeral mass
 
                         else{

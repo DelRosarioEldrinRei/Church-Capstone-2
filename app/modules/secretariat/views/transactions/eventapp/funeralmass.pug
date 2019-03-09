@@ -734,12 +734,12 @@ block addjs
 						$('#paymentAppend').empty()
 						
 					})
-		$('#updatePaymentButton').click(function(){
-			$.post('/secretariat/transaction-funeralmass/updatepaymentquery',{id1:idNow})
-				.done(data =>{
-					console.log(data)
-					$('#updatepaymentAppend').empty();
-					var ornumber = data.ornumber.max+1
+			$('#updatePaymentButton').click(function(){
+				$.post('/secretariat/transaction-funeralmass/updatepaymentquery',{id1:idNow})
+					.done(data =>{
+						console.log(data)
+						$('#updatepaymentAppend').empty();
+						var ornumber = data.ornumber.max+1
 						$('#updatepaymentAppend').append(`
 					
 								<div class="send-header">
@@ -877,9 +877,9 @@ block addjs
 								}//else
 								})
 
-							})
+			})
 				
-				})
+		})//updatebutton
 			
 		$('#sendMessage').click(function(){
 			swal({
