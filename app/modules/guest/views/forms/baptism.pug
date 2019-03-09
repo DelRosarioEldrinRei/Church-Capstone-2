@@ -16,6 +16,12 @@ block main
 		.fc-content {
 			font-family: sans-serif !important;
 		}
+		.form-control {
+			margin-bottom: 0;
+		}
+		.hidden {
+				display:none;
+		}
 	#headers
 		#header-style-1
 			.container
@@ -29,6 +35,7 @@ block main
 			.container
 				.row
 					.col-md-12.form-wizard.shadow3
+						form
 							h3 Baptism Application
 							p Fill all form required field to proceed
 							// Form progress
@@ -112,23 +119,20 @@ block main
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.pt-0
-													input.form-control#lastname(type='text' placeholder="Last Name *" name='lastname' required=''  )
-													.help-block.with-errors
+													input.form-control#lastname(type='text' placeholder="Last Name *" name='lastname')
 											.col-md-4.p-lg-0.px-md-3.px-sm-0
 												.form-group.pt-0
-													input.form-control#firstname(type='text' placeholder="First Name *" name='firstname' required=''  )
-													.help-block.with-errors
+													input.form-control#firstname(type='text' placeholder="First Name *" name='firstname')
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.pt-0
 													input.form-control#middlename(type='text' placeholder="Middle Name" name='middlename'  )
-													.help-block.with-errors
 										.row
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group.m-0
 													h6.label-control Gender
 														.text-danger.d-inline  *
 													.custom-control.custom-radio
-														input#customRadio1.custom-control-input(type='radio', name='gender' value="Male")
+														input#customRadio1.custom-control-input(type='radio', name='gender' value="Male" checked)
 														label.custom-control-label(for='customRadio1') 
 															| Male
 													.custom-control.custom-radio
@@ -140,19 +144,24 @@ block main
 												.form-group
 													h6.label-control Birthday
 														.text-danger.d-inline  *
-													input#birthdate.birthday.form-control(type='date' name='birthday' required='')
+													input#birthdate.birthday.form-control(type='date' name='birthday')
+													p
+														span.emsg.hidden
+															i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+															|  Please Enter Your Birthday.
+														span.emsgcorrect.hidden
+															i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 											.col-md-4.px-lg-3.px-md-0.px-sm-0
 												.form-group
 													h6.label-control Birthplace:
 														.text-danger.d-inline  *
-													input#birthplace.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required=''  ) 
-													.help-block.with-errors
+													input#birthplace.form-control(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" ) 
 										.row
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Relationship with the Child
 														.text-danger.d-inline  *
-													select#relation(type="text" name='relation' required='')
+													select#relation(type="text" name='relation')
 														option(selected="" value="" disabled) Choose...
 														option Aunt/Uncle
 														option Parent
@@ -162,38 +171,34 @@ block main
 												.form-group
 													h6.label-control Contact Number
 														.text-danger.d-inline  *
-													input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" required='' pattern="[0-9]{11}" )
+													input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" )
 										.row
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Father's Full Name:
 														.text-danger.d-inline  *
-													input#fatherfullname.form-control(type='text' name='fathername' placeholder="Ex. Juan Dela Cruz" required='' )
-													.help-block.with-errors
+													input#fatherfullname.form-control(type='text' name='fathername' placeholder="Ex. Juan Dela Cruz")
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Father's Birthplace:
 														.text-danger.d-inline  *
-													input#fatherbirthplace.form-control(type='text' name='fatherbirthplace' placeholder="Ex. Caloocan, Quezon City" required='' )
-													.help-block.with-errors
+													input#fatherbirthplace.form-control(type='text' name='fatherbirthplace' placeholder="Ex. Caloocan, Quezon City" )
 										.row
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Mother's Full Name:
 														.text-danger.d-inline  *
-													input#motherfullname.form-control(type='text' name='mothername' placeholder="Ex. Maria Dela Cruz" required='' )
-													.help-block.with-errors
+													input#motherfullname.form-control(type='text' name='mothername' placeholder="Ex. Maria Dela Cruz" )
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Mother's Birthplace:
 														.text-danger.d-inline  *
-													input#motherbirthplace.form-control(type='text' name='motherbirthplace' placeholder="Ex. San Isidro, Quezon City" required=''  )
-													.help-block.with-errors
+													input#motherbirthplace.form-control(type='text' name='motherbirthplace' placeholder="Ex. San Isidro, Quezon City" )
 										//- .row
 										//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
 										//- 		.form-group
 										//- 			h6.label-control Relationship with the Child
-										//- 			select#relation(type="text" name='relation' required='')
+										//- 			select#relation(type="text" name='relation')
 										//- 				option(selected="" value="" disabled) Choose...
 										//- 				option Aunt/Uncle
 										//- 				option Parent
@@ -202,18 +207,18 @@ block main
 										//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
 										//- 		.form-group
 										//- 			h6.label-control Family's Contact number
-										//- 			input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" required='' pattern="[0-9]{11}" )
+										//- 			input#contactnumber.form-control(type='text' name='contactnumber' placeholder="Ex. 09123456789" pattern="[0-9]{11}" )
 										.row
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Address:
 														.text-danger.d-inline  *
-													textarea#exampleFormControlTextarea1.address.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City" required='' )
+													textarea#exampleFormControlTextarea1.address.form-control(rows='2' name='address' placeholder="Ex. 75 P. Domingo Street, Carmona, Makati City" )
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6(for='exampleFormControlTextarea1') Parents' Marriage Address:
 														.text-danger.d-inline  *
-													textarea#exampleFormControlTextarea1.parentsmarriage.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' )
+													textarea#exampleFormControlTextarea1.parentsmarriage.form-control(rows='2' name='marriageaddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" )
 										.row
 											.col-md-7.px-lg-3.px-md-3.px-sm-0.mx-auto
 												.form-group
@@ -230,18 +235,19 @@ block main
 								h4
 									.d-none.d-sm-inline Sponsors Information:
 									span Step 3 - 3
+								.form-group
+									br
 									h6.label-control Principal Sponsors
 										.text-danger.d-inline  *
-										.row#principalSponsor
-											.col-md-6.px-lg-3.px-md-3.px-sm-0
-												.form-group.m-0
-													input.sponsorname.form-control(type='text' name='sponsorname' placeholder="Enter Full Name *" required=''  )
-													.help-block.with-errors
-											.col-md-6.px-lg-3.px-md-3.px-sm-0
-												.form-group.m-0
-													input.sponsorname.form-control.balance(type='text' name='sponsorname' placeholder="Enter Full Name *" required=''  )
-										button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button")
-											i.fa.fa-plus
+									.row#principalSponsor
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.form-group.m-0
+												input.sponsorname.form-control(type='text' name='sponsorname' placeholder="Enter Full Name *" )
+										.col-md-6.px-lg-3.px-md-3.px-sm-0
+											.form-group.m-0
+												input.sponsorname.form-control.balance(type='text' name='sponsorname' placeholder="Enter Full Name *" )
+									button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button")
+										i.fa.fa-plus
 									h6.label-control Additional Sponsors
 										.row#additionalSponsor
 								br
@@ -249,6 +255,7 @@ block main
 									button#prevButton2.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 									// para lumabas yung modal pang check ng summary at iedit pa
 									button#presubmitButton.btn.btn-submit Submit
+						input#errChecker(type='text' hidden)
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -281,6 +288,7 @@ block main
 					button.btn.std-btn.btn-common.btn-info.mb-0#submitButton(type='button') Submit
 block addjs
 	script.
+				validateForm()
 				function validateFileType(){
 
 					var fileName = document.getElementById("file-0b").value;
@@ -327,70 +335,101 @@ block addjs
 			$('#special').slideUp();
 		}
 		if(eventid == 3){
-			$('#nextButton2').click(function(){
-			$.get('/guest/baptism/query').done(data=>{
-			sponsorfee=data.utilities[0].double_addrate
-			ratefee=data.utilities[0].double_fee
-			console.log(ratefee)
-			console.log($("#baptismtype").val())
-			console.log(data.utilities[0].int_agemax)
-			console.log(baptismType1)
-				console.log($('#file-0b').val())
-				if ($("#customRadio1").prop("checked")) {
-				gender = $("#customRadio1").val();
-				}
-				else if($("#customRadio2").prop("checked")){
-				gender = $("#customRadio2").val();
-				}
-				console.log(gender)
-				var age = moment().diff($('#birthdate').val(),'years')
-				console.log(age)
-				if(
-				gender != undefined &&
-				$('#firstname').val() != ''  &&
-				$('#lastname').val() != ''  &&
-				$('#birthdate').val() != '' &&
-				$('#birthplace').val() != '' &&
-				$('#fatherfullname').val() != '' &&
-				$('#fatherbirthplace').val() != '' &&
-				$('#motherfullname').val() != '' &&
-				$('#motherbirthplace').val() != '' &&
-				$('#relation').val() != '' &&
-				$('#contactnumber').val() != '' &&
-				$('.marriageaddress').val() != '' &&
-				$('.address').val() != '' &&
-				$('#file-0b').val() != '' &&
-				$('#file-0b').val() != undefined
-				){
-				if(age >= data.utilities[0].int_agemax){
-					swal({
-						title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, do you want to apply on special baptism or re-input age?`,
-						showCancelButton: true,
-						confirmButtonColor: '#3085d6',
-						cancelButtonColor: '#d33',
-						confirmButtonClass: 'btn btn-success',
-						cancelButtonClass: 'btn btn-danger',
-						buttonsStyling: true,
-					}).then(function(){
-						return
-					})
-				}
-				else{
-					$('#nextButton2').addClass('btn-next')
-					//- $('#nextButton2').click();
-				}
-				}
-				else{
-					swal({
-						title: "Form is not completed yet",
-						text: "Please fill out all the required fields",
-						type: 'warning',
-						confirmButtonColor: '#3085d6',
-						confirmButtonText: 'OK'
-					})
-				}
-			})
-			})
+		$('#nextButton2').click(function(){
+		$.get('/guest/baptism/query').done(data=>{
+		sponsorfee=data.utilities[0].double_addrate
+		ratefee=data.utilities[0].double_fee
+		console.log(ratefee)
+		console.log($("#baptismtype").val())
+		console.log(data.utilities[0].int_agemax)
+		console.log(baptismType1)
+			console.log($('#file-0b').val())
+			if ($("#customRadio1").prop("checked")) {
+			gender = $("#customRadio1").val();
+			}
+			else if($("#customRadio2").prop("checked")){
+			gender = $("#customRadio2").val();
+			}
+			console.log(gender)
+			var age = moment().diff($('#birthdate').val(),'years')
+			console.log(age)
+			// required only alphabetical characters, minimum of 2
+			var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+			//only alphabetical characters, minimum of 2
+			var $regexvalidation2 = /^([a-zs ]{2,})*$/i;
+			// required only alphabetical characters, minimum of 6
+			var $regexvalidation3 = /^([a-zs ]{6,})+$/i;
+			//contact number validation
+			var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+			//contact number validation
+			var $contactnumber = /^(09|\+639)\d{9}$/;
+			if(
+			gender != undefined &&
+			$('#firstname').val().match($regexvalidation1) &&
+			$('#lastname').val().match($regexvalidation1)  &&
+			$('#middlename').val().match($regexvalidation2)   &&
+			$('#birthdate').val() != '' &&
+			$('#birthplace').val().match($regexvalidation2) &&
+			$('#fatherfullname').val().match($regexvalidation3) &&
+			$('#fatherbirthplace').val().match($regexvalidation2) &&
+			$('#motherfullname').val().match($regexvalidation3) &&
+			$('#motherbirthplace').val().match($regexvalidation2) &&
+			$('#relation').val() != '' &&
+			$('#contactnumber').val().match($contactnumber) &&
+			$('.parentsmarriage').val().match($addressvalidation) &&
+			$('.address').val().match($addressvalidation) &&
+			$('#file-0b').val() != '' &&
+			$('#file-0b').val() != undefined
+			){
+			if(age >= data.utilities[0].int_agemax){
+				swal({
+					title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, do you want to apply on special baptism or re-input age?`,
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonClass: 'btn btn-success',
+					cancelButtonClass: 'btn btn-danger',
+					buttonsStyling: true,
+				}).then(function(){
+					return
+				})
+			}
+			else{
+				//- $('#nextButton2').addClass('btn-next')
+				//- $(document).on('click','.form-wizard #nextButton2', function() {
+					var parent_fieldset = $(this).parents('fieldset');
+					var next_step = true;
+					// navigation steps / progress steps
+					var current_active_step = $(this).parents('.form-wizard').find('.form-wizard-step.active');
+					var progress_line = $(this).parents('.form-wizard').find('.form-wizard-progress-line');
+
+					if( next_step ) {
+						parent_fieldset.fadeOut(400, function() {
+							// change icons
+							current_active_step.removeClass('active').addClass('activated').next().addClass('active');
+							// progress bar
+							bar_progress(progress_line, 'right');
+							// show next step
+							$(this).next().fadeIn();
+							// scroll window to beginning of the form
+							scroll_to_class( $('.form-wizard'), 20 );
+						});
+					}
+					
+				//- });
+			}
+			}
+			else{
+				swal({
+					title: "Form is not complete/valid yet",
+					text: "Please fill out and validate all the required fields",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
+			}
+		})
+		})
 		}
 
 		if(eventid == 9) {
@@ -399,48 +438,58 @@ block addjs
 			$('#calendarSpecial').fullCalendar('changeView', 'month')
 			$('#special').slideDown();
 			$('#regular').slideUp();	
-			$(document).on('click','#nextButton2',function(){
-				$.get('/guest/baptism/query').done(data=>{
-				sponsorfee=data.utilities[0].double_addrate
-				ratefee=data.utilities[0].double_fee
-				console.log($('#file-0b').val())
-				if ($("#customRadio1").prop("checked")) {
-				gender = $("#customRadio1").val();
-				}
-				else if($("#customRadio2").prop("checked")){
-				gender = $("#customRadio2").val();
-				}
-				console.log(gender)
-				if(
-				gender != undefined ||
-				$('#firstname').val() != ''  ||
-				$('#lastname').val() != ''  ||
-				$('#birthdate').val() != '' ||
-				$('#birthplace').val() != '' ||
-				$('#fatherfullname').val() != '' ||
-				$('#fatherbirthplace').val() != '' ||
-				$('#motherfullname').val() != '' ||
-				$('#motherbirthplace').val() != '' ||
-				$('#relation').val() != '' ||
-				$('#contactnumber').val() != '' ||
-				$('.marriageaddress').val() != '' ||
-				$('.address').val() != '' ||
-				$('#file-0b').val() != '' ||
-				$('#file-0b').val() != undefined){
-					$('#nextButton2').addClass('btn-next')
-					
-				}
-				else{
-					swal({
-						title: "Form is not completed yet",
-						text: "Please fill out all the required fields",
-						type: 'warning',
-						confirmButtonColor: '#3085d6',
-						confirmButtonText: 'OK'
-					})
-				}
-			})
-			})
+		$(document).on('click','#nextButton2',function(){
+			$.get('/guest/baptism/query').done(data=>{
+			sponsorfee=data.utilities[0].double_addrate
+			ratefee=data.utilities[0].double_fee
+			console.log($('#file-0b').val())
+			if ($("#customRadio1").prop("checked")) {
+			gender = $("#customRadio1").val();
+			}
+			else if($("#customRadio2").prop("checked")){
+			gender = $("#customRadio2").val();
+			}
+			console.log(gender)
+			// required only alphabetical characters, minimum of 2
+			var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+			//only alphabetical characters, minimum of 2
+			var $regexvalidation2 = /^([a-zs ]{2,})*$/i;
+			// required only alphabetical characters, minimum of 6
+			var $regexvalidation3 = /^([a-zs ]{6,})+$/i;
+			//contact number validation
+			var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+			//contact number validation
+			var $contactnumber = /^(09|\+639)\d{9}$/;
+			if(
+			gender != undefined &&
+			$('#firstname').val().match($regexvalidation1) &&
+			$('#lastname').val().match($regexvalidation1)  &&
+			$('#middlename').val().match($regexvalidation2)   &&
+			$('#birthdate').val() != '' &&
+			$('#birthplace').val().match($regexvalidation2) &&
+			$('#fatherfullname').val().match($regexvalidation3) &&
+			$('#fatherbirthplace').val().match($regexvalidation2) &&
+			$('#motherfullname').val().match($regexvalidation3) &&
+			$('#motherbirthplace').val().match($regexvalidation2) &&
+			$('#relation').val() != '' &&
+			$('#contactnumber').val().match($contactnumber) &&
+			$('.parentsmarriage').val().match($addressvalidation) &&
+			$('.address').val().match($addressvalidation) &&
+			$('#file-0b').val() != '' &&
+			$('#file-0b').val() != undefined){
+				$('#nextButton2').addClass('btn-next')
+			}
+			else{
+				swal({
+					title: "Form is not complete/valid yet",
+					text: "Please fill out and validate all the required fields",
+					type: 'warning',
+					confirmButtonColor: '#3085d6',
+					confirmButtonText: 'OK'
+				})
+			}
+		})
+		})
 		}
 		$('#presubmitButton').click(function() {
 			$("#summaryModal").modal('show');
@@ -1010,19 +1059,47 @@ block addjs
 			});
 			event.stopPropagation();
 		});
-		$("#addAdditionalSponsor").click(function(event){
+		var ctrSponsor = 0;
+		$("#addAdditionalSponsor").on('click', function(event){
+				ctrSponsor++
 				var item2 = `
 				<div class="col-md-6 px-lg-3 px-md-3 px-sm-0 mt-3">
 					<div class="input-group m-0">
-						<input class="form-control" class="addedsponsor" type="text" name="sponsorname" placeholder="Enter Full Name"/>
+						<input class="form-control additionalSponsor${ctrSponsor}" class="addedsponsor" type="text" name="sponsorname" placeholder="Enter Full Name"/>
 						<div class="input-group-prepend">
 							<span class="btnDelete p-1 input-group-text rounded">
 								<i class="fa fa-trash"></i>
 							</span>
 						</div>
 					</div>
+					<p>
+						<span class="emsg${ctrSponsor} hidden">
+							<i class="fa fa-times text-danger" style="font-size:20px" aria-hidden="true"></i>Invalid Sponsor Name</span>
+						<span class="emsgcorrect${ctrSponsor} hidden">
+							<i class="fa fa-check text-success" style="font-size:20px" aria-hidden="true"></i>
+						</span>
+					</p>
 				</div>`
 				$(item2).hide().appendTo("#additionalSponsor").fadeIn(500);
+
+				$('.additionalSponsor' + ctrSponsor).on('keypress keydown keyup focus focusout',function(e){
+					if ($(this).val().length == 0) {
+						// there is a mismatch, hence show the error message
+							$('.emsgcorrect' + ctrSponsor).addClass('hidden');
+							$('.emsg' + ctrSponsor).removeClass('hidden');
+							$('.emsg' + ctrSponsor).show();
+							document.getElementById("presubmitButton").disabled = true;
+						}
+					else{
+						// else, do not display message
+						$('.emsg' + ctrSponsor).addClass('hidden');
+						$('.emsgcorrect' + ctrSponsor).removeClass('hidden');
+						$('.emsgcorrect' + ctrSponsor).show();
+						document.getElementById("presubmitButton").disabled = false;
+					}
+					e.stopPropagation();
+				});
+				//- $('.additionalSponsor' + ctrSponsor).focus();
 		});
 		$("#additionalSponsor").on("click", ".btnDelete", function(event){
 			$(this).parent().parent().parent().fadeOut(500, function(){
@@ -1284,3 +1361,201 @@ block addjs
 				}
 			})
 		})
+
+		$('#birthdate').on('keypress keydown keyup focus focusout',function(e){
+			if ($(this).val().length == 0) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrect').addClass('hidden');
+					$('.emsg').removeClass('hidden');
+					$('.emsg').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsg').addClass('hidden');
+				$('.emsgcorrect').removeClass('hidden');
+				$('.emsgcorrect').show();
+			}
+			e.stopPropagation();
+		});
+
+		function validateForm(){
+			$('form').formValidation({
+				framework: 'bootstrap',
+				icon: {
+					valid: 'fa fa-check',
+					invalid: 'fa fa-times',
+					validating: 'fa fa-spinner'
+				},
+				fields: {
+					lastname: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Last Name`
+								},
+								regexp: {
+									regexp: /^([a-zs ]{2,})+$/i,
+									message: 'Only Aphabetical Characters, Minimum of 2.'
+								},
+						}
+					},
+					firstname: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Last Name`
+								},
+								regexp: {
+									regexp: /^([a-zs ]{2,})+$/i,
+									message: 'Only Aphabetical Characters, Minimum of 2.'
+								},
+						}
+					},
+					middlename: {
+						validators: {
+							regexp: {
+								regexp: /^([a-zs ]{2,})+$/i,
+								message: 'Only Aphabetical Characters, Minimum of 2.'
+							},
+						}
+					},
+					relation: {
+						validators: {
+						notEmpty: {
+										message: `Please Enter Your Relationship with the Ill`
+								},
+							}
+						},
+					contactnumber: {
+							validators: {
+								regexp: {
+									regexp: /^(09|\+639)\d{9}$/,
+									message: 'Invalid Contact Number Format.'
+								},
+							}
+						},
+					birthplace: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Your Father's Birthplace`
+									},
+									regexp: {
+										regexp: /^([a-zs ]{2,})+$/i,
+										message: 'Only Aphabetical Characters, Minimum of 2.'
+									},
+								}
+							},
+					fathername: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Father's Full Name`
+								},
+								regexp: {
+									regexp: /^([a-zs ]{6,})+$/i,
+									message: 'Only Aphabetical Characters, Minimum of 6.'
+								},
+						}
+					},
+					fatherbirthplace: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Your Father's Birthplace`
+									},
+									regexp: {
+										regexp: /^([a-zs ]{2,})+$/i,
+										message: 'Only Aphabetical Characters, Minimum of 2.'
+									},
+								}
+							},
+					mothername: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Mother's Full Name`
+								},
+								regexp: {
+									regexp: /^([a-zs ]{6,})+$/i,
+									message: 'Only Aphabetical Characters, Minimum of 6.'
+								},
+						}
+					},
+					motherbirthplace: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Your Mother's Birthplace`
+									},
+									regexp: {
+										regexp: /^([a-zs ]{2,})+$/i,
+										message: 'Only Aphabetical Characters, Minimum of 2.'
+									},
+								}
+							},
+					address: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Your Address`
+									},
+									regexp: {
+										regexp: /^([a-zs0-9-,. ]{8,})+$/i,
+										message: 'Please Enter A Valid Address'
+									},
+								}
+							},
+					marriageaddress: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Your Parent's Marriage Address`
+									},
+									regexp: {
+										regexp: /^([a-zs0-9-,. ]{8,})+$/i,
+										message: 'Please Enter A Valid Address'
+									},
+								}
+							},
+					sponsorname: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Sponsor's Full Name`
+								},
+								regexp: {
+									regexp: /^([a-zs ]{6,})+$/i,
+									message: 'Only Aphabetical Characters, Minimum of 6.'
+								},
+						}
+					},
+					details: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Details`
+									},
+									regexp: {
+										regexp: /^([a-zs ]{6,})+$/i,
+										message: 'Only Aphabetical Characters, Minimum of 6.'
+									},
+								}
+							},
+					image: {
+							validators: {
+								notEmpty: {
+									message: `Please Enter Details`
+									},
+								}
+							},
+					//- venue: {
+					//- 		validators: {
+					//- 				regexp: {
+					//- 					regexp: /^([a-zs ]{6,})+$/i,
+					//- 					message: 'Only Aphabetical Characters, Minimum of 6.'
+					//- 				},
+					//- 			}
+					//- 		},
+					},
+				})
+			.on('err.field.fv', function(e, data) {
+				// Get the first invalid field
+				var invalidFields = data.fv.getInvalidFields().length;
+				$('#errChecker').val(invalidFields)
+			})
+			.on('success.field.fv', function(e, data) {
+				// Get the first invalid field
+				var invalidFields = data.fv.getInvalidFields().length;
+				$('#errChecker').val(invalidFields)
+			});
+		}
