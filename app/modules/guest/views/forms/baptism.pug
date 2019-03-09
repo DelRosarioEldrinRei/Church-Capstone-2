@@ -327,70 +327,70 @@ block addjs
 			$('#special').slideUp();
 		}
 		if(eventid == 3){
-		$('#nextButton2').click(function(){
-		$.get('/guest/baptism/query').done(data=>{
-		sponsorfee=data.utilities[0].double_addrate
-		ratefee=data.utilities[0].double_fee
-		console.log(ratefee)
-		console.log($("#baptismtype").val())
-		console.log(data.utilities[0].int_agemax)
-		console.log(baptismType1)
-			console.log($('#file-0b').val())
-			if ($("#customRadio1").prop("checked")) {
-			gender = $("#customRadio1").val();
-			}
-			else if($("#customRadio2").prop("checked")){
-			gender = $("#customRadio2").val();
-			}
-			console.log(gender)
-			var age = moment().diff($('#birthdate').val(),'years')
-			console.log(age)
-			if(
-			gender != undefined &&
-			$('#firstname').val() != ''  &&
-			$('#lastname').val() != ''  &&
-			$('#birthdate').val() != '' &&
-			$('#birthplace').val() != '' &&
-			$('#fatherfullname').val() != '' &&
-			$('#fatherbirthplace').val() != '' &&
-			$('#motherfullname').val() != '' &&
-			$('#motherbirthplace').val() != '' &&
-			$('#relation').val() != '' &&
-			$('#contactnumber').val() != '' &&
-			$('.marriageaddress').val() != '' &&
-			$('.address').val() != '' &&
-			$('#file-0b').val() != '' &&
-			$('#file-0b').val() != undefined
-			){
-			if(age >= data.utilities[0].int_agemax){
-				swal({
-					title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, do you want to apply on special baptism or re-input age?`,
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonClass: 'btn btn-success',
-					cancelButtonClass: 'btn btn-danger',
-					buttonsStyling: true,
-				}).then(function(){
-					return
-				})
-			}
-			else{
-				$('#nextButton2').addClass('btn-next')
-				//- $('#nextButton2').click();
-			}
-			}
-			else{
-				swal({
-					title: "Form is not completed yet",
-					text: "Please fill out all the required fields",
-					type: 'warning',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: 'OK'
-				})
-			}
-		})
-		})
+			$('#nextButton2').click(function(){
+			$.get('/guest/baptism/query').done(data=>{
+			sponsorfee=data.utilities[0].double_addrate
+			ratefee=data.utilities[0].double_fee
+			console.log(ratefee)
+			console.log($("#baptismtype").val())
+			console.log(data.utilities[0].int_agemax)
+			console.log(baptismType1)
+				console.log($('#file-0b').val())
+				if ($("#customRadio1").prop("checked")) {
+				gender = $("#customRadio1").val();
+				}
+				else if($("#customRadio2").prop("checked")){
+				gender = $("#customRadio2").val();
+				}
+				console.log(gender)
+				var age = moment().diff($('#birthdate').val(),'years')
+				console.log(age)
+				if(
+				gender != undefined &&
+				$('#firstname').val() != ''  &&
+				$('#lastname').val() != ''  &&
+				$('#birthdate').val() != '' &&
+				$('#birthplace').val() != '' &&
+				$('#fatherfullname').val() != '' &&
+				$('#fatherbirthplace').val() != '' &&
+				$('#motherfullname').val() != '' &&
+				$('#motherbirthplace').val() != '' &&
+				$('#relation').val() != '' &&
+				$('#contactnumber').val() != '' &&
+				$('.marriageaddress').val() != '' &&
+				$('.address').val() != '' &&
+				$('#file-0b').val() != '' &&
+				$('#file-0b').val() != undefined
+				){
+				if(age >= data.utilities[0].int_agemax){
+					swal({
+						title: `Your relative ${$('#firstname').val()} ${$('#lastname').val()} exceeded the max limit of age, do you want to apply on special baptism or re-input age?`,
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonClass: 'btn btn-success',
+						cancelButtonClass: 'btn btn-danger',
+						buttonsStyling: true,
+					}).then(function(){
+						return
+					})
+				}
+				else{
+					$('#nextButton2').addClass('btn-next')
+					//- $('#nextButton2').click();
+				}
+				}
+				else{
+					swal({
+						title: "Form is not completed yet",
+						text: "Please fill out all the required fields",
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: 'OK'
+					})
+				}
+			})
+			})
 		}
 
 		if(eventid == 9) {
@@ -399,48 +399,48 @@ block addjs
 			$('#calendarSpecial').fullCalendar('changeView', 'month')
 			$('#special').slideDown();
 			$('#regular').slideUp();	
-		$(document).on('click','#nextButton2',function(){
-			$.get('/guest/baptism/query').done(data=>{
-			sponsorfee=data.utilities[0].double_addrate
-			ratefee=data.utilities[0].double_fee
-			console.log($('#file-0b').val())
-			if ($("#customRadio1").prop("checked")) {
-			gender = $("#customRadio1").val();
-			}
-			else if($("#customRadio2").prop("checked")){
-			gender = $("#customRadio2").val();
-			}
-			console.log(gender)
-			if(
-			gender != undefined ||
-			$('#firstname').val() != ''  ||
-			$('#lastname').val() != ''  ||
-			$('#birthdate').val() != '' ||
-			$('#birthplace').val() != '' ||
-			$('#fatherfullname').val() != '' ||
-			$('#fatherbirthplace').val() != '' ||
-			$('#motherfullname').val() != '' ||
-			$('#motherbirthplace').val() != '' ||
-			$('#relation').val() != '' ||
-			$('#contactnumber').val() != '' ||
-			$('.marriageaddress').val() != '' ||
-			$('.address').val() != '' ||
-			$('#file-0b').val() != '' ||
-			$('#file-0b').val() != undefined){
-				$('#nextButton2').addClass('btn-next')
-				
-			}
-			else{
-				swal({
-					title: "Form is not completed yet",
-					text: "Please fill out all the required fields",
-					type: 'warning',
-					confirmButtonColor: '#3085d6',
-					confirmButtonText: 'OK'
-				})
-			}
-		})
-		})
+			$(document).on('click','#nextButton2',function(){
+				$.get('/guest/baptism/query').done(data=>{
+				sponsorfee=data.utilities[0].double_addrate
+				ratefee=data.utilities[0].double_fee
+				console.log($('#file-0b').val())
+				if ($("#customRadio1").prop("checked")) {
+				gender = $("#customRadio1").val();
+				}
+				else if($("#customRadio2").prop("checked")){
+				gender = $("#customRadio2").val();
+				}
+				console.log(gender)
+				if(
+				gender != undefined ||
+				$('#firstname').val() != ''  ||
+				$('#lastname').val() != ''  ||
+				$('#birthdate').val() != '' ||
+				$('#birthplace').val() != '' ||
+				$('#fatherfullname').val() != '' ||
+				$('#fatherbirthplace').val() != '' ||
+				$('#motherfullname').val() != '' ||
+				$('#motherbirthplace').val() != '' ||
+				$('#relation').val() != '' ||
+				$('#contactnumber').val() != '' ||
+				$('.marriageaddress').val() != '' ||
+				$('.address').val() != '' ||
+				$('#file-0b').val() != '' ||
+				$('#file-0b').val() != undefined){
+					$('#nextButton2').addClass('btn-next')
+					
+				}
+				else{
+					swal({
+						title: "Form is not completed yet",
+						text: "Please fill out all the required fields",
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: 'OK'
+					})
+				}
+			})
+			})
 		}
 		$('#presubmitButton').click(function() {
 			$("#summaryModal").modal('show');
