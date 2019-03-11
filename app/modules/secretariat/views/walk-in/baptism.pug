@@ -19,23 +19,35 @@ block prepend main
 				.masonry-sizer.col-md-12
 				.masonry-item.col-md-12
 					.bgc-white.p-20.bd
-						h6.c-grey-900 Funeral Mass
+						h6.c-grey-900 Regular Baptism
 						.mT-30
 							form
 								.row
-									.col-md-6
+									.col-md-3.px-lg-3.px-md-3.px-sm-0
+											.form-group.m-0.p-0
+												h6.label-control Baptism Type
+													.text-danger.d-inline  *
+												.custom-control.custom-radio
+													input#regularbap.custom-control-input(type='radio', name='baptismtype' value="Regular"  checked)
+													label.custom-control-label(for='regularbap') 
+														label Regular
+												.custom-control.custom-radio
+													input#specialbap.custom-control-input(type='radio', name='baptismtype' value="Special")
+													label.custom-control-label(for='specialbap') 
+														label Special
+									.col-md-4
 										.form-group
 											label Schedule Date
 												.text-danger.d-inline  *
 											input.form-control.start-date(id='desireddate' name='desireddate' type='text', placeholder='Enter Desired Date', data-provide='datepicker')
-									.col-md-6
+									.col-md-4
 										.form-group
 											label  Schedule Time
-											input.form-control(id='desiredtime' name='desireddate' type='text' placeholder='10:00 am')
+											input.form-control(id='desiredtime' name='desireddate' type='text' placeholder='10:00 am').row
 								.row
 									.col-md-4
 										.form-group
-											label Name of the Ill
+											label Name of the Child
 												.text-danger.d-inline  *
 											input.form-control(id='lname' name='lname' type='text' placeholder='Last Name *')
 									.col-md-4
@@ -71,37 +83,66 @@ block prepend main
 											.text-danger.d-inline  *
 											input.form-control(id='bplace' name='bplace' type='text' placeholder='Ex. Payatas, Quezon City')
 								.row
-									
 									.col-md-12
 										.form-group
-											label Address
+											label Address:
 												.text-danger.d-inline  *
 											input.form-control(id='address' name='address' type='textarea' placeholder='Ex. Urban, Bgy. Payatas B 1119 QC')
 									
 								.row
 									.col-md-6
 										.form-group
-											label Place where the blessing will happen
+											label Father's Full Name:
 												.text-danger.d-inline  *
-											.form-check
-												label.form-check-label
-													input.form-check-input(id='place1' name='place' type='radio' value='Male' checked='') 
-													| Same as his/her address
-											.form-check
-												label.form-check-label
-													input.form-check-input(id='place2' name='place' type='radio' value='Male') 
-													| Ina ng Lupang Pangako Parish
-										
-											.form-check
-												label.form-check-label
-													input.form-check-input(id='place3' name='place' type='radio' value='Male') 
-													| Other
-												input.form-control(id='othervenue' name='othervenue' type='text' placeholder="Please enter complete address")
+											input.form-control(id='fathername' name='fathername' type='text' placeholder='Ex. 09324126754')
 									.col-md-6
 										.form-group
-											label Cause of Death
+											label Father's Birthplace:
 												.text-danger.d-inline  *
-											input.form-control(id='details' name='cause' type='textarea' placeholder='Please enter cause of death')
+											input.form-control(id='fatherplace' name='fatherplace' type='text' placeholder='Ex. 09324126754')
+								.row
+									.col-md-6
+										.form-group
+											label Mother's Full Name:
+												.text-danger.d-inline  *
+											input.form-control(id='mothername' name='mothername' type='text' placeholder='Ex. 09324126754')
+									.col-md-6
+										.form-group
+											label Mother's Birthplace:
+												.text-danger.d-inline  *
+											input.form-control(id='motherplace' name='motherplace' type='text' placeholder='Ex. 09324126754')
+								.row
+									
+									.col-md-6
+										.form-group
+											label Contact Number
+												.text-danger.d-inline  *
+											input.form-control(id='contactnumber' name='contactnumber' type='text' placeholder='Ex. 09324126754')
+									.col-md-6
+										.form-group
+											label Parents' Marriage Address:
+												.text-danger.d-inline  *
+											input.form-control(id='marriageaddress' name='marriageaddress' type='textarea' placeholder="Ex. 75 P. Domingo Street, Carmona. Makati City")
+								h6.c-grey-900 Principal Sponsors
+								.row
+								
+									.col-md-6
+										//- .form-group
+										//- label Principal Sponsors
+										input.form-control(id='firstsponsor' name='sponsorname' type='text' placeholder="Ex. Enter Full Name *")
+									.col-md-6
+										//- .form-group
+										//- label 
+										input.form-control(id='secondsponsor' name='sponsorname' type='text' placeholder="Ex. Enter Full Name *")
+									
+								.row
+									.col-md-6
+										
+										.form-group
+											h6.c-grey-900 Number of Additional Sponsors
+											input.form-control(id='numofaddsponsors' name='numofaddsponsors' type='number' placeholder="Enter number of additional sponsors")
+								
+								
 								.row
 									.col-md-6
 										.form-group
@@ -135,7 +176,7 @@ block prepend main
 										.form-group
 											label Payment Details
 											.form-group
-												input.checkbox#paid(type="checkbox" disabled )
+												input.checkbox#paid(type="checkbox" )
 												| Paid
 									.col-md-9#paymentdetails
 										.form-group
@@ -165,6 +206,7 @@ block prepend main
 									
 								.text-center
 									button.btn.btn-primary#submitApplication(type='button') Submit
+							
 							input#errChecker(type='text' hidden)
 block addjs
 	script.
@@ -173,27 +215,17 @@ block addjs
 		$('#othervenue').hide();
 
 		$('#place1').click(function() {
-			if($(this).prop("checked") == true){
 			$('#hospitalname').slideUp();
 			$('#othervenue').slideUp();
-			$("#paid").prop('disabled', true);
-			}
 		});
 		$('#place2').click(function() {
-			if($(this).prop("checked") == true){
 			$('#hospitalname').slideDown();
 			$('#othervenue').slideUp();
-			$("#paid").prop('disabled', false);
-			}
 		});
 		$('#place3').click(function() {
-			if($(this).prop("checked") == true){
 			$('#hospitalname').slideUp();
 			$('#othervenue').slideDown();
-			$("#paid").prop('disabled', true);
-			}
 		});
-		
 		$('#desiredtime').datetimepicker({
 				format: 'LT',
 				icons: {
@@ -208,6 +240,44 @@ block addjs
 					close: 'fa fa-remove'
 				}
 		});
+
+		
+		$("#addPrincipalSponsor").click(function(event){
+				var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
+				$(principal).hide().appendTo("#principalSponsor").fadeIn(500);
+		});
+
+		$("#principalSponsor").on("click", ".btnDelete", function(event){
+			$(this).parent().parent().parent().fadeOut(500, function(){
+				$(this).remove();
+			});
+			event.stopPropagation();
+
+		});
+		$("#addAdditionalSponsor").click(function(event){
+			
+			var item2 = `
+				<div class="col-md-6 px-lg-3 px-md-3 px-sm-0 mt-3">
+					<div class="input-group m-0">
+						<input class="form-control" class= 'sponsorclass' type="text" name="sponsorname" id="additionalsponsor" placeholder="Enter Full Name" required/>
+						<div class="input-group-prepend"><span class="btnDelete p-1 input-group-text rounded"><i class="fa fa-trash"></i></span></div>
+					</div>
+				</div>`
+
+			$(item2).hide().appendTo("#additionalSponsor").fadeIn(500);
+			
+			//- for(i=0;i<$('.sponsorclass').length;i++){
+
+			//- }
+		});
+
+		$("#additionalSponsor").on("click", ".btnDelete", function(event){
+			$(this).parent().parent().parent().fadeOut(500, function(){
+				$(this).remove();
+			});
+			event.stopPropagation();
+		});
+
 
 		//Realtime Validation
 		function validateForm(){
@@ -247,6 +317,48 @@ block addjs
 								}
 						}
 					},
+					contact: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Contact Number`
+								}
+						}
+					},
+					fathername: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Father's Name`
+								}
+						}
+					},
+					fatherplace: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Father's Birthplace`
+								}
+						}
+					},
+					mothername: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Father's Birthplace`
+								}
+						}
+					},
+					motherplace: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Father's Birthplace`
+								}
+						}
+					},
+					contact: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Contact Number`
+								}
+						}
+					},
 					bday: {
 						validators: {
 								notEmpty: {
@@ -268,10 +380,10 @@ block addjs
 								}
 						}
 					},
-					cause: {
+					marriageaddress: {
 						validators: {
 								notEmpty: {
-										message: `Please Enter Cause of Death`
+										message: `Please Enter Your Parent's Address`
 								}
 						}
 					},
@@ -332,6 +444,12 @@ block addjs
 						if($('#genderfemale').prop("checked")){
 							gender= $('#genderfemale').val()
 						}
+						if($('#regularbap').prop("checked")){
+							baptismtype= 'Baptism'
+						}
+						if($('#specialbap').prop("checked")){
+							baptismtype= "Special Baptism"
+						}
 						if($('#place1').prop("checked")){
 							venue= $('#address').val()
 							var funeraltype='Funeral Service'
@@ -344,7 +462,7 @@ block addjs
 							venue= $('#othervenue').val()
 							var funeraltype='Funeral Service'
 						}
-						$.post('/secretariat/walkin-funeralblessing', {
+						$.post('/secretariat/walkin-baptism', {
 							desireddate:$('#desireddate').val(),
 							desiredtime:$('#desiredtime').val(),
 							lastname: $('#lname').val(),
@@ -354,8 +472,12 @@ block addjs
 							gender:gender,
 							birthplace: $('#bplace').val(),
 							address: $('#address').val(),
-							venue: venue,
-							details: $('#details').val(),
+							fathername: $('#fathername').val(),
+							fatherplace: $('#fatherplace').val(),
+							mothername: $('#mothername').val(),
+							motherplace: $('#motherplace').val(),
+							marriageaddress: $('#marriageaddress').val(),
+							contactnumber: $('#contactnumber').val(),
 							cabinet: $('#cabinets').val(),
 							division: $('#divisions').val(),
 							boolfile: boolfile,
@@ -365,22 +487,29 @@ block addjs
 							paymentdate:$('#paymentdate').val(),
 							payer:$('#payer').val(),
 							payment:$('#payment').val(),
+							baptismtype:baptismtype,
+							numofaddsponsors:$('#numofaddsponsors').val(),
+							firstsponsor:$('#firstsponsor').val(),
+							secondsponsor:$('#secondsponsor').val(),
 						}).done(data =>{
 							swal({
 							title:'Success',
 							text:'Request added', 
 							type:'success'
 							}).then(function(){
-								location.reload();
+
+								if(baptismtype=='Regular'){
+										window.location=`/secretariat/transaction-regularbaptism`
+								}
+								else{window.location=`/secretariat/transaction-specialbaptism`}
 							})
-							$('#updateModal').modal('hide');
-							$('#updateAppend').empty();
-							
+						
 						})//done
 					}
 				})
 			})
 		});
+
 		$('#withfiledrpdwn').hide();
 
 		$('#nofile').click(function() {

@@ -45,7 +45,7 @@ block main
           .row
             .col-md-12.form-wizard.shadow3
                 // Form Wizard
-                //- form(role='form' action="/guest/establishment/form"   enctype="multipart/form-data" method="post" data-toggle='validator')
+                //- form(role='form' action="/index/establishment/form"   enctype="multipart/form-data" method="post" data-toggle='validator')
                 h3 Establishment Blessing Form
                 p.mb-4 Fill all form fields
                 .form-wizard-steps.form-wizard-tolal-steps-3
@@ -174,7 +174,7 @@ block addjs
           $(this).attr('disabled', 'disabled');
           var idNow = $(this).val();
           console.log(idNow)
-          $.post('/guest/establishment/query',{
+          $.post('/index/establishment/query',{
             firstname: $('#firstname').val(),id:idNow,
           }).done(data=>{
             if($('#ourhomeradio').prop("checked")){
@@ -208,7 +208,7 @@ block addjs
               
             $.ajax({
               type: 'POST',
-              url: '/guest/establishment/form',
+              url: '/index/establishment/form',
               data: formData,
               processData:false,
               contentType:false,
@@ -221,7 +221,7 @@ block addjs
                     Okay:'okay'
                   }
                 }).then((value)=>{
-                  window.location='/guest'
+                  window.location='/index'
                 })
               }
 
@@ -290,7 +290,7 @@ block addjs
         var dateNow = new Date()
         var dateNow2;
         var gender;
-        $.get('/guest/establishment/utilities/query').done(data=>{
+        $.get('/index/establishment/utilities/query').done(data=>{
           console.log(data.int_reservationmindays)
           dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data.int_reservationmindays,'days').format('YYYY-MM-DD')
           $('#calendarEstablishment').fullCalendar({

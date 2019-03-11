@@ -15,591 +15,1075 @@ block prepend main
 			}
 
 	main.bgc-grey-100
-		#mainContent
-			.row.masonry.pos-r
-				.masonry-sizer.col-md-12
-				.masonry-item.col-md-12
-					.bgc-white.p-20.bd
-						h6.c-grey-900 Marriage
-						.mT-30
-							form
-								.row
-									.col-md-6
-										.form-group
-											label Schedule Date
-												.text-danger.d-inline  *
-											input.form-control.start-date(id='desireddate' name='desireddate' type='text', placeholder='Enter Desired Date', data-provide='datepicker')
-									.col-md-6
-										.form-group
-											label  Schedule Time
-											input.form-control(id='desiredtime' name='desireddate' type='text' placeholder='10:00 am').row
+		#raised-section.main.main-raised
+		section.form-box
+			.container
+				.row
+					.col-md-12.form-wizard.shadow3
+						form#form(action="/guest/marriage/form" method="post" enctype="multipart/form-data")
 								
-								h6.c-grey-900 Groom
-								.mT-30
-								.row
-									.col-md-4
-										.form-group
-											label Name
+								fieldset
+									h4
+										.d-none.d-sm-inline Schedule: 
+										
+											
+										.row
+											.col-md-4
+												.form-group
+													h6.label-control Schedule Date
+														.text-danger.d-inline  *
+													input.form-control.start-date(id='desireddate' name='desireddate' type='text', placeholder='Enter Desired Date', data-provide='datepicker')
+											.col-md-4
+												.form-group
+													h6.label-control  Schedule Time
+													input.form-control(id='desiredtime' name='desireddate' type='text' placeholder='10:00 am').row
+										
+								// Form Step 2 GROOM
+								fieldset
+									h4
+										.d-none.d-sm-inline Groom's Form: 
+										
+									.form-group
+										br
+										.container
+											h6.label-control Name
 												.text-danger.d-inline  *
-											input.form-control(id='glname' name='glname' type='text' placeholder='Last Name *')
-									.col-md-4
-										.form-group
-											label(style='visibility:hidden;') First Name
-											input.form-control(id='gfname' name='gfname' type='text' placeholder='First Name *')
-									.col-md-4
-										.form-group
-											label(style='visibility:hidden;') Middle Name
-											input.form-control(id='gmname' name='gmname' type='text' placeholder='Middle Name')
-								.row
-									.col-md-4
-										.form-group
-											label Birthday
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														input.form-control#glastname(type='text' placeholder="Last Name *" name='lastname' required='' )
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														input.form-control#gfirstname(type='text' placeholder="First Name *" name='firstname' required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														input.form-control#gmiddlename(type='text' placeholder="Middle Name" name='middlename' required='' )
+														.help-block.with-errors
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Birthday
+															.text-danger.d-inline  *
+														input.birthday.form-control#gbirthday(type='date' name='birthday')
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h6.label-control Birthplace:
+															.text-danger.d-inline  *
+														input.form-control#gbirthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Nationality:
+															.text-danger.d-inline  *
+														//- input.form-control#gnationality(type='text' name='gnationality' value='Filipino')
+														//- .help-block.with-errors
+														select#gnationality(type="text" name='gnationality')
+															option Afghan
+															option Albanian
+															option Algerian
+															option American
+															option Argentina
+															option Argentine
+															option Argentinian
+															option Australian
+															option Austrian
+															option Bangladeshi
+															option Belgian
+															option Bolivian
+															option Botswanan
+															option Brazilian
+															option Brit
+															option Bulgarian
+															option Cambodian
+															option Cameroonian
+															option Canadian
+															option Chilean
+															option Chinese
+															option Colombian
+															option Costa Rican
+															option Croat
+															option Cuban
+															option Czech
+															option Dane
+															option Dominican
+															option Dutchman
+															option Dutchwoman
+															option Ecuadorian
+															option Egyptian
+															option Emirati
+															option Englishman
+															option Englishwoman
+															option Estonian
+															option Ethiopian
+															option Fijian
+															option(selected) Filipino
+															option Finn
+															option Frenchman
+															option Frenchwoman
+															option German
+															option Ghanaian
+															option Greek
+															option Guatemalan
+															option Haitian
+															option Honduran
+															option Hungarian
+															option Icelander
+															option Indian
+															option Indonesian
+															option Iranian
+															option Iraqi
+															option Irishman
+															option Irishwoman
+															option Israeli
+															option Italian
+															option Jamaican
+															option Japanese
+															option Jordanian
+															option Kenyan
+															option Korean
+															option Kuwaiti
+															option Laotain
+															option Latvian
+															option Lebanese
+															option Libyan
+															option Lithuanian
+															option Malaysian
+															option Malian
+															option Maltese
+															option Mexican
+															option Mongolian
+															option Moroccan
+															option Mozambican
+															option Nambian
+															option Nepalese
+															option New Zealander
+															option Nicaraguan
+															option Nigerian
+															option Norwegian
+															option Pakistani
+															option Panamanian
+															option Paraguayan
+															option Peruvian
+															option Pole
+															option Portuguese
+															option Romanian
+															option Russian
+															option Salvadoran
+															option Saudi (Arabian)
+															option Scot
+															option Senegalese
+															option Serbian
+															option Singaporean
+															option Slovak
+															option South African
+															option Spaniard
+															option Sri Lankan
+															option Sudanese
+															option Swede
+															option Swiss
+															option Syrian
+															option Taiwanese
+															option Tajikistani
+															option Thai
+															option Tongan
+															option Tunisian
+															option Turk
+															option Ukranian
+															option Uruguayan
+															option Venezuelan
+															option Vietnamese
+															option Welshman
+															option Welshwoman
+															option Zambian
+															option Zimbabwean
+											.row
+												.col-md-6.px-lg-3.px-md-0.px-sm-3
+													.row
+														.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3
+															.form-group
+																h6.label-control Civil Status
+																	.text-danger.d-inline  *
+																select#gcivilstatus(type="text" name='gcivilstatus')
+																	option Single
+																	option Married
+																	option Divorced
+																	option Widower
+														.col-md-6.px-lg-3.px-md-0.px-sm-0
+															.form-group
+																h6.label-control Occupation:
+																	.text-danger.d-inline  *
+																input.form-control#goccupation(type='text' name='goccupation' placeholder="Ex. Driver")
+																.help-block.with-errors
+											
+												.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3
+													.form-group
+														h6(for='exampleFormControlTextarea1') Address:
+															.text-danger.d-inline  *
+														textarea#gaddress.form-control(rows='1' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' )
+														.help-block.with-errors
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Father's Full Name:
+															.text-danger.d-inline  *
+														input.form-control#gfathername(type='text' name='gfathername' placeholder="Ex. Juan Dela Cruz" required='' )
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h6.label-control Father's Birthplace:
+															.text-danger.d-inline  *
+														input.form-control#gfatherbirthplace(type='text' name='gfatherbplace' placeholder="Ex. Caloocan, Quezon City" required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Father's Religion
+															.text-danger.d-inline  *
+														select#gfatherreligion(type="text" name='gfatherreligion')
+															option Catholic
+															option Non-Catholic
+															option Non-Christion
+															option No religion											
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Mother's Full Name:
+															.text-danger.d-inline  *
+														input.form-control#gmothername(type='text' name='gmothername' placeholder="Ex. Maria Dela Cruz" required='' )
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h6.label-control Mother's Birthplace:
+															.text-danger.d-inline  *
+														input.form-control#gmotherbirthplace(type='text' name='gmotherbplace' placeholder="Ex. San Isidro, Quezon City" required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Mother's Religion
+															.text-danger.d-inline  *
+														select#gmotherreligion(type="text" name='gmotherreligion')
+															option Catholic
+															option Non-Catholic
+															option Non-Christion
+															option No religion
+											
+											.row
+												.col-md-3.px-lg-3.px-md-0.px-sm-0.pl-sm-3
+													.form-group
+														h6.label-control Religion
+															.text-danger.d-inline  *
+														select#greligion(type="text" name='greligion' )
+															option Catholic
+															option Non-Catholic
+															option Non-Christion
+															option No religion            
+												.col-md-9.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Current Parish:
+															.text-danger.d-inline  *
+													.row
+														.col-md-2
+															.form-check
+																label.form-check-label
+																	input.exampleRadios1.form-check-input#ginlpp(type="radio" name="gcurrentparishbool" value="1" checked)
+																	| INLPP
+																	span.circle
+																		span.check
+															.form-check
+																label.form-check-label
+																	input.exampleRadios1.form-check-input#gothers(type="radio" name="gcurrentparishbool" value="0")
+																	| Others
+																	span.circle
+																		span.check
+														.col-md-10
+															input.form-control#gcurrentparish(type='text' name='gcurrentparish' value='Ina ng Lupang Pangako Parish' disabled)
+															.help-block.with-errors
+										   
+												
+												
+											.row
+												.col-md-6.px-lg-3.pr-md-3.px-sm-0
+													.form-group
+														h6.label-control Baptized?
+															.text-danger.d-inline  *
+														.ml-4
+															.row
+																.col-md-2
+																	.form-check
+																		label.form-check-label
+																			input.exampleRadios1.form-check-input#gbapyes(type="radio" name="gbaptized" value="1" checked)
+																			| Yes
+																			span.circle
+																				span.check
+																.col-md-10
+																	.form-check
+																		label.form-check-label
+																			input.radioup.form-check-input#gbapno(type="radio" name="gbaptized" value="0" )
+																			| No
+																			span.circle
+																				span.check
+															.textarea1.form-group
+																.form-group
+																	h6.label-control Parish where you were baptized:
+																		.text-danger.d-inline  *
+																	input.form-control#gbapplace(type='text' name='gbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish"  )
+																.form-group
+																	h6.label-control Date when you were baptized:
+																		.text-danger.d-inline  *
+																	input.marriage.form-control#gbapdate(type='date' name='gbapdate')
+												.col-md-6.px-lg-3.pr-md-3.px-sm-0
+													.form-group
+														h6.label-control Confirmed?
+															.text-danger.d-inline  *
+														.row
+															.col-md-2
+																.form-check
+																	label.form-check-label
+																		input.exampleRadios2.form-check-input#gconyes(type="radio" name="gconfirmed" value="1" checked)
+																		| Yes
+																		span.circle
+																			span.check
+															.col-md-10
+																.form-check
+																	label.form-check-label
+																		input.radioup2.form-check-input#gconno(type="radio" name="gconfirmed" value="0" )
+																		| No
+																		span.circle
+																			span.check
+														.textarea2.form-group
+															.form-group
+																h6.label-control Parish Where You Were Confirmed:
+																	.text-danger.d-inline  *
+																input.form-control#gconplace(type='text' name='gconplace' placeholder=" Ex. Ina ng Lupang Pangako Parish" required='' )
+															.form-group
+																h6.label-control Date When You Were Confirmed:
+																	.text-danger.d-inline  *
+																input.marriage.form-control#gcondate(type='date' name='gcondate')
+											
+								// Form Step 2
+								// Form Step 3 BRIDE
+								fieldset
+									h4
+										.d-none.d-sm-inline Bride's Form: 
+										
+									.form-group
+										br
+										.container
+											h6.label-control Name:
 												.text-danger.d-inline  *
-											input.form-control.start-date(id='gbday' name='gbday' type='text', data-provide='datepicker' placeholder='Enter Your Birthday')
-									.col-md-4
-										.form-group
-											label Birthplace
-											.text-danger.d-inline  *
-											input.form-control(id='gbplace' name='gbplace' type='text' placeholder='Ex. Payatas, Quezon City')
-									// new
-									.col-md-4
-										.form-group
-											label Nationality
-											.text-danger.d-inline  *
-											input.form-control(id='gnationality' name='gnationality' type='text' value='Filipino' placeholder='Please enter your nationality')
-								.row
-									// new
-									.col-md-4
-										.form-group
-											label Civil Status
-												.text-danger.d-inline  *
-											select.form-control(id='gcivil' name='gcivil')
-												option(selected="" value="" disabled) Choose...
-												option Single
-												option Married
-												option Divorced
-												option Widower
-									.col-md-4
-										.form-group
-											label Address
-												.text-danger.d-inline  *
-											input.form-control(id='gaddress' name='gaddress' type='textarea' placeholder='Ex. Urban, Bgy. Payatas B 1119 QC')
-									// new
-									.col-md-4
-										.form-group
-											label Occupation
-											.text-danger.d-inline  *
-											input.form-control(id='goccupation' name='goccupation' type='text' placeholder='Ex. Driver')
-								.row
-									// new
-									.col-md-4
-										.form-group
-											label Father's Full Name:
-												.text-danger.d-inline  *
-											input.form-control(id='gfathername' name='gfathername' type='text' placeholder='Ex. Juan Dela Cruz')
-									// new
-									.col-md-4
-										.form-group
-											label Father's Birthplace:
-												.text-danger.d-inline  *
-											input.form-control(id='gfatherbplace' name='gfatherbplace' type='text' placeholder='Ex. Caloocan, Quezon City')
-									// new
-									.col-md-4
-										.form-group
-											label Father's Religion:
-												.text-danger.d-inline  *
-											select.form-control(id='gfatherreligion' name='gfatherreligion')
-												option(selected="" value="" disabled) Choose...
-												option Catholic
-												option Non-Catholic
-												option Non-Christian
-												option No Religion
-								.row
-									// new
-									.col-md-4
-										.form-group
-											label Mother's Full Name:
-												.text-danger.d-inline  *
-											input.form-control(id='gmothername' name='gmothername' type='text' placeholder='Ex. Juan Dela Cruz')
-									// new
-									.col-md-4
-										.form-group
-											label Mother's Birthplace:
-												.text-danger.d-inline  *
-											input.form-control(id='gmotherbplace' name='gmotherbplace' type='text' placeholder='Ex. Caloocan, Quezon City')
-									// new
-									.col-md-4
-										.form-group
-											label Mother's Religion:
-												.text-danger.d-inline  *
-											select.form-control(id='gmotherreligion' name='gmotherreligion')
-												option(selected="" value="" disabled) Choose...
-												option Catholic
-												option Non-Catholic
-												option Non-Christian
-												option No Religion
-								.row
-									// new
-									.col-md-4
-										.form-group
-											label Religion:
-												.text-danger.d-inline  *
-											select.form-control(id='greligion' name='greligion')
-												option(selected="" value="" disabled) Choose...
-												option Catholic
-												option Non-Catholic
-												option Non-Christian
-												option No Religion
-									legend.col-sm-2 Current Parish
-										.text-danger.d-inline  *
-									.col-sm-2
-										.form-check
-											label.form-check-label
-												input.form-check-input(id='gcurrentparish1' name='gcurrentparish' type='radio' value='INLPP', checked='checked') 
-												| INLPP
-										.form-check
-											label.form-check-label
-												input.form-check-input(id='gcurrentparish2' name='gcurrentparish' type='radio' value='Others')
-												| Others
-									.col-md-4
-										.form-group
-											label
-											input.form-control(id='gcurrentparishfield' name='gcurrentparishfield' type='text' placeholder='Ex. Please Enter Current Parish Address' value='Ina ng Lupang Pangako Parish' disabled)
-								.row
-									.col-md-6
-										.form-group.m-0
-											label Baptized?
-												.text-danger.d-inline  *
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														input.form-control#blastname(type='text' placeholder="Last Name *" name='blastname' required='' )
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														input.form-control#bfirstname(type='text' placeholder="First Name *" name='bfirstname' required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														input.form-control#bmiddlename(type='text' placeholder="Middle Name" name='bmiddlename' required='' )
+														.help-block.with-errors
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Birthday:
+															.text-danger.d-inline  *
+														input.birthday.form-control#bbirthday(type='date' name='bbirthday')
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h6.label-control Birthplace:
+															.text-danger.d-inline  *
+														input.form-control#bbirthplace(type='text' name='bbirthplace' placeholder="Ex. Payatas, Quezon City" required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Nationality:
+															.text-danger.d-inline  *
+														select#bnationality(type="text" name='bnationality')
+															option Afghan
+															option Albanian
+															option Algerian
+															option American
+															option Argentina
+															option Argentine
+															option Argentinian
+															option Australian
+															option Austrian
+															option Bangladeshi
+															option Belgian
+															option Bolivian
+															option Botswanan
+															option Brazilian
+															option Brit
+															option Bulgarian
+															option Cambodian
+															option Cameroonian
+															option Canadian
+															option Chilean
+															option Chinese
+															option Colombian
+															option Costa Rican
+															option Croat
+															option Cuban
+															option Czech
+															option Dane
+															option Dominican
+															option Dutchman
+															option Dutchwoman
+															option Ecuadorian
+															option Egyptian
+															option Emirati
+															option Englishman
+															option Englishwoman
+															option Estonian
+															option Ethiopian
+															option Fijian
+															option(selected) Filipino
+															option Finn
+															option Frenchman
+															option Frenchwoman
+															option German
+															option Ghanaian
+															option Greek
+															option Guatemalan
+															option Haitian
+															option Honduran
+															option Hungarian
+															option Icelander
+															option Indian
+															option Indonesian
+															option Iranian
+															option Iraqi
+															option Irishman
+															option Irishwoman
+															option Israeli
+															option Italian
+															option Jamaican
+															option Japanese
+															option Jordanian
+															option Kenyan
+															option Korean
+															option Kuwaiti
+															option Laotain
+															option Latvian
+															option Lebanese
+															option Libyan
+															option Lithuanian
+															option Malaysian
+															option Malian
+															option Maltese
+															option Mexican
+															option Mongolian
+															option Moroccan
+															option Mozambican
+															option Nambian
+															option Nepalese
+															option New Zealander
+															option Nicaraguan
+															option Nigerian
+															option Norwegian
+															option Pakistani
+															option Panamanian
+															option Paraguayan
+															option Peruvian
+															option Pole
+															option Portuguese
+															option Romanian
+															option Russian
+															option Salvadoran
+															option Saudi (Arabian)
+															option Scot
+															option Senegalese
+															option Serbian
+															option Singaporean
+															option Slovak
+															option South African
+															option Spaniard
+															option Sri Lankan
+															option Sudanese
+															option Swede
+															option Swiss
+															option Syrian
+															option Taiwanese
+															option Tajikistani
+															option Thai
+															option Tongan
+															option Tunisian
+															option Turk
+															option Ukranian
+															option Uruguayan
+															option Venezuelan
+															option Vietnamese
+															option Welshman
+															option Welshwoman
+															option Zambian
+															option Zimbabwean
+											.row
+												.col-md-12.px-lg-3.px-md-0.px-sm-3
+													.row
+														.col-md-4.px-lg-3.px-md-0.px-sm-0.pl-sm-3
+															.form-group
+																h6.label-control Civil Status
+																	.text-danger.d-inline  *
+																select#bcivilstatus(type="text" name='bcivilstatus')
+																	option Single
+																	option Married
+																	option Divorced
+																	option Widower
+																	input.datepicker.form-control#eventdate(type='hidden' name='eventDate' placeholder="Ex. Ina ng Lupang Pangako Parish")
+																	input.datepicker.form-control#timestart(type='hidden' name='timeStart' placeholder="Ex. Ina ng Lupang Pangako Parish")
+																	input.datepicker.form-control#timeEnd2(type='hidden' name='timeEnd2' placeholder="Ex. Ina ng Lupang Pangako Parish")
+																	
+														.col-md-4.px-lg-3.px-md-0.px-sm-0
+															.form-group
+																h6.label-control Occupation:
+																	.text-danger.d-inline  *
+																input.form-control#boccupation(type='text' name='boccupation' placeholder="Ex. Driver")
+																.help-block.with-errors
+														.col-md-4.px-lg-3.px-md-0.px-sm-0
+															.form-group
+																h6.label-control 5 months pregnant?:
+																	.text-danger.d-inline  *
+																.row
+																	.col-md-6.px-lg-3.px-md-0.px-sm-0
+																		//- h2.main--header.font-italic For the couple
+																		.form-group.m-0
+																			.form-check
+																				h6.form-check-label
+																					input.form-check-input#boolpregnantyes(type="radio" name="boolpregnant"  value="1")
+																					| Yes
+																					span.circle
+																						span.check
+																			.form-check
+																				h6.form-check-label
+																					input.form-check-input#boolpregnantno(type="radio" name="boolpregnant" value="0" checked)
+																					| No
+																					span.circle
+																						span.check
+
+											.textarea3.form-group
 												.row
-													.col-sm-6
-														.form-check
-															label.form-check-label
-																input.gbaptizedyes.form-check-input(id='gbaptize1' name='gbaptize' type='radio' checked='checked') 
-																| Yes
-													.col-sm-6
-														.form-check
-															label.form-check-label
-																input.gbaptizedno.form-check-input(id='gbaptize2' name='gbaptize' type='radio')
-																| No
-										.gisbaptized
-											.row
-												.col-md-12
-													.ml-2
+													.col-md-4
 														.form-group
-															label Parish where you were baptized:
+															h6.label-control Previous Wedding Date:
 																.text-danger.d-inline  *
-															input.form-control(id='gparishbaptized' name='gparishbaptized' type='text' placeholder="Ex. Ina ng Lupang Pangako Parish")
-											.row
-												.col-md-12
-													.ml-2
+															input.birthday.form-control#cpreviousweddingdate(type='date' name='cprevweddingdate')
+													.col-md-8
 														.form-group
-															label Date when you were baptized:
+															h6.label-control Previous Wedding Place/Parish:
 																.text-danger.d-inline  *
-															input.form-control.start-date(id='gparishdatebaptized' name='gparishdatebaptized' type='date' placeholder="Please enter date" data-provide='datepicker')
-									.col-md-6
-										.form-group.m-0
-											label Confirmed?
-												.text-danger.d-inline  *
-												.row
-													.col-sm-6
-														.form-check
-															label.form-check-label
-																input.gconfirmedyes.form-check-input(id='gconfirm1' name='gconfirm' type='radio' checked='checked') 
-																| Yes
-													.col-sm-6
-														.form-check
-															label.form-check-label
-																input.gconfirmedno.form-check-input(id='gconfirm2' name='gconfirm' type='radio')
-																| No
-										.gisconfirmed
+														input.form-control#cpreviousweddingplace(type='text' name='cprevweddingplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
 											.row
-												.col-md-12
-													.ml-2
-														.form-group
-															label Parish Where You Were Confirmed: 
-																.text-danger.d-inline  *
-															input.form-control(id='gparishconfirm' name='gparishconfirm' type='text' placeholder="Ex. Ina ng Lupang Pangako Parish")
+												.col-md-12.px-lg-3.px-md-0.px-sm-0.pl-sm-3
+													.form-group
+														h6(for='exampleFormControlTextarea1') Address:
+															.text-danger.d-inline  *
+														textarea.form-control#baddress(rows='1' name='baddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' )
+														.help-block.with-errors
 											.row
-												.col-md-12
-													.ml-2
-														.form-group
-															label Date When You Were Confirmed:
-																.text-danger.d-inline  *
-															input.form-control.start-date(id='gparishdateconfirm' name='gparishdateconfirm' type='date' placeholder="Please enter date" data-provide='datepicker')
-								.row
-									.col-md-6
-										.form-group
-											label Valid ID
-												.text-danger.d-inline  *
-											input.form-control(id='gvalidid' name='gvalidid' type='file')
-									.col-md-6
-										.form-group
-											label Birth Certificate
-												.text-danger.d-inline  *
-											input.form-control(id='gbirthcertificate' name='gbirthcertificate' type='file')
-								//bride
-								h6.c-grey-900 Bride
-								.mT-30
-								.row
-									.col-md-4
-										.form-group
-											label Name
-												.text-danger.d-inline  *
-											input.form-control(id='blname' name='blname' type='text' placeholder='Last Name *')
-									.col-md-4
-										.form-group
-											label(style='visibility:hidden;') First Name
-											input.form-control(id='bfname' name='bfname' type='text' placeholder='First Name *')
-									.col-md-4
-										.form-group
-											label(style='visibility:hidden;') Middle Name
-											input.form-control(id='bmname' name='bmname' type='text' placeholder='Middle Name')
-								.row
-									.col-md-4
-										.form-group
-											label Birthday
-												.text-danger.d-inline  *
-											input.form-control.start-date(id='bbday' name='bbday' type='text', data-provide='datepicker' placeholder='Enter Your Birthday')
-									.col-md-4
-										.form-group
-											label Birthplace
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Father's Full Name:
+															.text-danger.d-inline  *
+														input.form-control#bfathername(type='text' name='bfathername' placeholder="Ex. Juan Dela Cruz" required='' )
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h6.label-control Father's Birthplace:
+															.text-danger.d-inline  *
+														input.form-control#bfatherbirthplace(type'text' name='bfatherbplace' placeholder="Ex. Caloocan, Quezon City" required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Father's Religion:
+															.text-danger.d-inline  *
+														select#bfatherreligion(type="text" name='bfatherreligion')
+															option Catholic
+															option Non-Catholic
+															option Non-Christion
+															option No religion
+											
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Mother's Full Name:
+														input.form-control#bmothername(type='text' name='bmothername' placeholder="Ex. Maria Dela Cruz" required='' )
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h6.label-control Mother's Birthplace:
+														input.form-control#bmotherbirthplace(type'text' name='bmotherbplace' placeholder="Ex. San Isidro, Quezon City" required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Mother's Religion:
+															.text-danger.d-inline  *
+														select#bmotherreligion(type="text" name='bmotherreligion')
+															option Catholic
+															option Non-Catholic
+															option Non-Christion
+															option No religion
+											
+											.row
+												.col-md-3.px-lg-3.px-md-0.px-sm-0.pl-sm-3
+													.form-group
+														h6.label-control Religion
+															.text-danger.d-inline  *
+														select#breligion(type="text" name='breligion' )
+															option Catholic
+															option Non-Catholic
+															option Non-Christion
+															option No religion            
+												.col-md-9.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Current Parish:
+															.text-danger.d-inline  *
+													.row
+														.col-md-2
+															.form-check
+																label.form-check-label
+																	input.exampleRadios1.form-check-input#binlpp(type="radio" name="bcurrentparishbool" value="1" checked)
+																	| INLPP
+																	span.circle
+																		span.check
+															.form-check
+																label.form-check-label
+																	input.exampleRadios1.form-check-input#bothers(type="radio" name="bcurrentparishbool" value="0")
+																	| Others
+																	span.circle
+																		span.check
+														.col-md-10
+															input.form-control#bcurrentparish(type='text' name='bcurrentparish' value="Ina ng Lupang Pangako Parish" disabled)
+															.help-block.with-errors
+										   
+												
+												
+											.row
+												.col-md-6.px-lg-3.pr-md-3.px-sm-0
+													.form-group
+														h6.label-control Baptized?
+															.text-danger.d-inline  *
+														.ml-4
+															.row
+																.col-md-2
+																	.form-check
+																		label.form-check-label
+																			input.exampleRadios4.form-check-input#bbapyes(type="radio" name="bbaptized" value="1" checked)
+																			| Yes
+																			span.circle
+																				span.check
+																.col-md-10
+																	.form-check
+																		label.form-check-label
+																			input.radioup4.form-check-input#bbapno(type="radio" name="bbaptized" value="0" )
+																			| No
+																			span.circle
+																				span.check
+															.textarea4.form-group
+																.form-group
+																	h6.label-control Parish Where You Were Baptized:
+																		.text-danger.d-inline  *
+																	input.form-control#bbapplace(type='text' name='bbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
+																.form-group
+																	h6.label-control Date When You Were Baptized:
+																		.text-danger.d-inline  *
+																	input.marriage.form-control#bbapdate(type='date' name='bbapdate')
+												.col-md-6.px-lg-3.pr-md-3.px-sm-0
+													.form-group
+														h6.label-control Confirmed?
+															.text-danger.d-inline  *
+														.ml-4
+															.row
+																.col-md-2
+																	.form-check
+																		label.form-check-label
+																			input.exampleRadios5.form-check-input#bconyes(type="radio" name="bconfirmed" value="1" checked)
+																			| Yes
+																			span.circle
+																				span.check
+																.col-md-10
+																	.form-check
+																		label.form-check-label
+																			input.radioup5.form-check-input#bconno(type="radio" name="bconfirmed" value="0" )
+																			| No
+																			span.circle
+																				span.check
+															.textarea5.form-group
+																.form-group
+																	h6.label-control Parish where you were Confirmed:
+																		.text-danger.d-inline  *
+																	input.form-control#bconplace(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' )
+																.form-group
+																	h6.label-control Date when you were Confirmed:
+																		.text-danger.d-inline  *
+																	input.marriage.form-control#bcondate(type='date' name='bcondate')
+										
+								// Form Step 3
+								// Form Step 4 COUPLE
+								fieldset
+									h4
+										.d-none.d-sm-inline Couple's Form: 
+										
+										h6.label-control Living Together?
 											.text-danger.d-inline  *
-											input.form-control(id='bbplace' name='bbplace' type='text' placeholder='Ex. Payatas, Quezon City')
-									// new
-									.col-md-4
-										.form-group
-											label Nationality
-											.text-danger.d-inline  *
-											input.form-control(id='bnationality' name='bnationality' type='text' value='Filipino' placeholder='Please enter your nationality')
-								.row
-									// new
-									.col-md-4
-										.form-group
-											label Civil Status
-												.text-danger.d-inline  *
-											select.form-control(id='bcivil' name='bcivil')
-												option(selected="" value="" disabled) Choose...
-												option Single
-												option Married
-												option Divorced
-												option Widower
-									legend.col-sm-3 5 Months Pregnant?
-										.text-danger.d-inline  *
-									.col-sm-1
-										.form-check
-											label.form-check-label
-												input.form-check-input(id='bboolpregnant1' name='bboolpregnant' type='radio' value='INLPP', checked='checked') 
-												| Yes
-										.form-check
-											label.form-check-label
-												input.form-check-input(id='bboolpregnant2' name='bboolpregnant' type='radio' value='Others')
-												| No
-									// new
-									.col-md-4
-										.form-group
-											label Occupation
-											.text-danger.d-inline  *
-											input.form-control(id='boccupation' name='boccupation' type='text' placeholder='Ex. Driver')
-								.row
-									.col-md-12
-										.form-group
-											label Address
-												.text-danger.d-inline  *
-											input.form-control(id='baddress' name='baddress' type='textarea' placeholder='Ex. Urban, Bgy. Payatas B 1119 QC')
-								.row
-									// new
-									.col-md-4
-										.form-group
-											label Father's Full Name:
-												.text-danger.d-inline  *
-											input.form-control(id='bfathername' name='bfathername' type='text' placeholder='Ex. Juan Dela Cruz')
-									// new
-									.col-md-4
-										.form-group
-											label Father's Birthplace:
-												.text-danger.d-inline  *
-											input.form-control(id='bfatherbplace' name='bfatherbplace' type='text' placeholder='Ex. Caloocan, Quezon City')
-									// new
-									.col-md-4
-										.form-group
-											label Father's Religion:
-												.text-danger.d-inline  *
-											select.form-control(id='bfatherreligion' name='bfatherreligion')
-												option(selected="" value="" disabled) Choose...
-												option Catholic
-												option Non-Catholic
-												option Non-Christian
-												option No Religion
-								.row
-									// new
-									.col-md-4
-										.form-group
-											label Mother's Full Name:
-												.text-danger.d-inline  *
-											input.form-control(id='bmothername' name='bmothername' type='text' placeholder='Ex. Juan Dela Cruz')
-									// new
-									.col-md-4
-										.form-group
-											label Mother's Birthplace:
-												.text-danger.d-inline  *
-											input.form-control(id='bmotherbplace' name='bmotherbplace' type='text' placeholder='Ex. Caloocan, Quezon City')
-									// new
-									.col-md-4
-										.form-group
-											label Mother's Religion:
-												.text-danger.d-inline  *
-											select.form-control(id='bmotherreligion' name='bmotherreligion')
-												option(selected="" value="" disabled) Choose...
-												option Catholic
-												option Non-Catholic
-												option Non-Christian
-												option No Religion
-								.row
-									// new
-									.col-md-4
-										.form-group
-											label Religion:
-												.text-danger.d-inline  *
-											select.form-control(id='breligion' name='breligion')
-												option(selected="" value="" disabled) Choose...
-												option Catholic
-												option Non-Catholic
-												option Non-Christian
-												option No Religion
-									legend.col-sm-2 Current Parish
-										.text-danger.d-inline  *
-									.col-sm-2
-										.form-check
-											label.form-check-label
-												input.form-check-input(id='bcurrentparish1' name='bcurrentparish' type='radio' value='INLPP', checked='checked') 
-												| INLPP
-										.form-check
-											label.form-check-label
-												input.form-check-input(id='bcurrentparish2' name='bcurrentparish' type='radio' value='Others')
-												| Others
-									.col-md-4
-										.form-group
-											label
-											input.form-control(id='bcurrentparishfield' name='bcurrentparishfield' type='text' placeholder='Ex. Please Enter Current Parish Address' value='Ina ng Lupang Pangako Parish' disabled)
-								.row
-									.col-md-6
-										.form-group.m-0
-											label Baptized?
-												.text-danger.d-inline  *
-												.row
-													.col-sm-6
-														.form-check
-															label.form-check-label
-																input.bbaptizedyes.form-check-input(id='bbaptize1' name='bbaptize' type='radio' checked='checked') 
-																| Yes
-													.col-sm-6
-														.form-check
-															label.form-check-label
-																input.bbaptizedno.form-check-input(id='bbaptize2' name='bbaptize' type='radio')
-																| No
-										.bisbaptized
-											.row
-												.col-md-12
-													.ml-2
-														.form-group
-															label Parish where you were baptized:
-																.text-danger.d-inline  *
-															input.form-control(id='bparishbaptized' name='bparishbaptized' type='text' placeholder="Ex. Ina ng Lupang Pangako Parish")
-											.row
-												.col-md-12
-													.ml-2
-														.form-group
-															label Date when you were baptized:
-																.text-danger.d-inline  *
-															input.form-control.start-date(id='bparishdatebaptized' name='bparishdatebaptized' type='date' placeholder="Please enter date" data-provide='datepicker')
-									.col-md-6
-										.form-group.m-0
-											label Confirmed?
-												.text-danger.d-inline  *
-												.row
-													.col-sm-6
-														.form-check
-															label.form-check-label
-																input.bconfirmedyes.form-check-input(id='bconfirm1' name='bconfirm' type='radio' checked='checked') 
-																| Yes
-													.col-sm-6
-														.form-check
-															label.form-check-label
-																input.bconfirmedno.form-check-input(id='bconfirm2' name='bconfirm' type='radio')
-																| No
-										.bisconfirmed
-											.row
-												.col-md-12
-													.ml-2
-														.form-group
-															label Parish Where You Were Confirmed: 
-																.text-danger.d-inline  *
-															input.form-control(id='bparishconfirm' name='bparishconfirm' type='text' placeholder="Ex. Ina ng Lupang Pangako Parish")
-											.row
-												.col-md-12
-													.ml-2
-														.form-group
-															label Date When You Were Confirmed:
-																.text-danger.d-inline  *
-															input.form-control.start-date(id='bparishdateconfirm' name='bparishdateconfirm' type='date' placeholder="Please enter date" data-provide='datepicker')
-								.row
-									.col-md-6
-										.form-group
-											label Valid ID
-												.text-danger.d-inline  *
-											input.form-control(id='bvalidid' name='bvalidid' type='file')
-									.col-md-6
-										.form-group
-											label Birth Certificate
-												.text-danger.d-inline  *
-											input.form-control(id='bbirthcertificate' name='bbirthcertificate' type='file')
-								h6.c-grey-900 Living Together?
-								.col-sm-2
-									.form-check
-										label.form-check-label
-											input.form-check-input(id='livingtogether1' name='livingtogether' type='radio', checked='checked') 
-											| Yes
-									.form-check
-										label.form-check-label
-											input.form-check-input(id='livingtogether2' name='livingtogether' type='radio')
-											| No
+										.row
+											.col-md-6.px-lg-3.px-md-0.px-sm-0
+												//- h2.main--header.font-italic For the couple
+												.form-group.m-0
+													.form-check
+														h6.form-check-label
+															input.form-check-input#boollivinginyes(type="radio" name="boollivingin"  value="1")
+															| Yes
+															span.circle
+																span.check
+													.form-check
+														h6.form-check-label
+															input.form-check-input#boollivinginno(type="radio" name="boollivingin" value="0" checked)
+															| No
+															span.circle
+																span.check
+												
+									br
+									
+												
+								//- h6.c-grey-900 Principal Sponsors
+								//- .row
+								//- 	.col-md-6
+								//- 		input.form-control(id='firstsponsor' name='sponsorname' type='text' placeholder="Ex. Enter Full Name *")
+								//- 	.col-md-6
+								//- 		input.form-control(id='secondsponsor' name='sponsorname' type='text' placeholder="Ex. Enter Full Name *")
+								//- 	button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button" style='margin-top: 10px')
+								//- 		i.fa.fa-plus
+								//- h6.c-grey-900.label-control Secondary Sponsors
+								//- .row#additionalSponsor
+								//- .text-center
+								//- 	button.btn.btn-primary(type='submit') Submit
 								h6.c-grey-900 Principal Sponsors
 								.row
+								
 									.col-md-6
+										//- .form-group
+										//- label Principal Sponsors
 										input.form-control(id='firstsponsor' name='sponsorname' type='text' placeholder="Ex. Enter Full Name *")
 									.col-md-6
+										//- .form-group
+										//- label 
 										input.form-control(id='secondsponsor' name='sponsorname' type='text' placeholder="Ex. Enter Full Name *")
-									button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button")
-										i.fa.fa-plus
-								h6.c-grey-900.label-control Secondary Sponsors
-								.row#additionalSponsor
+									
+								.row
+									.col-md-6
+										
+										.form-group
+											h6.c-grey-900 Number of Additional Sponsors
+											input.form-control(id='numofaddsponsors' name='numofaddsponsors' type='number' placeholder="Enter number of additional sponsors")
+								
+
+
+									
 								.text-center
-									button.btn.btn-primary(type='submit') Submit
-							input#errChecker(type='text' hidden)
+									button.btn.btn-primary#submitApplication(type='button') Submit
+							
+									input#errChecker(type='text' hidden)
 block addjs
 	script.
 		
 		$('#desiredtime').datetimepicker({
-				format: 'LT',
-				icons: {
-					time: "fa fa-clock-o",
-					date: "fa fa-calendar",
-					up: "fa fa-chevron-up",
-					down: "fa fa-chevron-down",
-					previous: 'fa fa-chevron-left',
-					next: 'fa fa-chevron-right',
-					today: 'fa fa-screenshot',
-					clear: 'fa fa-trash',
-					close: 'fa fa-remove'
+					format: 'LT',
+					icons: {
+						time: "fa fa-clock-o",
+						date: "fa fa-calendar",
+						up: "fa fa-chevron-up",
+						down: "fa fa-chevron-down",
+						previous: 'fa fa-chevron-left',
+						next: 'fa fa-chevron-right',
+						today: 'fa fa-screenshot',
+						clear: 'fa fa-trash',
+						close: 'fa fa-remove'
+					}
+			});
+
+			$('.radioup').click(function() {
+				$('.textarea1').slideUp();
+			});
+			$('.exampleRadios1').click(function() {
+				$('.textarea1').slideDown();
+			});
+
+			//- $('.textarea2').hide();
+			$('.radioup2').click(function() {
+				$('.textarea2').slideUp();
+			});
+			$('.exampleRadios2').click(function() {
+				$('.textarea2').slideDown();
+			});
+
+			$('.textarea3').hide();
+			$('.radioup3').click(function() {
+				$('.textarea3').slideUp();
+			});
+			$('.exampleRadios3').click(function() {
+				$('.textarea3').slideDown();
+			});
+
+			//- $('.textarea4').hide();
+			$('.radioup4').click(function() {
+				$('.textarea4').slideUp();
+			});
+			$('.exampleRadios4').click(function() {
+				$('.textarea4').slideDown();
+			});
+
+			//- $('.textarea5').hide();
+			$('.radioup5').click(function() {
+				$('.textarea5').slideUp();
+			});
+			$('.exampleRadios5').click(function() {
+				$('.textarea5').slideDown();
+			});
+			$("#addPrincipalSponsor").click(function(event){
+					var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
+					$(principal).hide().appendTo("#principalSponsor").fadeIn(500);
+			});
+
+			$("#principalSponsor").on("click", ".btnDelete", function(event){
+				$(this).parent().parent().parent().fadeOut(500, function(){
+					$(this).remove();
+				});
+				event.stopPropagation();
+
+			});
+			$("#addAdditionalSponsor").click(function(event){
+				
+				var item2 = `
+					<div class="col-md-6 px-lg-3 px-md-3 px-sm-0 mt-3">
+						<div class="input-group m-0">
+							<input class="form-control" class= 'sponsorclass' type="text" name="sponsorname" id="additionalsponsor" placeholder="Enter Full Name" required/>
+							<div class="input-group-prepend"><span class="btnDelete p-1 input-group-text rounded"><i class="fa fa-trash"></i></span></div>
+						</div>
+					</div>`
+
+				$(item2).hide().appendTo("#additionalSponsor").fadeIn(500);
+				
+				//- for(i=0;i<$('.sponsorclass').length;i++){
+
+				//- }
+			});
+
+			$("#additionalSponsor").on("click", ".btnDelete", function(event){
+				$(this).parent().parent().parent().fadeOut(500, function(){
+					$(this).remove();
+				});
+				event.stopPropagation();
+			});
+
+			$('#bcivilstatus').change(function(){
+			if( $(this).val() == "Married" && $('#gcivilstatus').val()=='Married'){
+				$('.textarea3').slideDown();
+			}
+			else{
+				$('.textarea3').slideUp();
+			}
+		
+		});
+		// IF THE GROOM IS NOT CATHOLIC
+		$('#greligion').change(function(){
+				if( $(this).val() != "Catholic"){
+					$('.textarea2').slideUp();
+					$('.textarea1').slideUp();
+					$('#gcurrentparish').prop('disabled', $(this).val() != "Catholic");
+					$('#gbapno').prop('disabled', $(this).val() != "Catholic");
+					$('#gbapyes').prop('disabled', $(this).val() != "Catholic");
+					$('#gconno').prop('disabled', $(this).val() != "Catholic");
+					$('#gconyes').prop('disabled', $(this).val() != "Catholic");
+					$('#ginlpp').prop('disabled', $(this).val() != "Catholic");
+					$('#gothers').prop('disabled', $(this).val() != "Catholic");
+					$("#ginlpp").prop('checked', false)
+					$("#gothers").prop('checked', false)
+					$("#gbapyes").prop('checked', false)
+					$("#gbapno").prop('checked', false)
+					$("#gconyes").prop('checked', false)
+					$("#gconno").prop('checked', false)
+					$('#bcurrentparish').val('');
+					$('#gbapplace').val('');
+					$('#gbapdate').val('');
+					$('#gconplace').val('');
+					$('#gcondate').val('');
 				}
-		});
-
-		$('#place1').click(function() {
-			$('#hospitalname').slideUp();
-			$('#othervenue').slideUp();
-		});
-		$('#place2').click(function() {
-			$('#hospitalname').slideDown();
-			$('#othervenue').slideUp();
-		});
-		$('#place3').click(function() {
-			$('#hospitalname').slideUp();
-			$('#othervenue').slideDown();
-		});
-
-		$('#gcurrentparish2').change(function () {
-			if ($(this).prop("checked")) {
-					$('#gcurrentparishfield').prop('disabled', false);
-					$('#gcurrentparishfield').val('')
-			} 
-		});
-
-		$('#gcurrentparish1').change(function () {
-			if ($(this).prop("checked")) {
-				$('#gcurrentparishfield').prop('disabled', true);
-				$('#gcurrentparishfield').val('Ina ng Lupang Pangako Parish')
-			} 
-		});
-
-		$('#bcurrentparish2').change(function () {
-			if ($(this).prop("checked")) {
-					$('#bcurrentparishfield').prop('disabled', false);
-					$('#bcurrentparishfield').val('')
-			} 
-		});
-
-		$('#bcurrentparish1').change(function () {
-			if ($(this).prop("checked")) {
-				$('#bcurrentparishfield').prop('disabled', true);
-				$('#bcurrentparishfield').val('Ina ng Lupang Pangako Parish')
-			} 
-		});
-
-		$('.gbaptizedno').click(function() {
-			$('.gisbaptized').slideUp();
-		});
-		$('.gbaptizedyes').click(function() {
-			$('.gisbaptized').slideDown();
-		});
-
-		//- $('.textarea2').hide();
-		$('.gconfirmedno').click(function() {
-			$('.gisconfirmed').slideUp();
-		});
-		$('.gconfirmedyes').click(function() {
-			$('.gisconfirmed').slideDown();
-		});
-
-		$('.bbaptizedno').click(function() {
-			$('.bisbaptized').slideUp();
-		});
-		$('.bbaptizedyes').click(function() {
-			$('.bisbaptized').slideDown();
-		});
-
-		//- $('.textarea2').hide();
-		$('.bconfirmedno').click(function() {
-			$('.bisconfirmed').slideUp();
-		});
-		$('.bconfirmedyes').click(function() {
-			$('.bisconfirmed').slideDown();
-		});
-
-		$("#addPrincipalSponsor").click(function(event){
-				var principal = "<div class='col-md-6 mb-4 pb-3'><div class='input-group'><input type='text' name='sponsorname' class='form-control'/><div class='input-group-prepend'><span class='btnDelete p-1 input-group-text rounded'><i class='fa fa-trash'></i></span></div></div></div>"
-				$(principal).hide().appendTo("#principalSponsor").fadeIn(500);
-		});
-
-		$("#principalSponsor").on("click", ".btnDelete", function(event){
-			$(this).parent().parent().parent().fadeOut(500, function(){
-				$(this).remove();
+				else{
+					$('#gcurrentparish').prop('disabled', true);
+					$('#gbapno').prop('disabled', false);
+					$('#gbapyes').prop('disabled', false);
+					$('#gconno').prop('disabled', false);
+					$('#gconyes').prop('disabled', false);
+					$('#ginlpp').prop('disabled', false);
+					$('#gothers').prop('disabled', false);
+					$("#ginlpp").prop('checked', true)
+					$("#gbapyes").prop('checked', true)
+					$("#gconyes").prop('checked', true)
+					$('#gbapplace').val('');
+					$('#gbapdate').val('');
+					$('#gconplace').val('');
+					$('#gcondate').val('');
+					$('.textarea2').slideDown();
+					$('.textarea1').slideDown();
+				}
 			});
-			event.stopPropagation();
-
-		});
-		$("#addAdditionalSponsor").click(function(event){
-			
-			var item2 = `
-				<div class="col-md-6 px-lg-3 px-md-3 px-sm-0 mt-3">
-					<div class="input-group m-0">
-						<input class="form-control" class= 'sponsorclass' type="text" name="sponsorname" id="additionalsponsor" placeholder="Enter Full Name" required/>
-						<div class="input-group-prepend"><span class="btnDelete p-1 input-group-text rounded"><i class="fa fa-trash"></i></span></div>
-					</div>
-				</div>`
-
-			$(item2).hide().appendTo("#additionalSponsor").fadeIn(500);
-			
-			//- for(i=0;i<$('.sponsorclass').length;i++){
-
-			//- }
-		});
-
-		$("#additionalSponsor").on("click", ".btnDelete", function(event){
-			$(this).parent().parent().parent().fadeOut(500, function(){
-				$(this).remove();
+			// if THE GROOM IS BAPTIZED
+			$("#gbapyes").click(function(){
+				if($(this).prop("checked") == false){
+					$("#gconno").prop('disabled', true);
+					$("#gconyes").prop('disabled', true);
+					$('#gconplace').val('');
+					$('#gcondate').val('');
+					$('.textarea1').slideUp();
+				}
+				else if($(this).prop("checked") == true){
+				$("#gconno").prop('disabled', false);
+				$("#gconyes").prop('disabled', false);
+				$("#gconno").prop('checked', true);
+				}
 			});
-			event.stopPropagation();
-		});
+			// IF THE GROOM IS NOT BAPTIZED
+			$("#gbapno").click(function(){
+				if($(this).prop("checked") == true){
+					$("#gconno").prop('disabled', true);
+					$("#gconyes").prop('disabled', true);
+					$('#gconplace').val('');
+					$('#gcondate').val('');
+					$("#gconyes").prop('checked', false)
+					$("#gconno").prop('checked', true)
+					$('.textarea2').slideUp();
+					}
+				else if($(this).prop("checked") == false){
+					$("#gconno").prop('disabled', false);
+					$("#gconyes").prop('disabled', false);
+					}
+			});
+			
+			// bride
+			$('#breligion').change(function(){
+
+
+				if( $(this).val() != "Catholic"){
+					$('.textarea4').slideUp();
+					$('.textarea5').slideUp();
+					$('#bcurrentparish').prop('disabled', $(this).val() != "Catholic");
+					$('#bbapno').prop('disabled', $(this).val() != "Catholic");
+					$('#bbapyes').prop('disabled', $(this).val() != "Catholic");
+					$('#bconno').prop('disabled', $(this).val() != "Catholic");
+					$('#bconyes').prop('disabled', $(this).val() != "Catholic");
+					$('#binlpp').prop('disabled', $(this).val() != "Catholic");
+					$('#bothers').prop('disabled', $(this).val() != "Catholic");
+					$("#binlpp").prop('checked', false)
+					$("#bothers").prop('checked', false)
+					$("#bbapyes").prop('checked', false)
+					$("#bbapno").prop('checked', false)
+					$("#bconyes").prop('checked', false)
+					$("#bconno").prop('checked', false)
+					$('#bbapplace').val('');
+					$('#bbapdate').val('');
+					$('#bconplace').val('');
+					$('#bcondate').val('');
+					$('#bcurrentparish').val('');
+				}
+				else{
+					$('#bcurrentparish').prop('disabled', true);
+					$('#bbapno').prop('disabled', false);
+					$('#bbapyes').prop('disabled', false);
+					$('#bconno').prop('disabled', false);
+					$('#bconyes').prop('disabled', false);
+					$('#binlpp').prop('disabled', false);
+					$('#bothers').prop('disabled', false);
+					$("#binlpp").prop('checked', true)
+					$("#bbapyes").prop('checked', true)
+					$("#bconyes").prop('checked', true)
+					$('#bbapplace').val('');
+					$('#bbapdate').val('');
+					$('#bconplace').val('');
+					$('#bcondate').val('');
+					$('.textarea4').slideDown();
+					$('.textarea5').slideDown();
+				}
+			});
+			// if THE BRIDE IS BAPTIZED
+			$("#bbapyes").click(function(){
+				if($(this).prop("checked") == false){
+					$("#bconno").prop('disabled', true);
+					$("#bconyes").prop('disabled', true);
+					$('#bconplace').val('');
+					$('#bcondate').val('');
+					$('.textarea4').slideUp();
+					}
+				else if($(this).prop("checked") == true){
+					$("#bconno").prop('disabled', false);
+					$("#bconyes").prop('disabled', false);
+					$("#bconno").prop('checked', true);
+					}
+			});
+			// IF THE BRIDE IS NOT BAPTIZED
+			$("#bbapno").click(function(){
+				if($(this).prop("checked") == true){
+					$("#bconno").prop('disabled', true);
+					$("#bconyes").prop('disabled', true);
+					$('#bconplace').val('');
+					$('#bcondate').val('');
+					$("#bconyes").prop('checked', false)
+					$("#bconno").prop('checked', true)
+					$('.textarea5').slideUp();
+					}
+				else if($(this).prop("checked") == false){
+					$("#bconno").prop('disabled', false);
+					$("#bconyes").prop('disabled', false);
+					
+					}
+			});
+
+			$("#gothers").click(function(){
+				if($(this).prop("checked") == true){
+					$("#gcurrentparish").prop('disabled', false);
+					$("#gcurrentparish").val("")
+					$("#ginlpp").prop('checked', false)
+					}
+				else if($(this).prop("checked") == false){
+					$("#gcurrentparish").prop('disabled', true);
+					}
+			});
+			$("#ginlpp").click(function(){
+				if($(this).prop("checked") == true){
+					$("#gcurrentparish").prop('disabled', true);
+					$("#gcurrentparish").val("Ina ng Lupang Pangako Parish")
+					$("#gothers").prop('checked', false)
+					}
+				else if($(this).prop("checked") == false){
+					$("#gcurrentparish").prop('disabled', false);
+					$("#ginlpp").prop('checked', false)
+					}
+			});
+			$("#bothers").click(function(){
+				if($(this).prop("checked") == true){
+					$("#bcurrentparish").prop('disabled', false);
+					$("#bcurrentparish").val("")
+					$("#binlpp").prop('checked', false)
+					}
+				else if($(this).prop("checked") == false){
+					$("#bcurrentparish").prop('disabled', true);
+					}
+			});
+			$("#binlpp").click(function(){
+				if($(this).prop("checked") == true){
+					$("#bcurrentparish").prop('disabled', true);
+					$("#bcurrentparish").val("Ina ng Lupang Pangako Parish")
+					$("#bothers").prop('checked', false)
+					}
+				else if($(this).prop("checked") == false){
+					$("#bcurrentparish").prop('disabled', false);
+					$("#binlpp").prop('checked', false)
+					}
+			});
 
 		//Realtime Validation
 		function validateForm(){
@@ -872,4 +1356,170 @@ block addjs
 
 		$(document).ready(function() {
 			validateForm()
+
+
+			$('#submitApplication').click(function(){
+				console.log('SUBMIT BUTTON CLICKED')
+				swal({
+				title:'Are you sure?', 
+				text:'This record will be considered as an approved request, and will then be added to the schedule of the priest. We will wait for the confirmation of the priest.',
+				type:'warning',
+				showCancelButton: false,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Confirm'
+				}).then((result)=>{
+					if(result.value){
+						
+						if($('#bbaptized1').prop("checked")){
+							var bbaptized=1
+						}
+						else{
+							var bbaptized=0
+						}
+						if($('#bconfirm1').prop("checked")){
+							var bconfirmed=1
+						}
+						else{
+							var bconfirmed=0
+						}
+						
+
+						if($('#gbaptized1').prop("checked")){
+							var gbaptized=1
+						}
+						else{
+							var gbaptized=0
+						}
+						if($('#gconfirm1').prop("checked")){
+							var gconfirmed=1
+						}
+						else{
+							var gconfirmed=0
+						}
+
+						boollivingin
+
+						if($('#bcurrentparish1').prop("checked")){
+							var gconfirmed=1
+						}
+						else{
+							var gconfirmed=0
+						}
+
+						if($('#boollivinginyes').prop("checked")){
+							var boollivingin=1
+						}
+						if($('#boollivinginno').prop("checked")){
+							var boollivingin=0
+						}
+						if($('#boolpregnantyes').prop("checked")){
+							var boolpregnant=1
+						}
+						if($('#boolpregnantno').prop("checked")){
+							var boolpregnant=0
+						}
+						$.post('/secretariat/walkin-marriage', {
+							desireddate:$('#desireddate').val(),
+							desiredtime:$('#desiredtime').val(),
+
+							lastname:$('#glastname').val(),
+							firstname:$('#gfirstname').val(),
+							middlename:$('#gmiddlename').val(),
+							birthday:$('#gbirthday').val(),
+							birthplace:$('#gbirthplace').val(),
+							gnationality:$('#gnationality').val(),
+							gcivilstatus:$('#gcivilstatus').val(),
+							goccupation:$('#goccupation').val(),
+							address:$('#gaddress').val(),
+							gfathername:$('#gfathername').val(),
+							gfatherbplace:$('#gfatherbirthplace').val(),
+							gfatherreligion:$('#gfatherreligion').val(),
+							gmothername:$('#gmothername').val(),
+							gmotherbplace:$('#gmotherbirthplace').val(),
+							gmotherreligion:$('#gmotherreligion').val(),
+							greligion:$('#greligion').val(),
+							ginlpp:$('#ginlpp').val(),
+							gothers:$('#gothers').val(),
+							gcurrentparish:$('#gcurrentparish').val(),
+							gbapyes:$('#gbapyes').val(),
+							gbapno:$('#gbapno').val(),
+							gbapplace:$('#gbapplace').val(),
+							gbapdate:$('#gbapdate').val(),
+							gconyes:$('#gconyes').val(),
+							gconno:$('#gconno').val(),
+							gconplace:$('#gconplace').val(),
+							gcondate:$('#gcondate').val(),
+							gbaptized:bbaptized,
+							gconfirmed:gconfirmed,
+
+							blastname:$('#blastname').val(),
+							bfirstname:$('#bfirstname').val(),
+							bmiddlename:$('#bmiddlename').val(),
+							bbirthday:$('#bbirthday').val(),
+							bbirthplace:$('#bbirthplace').val(),
+							bnationality:$('#bnationality').val(),
+							bcivilstatus:$('#bcivilstatus').val(),
+							boccupation:$('#boccupation').val(),
+							baddress:$('#baddress').val(),
+							bfathername:$('#bfathername').val(),
+							bfatherbplace:$('#bfatherbirthplace').val(),
+							bfatherreligion:$('#bfatherreligion').val(),
+							bmothername:$('#bmothername').val(),
+							bmotherbplace:$('#bmotherbirthplace').val(),
+							bmotherreligion:$('#bmotherreligion').val(),
+							breligion:$('#breligion').val(),
+							binlpp:$('#binlpp').val(),
+							bothers:$('#bothers').val(),
+							bcurrentparish:$('#bcurrentparish').val(),
+							bbapyes:$('#bbapyes').val(),
+							bbapno:$('#bbapno').val(),
+							bbapplace:$('#bbapplace').val(),
+							bbapdate:$('#bbapdate').val(),
+							bconyes:$('#bconyes').val(),
+							bconno:$('#bconno').val(),
+							bconplace:$('#bconplace').val(),
+							bcondate:$('#bcondate').val(),
+							bbaptized:bbaptized,
+							bconfirmed:bconfirmed,
+
+							
+							boolpregnant:boolpregnant,
+
+						
+							cpreviousweddingdate:$('#cpreviousweddingdate').val(),
+							cpreviousweddingplace:$('#cpreviousweddingplace').val(),
+
+							boollivingin:boollivingin,
+							
+
+							firstsponsor:$('#firstsponsor').val(),
+							secondsponsor:$('#secondsponsor').val(),
+							numofaddsponsors:$('#numofaddsponsors').val(),
+
+
+
+
+
+
+
+
+						}).done(data =>{
+							swal({
+							title:'Success',
+							text:'Request added', 
+							type:'success'
+							}).then(function(){
+								window.location=`/secretariat/transaction-marriage`
+							})
+							
+							
+						})//done
+					}
+				})
+			})
+
+
+
 		});
+

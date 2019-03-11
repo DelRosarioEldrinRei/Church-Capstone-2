@@ -75,37 +75,78 @@ block prepend main
 													table#shit.table.dataTable.table-hover
 															thead.text-primary
 																	th Deceased
-																	th Event Date
+																	th Desired Schedule
+																	th Date Applied
 																	th Requirement Status
 																	th Payment Status
 																	th Approval Status
-																	th Event Status
+																	th Priest Assigned
 																	th.text-center(style=" width:120px") Actions
 															tbody
 																	each funeral in funerals
-																		tr
-																			//- td=funeral.int_eventinfoID
-																			input.form-control#int_userID(type='hidden' name='clientID' value=funeral.int_userID)
-																			td=funeral.var_lname + ", " + funeral.var_fname
-																			td=funeral.date_eventdate
-																			td
-																				span.approvalreq(value=`${funeral.var_reqstatus}`) #{funeral.var_reqstatus}
-																			td
-																				span.approvalpay(value=`${funeral.char_paymentstatus}`) #{funeral.char_paymentstatus}
-																			td
-																				span.approval(value=`${funeral.char_approvalstatus}`) #{funeral.char_approvalstatus}
-																			td
-																				span.eventstatus(value=`${funeral.var_eventstatus}`) #{funeral.var_eventstatus}
-																			td.td-actions.text-center
-																				button.btn.btn-primary.actionButton(type='button' value=`${funeral.int_eventinfoID}`)
-																					i.ti-settings
-																						#toolbar-options.hidden
-																							a.viewButton(href='#')
-																								i.ti-file(style="color:white;")
-																							a.updateButton(href='#')
-																								i.ti-pencil(style="color:white;")
-																							a.updateReqButton(href='#')
-																								i.ti-new-window(style="color:white;")
+																		-if(funeral.var_eventstatus=='On Going')
+																			tr(style='background-color:#d7ffd3')
+																				//- td=funeral.int_eventinfoID
+																				input.form-control#int_userID(type='hidden' name='clientID' value=funeral.int_userID)
+																				input.form-control.eventinfoID(type='hidden' name='clientID' value=`${funeral.int_eventinfoID}`)
+																				td=funeral.var_lname + ", " + funeral.var_fname
+																				td=funeral.date_eventdate + ' ' + funeral.time_eventstart
+																				td=funeral.date_applied
+																				td
+																					span.approvalreq(value=`${funeral.var_reqstatus}`) #{funeral.var_reqstatus}
+																				td
+																					span.approvalpay(value=`${funeral.char_paymentstatus}`) #{funeral.char_paymentstatus}
+																				td
+																					span.approval(value=`${funeral.char_approvalstatus}`) #{funeral.char_approvalstatus}
+																				- if(funeral.int_userpriestID !=null)
+																					td
+																						span #{funeral.var_priestname}
+																				- if(funeral.int_userpriestID ==null)
+																					td No priest assigned
+																				td
+																					span.eventstatus(value=`${funeral.var_eventstatus}`) #{funeral.var_eventstatus}
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${funeral.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-file(style="color:white;")
+																								a.updateButton(href='#')
+																									i.ti-pencil(style="color:white;")
+																								a.updateReqButton(href='#')
+																									i.ti-new-window(style="color:white;")
+								
+																		-else
+																			tr
+																				//- td=funeral.int_eventinfoID
+																				input.form-control#int_userID(type='hidden' name='clientID' value=funeral.int_userID)
+																				input.form-control.eventinfoID(type='hidden' name='clientID' value=`${funeral.int_eventinfoID}`)
+																				td=funeral.var_lname + ", " + funeral.var_fname
+																				td=funeral.date_eventdate + ' ' + funeral.time_eventstart
+																				td=funeral.date_applied
+																				td
+																					span.approvalreq(value=`${funeral.var_reqstatus}`) #{funeral.var_reqstatus}
+																				td
+																					span.approvalpay(value=`${funeral.char_paymentstatus}`) #{funeral.char_paymentstatus}
+																				td
+																					span.approval(value=`${funeral.char_approvalstatus}`) #{funeral.char_approvalstatus}
+																				- if(funeral.int_userpriestID !=null)
+																					td
+																						span #{funeral.var_priestname}
+																				- if(funeral.int_userpriestID ==null)
+																					td No priest assigned
+																				//- td
+																				//- 	span.eventstatus(value=`${funeral.var_eventstatus}`) #{funeral.var_eventstatus}
+																				td.td-actions.text-center
+																					button.btn.btn-primary.actionButton(type='button' value=`${funeral.int_eventinfoID}`)
+																						i.ti-settings
+																							#toolbar-options.hidden
+																								a.viewButton(href='#')
+																									i.ti-file(style="color:white;")
+																								a.updateButton(href='#')
+																									i.ti-pencil(style="color:white;")
+																								a.updateReqButton(href='#')
+																									i.ti-new-window(style="color:white;")
 								
 	#paymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
@@ -194,6 +235,39 @@ block prepend main
 				.modal-footer
 					//- button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
 					button.btn.btn-danger#sendMessage(type="button") Send
+	#walkin.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog(role="document" style="z-index: 9998;")
+				.modal-content
+					.modal-header(style='background:#367587; color:white')
+						h5.modal-title(style='background:#367587; color:white') Walk-in Requirements
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true' style='background:#367587; color:white') ×
+					.modal-body#walkinAppend
+						
+					.modal-footer.mx-auto
+						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
+	#insertFile.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog(role="document")
+				.modal-content
+					.modal-header(style='background:#367587')
+						h5.modal-title(style='color:white') Walk-in Requirement
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true' style='color:white') ×
+					.modal-body#insertFileAppend
+					.modal-footer
+						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
+						button.btn#insertFileButton(type="button" style='background:#367587; color:white') Insert File
+	#fileLocation.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog(role="document")
+				.modal-content
+					.modal-header(style='background:#367587; color:white')
+						h4.modal-title(style='background:#367587; color:white') Change Folder Location
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span.p-2(aria-hidden='true' style='background:#367587; color:white') ×
+					.modal-body#fileLocationAppend
+					.modal-footer
+						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
+						button.btn#fileLocationButton(type="button" style='background:#367587; color:white') Set
 
 block addjs
 	
@@ -230,7 +304,7 @@ block addjs
 				else if($('.approval').eq(i).attr('value') == "Disapproved"){
 					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700')
 				}
-				if($('.eventstatus').eq(i).attr('value') == "Pending"){
+				if($('.eventstatus').eq(i).attr('value') == "Pending"|| $('.eventstatus').eq(i).attr('value') == "In Coming"){
 					$('.eventstatus').eq(i).addClass('badge btn btn-primary-lg bgc-amber-100 c-amber-700')
 				}
 				else if($('.eventstatus').eq(i).attr('value') == "Cancelled"){
@@ -318,223 +392,242 @@ block addjs
 			})
 			$('.updateReqButton').click(function(){
 				$.post('/secretariat/transaction-funeralmass/query/updateStatus',{id:idNow}).done(data=>{
-					$('#updateReqModal').modal('show')
-					var ctr=0;
-					for(i=0;i<data.requirements.length;i++){
-
-						if(data.requirements[i].var_reqstatus == "Submitted"){
-						$(`#reqAppend`).append(`
-						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
-						`)
-						$('#status').append(`
-						<input class="reject" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
-							<h5 class="d-inline">Reject</h5>
-						<br>
-						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
-							<h5 class="d-inline">Accept</h5>
-						`)
-						
+					if(data.results.var_applicationtype=='Walk-in'){
+						if(data.requirements[0].var_reqpath==null){
+							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted`)
+							$('#insertFile').modal('show')
+								$('#insertFile').on('hidden.bs.modal',function(){
+									$('#insertFileAppend').empty()
+								})
 						}
-						else if(data.requirements[i].var_reqstatus == "Approved"){
-						ctr++;
-						$(`#reqAppend`).append(`
-						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
-						`) 
-						$('#status').append(`
-						<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} /> 
-							<h5 class="d-inline">Reject</h5>
-						<br>
-						<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
-							<h5 class="d-inline">Accept</h5>
-						`)
+						else{
+							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}`)
+							$('#walkin').modal('show')
+								$('#walkin').on('hidden.bs.modal',function(){
+									$('#walkinAppend').empty()
+								})
 						}
-						else if(data.requirements[i].var_reqstatus == "Rejected"){
-						$(`#reqAppend`).append(`
-						<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
-						`)
-						$('#status').append(`
-						<input class="reject" checked="" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
-							<h5class="d-inline">Reject</h5>
-						<br>
-						<input class="accept" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
-							<h5 class="d-inline">Accep</h5>
-						`)
-						$(`input[name="${data.requirements[i].var_reqname}reject"][class="reject"]`).attr("checked",true);
-						console.log()
-						}
-					}
-					if(ctr == data.requirements.length){
-						$(`#upStatus`).append(`
-						<h4 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h4> <span class="approvalpay badge btn btn-primary-lg bgc-green-100 c-green-700" value="Complete">Complete</span>
-						`)
 					}
 					else{
-						$(`#upStatus`).append(`
-						<h4 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h4> <span class="approval badge btn btn-primary-lg bgc-amber-100 c-amber-700" value="Incomplete">Incomplete</span>
-						`)
-					}
-					console.log(ctr)
-					console.log(data.requirements.length)
-					$('#updateReqButton').click(function(){
-						var idsa = [];
-						var idsr = [];
-						var requirements = [];
+
+						$('#updateReqModal').modal('show')
+						var ctr=0;
 						for(i=0;i<data.requirements.length;i++){
-						requirements.push(data.requirements[i])
-						if($('.accept').is(':checked') == true){
-							idsa.push($('.accept').val())
-						}
-						else if($('.reject').is(':checked') == true){
-							idsr.push($('.reject').val())
-						} else {
-							return Swal.fire({
-								type: 'error',
-								title: 'Oops...',
-								text: 'You haven\'t chosen yet!',
-							})
-						}
-						//- console.log($(`input[name="${data.requirements[i].var_reqname}accept"]`).is(':checked'))
-						//- console.log($(`input[name="${data.requirements[i].var_reqname}reject"]`).is(':checked'))
-						}
-						console.log(idsa)
-						console.log(idsr)
-						console.log(requirements)
-							swal({
-							title:'Are You Sure?', 
-							text:'You want to update the Status of the Requirements?', 
-							type:'warning',
-							showCancelButton: true,
-							confirmButtonColor: '#3085d6',
-							cancelButtonColor: '#d33',
-							confirmButtonText: 'Confirm'
-							}).then((result)=>{
-							if(result.value){
-							var reqstatus = $('#reqstatus').val()
-							var paystatus = $('#paystatusupdate').val()
-							if(idsr.length > 0){
-								$.post('/secretariat/message',{int_userID:$('#int_userID').val()})
-										.done(data =>{
-											var rejected =[];
-											for(j=0;j<idsr.length;j++){
-												for(i=0;i<requirements.length;i++){
-													if(idsr[j] == requirements[i].int_requirementID){
-														rejected.push(requirements[i].var_reqname)
-													}
-												}
 
-											}
-											$('#messageAppend').append(`
-											<h4 class="c-grey-900 mB-20">Send Message</h4>
-												<div class="send-header">
-													<div class="form-group">
-													<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
-													<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}, ${data.var_userfname}"  readonly>
-													</div>
-													<div class="form-group">
-													<h6 class="label-control" id="eventstatus">Rejected Requirements: 
-													<span id="var_subject" class="badge btn btn-primary-lg bgc-blue-100 c-white-700"></span>
-													</h6>
-													</div>
-													<div class="form-group">
-													<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you declined the guest's request." rows='6'></textarea>
-													</div>
-												</div>
-												<div id="compose-area"></div>
-											`)
-											for(v=0;v<rejected.length;v++){
-												if(v < rejected.length - 1){
-													$('#var_subject').append(rejected[v] + ",")
-												}
-												else{
-													$('#var_subject').append(rejected[v])
-												}
-											}
-											$('#updateReqModal').modal('hide')
-											$('#messageModal').modal('show')
-											$('#messageModal').on('hidden.bs.modal',function(){
-												$('#selectBox').val('default')
-												$('#messageAppend').empty()
-											})
-											
-											$('#sendMessage').click(function(){
-												swal({
-												title:'Are you sure?', 
-												text:'This message will be sent to the guest and his/her request will be declined.', 
-												type:'warning',
-												showCancelButton: false,
-												confirmButtonColor: '#3085d6',
-												cancelButtonColor: '#d33',
-												confirmButtonText: 'Confirm'
-												}).then((result)=>{
-													if(result.value){										
-														$.post('/secretariat/message/send',{
-															int_receiverID:$('#int_receiverID').val(),
-															int_receiverID:$('#int_receiverID').val(),
-															var_subject:$('#var_subject').val(),
-															text_message:$('#text_message').val(),
-															id1:idNow
-														})
-														.done(data=>{
-															if(data){
-																swal({
-																	title:'Success',
-																	text:'Status updated and message sent!', 
-																	type:'success'
-																}).then(function(){
-																	for(i=0;i<idsr.length;i++){
-																		$.post('/secretariat/updateRequirementsReject',{
-																		id:idsr[i],
-																		eventid:idNow
-																		}).done(data=>{
-																		location.reload()
-																		})
-																	}
-																})
-																$('#messageModal').modal('hide');
-																$('#messageAppend').empty();
-															}
-														})
-													}
-											})
-											})
-										})
-								
-
+							if(data.requirements[i].var_reqstatus == "Submitted"){
+							$(`#reqAppend`).append(`
+							<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
+							`)
+							$('#status').append(`
+							<input class="reject" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
+								<h5 class="d-inline">Reject</h5>
+							<br>
+							<input class="accept" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
+								<h5 class="d-inline">Accept</h5>
+							`)
+							
 							}
-							else if(idsa.length > 0){
-							for(i=0;i<idsa.length;i++){
-								$.post('/secretariat/transaction-funeralmass/updateRequirements',{
-								id:idsa[i],
-								eventid:idNow
-								}).done(data=>{
-
+							else if(data.requirements[i].var_reqstatus == "Approved"){
+							ctr++;
+							$(`#reqAppend`).append(`
+							<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
+							`) 
+							$('#status').append(`
+							<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} /> 
+								<h5 class="d-inline">Reject</h5>
+							<br>
+							<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
+								<h5 class="d-inline">Accept</h5>
+							`)
+							}
+							else if(data.requirements[i].var_reqstatus == "Rejected"){
+							$(`#reqAppend`).append(`
+							<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
+							`)
+							$('#status').append(`
+							<input class="reject" checked="" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
+								<h5class="d-inline">Reject</h5>
+							<br>
+							<input class="accept" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
+								<h5 class="d-inline">Accep</h5>
+							`)
+							$(`input[name="${data.requirements[i].var_reqname}reject"][class="reject"]`).attr("checked",true);
+							console.log()
+							}
+						}
+						if(ctr == data.requirements.length){
+							$(`#upStatus`).append(`
+							<h4 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h4> <span class="approvalpay badge btn btn-primary-lg bgc-green-100 c-green-700" value="Complete">Complete</span>
+							`)
+						}
+						else{
+							$(`#upStatus`).append(`
+							<h4 class="label-control" class="reqstatus"><h5 class="d-inline">Current Requirement Status:</h4> <span class="approval badge btn btn-primary-lg bgc-amber-100 c-amber-700" value="Incomplete">Incomplete</span>
+							`)
+						}
+						console.log(ctr)
+						console.log(data.requirements.length)
+						$('#updateReqButton').click(function(){
+							var idsa = [];
+							var idsr = [];
+							var requirements = [];
+							for(i=0;i<data.requirements.length;i++){
+							requirements.push(data.requirements[i])
+							if($('.accept').is(':checked') == true){
+								idsa.push($('.accept').val())
+							}
+							else if($('.reject').is(':checked') == true){
+								idsr.push($('.reject').val())
+							} else {
+								return Swal.fire({
+									type: 'error',
+									title: 'Oops...',
+									text: 'You haven\'t chosen yet!',
 								})
 							}
-							swal({
-								title:'Success',
-								text:'Status updated', 
-								type:'success'
-								}).then(function(){
-									location.reload();
-								})
+							//- console.log($(`input[name="${data.requirements[i].var_reqname}accept"]`).is(':checked'))
+							//- console.log($(`input[name="${data.requirements[i].var_reqname}reject"]`).is(':checked'))
 							}
-							else{
+							console.log(idsa)
+							console.log(idsr)
+							console.log(requirements)
 								swal({
-								title:'Success',
-								text:'Status updated', 
-								type:'success'
-								}).then(function(){
-									location.reload();
+								title:'Are You Sure?', 
+								text:'You want to update the Status of the Requirements?', 
+								type:'warning',
+								showCancelButton: true,
+								confirmButtonColor: '#3085d6',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'Confirm'
+								}).then((result)=>{
+								if(result.value){
+								var reqstatus = $('#reqstatus').val()
+								var paystatus = $('#paystatusupdate').val()
+								if(idsr.length > 0){
+									$.post('/secretariat/message',{int_userID:$('#int_userID').val()})
+											.done(data =>{
+												var rejected =[];
+												for(j=0;j<idsr.length;j++){
+													for(i=0;i<requirements.length;i++){
+														if(idsr[j] == requirements[i].int_requirementID){
+															rejected.push(requirements[i].var_reqname)
+														}
+													}
+
+												}
+												$('#messageAppend').append(`
+												<h4 class="c-grey-900 mB-20">Send Message</h4>
+													<div class="send-header">
+														<div class="form-group">
+														<input type="hidden" class='form-control' id='int_receiverID' placeholder="To" value =" ${data.int_userID}">
+														<input type="text" class='form-control' placeholder="To" value ="${data.var_userlname}, ${data.var_userfname}"  readonly>
+														</div>
+														<div class="form-group">
+														<h6 class="label-control" id="eventstatus">Rejected Requirements: 
+														<span id="var_subject" class="badge btn btn-primary-lg bgc-blue-100 c-white-700"></span>
+														</h6>
+														</div>
+														<div class="form-group">
+														<textarea name="compose" class="form-control" id='text_message' placeholder="Please state your reason why you declined the guest's request." rows='6'></textarea>
+														</div>
+													</div>
+													<div id="compose-area"></div>
+												`)
+												for(v=0;v<rejected.length;v++){
+													if(v < rejected.length - 1){
+														$('#var_subject').append(rejected[v] + ",")
+													}
+													else{
+														$('#var_subject').append(rejected[v])
+													}
+												}
+												$('#updateReqModal').modal('hide')
+												$('#messageModal').modal('show')
+												$('#messageModal').on('hidden.bs.modal',function(){
+													$('#selectBox').val('default')
+													$('#messageAppend').empty()
+												})
+												
+												$('#sendMessage').click(function(){
+													swal({
+													title:'Are you sure?', 
+													text:'This message will be sent to the guest and his/her request will be declined.', 
+													type:'warning',
+													showCancelButton: false,
+													confirmButtonColor: '#3085d6',
+													cancelButtonColor: '#d33',
+													confirmButtonText: 'Confirm'
+													}).then((result)=>{
+														if(result.value){										
+															$.post('/secretariat/message/send',{
+																int_receiverID:$('#int_receiverID').val(),
+																int_receiverID:$('#int_receiverID').val(),
+																var_subject:$('#var_subject').val(),
+																text_message:$('#text_message').val(),
+																id1:idNow
+															})
+															.done(data=>{
+																if(data){
+																	swal({
+																		title:'Success',
+																		text:'Status updated and message sent!', 
+																		type:'success'
+																	}).then(function(){
+																		for(i=0;i<idsr.length;i++){
+																			$.post('/secretariat/updateRequirementsReject',{
+																			id:idsr[i],
+																			eventid:idNow
+																			}).done(data=>{
+																			location.reload()
+																			})
+																		}
+																	})
+																	$('#messageModal').modal('hide');
+																	$('#messageAppend').empty();
+																}
+															})
+														}
+												})
+												})
+											})
+									
+
+								}
+								else if(idsa.length > 0){
+								for(i=0;i<idsa.length;i++){
+									$.post('/secretariat/transaction-funeralmass/updateRequirements',{
+									id:idsa[i],
+									eventid:idNow
+									}).done(data=>{
+
+									})
+								}
+								swal({
+									title:'Success',
+									text:'Status updated', 
+									type:'success'
+									}).then(function(){
+										location.reload();
+									})
+								}
+								else{
+									swal({
+									title:'Success',
+									text:'Status updated', 
+									type:'success'
+									}).then(function(){
+										location.reload();
+									})
+								}
+								}
 								})
-							}
-							}
-							})
-					})
-					$('#updateReqModal').on('hidden.bs.modal',function(){
-						$('#reqAppend').empty()
-						$('#upStatus').empty()
-						$('#status').empty()
-					})
+						})
+						$('#updateReqModal').on('hidden.bs.modal',function(){
+							$('#reqAppend').empty()
+							$('#upStatus').empty()
+							$('#status').empty()
+						})
+					}
 				})
 			})
 			
@@ -641,12 +734,12 @@ block addjs
 						$('#paymentAppend').empty()
 						
 					})
-		$('#updatePaymentButton').click(function(){
-			$.post('/secretariat/transaction-funeralmass/updatepaymentquery',{id1:idNow})
-				.done(data =>{
-					console.log(data)
-					$('#updatepaymentAppend').empty();
-					var ornumber = data.ornumber.max+1
+			$('#updatePaymentButton').click(function(){
+				$.post('/secretariat/transaction-funeralmass/updatepaymentquery',{id1:idNow})
+					.done(data =>{
+						console.log(data)
+						$('#updatepaymentAppend').empty();
+						var ornumber = data.ornumber.max+1
 						$('#updatepaymentAppend').append(`
 					
 								<div class="send-header">
@@ -784,9 +877,9 @@ block addjs
 								}//else
 								})
 
-							})
+			})
 				
-				})
+		})//updatebutton
 			
 		$('#sendMessage').click(function(){
 			swal({
@@ -828,3 +921,107 @@ block addjs
 		})
 
 		})
+
+		$(document).on('click','#insertFileButton',function(){
+				
+				var id = $('.eventinfoID').val()
+				
+				$.post('/secretariat/getcabinets',{id:id}).done(data =>{
+					$('#fileLocationAppend').append(`
+					
+
+						<h6 class="label-control"><strong>File Location: </strong> </h6>
+						
+						<div class="row">
+						<div class="col-md-6">
+							<div class="form-group" id='cabinetdiv'>
+								<label>Cabinet
+								
+								<select id="cabinets" onchange="setcabinet(value);" class="form-control">
+								<option> No drawer selected</option>
+								</select>
+							</div>	
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Division
+								<select id="divisions" onchange="setdivision(value);" class="form-control" >
+								<option> No division selected</option>
+								</select>
+							</div>	
+						</div>
+						
+						</div>
+						
+						`)
+
+						for(i=0;i<data.cabinets.length;i++){
+								$('#cabinets').append(`
+									<option value=${data.cabinets[i].int_cabinetID}>${data.cabinets[i].var_cabinetname}</option>
+								`)
+						}
+
+						$('#fileLocationButton').click(function(){
+							console.log('set is clicked')
+							console.log($('.eventinfoID').val())
+							
+									$.post('/secretariat/setfolderloc', {
+										cabinet:$('#cabinets').val(),
+										division:$('#divisions').val(),
+										eventinfoID: $('.eventinfoID').val(),
+									})
+										.done(data =>{
+											swal({
+											title:'Success',
+											text:'Status updated', 
+											type:'success'
+											}).then(function(){
+												location.reload();
+											})
+											$('#updateModal').modal('hide');
+											$('#updateAppend').empty();
+											
+										})//done
+								
+								})
+						})		
+				$('#insertFile').modal('hide')
+				$('#fileLocation').modal('show')
+				$('#fileLocation').on('hidden.bs.modal',function(){
+					$('#fileLocationAppend').empty()
+				})
+				
+				})
+			
+
+		function setcabinet($i){
+				console.log($i)
+				$("#divisions").empty();
+				$('#divisions').append(`
+						<option>No division selected</option>
+					`)
+				$.post('/secretariat/transaction-marriage/getdivisions',{ cabinetID:$i}).done(data=>{
+					console.log(data)
+					for(i=0;i<data.divisions.length;i++){
+					$('#divisions').append(`
+						<option value='${$i}-${data.divisions[i].int_divisionID}'>${data.divisions[i].var_divisionname}</option>
+					`)
+					}//for		
+				})//donedatacabinets
+			}//function cabinets
+		function setdivision($i){
+				console.log($i)
+				$("#folders").empty();
+
+				$.post('/secretariat/transaction-marriage/getfolders',{ location:$i}).done(data=>{
+					console.log(data)
+					var newID= data.folders.max +1
+					$('#folderID').val(`${newID}`)
+
+					//- $('#folders').append(`
+					//- 	<option value=${data.folders.max}>${data.folders.max}</option>
+					//- `)
+						
+				})//donedatacabinets
+			}//function cabinets
+

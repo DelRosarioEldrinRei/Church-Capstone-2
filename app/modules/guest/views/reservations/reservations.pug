@@ -87,13 +87,20 @@ block main
 											td=reservation.date_eventdate
 											td=reservation.time_eventstart
 											td.td-actions
-												-if (reservation.var_eventname == 'Marriage')
-													button.btn-info.btn-sm.marriageButton(type='button' style="cursor: pointer;" value=reservation.int_eventinfoID) View
+												-if(reservation.char_approvalstatus!='Cancelled')
+													-if (reservation.var_eventname == 'Marriage')
+														button.btn-info.btn-sm.marriageButton(type='button' style="cursor: pointer;" value=reservation.int_eventinfoID) View
+														button.btn.btn-danger.btn-sm.cancelButton(type='button',value=`${reservation.int_eventinfoID}`) Cancel
+													-else
+														button.btn-info.btn-sm.viewButton(type='button', style="cursor: pointer;"  value=reservation.int_eventinfoID) View
+														button.btn-success.btn-sm.updateButton.mx-1(type='button', style="cursor: pointer;"  value=reservation.int_eventinfoID) Edit
+														button.btn.btn-danger.btn-sm.cancelButton(type='button',value=`${reservation.int_eventinfoID}`) Cancel
+														| &nbsp;
 												-else
-													button.btn-info.btn-sm.viewButton(type='button', style="cursor: pointer;"  value=reservation.int_eventinfoID) View
-												button.btn-success.btn-sm.updateButton.mx-1(type='button', style="cursor: pointer;"  value=reservation.int_eventinfoID) Edit
-												button.btn.btn-danger.btn-sm.cancelButton(type='button',value=`${reservation.int_eventinfoID}`) Cancel
-												| &nbsp;
+													-if (reservation.var_eventname == 'Marriage')
+														button.btn-info.btn-sm.marriageButton(type='button' style="cursor: pointer;" value=reservation.int_eventinfoID) View
+													-else
+														button.btn-info.btn-sm.viewButton(type='button', style="cursor: pointer;"  value=reservation.int_eventinfoID) View
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -169,8 +176,9 @@ block addjs
 				$(document).on('click','.viewButton',function(){
 					var idNow = $(this).val()
 					console.log(idNow)
-					//- console.log($('.eventname').attr('value'))
+					console.log($('.eventname').attr('value'))
 					var eventname = $('.eventname').attr('value')
+
 					$.post('/guest/reservation/query',{id:idNow}).done(data=>{
 						if(data.var_eventname == "Marriage"){
 							window.location=`/guest/weddingDetails/${data.int_eventinfoID}`
@@ -1592,7 +1600,7 @@ block addjs
 							</form>
 							`)
 						}
-						else if(data[0].var_eventname == "Funeral Service"){
+						else if(data[0].var_eventname == "Funeral Service" ||data[0].var_eventname == "Funeral Mass"){
 							console.log(data)
 							var dateRequested = moment(data[0].date_eventdate).format('MM/DD/YYYY')
 							var timeRequested = moment(data[0].time_eventstart,'HH:mm:ss').format('hh:mm A')
@@ -1644,12 +1652,12 @@ block addjs
 									</div>
 									<div class="form-group col-md-6">
 										<label>Cause of Death</label>
-										<input type="text" class="form-control" value="" disabled>
+										<input type="text" class="form-control" value="${data[0].var_blessingdetails}" disabled>
 									</div>
 								</div>
 								<div class="form-group">
 									<label>Blessing Venue:</label>
-									<input type="text" class="form-control" value="${data[0].var_blessingdetails}" disabled>
+									<input type="text" class="form-control" value="${data[0].var_blessingvenue}" disabled>
 								</div>
 								<div class="form-group">
 									<label>Address:</label>
@@ -1658,67 +1666,7 @@ block addjs
 							</form>
 							`)
 						}
-						else if(data[0].var_eventname == "Funeral Mass"){
-							var dateRequested = moment(data[0].date_eventdate).format('MM/DD/YYYY')
-							var timeRequested = moment(data[0].time_eventstart,'HH:mm:ss').format('hh:mm A')
-							$('#viewBodyAppend').empty().append(`
-								<form>
-									<div class="form-row">
-										<div class="form-group col-md-6">
-											<label>Desired Date:</label>
-											<input type="text" class="form-control" value="${dateRequested}" disabled>
-										</div>
-										<div class="form-group col-md-6">
-											<label>Desired Time:</label>
-											<input type="text" class="form-control" value="${timeRequested}" disabled>
-										</div>
-									</div>
-									<label>Name of the Child:</label>
-									<div class="form-row">
-										<div class="form-group col-md-4">
-											<label>Last Name:</label>
-											<input type="text" class="form-control" value="${data[0].var_lname}" disabled>
-										</div>
-										<div class="form-group col-md-4">
-											<label>First Name:</label>
-											<input type="text" class="form-control" value="${data[0].var_fname}" disabled>
-										</div>
-										<div class="form-group col-md-4">
-											<label>Middle Name:</label>
-											<input type="text" class="form-control" value="${(data[0].var_mname) ? data[0].var_mname : 'N/A'}" disabled>
-										</div>
-									</div>
-									<div class="form-row">
-										<div class="form-group col-md-4">
-											<label>Gender:</label>
-											<input type="text" class="form-control" value="${data[0].char_gender}" disabled>
-										</div>
-										<div class="form-group col-md-4">
-											<label>Birth Date:</label>
-											<input type="text" class="form-control" value="${moment(data[0].date_birthday).format('MM/DD/YYYY')}" disabled>
-										</div>
-										<div class="form-group col-md-4">
-											<label>Birth Place:</label>
-											<input type="text" class="form-control" value="${data[0].var_birthplace}" disabled>
-										</div>
-									</div>
-									<div class="form-row">
-										<div class="form-group col-md-6">
-											<label>Relationship with the Deceased:</label>
-											<input type="text" class="form-control" value="${data[0].var_relation}" disabled>
-										</div>
-										<div class="form-group col-md-6">
-											<label>Cause of Death</label>
-											<input type="text" class="form-control" value="" disabled>
-										</div>
-									</div>
-									<div class="form-group">
-										<label>Blessing Venue:</label>
-										<input type="text" class="form-control" value="${data[0].var_blessingdetails}" disabled>
-									</div>
-								</form>
-							`)
-						}
+						
 						else if(data[0].var_eventname == "House Blessing"){
 							var dateRequested = moment(data[0].date_eventdate).format('MM/DD/YYYY')
 							var timeRequested = moment(data[0].time_eventstart,'HH:mm:ss').format('hh:mm A')
@@ -1758,7 +1706,8 @@ block addjs
 					var idNow = $(this).val()
 					console.log(idNow)
 					var eventname = $('.eventname').attr('value')
-					$.post('/guest/reservation/query',{id:idNow,eventname:eventname}).done(data=>{
+					$.post('/guest/reservation/query',{id:idNow}).done(data=>{
+						console.log(data[0].var_eventname)
 						if(data[0].char_approvalstatus == "Pending"){
 							if(data[0].var_eventname == "Baptism" || data[0].var_eventname == "Special Baptism"){
 								var birthday = moment(data[0].date_birthday).format('YYYY-MM-DD')
@@ -1769,15 +1718,15 @@ block addjs
 										<div class="form-row">
 											<div class="form-group col-md-4">
 												<label>Last Name: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_lname}">
+												<input type="text" id='lastname' class="form-control" value="${data[0].var_lname}">
 											</div>
 											<div class="form-group col-md-4">
 												<label>First Name: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_fname}">
+												<input type="text"id='firstname'  class="form-control" value="${data[0].var_fname}">
 											</div>
 											<div class="form-group col-md-4">
 												<label>Middle Name:</label>
-												<input type="text" class="form-control" value="${(data[0].var_mname) ? data[0].var_mname : 'N/A'}">
+												<input type="text" id='middlename'  class="form-control" value="${(data[0].var_mname) ? data[0].var_mname : 'N/A'}">
 											</div>
 										</div>
 										<div class="form-row">
@@ -1788,11 +1737,11 @@ block addjs
 											</div>
 											<div class="form-group col-md-4">
 												<label>Birth Date: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${moment(data[0].date_birthday).format('MM/DD/YYYY')}">
+												<input type="text" id='birthday'  class="form-control" value="${moment(data[0].date_birthday).format('MM/DD/YYYY')}">
 											</div>
 											<div class="form-group col-md-4">
 												<label>Birth Place: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_birthplace}">
+												<input type="text" id='birthplace'  class="form-control" value="${data[0].var_birthplace}">
 											</div>
 										</div>
 										<div class="form-row">
@@ -1803,36 +1752,36 @@ block addjs
 											</div>
 											<div class="form-group col-md-6">
 												<label>Contact No: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_contactnum}">
+												<input type="text" id='contactnumber'  class="form-control" value="${data[0].var_contactnum}">
 											</div>
 										</div>
 										<div class="form-row">
 											<div class="form-group col-md-6">
 												<label>Father's Name: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_fathername}">
+												<input type="text" id='fathername' class="form-control" value="${data[0].var_fathername}">
 											</div>
 											<div class="form-group col-md-6">
 												<label>Father's Birthplace: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_fatherbplace}">
+												<input type="text" id='fatherbplace' class="form-control" value="${data[0].var_fatherbplace}">
 											</div>
 										</div>
 										<div class="form-row">
 											<div class="form-group col-md-6">
 												<label>Mother's Name: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_mothername}">
+												<input type="text" id='mothername' class="form-control" value="${data[0].var_mothername}">
 											</div>
 											<div class="form-group col-md-6">
 												<label>Mother's Birthplace: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_motherbplace}">
+												<input type="text" id='motherbplace'  class="form-control" value="${data[0].var_motherbplace}">
 											</div>
 										</div>
 										<div class="form-group">
 											<label>Address: <div class="text-danger d-inline"> *</div></label>
-											<input type="text" class="form-control" value="${data[0].var_address}">
+											<input type="text" id='address' class="form-control" value="${data[0].var_address}">
 										</div>
 										<div class="form-group">
 											<label>Parent Marriage Address: <div class="text-danger d-inline"> *</div></label>
-											<input type="text" class="form-control" value="${data[0].var_parentmarriageadd}">
+											<input type="text" id='marriageaddress' class="form-control" value="${data[0].var_parentmarriageadd}">
 										</div>
 									</form>
 									`)
@@ -1843,15 +1792,15 @@ block addjs
 									if(data[0].char_gender == "Male"){
 										$('#gender').append(`
 										<option value="" disabled="disabled">Choose...</option>
-										<option selected="">Male</option>
-										<option>Female</option>
+										<option id='customRadio1' selected="">Male</option>
+										<option id='customRadio2'>Female</option>
 										`)
 									}
 									else if(data[0].char_gender == "Female"){
 										$('#gender').append(`
 											<option value="" disabled="disabled">Choose...</option>
-											<option>Male</option>
-											<option selected="">Female</option>
+											<option id='customRadio1'>Male</option>
+											<option id='customRadio2'selected="">Female</option>
 											`)
 									}
 									if(data[0].char_gender == "Male"){
@@ -1901,22 +1850,18 @@ block addjs
 									var firstname = $('#firstname').val()
 									var middlename = $('#middlename').val()
 									var lastname = $('#lastname').val()
-									var gender;
+									var gender=$('#gender').val()
 									var relation = $('#relation').val()
-									var contactnum = $('#contactnumber').val()
+									var contactnumber = $('#contactnumber').val()
 									var birthplace = $('#birthplace').val()
+									var birthday = $('#birthday').val()
 									var mothername = $('#mothername').val()
-									var motherbplace = $('#motherbplace').val()
+									var motherplace = $('#motherbplace').val()
 									var fathername = $('#fathername').val()
-									var fatherbplace = $('#fatherbplace').val()
+									var fatherplace = $('#fatherbplace').val()
 									var address = $('#address').val()
-									var parentmarriageaddress = $('#parentmarriageaddress').val()
-									if ($("#customRadio1").prop("checked")) {
-									gender = $("#customRadio1").val();
-									}
-									else if($("#customRadio2").prop("checked")){
-									gender = $("#customRadio2").val();
-									}
+									var marriageaddress = $('#marriageaddress').val()
+									
 									var birthdate = moment($('#birthday').val()).format('YYYY-MM-DD')
 									swal({
 									title:'Are You Sure?', 
@@ -1929,27 +1874,27 @@ block addjs
 									}).then((result)=>{
 									if(result.value){
 										console.log($('#firstname').val())
-										$.post('/guest/reservation/query/update',{
+										$.post('/guest/reservation/query/baptism',{
 											firstname:firstname,
 											middlename:middlename,
 											lastname:lastname,
 											gender:gender,
 											relation:relation,
-											contactnum:contactnum,
+											contactnumber:contactnumber,
 											birthdate:birthdate,
 											birthplace:birthplace,
 											mothername:mothername,
-											motherbplace:motherbplace,
+											motherplace:motherplace,
 											fathername:fathername,
-											fatherbplace:fatherbplace,
-											eventname:data[0].var_eventname,
+											fatherplace:fatherplace,
 											address:address,
-											parentmarriageaddress:parentmarriageaddress,
+											birthday:birthday,
+											marriageaddress:marriageaddress,
 											id:idNow,
 										}).done(data=>{
 											swal({
 												title:'Success',
-												text:'Status updated and message sent!', 
+												text:'Application details updated!', 
 												type:'success'
 											}).then(function(){
 												$('#updateModal').modal('hide');
@@ -1961,7 +1906,8 @@ block addjs
 									}
 									})
 								})
-							} else if(data[0].var_eventname == "Marriage"){
+							} 
+							else if(data[0].var_eventname == "Marriage"){
 								var birthday = moment(data[0].date_birthday).format('YYYY-MM-DD')
 								//- var gbirthday = moment(data[0].results.date_birthday).format('MMMM DD, YYYY')
 								//- var bbirthday = moment(data[0].results.date_bbirthday).format('MMMM DD, YYYY')
@@ -2343,7 +2289,9 @@ block addjs
 									})
 								})
 							}
-							else if(data[0].var_eventname == "Anointing of the sick" || data[0].var_eventname == "Funeral Service"|| data[0].var_eventname == "Funeral Mass"){
+							else if(data[0].var_eventname == "Anointing of the sick" || 
+								data[0].var_eventname == "Funeral Service"|| 
+								data[0].var_eventname == "Funeral Mass"){
 								if(data[0].var_eventname == "Anointing of the sick"){
 									$('#updateblessingBodyAppend').empty().append(`
 										<form>
@@ -2351,15 +2299,15 @@ block addjs
 											<div class="form-row">
 												<div class="form-group col-md-4">
 													<label>Last Name: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${data[0].var_lname}">
+													<input type="text" id='lastname' class="form-control" value="${data[0].var_lname}">
 												</div>
 												<div class="form-group col-md-4">
 													<label>First Name: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${data[0].var_fname}">
+													<input type="text" id='firstname' class="form-control" value="${data[0].var_fname}">
 												</div>
 												<div class="form-group col-md-4">
 													<label>Middle Name: </label>
-													<input type="text" class="form-control" value="${(data[0].var_mname) ? data[0].var_mname : 'N/A'}">
+													<input type="text" id='middlename'  class="form-control" value="${(data[0].var_mname) ? data[0].var_mname : 'N/A'}">
 												</div>
 											</div>
 											<div class="form-row">
@@ -2371,11 +2319,11 @@ block addjs
 												</div>
 												<div class="form-group col-md-4">
 													<label>Birth Date: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control birthday" value="${moment(data[0].date_birthday).format('MM/DD/YYYY')}">
+													<input type="text" class="form-control birthday" id='birthday' value="${moment(data[0].date_birthday).format('MM/DD/YYYY')}">
 												</div>
 												<div class="form-group col-md-4">
 													<label>Birth Place: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${data[0].var_birthplace}">
+													<input type="text" class="form-control" id='birthplace'  value="${data[0].var_birthplace}">
 												</div>
 											</div>
 											<div class="form-row">
@@ -2387,197 +2335,147 @@ block addjs
 												</div>
 												<div class="form-group col-md-6">
 													<label>Blessing Venue: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${data[0].var_blessingvenue}">
+													<input type="text" class="form-control"  id='venue' value="${data[0].var_blessingvenue}">
 												</div>
 											</div>
 											<div class="form-group">
 												<label>Details: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_blessingdetails}">
+												<input type="text" class="form-control"  id='details' value="${data[0].var_blessingdetails}">
 											</div>
 											<div class="form-group">
 												<label>Address: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_address}">
+												<input type="text" class="form-control"  id='address' value="${data[0].var_address}">
 											</div>
 											<div class="text-center" id="refund" class="form-group">
 											</div>
 										</form>
 										`)
-									} else if (data[0].var_eventname == "Funeral Service"){
+									} 
+								else if (data[0].var_eventname == "Funeral Service" || data[0].var_eventname == "Funeral Mass"){
 									$('#updateblessingBodyAppend').empty().append(`
-										<form>
-											<label>Name of the Deceased: <div class="text-danger d-inline"> *</div></label>
-											<div class="form-row">
-												<div class="form-group col-md-4">
-													<label>Last Name: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${data[0].var_lname}">
-												</div>
-												<div class="form-group col-md-4">
-													<label>First Name: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${data[0].var_fname}">
-												</div>
-												<div class="form-group col-md-4">
-													<label>Middle Name:</label>
-													<input type="text" class="form-control" value="${(data[0].var_mname) ? data[0].var_mname : 'N/A'}">
-												</div>
+									<form>
+										<label>Name of the Deceased: <div class="text-danger d-inline"> *</div></label>
+										<div class="form-row">
+											<div class="form-group col-md-4">
+												<label>Last Name: <div class="text-danger d-inline"> *</div></label>
+												<input type="text" id='lastname' class="form-control" value="${data[0].var_lname}">
 											</div>
-											<div class="form-row">
-												<div class="form-group col-md-4">
-													<label>Gender: <div class="text-danger d-inline"> *</div></label>
-													<select id="gender" name="gender">
-													</select>
-												</div>
-												<div class="form-group col-md-4">
-													<label>Birth Date: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${moment(data[0].date_birthday).format('MM/DD/YYYY')}">
-												</div>
-												<div class="form-group col-md-4">
-													<label>Birth Place: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${data[0].var_birthplace}">
-												</div>
+											<div class="form-group col-md-4">
+												<label>First Name: <div class="text-danger d-inline"> *</div></label>
+												<input type="text" id='firstname'  class="form-control" value="${data[0].var_fname}">
 											</div>
-											<div class="form-row">
-												<div class="form-group col-md-6">
-													<label>Relationship with the Deceased: <div class="text-danger d-inline"> *</div></label>
-													<select id="relation" name="relation">
-													</select>
-												</div>
-												<div class="form-group col-md-6">
-													<label>Cause of Death <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="">
-												</div>
+											<div class="form-group col-md-4">
+												<label>Middle Name:</label>
+												<input type="text" id='middlename'  class="form-control" value="${(data[0].var_mname) ? data[0].var_mname : 'N/A'}">
 											</div>
-											<div class="form-group">
-												<label>Blessing Venue: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_blessingdetails}">
+										</div>
+										<div class="form-row">
+											<div class="form-group col-md-4">
+												<label>Gender: <div class="text-danger d-inline"> *</div></label>
+												<select id="gender" name="gender">
+												</select>
 											</div>
-											<div class="form-group">
-												<label>Address: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_address}">
+											<div class="form-group col-md-4">
+												<label>Birth Date: <div class="text-danger d-inline"> *</div></label>
+												<input type="text" id='birthday'  class="form-control" value="${moment(data[0].date_birthday).format('MM/DD/YYYY')}">
 											</div>
-										</form>
-										`)
-									} else if (data[0].var_eventname == "Funeral Mass"){
-									$('#updateblessingBodyAppend').empty().append(`
-										<form>
-											<label>Name of the Deceased: <div class="text-danger d-inline"> *</div></label>
-											<div class="form-row">
-												<div class="form-group col-md-4">
-													<label>Last Name: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${data[0].var_lname}">
-												</div>
-												<div class="form-group col-md-4">
-													<label>First Name: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${data[0].var_fname}">
-												</div>
-												<div class="form-group col-md-4">
-													<label>Middle Name:</label>
-													<input type="text" class="form-control" value="${(data[0].var_mname) ? data[0].var_mname : 'N/A'}">
-												</div>
+											<div class="form-group col-md-4">
+												<label>Birth Place: <div class="text-danger d-inline"> *</div></label>
+												<input type="text" id='birthplace'  class="form-control" value="${data[0].var_birthplace}">
 											</div>
-											<div class="form-row">
-												<div class="form-group col-md-4">
-													<label>Gender: <div class="text-danger d-inline"> *</div></label>
-													<select id="gender" name="gender">
-													</select>
-												</div>
-												<div class="form-group col-md-4">
-													<label>Birth Date: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${moment(data[0].date_birthday).format('MM/DD/YYYY')}">
-												</div>
-												<div class="form-group col-md-4">
-													<label>Birth Place: <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="${data[0].var_birthplace}">
-												</div>
+										</div>
+										<div class="form-row">
+											<div class="form-group col-md-6">
+												<label>Relationship with the Deceased: <div class="text-danger d-inline"> *</div></label>
+												<select id="relation" name="relation">
+												</select>
 											</div>
-											<div class="form-row">
-												<div class="form-group col-md-6">
-													<label>Relationship with the Deceased: <div class="text-danger d-inline"> *</div></label>
-													<select id="relation" name="relation">
-													</select>
-												</div>
-												<div class="form-group col-md-6">
-													<label>Cause of Death <div class="text-danger d-inline"> *</div></label>
-													<input type="text" class="form-control" value="">
-												</div>
+											<div class="form-group col-md-6">
+												<label>Cause of Death <div class="text-danger d-inline"> *</div></label>
+												<input type="text" id='details' class="form-control" value="${data[0].var_blessingdetails}">
 											</div>
-											<div class="form-group">
-												<label>Blessing Venue: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_blessingdetails}">
-											</div>
-											<div class="form-group">
-												<label>Address: <div class="text-danger d-inline"> *</div></label>
-												<input type="text" class="form-control" value="${data[0].var_address}">
-											</div>
-										</form>
-										`)
-									}
-									$('#updateBlessingModal').modal('show');
-									$('#updateBlessingModal').on('hidden.bs.modal',function(){
-										$('#updateblessingBodyAppend').empty()
-									})
-										$('#gender').append(`
+										</div>
+										<div class="form-group">
+											<label>Blessing Venue: <div class="text-danger d-inline"> *</div></label>
+											<input type="text" id='venue' class="form-control" value="${data[0].var_blessingvenue}">
+										</div>
+										<div class="form-group">
+											<label>Address: <div class="text-danger d-inline"> *</div></label>
+											<input type="text" id='address' class="form-control" value="${data[0].var_address}">
+										</div>
+									</form>
+									`)
+								} 
+
+								$('#updateBlessingModal').modal('show');
+								$('#updateBlessingModal').on('hidden.bs.modal',function(){
+									$('#updateblessingBodyAppend').empty()
+								})
+								if(data[0].char_gender == "Male"){
+									$('#gender').append(`
+									<option value="" disabled="disabled">Choose...</option>
+									<option id='customRadio1' selected="">Male</option>
+									<option id='customRadio2'>Female</option>
+									`)
+								}
+								else if(data[0].char_gender == "Female"){
+									$('#gender').append(`
 										<option value="" disabled="disabled">Choose...</option>
-										<option selected="">Male</option>
-										<option>Female</option>
+										<option id='customRadio1'>Male</option>
+										<option selected="" id='customRadio2'>Female</option>
 										`)
-									}
-									else if(data[0].char_gender == "Female"){
-										$('#gender').append(`
-											<option value="" disabled="disabled">Choose...</option>
-											<option>Male</option>
-											<option selected="">Female</option>
-											`)
-									}
-									if(data[0].char_gender == "Male"){
-									$('#customRadio1').prop('checked', true);
-									}
-									else if(data[0].char_gender == "Female"){
-									$('#customRadio2').prop('checked', true);
-									}
-									if(data[0].var_relation == "Aunt/Uncle"){
-										$('#relation').append(`
-										<option id="relationAppend" selected="" value="" disabled="disabled">Choose...</option>
-										<option selected="">Aunt/Uncle</option>
-										<option>Parent</option>
-										<option>Grandparent</option>
-										<option>Sibling</option>
-										`)								
-									}
-									else if(data[0].var_relation == "Parent"){
-										$('#relation').append(`
-										<option id="relationAppend" selected="" value="" disabled="disabled">Choose...</option>
-										<option>Aunt/Uncle</option>
-										<option selected="">Parent</option>
-										<option>Grandparent</option>
-										<option>Sibling</option>
-										`)								
-									}
-									else if(data[0].var_relation == "Grandparent"){
-										$('#relation').append(`
-										<option id="relationAppend" selected="" value="" disabled="disabled">Choose...</option>
-										<option>Aunt/Uncle</option>
-										<option>Parent</option>
-										<option selected="">Grandparent</option>
-										<option>Sibling</option>
-										`)								
-									}
-									else if(data[0].var_relation == "Sibling"){
-										$('#relation').append(`
-										<option id="relationAppend" selected="" value="" disabled="disabled">Choose...</option>
-										<option>Aunt/Uncle</option>
-										<option>Parent</option>
-										<option>Grandparent</option>
-										<option selected="">Sibling</option>
-										`)								
-									}
-								
+								}
+								if(data[0].char_gender == "Male"){
+								$('#customRadio1').prop('checked', true);
+								}
+								else if(data[0].char_gender == "Female"){
+								$('#customRadio2').prop('checked', true);
+								}
+								if(data[0].var_relation == "Aunt/Uncle"){
+									$('#relation').append(`
+									<option id="relationAppend" selected="" value="" disabled="disabled">Choose...</option>
+									<option selected="">Aunt/Uncle</option>
+									<option>Parent</option>
+									<option>Grandparent</option>
+									<option>Sibling</option>
+									`)								
+								}
+								else if(data[0].var_relation == "Parent"){
+									$('#relation').append(`
+									<option id="relationAppend" selected="" value="" disabled="disabled">Choose...</option>
+									<option>Aunt/Uncle</option>
+									<option selected="">Parent</option>
+									<option>Grandparent</option>
+									<option>Sibling</option>
+									`)								
+								}
+								else if(data[0].var_relation == "Grandparent"){
+									$('#relation').append(`
+									<option id="relationAppend" selected="" value="" disabled="disabled">Choose...</option>
+									<option>Aunt/Uncle</option>
+									<option>Parent</option>
+									<option selected="">Grandparent</option>
+									<option>Sibling</option>
+									`)								
+								}
+								else if(data[0].var_relation == "Sibling"){
+									$('#relation').append(`
+									<option id="relationAppend" selected="" value="" disabled="disabled">Choose...</option>
+									<option>Aunt/Uncle</option>
+									<option>Parent</option>
+									<option>Grandparent</option>
+									<option selected="">Sibling</option>
+									`)								
+								}
+							
 								$(document).on('click','#updateblessingbutton',function(){
 									var firstname = $('#firstname').val()
 									var middlename = $('#middlename').val()
 									var lastname = $('#lastname').val()
-									var gender;
+									var gender=  $('#gender').val();
 									var relation = $('#relation').val()
 									var birthplace = $('#birthplace').val()
+									var birthdate = $('#birthdate').val()
 									var address = $('#address').val()
 									var venue = $('#venue').val()
 									var details = $('#details').val()
@@ -2611,8 +2509,6 @@ block addjs
 											birthplace:birthplace,
 											eventname:data[0].var_eventname,
 											address:address,
-											venue:venue,
-											details:address,
 											id:idNow,
 										}).done(data=>{
 											swal({
@@ -2630,7 +2526,8 @@ block addjs
 									})
 								})
 							}
-							else if(data[0].var_eventname == "House Blessing"){
+							if(data[0].var_eventname == "House Blessing"){
+								console.log('napindot na house blesing edit')
 								$('#updatehouseblessingBodyAppend').append(`
 									
 									<div class="form-group">
@@ -2683,6 +2580,7 @@ block addjs
 											estloc:estloc,
 											contactnumber:contactnumber,
 											emailadd:emailadd,
+											id:idNow,
 										}).done(data=>{
 											swal({
 												title:'Success',
@@ -2698,7 +2596,8 @@ block addjs
 									}
 									})
 								})
-							}
+							}//not pending
+						}
 						else{
 							swal({
 								title:'Sorry',

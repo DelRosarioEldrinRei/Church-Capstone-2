@@ -1,0 +1,485 @@
+<!-- edit ke,edit -->
+
+// Anointing
+            $(document).on('click', '.viewButton', function(){
+				console.log(idNow)
+				$.post('/secretariat/transaction-anointing/query',{id:idNow}).done(data =>{
+					var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
+					var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
+					var age = moment().diff(data.date_birthday,'years');
+					$('#viewBodyAppend').append(`
+						<form>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Desired Date:</label>
+									<input type="text" class="form-control" value="${dateRequested}" disabled>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Desired Time:</label>
+									<input type="text" class="form-control" value="${timeRequested}" disabled>
+								</div>
+							</div>
+							<label>Name of the Ill:</label>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label>Last Name:</label>
+									<input type="text" class="form-control" value="${data.var_lname}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>First Name:</label>
+									<input type="text" class="form-control" value="${data.var_fname}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Middle Name:</label>
+									<input type="text" class="form-control" value="${data.var_mname}" disabled>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label>Gender:</label>
+									<input type="text" class="form-control" value="${data.char_gender}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Birth Date:</label>
+									<input type="text" class="form-control" value="${moment(data.date_birthday).format('MM/DD/YYYY')}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Birth Place:</label>
+									<input type="text" class="form-control" value="${data.var_birthplace}" disabled>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+										<label>Relationship with the Ill:</label>
+										<input type="text" class="form-control" value="${data.var_relation}" disabled>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Blessing Venue:</label>
+									<input type="text" class="form-control" value="${data.var_blessingvenue}" disabled>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Details:</label>
+								<input type="text" class="form-control" value="${data.var_blessingdetails}" disabled>
+							</div>
+							<div class="form-group">
+								<label>Address:</label>
+								<input type="text" class="form-control" value="${data.var_address}" disabled>
+							</div>
+						</form>
+					`)
+					$('#viewModal').modal('show')
+					$('#viewModal').on('hidden.bs.modal',function(){
+						$('#viewBodyAppend').empty()
+					})
+
+				})
+            })
+            
+
+
+
+
+
+
+            <!-- end ng anointing -->
+
+<!-- house blessing -->
+$(document).on('click', '.viewButton', function(){
+    console.log(idNow)
+    $.post('/secretariat/transaction-houseblessing/query',{id:idNow}).done(data =>{
+        var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
+        var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
+        var age = moment().diff(data.date_birthday,'years');
+        $('#viewBodyAppend').append(`
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Desired Date:</label>
+                    <input type="text" class="form-control" value="${dateRequested}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Desired Time:</label>
+                    <input type="text" class="form-control" value="${timeRequested}" disabled>
+                </div>
+            </div>
+            <label>Name of the Child:</label>
+            <div class="form-row mx-1">
+                <div class="form-group col-md-6">
+                    <label>Last Name:</label>
+                    <input type="text" class="form-control" value="${data.var_owner}" disabled>
+                </div>
+            
+            </div>
+            
+        </form>
+        `)
+        $('#viewModal').modal('show')
+        $('#viewModal').on('hidden.bs.modal',function(){
+            $('#viewBodyAppend').empty()
+        })
+
+    })
+})
+<!-- end ng house blessing -->
+
+
+<!-- funeral mass and service -->
+$(document).on('click', '.viewButton', function(){
+    console.log(idNow)
+    $.post('/secretariat/transaction-funeralmass/query',{id:idNow}).done(data =>{
+        var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
+        var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
+        var age = moment().diff(data.date_birthday,'years');
+        $('#viewBodyAppend').append(`
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Desired Date:</label>
+                    <input type="text" class="form-control" value="${dateRequested}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Desired Time:</label>
+                    <input type="text" class="form-control" value="${timeRequested}" disabled>
+                </div>
+            </div>
+            <label>Name of the Child:</label>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Last Name:</label>
+                    <input type="text" class="form-control" value="${data.var_lname}" disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    <label>First Name:</label>
+                    <input type="text" class="form-control" value="${data.var_fname}" disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Middle Name:</label>
+                    <input type="text" class="form-control" value="${(data.var_mname) ? data.var_mname : 'N/A'}" disabled>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Gender:</label>
+                    <input type="text" class="form-control" value="${data.char_gender}" disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Birth Date:</label>
+                    <input type="text" class="form-control" value="${moment(data.date_birthday).format('MM/DD/YYYY')}" disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Birth Place:</label>
+                    <input type="text" class="form-control" value="${data.var_birthplace}" disabled>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Relationship with the Deceased:</label>
+                    <input type="text" class="form-control" value="${data.var_relation}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Cause of Death</label>
+                    <input type="text" class="form-control" value="" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Blessing Venue:</label>
+                <input type="text" class="form-control" value="${data.var_blessingvenue}" disabled>
+            </div>
+        </form>
+        `)
+        $('#viewModal').modal('show')
+        $('#viewModal').on('hidden.bs.modal',function(){
+            $('#viewBodyAppend').empty()
+        })
+
+    })
+})
+
+<!-- end ng funeral mass and service -->
+
+<!-- marriage -->
+
+$('.viewButton').click(function(){
+    console.log(idNow)
+    $.post('/secretariat/transaction-marriage/query',{id:idNow}).done(data =>{
+        var dateRequested = moment(data.results.date_eventdate).format('MMMM DD, YYYY')
+        var gbirthday = moment(data.results.date_birthday).format('MMMM DD, YYYY')
+        var bbirthday = moment(data.results.date_bbirthday).format('MMMM DD, YYYY')
+        var timeRequested = moment(data.results.time_eventstart,'HH:mm:ss').format('hh:mm A')
+        var age = moment().diff(data.results.date_birthday,'years');
+        $('#viewBodyAppend').append(`
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="label-control">Desired Date:</h6>
+                    <input type="text" class="form-control" value="${dateRequested}" disabled> 
+                </div>
+                <div class="col-md-6">
+                    <h6 class="label-control"> Desired Time:</h6>
+                    <input type="text" class="form-control" value="${timeRequested}" disabled> 
+                </div>
+            </div>
+            <br>
+            <h6>Groom</h6>
+        
+            <div class="row">
+                <div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Full Name</h6><input class="form-control" id="lastname" type="text" name="glastname" value= "${data.results.var_lname}, ${data.results.var_fname}" disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Birthday:</h6><input class="form-control" type="text" name="gbirthday" value= ${gbirthday} disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-8 px-lg-3 px-md-3 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Birthplace:</h6><input class="form-control" type="text" name="gbirthplace" value=${data.results.var_birthplace} disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 for="exampleFormControlTextarea1">Address:</h6><input class="form-control" rows="2" name="gaddress" value='${data.results.var_address}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+                    <div class="form-group">
+                        <h6 class="label-control">Civil Status:</h6><input class="form-control" type="text" name="gcivilstatus" value='${data.results.var_gcivilstatus}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 px-lg-3 pr-md-3 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Occupation:</h6><input class="form-control" type="text" name="goccupation" value='${data.results.var_goccupation}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Nationality:</h6><input class="form-control" type="text" name="gnationality" value='${data.results.var_gnationality}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+                    <div class="form-group">
+                        <h6 class="label-control">Religion:</h6><input class="form-control" type="text" name="greligion" value='${data.results.var_greligion}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-8 px-lg-3 pr-md-3 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Current Parish:</h6><input class="form-control" type="text" name="gcurrparish" value='${data.results.var_gcurrparish}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-4 px-lg-3 px-md-3 px-sm-3">
+                    <div class="form-group">
+                        <h6 class="label-control">Father's Full Name:</h6><input class="form-control" type="text" name="gfathername" value='${data.results.var_gfathername}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Father's Birthplace:</h6><input class="form-control" type="text" name="gfatherbplace" value='${data.results.var_gfatherbplace}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Father's Religion:</h6><input class="form-control" type="text" name="gfatherreligion" value='${data.results.var_gfatherreligion}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Mother's Full Name:</h6><input class="form-control" type="text" name="gmothername" value='${data.results.var_gmothername}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Mother's Birthplace:</h6><input class="form-control" type="text" name="gmotherbplace" value='${data.results.var_gmotherbplace}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Mother's Religion:</h6><input class="form-control" type="text" name="gmotherreligion" value='${data.results.var_gmotherreligion}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <br>
+            <h6>Bride</h6>
+        
+            <div class="row">
+                <div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Full Name</h6><input class="form-control" id="lastname" type="text" name="blastname" value= "${data.results.var_blname}, ${data.results.var_bfname}" disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Birthday:</h6><input class="form-control" type="text" name="bbirthday" value= ${bbirthday} disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-8 px-lg-3 px-md-3 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Birthplace:</h6><input class="form-control" type="text" name="bbirthplace" value=${data.results.var_bbirthplace} disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-8 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 for="exampleFormControlTextarea1">Address:</h6><input class="form-control" rows="2" name="baddress" value='${data.results.var_baddress}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 for="exampleFormControlTextarea1">5 Months Pregnant?</h6>
+                        <input class="form-control" rows="2" name="baddress" value='${(data.results.bool_bpregnant) ? 'Yes' : 'No'}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+                    <div class="form-group">
+                        <h6 class="label-control">Civil Status:</h6><input class="form-control" type="text" name="bcivilstatus" value='${data.results.var_bcivilstatus}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 px-lg-3 pr-md-3 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Occupation:</h6><input class="form-control" type="text" name="boccupation" value='${data.results.var_boccupation}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Nationality:</h6><input class="form-control" type="text" name="bnationality" value='${data.results.var_bnationality}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0 pl-sm-3 extra-small-balance">
+                    <div class="form-group">
+                        <h6 class="label-control">Religion:</h6><input class="form-control" type="text" name="breligion" value='${data.results.var_breligion}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-8 px-lg-3 pr-md-3 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Current Parish:</h6><input class="form-control" type="text" name="bcurrparish" value='${data.results.var_bcurrparish}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-4 px-lg-3 px-md-3 px-sm-3">
+                    <div class="form-group">
+                        <h6 class="label-control">Father's Full Name:</h6><input class="form-control" type="text" name="bfathername" value='${data.results.var_bfathername}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Father's Birthplace:</h6><input class="form-control" type="text" name="bfatherbplace" value='${data.results.var_bfatherbplace}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Father's Religion:</h6><input class="form-control" type="text" name="bfatherreligion" value='${data.results.var_bfatherreligion}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Mother's Full Name:</h6><input class="form-control" type="text" name="bmothername" value='${data.results.var_bmothername}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 p-lg-0 px-md-3 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Mother's Birthplace:</h6><input class="form-control" type="text" name="bmotherbplace" value='${data.results.var_bmotherbplace}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Mother's Religion:</h6><input class="form-control" type="text" name="bmotherreligion" value='${data.results.var_bmotherreligion}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <br>
+            <h6>Couple</h6>
+
+            <div class="row">
+                <div class="col-md-12 px-lg-3 px-md-0 px-sm-0">
+                    <div class="form-group">
+                        <h6 class="label-control">Living Together?</h6><input class="form-control" type="text" name="bmothername" value='${(data.results.bool_livingin) ? 'Yes' : 'No'}'disabled/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+        `)
+        console.log(data.requirements)
+        //- for(i=0;i<data.requirements.length;i++){
+        //- $(`#reqAppend`).append(`
+        //- 	<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="size" src="${data.requirements[i].var_reqpath}"/></a>
+        //- `)
+        //- }
+        $('#viewModal').modal('show')
+        $('#viewModal').on('hidden.bs.modal',function(){
+            $('#viewBodyAppend').empty()
+            $('#reqAppend').empty()
+        })
+
+    })
+})
+
+<!-- marriage -->
