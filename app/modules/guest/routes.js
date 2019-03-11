@@ -1361,13 +1361,49 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
     })
 
     guestRouter.post('/funeral/query', (req, res) => {
-
     var queryString1 =`SELECT * FROM tbl_user where int_userID = ?`
-    db.query(queryString1,[req.body.id], (err, results1, fields) => {
-        res.send({firstQuery:results1[0]});
-    });
-
+        db.query(queryString1,[req.body.id], (err, results1, fields) => {
+            res.send({firstQuery:results1[0]});
+        });
     })
+
+    guestRouter.get('/funeral/query/checksched', (req, res) => {
+            var queryString2 = `SELECT int_priestID from tbl_priestsequence`
+            db.query(queryString2,(err,results2,fields)=>{
+                var queryString3 = `SELECT date_eventdate,time_eventstart from tbl_eventinfo`
+                db.query(queryString3,(err,results3,fields)=>{
+                    for(i=0;i<results3.length;i++){
+                        results3[i].date_eventdate = moment(results3[i].date_eventdate).format('YYYY-MM-DD');
+                    }
+                    console.log(results2)
+                    console.log(results3)
+                    res.send({priestLength:results2,schedules:results3});
+                })
+            })
+    
+        })
+    guestRouter.post('/funeral/query/checksched2', (req, res) => {
+        var queryString1 = `SELECT date_eventdate,int_eventinfoID from tbl_eventinfo join tbl_priestsequence 
+        on tbl_priestsequence.int_priestID
+        = tbl_eventinfo.int_userpriestID WHERE tbl_eventinfo.int_userpriestID = ?
+        AND tbl_eventinfo.date_eventdate = ? AND tbl_eventinfo.time_eventstart=?`
+        console.log(req.body.priestid)
+        console.log(req.body.eventdate)
+            db.query(queryString1,[req.body.priestid,req.body.eventdate,req.body.eventtime],(err,results,fields)=>{
+                var shit =0;
+                if(results != ""){
+                    console.log("MERON")
+                    shit =1;
+                    res.send({shit})
+                }
+                else{
+                    shit =0;
+                    res.send({shit})
+                }
+                console.log(results)
+            })
+    })
+
     guestRouter.get('/funeral/form', (req, res)=>{
         res.render('guest/views/forms/funeral',{user: req.session.user})
     });
