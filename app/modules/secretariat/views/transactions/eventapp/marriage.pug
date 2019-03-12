@@ -609,11 +609,7 @@ block addjs
 						</div>
 					`)
 					console.log(data.requirements)
-					//- for(i=0;i<data.requirements.length;i++){
-					//- $(`#reqAppend`).append(`
-					//- 	<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="size" src="${data.requirements[i].var_reqpath}"/></a>
-					//- `)
-					//- }
+					
 					$('#viewModal').modal('show')
 					$('#viewModal').on('hidden.bs.modal',function(){
 						$('#viewBodyAppend').empty()
@@ -1634,7 +1630,7 @@ block addjs
 					$('#updateschedbody').empty()
 				})
 				
-				})
+		})
 		function checkifavailable($i){
 				console.log($i)
 				$("#divisions").empty();

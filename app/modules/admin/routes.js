@@ -456,55 +456,7 @@ adminRouter.use(authMiddleware.adminAuth)
                                                                     var december7 = results[0]
                                                                     docuCount.push(december7.countt)
                                                                     console.log(docuCount)
-                    db.query(house,[1],(err, results, fields) => {
-                        if (err) console.log(err);
-                        var january7 = results[0]
-                        houseCount.push(january7.countt)
-                        db.query(house,[2],(err, results, fields) => {
-                            if (err) console.log(err);
-                            var february7 = results[0]
-                            houseCount.push(february7.countt)
-                            db.query(house,[3],(err, results, fields) => {
-                                if (err) console.log(err);
-                                var march7 = results[0]
-                                houseCount.push(march7.countt)
-                                db.query(house,[4],(err, results, fields) => {
-                                    if (err) console.log(err);
-                                    var april7 = results[0]
-                                    houseCount.push(april7.countt)
-                                    db.query(house,[7],(err, results, fields) => {
-                                        if (err) console.log(err);
-                                        var may7 = results[0]
-                                        houseCount.push(may7.countt)
-                                        db.query(house,[7],(err, results, fields) => {
-                                            if (err) console.log(err);
-                                            var june7 = results[0]
-                                            houseCount.push(june7.countt)
-                                            db.query(house,[7],(err, results, fields) => {
-                                                if (err) console.log(err);
-                                                var july7 = results[0]
-                                                houseCount.push(july7.countt)
-                                                db.query(house,[8],(err, results, fields) => {
-                                                    if (err) console.log(err);
-                                                    var august7 = results[0]
-                                                    houseCount.push(august7.countt)
-                                                    db.query(house,[9],(err, results, fields) => {
-                                                        if (err) console.log(err);
-                                                        var september7 = results[0]
-                                                        houseCount.push(september7.countt)
-                                                        db.query(house,[10],(err, results, fields) => {
-                                                            if (err) console.log(err);
-                                                            var october7 = results[0]
-                                                            houseCount.push(october7.countt)
-                                                            db.query(house,[11],(err, results, fields) => {
-                                                                if (err) console.log(err);
-                                                                var november7 = results[0]
-                                                                houseCount.push(november7.countt)
-                                                                db.query(house,[12],(err, results, fields) => {
-                                                                if (err) console.log(err);
-                                                                    var december7 = results[0]
-                                                                    houseCount.push(december7.countt)
-                                                                    console.log(houseCount)
+                    
                             // res.send(resulta)
                             return res.render('admin/views/index',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                                 anointingCount:anointingCount,baptismCount:baptismCount, specialbaptismCount:specialbaptismCount, funeralmassCount:funeralmassCount, funeralserviceCount:funeralserviceCount, marriageCount:marriageCount,
@@ -517,7 +469,7 @@ adminRouter.use(authMiddleware.adminAuth)
                                 }); }); }); }); }); }); }); }); }); }); }); }); //marriage
                             }); }); }); }); }); }); }); }); }); }); }); }); //facility
                         }); }); }); }); }); }); }); }); }); }); }); }); //document
-                    }); }); }); }); }); }); }); }); }); }); }); }); //house 
+                    
         
         
         

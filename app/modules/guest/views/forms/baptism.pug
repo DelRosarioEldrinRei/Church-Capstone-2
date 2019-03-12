@@ -591,7 +591,7 @@ block addjs
 					</div>
 				<div class="col-md-4 px-lg-3 px-md-0 px-sm-0">
 					<div class="form-group m-0">
-					<h6 class="label-control">Desired Time: </h6> ${moment(timeStart,'hh:mm:ss').format('hh:mm a')} - ${moment(timeEnd2,'hh:mm:ss').format('hh:mm a')}
+					<h6 class="label-control">Desired Time: </h6> ${moment(timeStart,'HH:mm:ss').format('hh:mm a')} - ${moment(timeEnd2,'HH:mm:ss').format('hh:mm a')}
 						<div class="help-block with-errors"></div>
 					</div>
 					</div>
@@ -664,7 +664,7 @@ block addjs
 					formData.append('gender',gender)
 					formData.append('eventDate',eventDate)
 					formData.append('timeStart',timeStart)	
-					formData.append('timeEnd',moment(timeEnd2,'hh:mm a').format('hh:mm:ss'))	
+					formData.append('timeEnd',moment(timeEnd2,'hh:mm a').format('HH:mm:ss'))	
 					formData.append('address', $('.address').val())
 					formData.append('birthday', $('#birthdate').val()) 
 					formData.append('birthplace', $('#birthplace').val())
@@ -1142,7 +1142,7 @@ block addjs
 		console.log(data.utilities[0].int_agemax)
 		console.log(baptismType1)
 
-		dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data.utilities[0].int_reservationmindays,'days').format('YYYY-MM-DD')
+			dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data.utilities[0].int_reservationmindays,'days').format('YYYY-MM-DD')
 			console.log(dateNow2)
 			console.log(data.utilities[0].int_reservationmindays)
 			$('#calendarSpecial').fullCalendar({
@@ -1171,7 +1171,7 @@ block addjs
 				if(view.name == 'agendaDay'){
 					eventDate = date.format('YYYY-MM-DD')
 					timeStart = date.format('hh:mm a')
-					timeEnd1 = date.add(1,'hour').format('YYYY-MM-DD hh:mm a')
+					timeEnd1 = date.add(1,'hour').format('YYYY-MM-DD HH:mm:ss')
 					timeEnd2 = moment(timeEnd1).format('hh:mm a')
 					console.log(eventDate)
 					console.log(timeStart)
@@ -1316,8 +1316,8 @@ block addjs
 			
 			for(i=0;i<data.queries.length;i++){
 			var dateEvent = moment(data.queries[i].date_eventdate).format('MM/DD/YYYY');
-			var time_start = data.queries[i].time_eventstart = moment(data.queries[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
-			var time_end = moment(data.queries[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+			var time_start = data.queries[i].time_eventstart = moment(data.queries[i].time_eventstart,'HH:mm:ss').format('hh:mm a');
+			var time_end = moment(data.queries[i].time_eventstart,'HH:mm:ss').add(1,'hour').format('hh:mm a');
 			//- console.log(time_end)
 			//- console.log(dateEvent)
 			//- console.log(data.queries[i].time_eventstart)
@@ -1335,8 +1335,8 @@ block addjs
 				
 				for(i=0;i<data.length;i++){
 					var dateEvent = moment(data.date_eventdate).format('MM/DD/YYYY');
-					var time_start = data.time_eventstart = moment(data.time_eventstart,'hh:mm:ss').format('hh:mm a');
-					var time_end = moment(data.time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+					var time_start = data.time_eventstart = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm a');
+					var time_end = moment(data.time_eventstart,'HH:mm:ss').add(1,'hour').format('hh:mm a');
 					console.log(data[i].date_eventdate)
 					 $.post('/guest/baptism/query/regular/bilang',{eventdate:data[i].date_eventdate}).done(data=>{
 						console.log(data[1])

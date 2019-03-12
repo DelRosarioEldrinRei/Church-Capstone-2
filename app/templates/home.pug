@@ -26,6 +26,7 @@ html(lang='en')
 		//- link(rel="stylesheet" href="/css/timedropper.min.css")
 		link(rel="stylesheet" href="/css/bootstrap-datetimepicker-solo.css")
 		link(href='/themes/explorer-fa/theme.css', media='all', rel='stylesheet')
+		link(href='/css/formValidation.css', rel='stylesheet')
 		block addcss
 		style.
 			.shadow {
@@ -166,6 +167,8 @@ html(lang='en')
 		script(src='/js/pdfmake.js')
 		script(src='/js/vfs_fonts.js')
 		script(src='/js/jquery.inputmask.bundle.js')
+		script(type='text/javascript', src='/js/formValidation.js')
+		script(type='text/javascript', src='/js/bootstrapformvalidation.js')
 		script.
 
 			$('.datepicker').datetimepicker({

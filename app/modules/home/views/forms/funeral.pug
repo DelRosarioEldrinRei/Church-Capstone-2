@@ -35,7 +35,7 @@ block main
 					.row
 						.col-md-12.form-wizard.shadow3
 								// Form Wizard
-								//- form(action="/guest/funeral/form" enctype="multipart/form-data" method="post" data-toggle='validator')
+								//- form(action="/index/funeral/form" enctype="multipart/form-data" method="post" data-toggle='validator')
 								h3 Funeral Blessing Form
 								p.mb-2 Fill all form fields
 								.form-wizard-steps.form-wizard-tolal-steps-3
@@ -76,7 +76,7 @@ block main
 									h4
 										.d-none.d-sm-inline Blessing Details:
 										span Step 2 - 2
-										
+										input.form-control#userID(type='hidden' name='userID' value=`${user.int_tempuserID}`)
 										h6.label-control Name of the deceased
 											.text-danger.d-inline  *
 										.row
@@ -211,7 +211,7 @@ block addjs
 						$(this).attr('disabled', 'disabled');
 						var idNow = $(this).val();
 						console.log(idNow)
-						$.post('/guest/funeral/query',{
+						$.post('/index/funeral/query',{
 							firstname: $('#firstname').val(),id:idNow
 						}).done(data=>{
 							if($('#male').prop("checked")){
@@ -235,6 +235,7 @@ block addjs
 								var formData= new FormData();
 								formData.append('desireddate1', eventDate),
 								formData.append('desiredtime1', timeStart),	
+								formData.append('userID', $('#userID').val()),
 								formData.append('lastname', $('#lastname').val()),
 								formData.append('firstname', $('#firstname').val()),
 								formData.append('middlename', $('#middlename').val()),
@@ -249,7 +250,7 @@ block addjs
 								formData.append('image', $('#file-0b')[0].files[0]);
 							$.ajax({
 								type: 'POST',
-								url: '/guest/funeral/form',
+								url: '/index/funeral/form',
 								data: formData,
 								processData:false,
 								contentType:false,
@@ -262,7 +263,7 @@ block addjs
 											Okay:'okay'
 										}
 									}).then((value)=>{
-										window.location='/guest'
+										window.location='/index#services'
 									})
 								}
 
@@ -279,7 +280,7 @@ block addjs
 		var dateNow = new Date()
 		var dateNow2;
 		var gender;
-		$.get('/guest/funeral/utilities/query').done(data=>{
+		$.get('/index/funeral/utilities/query').done(data=>{
 			console.log(data[0].int_reservationmindays)
 			dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data[0].int_reservationmindays,'days').format('YYYY-MM-DD')
 			$('#calendarFuneral').fullCalendar({

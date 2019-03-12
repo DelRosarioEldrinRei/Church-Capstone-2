@@ -136,33 +136,79 @@ block prepend main
 											button.btn.std-btn.btn-common.inquireButtonnew(type='button', data-toggle='modal', data-target='#exampleModal' value='Marriage') Inquire
 					
 		.container
-			//- .row
-			//- 	.col-md-12
-			//- 		h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Special Services
-			//- .row
-			//- 	each service in services
-			//- 		.col-lg-4.col-md-6.col-xs-12
-			//- 					.featured-box-item
-			//- 						.featured-icon
-			//- 							i.fa.fa-bolt
-			//- 						.featured-content
-			//- 							h4
-			//- 								| #{service.var_servicename}
+			.row
+				.col-md-12
+					h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Special Services
+			.row
+						each service in services
+							.col-lg-4.col-md-6.col-xs-12
+								.featured-box-item
+									.featured-icon
+										i.fa.fa-bolt
+									.featured-content
+										h4
+											| #{service.var_servicename}
 										
-			//- 							.learn-more
-			//- 									button.btn.std-btn.btn-common.serviceButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${service.int_serviceutilitiesID}`) Inquire
-			//- 									// Modal
-			//- 									#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-			//- 										.modal-dialog.modal-lg(role='document')
-			//- 											.modal-content#each
-			//- 												.modal-header#headerAppend
-			//- 													button.close(type='button', data-dismiss='modal', aria-label='Close')
-			//- 														span.p-3(aria-hidden='true') ×
-			//- 												.modal-body#bodyAppend
-			//- 												.modal-body#reqAppend
-			//- 												.modal-footer
-			//- 													button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
-			//- 													button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${service.int_utilitiesID}`) Apply
+										.learn-more
+												button.btn.std-btn.btn-common.serviceButton(type='button', data-toggle='modal', data-target='#exampleModal' value=`${service.int_serviceutilitiesID}`) Inquire
+												// Modal
+												#inquireModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+													.modal-dialog.modal-lg(role='document')
+														.modal-content#each
+															.modal-header#headerAppend
+																button.close(type='button', data-dismiss='modal', aria-label='Close')
+																	span.p-3(aria-hidden='true') ×
+															.modal-body#bodyAppend
+															.modal-body#reqAppend
+															.modal-footer
+																button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+																button.btn.std-btn.btn-common.btn-info.mb-0#proceedButton(type='button' value=`${service.int_utilitiesID}`) Apply
+										#searchModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+												.modal-dialog.modal-lg(role='document')
+														.modal-content
+																.modal-header
+																		h5 Input Details about the Person in the certificate
+																		button.close(type='button', data-dismiss='modal', aria-label='Close')
+																				span.p-3(aria-hidden='true') ×
+																.modal-body
+																		.row
+																				.col-md-6
+																						.form-group
+																								h5.label-control Document
+																									.text-danger.d-inline  *
+																								select#documenttype(type="text" name='documenttype' style="width:100%;")
+																										option Baptismal Certificate
+																										option Confirmation Certificate
+																				.col-md-6
+																						h5.label-control Event Date (optional)
+																							//- .text-danger.d-inline  *
+																						input#eventDate.datepicker.form-control(type='date' name='birthday')
+																		h5.label-control Person in the certificate:
+																		.row.mt-4
+																				.col-md-4
+																						h5.label-control Last Name
+																							.text-danger.d-inline  *
+																						input#lastName.form-control(type='text' name='lastname' placeholder='Last Name *')
+																				.col-md-4
+																						h5.label-control First Name
+																							.text-danger.d-inline  *
+																						input#firstName.form-control(type='text' name='firstname' placeholder='First Name *')
+																				.col-md-4
+																						h5.label-control Birthday
+																							.text-danger.d-inline  *
+																						input#birthday.datepicker.form-control(type='date' name='birthday' placeholder='Birthday')
+																		.row#reqAppend
+																				.col-md-12.text-center
+																					.learn-more
+																						button.btn.std-btn.btn-common#searchButton(type='button') Search
+																//- .modal-body#reqAppend
+																//- .modal-footer
+																//- 		button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Cancel
+																//- 		button.btn.std-btn.btn-common.btn-info.mb-0#searchButton(type='button') Search
+								//- .col-md-12.text-center
+								//-     .learn-more
+								//-         a.btn.std-btn.btn-common(href='/index/services') View All
+		
 	#confirmationModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -174,6 +220,58 @@ block prepend main
 					.modal-footer
 						button#confirmButton.filter.btn.btn-success(type="button") Yes, these are correct. 
 						button#cancelButton.filter.btn.btn-danger(type="button") Cancel							
+	#tempUserModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header
+						h5 Your contact particulars
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true' style=' margin-right: 5px') ×
+					.modal-body#tempbodyAppend
+						.form-group
+							.form-row
+								.form-group.col-md-6
+									.form-group
+										h5.label-control Last Name
+											.text-danger.d-inline *
+										input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+										.invalid-feedback Please re-enter your valid last name.
+
+								.form-group.col-md-6
+									.form-group
+										.invalid-feedback Please re-enter your valid last name.
+										h5.label-control  First Name
+											.text-danger.d-inline *
+										input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
+										.invalid-feedback Please provide a valid first name.
+							.form-row
+								.form-group.col-md-12
+									.form-group
+										h5.label-control  Address
+											.text-danger.d-inline *
+										input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+										.invalid-feedback Please re-enter your valid first name. 
+
+							.form-row
+								.form-group.col-md-6
+									.form-group
+										h5.label-control  Contact Number
+											.text-danger.d-inline *
+										input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+										.invalid-feedback Please re-enter your valid contact number.
+
+								.form-group.col-md-6
+									.form-group
+										.invalid-feedback Please re-enter your valid contact number.
+										h5.label-control  Email Address
+											.text-danger.d-inline *
+										input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
+										.invalid-feedback Please provide a valid email address
+							
+							p Please fill out all the fields. This is an important step for us to update you regarding your request. Thank you.
+					.modal-footer
+						button#submitButton.filter.btn.btn-success(type="button") Submit. 
+						button#cancelButton.filter.btn.btn-danger(type="button") Cancel		
 	section#portfolio.section-padding
 		.container
 			.row
@@ -197,220 +295,32 @@ block prepend main
 						.portfolio-item
 							.portfolio-img
 								img(src='/imgchurch/1.jpg', alt='')
-							//- .portfoli-content
-							//- 	.sup-desc-wrap
-							//- 		.sup-desc-inner
-							//- 			.sup-link
-							//- 				a.left-link(href='#')
-							//- 					i.fa.fa-link
-							//- 				a.right-link(href='#')
-							//- 					i.fa.fa-heart
-							//- 			.sup-meta-wrap
-							//- 				a.sup-title(href='#')
-							//- 					h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+							
 					.col-lg-4.col-md-6.col-xs-12.mix.branding.planning(style='display: inline-block;', data-bound='')
 						.portfolio-item
 							.portfolio-img
 								img(src='/imgchurch/2.jpg', alt='')
-							//- .portfoli-content
-							//- 	.sup-desc-wrap
-							//- 		.sup-desc-inner
-							//- 			.sup-link
-							//- 				a.left-link(href='#')
-							//- 					i.fa.fa-link
-							//- 				a.right-link(href='#')
-							//- 					i.fa.fa-heart
-							//- 			.sup-meta-wrap
-							//- 				a.sup-title(href='#')
-							//- 					h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+							
 					.col-lg-4.col-md-6.col-xs-12.mix.branding.research(style='display: inline-block;', data-bound='')
 						.portfolio-item
 							.portfolio-img
 								img(src='/imgchurch/3.jpg', alt='')
-							//- .portfoli-content
-							//- 	.sup-desc-wrap
-							//- 		.sup-desc-inner
-							//- 			.sup-link
-							//- 				a.left-link(href='#')
-							//- 					i.fa.fa-link
-							//- 				a.right-link(href='#')
-							//- 					i.fa.fa-heart
-							//- 			.sup-meta-wrap
-							//- 				a.sup-title(href='#')
-							//- 					h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+							
 					.col-lg-4.col-md-6.col-xs-12.mix.marketing.research(style='display: inline-block;', data-bound='')
 						.portfolio-item
 							.portfolio-img
 								img(src='/imgchurch/4.jpg', alt='')
-							//- .portfoli-content
-							//- 	.sup-desc-wrap
-							//- 		.sup-desc-inner
-							//- 			.sup-link
-							//- 				a.left-link(href='#')
-							//- 					i.fa.fa-link
-							//- 				a.right-link(href='#')
-							//- 					i.fa.fa-heart
-							//- 			.sup-meta-wrap
-							//- 				a.sup-title(href='#')
-							//- 					h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+							
 					.col-lg-4.col-md-6.col-xs-12.mix.marketing.planning(style='display: inline-block;', data-bound='')
 						.portfolio-item
 							.portfolio-img
 								img(src=src='/imgchurch/5.jpg', alt='')
-							//- .portfoli-content
-							//- 	.sup-desc-wrap
-							//- 		.sup-desc-inner
-							//- 			.sup-link
-							//- 				a.left-link(href='#')
-							//- 					i.fa.fa-link
-							//- 				a.right-link(href='#')
-							//- 					i.fa.fa-heart
-							//- 			.sup-meta-wrap
-							//- 				a.sup-title(href='#')
-							//- 					h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
+							
 					.col-lg-4.col-md-6.col-xs-12.mix.planning.research(style='display: inline-block;', data-bound='')
 						.portfolio-item
 							.portfolio-img
 								img(src=src='/imgchurch/6.jpg', alt='')
-							//- .portfoli-content
-							//- 	.sup-desc-wrap
-							//- 		.sup-desc-inner
-							//- 			.sup-link
-							//- 				a.left-link(href='#')
-							//- 					i.fa.fa-link
-							//- 				a.right-link(href='#')
-							//- 					i.fa.fa-heart
-							//- 			.sup-meta-wrap
-							//- 				a.sup-title(href='#')
-							//- 					h4 TITLE HERE
-											p.sup-description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente vel quisquam.
-		//- #counter
-		//- 	.container
-		//- 		.row.count-to-sec
-		//- 			.col-lg-3.col-md-6.col-xs-12.count-one
-		//- 				span.icon
-		//- 					i.fa.fa-download  
-		//- 				h3.timer.count-value(data-to='561', data-speed='1000') 561
-		//- 				hr.width25-divider
-		//- 				small.count-title Downloads
-		//- 			.col-lg-3.col-md-6.col-xs-12.count-one
-		//- 				span.icon
-		//- 					i.fa.fa-user  
-		//- 				h3.timer.count-value(data-to='950', data-speed='1000') 950
-		//- 				hr.width25-divider
-		//- 				small.count-title Developers
-		//- 			.col-lg-3.col-md-6.col-xs-12.count-one
-		//- 				span.icon
-		//- 					i.fa.fa-desktop  
-		//- 				h3.timer.count-value(data-to='978', data-speed='1000') 978
-		//- 				hr.width25-divider
-		//- 				small.count-title Lines of code written
-		//- 			.col-lg-3.col-md-6.col-xs-12.count-one
-		//- 				span.icon
-		//- 					i.fa.fa-coffee  
-		//- 				h3.timer.count-value(data-to='1700', data-speed='1000') 1700
-		//- 				hr.width25-divider
-		//- 				small.count-title Cups of coffee consumed
-		//- #team.team-members-tow.section-padding.mx-5
-			.container
-				.row
-					.col-md-12
-						h2.section-title.wow.fadeInDown.animated(data-wow-delay='0.3s') Our Team
-			.row
-				.col-sm-6.col-md-3
-					// Team Item Starts
-					.team-item
-						figure.team-profile
-							img(src='/img/team/2.jpg', alt='')
-							figcaption.our-team
-								.details
-									p.content-white
-										| "Cram Is Gold" swswswswswswswswswswssws
-										| "b a k a l a k o"
-									hr.small-divider.border-white
-									.social
-										a.facebook(href='#')
-											i.fa.fa-facebook
-										a.twitter(href='#')
-											i.fa.fa-twitter
-										a.google-plus(href='#')
-											i.fa.fa-instagram
-						.info
-							h2
-								| Joshua Rae Macaya
-							p
-								| Database Engineer/ Main Dev
-					// Team Item Ends
-				.col-sm-6.col-md-3
-					// Team Item Starts
-					.team-item
-						figure.team-profile
-							img(src='/img/team/1.jpg', alt='')
-							figcaption.our-team
-								.details
-									p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-									hr.small-divider.border-white
-									.social
-										a.facebook(href='#')
-											i.fa.fa-facebook
-										a.twitter(href='#')
-											i.fa.fa-twitter
-										a.google-plus(href='#')
-											i.fa.fa-instagram
-						.info
-							h2
-								| Jonalyn Fe Ebrada
-							p
-								| Project Manager
-					// Team Item Starts
-				.col-sm-6.col-md-3
-					// Team Item Starts
-					.team-item
-						figure.team-profile
-							img(src='/img/team/3.jpg', alt='')
-							figcaption.our-team
-								.details
-									p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-									hr.small-divider.border-white
-									.social
-										a.facebook(href='#')
-											i.fa.fa-facebook
-										a.twitter(href='#')
-											i.fa.fa-twitter
-										a.google-plus(href='#')
-											i.fa.fa-instagram
-						.info
-							h2
-								| Norme Ann Joyce Peñaverde
-							p
-								| Software Tester
-					// Team Item Ends
-				.col-sm-6.col-md-3
-					// Team Item Starts
-					.team-item
-						figure.team-profile
-							img(src='/img/team/4.jpg', alt='')
-							figcaption.our-team
-								.details
-									p.content-white Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-									hr.small-divider.border-white
-									.social
-										a.facebook(href='#')
-											i.fa.fa-facebook
-										a.twitter(href='#')
-											i.fa.fa-twitter
-										a.google-plus(href='#')
-											i.fa.fa-instagram
-						.info
-							h2
-								| Eldrin Rei Del Rosario
-							p
-								| Web Designer
+							
 	section#contact.contact-form.section-padding
 		.container
 			.row
@@ -685,7 +595,7 @@ block addjs
 								type: 'info',
 								showCancelButton: true,
 								confirmButtonText: 'Yes, I have',
-								cancelButtonText: 'No, don\'t have',
+								cancelButtonText: 'No, I don\'t have',
 								reverseButtons: true
 								}).then((result) => {
 									//for yes
@@ -698,8 +608,25 @@ block addjs
 								}
 								//for no
 								else {
-									window.location=`/index/anointingform`
-									
+									//- window.location=`/index/anointingform`
+									$('#submitButton').click(function(){
+											$.post('/index/tempuser',{
+												templastname:$('#templastname').val(),
+												tempfirstname:$('#tempfirstname').val(),
+												tempaddress:$('#tempaddress').val(),
+												tempemailaddress:$('#tempemailaddress').val(),
+												tempcontactnumber:$('#tempcontactnumber').val(),
+												}).done(data =>{
+												window.location=`/index/anointingform?id=${data.tempuser.insertId}`
+											})
+										})
+	
+
+									$('#tempUserModal').modal('show');	
+									$('#tempUserModal').on('hidden.bs.modal',function(){
+										$('#tempbodyAppend').empty()
+									})
+
 								}
 								})
 								$('#inquireModal1').modal('hide');	
@@ -736,8 +663,25 @@ block addjs
 								}
 								//for no
 								else {
-									window.location=`/index/funeralform`
-									
+									//- window.location=`/index/funeralform`
+									$('#submitButton').click(function(){
+											$.post('/index/tempuser',{
+												templastname:$('#templastname').val(),
+												tempfirstname:$('#tempfirstname').val(),
+												tempaddress:$('#tempaddress').val(),
+												tempemailaddress:$('#tempemailaddress').val(),
+												tempcontactnumber:$('#tempcontactnumber').val(),
+												}).done(data =>{
+												window.location=`/index/funeralform?id=${data.tempuser.insertId}`
+											})
+										})
+	
+
+									$('#tempUserModal').modal('show');	
+									$('#tempUserModal').on('hidden.bs.modal',function(){
+										$('#tempbodyAppend').empty()
+									})
+
 								}
 								})
 								$('#inquireModal1').modal('hide');	
@@ -772,8 +716,24 @@ block addjs
 								}
 								//for no
 								else {
-									window.location=`/index/funeralform`
-									
+									//- window.location=`/index/funeralform`
+									$('#submitButton').click(function(){
+											$.post('/index/tempuser',{
+												templastname:$('#templastname').val(),
+												tempfirstname:$('#tempfirstname').val(),
+												tempaddress:$('#tempaddress').val(),
+												tempemailaddress:$('#tempemailaddress').val(),
+												tempcontactnumber:$('#tempcontactnumber').val(),
+												}).done(data =>{
+												window.location=`/index/funeralform?id=${data.tempuser.insertId}`
+											})
+										})
+	
+
+									$('#tempUserModal').modal('show');	
+									$('#tempUserModal').on('hidden.bs.modal',function(){
+										$('#tempbodyAppend').empty()
+									})
 								}
 								})
 								$('#inquireModal1').modal('hide');	
@@ -807,8 +767,24 @@ block addjs
 								}
 								//for no
 								else {
-									window.location=`/index/establishmentform`
-									
+									//- window.location=`/index/establishmentform`
+									$('#submitButton').click(function(){
+											$.post('/index/tempuser',{
+												templastname:$('#templastname').val(),
+												tempfirstname:$('#tempfirstname').val(),
+												tempaddress:$('#tempaddress').val(),
+												tempemailaddress:$('#tempemailaddress').val(),
+												tempcontactnumber:$('#tempcontactnumber').val(),
+												}).done(data =>{
+												window.location=`/index/establishmentform?id=${data.tempuser.insertId}`
+											})
+										})
+	
+
+									$('#tempUserModal').modal('show');	
+									$('#tempUserModal').on('hidden.bs.modal',function(){
+										$('#tempbodyAppend').empty()
+									})
 								}
 								})
 								$('#inquireModal1').modal('hide');	
@@ -966,57 +942,10 @@ block addjs
 											})
 										})
 								})//post done		
-						}//if baptism
-						
-								
+						}//if baptism				
 			})
 
 		
-			$('.inquireButton').click(function(){
-				var idNow = $(this).val();
-				console.log(idNow)
-					$.post('/index/query',{id:idNow})
-						.done(data =>{
-						if(data.firstQuery.var_eventname == "Marriage"){
-							window.location='/index/marriagedetails'
-						}
-								//- else if(data.firstQuery.var_eventname == "Facility Reservation"){
-								//- window.location='/index/facilities'
-								//- }
-								
-						$('#headerAppend').append(`
-							<label id="idshit" hidden>${data.firstQuery.int_eventID}</label>
-							<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_eventname}</h5>
-							`)
-							$('#bodyAppend').append(`
-							<p><strong>Service Description</strong></p>
-							<p class="pl-2 description">${data.firstQuery.var_eventdesc}</p>
-							<br>
-							
-						`)
-						for(i=0;i<data.secondQuery.length;i++){
-						$('#reqAppend').append(`
-							<p><strong>Requirements</strong></p>
-							<p class="pl-2 description">${data.secondQuery[i].var_reqname}</p>
-						`)
-						}
-						$('#inquireModal').modal('show');	
-						$('#inquireModal').on('hidden.bs.modal',function(){
-							$('#bodyAppend').empty()
-							$('#headerAppend').empty()
-							$('#reqAppend').empty()
-
-						})
-						$('#cancelButton').css('display', 'block');
-						//- $('#proceedButton').css('display', 'block');
-							$('#proceedButton').click(function(){
-								$.post('/login/query',{id:data.firstQuery.int_eventID}).done(data =>{
-									window.location=`/login? 
-									redirect="${$(this).val()}"`
-								})
-							})
-						})								
-			})
 			$('.serviceButton').click(function(){
 				var idNow = $(this).val();
 				console.log(idNow)
@@ -1026,40 +955,193 @@ block addjs
 							window.location='/index/facilities'
 						}
 						else if(data.firstQuery.var_servicename == "Document Request"){
-						window.location='/index'
-						}		
+							$('#searchModal').modal('show');
+							$('#searchButton').click(function(){
+							$('#searchModal').modal('hide');
+							var eventDate = moment($('#eventDate').val()).format('YYYY-MM-DD');
+									$.post('/index/document/query',{
+									eventDate:eventDate,
+									firstName:$('#firstName').val(),
+									lastName:$('#lastName').val(),
+									birthday:$('#birthday').val(),
+									documentType:$('#documenttype').val(),
+									}).done(data=>{
+											if(($('#lastName').val() == data.var_lname) && ($('#firstName').val() == data.var_fname) || (eventDate == data.date_eventdate)){
+												var fullName = data.var_lname + ", " + data.var_fname
+												var birthDate =  moment(data.date_birthday).format('YYYY-MM-DD');
+												var eventinfoID = data.int_eventinfoID
+												console.log(data)
+												console.log(eventinfoID)
+												swal({
+														title:'Record found!',
+														html:`<h5>Confirm Record</h5>
+														<br><label>Name of the child: ${fullName}</label>
+														<br><label>Birth Date: ${birthDate}</label>
+														<br><label>Name of Mother: ${data.var_mothername}</label>
+														<br><label>Name of Father: ${data.var_fathername}</label>`,
+														type:'question',
+														showCancelButton: true,
+														confirmButtonColor: '#3085d6',
+														cancelButtonColor: '#d33',
+														confirmButtonText: 'Confirm'
+												}).then((result)=>{
+														if(result.value){
+														$.post('/index/document/queryDocument',{
+														firstName:$('#firstName').val(),
+														lastName:$('#lastName').val(),
+														birthday:$('#birthday').val(),
+														documentType:$('#documenttype').val(),
+														eventinfoID:eventinfoID,
+														}).done(data=>{
+																if(data){
+																	swal({
+																	title:'Warning',
+																	text: 'This document is already requested, do you still want to continue?',
+																	type:'warning',
+																	showCancelButton: true,
+																	confirmButtonColor: '#3085d6',
+																	cancelButtonColor: '#d33',
+																	confirmButtonText: 'Confirm'
+																	}).then((result)=>{
+																			if(result.value){
+																				const swalWithBootstrapButtons = Swal.mixin({
+																				confirmButtonClass: 'btn btn-success',
+																				cancelButtonClass: 'btn btn-danger',
+																				buttonsStyling: false,
+																				})
 
-						$('#headerAppend').append(`
-							<label id="idshit" hidden>${data.firstQuery.int_serviceutilitiesID}</label>
-							<h5 id="exampleModalLabel" class="modal-title">${data.firstQuery.var_servicename}</h5>
-							`)
-							$('#bodyAppend').append(`
-							<p><strong>Service Description</strong></p>
-							<p class="pl-2 description>${data.firstQuery.var_servicedesc}</p>
-							<br>
-							
-						`)
-						for(i=0;i<data.secondQuery.length;i++){
-						$('#reqAppend').append(`
-							<p><strong>Requirements</strong></p>
-							<p>${data.secondQuery[i].var_reqname}</p>
-						`)
-						}
-						$('#inquireModal').modal('show');	
-						$('#inquireModal').on('hidden.bs.modal',function(){
-							$('#bodyAppend').empty()
-							$('#headerAppend').empty()
-							$('#reqAppend').empty()
+																				swalWithBootstrapButtons.fire({
+																				title: 'Do you have an account?',
+																				//- text: "Do you have an account?",
+																				type: 'info',
+																				showCancelButton: true,
+																				confirmButtonText: 'Yes, I have',
+																				cancelButtonText: 'No, don\'t have',
+																				reverseButtons: true
+																				}).then((result) => {
+																					//for yes
+																					if (result.value) {
+																						console.log('ey')
+																						$.post('/login/query',{id:14,
+																						documenttype: $('#documenttype').val(),
+																						lastName: $('#lastName').val(),
+																						firstName: $('#firstName').val(),
+																						eventDate:eventDate,
+																						birthday: birthDate,
+																						eventinfoID: eventinfoID
 
-						})
-						$('#cancelButton').css('display', 'block');
-						//- $('#proceedButton').css('display', 'block');
-							$('#proceedButton').click(function(){
-								$.post('/login/queryservice',{id:data.firstQuery.int_serviceutilitiesID}).done(data =>{
-									window.location=`/login? 
-									redirect="${$(this).val()}"`
+
+
+																						}).done(data =>{
+																							window.location=`/login?redirect="14"`
+																						})
+																					}
+																					//for no
+																					else {
+																						
+																						$('#submitButton').click(function(){
+																								$.post('/index/tempuser',{
+																									templastname:$('#templastname').val(),
+																									tempfirstname:$('#tempfirstname').val(),
+																									tempaddress:$('#tempaddress').val(),
+																									tempemailaddress:$('#tempemailaddress').val(),
+																									tempcontactnumber:$('#tempcontactnumber').val(),
+																									}).done(data =>{
+
+																										window.location=`/index/document/form?documentType=${$('#documenttype').val()}&lastName=${$('#lastName').val()}&firstName=${$('#firstName').val()}&eventDate=${eventDate}&birthday=${birthDate}&eventinfoID=${eventinfoID}&id=${data.tempuser.insertId}`
+																									
+																								})
+																							})
+														
+
+																						$('#tempUserModal').modal('show');	
+																						$('#tempUserModal').on('hidden.bs.modal',function(){
+																							$('#tempbodyAppend').empty()
+																						})
+																					}
+																				})
+																			
+
+
+
+
+																					
+																			}
+																		})
+
+																}
+																else{
+																	const swalWithBootstrapButtons = Swal.mixin({
+																	confirmButtonClass: 'btn btn-success',
+																	cancelButtonClass: 'btn btn-danger',
+																	buttonsStyling: false,
+																	})
+
+																	swalWithBootstrapButtons.fire({
+																	title: 'Do you have an account?',
+																	//- text: "Do you have an account?",
+																	type: 'info',
+																	showCancelButton: true,
+																	confirmButtonText: 'Yes, I have',
+																	cancelButtonText: 'No, don\'t have',
+																	reverseButtons: true
+																	}).then((result) => {
+																		//for yes
+																		if (result.value) {
+																			console.log('ey')
+																			$.post('/login/query',{id:14}).done(data =>{
+																				window.location=`/login? 
+																					redirect="14"&documentType=${$('#documenttype').val()}&lastName=${$('#lastName').val()}&firstName=${$('#firstName').val()}&eventDate=${eventDate}&birthday=${birthDate}&eventinfoID=${eventinfoID}`
+																			})
+																		}
+																		//for no
+																		else {
+																			
+																			$('#submitButton').click(function(){
+																					$.post('/index/tempuser',{
+																						templastname:$('#templastname').val(),
+																						tempfirstname:$('#tempfirstname').val(),
+																						tempaddress:$('#tempaddress').val(),
+																						tempemailaddress:$('#tempemailaddress').val(),
+																						tempcontactnumber:$('#tempcontactnumber').val(),
+																						}).done(data =>{
+
+																							window.location=`/index/document/form?documentType=${$('#documenttype').val()}&lastName=${$('#lastName').val()}&firstName=${$('#firstName').val()}&eventDate=${eventDate}&birthday=${birthDate}&eventinfoID=${eventinfoID}&id=${data.tempuser.insertId}`
+																						
+																					})
+																				})
+											
+
+																			$('#tempUserModal').modal('show');	
+																			$('#tempUserModal').on('hidden.bs.modal',function(){
+																				$('#tempbodyAppend').empty()
+																			})
+																		}
+																	})
+																	
+
+																}
+														})
+
+														}
+
+												})
+											}
+											else{
+													swal({
+															title:'Sorry',
+															text: 'Your transaction does not exist. Check the data you have entered and try again.',
+															type:'warning',
+															showCancelButton: true,
+															confirmButtonColor: '#3085d6',
+															cancelButtonColor: '#d33',
+															confirmButtonText: 'Confirm'
+													})
+
+											}
+									})
 								})
-							})
+							}
 						})
 			})
 			////////////////////////////////////////////

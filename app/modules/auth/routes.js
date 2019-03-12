@@ -8,9 +8,14 @@ var db = require('../../lib/database')();
 
 loginRouter.route('/query')
     .post(authMiddleware.noAuthed, (req, res) => {
-        console.log(req.body.id)
+        console.log('============================')
+        console.log(req.body)
+        console.log('============================')
+        console.log(req.query)
+        console.log('============================')
         req.session.eventId = req.body.id
-        res.render('auth/views/login');
+        req.session.document =req.body
+       return res.render('auth/views/login');
     })
 loginRouter.route('/queryservice')
     .post(authMiddleware.noAuthed, (req, res) => {
@@ -156,6 +161,7 @@ loginRouter.route('/')
                 else if(req.session.eventId == 14){
                     delete user.var_password;
                     req.session.user = user;
+                    console.log(req.body)
                     console.log(req.session);
                     return res.redirect('/guest/document/form');
                 }
