@@ -397,6 +397,8 @@ block addjs
 			else{
 				//- $('#nextButton2').addClass('btn-next')
 				//- $(document).on('click','.form-wizard #nextButton2', function() {
+					$('html, body').animate({
+						scrollTop:$('.header-text').position().top},600);
 					var parent_fieldset = $(this).parents('fieldset');
 					var next_step = true;
 					// navigation steps / progress steps
@@ -1401,7 +1403,7 @@ block addjs
 					firstname: {
 						validators: {
 								notEmpty: {
-										message: `Please Enter Your Last Name`
+										message: `Please Enter Your First Name`
 								},
 								regexp: {
 									regexp: /^([a-zs ]{2,})+$/i,
@@ -1534,7 +1536,7 @@ block addjs
 					image: {
 							validators: {
 								notEmpty: {
-									message: `Please Enter Details`
+									message: `Please Enter Birth Certificate`
 									},
 								}
 							},
