@@ -156,7 +156,7 @@ block prepend main
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true' style='color:white') ×
 					.modal-body#paymentAppend
-					.modal-footer#footerpayment
+					.modal-footer.footerpayment
 						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
 						button.btn#updatePaymentButton(type="button" style='background:#367587; color:white') Update Payment
 	#updatepaymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
@@ -730,8 +730,8 @@ block addjs
 						<div id="compose-area"></div>
 					`)
 					if(data.results.char_paymentstatus=='Paid'){
-						$('#footerpayment').empty()
-						$('#footerpayment').append(`
+						$('.footerpayment').empty()
+						$('.footerpayment').append(`
 						<button class="btn btn-outline btn-secondary pull-left" id="cancelButton" type="button" data-dismiss="modal">Close</button>
 						`)
 					}

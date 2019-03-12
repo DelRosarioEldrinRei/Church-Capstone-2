@@ -117,7 +117,7 @@ block prepend main
 																									i.ti-new-window(style="color:white;")
 																								
 																								a.scheduleButton(href='#')
-																									i.ti-calendar(style="color:white;") #{marriage.int_userpriestID}
+																									i.ti-calendar(style="color:white;")
 																					
 																		-else
 																			tr
@@ -140,7 +140,7 @@ block prepend main
 																				- if(marriage.dbl_balance < (marriage.dbl_amount/2)&& marriage.int_userpriestID ==null)
 																					td
 																						button.btn.assignPriest(type="button" style='background:green; color:white' value=`${marriage.int_eventinfoID}`) Assign Priest
-																				- if(marriage.dbl_balance > (marriage.dbl_amount/2))
+																				- if(marriage.dbl_balance > (marriage.dbl_amount/2) && marriage.int_userpriestID ==null)
 																					td No priest assigned
 																				td.td-actions.text-center
 																					button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)
@@ -154,7 +154,7 @@ block prepend main
 																									i.ti-new-window(style="color:white;")
 																								
 																								a.scheduleButton(href='#')
-																									i.ti-calendar(style="color:white;") #{marriage.int_userpriestID}
+																									i.ti-calendar(style="color:white;")
 																						
 																								
 
@@ -203,7 +203,7 @@ block prepend main
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true' style='color:white') ×
 					.modal-body#paymentAppend
-					.modal-footer
+					.modal-footer.footerpayment
 						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
 						button.btn#updatePaymentButton(type="button" style='background:#367587; color:white') Update Payment
 	#updatepaymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
@@ -1055,6 +1055,12 @@ block addjs
 										<div id="compose-area"></div>
 									
 									`)
+									if(data.results.char_paymentstatus=='Paid'){
+										$('.footerpayment').empty()
+										$('.footerpayment').append(`
+										<button class="btn btn-outline btn-secondary pull-left" id="cancelButton" type="button" data-dismiss="modal">Close</button>
+										`)
+									}
 									
 									if(data.paymenthistory!=null){
 										console.log('not null')
