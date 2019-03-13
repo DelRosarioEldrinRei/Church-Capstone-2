@@ -276,6 +276,7 @@ block addjs
 			$(document).on('click', '.viewButton', function(){
 				console.log(idNow)
 				$.post('/secretariat/transaction-houseblessing/query',{id:idNow}).done(data =>{
+					
 					var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
 					var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
 					var age = moment().diff(data.date_birthday,'years');
@@ -313,16 +314,28 @@ block addjs
 				$.post('/secretariat/transaction-houseblessing/query/updateStatus',{id:idNow}).done(data=>{
 					console.log(data)
 					if(data.results.var_applicationtype=='Walk-in'){
+						
 						if(data.requirements[0].var_reqpath==null){
-							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted`)
+							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted.
+							<hr>
+							<h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>`)
 							$('#insertFile').modal('show')
 								$('#insertFile').on('hidden.bs.modal',function(){
 									$('#insertFileAppend').empty()
 								})
 						}
 						else{
-							
-							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}`)
+							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}
+							<hr>
+							<h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>`)
 							$('#walkin').modal('show')
 								$('#walkin').on('hidden.bs.modal',function(){
 									$('#walkinAppend').empty()
@@ -558,6 +571,15 @@ block addjs
 						})
 						}
 						
+					}
+					if(data.results.var_applicationtype=='No account'){
+					$('#status').append(`
+					<hr><h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>
+					`)
 					}
 				})
 			})

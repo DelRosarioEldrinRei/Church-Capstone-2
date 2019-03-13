@@ -22,6 +22,48 @@ block prepend main
 						h6.c-grey-900 Regular Baptism
 						.mT-30
 							form
+								h5.label-control Contact Details
+								.row
+									
+									.form-group.col-md-6
+										.form-group
+											label Last Name
+												.text-danger.d-inline *
+											input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+											.invalid-feedback Please re-enter your valid last name.
+
+									.form-group.col-md-6
+										.form-group
+											.invalid-feedback Please re-enter your valid last name.
+											label First Name
+												.text-danger.d-inline *
+											input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
+											.invalid-feedback Please provide a valid first name.
+								.row
+									.form-group.col-md-12
+										.form-group
+											label Address
+												.text-danger.d-inline *
+											input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+											.invalid-feedback Please re-enter your valid first name. 
+
+								.row
+									.form-group.col-md-6
+										.form-group
+											label Contact Number
+												.text-danger.d-inline *
+											input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+											.invalid-feedback Please re-enter your valid contact number.
+
+									.form-group.col-md-6
+										.form-group
+											.invalid-feedback Please re-enter your valid contact number.
+											label Email Address
+												.text-danger.d-inline *
+											input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
+											.invalid-feedback Please provide a valid email address
+								hr
+								h5.label-control Application Details
 								.row
 									.col-md-3.px-lg-3.px-md-3.px-sm-0
 											.form-group.m-0.p-0
@@ -491,6 +533,11 @@ block addjs
 							numofaddsponsors:$('#numofaddsponsors').val(),
 							firstsponsor:$('#firstsponsor').val(),
 							secondsponsor:$('#secondsponsor').val(),
+							templastname:$('#templastname').val(),
+							tempfirstname:$('#tempfirstname').val(),
+							tempaddress:$('#tempaddress').val(),
+							tempemailaddress:$('#tempemailaddress').val(),
+							tempcontactnumber:$('#tempcontactnumber').val(),
 						}).done(data =>{
 							swal({
 							title:'Success',

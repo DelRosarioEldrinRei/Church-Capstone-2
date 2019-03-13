@@ -423,16 +423,29 @@ block addjs
 			$('.updateReqButton').click(function(){
 				$.post('/secretariat/transaction-spcbaptism/query/updateStatus',{id:idNow}).done(data=>{
 					
-				if(data.results.var_applicationtype=='Walk-in'){
+				if(data.results.var_applicationtype=='Walk-in' || data.results.var_applicationtype=='No account'){
+						
 						if(data.requirements[0].var_reqpath==null){
-							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted`)
+							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted.
+							<hr>
+							<h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>`)
 							$('#insertFile').modal('show')
 								$('#insertFile').on('hidden.bs.modal',function(){
 									$('#insertFileAppend').empty()
 								})
 						}
 						else{
-							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}`)
+							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}
+							<hr>
+							<h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>`)
 							$('#walkin').modal('show')
 								$('#walkin').on('hidden.bs.modal',function(){
 									$('#walkinAppend').empty()
@@ -1193,7 +1206,7 @@ block addjs
 				$('#divisions').append(`
 						<option>No division selected</option>
 					`)
-				$.post('/secretariat/transaction-spcbaptism/getdivisions',{ cabinetID:$i}).done(data=>{
+				$.post('/secretariat/getdivisions',{ cabinetID:$i}).done(data=>{
 					console.log(data)
 					for(i=0;i<data.divisions.length;i++){
 					$('#divisions').append(`
@@ -1206,7 +1219,7 @@ block addjs
 				console.log($i)
 				$("#folders").empty();
 
-				$.post('/secretariat/transaction-spcbaptism/getfolders',{ location:$i}).done(data=>{
+				$.post('/secretariat/getfolders',{ location:$i}).done(data=>{
 					console.log(data)
 					var newID= data.folders.max +1
 					$('#folderID').val(`${newID}`)

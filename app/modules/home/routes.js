@@ -258,7 +258,8 @@ indexRouter.post('/anointing/form', upload.single('image'),(req, res) => {
       
   // });
 indexRouter.get('/anointing/utilities/query', (req, res)=>{
-  var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = (select int_eventID from tbl_services where var_eventname="Anointing of the sick")`
+  var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 
+  (select int_eventID from tbl_services where var_eventname="Anointing of the sick")`
   db.query(queryString3,(err,results,fields)=>{
       console.log(results)
   res.send(results)
@@ -280,8 +281,9 @@ console.log(req.body)
 //=============================================================
 indexRouter.get('/funeral/utilities/query', (req, res)=>{
   var queryString3 = `SELECT * FROM tbl_utilities where int_eventID =
-  (select int_eventID from tbl_services where var_eventname="Funeral Service")}`
+  (select int_eventID from tbl_services where var_eventname="Funeral Service")`
   db.query(queryString3,(err,results,fields)=>{
+    if(err) console.log(err)
       console.log(results)
   res.send(results)
 })
@@ -289,7 +291,20 @@ indexRouter.get('/funeral/utilities/query', (req, res)=>{
 
 
 indexRouter.get('/funeralform', (req, res) => {
-  res.render('home/views/forms/funeral')
+
+  var queryString= `select int_eventID from tbl_services where var_eventname="Funeral Service"`
+  db.query(queryString, (err, results, fields) => {
+      if (err) console.log(err);
+      console.log(results);
+      console.log(req.query)
+      var queryString= `select * from tbl_tempuser where int_tempuserID =?`
+      db.query(queryString,[req.query.id], (err, results2, fields) => {
+        var user=results2[0]
+      console.log(results2)
+
+      return res.render('home/views/forms/funeral',{ID:results, user:user})
+  });})
+  
 });
 indexRouter.post('/funeral/query', (req, res) => {
 
@@ -313,12 +328,12 @@ indexRouter.post('/funeral/form',upload.single('image'),(req, res) => {
           var desiredtimeend= moment(req.body.desiredtimeend, 'hh:mm A').format('HH:mm:ss');
           var datenow = new Date();
           var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-          var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID,date_eventdate, time_eventstart, time_eventend, char_approvalstatus, char_requirements, date_applied) VALUES(?,?,?,?,?,?,?,?)`;
-          db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1,desiredtime1, desiredtimeend,"Pending", 'Submitted', dateNow], (err, results, fields) => {
+          var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID,date_eventdate, time_eventstart, time_eventend, char_approvalstatus, char_requirements, date_applied, var_applicationtype) VALUES(?,?,?,?,?,?,?,?,?)`;
+          db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1,desiredtime1, desiredtimeend,"Pending", 'Submitted', dateNow, 'No account'], (err, results, fields) => {
               if (err) console.log(err);
               var eventinfoID= results;
 
-          queries( eventID, eventinfoID.insertId);;});});
+          queries( eventID, eventinfoID.insertId)});});
   }
 
   if(req.body.blessloc =='2'){
@@ -349,8 +364,8 @@ indexRouter.post('/funeral/form',upload.single('image'),(req, res) => {
                   console.log(paymentid)
                   var datenow = new Date();
                   var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-                  var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, time_eventend, int_paymentID, char_approvalstatus, char_requirements, date_applied) VALUES(?,?,?,?,?,?,?,?,?)`;
-                  db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1, desiredtime1, desiredtimeend,paymentid.insertId, "Pending", "Submitted", dateNow], (err, results, fields) => {
+                  var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID, date_eventdate, time_eventstart, time_eventend, int_paymentID, char_approvalstatus, char_requirements, date_applied, var_applicationtype) VALUES(?,?,?,?,?,?,?,?,?,?)`;
+                  db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1, desiredtime1, desiredtimeend,paymentid.insertId, "Pending", "Submitted", dateNow, 'No account'], (err, results, fields) => {
                       if (err) console.log(err);
                       var eventinfoID= results;
                       var text="";
@@ -364,8 +379,8 @@ indexRouter.post('/funeral/form',upload.single('image'),(req, res) => {
                       var dateDue1 = moment(dateDue).format('YYYY-MM-DD')
                       console.log(dateNow)
                       console.log(dateDue1)
-                      var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_userID,var_vouchercode) VALUES(?,?,now(),?,?)`
-                      db.query(queryString9,[eventinfoID.insertId,dateDue1,req.session.user.int_userID,text],(err,results,fields)=>{
+                      var queryString9 = `INSERT INTO tbl_voucherevents(int_eventinfoID,date_issued,date_due,int_tempuserID,var_vouchercode) VALUES(?,?,now(),?,?)`
+                      db.query(queryString9,[eventinfoID.insertId,dateDue1,req.body.userID,text],(err,results,fields)=>{
                           if(err) throw err 
           
           queries( eventID, eventinfoID.insertId);
@@ -472,8 +487,8 @@ indexRouter.post('/establishment/form',upload.single('image'), (req, res) => {
                       
                       var datenow = new Date();
                       var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-                      var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, time_eventend,char_approvalstatus, char_requirements, date_applied) VALUES(?,?,?,?,?,?,?,?)`
-                          db.query(queryString1, [req.session.user.int_userID,12, req.body.desireddate1, desiredtime1, desiredtimeend,"Pending", "Submitted", dateNow], (err, results, fields) => {
+                      var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID, date_eventdate, time_eventstart, time_eventend,char_approvalstatus, char_requirements, date_applied) VALUES(?,?,?,?,?,?,?,?)`
+                          db.query(queryString1, [req.body.userID,12, req.body.desireddate1, desiredtime1, desiredtimeend,"Pending", "Submitted", dateNow], (err, results, fields) => {
                               if (err) console.log(err);
                               var eventinfoID= results;
                               console.log(eventinfoID)
@@ -502,8 +517,8 @@ indexRouter.post('/establishment/form',upload.single('image'), (req, res) => {
                           var reqq = results[0];
                           var datenow = new Date();
                           var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-                          var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart,time_eventend, char_approvalstatus, char_requirements, date_applied) VALUES(?,?,?,?,?,?,?,?)`
-                          db.query(queryString1, [req.session.user.int_userID, eventID.int_eventID, req.body.desireddate1, desiredtime1,desiredtimeend, "Pending", "Submitted", dateNow], (err, results, fields) => {
+                          var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID, date_eventdate, time_eventstart,time_eventend, char_approvalstatus, char_requirements, date_applied) VALUES(?,?,?,?,?,?,?,?)`
+                          db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1, desiredtime1,desiredtimeend, "Pending", "Submitted", dateNow], (err, results, fields) => {
                               if (err) console.log(err);
                               var eventinfoID= results;
                               var queryString3 = `INSERT INTO tbl_houseblessing(int_eventinfoID,var_owner, var_estloc, var_ownercontactnum, var_owneremailadd) VALUES(?,?,?,?,?);`

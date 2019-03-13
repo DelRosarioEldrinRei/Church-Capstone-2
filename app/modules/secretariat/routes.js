@@ -473,8 +473,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 	secretariatRouter.get('/transaction-documentrequest', (req, res)=>{
         
         
-		var queryString1 =`SELECT * FROM tbl_documentrequest 
-		join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID 
+        var queryString1 =`SELECT * FROM tbl_documentrequest 
+        join tbl_document on tbl_documentrequest.int_documentID = tbl_document.int_documentID order by int_requestID DESC
 		`
 		db.query(queryString1, (err, results, fields) => {
 			if (err) console.log(err);       
@@ -854,14 +854,15 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
  
     secretariatRouter.get('/transaction-regularbaptism', (req, res)=>{        
         var queryString1 =`SELECT * FROM tbl_eventinfo 
-        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         JOIN tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
         JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
         JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
-        where tbl_services.var_eventname ='Baptism' and tbl_eventinfo.var_eventstatus<>'Done' and tbl_eventinfo.var_eventstatus<>'Cancelled'`
+        where tbl_services.var_eventname ='Baptism' and tbl_eventinfo.var_eventstatus<>'Done' and tbl_eventinfo.var_eventstatus<>'Cancelled'
+        order by tbl_eventinfo.int_eventinfoID DESC`
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
                 var regulars=results;
@@ -904,14 +905,36 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         WHERE tbl_eventinfo.int_eventinfoID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);
+            var resultss = results[0]
+            console.log('------------------------------')
+            console.log(results)
+            console.log('------------------------------')
             var queryString2 = `SELECT * from tbl_requirements
             JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
             JOIN tbl_eventinfo ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_requirementtype ON tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
             WHERE tbl_eventinfo.int_eventinfoID = ?`
             db.query(queryString2,[req.body.id], (err, results1, fields) => {
-                res.send({results:results[0],requirements:results1})
-                console.log(results1)
+                if(resultss.var_applicationtype=='Walk-in' || resultss.var_applicationtype=='No account'){
+                    console.log('====yes=====')
+                    console.log(resultss.int_tempuserID)
+                    var tempuserdetails= `select * from tbl_tempuser where int_tempuserID =?`
+                    db.query(tempuserdetails,[resultss.int_tempuserID], (err, results2, fields) => {
+                        var tempuser= results2[0]
+
+                        
+                        
+                        console.log(tempuser)
+                        console.log('-----------------------')
+                        
+                        res.send({results:resultss,requirements:results1, tempuser:tempuser})
+                        console.log(results1)
+                    })
+                }
+                else{
+                    res.send({results:resultss,requirements:results1, tempuser:null})
+                        console.log(results1)
+                }
             })
         });
     });
@@ -1058,7 +1081,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         console.log(req.body.id1)
         var queryString1 =`SELECT * from tbl_eventinfo 
        
-        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        
         join tbl_utilities on tbl_eventinfo.int_eventID = tbl_utilities.int_eventID
         JOIN tbl_baptism on tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_relation on tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID   
@@ -1069,7 +1092,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         db.query(queryString1,[req.body.id1], (err, results, fields) => {
             if (err) console.log(err);
             var queryString2 =`SELECT * from tbl_eventinfo 
-            join tbl_user on tbl_eventinfo.int_userID =  tbl_user.int_userID
+            
             JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
             JOIN tbl_paymenthistory ON tbl_paymenthistory.int_paymentID = tbl_payment.int_paymentID
             where tbl_eventinfo.int_eventinfoID = ?`
@@ -1087,6 +1110,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     });
     secretariatRouter.post('/transaction-baptism/updatepaymentquery', (req, res)=>{
         console.log(req.body.id1)
+        var queryString =`SELECT * FROM tbl_eventinfo where int_eventinfoID = ?`
+        db.query(queryString,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            var type = results[0]
+        if(type.var_requesttype=='Online'){
         var queryString1 =`SELECT * from tbl_eventinfo 
        
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
@@ -1104,14 +1132,35 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             db.query(queryString2,(err,results1,fields) =>{
                 if(err) console.log(err)
                 console.log(results1)
+                res.send({results:results[0], ornumber:results1[0]})
+            
+                });
+            });
+        }
+        else{
+            var queryString1 =`SELECT * from tbl_eventinfo 
+       
+        JOIN tbl_tempuser on tbl_eventinfo.int_tempuserID =tbl_tempuser.int_tempuserID
+        join tbl_utilities on tbl_eventinfo.int_eventID = tbl_utilities.int_eventID
+        JOIN tbl_baptism on tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_relation on tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID   
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        JOIN tbl_voucherevents ON tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        where tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString1,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            var queryString2 =`select MAX(int_ORnumber) as max from tbl_paymenthistory`
 
-
-
-
-            res.send({results:results[0], ornumber:results1[0]})
-            // console.log(results[0])
-        });
-    });
+            db.query(queryString2,(err,results1,fields) =>{
+                if(err) console.log(err)
+                console.log(results1)
+                res.send({results:results[0], ornumber:results1[0]})
+            
+                });
+            });
+        }
+    })
     });
 
     secretariatRouter.post('/transaction-baptism/changepaymentstatus', (req, res)=>{
@@ -1202,14 +1251,15 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     secretariatRouter.get('/transaction-specialbaptism', (req, res)=>{        
       
         var queryString3 =`SELECT * FROM tbl_eventinfo 
-            JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID 
+            
             JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
             JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
             join tbl_baptism on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
             JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
             JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
-            where tbl_services.var_eventname ='Special Baptism'`
+            where tbl_services.var_eventname ='Special Baptism'
+            order by tbl_eventinfo.int_eventinfoID DESC`
 
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
@@ -1255,14 +1305,33 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         WHERE tbl_eventinfo.int_eventinfoID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);
+            var resultss=results[0]
             var queryString2 = `SELECT * from tbl_requirements
             JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
             JOIN tbl_eventinfo ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_requirementtype ON tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
             WHERE tbl_eventinfo.int_eventinfoID = ?`
             db.query(queryString2,[req.body.id], (err, results1, fields) => {
-                res.send({results:results[0],requirements:results1})
-                console.log(results1)
+                if(resultss.var_applicationtype=='Walk-in' || resultss.var_applicationtype=='No account'){
+                    console.log('====yes=====')
+                    console.log(resultss.int_tempuserID)
+                    var tempuserdetails= `select * from tbl_tempuser where int_tempuserID =?`
+                    db.query(tempuserdetails,[resultss.int_tempuserID], (err, results2, fields) => {
+                        var tempuser= results2[0]
+
+                        
+                        console.log('-----------------------')
+                        console.log(tempuser)
+                        console.log('-----------------------')
+                        
+                        res.send({results:resultss,requirements:results1, tempuser:tempuser})
+                        console.log(results1)
+                    })
+                }
+                else{
+                    res.send({results:resultss,requirements:results1, tempuser:null})
+                        console.log(results1)
+                }
             })
         });
     });
@@ -1626,7 +1695,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         console.log(req.body.id1)
         var queryString1 =`SELECT * from tbl_eventinfo 
        
-        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        
         join tbl_utilities on tbl_eventinfo.int_eventID = tbl_utilities.int_eventID
         JOIN tbl_baptism on tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_relation on tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID   
@@ -1637,7 +1706,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         db.query(queryString1,[req.body.id1], (err, results, fields) => {
             if (err) console.log(err);
             var queryString2 =`SELECT * from tbl_eventinfo 
-            join tbl_user on tbl_eventinfo.int_userID =  tbl_user.int_userID
+            
             JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
             JOIN tbl_paymenthistory ON tbl_paymenthistory.int_paymentID = tbl_payment.int_paymentID
             where tbl_eventinfo.int_eventinfoID = ?`
@@ -1655,6 +1724,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     });
     secretariatRouter.post('/transaction-spcbaptism/updatepaymentquery', (req, res)=>{
         console.log(req.body.id1)
+        var queryString =`SELECT * FROM tbl_eventinfo where int_eventinfoID = ?`
+        db.query(queryString,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            var type = results[0]
+        if(type.var_requesttype=='Online'){
         var queryString1 =`SELECT * from tbl_eventinfo 
        
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
@@ -1678,8 +1752,37 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
             res.send({results:results[0], ornumber:results1[0]})
             // console.log(results[0])
+            });
         });
-    });
+        }
+        else{
+            var queryString1 =`SELECT * from tbl_eventinfo 
+       
+        JOIN tbl_tempuser on tbl_eventinfo.int_tempuserID =tbl_tempuser.int_tempuserID
+        join tbl_utilities on tbl_eventinfo.int_eventID = tbl_utilities.int_eventID
+        JOIN tbl_baptism on tbl_baptism.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_relation on tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID   
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        JOIN tbl_voucherevents ON tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        where tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString1,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            var queryString2 =`select MAX(int_ORnumber) as max from tbl_paymenthistory`
+
+            db.query(queryString2,(err,results1,fields) =>{
+                if(err) console.log(err)
+                console.log(results1)
+
+
+
+
+            res.send({results:results[0], ornumber:results1[0]})
+            // console.log(results[0])
+            });
+        });
+        }
+    })
     });
     secretariatRouter.post('/transaction-spcbaptism/changepaymentstatus', (req, res)=>{
         var success =0
@@ -1769,7 +1872,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     //anointing of the sick 
     secretariatRouter.get('/transaction-anointing', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
-        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
@@ -1799,21 +1902,46 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             }); 
     });
     secretariatRouter.post('/transaction-anointing/query', (req, res)=>{
-        var queryString1 =`SELECT * from tbl_eventinfo 
-       
-        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
-        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
-        JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
-        JOIN tbl_blessing ON tbl_blessing.int_eventinfoID = tbl_eventinfo.int_eventinfoID
-        JOIN tbl_requirementtype ON tbl_requirementtype.int_eventID = tbl_services.int_eventID
-        JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
-        JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
-        where tbl_eventinfo.int_eventinfoID = ?`
-        db.query(queryString1,[req.body.id], (err, results, fields) => {
+        var initial =`SELECT * from tbl_eventinfo where tbl_eventinfo.int_eventinfoID = ?`
+        db.query(initial,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);
-            res.send(results[0])
-            console.log(results[0])
-        });
+
+            if(results[0].var_applicationtype=='Walk-in' || results[0].var_applicationtype=='No account'){
+                console.log('No accoutn/ walk-in')
+                var queryString1 =`SELECT * from tbl_eventinfo
+                JOIN tbl_tempuser on tbl_eventinfo.int_tempuserID =tbl_tempuser.int_tempuserID
+                JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+                JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                JOIN tbl_blessing ON tbl_blessing.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                JOIN tbl_requirementtype ON tbl_requirementtype.int_eventID = tbl_services.int_eventID
+                JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
+                where tbl_eventinfo.int_eventinfoID = ?`
+                db.query(queryString1,[req.body.id], (err, results, fields) => {
+                    if (err) console.log(err);
+                    res.send(results[0])
+                    console.log(results[0])
+                });
+            }
+            else{
+                console.log('With account')
+                var queryString1 =`SELECT * from tbl_eventinfo
+                JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+                JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+                JOIN tbl_relation ON tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                JOIN tbl_blessing ON tbl_blessing.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                JOIN tbl_requirementtype ON tbl_requirementtype.int_eventID = tbl_services.int_eventID
+                JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+                JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
+                where tbl_eventinfo.int_eventinfoID = ?`
+                db.query(queryString1,[req.body.id], (err, results, fields) => {
+                    if (err) console.log(err);
+                    res.send(results[0])
+                    console.log(results[0])
+                });
+            }
+        })
+       
     });
     secretariatRouter.post('/transaction-anointing/query/updateStatus', (req, res)=>{
         var queryString1 =`SELECT * from tbl_eventinfo 
@@ -1826,18 +1954,46 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         WHERE tbl_eventinfo.int_eventinfoID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);
-            console.log(results)
+            // console.log(results)
+            var resultss = results[0]
+            console.log('-----------------------')
+            console.log(resultss)
+            console.log('-----------------------')
             var queryString2 = `SELECT * from tbl_requirements
             JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
             JOIN tbl_eventinfo ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_requirementtype ON tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
             WHERE tbl_eventinfo.int_eventinfoID = ?`
             db.query(queryString2,[req.body.id], (err, results1, fields) => {
-                res.send({results:results[0],requirements:results1})
+                console.log('-----------------------')
                 console.log(results1)
+                console.log('-----------------------')
+                if(resultss.var_applicationtype=='Walk-in' || resultss.var_applicationtype=='No account'){
+                    console.log('====yes=====')
+                    console.log(resultss.int_tempuserID)
+                    var tempuserdetails= `select * from tbl_tempuser where int_tempuserID =?`
+                    db.query(tempuserdetails,[resultss.int_tempuserID], (err, results2, fields) => {
+                        var tempuser= results2[0]
+
+                        
+                        console.log('-----------------------')
+                        console.log(tempuser)
+                        console.log('-----------------------')
+                        
+                        res.send({results:resultss,requirements:results1, tempuser:tempuser})
+                        console.log(results1)
+                    })
+                }
+                else{
+                    res.send({results:resultss,requirements:results1, tempuser:null})
+                        console.log(results1)
+                }
+
+                
             })
         });
     });
+
     secretariatRouter.post('/transaction-anointing/updateStatus',(req,res)=>{
         var queryString3 = `UPDATE tbl_eventinfo SET char_approvalstatus =?
         WHERE int_eventinfoID = ?`
@@ -2051,12 +2207,13 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     //house blessing
     secretariatRouter.get('/transaction-houseblessing', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
-        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+       
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         join tbl_houseblessing on tbl_eventinfo.int_eventinfoID = tbl_houseblessing.int_eventinfoID
         where tbl_services.var_eventname = 'House Blessing' and
         tbl_eventinfo.char_approvalstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Done'
-        order by tbl_eventinfo.int_eventinfoID`
+        
+        order by tbl_eventinfo.int_eventinfoID DESC`
         
         
        
@@ -2106,15 +2263,33 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         WHERE tbl_eventinfo.int_eventinfoID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);
-            console.log(results)
+            var resultss= results[0]
             var queryString2 = `SELECT * from tbl_requirements
             JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
             JOIN tbl_eventinfo ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_requirementtype ON tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
             WHERE tbl_eventinfo.int_eventinfoID = ?`
             db.query(queryString2,[req.body.id], (err, results1, fields) => {
-                res.send({results:results[0],requirements:results1})
-                console.log(results1)
+                if(resultss.var_applicationtype=='Walk-in' || resultss.var_applicationtype=='No account'){
+                    console.log('====yes=====')
+                    console.log(resultss.int_tempuserID)
+                    var tempuserdetails= `select * from tbl_tempuser where int_tempuserID =?`
+                    db.query(tempuserdetails,[resultss.int_tempuserID], (err, results2, fields) => {
+                        var tempuser= results2[0]
+
+                        
+                        console.log('-----------------------')
+                        console.log(tempuser)
+                        console.log('-----------------------')
+                        
+                        res.send({results:resultss,requirements:results1, tempuser:tempuser})
+                        console.log(results1)
+                    })
+                }
+                else{
+                    res.send({results:resultss,requirements:results1, tempuser:null})
+                        console.log(results1)
+                }
             })
         });
     });
@@ -2424,15 +2599,17 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     //funeral service
     secretariatRouter.get('/transaction-funeralservice', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
-        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_requirements ON tbl_requirements.int_requirementID = tbl_requirementsinevents.int_requirementID
         join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_blessing.int_eventinfoID
         where tbl_services.var_eventname = 'Funeral Service'
-        and tbl_eventinfo.char_approvalstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Done'
-        order by tbl_eventinfo.int_eventinfoID`
+        and tbl_eventinfo.char_approvalstatus<>'Cancelled' 
+        and tbl_eventinfo.var_eventstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Done'
+        order by tbl_eventinfo.int_eventinfoID DESC
+        `
         
         
         
@@ -2484,15 +2661,33 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         WHERE tbl_eventinfo.int_eventinfoID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);
-            console.log(results)
+            var resultss = results[0]
             var queryString2 = `SELECT * from tbl_requirements
             JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
             JOIN tbl_eventinfo ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_requirementtype ON tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
             WHERE tbl_eventinfo.int_eventinfoID = ?`
             db.query(queryString2,[req.body.id], (err, results1, fields) => {
-                res.send({results:results[0],requirements:results1})
-                console.log(results1)
+                if(resultss.var_applicationtype=='Walk-in' || resultss.var_applicationtype=='No account'){
+                    console.log('====yes=====')
+                    console.log(resultss.int_tempuserID)
+                    var tempuserdetails= `select * from tbl_tempuser where int_tempuserID =?`
+                    db.query(tempuserdetails,[resultss.int_tempuserID], (err, results2, fields) => {
+                        var tempuser= results2[0]
+
+                        
+                        console.log('-----------------------')
+                        console.log(tempuser)
+                        console.log('-----------------------')
+                        
+                        res.send({results:resultss,requirements:results1, tempuser:tempuser})
+                        console.log(results1)
+                    })
+                }
+                else{
+                    res.send({results:resultss,requirements:results1, tempuser:null})
+                        console.log(results1)
+                }
             })
         });
     });
@@ -2710,7 +2905,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     //funeral mass
     secretariatRouter.get('/transaction-funeralmass', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
-        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
@@ -2719,7 +2914,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID
         where tbl_services.var_eventname = 'Funeral Mass'
         and tbl_eventinfo.char_approvalstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Done'
-        order by tbl_eventinfo.int_eventinfoID`
+        order by tbl_eventinfo.int_eventinfoID DESC`
        
             db.query(queryString1, (err, results, fields) => {
                 if (err) console.log(err);
@@ -2767,14 +2962,33 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         WHERE tbl_eventinfo.int_eventinfoID = ?`
         db.query(queryString1,[req.body.id], (err, results, fields) => {
             if (err) console.log(err);
+            var resultss=results[0]
             var queryString2 = `SELECT * from tbl_requirements
             JOIN tbl_requirementsinevents ON tbl_requirementsinevents.int_requirementID = tbl_requirements.int_requirementID
             JOIN tbl_eventinfo ON tbl_requirementsinevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
             JOIN tbl_requirementtype ON tbl_requirementtype.int_reqtypeID = tbl_requirements.int_reqtypeID
             WHERE tbl_eventinfo.int_eventinfoID = ?`
             db.query(queryString2,[req.body.id], (err, results1, fields) => {
-                res.send({results:results[0],requirements:results1})
-                console.log(results1)
+                if(resultss.var_applicationtype=='Walk-in' || resultss.var_applicationtype=='No account'){
+                    console.log('====yes=====')
+                    console.log(resultss.int_tempuserID)
+                    var tempuserdetails= `select * from tbl_tempuser where int_tempuserID =?`
+                    db.query(tempuserdetails,[resultss.int_tempuserID], (err, results2, fields) => {
+                        var tempuser= results2[0]
+
+                        
+                        console.log('-----------------------')
+                        console.log(tempuser)
+                        console.log('-----------------------')
+                        
+                        res.send({results:resultss,requirements:results1, tempuser:tempuser})
+                        console.log(results1)
+                    })
+                }
+                else{
+                    res.send({results:resultss,requirements:results1, tempuser:null})
+                        console.log(results1)
+                }
             })
         });
     });
@@ -3007,7 +3221,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         console.log(req.body.id1)
         var queryString1 =`SELECT * from tbl_eventinfo 
        
-        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        
         join tbl_utilities on tbl_eventinfo.int_eventID = tbl_utilities.int_eventID
         JOIN tbl_blessing on tbl_blessing.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_relation on tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID   
@@ -3018,7 +3232,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         db.query(queryString1,[req.body.id1], (err, results, fields) => {
             if (err) console.log(err);
             var queryString2 =`SELECT * from tbl_eventinfo 
-            join tbl_user on tbl_eventinfo.int_userID =  tbl_user.int_userID
+            
             JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
             JOIN tbl_paymenthistory ON tbl_paymenthistory.int_paymentID = tbl_payment.int_paymentID
             where tbl_eventinfo.int_eventinfoID = ?`
@@ -3036,6 +3250,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     });
     secretariatRouter.post('/transaction-funeralmass/updatepaymentquery', (req, res)=>{
         console.log(req.body.id1)
+        var queryString =`SELECT * FROM tbl_eventinfo where int_eventinfoID = ?`
+        db.query(queryString,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            var type = results[0]
+        if(type.var_requesttype=='Online'){
         var queryString1 =`SELECT * from tbl_eventinfo 
        
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
@@ -3061,6 +3280,35 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             // console.log(results[0])
         });
     });
+    }
+    else{
+        var queryString1 =`SELECT * from tbl_eventinfo 
+       
+        JOIN tbl_tempuser on tbl_eventinfo.int_tempuserID =tbl_tempuser.int_tempuserID
+        join tbl_utilities on tbl_eventinfo.int_eventID = tbl_utilities.int_eventID
+        JOIN tbl_blessing on tbl_blessing.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        JOIN tbl_relation on tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID   
+        JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+        JOIN tbl_voucherevents ON tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        where tbl_eventinfo.int_eventinfoID = ?`
+        db.query(queryString1,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            var queryString2 =`select MAX(int_ORnumber) as max from tbl_paymenthistory`
+
+            db.query(queryString2,(err,results1,fields) =>{
+                if(err) console.log(err)
+                console.log(results1)
+
+
+
+
+            res.send({results:results[0], ornumber:results1[0]})
+            // console.log(results[0])
+        });
+    });
+    }
+    })
     });
 
     secretariatRouter.post('/transaction-funeralmass/changepaymentstatus', (req, res)=>{
@@ -3154,7 +3402,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         join tbl_blessing on tbl_eventinfo.int_eventinfoID = tbl_baptism.int_eventinfoID
         JOIN tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
         
-        where tbl_services.var_eventname ='Confirmation'`
+        where tbl_services.var_eventname ='Confirmation'
+        order by tbl_eventinfo.int_eventinfoID DESC`
         
         
             db.query(queryString1, (err, results, fields) => {
@@ -3290,7 +3539,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
     secretariatRouter.get('/transaction-marriage', (req, res)=>{
             var queryString1 =`SELECT * FROM tbl_eventinfo 
-            JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+           
             JOIN tbl_utilities ON tbl_utilities.int_eventID = tbl_eventinfo.int_eventID
             JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
             JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
@@ -3299,7 +3548,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             JOIN tbl_wedcouple on tbl_eventinfo.int_eventinfoID = tbl_wedcouple.int_eventinfoID
             JOIN tbl_wedgroom on tbl_eventinfo.int_eventinfoID = tbl_wedgroom.int_eventinfoID
             where tbl_services.var_eventname ='Marriage' 
-            and tbl_eventinfo.char_approvalstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Done' order by tbl_eventinfo.int_eventinfoID`
+            and tbl_eventinfo.char_approvalstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Cancelled' and tbl_eventinfo.var_eventstatus<>'Done' order by tbl_eventinfo.int_eventinfoID
+            order by tbl_eventinfo.int_eventinfoID DESC`
             
              
             db.query(queryString1, (err, results, fields) => {
@@ -3499,7 +3749,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         console.log(req.body.id1)
         var queryString1 =`SELECT * from tbl_eventinfo 
        
-        JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+        
         join tbl_utilities on tbl_eventinfo.int_eventID = tbl_utilities.int_eventID
         JOIN tbl_wedgroom on tbl_wedgroom.int_eventinfoID = tbl_eventinfo.int_eventinfoID
         JOIN tbl_wedbride on tbl_wedbride.int_eventinfoID = tbl_eventinfo.int_eventinfoID
@@ -3512,7 +3762,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         db.query(queryString1,[req.body.id1], (err, results, fields) => {
             if (err) console.log(err);
             var queryString2 =`SELECT * from tbl_eventinfo 
-            join tbl_user on tbl_eventinfo.int_userID =  tbl_user.int_userID
+           
             JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
             JOIN tbl_paymenthistory ON tbl_paymenthistory.int_paymentID = tbl_payment.int_paymentID
             where tbl_eventinfo.int_eventinfoID = ?`
@@ -3531,6 +3781,11 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
     secretariatRouter.post('/transaction-marriage/updatepaymentquery', (req, res)=>{
         console.log(req.body.id1)
+        var queryString =`SELECT * FROM tbl_eventinfo where int_eventinfoID = ?`
+        db.query(queryString,[req.body.id1], (err, results, fields) => {
+            if (err) console.log(err);
+            var type = results[0]
+        if(type.var_requesttype=='Online'){
         var queryString1 =`SELECT * from tbl_eventinfo 
        
         JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
@@ -3556,8 +3811,39 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
             res.send({results:results[0], ornumber:results1[0]})
             // console.log(results[0])
+            });
+            });
+        }
+        else{
+            var queryString1 =`SELECT * from tbl_eventinfo 
+       
+            JOIN tbl_tempuser on tbl_eventinfo.int_tempuserID =tbl_tempuser.int_tempuserID
+            join tbl_utilities on tbl_eventinfo.int_eventID = tbl_utilities.int_eventID
+            JOIN tbl_wedgroom on tbl_wedgroom.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            JOIN tbl_wedbride on tbl_wedbride.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            JOIN tbl_wedcouple on tbl_wedcouple.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            JOIN tbl_relation on tbl_relation.int_eventinfoID = tbl_eventinfo.int_eventinfoID   
+            JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+            JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+            JOIN tbl_voucherevents ON tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            where tbl_eventinfo.int_eventinfoID = ?`
+            db.query(queryString1,[req.body.id1], (err, results, fields) => {
+                if (err) console.log(err);
+                var queryString2 =`select MAX(int_ORnumber) as max from tbl_paymenthistory`
+    
+                db.query(queryString2,(err,results1,fields) =>{
+                    if(err) console.log(err)
+                    console.log(results1)
+    
+    
+    
+    
+                res.send({results:results[0], ornumber:results1[0]})
+                // console.log(results[0])
+            });
         });
-    });
+        }
+    })
     });
 
     //initial getting ng sched ni priest
@@ -4166,8 +4452,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         var insertfile = `insert into tbl_files(var_fileloc, int_requirementID) values(?,?) `
         db.query(insertfile,[folderloc,requirementID.int_requirementID],(err,results,fields) =>{
 
-            const queryString = `UPDATE tbl_requirements SET var_reqpath=? where int_requirementID =?`;
-            db.query(queryString,[folderloc,requirementID.int_requirementID],(err,results,fields) =>{
+            const queryString = `UPDATE tbl_requirements SET var_reqpath=?, var_reqstatus =? where int_requirementID =?`;
+            db.query(queryString,[folderloc,'Approved',requirementID.int_requirementID],(err,results,fields) =>{
             if(err) console.log(err)
             if (err){
                 console.log(err)
@@ -4190,9 +4476,14 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         console.log(req.body)
         var success =0
         var notsuccess =1
-       
+        //tempuserr
+        var tempuser =`INSERT INTO tbl_tempuser(var_userlname,var_userfname, var_useraddress, var_usercontactnum, var_useremail) VALUES(?,?,?,?,?)`
+        db.query(tempuser,[req.body.templastname, req.body.tempfirstname, req.body.tempaddress, req.body.tempcontactnumber, req.body.tempemailaddress], (err, results1, fields) => {
+        if(err) console.log(err)
+        var userdetails = results1
+        console.log(userdetails)
+        
         var queryString= `select int_eventID from tbl_services where var_eventname="Anointing of the sick"`
-            
         db.query(queryString, (err, results, fields) => {
                 if (err) console.log(err);
                 console.log(results);
@@ -4203,8 +4494,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             var desireddate= moment(req.body.desireddate, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var birthday= moment(req.body.birthday, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var nowDate = new Date(); 
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied, var_applicationtype) VALUES(?,?,?, ?,?,?,?,?)`
-                db.query(queryString1, [req.session.secretariat.int_userID, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate, "Walk-in"], (err, results, fields) => {
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied, var_applicationtype) VALUES(?,?,?, ?,?,?,?,?)`
+                db.query(queryString1, [userdetails.insertId, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate, "Walk-in"], (err, results, fields) => {
                     if (err) console.log(err);
                     var eventinfoID= results;
                         if (err) console.log(err);
@@ -4285,6 +4576,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                         });
                     })
                 })
+            })
         function priestassignment(eventinfoID){
 
             var queryString = `SELECT * FROM tbl_priestsequence WHERE char_seqstatus=?`
@@ -4395,21 +4687,29 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     var success =0
     var notsuccess =1
     function queries(paymentid){
-            
+          //tempuserr
+        var tempuser =`INSERT INTO tbl_tempuser(var_userlname,var_userfname, var_useraddress, var_usercontactnum, var_useremail) VALUES(?,?,?,?,?)`
+        db.query(tempuser,[req.body.templastname, req.body.tempfirstname, req.body.tempaddress, req.body.tempcontactnumber, req.body.tempemailaddress], (err, results1, fields) => {
+        if(err) console.log(err)
+        console.log('-------------------------------')
+        console.log('TEMP USER DETAILS')
+        var userdetails = results1
+        console.log('-------------------------------')
+        console.log(userdetails)  
         var queryString= `select int_eventID from tbl_services where var_eventname=?`
             
         db.query(queryString, [req.body.baptismtype],(err, results, fields) => {
                 if (err) console.log(err);
                 console.log(results);
                 var eventID = results[0];
-                console.log(req.session.secretariat.int_userID)
+               
             
             var desiredtime1= moment(req.body.desiredtime, 'h:mm a').format('HH:mm:ss');
             var desireddate= moment(req.body.desireddate, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var birthday= moment(req.body.birthday, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var nowDate = new Date(); 
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied,int_paymentID,var_applicationtype) VALUES(?,?,?,?,?,?,?,?,?)`
-                db.query(queryString1, [req.session.secretariat.int_userID, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate, paymentid,'Walk-in'], (err, results, fields) => {
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied,int_paymentID,var_applicationtype) VALUES(?,?,?,?,?,?,?,?,?)`
+                db.query(queryString1, [userdetails.insertId, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate, paymentid,'Walk-in'], (err, results, fields) => {
                     if (err) console.log(err);
                     var eventinfoID= results;
                         if (err) console.log(err);
@@ -4526,7 +4826,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                         })
                                     })
                                 }
-                            })})})})})})})
+                            })})})})})})})})
                                                     
         }
 
@@ -4679,15 +4979,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                     console.log(results)
                                     //nalagay na yung name
                                     // INSERT INFO COPY FOR OTHERS~
-                                    var datenoww= new Date();
-                                    var selecteventinfo = `select * from tbl_eventinfo where int_eventinfoID =? `
-                                    db.query(selecteventinfo,[eventinfoID],(err,results,fields)=>{
-                                    if(err) console.log(err);
-                                    var eventinfodetailss = results[0]
-                                    var notifdesc ='Your application is approved'
-                                    var insertnotif = `insert into tbl_notification(int_userID, var_notifdesc, int_eventinfoID, datetime_received) values(?,?,?,?)`
-                                    db.query(insertnotif,[eventinfodetailss.int_userID, notifdesc,eventinfoID, datenoww], (err, results4, fields) => {
-                                        if(err) console.log(err)
+                                   
 
 
 
@@ -4734,8 +5026,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                             })
                             })
                         
-                    })
-                })
+                 
+                
         }
     })
    
@@ -4750,7 +5042,12 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         var notsuccess =1
        function queries(paymentid){
         var queryString= `select int_eventID from tbl_services where var_eventname=?`
-            
+         //tempuserr
+         var tempuser =`INSERT INTO tbl_tempuser(var_userlname,var_userfname, var_useraddress, var_usercontactnum, var_useremail) VALUES(?,?,?,?,?)`
+         db.query(tempuser,[req.body.templastname, req.body.tempfirstname, req.body.tempaddress, req.body.tempcontactnumber, req.body.tempemailaddress], (err, results1, fields) => {
+         if(err) console.log(err)
+         var userdetails = results1
+         console.log(userdetails)
         db.query(queryString, [req.body.funeraltype],(err, results, fields) => {
                 if (err) console.log(err);
                 console.log(results);
@@ -4761,8 +5058,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             var desireddate= moment(req.body.desireddate, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var birthday= moment(req.body.birthday, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var nowDate = new Date(); 
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied, var_applicationtype, int_paymentID) VALUES(?,?,?,?, ?,?,?,?,?)`
-                db.query(queryString1, [req.session.secretariat.int_userID, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate,"Walk-in", paymentid], (err, results, fields) => {
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied, var_applicationtype, int_paymentID) VALUES(?,?,?,?, ?,?,?,?,?)`
+                db.query(queryString1, [userdetails.insertId, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate,"Walk-in", paymentid], (err, results, fields) => {
                     if (err) console.log(err);
                     var eventinfoID= results;
                         if (err) console.log(err);
@@ -4875,7 +5172,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                             
                                 }
 
-                }) }) }) })
+                }) }) }) })})
        }
        
 
@@ -5076,7 +5373,12 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         console.log(req.body)
         var success =0
         var notsuccess =1
-       
+        //tempuserr
+        var tempuser =`INSERT INTO tbl_tempuser(var_userlname,var_userfname, var_useraddress, var_usercontactnum, var_useremail) VALUES(?,?,?,?,?)`
+        db.query(tempuser,[req.body.templastname, req.body.tempfirstname, req.body.tempaddress, req.body.tempcontactnumber, req.body.tempemailaddress], (err, results1, fields) => {
+        if(err) console.log(err)
+        var userdetails = results1
+        console.log(userdetails)
         var queryString= `select int_eventID from tbl_services where var_eventname="House Blessing"`
             
         db.query(queryString, (err, results, fields) => {
@@ -5089,8 +5391,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             var desireddate= moment(req.body.desireddate, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var birthday= moment(req.body.birthday, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var nowDate = new Date(); 
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied, var_applicationtype) VALUES(?,?,?, ?,?,?,?,?)`
-                db.query(queryString1, [req.session.secretariat.int_userID, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate,'Walk-in'], (err, results, fields) => {
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied, var_applicationtype) VALUES(?,?,?, ?,?,?,?,?)`
+                db.query(queryString1, [userdetails.insertId, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate,'Walk-in'], (err, results, fields) => {
                     if (err) console.log(err);
                     var eventinfoID= results;
                         if (err) console.log(err);
@@ -5163,7 +5465,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                 
                             
                         });
-                    })
+                    })})
                 })
         
                 function priestassignment(eventinfoID){
@@ -5273,14 +5575,20 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
     secretariatRouter.post('/walkin-marriage', (req, res)=>{
         //main query
 
-        var success =0
+    var success =0
     var notsuccess =1
 
     var text="";
     console.log(req.body)
     var caseArray =[]
+     //tempuserr
+     var tempuser =`INSERT INTO tbl_tempuser(var_userlname,var_userfname, var_useraddress, var_usercontactnum, var_useremail) VALUES(?,?,?,?,?)`
+     db.query(tempuser,[req.body.templastname, req.body.tempfirstname, req.body.tempaddress, req.body.tempcontactnumber, req.body.tempemailaddress], (err, results1, fields) => {
+     if(err) console.log(err)
+     var userdetails = results1
+     console.log(userdetails)
     var queryString= `select int_eventID from tbl_services where var_eventname="Marriage";`
-    db.query(queryString, (err, results, fields) => {
+        db.query(queryString, (err, results, fields) => {
             if (err) console.log(err);
             var eventID = results[0];
             // console.log(eventID.int_eventID)
@@ -5314,8 +5622,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 var dateDue = moment(dateDue1).format('YYYY-MM-DD')
                 req.body.timeStart = moment(req.body.timeStart,'hh:mm a').format('HH:mm:ss')
                 req.body.timeEnd2 = moment(req.body.timeEnd2,'hh:mm a').format('HH:mm:ss')
-                var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID , date_eventdate, time_eventstart,time_eventend, char_approvalstatus, int_paymentID, char_requirements, date_applied) VALUES(?,?,?,?,?,?,?,?,?)`;
-                db.query(queryString1, [6, eventID.int_eventID, req.body.eventDate, req.body.timeStart,req.body.timeEnd2,"Pending", paymentid.insertId, "Incomplete", datenow], (err, results, fields) => {
+                var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID , date_eventdate, time_eventstart,time_eventend, char_approvalstatus, int_paymentID, char_requirements, date_applied) VALUES(?,?,?,?,?,?,?,?,?)`;
+                db.query(queryString1, [userdetails.insertId, eventID.int_eventID, req.body.eventDate, req.body.timeStart,req.body.timeEnd2,"Pending", paymentid.insertId, "Incomplete", datenow], (err, results, fields) => {
                     if (err) console.log(err);
                     var eventinfoID= results;
                     // console.log(eventinfoID.insertId)
@@ -5365,10 +5673,10 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                             
                                         });
                                     }      
-                                });});})});});});});
+                                });});})});});});});})
     });
 
-    function groombapconChecking(eventinfoID){
+        function groombapconChecking(eventinfoID){
         var gcurrparish;
         console.log('NAKAPASOK AKO SA GROOOOOOM')
         if(req.body.greligion=='Catholic'){

@@ -36,7 +36,7 @@ block prepend main
 																			//- td=funeral.int_eventinfoID
 																			input.form-control#int_userID(type='hidden' name='clientID' value=funeral.int_userID)
 																			input.form-control.eventinfoID(type='hidden' name='clientID' value=`${funeral.int_eventinfoID}`)
-																			td=funeral.var_lname + ", " + funeral.var_fname + " " + funeral.var_mname
+																			td=funeral.var_lname + ", " + funeral.var_fname 
 																			td=funeral.date_eventdate + ' ' + funeral.time_eventstart
 																			td=funeral.date_applied
 																			//- td=funeral.char_approvalstatus
@@ -64,7 +64,7 @@ block prepend main
 																			//- td=funeral.int_eventinfoID
 																			input.form-control#int_userID(type='hidden' name='clientID' value=funeral.int_userID)
 																			input.form-control.eventinfoID(type='hidden' name='clientID' value=`${funeral.int_eventinfoID}`)
-																			td=funeral.var_lname + ", " + funeral.var_fname + " " + funeral.var_mname
+																			td=funeral.var_lname + ", " + funeral.var_fname 
 																			td=funeral.date_eventdate + ' ' + funeral.time_eventstart
 																			td=funeral.date_applied
 																			//- td=funeral.char_approvalstatus
@@ -294,16 +294,30 @@ block addjs
 			})
 			$('.updateReqButton').click(function(){
 				$.post('/secretariat/transaction-funeralservice/query/updateStatus',{id:idNow}).done(data=>{
-				if(data.results.var_applicationtype=='Walk-in'){
+					console.log(data)
+				if(data.results.var_applicationtype=='Walk-in' ){
+						
 						if(data.requirements[0].var_reqpath==null){
-							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted`)
+							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted.
+							<hr>
+							<h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>`)
 							$('#insertFile').modal('show')
 								$('#insertFile').on('hidden.bs.modal',function(){
 									$('#insertFileAppend').empty()
 								})
 						}
 						else{
-							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}`)
+							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}
+							<hr>
+							<h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>`)
 							$('#walkin').modal('show')
 								$('#walkin').on('hidden.bs.modal',function(){
 									$('#walkinAppend').empty()
@@ -536,6 +550,15 @@ block addjs
 						$('#status').empty()
 					})
 				}
+				if(data.results.var_applicationtype=='No account'){
+					$('#status').append(`
+					<hr><h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>
+					`)
+					}
 				})
 			})
 			

@@ -323,85 +323,105 @@ block addjs
 			$(document).on('click', '.viewButton', function(){
 				console.log(idNow)
 				$.post('/secretariat/transaction-funeralmass/query',{id:idNow}).done(data =>{
-					var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
-					var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
-					var age = moment().diff(data.date_birthday,'years');
-					$('#viewBodyAppend').append(`
-					<form>
-						<div class="form-row">
-							<div class="form-group col-md-6">
-								<label>Desired Date:</label>
-								<input type="text" class="form-control" value="${dateRequested}" disabled>
+					
+
+					
+						var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
+						var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
+						var age = moment().diff(data.date_birthday,'years');
+						$('#viewBodyAppend').append(`
+						<form>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Desired Date:</label>
+									<input type="text" class="form-control" value="${dateRequested}" disabled>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Desired Time:</label>
+									<input type="text" class="form-control" value="${timeRequested}" disabled>
+								</div>
 							</div>
-							<div class="form-group col-md-6">
-								<label>Desired Time:</label>
-								<input type="text" class="form-control" value="${timeRequested}" disabled>
+							<label>Name of the Child:</label>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label>Last Name:</label>
+									<input type="text" class="form-control" value="${data.var_lname}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>First Name:</label>
+									<input type="text" class="form-control" value="${data.var_fname}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Middle Name:</label>
+									<input type="text" class="form-control" value="${(data.var_mname) ? data.var_mname : 'N/A'}" disabled>
+								</div>
 							</div>
-						</div>
-						<label>Name of the Child:</label>
-						<div class="form-row">
-							<div class="form-group col-md-4">
-								<label>Last Name:</label>
-								<input type="text" class="form-control" value="${data.var_lname}" disabled>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label>Gender:</label>
+									<input type="text" class="form-control" value="${data.char_gender}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Birth Date:</label>
+									<input type="text" class="form-control" value="${moment(data.date_birthday).format('MM/DD/YYYY')}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Birth Place:</label>
+									<input type="text" class="form-control" value="${data.var_birthplace}" disabled>
+								</div>
 							</div>
-							<div class="form-group col-md-4">
-								<label>First Name:</label>
-								<input type="text" class="form-control" value="${data.var_fname}" disabled>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Relationship with the Deceased:</label>
+									<input type="text" class="form-control" value="${data.var_relation}" disabled>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Cause of Death</label>
+									<input type="text" class="form-control" value="" disabled>
+								</div>
 							</div>
-							<div class="form-group col-md-4">
-								<label>Middle Name:</label>
-								<input type="text" class="form-control" value="${(data.var_mname) ? data.var_mname : 'N/A'}" disabled>
+							<div class="form-group">
+								<label>Blessing Venue:</label>
+								<input type="text" class="form-control" value="${data.var_blessingvenue}" disabled>
 							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col-md-4">
-								<label>Gender:</label>
-								<input type="text" class="form-control" value="${data.char_gender}" disabled>
-							</div>
-							<div class="form-group col-md-4">
-								<label>Birth Date:</label>
-								<input type="text" class="form-control" value="${moment(data.date_birthday).format('MM/DD/YYYY')}" disabled>
-							</div>
-							<div class="form-group col-md-4">
-								<label>Birth Place:</label>
-								<input type="text" class="form-control" value="${data.var_birthplace}" disabled>
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col-md-6">
-								<label>Relationship with the Deceased:</label>
-								<input type="text" class="form-control" value="${data.var_relation}" disabled>
-							</div>
-							<div class="form-group col-md-6">
-								<label>Cause of Death</label>
-								<input type="text" class="form-control" value="" disabled>
-							</div>
-						</div>
-						<div class="form-group">
-							<label>Blessing Venue:</label>
-							<input type="text" class="form-control" value="${data.var_blessingvenue}" disabled>
-						</div>
-					</form>
-					`)
-					$('#viewModal').modal('show')
-					$('#viewModal').on('hidden.bs.modal',function(){
-						$('#viewBodyAppend').empty()
-					})
+						</form>
+						`)
+						$('#viewModal').modal('show')
+						$('#viewModal').on('hidden.bs.modal',function(){
+							$('#viewBodyAppend').empty()
+						})
+					
+
+					
+					
 
 				})
 			})
 			$('.updateReqButton').click(function(){
 				$.post('/secretariat/transaction-funeralmass/query/updateStatus',{id:idNow}).done(data=>{
 					if(data.results.var_applicationtype=='Walk-in'){
+						console.log(data)
 						if(data.requirements[0].var_reqpath==null){
-							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted`)
+							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted.
+							<hr>
+							<h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>`)
 							$('#insertFile').modal('show')
 								$('#insertFile').on('hidden.bs.modal',function(){
 									$('#insertFileAppend').empty()
 								})
 						}
 						else{
-							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}`)
+							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}
+							<hr>
+							<h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>`)
 							$('#walkin').modal('show')
 								$('#walkin').on('hidden.bs.modal',function(){
 									$('#walkinAppend').empty()
@@ -631,6 +651,15 @@ block addjs
 							$('#upStatus').empty()
 							$('#status').empty()
 						})
+					}
+					if(data.results.var_applicationtype=='No account'){
+						$('#status').append(`
+						<hr><h6>CONTACT DETAILS</h6>
+								<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+								<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+								<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+								<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>
+						`)
 					}
 				})
 			})
