@@ -10,15 +10,15 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 //===============================================================================================//
 	secretariatRouter.get('/', (req, res)=>{
 		var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
-		var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+		// var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
 		var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
 		var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
 			db.query(queryString1, (err, results, fields) => {
 				if (err) console.log(err);
 				var application = results[0];
-				db.query(queryString2, (err, results, fields) => {
-					if (err) console.log(err);
-					var reservation = results[0];
+				// db.query(queryString2, (err, results, fields) => {
+				// 	if (err) console.log(err);
+				// 	var reservation = results[0];
 					db.query(queryString3, (err, results, fields) => {
 						if (err) console.log(err);
 						var request = results[0];
@@ -29,11 +29,27 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
       
 		
 				
-			return res.render('secretariat/views/index',{application:application,reservation:reservation,request:request, baptism:baptism});
-        }); }); }); }); });
-    
-    
-    
+			return res.render('secretariat/views/index',{application:application,request:request, baptism:baptism});
+        }); }); }); 
+    });
+    secretariatRouter.post('/searchvoucher', (req, res)=>{
+        console.log(req.body)
+        //for events lang
+        var queryString2 = `select * from tbl_voucherevents 
+        left join tbl_eventinfo on tbl_voucherevents.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+        left join tbl_documentrequest on tbl_voucherevents.int_requestID = tbl_documentrequest.int_requestID
+        
+        left join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID
+        
+        left join tbl_services on tbl_eventinfo.int_eventID = tbl_services.int_eventID
+        left join tbl_serviceutilities on tbl_documentrequest.int_serviceutilitiesID = tbl_serviceutilities.int_serviceutilitiesID
+        where tbl_voucherevents.var_vouchercode=?`
+        db.query(queryString2,[req.body.vouchercode],(err,results,fields) =>{
+            if(err) console.log(err)
+            console.log(results)
+            res.send({details:results[0]})
+        })
+	});
     secretariatRouter.post('/messagesButton', (req, res)=>{
         var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
         db.query(message, [req.session.secretariat.int_userID],(err, results, fields) => {
@@ -56,7 +72,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             res.send({notifications:notifications})
         })
     })
-
     secretariatRouter.post('/getmessagecount', (req, res)=>{
         var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
         db.query(newmessage, [req.session.secretariat.int_userID],(err, results, fields) => {
@@ -66,8 +81,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             res.send({newmessage:newmessages})
         })
     })
-    
-
     secretariatRouter.post('/checkeventstime', (req, res)=>{
         
         var newnotif =`SELECT * from tbl_eventinfo 
@@ -156,8 +169,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             res.send({newnotif:newnotif})
         })
     })
-    
-
     secretariatRouter.get('/messages', (req, res)=>{
         var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
         
@@ -244,7 +255,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             res.send(query[0])
         });
     });
-    
     secretariatRouter.post('/message/send', (req, res)=>{
         var success =0
         var notsuccess =1
@@ -266,11 +276,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                     }
         }); 
     }); 
-
-	secretariatRouter.get('/details', (req, res)=>{
-		res.render('secretariat/views/ref/details')
-	});
-
     secretariatRouter.post('/getcabinets',(req,res)=>{
         var queryString2 = `select * from tbl_filecabinets`
         db.query(queryString2,(err,results,fields) =>{
@@ -288,8 +293,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             res.send({cabinets:cabinets})
         })
     })
-
-    
     secretariatRouter.get('/cabinets',(req,res)=>{
         console.log(req.query)
         console.log(req.body)
@@ -363,7 +366,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             })
         }
     })
-    
     secretariatRouter.post('/getdivisions',(req,res)=>{
         console.log(req.body)
         var queryString2 = `select * from tbl_filedivisions where int_cabinetID =?`
@@ -373,7 +375,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             res.send({divisions:results})
         })
     })
-
     secretariatRouter.post('/getfolders',(req,res)=>{
         console.log(req.body)
         var value = req.body.location.split('-');
@@ -405,7 +406,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                 res.send({ ornumber:results1[0]})      
     });
     });
-
     secretariatRouter.post('/thisweek', (req, res)=>{
         var queryString1= `select * from tbl_eventinfo
         join tbl_payment on tbl_eventinfo.int_paymentID = tbl_payment.int_paymentID
@@ -419,7 +419,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             res.send({results:results})
         }); 
     }); 
-
     secretariatRouter.post('/thisweek/status', (req, res)=>{
         console.log(req.body)
         if(req.body.generatestatus=='All Applications'){
@@ -6318,6 +6317,48 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             })
       
     });
+
+
+        secretariatRouter.post('/mass/add', (req, res) => {
+        var start= moment(req.body.start, 'MM/DD/YYYY h:mm a').format('YYYY-MM-DD HH:mm:ss');
+        
+        
+        var queryString4 = `INSERT INTO tbl_mass(
+            time_massstart, 
+            time_massduration, 
+            var_massvenue, 
+            char_masstype) VALUES(?,"01:00:00", ?,?)`
+            db.query(queryString4, [start, req.body.duration, req.body.massvenue, req.body.masstype], (err, results, fields) => {         
+                if (err) console.log(err);
+                    return res.redirect('/secretariat/mass');
+            });   
+    
+        });
+        secretariatRouter.post('/mass/delete', (req, res) => {
+            const queryString = `DELETE FROM tbl_mass WHERE int_massID= ?`;
+            db.query(queryString,[req.body.id1], (err, results, fields) => {        
+                if (err) console.log(err);
+                console.log(req.body.id1)
+                return res.redirect('/secretariat/mass');
+            });
+        });
+        secretariatRouter.post('/mass/query', (req, res) => {
+            const queryString = `select * from tbl_mass WHERE int_massID = ?`;
+            db.query(queryString,[req.body.id], (err, results, fields) => {        
+            if (err) console.log(err);
+            res.send(results[0])
+            console.log(results[0])
+            });
+        });
+        secretariatRouter.post('/mass/edit', (req, res) => {
+            console.log(req.body)
+            var start= moment(req.body.starttime, 'YYYY-MM-DD h:mm a').format('YYYY-MM-DD HH:mm:ss');
+            const queryString = `UPDATE tbl_mass SET  time_massstart=?,var_massvenue=?, char_masstype=? WHERE int_massID=?`;
+            db.query(queryString,[start,req.body.massvenue,req.body.masstype,req.body.id1], (err, results, fields) => {        
+                if (err) console.log(err);
+                return res.redirect('/secretariat/mass');   
+            })
+        })
 
     secretariatRouter.get('/cancelled', (req, res)=>{
         
