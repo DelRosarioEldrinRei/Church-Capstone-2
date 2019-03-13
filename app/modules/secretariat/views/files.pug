@@ -1,0 +1,74 @@
+extends ../../../templates/secretariat
+block prepend main
+	#wrap
+	div(style='clear:both')
+
+	#mainContent
+			.content
+				.container-fluid
+					.row
+						.col-lg-12.col-md-12
+							// Tab panes
+							.tab-content
+								#nonwedding.tab-pane.active.mx-3
+								
+									// Tab panes
+									.tab-content
+										
+										#regularbaptism.tab-pane.active
+											.card.shadow
+												.card-header.card-header-primary(style='background:#367587; color:white')
+													.row
+														.col-md-6
+															h4.card-title(style='background:#367587; color:white') Files
+														.col-md-6
+															.form-group.col-md-12
+																select#getdivisionname.form-control(onchange='getdivisionname(value);')
+																		option(value=`0,${cabinetid}`) All								
+																		each division in divisions
+																			option(value=`${division.int_divisionID},${division.int_cabinetID}`)=division.var_divisionname
+												
+												.card-body.table-responsive
+													table.table.dataTable.table-hover
+														thead.text-primary
+															//- th ID
+															th File ID
+															th File Name
+															th Folder Name
+															th Received On
+															th Service Name
+															//- th.text-right(style=" width:120px") Actions
+														tbody#filesappend
+															each file in files
+																tr
+																	td=file.int_fileID
+																	td=file.var_reqname
+																	td=file.var_foldername
+																	td=file.datetime_reqreceived
+																	td=file.var_eventname
+block addjs
+	
+	script(type='text/javascript').
+
+		function getdivisionname($i){
+			console.log($i)
+				$('#filesappend').empty()
+				
+			$.post('/secretariat/folderdetails',{id:$i}).done(data=>{
+				console.log(data)
+				//- var received = moment(data.files[i].date_fullpaymentdeadline).format('MMMM DD, YYYY')
+				for(i=0; i<data.files.length; i++){
+						$('#filesappend').append(`
+								<tr>
+										<td>${data.files[i].int_fileID}
+										<td>${data.files[i].var_reqname}
+										<td>${data.files[i].var_foldername}
+										<td>${data.files[i].datetime_reqreceived}
+										<td>${data.files[i].var_eventname}
+										
+									</tr>
+						`)
+			
+					}
+			})
+		}

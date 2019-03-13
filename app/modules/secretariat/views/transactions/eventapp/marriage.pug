@@ -796,27 +796,28 @@ block addjs
 															}
 
 																
-															$('#requirementModal').modal('hide')
-															$('#folderlocModal').modal('show')
-															$('#folderlocModal').on('hidden.bs.modal',function(){
-																$('#folderBodyAppend').empty()
-																//- $('#requirementModal').modal('show')
-															})
+												$('#requirementModal').modal('hide')
+												$('#folderlocModal').modal('show')
+												$('#folderlocModal').on('hidden.bs.modal',function(){
+													$('#folderBodyAppend').empty()
+													//- $('#requirementModal').modal('show')
+												})
+												
+												$('#setLocButton').click(function(){
+													console.log('ueasdf')
+													$.post('/secretariat/transaction-marriage/setfolderloc', {
+														cabinet:$('#cabinets').val(),
+														division:$('#divisions').val(),
+														foldernumber:$('#folderID').val(),
+														foldername:$('#foldername').val(),
+														eventinfoID:idNow,
+														idchecked:checkedvalue,
+													})
+														.done(data =>{
+															updatereqstat()
 															
-															$('#setLocButton').click(function(){
-																console.log('ueasdf')
-																$.post('/secretariat/transaction-marriage/setfolderloc', {
-																	cabinet:$('#cabinets').val(),
-																	division:$('#divisions').val(),
-																	foldernumber:$('#folderID').val(),
-																	foldername:$('#foldername').val(),
-																	eventinfoID:idNow
-																})
-																	.done(data =>{
-																		updatereqstat()
-																		
-																	})//done
-															})
+														})//done
+												})
 
 
 												})//donedata getcabinetes
