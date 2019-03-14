@@ -197,11 +197,24 @@ block main
 											//- 			input.timepicker.form-control(type='text' name='desiredtime1')
 									.learn-more.pull-right
 										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-										button.btn.btn-submit#submitButton(type='submit' value= `${user.int_userID}`) Submit
+										button.btn.btn-submit#submitButton(type='button' value= `${user.int_userID}`) Submit
 								input#errChecker(type='text' hidden)
 								// Form Step 2
 block addjs
 	script.
+		function validateFileType(){
+			var fileName = document.getElementById("file-0b").value;
+			console.log(fileName)
+			var idxDot = fileName.lastIndexOf(".") + 1;
+			var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+			if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+				//TO DO
+			}else{
+				alert("Only jpg/jpeg and png files are allowed!");
+				$("#file-0b").val(null)
+			}  
+		}
+
 		$(document).ready(function(){
 			validateForm()
 
@@ -221,7 +234,7 @@ block addjs
 			})
 
 			$('#submitButton').click(function(){
-					$(this).attr('disabled', 'disabled');
+					//- $(this).attr('disabled', 'disabled');
 					var idNow = $(this).val();
 					console.log(idNow)
 					$.post('/guest/establishment/query',{
@@ -492,18 +505,7 @@ block addjs
 				})
 			});
 
-		function validateFileType(){
-			var fileName = document.getElementById("file-0b").value;
-			console.log(fileName)
-			var idxDot = fileName.lastIndexOf(".") + 1;
-			var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-			if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
-				//TO DO
-			}else{
-				alert("Only jpg/jpeg and png files are allowed!");
-				$("#file-0b").val(null)
-			}  
-		}
+		
 
 			var $ownername = /^([a-zs ]{2,})+$/i;
 			$('#owner1').on('keypress keydown keyup',function(e){

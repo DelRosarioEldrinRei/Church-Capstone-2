@@ -444,12 +444,12 @@ block main
 													.form-group
 														h6.label-control Valid ID
 															.text-danger.d-inline  *
-														input#file-0b.file.groomid(type='file',accept='image/*' name="validIDGroom" )
+														input#file-0b.file.groomid(type='file',accept='image/*' name="validIDGroom" onchange="validateFileType()")
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
 														h6.label-control Birth Certificate
 															.text-danger.d-inline  *
-														input#file-0b.file.groombirthcertificate(type='file',accept='image/*' name="birthCertGroom")
+														input#file-0b.file.groombirthcertificate(type='file',accept='image/*' name="birthCertGroom" onchange="validateFileType()")
 									.learn-more.pull-right
 										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 										button.btn#nextGroom(type='button') Next
@@ -839,22 +839,22 @@ block main
 																		.text-danger.d-inline  *
 																	input.marriage.form-control#bcondate(type='date' name='bcondate')
 																	p
-																		span.gemsginvalidconfirmeddate.hidden
+																		span.bemsginvalidconfirmeddate.hidden
 																			i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
 																			|  Please Enter Date of Confirmation.
-																		span.gemsgcorrectconfirmeddate.hidden
+																		span.bemsgcorrectconfirmeddate.hidden
 																			i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 											.row
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
 														h6.label-control Valid ID:
 															.text-danger.d-inline  *
-														input#file-0b.file.brideid(type='file',accept='image/*' name="validIDBride")
+														input#file-0b.file.brideid(type='file',accept='image/*' name="validIDBride" onchange="validateFileType()")
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
 														h6.label-control Birth Certificate:
 															.text-danger.d-inline  *
-														input#file-0b.file.bridebirthcertificate(type='file',accept='image/*' name="birthCertBride")
+														input#file-0b.file.bridebirthcertificate(type='file',accept='image/*' name="birthCertBride" onchange="validateFileType()")
 									.learn-more.pull-right
 										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 										button.btn#nextBride(type='button') Next
@@ -906,7 +906,7 @@ block main
 										h6.label-control Secondary Sponsors
 										.row#additionalSponsor
 									br
-									.learn-more.pull-right
+									.learn-more.pull-right#finaleSubmit
 										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 										button.btn#proceedButton(type='button') Proceed
 						input#errChecker(type='text' hidden)
@@ -931,11 +931,23 @@ block main
 							span(aria-hidden='true' style='background:#367587; color:white; margin-right: 5px') ×
 					.modal-body#bodyAppend1
 					.modal-footer
-						button#submitButton.filter.btn.btn-success(type="button") SUBMIT
+						button#submitButton.filter.btn.btn-success(type="button") FINALIZE
 						button#cancelappButton.filter.btn.btn-danger(type="button") CANCEL APPLICATION
 block addjs
 	script.
 		validateForm()
+		function validateFileType(){
+			var fileName = document.getElementsByClassName("file").value;
+			console.log(fileName)
+			var idxDot = fileName.lastIndexOf(".") + 1;
+			var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+			if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+				//TO DO
+			}else{
+				alert("Only jpg/jpeg and png files are allowed!");
+				$(".file").val(null)
+			}  
+		}
 
 		var numsponsors;
 		//slides
@@ -1421,6 +1433,7 @@ block addjs
 											scrollTop:$('.scrollbday').position().top},600);
 											$('.birthday').val("")
 											$('.birthday').css("border", "1px solid red")
+											$('.birthday').focus()
 										}
 									})
 								}
@@ -1529,6 +1542,7 @@ block addjs
 										scrollTop:$('.bscrollbday').position().top},600);
 										$('.bridebday').val("")
 										$('.bridebday').css("border", "1px solid red")
+										$('.bridebday').focus()
 									}
 								})
 						}
@@ -1637,8 +1651,25 @@ block addjs
 						
 
 						$('#submitButton').click(function(){
-							$(this).attr('disabled', 'disabled');
-							$('#form').submit()
+							$('#summaryModal').modal('hide')
+							Swal.fire({
+								title: '<strong>Finalize all preceding fields and then press submit.</strong>',
+								type: 'info',
+								//- html:
+								//- 	'You can use <b>bold text</b>, ' +
+								//- 	'<a href="//github.com">links</a> ' +
+								//- 	'and other HTML tags',
+								showCloseButton: true,
+								focusConfirm: false,
+								confirmButtonText: 'Okay'
+							}).then((result) => {
+								if (result.value) {
+									$('#proceedButton').addClass('d-none')
+									$('#finaleSubmit').append("<button id='proceedButton' class='btn' type='submit'>Submit</button>")
+								}
+							})
+							//- $(this).attr('disabled', 'disabled');
+							//- $('#form').submit()
 						})
 						$('#confirmationModal').modal('hide')
 						$('#cancelButton').click(function(){
@@ -1789,7 +1820,8 @@ block addjs
 							
 
 							$('#submitButton').click(function(){
-								$('#form').submit()
+								$('#finaleSubmit').empty().append("<button id='proceedButton' class='btn' type='submit'>Proceed</button>")
+								//- $('#form').submit()
 							})
 							$('#confirmationModal').modal('hide')
 							$('#cancelButton').click(function(){
@@ -1881,8 +1913,8 @@ block addjs
 			e.stopPropagation();
 		});
 
-		$('#gcondate').on('keypress keydown keyup focus focusout',function(e){
-			if ($(this).val().length == 0) {
+		$('#gconplace').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($regexvalidation4)) {
 				// there is a mismatch, hence show the error message
 					$('.gemsgcorrectconfirmed').addClass('hidden');
 					$('.gemsginvalidconfirmed').removeClass('hidden');
@@ -1913,8 +1945,8 @@ block addjs
 			e.stopPropagation();
 		});
 
-		$('#gconplace').on('keypress keydown keyup focus focusout',function(e){
-			if (!$(this).val().match($regexvalidation4)) {
+		$('#gcondate').on('keypress keydown keyup focus focusout',function(e){
+			if ($(this).val().length == 0) {
 				// there is a mismatch, hence show the error message
 					$('.gemsgcorrectconfirmeddate').addClass('hidden');
 					$('.gemsginvalidconfirmeddate').removeClass('hidden');

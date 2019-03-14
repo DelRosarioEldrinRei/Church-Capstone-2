@@ -8,6 +8,12 @@ block prepend main
 		#counter > div > div > div > span > i {
 			color:white;
 		}
+		.form-control {
+			margin-bottom: 0;
+		}
+		.hidden {
+			display:none;
+		}
 	#headers
 		#header-style-1
 			.container
@@ -234,40 +240,60 @@ block prepend main
 									.form-group
 										h5.label-control Last Name
 											.text-danger.d-inline *
-										input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-										.invalid-feedback Please re-enter your valid last name.
-
+										input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname')
+										p
+											span.emsginvalidlastname.hidden
+												i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+												|  Please Enter Last Name
+											span.emsgcorrectlastname.hidden
+												i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 								.form-group.col-md-6
 									.form-group
-										.invalid-feedback Please re-enter your valid last name.
 										h5.label-control  First Name
 											.text-danger.d-inline *
-										input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
-										.invalid-feedback Please provide a valid first name.
+										input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname')
+										p
+											span.emsginvalidfirstname.hidden
+												i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+												|  Please Enter Your First Name
+											span.emsgcorrectfirstname.hidden
+												i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 							.form-row
 								.form-group.col-md-12
 									.form-group
 										h5.label-control  Address
 											.text-danger.d-inline *
-										input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-										.invalid-feedback Please re-enter your valid first name. 
-
+										input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname')
+										p
+											span.emsginvalidaddress.hidden
+												i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+												|  Please Enter Your Address
+											span.emsgcorrectaddress.hidden
+												i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 							.form-row
 								.form-group.col-md-6
 									.form-group
 										h5.label-control  Contact Number
 											.text-danger.d-inline *
-										input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-										.invalid-feedback Please re-enter your valid contact number.
-
+										input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname')
+										p
+											span.emsginvalidcontact.hidden
+												i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+												|  Please Enter Your Contact Number
+											span.emsgcorrectcontact.hidden
+												i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 								.form-group.col-md-6
 									.form-group
 										.invalid-feedback Please re-enter your valid contact number.
 										h5.label-control  Email Address
 											.text-danger.d-inline *
-										input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
-										.invalid-feedback Please provide a valid email address
-							
+										input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname')
+										p
+											span.emsginvalidemail.hidden
+												i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+												|  Please Enter Your Email Address
+											span.emsgcorrectemail.hidden
+												i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 							p Please fill out all the fields. This is an important step for us to update you regarding your request. Thank you.
 					.modal-footer
 						button#submitButton.filter.btn.btn-success(type="button") Submit. 
@@ -609,7 +635,32 @@ block addjs
 								//for no
 								else {
 									//- window.location=`/index/anointingform`
-									$('#submitButton').click(function(){
+									//- $('#submitButton').on('click', function(){
+									//- 		$.post('/index/tempuser',{
+									//- 			templastname:$('#templastname').val(),
+									//- 			tempfirstname:$('#tempfirstname').val(),
+									//- 			tempaddress:$('#tempaddress').val(),
+									//- 			tempemailaddress:$('#tempemailaddress').val(),
+									//- 			tempcontactnumber:$('#tempcontactnumber').val(),
+									//- 			}).done(data =>{
+									//- 			window.location=`/index/anointingform?id=${data.tempuser.insertId}`
+									//- 		})
+									//- 	})
+
+										$('#submitButton').on('click', function(){
+										var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+										var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+										var $contactnumber = /^(09|\+639)\d{9}$/;
+										var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+										if(
+											!$('#templastname').val().match($regexvalidation1) ||
+											!$('#tempfirstname').val().match($regexvalidation1) ||
+											!$('#tempaddress').val().match($addressvalidation) ||
+											!$('#tempcontactnumber').val().match($contactnumber) ||
+											!$('#tempemailaddress').val().match($email)
+										){
+											alert('Field is not completed')
+										} else {
 											$.post('/index/tempuser',{
 												templastname:$('#templastname').val(),
 												tempfirstname:$('#tempfirstname').val(),
@@ -619,12 +670,17 @@ block addjs
 												}).done(data =>{
 												window.location=`/index/anointingform?id=${data.tempuser.insertId}`
 											})
+										}
 										})
 	
 
 									$('#tempUserModal').modal('show');	
 									$('#tempUserModal').on('hidden.bs.modal',function(){
-										$('#tempbodyAppend').empty()
+										$('#templastname').val('')
+										$('#tempfirstname').val('')
+										$('#tempaddress').val('')
+										$('#tempcontactnumber').val('')
+										$('#tempemailaddress').val('')
 									})
 
 								}
@@ -664,7 +720,20 @@ block addjs
 								//for no
 								else {
 									//- window.location=`/index/funeralform`
-									$('#submitButton').click(function(){
+									$('#submitButton').on('click', function(){
+										var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+										var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+										var $contactnumber = /^(09|\+639)\d{9}$/;
+										var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+										if(
+											!$('#templastname').val().match($regexvalidation1) ||
+											!$('#tempfirstname').val().match($regexvalidation1) ||
+											!$('#tempaddress').val().match($addressvalidation) ||
+											!$('#tempcontactnumber').val().match($contactnumber) ||
+											!$('#tempemailaddress').val().match($email)
+										){
+											alert('Field is not completed')
+										} else {
 											$.post('/index/tempuser',{
 												templastname:$('#templastname').val(),
 												tempfirstname:$('#tempfirstname').val(),
@@ -674,12 +743,16 @@ block addjs
 												}).done(data =>{
 												window.location=`/index/funeralform?id=${data.tempuser.insertId}`
 											})
+										}
 										})
-	
 
 									$('#tempUserModal').modal('show');	
 									$('#tempUserModal').on('hidden.bs.modal',function(){
-										$('#tempbodyAppend').empty()
+										$('#templastname').val('')
+										$('#tempfirstname').val('')
+										$('#tempaddress').val('')
+										$('#tempcontactnumber').val('')
+										$('#tempemailaddress').val('')
 									})
 
 								}
@@ -717,7 +790,21 @@ block addjs
 								//for no
 								else {
 									//- window.location=`/index/funeralform`
-									$('#submitButton').click(function(){
+
+									$('#submitButton').on('click', function(){
+										var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+										var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+										var $contactnumber = /^(09|\+639)\d{9}$/;
+										var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+										if(
+											!$('#templastname').val().match($regexvalidation1) ||
+											!$('#tempfirstname').val().match($regexvalidation1) ||
+											!$('#tempaddress').val().match($addressvalidation) ||
+											!$('#tempcontactnumber').val().match($contactnumber) ||
+											!$('#tempemailaddress').val().match($email)
+										){
+											alert('Field is not completed')
+										} else {
 											$.post('/index/tempuser',{
 												templastname:$('#templastname').val(),
 												tempfirstname:$('#tempfirstname').val(),
@@ -727,12 +814,17 @@ block addjs
 												}).done(data =>{
 												window.location=`/index/funeralform?id=${data.tempuser.insertId}`
 											})
+										}
 										})
 	
 
 									$('#tempUserModal').modal('show');	
 									$('#tempUserModal').on('hidden.bs.modal',function(){
-										$('#tempbodyAppend').empty()
+										$('#templastname').val('')
+										$('#tempfirstname').val('')
+										$('#tempaddress').val('')
+										$('#tempcontactnumber').val('')
+										$('#tempemailaddress').val('')
 									})
 								}
 								})
@@ -768,7 +860,20 @@ block addjs
 								//for no
 								else {
 									//- window.location=`/index/establishmentform`
-									$('#submitButton').click(function(){
+									$('#submitButton').on('click', function(){
+										var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+										var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+										var $contactnumber = /^(09|\+639)\d{9}$/;
+										var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+										if(
+											!$('#templastname').val().match($regexvalidation1) ||
+											!$('#tempfirstname').val().match($regexvalidation1) ||
+											!$('#tempaddress').val().match($addressvalidation) ||
+											!$('#tempcontactnumber').val().match($contactnumber) ||
+											!$('#tempemailaddress').val().match($email)
+										){
+											alert('Field is not completed')
+										} else {
 											$.post('/index/tempuser',{
 												templastname:$('#templastname').val(),
 												tempfirstname:$('#tempfirstname').val(),
@@ -778,12 +883,17 @@ block addjs
 												}).done(data =>{
 												window.location=`/index/establishmentform?id=${data.tempuser.insertId}`
 											})
+										}
 										})
-	
+
 
 									$('#tempUserModal').modal('show');	
 									$('#tempUserModal').on('hidden.bs.modal',function(){
-										$('#tempbodyAppend').empty()
+										$('#templastname').val('')
+										$('#tempfirstname').val('')
+										$('#tempaddress').val('')
+										$('#tempcontactnumber').val('')
+										$('#tempemailaddress').val('')
 									})
 								}
 								})
@@ -1039,7 +1149,7 @@ block addjs
 																					//for no
 																					else {
 																						
-																						$('#submitButton').click(function(){
+																						$('#submitButton').on('click', function(){
 																								$.post('/index/tempuser',{
 																									templastname:$('#templastname').val(),
 																									tempfirstname:$('#tempfirstname').val(),
@@ -1056,7 +1166,11 @@ block addjs
 
 																						$('#tempUserModal').modal('show');	
 																						$('#tempUserModal').on('hidden.bs.modal',function(){
-																							$('#tempbodyAppend').empty()
+																							$('#templastname').val('')
+																							$('#tempfirstname').val('')
+																							$('#tempaddress').val('')
+																							$('#tempcontactnumber').val('')
+																							$('#tempemailaddress').val('')
 																						})
 																					}
 																				})
@@ -1096,8 +1210,21 @@ block addjs
 																		}
 																		//for no
 																		else {
-																			
-																			$('#submitButton').click(function(){
+
+																			$('#submitButton').on('click', function(){
+																				var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+																				var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+																				var $contactnumber = /^(09|\+639)\d{9}$/;
+																				var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+																				if(
+																					!$('#templastname').val().match($regexvalidation1) ||
+																					!$('#tempfirstname').val().match($regexvalidation1) ||
+																					!$('#tempaddress').val().match($addressvalidation) ||
+																					!$('#tempcontactnumber').val().match($contactnumber) ||
+																					!$('#tempemailaddress').val().match($email)
+																				){
+																					alert('Field is not completed')
+																				} else {
 																					$.post('/index/tempuser',{
 																						templastname:$('#templastname').val(),
 																						tempfirstname:$('#tempfirstname').val(),
@@ -1105,16 +1232,18 @@ block addjs
 																						tempemailaddress:$('#tempemailaddress').val(),
 																						tempcontactnumber:$('#tempcontactnumber').val(),
 																						}).done(data =>{
-
-																							window.location=`/index/document/form?documentType=${$('#documenttype').val()}&lastName=${$('#lastName').val()}&firstName=${$('#firstName').val()}&eventDate=${eventDate}&birthday=${birthDate}&eventinfoID=${eventinfoID}&id=${data.tempuser.insertId}`
-																						
+																						window.location=`/index/document/form?documentType=${$('#documenttype').val()}&lastName=${$('#lastName').val()}&firstName=${$('#firstName').val()}&eventDate=${eventDate}&birthday=${birthDate}&eventinfoID=${eventinfoID}&id=${data.tempuser.insertId}`
 																					})
+																				}
 																				})
-											
 
 																			$('#tempUserModal').modal('show');	
 																			$('#tempUserModal').on('hidden.bs.modal',function(){
-																				$('#tempbodyAppend').empty()
+																				$('#templastname').val('')
+																				$('#tempfirstname').val('')
+																				$('#tempaddress').val('')
+																				$('#tempcontactnumber').val('')
+																				$('#tempemailaddress').val('')
 																			})
 																		}
 																	})
@@ -1144,6 +1273,90 @@ block addjs
 							}
 						})
 			})
+		var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+		$('#templastname').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($regexvalidation1)) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrectlastname').addClass('hidden');
+					$('.emsginvalidlastname').removeClass('hidden');
+					$('.emsginvalidlastname').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsginvalidlastname').addClass('hidden');
+				$('.emsgcorrectlastname').removeClass('hidden');
+				$('.emsgcorrectlastname').show();
+			}
+			e.stopPropagation();
+		});
+
+		$('#tempfirstname').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($regexvalidation1)) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrectfirstname').addClass('hidden');
+					$('.emsginvalidfirstname').removeClass('hidden');
+					$('.emsginvalidfirstname').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsginvalidfirstname').addClass('hidden');
+				$('.emsgcorrectfirstname').removeClass('hidden');
+				$('.emsgcorrectfirstname').show();
+			}
+			e.stopPropagation();
+		});
+
+		var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+		$('#tempaddress').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($addressvalidation)) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrectaddress').addClass('hidden');
+					$('.emsginvalidaddress').removeClass('hidden');
+					$('.emsginvalidaddress').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsginvalidaddress').addClass('hidden');
+				$('.emsgcorrectaddress').removeClass('hidden');
+				$('.emsgcorrectaddress').show();
+			}
+			e.stopPropagation();
+		});
+
+		var $contactnumber = /^(09|\+639)\d{9}$/;
+		$('#tempcontactnumber').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($contactnumber)) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrectcontact').addClass('hidden');
+					$('.emsginvalidcontact').removeClass('hidden');
+					$('.emsginvalidcontact').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsginvalidcontact').addClass('hidden');
+				$('.emsgcorrectcontact').removeClass('hidden');
+				$('.emsgcorrectcontact').show();
+			}
+			e.stopPropagation();
+		});
+
+		var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+		$('#tempemailaddress').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($email)) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrectemail').addClass('hidden');
+					$('.emsginvalidemail').removeClass('hidden');
+					$('.emsginvalidemail').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsginvalidemail').addClass('hidden');
+				$('.emsgcorrectemail').removeClass('hidden');
+				$('.emsgcorrectemail').show();
+			}
+			e.stopPropagation();
+		});
+
 			////////////////////////////////////////////
 			function isNullOrEmpty(val){
 				return (val == null || val == '' || val == undefined) ? 'free' : `₱ ${val}` ;

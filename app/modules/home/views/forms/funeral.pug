@@ -42,7 +42,7 @@ block main
 						.col-md-12.form-wizard.shadow3
 							form
 								// Form Wizard
-								//- form(action="/index/funeral/form" enctype="multipart/form-data" method="post" data-toggle='validator')
+								//- form(action="/guest/funeral/form" enctype="multipart/form-data" method="post" data-toggle='validator')
 								h3 Funeral Blessing Form
 								p.mb-2 Fill all form fields
 								.form-wizard-steps.form-wizard-tolal-steps-3
@@ -75,7 +75,7 @@ block main
 															.container
 																#calendarFuneral
 										.learn-more.pull-right
-													button#next.btn.btn-next(type='button') Next
+													button#next.btn(type='button') Next
 								// Form Step 1
 								// Form Step 2
 								fieldset
@@ -186,7 +186,7 @@ block main
 																p
 																	span.emsgvenue.hidden
 																		i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																		|  Please Enter Venue.
+																		| Please Enter Venue. Minimum of 8 Characters
 																	span.emsgcorrectvenue.hidden
 																		i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
@@ -200,7 +200,7 @@ block main
 													//- 	input(type='file', name='deathCertificate' accept='image/*' required)
 									.learn-more.pull-right
 										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-										button.btn.btn-submit#submitButton(type='submit'  value= `${user.int_userID}`) Submit
+										button.btn.btn-submit#submitButton(type='button'  value= `${user.int_userID}`) Submit
 							input#errChecker(type='text' hidden)
 block addjs
 	script.
@@ -214,24 +214,62 @@ block addjs
 		$('.exampleRadios3').click(function() {
 			$('#textarea2').slideDown();
 		});
+		function validateFileType(){
+			var fileName = document.getElementById("file-0b").value;
+			console.log(fileName)
+			var idxDot = fileName.lastIndexOf(".") + 1;
+			var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+			if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+				//TO DO
+			}else{
+				alert("Only jpg/jpeg and png files are allowed!");
+				$("#file-0b").val(null)
+			}
+		}
 		$(document).ready(function(){
 				validateForm()
 
-				function validateFileType(){
-					var fileName = document.getElementById("file-0b").value;
-					console.log(fileName)
-					var idxDot = fileName.lastIndexOf(".") + 1;
-					var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-					if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
-						//TO DO
-					}else{
-						alert("Only jpg/jpeg and png files are allowed!");
-						$("#file-0b").val(null)
+				$('#next').click(function(){
+					if(eventDate == ''){
+						swal({
+							title: "Please schedule your date",
+							text: "You haven't chosen your desired schedule yet",
+							type: 'warning',
+							confirmButtonColor: '#3085d6',
+							confirmButtonText: 'OK'
+						})
 					}
-				}
+					else{
+						$('#next').addClass('btn-next')
+					}
+				})
 
 				$('#submitButton').click(function(){
-						$(this).attr('disabled', 'disabled');
+
+				var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+				if(
+					$('#firstname').val() == ''  ||
+					$('#lastname').val() == ''  ||
+					$('#birthday').val() == '' ||
+					$('#birthplace').val() == '' ||
+					$('#relation').val() == '' ||
+					$('#address').val() == '' ||
+					$('#details').val() == '' ||
+					$('#file-0b').val() == '' ||
+					$('#file-0b').val() == undefined ||
+					$('.exampleRadios3').prop("checked") && !$('#othervenue').val().match($addressvalidation)
+				){
+						swal({
+						title: "Form is not complete/valid yet",
+						text: "Please fill out and validate all the required fields",
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: 'OK'
+					})
+				}
+				else{
+					
+						//- $(this).attr('disabled', 'disabled');
 						var idNow = $(this).val();
 						console.log(idNow)
 						$.post('/index/funeral/query',{
@@ -295,6 +333,8 @@ block addjs
 
 						})
 							
+
+				}
 					})		
 		
 		var dateNow2

@@ -93,7 +93,7 @@ block main
 										.col-md-4.px-lg-3.px-md-0.px-sm-0
 											.form-group.p-0
 												input.form-control#firstname(type='text' placeholder="First Name *" name='firstname')
-										.col-md-4.px-lg-3.px-md-0.px-sm-0
+										.col-md-4.px-lg-0.px-md-0.px-sm-0
 											.form-group.pt-0
 												input.form-control#middlename(type='text' placeholder="Middle Name" name='middlename')
 									.row
@@ -219,7 +219,7 @@ block main
 														.help-block.with-errors
 								.learn-more.pull-right
 									button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
-									button.btn.btn-submit#submitButton(type='submit' value= `${user.int_tempuserID}` ) Submit
+									button.btn.btn-submit#submitButton(type='button' value= `${user.int_tempuserID}` ) Submit
 						input#errChecker(type='text' hidden)
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
@@ -240,21 +240,21 @@ block main
 						button.btn.btn-submit#OK(type='button') OK
 block addjs
 	script(type='text/javascript').
+		function validateFileType(){
+			var fileName = document.getElementById("file-0b").value;
+			console.log(fileName)
+			var idxDot = fileName.lastIndexOf(".") + 1;
+			var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+			if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+				//TO DO
+			}else{
+				alert("Only jpg/jpeg and png files are allowed!");
+				$("#file-0b").val(null)
+			}  
+		}
 		$(document).ready(function(){
 			validateForm()
 
-				function validateFileType(){
-					var fileName = document.getElementById("file-0b").value;
-					console.log(fileName)
-					var idxDot = fileName.lastIndexOf(".") + 1;
-					var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-					if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
-						//TO DO
-					}else{
-						alert("Only jpg/jpeg and png files are allowed!");
-						$("#file-0b").val(null)
-					}  
-				}
 			// for birthday validation start
 			$('#birthday').on('keypress keydown keyup focus focusout',function(e){
 				if ($(this).val().length == 0) {
@@ -324,18 +324,30 @@ block addjs
 			}
 			})
 			$('#submitButton').click(function(){
-					$(this).attr('disabled', 'disabled');
+					//- $(this).attr('disabled', 'disabled');
+					var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
 				if(
-					$('#firstname').val() != ''  &&
-					$('#lastname').val() != ''  &&
-					$('#birthday').val() != '' &&
-					$('#birthplace').val() != '' &&
-					$('#relation').val() != '' &&
-					$('#address').val() != '' &&
-					$('#details').val() != '' &&
-					$('#file-0b').val() != '' &&
-					$('#file-0b').val() != undefined
+					$('#firstname').val() == ''  ||
+					$('#lastname').val() == ''  ||
+					$('#birthday').val() == '' ||
+					$('#birthplace').val() == '' ||
+					$('#relation').val() == '' ||
+					$('#address').val() == '' ||
+					$('#details').val() == '' ||
+					$('#file-0b').val() == '' ||
+					$('#file-0b').val() == undefined ||
+					$('#exampleRadios1').prop("checked") && !$('#hospitalname').val().match($addressvalidation) ||
+					$('#exampleRadios3').prop("checked") && !$('#othervenue').val().match($addressvalidation)
 				){
+					swal({
+						title: "Form is not complete/valid yet",
+						text: "Please fill out and validate all the required fields",
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: 'OK'
+					})
+				}
+				else{
 					var idNow = $(this).val();
 					console.log(idNow)
 					$.post('/index/anointing/query',{
@@ -398,16 +410,8 @@ block addjs
 
 					})
 				}
-				else{
-					swal({
-						title: "Form is not completed yet",
-						text: "Please fill out all the required fields",
-						type: 'warning',
-						confirmButtonColor: '#3085d6',
-						confirmButtonText: 'OK'
-					})
-				}
-				})		
+				})
+
 
 		$('#textarea1').hide();
 		$('#textarea2').hide();
@@ -547,6 +551,56 @@ block addjs
 		//- 	},
 		//- });	
 				})
+			// for birthday validation start
+			$('#birthday').on('keypress keydown keyup focus focusout',function(e){
+				if ($(this).val().length == 0) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrect').addClass('hidden');
+						$('.emsg').removeClass('hidden');
+						$('.emsg').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsg').addClass('hidden');
+					$('.emsgcorrect').removeClass('hidden');
+					$('.emsgcorrect').show();
+				}
+				e.stopPropagation();
+			});
+
+			var $regexname = /^([a-zs0-9-, ]{8,})+$/i;
+			$('.venuevalidation').on('keypress keydown keyup',function(e){
+				if (!$(this).val().match($regexname)) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrectvenue').addClass('hidden');
+						$('.emsgvenue').removeClass('hidden');
+						$('.emsgvenue').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsgvenue').addClass('hidden');
+					$('.emsgcorrectvenue').removeClass('hidden');
+					$('.emsgcorrectvenue').show();
+				}
+				e.stopPropagation();
+			});
+
+			var $regexname2 = /^([a-zs0-9-, ]{8,})+$/i;
+			$('#othervenue').on('keypress keydown keyup',function(e){
+				if (!$(this).val().match($regexname)) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrectother').addClass('hidden');
+						$('.emsginvalidother').removeClass('hidden');
+						$('.emsginvalidother').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsginvalidother').addClass('hidden');
+					$('.emsgcorrectother').removeClass('hidden');
+					$('.emsgcorrectother').show();
+				}
+				e.stopPropagation();
+			});
 
 		function validateForm(){
 			$('form').formValidation({
