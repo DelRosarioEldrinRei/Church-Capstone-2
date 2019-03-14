@@ -182,64 +182,22 @@ html(lang='en')
 								a.dropdown-item(href='/guest/reservation') Reservations
 								hr
 								a.dropdown-item(href='/logout') Logout
+						
+		#paymenthistoryModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header(style='background:#802b00; color:white')
+						h4.modal-title(style='background:#802b00; color:white') Reminder
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span.p-2(aria-hidden='true' style='background:#802b00; color:white') ×
+					.modal-body#paymenthistoryBodyAppend
+					.modal-footer
+						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
+						
 		block main
 		footer.footer
 			.container
-				//- .row.section
-				//- 	.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn
-				//- 		h3.small-title
-				//- 			| About Us
-				//- 		p
-				//- 			| Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis veritatis eius porro modi hic. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-				//- 		.social-footer
-				//- 			a(href='#')
-				//- 				i.fa.fa-facebook.icon-round
-				//- 			a(href='#')
-				//- 				i.fa.fa-twitter.icon-round
-				//- 			a(href='#')
-				//- 				i.fa.fa-linkedin.icon-round
-				//- 			a(href='#')
-				//- 				i.fa.fa-google-plus.icon-round
-				//- 	.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.2s')
-				//- 		h3.small-title
-				//- 			| Links
-				//- 		ul.menu
-				//- 			li
-				//- 				a(href='#') About Us
-				//- 			li
-				//- 				a(href='#') Services
-				//- 			li
-				//- 				a(href='#') Works
-				//- 			li
-				//- 				a(href='#') Pricing
-				//- 			li
-				//- 				a(href='#') Contact
-				//- 	.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.5s')
-				//- 		h3.small-title
-				//- 			| GALLERY
-				//- 		.plain-flicker-gallery
-				//- 			a(href='#')
-				//- 				img(src='/Helium/img/img1(2).jpg', alt='')
-				//- 			a(href='#')
-				//- 				img(src='/Helium/img/img2(2).jpg', alt='')
-				//- 			a(href='#')
-				//- 				img(src='/Helium/img/img3(2).jpg', alt='')
-				//- 			a(href='#')
-				//- 				img(src='/Helium/img/img4(1).jpg', alt='')
-				//- 			a(href='#')
-				//- 				img(src='/Helium/img/img5(1).jpg', alt='')
-				//- 			a(href='#')
-				//- 				img(src='/Helium/img/img6(1).jpg', alt='')
-				//- 	.footer-widget.col-lg-3.col-md-6.col-xs-12.wow.fadeIn(data-wow-delay='.8s')
-				//- 		h3.small-title
-				//- 			| SUBSCRIBE US
-				//- 		.contact-us
-				//- 			form
-				//- 				.form-group
-				//- 					input#exampleInputName2.form-control(type='text', placeholder='Enter your name')
-				//- 				.form-group
-				//- 					input#exampleInputEmail2.form-control(type='email', placeholder='Enter your email')
-				//- 				button.btn.btn-common(type='submit') Submit
+				
 			#copyright
 				.container
 					.row
@@ -306,27 +264,99 @@ html(lang='en')
 						clear: 'fa fa-trash',
 						close: 'fa fa-remove'
 				}
-			});
+				});
 
-			//date when you were baptized and confirmed
-			$('.marriage').datetimepicker({
+				//date when you were baptized and confirmed
+				$('.marriage').datetimepicker({
+						format: 'YYYY-MM-DD',
+						useCurrent: false,
+						viewMode: 'years',
+						icons: {
+							time: "fa fa-clock-o",
+							date: "fa fa-calendar",
+							up: "fa fa-chevron-up",
+							down: "fa fa-chevron-down",
+							previous: 'fa fa-chevron-left',
+							next: 'fa fa-chevron-right',
+							today: 'fa fa-screenshot',
+							clear: 'fa fa-trash',
+							close: 'fa fa-remove'
+					}
+				});
+
+				$('.dateandtimepicker').datetimepicker({
+						icons: {
+							time: "fa fa-clock-o",
+							date: "fa fa-calendar",
+							up: "fa fa-chevron-up",
+							down: "fa fa-chevron-down",
+							previous: 'fa fa-chevron-left',
+							next: 'fa fa-chevron-right',
+							today: 'fa fa-screenshot',
+							clear: 'fa fa-trash',
+							close: 'fa fa-remove'
+					}
+				});
+				$('.datepicker1').datetimepicker({
+						format: 'YYYY-MM-DD',
+						icons: {
+							time: "fa fa-clock-o",
+							date: "fa fa-calendar",
+							up: "fa fa-chevron-up",
+							down: "fa fa-chevron-down",
+							previous: 'fa fa-chevron-left',
+							next: 'fa fa-chevron-right',
+							today: 'fa fa-screenshot',
+							clear: 'fa fa-trash',
+							close: 'fa fa-remove'
+					}
+				});
+
+				$('.timepicker1').datetimepicker({
+					icons: {
+						time: "fa fa-clock-o",
+						date: "fa fa-calendar",
+						up: "fa fa-chevron-up",
+						down: "fa fa-chevron-down",
+						previous: 'fa fa-chevron-left',
+						next: 'fa fa-chevron-right',
+						today: 'fa fa-screenshot',
+						clear: 'fa fa-trash',
+						close: 'fa fa-remove'
+					}
+				})
+
+				// for Birthday
+				let birthdayDate = moment();
+				$('.birthday').datetimepicker({
 					format: 'YYYY-MM-DD',
+					maxDate: birthdayDate,
 					useCurrent: false,
 					viewMode: 'years',
 					icons: {
-						time: "fa fa-clock-o",
-						date: "fa fa-calendar",
-						up: "fa fa-chevron-up",
-						down: "fa fa-chevron-down",
-						previous: 'fa fa-chevron-left',
-						next: 'fa fa-chevron-right',
-						today: 'fa fa-screenshot',
-						clear: 'fa fa-trash',
-						close: 'fa fa-remove'
-				}
-			});
+							time: "fa fa-clock-o",
+							date: "fa fa-calendar",
+							up: "fa fa-chevron-up",
+							down: "fa fa-chevron-down",
+							previous: 'fa fa-chevron-left',
+							next: 'fa fa-chevron-right',
+							today: 'fa fa-screenshot',
+							clear: 'fa fa-trash',
+							close: 'fa fa-remove',
+					},
+				});
 
-			$('.dateandtimepicker').datetimepicker({
+				$('.birthday').datepicker( "isDisabled" );
+
+				let startTime = moment().hour(8)
+				let endTime = moment().hour(21)
+
+				$('.desiredTime').datetimepicker({
+					format: 'LT',
+					minDate: startTime,
+					maxDate: endTime,
+					useCurrent: "hour",
+					stepping: 30,
 					icons: {
 						time: "fa fa-clock-o",
 						date: "fa fa-calendar",
@@ -337,103 +367,10 @@ html(lang='en')
 						today: 'fa fa-screenshot',
 						clear: 'fa fa-trash',
 						close: 'fa fa-remove'
-				}
-			});
-			$('.datepicker1').datetimepicker({
-					format: 'YYYY-MM-DD',
-					icons: {
-						time: "fa fa-clock-o",
-						date: "fa fa-calendar",
-						up: "fa fa-chevron-up",
-						down: "fa fa-chevron-down",
-						previous: 'fa fa-chevron-left',
-						next: 'fa fa-chevron-right',
-						today: 'fa fa-screenshot',
-						clear: 'fa fa-trash',
-						close: 'fa fa-remove'
-				}
-			});
-
-			$('.timepicker1').datetimepicker({
-				icons: {
-					time: "fa fa-clock-o",
-					date: "fa fa-calendar",
-					up: "fa fa-chevron-up",
-					down: "fa fa-chevron-down",
-					previous: 'fa fa-chevron-left',
-					next: 'fa fa-chevron-right',
-					today: 'fa fa-screenshot',
-					clear: 'fa fa-trash',
-					close: 'fa fa-remove'
-				}
-			})
-
-			// for Birthday
-			let birthdayDate = moment();
-			$('.birthday').datetimepicker({
-				format: 'YYYY-MM-DD',
-				maxDate: birthdayDate,
-				useCurrent: false,
-				viewMode: 'years',
-				icons: {
-						time: "fa fa-clock-o",
-						date: "fa fa-calendar",
-						up: "fa fa-chevron-up",
-						down: "fa fa-chevron-down",
-						previous: 'fa fa-chevron-left',
-						next: 'fa fa-chevron-right',
-						today: 'fa fa-screenshot',
-						clear: 'fa fa-trash',
-						close: 'fa fa-remove',
-				},
-			});
-
-			$('.birthday').datepicker( "isDisabled" );
-
-			 let startTime = moment().hour(8)
-			 let endTime = moment().hour(21)
-
-			$('.desiredTime').datetimepicker({
-				format: 'LT',
-				minDate: startTime,
-				maxDate: endTime,
-				useCurrent: "hour",
-				stepping: 30,
-				icons: {
-					time: "fa fa-clock-o",
-					date: "fa fa-calendar",
-					up: "fa fa-chevron-up",
-					down: "fa fa-chevron-down",
-					previous: 'fa fa-chevron-left',
-					next: 'fa fa-chevron-right',
-					today: 'fa fa-screenshot',
-					clear: 'fa fa-trash',
-					close: 'fa fa-remove'
-				}
-			});
+					}
+				});
 
 
-			//for funeral blessing
-			//- let startDatee = moment().add(2, 'days').calendar();
-			//- let endDatee = moment().add(1, 'w').calendar();
-
-			//- $('.funeral').datetimepicker({
-			//- 	format: 'YYYY-MM-DD',
-			//- 	minDate: startDatee,
-			//- 	maxDate: endDatee,
-			//- 	daysOfWeekDisabled: [1,2,3,4,5,6],
-			//- 	icons: {
-			//- 			time: "fa fa-clock-o",
-			//- 			date: "fa fa-calendar",
-			//- 			up: "fa fa-chevron-up",
-			//- 			down: "fa fa-chevron-down",
-			//- 			previous: 'fa fa-chevron-left',
-			//- 			next: 'fa fa-chevron-right',
-			//- 			today: 'fa fa-screenshot',
-			//- 			clear: 'fa fa-trash',
-			//- 			close: 'fa fa-remove',
-			//- 	},
-			//- });
 
 			$(document).on('click','.btn-next, .btn-previous',function(event){
 				event.preventDefault();
@@ -442,6 +379,54 @@ html(lang='en')
 				return false;
 			});
 
+			if(window.location.href=='http://localhost:3009/guest?loggedin'){
+				$.post('/guest/balancechecking').done(data =>{
+					console.log(data)
+
+					$('#paymenthistoryBodyAppend').append(`
+						<p>Hello, a friendly reminder to complete your transaction before the deadline. Thank you, God bless!</p>
+							<div class="col-md-12">
+								<div class="table-responsive">
+									<table class="table table-hover dataTable fixed_header" >
+										<thead class="text-primary">
+											<th style ="text-align: left">Event Name</th>
+											<th style ="text-align: left">Due Date</th>
+											<th style ="text-align: right">Amount</th>
+											<th style ="text-align: right">Balance</th>
+										</thead>
+										<tbody id='paymentsummary'></tbody>
+									</table>
+								</div>
+							</div>
+					`)
+					for(i=0; i<data.details.length; i++){
+								console.log('for')
+								var duedate = moment(data.details[i].date_fullpaymentdeadline).format('MMMM DD, YYYY')
+								$('#paymentsummary').append(`
+									<tr>
+										<td style ="text-align: left">${data.details[i].var_eventname}
+										<td style ="text-align: left">${duedate}
+										<td style ="text-align: right">₱${data.details[i].dbl_amount}
+										<td style ="text-align: right">₱${data.details[i].dbl_balance}
+									</tr>
+								
+								`)
+					}
+					$('#paymenthistoryModal').modal('show')
+					$('#paymenthistoryModal').on('hidden.bs.modal',function(){
+						$('#paymenthistoryBodyAppend').empty()
+					})
+				})
+			}
+			else{
+				console.log('no checking')
+			}
+
+			$.post('/guest/schedulechecking').done(data =>{
+				console.log('checking schedule')
+				console.log(data)
+			})
+			
 			$(document).ready(function() {
 				$('.dataTable').DataTable( {
 						responsive: {

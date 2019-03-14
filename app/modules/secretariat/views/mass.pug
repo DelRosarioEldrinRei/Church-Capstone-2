@@ -55,7 +55,13 @@ block prepend main
 								#mass.tab-pane.active
 									.card
 											.card-header.card-header-primary(style='background:#367587; color:white')
-													h4.card-title(style='background:#367587; color:white') Mass Schedule
+												
+												.row
+													.col-md-6
+														h4.card-title(style='background:#367587; color:white') Mass Schedules
+													.col-md-6
+														a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add a schedule
+
 											.card-body.table-responsive
 													table.table.table-hover.dataTable
 															thead.text-primary
@@ -63,7 +69,7 @@ block prepend main
 																	
 																	th Mass Start
 																	th Mass Duration
-																	th Day
+																	//- th Day
 																	th Venue
 																	th Type
 																	th.text-center Actions
@@ -73,17 +79,17 @@ block prepend main
 																			//- td=mass.int_eventinfoID
 																			td=mass.time_massstart
 																			td=mass.time_massduration
-																			td=mass.int_massday
+																			//- td=mass.int_massday
 																			td=mass.var_massvenue
 																			td=mass.char_masstype
 																			//- td=mass.char_weddingtype
 																			
 																			td.td-actions.text-center
-																				button.btn.btn-primary.actionButton(type='button' value=`${mass.massID}`)
+																				button.btn.btn-primary.actionButton(type='button' value=`${mass.int_massID}`)
 																					i.ti-settings
 																						#toolbar-options.hidden
-																							a.viewButton(href='#')
-																								i.ti-file(style="color:white;")
+																							//- a.viewButton(href='#')
+																							//- 	i.ti-file(style="color:white;")
 																							a.updateButton(href='#')
 																								i.ti-pencil(style="color:white;")
 																							a.updateReqButton(href='#')
@@ -105,15 +111,323 @@ block prepend main
 							.gallery#reqAppend
 					.modal-footer
 						button.btn.btn-outline.btn-secondary.pull-left#massButton(type='button', data-dismiss='modal') Close
-	
+	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
+		.modal-dialog.modal-notify.modal-success(role='document')
+			// Content
+			.modal-content
+				// Header
+				.modal-header(style='background:#367587')
+					h4.heading.lead(style='color:white') Add Mass
+					button.close(type='button' data-dismiss='modal' aria-label='Close' style='color:white')
+						span.white-text(aria-hidden='true') &times;
+				// Body
+				.modal-body
+						//- form.form(action="/admin/maintenance-events/add" method="post")
+						input.form-control#bool_withpayment(type='hidden'  value=0)
+						input.form-control#bool_refundable(type='hidden'  value=0)
+						input.form-control#mon_val(type='hidden'  value=0)
+						input.form-control#tues_val(type='hidden'  value=0)
+						input.form-control#wed_val(type='hidden'  value=0)
+						input.form-control#thurs_val(type='hidden'  value=0)
+						input.form-control#fri_val(type='hidden'  value=0)
+						input.form-control#sat_val(type='hidden'  value=0)
+						input.form-control#sun_val(type='hidden'  value=0)
+						.form-row
+							.form-group.col-md-6.m-0
+								.form-group
+									label.h6 Start
+									input.form-control.timepicker1.timeDropper#massstart(type='text' )
+							.form-group.col-md-6.m-0
+								.form-group
+									label.h6 Duration 
+									input.form-control.timepicker1.timeDropper#massduration(type='text' )
+						.form-row
+							.form-group.col-md-6.m-0
+								.form-group
+									label.label-control Mass Type
+									select.form-control#massstype(type="text" name='masstype')
+										option Regular
+										option Special
+										
+						.form-row
+							.col-md-12.ml-2.mt
+								.form-group.col-md-6
+									.form-row
+										.form-group.col-md-12
+										
+											label.h6.m-0 Days of the week
+											.form-row
+												.col-md-6
+													.form-check.my-2
+														label.form-check-label
+															input.form-check-input#mon(type='checkbox')
+															|  Monday
+													.form-check.my-2
+														label.form-check-label
+															input.form-check-input#tues(type='checkbox')
+															|  Tuesday
+													.form-check.my-2
+														label.form-check-label
+															input.form-check-input#wed(type='checkbox')
+															|  Wednesday
+													.form-check.my-2
+														label.form-check-label
+															input.form-check-input#thurs(type='checkbox')
+															|  Thursday
+												.col-md-6
+													.form-check.my-2
+														label.form-check-label
+															input.form-check-input#fri(type='checkbox')
+															|  Friday
+													.form-check.my-2
+														label.form-check-label
+															input.form-check-input#sat(type='checkbox')
+															|  Saturday
+													.form-check.my-2
+														label.form-check-label
+															input.form-check-input#sun(type='checkbox')
+															|  Sunday	
+						.row
+							.col-md-12.text-center.my-3
+								button.btn.btn-primary#addMass(type='submit') Add Mass Schedule
+					
+	#updateModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
+		.modal-dialog.modal-notify.modal-success(role='document')
+			.modal-content
+				.modal-header(style='background:#367587; color:white;')
+					p.heading.lead Edit Mass
+					button.close#cancelButton.text-white(type='button' data-dismiss='modal' aria-label='Close')
+						span.white-text(aria-hidden='true') &times;
+				.modal-body#updateAppend
+					.col-md-12.text-center.my-3
+				.modal-footer
+					button.btn.btn-primary#updateSubmitButton(type="button") Update
 block addjs
 	script.
+		$('.datetimepicker').datetimepicker({
+				icons: {
+					time: "fa fa-clock-o",
+					date: "fa fa-calendar",
+					up: "fa fa-chevron-up",
+					down: "fa fa-chevron-down",
+					previous: 'fa fa-chevron-left',
+					next: 'fa fa-chevron-right',
+					today: 'fa fa-screenshot',
+					clear: 'fa fa-trash',
+					close: 'fa fa-remove'
+			}
+		});
+
+		$('.datetimepicker1').datetimepicker({
+				icons: {
+					time: "fa fa-clock-o",
+					date: "fa fa-calendar",
+					up: "fa fa-chevron-up",
+					down: "fa fa-chevron-down",
+					previous: 'fa fa-chevron-left',
+					next: 'fa fa-chevron-right',
+					today: 'fa fa-screenshot',
+					clear: 'fa fa-trash',
+					close: 'fa fa-remove'
+			}
+		});
+
+		$('.timepicker').datetimepicker({
+			icons: {
+				time: "fa fa-clock-o",
+				date: "fa fa-calendar",
+				up: "fa fa-chevron-up",
+				down: "fa fa-chevron-down",
+				previous: 'fa fa-chevron-left',
+				next: 'fa fa-chevron-right',
+				today: 'fa fa-screenshot',
+				clear: 'fa fa-trash',
+				close: 'fa fa-remove'
+			}
+		});
+		$('.timepicker1').datetimepicker({
+			icons: {
+				time: "fa fa-clock-o",
+				date: "fa fa-calendar",
+				up: "fa fa-chevron-up",
+				down: "fa fa-chevron-down",
+				previous: 'fa fa-chevron-left',
+				next: 'fa fa-chevron-right',
+				today: 'fa fa-screenshot',
+				clear: 'fa fa-trash',
+				close: 'fa fa-remove'
+			}
+		})
+	script.
 		$(document).ready(function() {
-			var ctr = 0;
+			var idNow = 0;
 			$('.actionButton').click(function(){
 				idNow = $(this).val();
 				console.log(idNow)
+			});
+			$('.deleteButton').click(function(){
+				swal({
+					title: 'Are you sure?',
+					text: "You won't be able to revert this!",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Confirm'
+					}).then((result) => {
+						if (result.value) {
+							$.post('/secretariat/mass/delete',{id1:idNow})
+							.done(data =>{
+								if(data){
+									swal({
+									title:'Success',
+									text:'Special event deleted',
+									icon:'success'
+									}).then(function(){
+										location.reload();
+									})
+								}
+							});
+						}
+					})
+				})
+			$('.updateButton').click(function(){
+					$.post('/secretariat/mass/query',{id:idNow})
+				.done(data=>{
+					var start = moment(data.time_massstart, 'YYYY-MM-DD h:mm a').format('YYYY-MM-DD HH:mm:ss');
+					var end = moment(data.time_massend, 'YYYY-MM-DD h:mm a').format('YYYY-MM-DD HH:mm:ss');
+					$('#updateAppend').append(`
+					
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="label-control">Start</label>
+								<input type="datetime" id="starttime" id="timepicker1" value="${start}" class="timepicker1 form-control">
+							</div>
+						</div>
+						
+					</div>
+					<div class="form-group">
+						<label class="label-control">Venue</label>
+						<input type="text" id="massvenue" value="${data.var_massvenue}"class="form-control">
+					</div>
+					<div class="form-group">
+						<label class="label-control">mass Type
+							<select type="text" id="masstype" value="${data.char_masstype}" class="form-control">
+							<option>Regular</option>
+							<option>Special</option>
+							
+							
+							</select>
+						</label>
+					</div>`)
+					$('#updateModal').modal('show')
+					$('#updateModal').on('hidden.bs.modal',function(){
+						$('#updateAppend').empty()
+					})
+					$('#cancelButton').click(function(){
+						$('#updateAppend').empty();
+					})
+					$(document).keyup(function(e) {
+					if (e.keyCode === 27)
+						{
+						$('#updateModal').modal('hide');
+						$('#updateAppend').empty();
+						};
+					});
+					$('#updateSubmitButton').click(function(){
+						$.post('/secretariat/mass/edit',{
+						eventname:$('#eventname').val(),
+						eventdesc:$('#eventdesc').val(),
+						starttime:$('#starttime').val(),
+						endtime:$('#endtime').val(),
+						venue:$('#venue').val(),
+						eventtype:$('#eventtype').val(),
+						id1:idNow
+						})
+						.done(data=>{
+							if(data){
+								swal({
+								title:'Success',
+								text:'service updated',
+								icon:'success'
+								}).then(function(){
+									location.reload();
+								})
+								$('#updateModal').modal('hide');
+								$('#updateAppend').empty();
+							}
+						})
+					})
+				})
 			})
+
+			$('#addMass').click(function(){
+					
+					console.log()
+					
+					if($("#mon").prop("checked") == true){$('#mon_val').val(1)}
+					if($("#mon").prop("checked") == false){$('#mon_val').val(0)}
+					if($("#tues").prop("checked") == true){$('#tues_val').val(1)}
+					if($("#tues").prop("checked") == false){$('#tues_val').val(0)}
+					if($("#wed").prop("checked") == true){$('#wed_val').val(1)}
+					if($("#wed").prop("checked") == false){$('#wed_val').val(0)}
+					if($("#thurs").prop("checked") == true){$('#thurs_val').val(1)}
+					if($("#thurs").prop("checked") == false){$('#thurs_val').val(0)}
+					if($("#fri").prop("checked") == true){$('#fri_val').val(1)}
+					if($("#fri").prop("checked") == false){$('#fri_val').val(0)}
+					if($("#sat").prop("checked") == true){$('#sat_val').val(1)}
+					if($("#sat").prop("checked") == false){$('#sat_val').val(0)}
+					if($("#sun").prop("checked") == true){$('#sun_val').val(1)}
+					if($("#sun").prop("checked") == false){$('#sun_val').val(0)}
+					
+					$.post('/secretariat/mass/add',{
+
+					massstart:$('#massstart').val(),
+					massduration:$('#massduration').val(),
+					massduration:$('#massduration').val(),
+					mon:$('#mon_val').val(),
+					tues:$('#tues_val').val(),
+					wed:$('#wed_val').val(),
+					thurs:$('#thurs_val').val(),
+					fri:$('#fri_val').val(),
+					sat:$('#sat_val').val(),
+					sun:$('#sun_val').val(),
+
+					char_facilitiestatus:'Enabled'
+				}).done(data=>{
+						var facilityid= data.facilityid;
+						var formData= new FormData();
+
+						formData.append('image', $('#file-0b')[0].files[0]);
+						formData.append('int_facilityID', facilityid);
+						$.ajax({
+							type: 'POST',
+							url: '/admin/maintenance-facilities/upload',
+							data: formData,
+							processData:false,
+							contentType:false,
+							success: function(data){
+								swal({
+									title: "Facility Added",
+									//- text: 'Facility Added',
+									icon: 'success',
+									buttons:{
+										Okay:'okay'
+									}
+								}).then((value)=>{
+									location.reload()
+								})
+							}
+
+						})
+
+					})
+				
 			
+				})
 			
-		})
+		});
+			$('.timeDropper').timeDropper({
+			meridians: false,
+		}) 

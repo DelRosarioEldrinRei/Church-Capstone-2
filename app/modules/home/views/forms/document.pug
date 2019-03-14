@@ -1,4 +1,4 @@
-extends ../../../../templates/guests
+extends ../../../../templates/home
 block main
 	style.
 		#header-style-1 {
@@ -51,6 +51,7 @@ block main
 							.col-md-4.my-3
 								input#birthday.form-control(type='text' name='birthday' placeholder='First Name' value=`${results.birthday}`)
 								input#eventinfoID.form-control(type='hidden' name='eventinfoID'  value=`${results.eventinfoID}`)
+								input.form-control#userID(type='hidden' name='userID' value=`${user.int_tempuserID}`)
 						.row
 							.col-md-12.my-3
 								.form-group
@@ -81,6 +82,7 @@ block main
 						formData.append('birthday', $('#birthday').val())
 						formData.append('purpose', $('#purpose').val())
 						formData.append('eventinfoID', $('#eventinfoID').val())
+						formData.append('userID', $('#userID').val()),
 						swal({
 						title:'Are You Sure?', 
 						text:'This request will be submitted to the office.', 
@@ -93,20 +95,20 @@ block main
 						if(result.value){
 						$.ajax({
 							type:'POST',
-							url:'/guest/document/form',
+							url:'/index/document/form',
 							data: formData,
 							processData:false,
 							contentType:false,
 							success: function(data){
 								swal({
 									title:'Submitted!',
-									text:'Please wait for 3 days for your request to be processed. We will notify you once your document is ready to be released. You will find your transaction in the My Account>Reservations.',
+									text:'Please wait for 3 days for your request to be processed. We will notify through your email/contact number once your document is ready to be released. ',
 									icon:'success',
 									buttons: {
 										Okay: 'okay'
 									}
 								}).then((value)=>{
-									window.location='/guest/reservation'
+									window.location='/index#services'
 								})
 							}
 						})

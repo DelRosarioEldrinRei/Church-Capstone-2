@@ -28,9 +28,7 @@ adminRouter.use(authMiddleware.adminAuth)
                 db.query(queryString1, (err, results, fields) => {
                     if (err) console.log(err);
                     var application = results[0];
-                    db.query(queryString2, (err, results, fields) => {
-                        if (err) console.log(err);
-                        var reservation = results[0];
+                    
                         db.query(queryString3, (err, results, fields) => {
                             if (err) console.log(err);
                             var request = results[0];
@@ -54,7 +52,7 @@ adminRouter.use(authMiddleware.adminAuth)
                     var funeralmassCount=[];
                     var funeralserviceCount=[];
                     var marriageCount=[];
-                    var facilityCount=[];
+                    
                     var docuCount=[];
                     var houseCount=[];
                     //pie charts
@@ -358,55 +356,55 @@ adminRouter.use(authMiddleware.adminAuth)
                                                                     var december5 = results[0]
                                                                     marriageCount.push(december5.countt)
                                                                     console.log(marriageCount)       
-                    db.query(facility,[1],(err, results, fields) => {
-                        if (err) console.log(err);
-                        var january6 = results[0]
-                        facilityCount.push(january6.countt)
-                        db.query(facility,[2],(err, results, fields) => {
-                            if (err) console.log(err);
-                            var february6 = results[0]
-                            facilityCount.push(february6.countt)
-                            db.query(facility,[3],(err, results, fields) => {
-                                if (err) console.log(err);
-                                var march6 = results[0]
-                                facilityCount.push(march6.countt)
-                                db.query(facility,[4],(err, results, fields) => {
-                                    if (err) console.log(err);
-                                    var april6 = results[0]
-                                    facilityCount.push(april6.countt)
-                                    db.query(facility,[5],(err, results, fields) => {
-                                        if (err) console.log(err);
-                                        var may6 = results[0]
-                                        facilityCount.push(may6.countt)
-                                        db.query(facility,[6],(err, results, fields) => {
-                                            if (err) console.log(err);
-                                            var june6 = results[0]
-                                            facilityCount.push(june6.countt)
-                                            db.query(facility,[7],(err, results, fields) => {
-                                                if (err) console.log(err);
-                                                var july6 = results[0]
-                                                facilityCount.push(july6.countt)
-                                                db.query(facility,[8],(err, results, fields) => {
-                                                    if (err) console.log(err);
-                                                    var august6 = results[0]
-                                                    facilityCount.push(august6.countt)
-                                                    db.query(facility,[9],(err, results, fields) => {
-                                                        if (err) console.log(err);
-                                                        var september6 = results[0]
-                                                        facilityCount.push(september6.countt)
-                                                        db.query(facility,[10],(err, results, fields) => {
-                                                            if (err) console.log(err);
-                                                            var october6 = results[0]
-                                                            facilityCount.push(october6.countt)
-                                                            db.query(facility,[11],(err, results, fields) => {
-                                                                if (err) console.log(err);
-                                                                var november6 = results[0]
-                                                                facilityCount.push(november6.countt)
-                                                                db.query(facility,[12],(err, results, fields) => {
-                                                                if (err) console.log(err);
-                                                                    var december6 = results[0]
-                                                                    facilityCount.push(december6.countt)
-                                                                    console.log(facilityCount)
+                    // db.query(facility,[1],(err, results, fields) => {
+                    //     if (err) console.log(err);
+                    //     var january6 = results[0]
+                    //     facilityCount.push(january6.countt)
+                    //     db.query(facility,[2],(err, results, fields) => {
+                    //         if (err) console.log(err);
+                    //         var february6 = results[0]
+                    //         facilityCount.push(february6.countt)
+                    //         db.query(facility,[3],(err, results, fields) => {
+                    //             if (err) console.log(err);
+                    //             var march6 = results[0]
+                    //             facilityCount.push(march6.countt)
+                    //             db.query(facility,[4],(err, results, fields) => {
+                    //                 if (err) console.log(err);
+                    //                 var april6 = results[0]
+                    //                 facilityCount.push(april6.countt)
+                    //                 db.query(facility,[5],(err, results, fields) => {
+                    //                     if (err) console.log(err);
+                    //                     var may6 = results[0]
+                    //                     facilityCount.push(may6.countt)
+                    //                     db.query(facility,[6],(err, results, fields) => {
+                    //                         if (err) console.log(err);
+                    //                         var june6 = results[0]
+                    //                         facilityCount.push(june6.countt)
+                    //                         db.query(facility,[7],(err, results, fields) => {
+                    //                             if (err) console.log(err);
+                    //                             var july6 = results[0]
+                    //                             facilityCount.push(july6.countt)
+                    //                             db.query(facility,[8],(err, results, fields) => {
+                    //                                 if (err) console.log(err);
+                    //                                 var august6 = results[0]
+                    //                                 facilityCount.push(august6.countt)
+                    //                                 db.query(facility,[9],(err, results, fields) => {
+                    //                                     if (err) console.log(err);
+                    //                                     var september6 = results[0]
+                    //                                     facilityCount.push(september6.countt)
+                    //                                     db.query(facility,[10],(err, results, fields) => {
+                    //                                         if (err) console.log(err);
+                    //                                         var october6 = results[0]
+                    //                                         facilityCount.push(october6.countt)
+                    //                                         db.query(facility,[11],(err, results, fields) => {
+                    //                                             if (err) console.log(err);
+                    //                                             var november6 = results[0]
+                    //                                             facilityCount.push(november6.countt)
+                    //                                             db.query(facility,[12],(err, results, fields) => {
+                    //                                             if (err) console.log(err);
+                    //                                                 var december6 = results[0]
+                    //                                                 facilityCount.push(december6.countt)
+                    //                                                 console.log(facilityCount)
                     db.query(docu,[1],(err, results, fields) => {
                         if (err) console.log(err);
                         var january7 = results[0]
@@ -456,59 +454,11 @@ adminRouter.use(authMiddleware.adminAuth)
                                                                     var december7 = results[0]
                                                                     docuCount.push(december7.countt)
                                                                     console.log(docuCount)
-                    db.query(house,[1],(err, results, fields) => {
-                        if (err) console.log(err);
-                        var january7 = results[0]
-                        houseCount.push(january7.countt)
-                        db.query(house,[2],(err, results, fields) => {
-                            if (err) console.log(err);
-                            var february7 = results[0]
-                            houseCount.push(february7.countt)
-                            db.query(house,[3],(err, results, fields) => {
-                                if (err) console.log(err);
-                                var march7 = results[0]
-                                houseCount.push(march7.countt)
-                                db.query(house,[4],(err, results, fields) => {
-                                    if (err) console.log(err);
-                                    var april7 = results[0]
-                                    houseCount.push(april7.countt)
-                                    db.query(house,[7],(err, results, fields) => {
-                                        if (err) console.log(err);
-                                        var may7 = results[0]
-                                        houseCount.push(may7.countt)
-                                        db.query(house,[7],(err, results, fields) => {
-                                            if (err) console.log(err);
-                                            var june7 = results[0]
-                                            houseCount.push(june7.countt)
-                                            db.query(house,[7],(err, results, fields) => {
-                                                if (err) console.log(err);
-                                                var july7 = results[0]
-                                                houseCount.push(july7.countt)
-                                                db.query(house,[8],(err, results, fields) => {
-                                                    if (err) console.log(err);
-                                                    var august7 = results[0]
-                                                    houseCount.push(august7.countt)
-                                                    db.query(house,[9],(err, results, fields) => {
-                                                        if (err) console.log(err);
-                                                        var september7 = results[0]
-                                                        houseCount.push(september7.countt)
-                                                        db.query(house,[10],(err, results, fields) => {
-                                                            if (err) console.log(err);
-                                                            var october7 = results[0]
-                                                            houseCount.push(october7.countt)
-                                                            db.query(house,[11],(err, results, fields) => {
-                                                                if (err) console.log(err);
-                                                                var november7 = results[0]
-                                                                houseCount.push(november7.countt)
-                                                                db.query(house,[12],(err, results, fields) => {
-                                                                if (err) console.log(err);
-                                                                    var december7 = results[0]
-                                                                    houseCount.push(december7.countt)
-                                                                    console.log(houseCount)
+                    
                             // res.send(resulta)
-                            return res.render('admin/views/index',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                            return res.render('admin/views/index',{ application:application,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                                 anointingCount:anointingCount,baptismCount:baptismCount, specialbaptismCount:specialbaptismCount, funeralmassCount:funeralmassCount, funeralserviceCount:funeralserviceCount, marriageCount:marriageCount,
-                            facilityCount:facilityCount, docuCount:docuCount, houseCount:houseCount
+                            docuCount:docuCount, houseCount:houseCount
                                                     }); }); }); }); }); }); }); }); }); }); }); });     //anointing           
                                                 }); }); }); }); }); }); }); }); }); }); }); }); //reg bap
                                             }); }); }); }); }); }); }); }); }); }); }); });  // spc bap
@@ -516,12 +466,12 @@ adminRouter.use(authMiddleware.adminAuth)
                                     }); }); }); }); }); }); }); }); }); }); }); }); //funeral service
                                 }); }); }); }); }); }); }); }); }); }); }); }); //marriage
                             }); }); }); }); }); }); }); }); }); }); }); }); //facility
-                        }); }); }); }); }); }); }); }); }); }); }); }); //document
-                    }); }); }); }); }); }); }); }); }); }); }); }); //house 
+                        // }); }); }); }); }); }); }); }); }); }); }); }); //document
+                    
         
         
         
-            }); }); }); }); }); });//upto message
+             }); }); }); }); });//upto message
         }); 
         
     });
@@ -1798,9 +1748,7 @@ adminRouter.get('/reports-anointing', (req, res)=>{
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);
             var application = results[0];
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var reservation = results[0];
+          
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
@@ -1950,7 +1898,7 @@ adminRouter.get('/reports-anointing', (req, res)=>{
                                             anointingCountyear.push(eighteen.countt)
 
                                             console.log(anointingCountyear)
-                    return res.render('admin/views/reports/services/anointing',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                    return res.render('admin/views/reports/services/anointing',{ application:application,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                         anointingCount:anointingCount,
                         anointingCountyear:anointingCountyear,
                     anointingpieapproval:anointingpieapproval,
@@ -1959,7 +1907,7 @@ adminRouter.get('/reports-anointing', (req, res)=>{
 
     }); }); }); }); }); });  //anointing
 }); }); }); }); }); }); }); }); }); //year 
-}); }); }); }); }); }); }); }); }); }); }); });     //anointing           
+}); }); }); }); }); }); }); }); }); }); });     //anointing           
     }); }); }); }); }); });//upto message
 });
 adminRouter.get('/reports-baptism', (req, res)=>{
@@ -1968,15 +1916,13 @@ adminRouter.get('/reports-baptism', (req, res)=>{
     var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
     var years =`select count(int_eventinfoID) as countt from tbl_eventinfo where int_eventID = (select int_eventID from tbl_services where var_eventname = ?) and year(date_eventdate) =?`
     var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
-    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    // var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
     var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
     var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);
             var application = results[0];
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var reservation = results[0];
+           
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
@@ -2276,7 +2222,7 @@ adminRouter.get('/reports-baptism', (req, res)=>{
 
                                             console.log(specialbaptismCountyear)
                     // res.send(resulta)
-                    return res.render('admin/views/reports/services/baptism',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                    return res.render('admin/views/reports/services/baptism',{ application:application,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                     baptismCount:baptismCount, baptismCountyear:baptismCountyear, 
                     specialbaptismCount:specialbaptismCount, specialbaptismCountyear:specialbaptismCountyear,
                     baptismpieapproval:baptismpieapproval,
@@ -2302,7 +2248,7 @@ adminRouter.get('/reports-baptism', (req, res)=>{
                                 
 
 
-    }); }); }); }); }); });//upto message
+    }); }); }); }); }); //upto message
 
 })
 adminRouter.get('/reports-funeral', (req, res)=>{
@@ -2311,15 +2257,13 @@ adminRouter.get('/reports-funeral', (req, res)=>{
     var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
         
     var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
-    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    // var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
     var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
     var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);
             var application = results[0];
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var reservation = results[0];
+           
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
@@ -2607,7 +2551,7 @@ adminRouter.get('/reports-funeral', (req, res)=>{
 
                                             console.log(funeralserviceCountyear)
                     // res.send(resulta)
-                    return res.render('admin/views/reports/services/funeral',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                    return res.render('admin/views/reports/services/funeral',{ application:application,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                          funeralmassCount:funeralmassCount, funeralserviceCount:funeralserviceCount,
                          funeralmassCountyear:funeralmassCountyear, funeralserviceCountyear:funeralserviceCountyear,
                     
@@ -2637,7 +2581,7 @@ adminRouter.get('/reports-funeral', (req, res)=>{
 
 
 
-    }); }); }); }); }); });//upto message
+    }); }); }); }); }); //upto message
 })
 adminRouter.get('/reports-marriage', (req, res)=>{
     
@@ -2651,9 +2595,7 @@ adminRouter.get('/reports-marriage', (req, res)=>{
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);
             var application = results[0];
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var reservation = results[0];
+            
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
@@ -2819,7 +2761,7 @@ adminRouter.get('/reports-marriage', (req, res)=>{
 
                                             console.log(marriageCountyear)
                     // res.send(resulta)
-                    return res.render('admin/views/reports/services/marriage',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                    return res.render('admin/views/reports/services/marriage',{ application:application,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                         marriageCount:marriageCount,
                         marriageCountyear:marriageCountyear,
                     
@@ -2829,7 +2771,7 @@ adminRouter.get('/reports-marriage', (req, res)=>{
                     marriagepiepayment:marriagepiepayment,
                     
                 
-                });
+                
 
 }); }); }); }); }); }); }); }); //marriage
 }); }); }); }); }); }); }); }); }); //year 
@@ -2852,9 +2794,7 @@ adminRouter.get('/reports-facilityreservation', (req, res)=>{
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);
             var application = results[0];
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var reservation = results[0];
+           
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
@@ -3019,7 +2959,7 @@ adminRouter.get('/reports-facilityreservation', (req, res)=>{
                                             console.log(facilityCountyear)
             
                     // res.send(resulta)
-                    return res.render('admin/views/reports/specialservices/facility',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                    return res.render('admin/views/reports/specialservices/facility',{ application:application,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                         
                     facilityCount:facilityCount, 
                     facilityCountyear:facilityCountyear, 
@@ -3030,7 +2970,7 @@ adminRouter.get('/reports-facilityreservation', (req, res)=>{
                     facilitypiepayment:facilitypiepayment,
                     
                 
-                });
+                
                 
 }); }); }); }); }); }); }); }); //facility
 }); }); }); }); }); }); }); });});
@@ -3054,9 +2994,7 @@ adminRouter.get('/reports-documentrequest', (req, res)=>{
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);
             var application = results[0];
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var reservation = results[0];
+            
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
@@ -3221,7 +3159,7 @@ adminRouter.get('/reports-documentrequest', (req, res)=>{
                                             docuCountyear.push(eighteen.countt)
 
                                             console.log(docuCountyear)
-                    return res.render('admin/views/reports/specialservices/document',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                    return res.render('admin/views/reports/specialservices/document',{ application:application,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                     docuCount:docuCount, 
                     docuCountyear:docuCountyear, 
                     docupieapproval:docupieapproval,
@@ -3235,7 +3173,7 @@ adminRouter.get('/reports-documentrequest', (req, res)=>{
 }); }); }); }); }); }); }); }); //docu
 }); }); }); }); }); }); }); }); }); 
 
-                }); }); }); }); }); }); }); }); }); }); }); }); //document
+                }); }); }); }); }); }); }); }); }); }); });  //document
           
 
 
@@ -3254,9 +3192,7 @@ adminRouter.get('/reports-houseblessing', (req, res)=>{
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);
             var application = results[0];
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var reservation = results[0];
+            
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
@@ -3407,12 +3343,12 @@ adminRouter.get('/reports-houseblessing', (req, res)=>{
                                             houseCountyear.push(eighteen.countt)
 
                                             console.log(houseCountyear)
-                    return res.render('admin/views/reports/specialservices/house',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                    return res.render('admin/views/reports/specialservices/house',{ application:application,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                       houseCount:houseCount,
                     
                     housepieapproval:housepieapproval,
                     houserequirement:houserequirement
-                });
+                
                 
 
 }); }); }); }); }); }); //houseblessing
@@ -3430,15 +3366,13 @@ adminRouter.get('/reports', (req, res)=>{
     var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
         
     var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
-    var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
+    
     var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
     var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
         db.query(queryString1, (err, results, fields) => {
             if (err) console.log(err);
             var application = results[0];
-            db.query(queryString2, (err, results, fields) => {
-                if (err) console.log(err);
-                var reservation = results[0];
+         
                 db.query(queryString3, (err, results, fields) => {
                     if (err) console.log(err);
                     var request = results[0];
@@ -3462,7 +3396,7 @@ adminRouter.get('/reports', (req, res)=>{
             var funeralmassCount=[];
             var funeralserviceCount=[];
             var marriageCount=[];
-            var facilityCount=[];
+           
             var docuCount=[];
             var houseCount=[];
             //pie charts
@@ -3487,11 +3421,7 @@ adminRouter.get('/reports', (req, res)=>{
             var marriagerequirement=[];
             var marriagepiepayment=[];
             
-            //FACILITY RESERVATION
-            var facilitypieapproval=[];
-            var facilityrequirement=[];
-            var facilitypiepayment=[];
-            
+          
             //DOCUMENT
             var docupieapproval=[];
             var docurequirement=[];
@@ -3537,15 +3467,7 @@ adminRouter.get('/reports', (req, res)=>{
             join tbl_payment on tbl_documentrequest.int_paymentID = tbl_payment.int_paymentID
             where tbl_payment.char_paymentstatus=?`
 
-            var facilitypieapprovalquery =`select count(int_reservationID) as countt from tbl_facilityreservation 
-            where char_reservestatus=?`
-            var facilitypierequirementquery =`select count(tbl_facilityreservation.int_reservationID) as countt from tbl_facilityreservation 
-            join tbl_requirementsfacility on tbl_facilityreservation.int_reservationID = tbl_requirementsfacility.int_reservationID
-            where tbl_requirementsfacility.char_reqstatus=?`
-            var facilitypiepaymentquery =`select count(tbl_facilityreservation.int_reservationID) as countt from tbl_facilityreservation 
-            join tbl_payment on tbl_facilityreservation.int_paymentID = tbl_payment.int_paymentID
-            where tbl_payment.char_paymentstatus=?`
-            
+           
             var housepieapprovalquery =`select count(int_houseblessID) as countt from tbl_houseblessing 
             where char_approvalstatus=?`
             var housepierequirementquery =`select count(tbl_houseblessing.int_houseblessID) as countt from tbl_houseblessing 
@@ -3776,40 +3698,7 @@ adminRouter.get('/reports', (req, res)=>{
                                         if (err) console.log(err);
                                         var unpaid7 = results[0]
                                         docupiepayment.push(unpaid7.countt)
-        db.query(facilitypieapprovalquery,["Pending"],(err, results, fields) => {
-            if (err) console.log(err);
-            var pending8 = results[0]
-            facilitypieapproval.push(pending8.countt)
-            db.query(facilitypieapprovalquery,["Approved"],(err, results, fields) => {
-                if (err) console.log(err);
-                var approved8 = results[0]
-                facilitypieapproval.push(approved8.countt)
-                db.query(facilitypieapprovalquery,["Disapproved"],(err, results, fields) => {
-                    if (err) console.log(err);
-                    var disapproved8 = results[0]
-                    facilitypieapproval.push(disapproved8.countt)
-                    //requirement
-                    db.query(facilitypierequirementquery,[ "Submitted"],(err, results, fields) => {
-                        if (err) console.log(err);
-                        var submitted8 = results[0]
-                        facilityrequirement.push(submitted8.countt)
-                        db.query(facilitypierequirementquery,[ "Approved"],(err, results, fields) => {
-                            if (err) console.log(err);
-                            var approvedd8 = results[0]
-                            facilityrequirement.push(approvedd8.countt)
-                            db.query(facilitypierequirementquery,[ "Rejected"],(err, results, fields) => {
-                                if (err) console.log(err);
-                                var rejected8 = results[0]
-                                facilityrequirement.push(rejected8.countt)
-                                //payment
-                                db.query(facilitypiepaymentquery,[ "Paid"],(err, results, fields) => {
-                                    if (err) console.log(err);
-                                    var paid8 = results[0]
-                                    facilitypiepayment.push(paid8.countt)
-                                    db.query(facilitypiepaymentquery,[ "Unpaid"],(err, results, fields) => {
-                                        if (err) console.log(err);
-                                        var unpaid8 = results[0]
-                                        facilitypiepayment.push(unpaid8.countt)
+      
         db.query(housepieapprovalquery,["Pending"],(err, results, fields) => {
             if (err) console.log(err);
             var pending9 = results[0]
@@ -4137,55 +4026,7 @@ adminRouter.get('/reports', (req, res)=>{
                                                             var december5 = results[0]
                                                             marriageCount.push(december5.countt)
                                                             console.log(marriageCount)       
-            db.query(facility,[1],(err, results, fields) => {
-                if (err) console.log(err);
-                var january6 = results[0]
-                facilityCount.push(january6.countt)
-                db.query(facility,[2],(err, results, fields) => {
-                    if (err) console.log(err);
-                    var february6 = results[0]
-                    facilityCount.push(february6.countt)
-                    db.query(facility,[3],(err, results, fields) => {
-                        if (err) console.log(err);
-                        var march6 = results[0]
-                        facilityCount.push(march6.countt)
-                        db.query(facility,[4],(err, results, fields) => {
-                            if (err) console.log(err);
-                            var april6 = results[0]
-                            facilityCount.push(april6.countt)
-                            db.query(facility,[5],(err, results, fields) => {
-                                if (err) console.log(err);
-                                var may6 = results[0]
-                                facilityCount.push(may6.countt)
-                                db.query(facility,[6],(err, results, fields) => {
-                                    if (err) console.log(err);
-                                    var june6 = results[0]
-                                    facilityCount.push(june6.countt)
-                                    db.query(facility,[7],(err, results, fields) => {
-                                        if (err) console.log(err);
-                                        var july6 = results[0]
-                                        facilityCount.push(july6.countt)
-                                        db.query(facility,[8],(err, results, fields) => {
-                                            if (err) console.log(err);
-                                            var august6 = results[0]
-                                            facilityCount.push(august6.countt)
-                                            db.query(facility,[9],(err, results, fields) => {
-                                                if (err) console.log(err);
-                                                var september6 = results[0]
-                                                facilityCount.push(september6.countt)
-                                                db.query(facility,[10],(err, results, fields) => {
-                                                    if (err) console.log(err);
-                                                    var october6 = results[0]
-                                                    facilityCount.push(october6.countt)
-                                                    db.query(facility,[11],(err, results, fields) => {
-                                                        if (err) console.log(err);
-                                                        var november6 = results[0]
-                                                        facilityCount.push(november6.countt)
-                                                        db.query(facility,[12],(err, results, fields) => {
-                                                        if (err) console.log(err);
-                                                            var december6 = results[0]
-                                                            facilityCount.push(december6.countt)
-                                                            console.log(facilityCount)
+          
             db.query(docu,[1],(err, results, fields) => {
                 if (err) console.log(err);
                 var january7 = results[0]
@@ -4285,9 +4126,9 @@ adminRouter.get('/reports', (req, res)=>{
                                                             houseCount.push(december7.countt)
                                                             console.log(houseCount)
                     // res.send(resulta)
-                    return res.render('admin/views/reports/index',{ application:application,reservation:reservation,request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
+                    return res.render('admin/views/reports/index',{ application:applicationrequest, request:request, baptism:baptism, messages:messages, newmessages:newmessages, 
                         anointingCount:anointingCount,baptismCount:baptismCount, specialbaptismCount:specialbaptismCount, funeralmassCount:funeralmassCount, funeralserviceCount:funeralserviceCount, marriageCount:marriageCount,
-                    facilityCount:facilityCount, docuCount:docuCount, houseCount:houseCount,
+                    docuCount:docuCount, houseCount:houseCount,
                     baptismpieapproval:baptismpieapproval,
                     baptismpierequirement:baptismpierequirement,
                     baptismpiepayment:baptismpiepayment,
@@ -4307,10 +4148,6 @@ adminRouter.get('/reports', (req, res)=>{
                     marriagerequirement:marriagerequirement,
                     marriagepiepayment:marriagepiepayment,
                     
-                    //FACILITY RESERVATION
-                    facilitypieapproval:facilitypieapproval,
-                    facilityrequirement:facilityrequirement,
-                    facilitypiepayment:facilitypiepayment,
                     
                     //DOCUMENT
                     docupieapproval:docupieapproval,
@@ -4338,7 +4175,7 @@ adminRouter.get('/reports', (req, res)=>{
 }); }); }); }); }); }); }); }); //marriage
 }); }); }); }); }); }); }); }); //regbap
 }); }); }); }); }); }); }); }); //spc bap
-}); }); }); }); }); }); }); }); //facility
+
 }); }); }); }); }); }); }); }); //docu
 }); }); }); }); }); });  //anointing
 }); }); }); }); }); }); //funeral service
@@ -4357,14 +4194,14 @@ adminRouter.get('/reports', (req, res)=>{
                                 }); }); }); }); }); }); }); }); }); }); }); });  //funeral mass
                             }); }); }); }); }); }); }); }); }); }); }); }); //funeral service
                         }); }); }); }); }); }); }); }); }); }); }); }); //marriage
-                    }); }); }); }); }); }); }); }); }); }); }); }); //facility
+                    
                 }); }); }); }); }); }); }); }); }); }); }); }); //document
             }); }); }); }); }); }); }); }); }); }); }); }); //house 
 
 
 
     }); }); }); }); }); });//upto message
-}); 
+
 
 //=======================================================
 //Q U E R I E S

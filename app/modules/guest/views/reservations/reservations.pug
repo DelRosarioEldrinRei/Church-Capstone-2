@@ -101,6 +101,35 @@ block main
 														button.btn-info.btn-sm.marriageButton(type='button' style="cursor: pointer;" value=reservation.int_eventinfoID) View
 													-else
 														button.btn-info.btn-sm.viewButton(type='button', style="cursor: pointer;"  value=reservation.int_eventinfoID) View
+					.row
+						.col-md-12.form-wizard.p0
+							h3 Others
+							p 
+					.row
+						.col-lg-12.col-md-12.mb-60
+							table.table#dataTable
+								thead
+									tr.text-center
+										th Service
+										th Type
+										th Status
+										th Actions
+								tbody
+									each docurequest in docurequests
+										tr.text-center
+											td.servicename(value=docurequest.var_servicename)=docurequest.var_servicename
+											td=docurequest.var_documenttype
+											td=docurequest.char_docustatus
+											//- td=docurequest.time_eventstart
+											td.td-actions
+												-if(docurequest.char_approvalstatus!='Cancelled')
+														button.btn-info.btn-sm.viewDocuButton(type='button', style="cursor: pointer;"  value=docurequest.int_requestID) View
+														//- button.btn-success.btn-sm.updateDocuButton.mx-1(type='button', style="cursor: pointer;"  value=docurequest.int_requestID) Edit
+														button.btn.btn-danger.btn-sm.cancelDocuButton(type='button',value=`${docurequest.int_requestID}`) Cancel
+														| &nbsp;
+												-else
+														button.btn-info.btn-sm.viewButton(type='button', style="cursor: pointer;"  value=docurequest.int_requestID) View
+									
 	#viewModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
 				.modal-content
@@ -109,6 +138,17 @@ block main
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span.p-3(aria-hidden='true' style='background:#367587; color:white') ×
 					.modal-body#viewBodyAppend
+	#viewDocuModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header(style='background:#367587; color:white')
+						h4.modal-title(style='background:#367587; color:white') View Request Details
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span.p-3(aria-hidden='true' style='background:#367587; color:white') ×
+					.modal-body#viewDocuBodyAppend
+					.modal-footer
+						button.btn.std-btn.btn-common.m-0#cancelButton(type='button', data-dismiss='modal') Close
+	
 	#updateModal.modal.fade( role="dialog" aria-labelledby="exampleModalLabel")
 		.modal-dialog.modal-lg(role="document")
 			.modal-content
@@ -1177,359 +1217,359 @@ block addjs
 								}
 							}
 							else if(data[0].char_approvalstatus == "Pending" && data[0].char_paymentstatus == "Unpaid"){
-							$('#refund').append(`
-							<button id="voucher" type="button" class="btn btn-common">Print Voucher</button>
-							`)	
-							$('#voucher').click(function(){
-								console.log(data[0].int_voucherID)
-								$.post('/guest/voucherEvents',{voucherId:data[0].int_voucherID}).done(data=>{
-								console.log("sponsors "+data.sponsors.length)
-								
-											console.log(data.voucherinfo[0].var_vouchercode)
-											console.log("info"+data.voucherinfo[0])
-											$(document).off('click', '#voucherButton')
-												function toDataURL(url, callback) {
-													var xhr = new XMLHttpRequest();
-													xhr.onload = function() {
-														var reader = new FileReader();
-														reader.onloadend = function() {
-														callback(reader.result);
-														}
-														reader.readAsDataURL(xhr.response);
-													};
-													xhr.open('GET', url);
-													xhr.responseType = 'blob';
-													xhr.send();
-												}
-												toDataURL('/document_templates/voucherTemplate3witheventname.png', function(dataUrl) {
-													toDataURL('/document_templates/logo.png', function(logo) {
-														var sponsorText = [];
-														var sponsorX = [65,393,507];
-														var sponsorY = 243;
-														console.log(`${data.sponsors}`)
-														for(i=0;i<data.sponsors.length;i++){
-															sponsorText.push({
-																text: `${data.sponsors[i].var_sponsorname}`,
-																style: 'styleLabelEvent',
-																absolutePosition: {x:sponsorX[0], y:sponsorY},
-															})
-														}
-														var docDefinition = {
-															pageMargins: [ 0, 35, 0, 0 ],
-															content: [
-																{
-																	image: dataUrl,
-																	width: 610,
-																	//- height: 100,
-																},
-																{
-																	image: logo,
-																	width: 45,
-																	height: 40,
-																	absolutePosition: {x:13, y:60},
-																},
-																{
-																	image: logo,
-																	width: 45,
-																	height: 40,
-																	absolutePosition: {x:13, y:447},
-																},
-																//mga laman sa taas
-																{
-																text:'500-0239',
-																style: 'styleLabelTop',
-																absolutePosition: {x:350, y:45},
-																},
-																{
-																text:'churcheventapp@gmail.com',
-																style: 'styleLabelTop',
-																absolutePosition: {x:257, y:68},
-																},
-																{
-																text:'inanglupangpangako.com',
-																style: 'styleLabelTop',
-																absolutePosition: {x:269, y:90},
-																},
-																{
-																text:'Urban, Brgy. Payatas B. 1119',
-																style: 'styleLabelTop',
-																absolutePosition: {x:444, y:45},
-																},
-																{
-																text:'Quezon City, Manila',
-																style: 'styleLabelTop',
-																absolutePosition: {x:487, y:68},
-																},
-																{
-																text:`${data.voucherinfo[0].var_vouchercode}`,
-																style: 'styleLabelTop',
-																absolutePosition: {x:495, y:90},
-																},
-																//Middle part
-																{
-																text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
-																style: 'styleLabelMiddle',
-																absolutePosition: {x:51, y:127},
-																},
-																{
-																text:`${data.voucherinfo[0].var_useraddress}`,
-																style: 'styleLabelMiddle',
-																absolutePosition: {x:51, y:140},
-																},
-																{
-																text:`# ${data.voucherinfo[0].var_vouchercode}`,
-																style: 'styleLabelMiddle',
-																absolutePosition: {x:225, y:127},
-																},
-																{
-																text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
-																style: 'styleLabelMiddle',
-																absolutePosition: {x:225, y:140},
-																},
-																{
-																text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
-																style: 'styleLabelMiddle',
-																absolutePosition: {x:225, y:153},
-																},
-																//table Contents
-																// .toUpperCase() yung event name before ilagay sa pdfmake
-																//ito yung ifoforeach mu rae
-																{ 
-																text: `${data.voucherinfo[0].var_eventname}`,
-																style: 'styleLabelEventName',
-																absolutePosition: {x:65, y:217},
-																},
-																{
-																text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
-																style: 'styleLabelEvent',
-																absolutePosition: {x:393, y:217},
-																},
-																{
-																text:`₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
-																style: 'styleLabelEvent',
-																absolutePosition: {x:507, y:217},
-																},
-																// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
-																{
-																text: `Number of Additional Sponsors : ${data.sponsors.length - 2}`,
-																style: 'styleLabelEventName',
-																absolutePosition: {x:65, y:243},
-																},
-																{
-																text: '₱ 50/head',
-																style: 'styleLabelEvent',
-																absolutePosition: {x:393, y:243},
-																},
-																{
-																text: `₱ ${((data.sponsors.length-2)*50).toFixed(2)}`,
-																style: 'styleLabelEvent',
-																absolutePosition: {x:506, y:243},
-																},
-																//total amount
-																{
-																text: `₱ ${(((data.sponsors.length-2)*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
-																style: 'styleLabelTA',
-																absolutePosition: {x:476, y:354},
-																},
-																//remaining days
-																{
-																text: '14',
-																style: 'styleLabelRemaining',
-																absolutePosition: {x:338, y:389},
-																},
-																//IBABANG VOUCHER 387 sa y-axis dinagdag
-																{
-																text:'500-0239',
-																style: 'styleLabelTop',
-																absolutePosition: {x:350, y:432},
-																},
-																{
-																text:'churcheventapp@gmail.com',
-																style: 'styleLabelTop',
-																absolutePosition: {x:257, y:455},
-																},
-																{
-																text:'inanglupangpangako.com',
-																style: 'styleLabelTop',
-																absolutePosition: {x:269, y:477},
-																},
-																{
-																text:'Urban, Brgy. Payatas B. 1119',
-																style: 'styleLabelTop',
-																absolutePosition: {x:444, y:432},
-																},
-																{
-																text:'Quezon City, Manila',
-																style: 'styleLabelTop',
-																absolutePosition: {x:487, y:455},
-																},
-																{
-																text:'Voucher ID 42352',
-																style: 'styleLabelTop',
-																absolutePosition: {x:495, y:477},
-																},
-																//Middle part
-																{
-																text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
-																style: 'styleLabelMiddle',
-																absolutePosition: {x:51, y:514},
-																},
-																{
-																text:`${data.voucherinfo[0].var_useraddress}`,
-																style: 'styleLabelMiddle',
-																absolutePosition: {x:51, y:527},
-																},
-																{
-																text:`# ${data.voucherinfo[0].var_vouchercode}`,
-																style: 'styleLabelMiddle',
-																absolutePosition: {x:225, y:514},
-																},
-																{
-																text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
-																style: 'styleLabelMiddle',
-																absolutePosition: {x:225, y:527},
-																},
-																{
-																text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
-																style: 'styleLabelMiddle',
-																absolutePosition: {x:225, y:540},
-																},
-																//table Contents
-																// .toUpperCase() yung event name before ilagay sa pdfmake
-																//ito yung ifoforeach mu rae
-																{
-																text: `${data.voucherinfo[0].var_eventname}`,
-																style: 'styleLabelEventName',
-																absolutePosition: {x:65, y:604},
-																},
-																{
-																text:  `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
-																absolutePosition: {x:393, y:604},
-																style: 'styleLabelEvent',
-																},
-																{
-																text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
-																style: 'styleLabelEvent',
-																absolutePosition: {x:507, y:604},
-																},
-																//- // second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
-																{
-																text: `Number of Additional Sponsors : ${data.sponsors.length - 2}`,
-																style: 'styleLabelEventName',
-																absolutePosition: {x:65, y:630},
-																},
-																{
-																text: '₱ 50/head',
-																style: 'styleLabelEvent',
-																absolutePosition: {x:393, y:630},
-																},
-																{
-																text: `₱ ${((data.sponsors.length-2)*50).toFixed(2)}`,
-																style: 'styleLabelEvent',
-																absolutePosition: {x:506, y:630},
-																},
-																//total amount
-																{
-																text: `₱ ${(((data.sponsors.length-2)*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
-																style: 'styleLabelTA',
-																absolutePosition: {x:476, y:741},
-																},
-																//- //remaining days
-																{
-																text: '14',
-																style: 'styleLabelRemaining',
-																absolutePosition: {x:338, y:776},
-																},
-																//- {
-																//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
-																//- style: 'styleLabelFill',
-																//- absolutePosition: {x:520, y:28},
-																//- text: 'Date: ' + dateRequested,
-																//- },
-															],
-															styles: {
-																styleLabel: {
-																	font: 'EdwardianScript',
-																	fontSize:85,
-																},
-																styleHeader: {
-																	font: 'OldEnglishText',
-																	fontSize: 45,
-																	alignment: 'center',
-																	margin: [0, 15, 0, 0],
-																},
-																styleHeader2: {
-																	font: 'EdwardianScript',
-																	fontSize: 33,
-																	alignment: 'center',
-																	margin: [0, 5, 0, 5],
-																},
-																styleLabel: {
-																	font: 'EdwardianScript',
-																	fontSize: 26,
-																},
-																styleLabelTop: {
-																	font: 'Roboto',
-																	fontSize: 11,
-																	color: 'white',
-																},
-																styleLabelMiddle: {
-																	font: 'Roboto',
-																	fontSize: 9,
-																},
-																styleLabelMiddleTA: {
-																	font: 'Roboto',
-																	fontSize: 18,
-																},
-																styleLabelEventName: {
-																	font: 'Roboto',
-																	fontSize: 10,
-																	bold: true,
-																},
-																styleLabelEvent: {
-																	font: 'Roboto',
-																	fontSize: 10,
-																},
-																styleLabelFill: {
-																	font: 'Roboto',
-																	fontSize: 20,
-																},
-																styleLabelTA: {
-																	font: 'Roboto',
-																	fontSize: 15,
-																	color: 'white',
-																	bold: true,
-																},
-																styleLabelRemaining: {
-																	font: 'Roboto',
-																	fontSize: 9,
-																	italic: true,
-																},
-															},
-														}
-														pdfMake.fonts = {
-															Roboto: {
-																normal: 'Roboto-Regular.ttf',
-																bold: 'Roboto-Medium.ttf',
-																italic: 'Roboto-Italic.ttf',
-																bolditalics: 'Roboto-MediumItalic.ttf',
-															},
-															EdwardianScript: {
-																normal: 'Edwardian-script-itc-Regular.TTF'
-															},
-															OldEnglishText: {
-																normal: 'Old-english-text-mt-Regular.ttf'
-															},
-															TimesNewRoman: {
-																normal: 'Times-new-roman-Regular.ttf'
+								$('#refund').append(`
+								<button id="voucher" type="button" class="btn btn-common">Print Voucher</button>
+								`)	
+								$('#voucher').click(function(){
+									console.log(data[0].int_voucherID)
+									$.post('/guest/voucherEvents',{voucherId:data[0].int_voucherID}).done(data=>{
+									console.log("sponsors "+data.sponsors.length)
+									
+												console.log(data.voucherinfo[0].var_vouchercode)
+												console.log("info"+data.voucherinfo[0])
+												$(document).off('click', '#voucherButton')
+													function toDataURL(url, callback) {
+														var xhr = new XMLHttpRequest();
+														xhr.onload = function() {
+															var reader = new FileReader();
+															reader.onloadend = function() {
+															callback(reader.result);
 															}
-														}
-														pdfMake.createPdf(docDefinition).open();
-														pdfMake.createPdf(docDefinition).download();
-													});
-												})
+															reader.readAsDataURL(xhr.response);
+														};
+														xhr.open('GET', url);
+														xhr.responseType = 'blob';
+														xhr.send();
+													}
+													toDataURL('/document_templates/voucherTemplate3witheventname.png', function(dataUrl) {
+														toDataURL('/document_templates/logo.png', function(logo) {
+															var sponsorText = [];
+															var sponsorX = [65,393,507];
+															var sponsorY = 243;
+															console.log(`${data.sponsors}`)
+															for(i=0;i<data.sponsors.length;i++){
+																sponsorText.push({
+																	text: `${data.sponsors[i].var_sponsorname}`,
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:sponsorX[0], y:sponsorY},
+																})
+															}
+															var docDefinition = {
+																pageMargins: [ 0, 35, 0, 0 ],
+																content: [
+																	{
+																		image: dataUrl,
+																		width: 610,
+																		//- height: 100,
+																	},
+																	{
+																		image: logo,
+																		width: 45,
+																		height: 40,
+																		absolutePosition: {x:13, y:60},
+																	},
+																	{
+																		image: logo,
+																		width: 45,
+																		height: 40,
+																		absolutePosition: {x:13, y:447},
+																	},
+																	//mga laman sa taas
+																	{
+																	text:'500-0239',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:350, y:45},
+																	},
+																	{
+																	text:'churcheventapp@gmail.com',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:257, y:68},
+																	},
+																	{
+																	text:'inanglupangpangako.com',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:269, y:90},
+																	},
+																	{
+																	text:'Urban, Brgy. Payatas B. 1119',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:444, y:45},
+																	},
+																	{
+																	text:'Quezon City, Manila',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:487, y:68},
+																	},
+																	{
+																	text:`${data.voucherinfo[0].var_vouchercode}`,
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:495, y:90},
+																	},
+																	//Middle part
+																	{
+																	text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:51, y:127},
+																	},
+																	{
+																	text:`${data.voucherinfo[0].var_useraddress}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:51, y:140},
+																	},
+																	{
+																	text:`# ${data.voucherinfo[0].var_vouchercode}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:127},
+																	},
+																	{
+																	text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:140},
+																	},
+																	{
+																	text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:153},
+																	},
+																	//table Contents
+																	// .toUpperCase() yung event name before ilagay sa pdfmake
+																	//ito yung ifoforeach mu rae
+																	{ 
+																	text: `${data.voucherinfo[0].var_eventname}`,
+																	style: 'styleLabelEventName',
+																	absolutePosition: {x:65, y:217},
+																	},
+																	{
+																	text: `₱ ${(data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50).toFixed(2)}`,
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:393, y:217},
+																	},
+																	{
+																	text:`₱ ${(data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50).toFixed(2)}`,
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:507, y:217},
+																	},
+																	// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+																	{
+																	text: `Number of Additional Sponsors : ${data.sponsors.length - 2}`,
+																	style: 'styleLabelEventName',
+																	absolutePosition: {x:65, y:243},
+																	},
+																	{
+																	text: '₱ 50/head',
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:393, y:243},
+																	},
+																	{
+																	text: `₱ ${((data.sponsors.length-2)*50).toFixed(2)}`,
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:506, y:243},
+																	},
+																	//total amount
+																	{
+																	text: `₱ ${(((data.sponsors.length-2)*50) + (data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50)).toFixed(2)}`,
+																	style: 'styleLabelTA',
+																	absolutePosition: {x:476, y:354},
+																	},
+																	//remaining days
+																	{
+																	text: '14',
+																	style: 'styleLabelRemaining',
+																	absolutePosition: {x:338, y:389},
+																	},
+																	//IBABANG VOUCHER 387 sa y-axis dinagdag
+																	{
+																	text:'500-0239',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:350, y:432},
+																	},
+																	{
+																	text:'churcheventapp@gmail.com',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:257, y:455},
+																	},
+																	{
+																	text:'inanglupangpangako.com',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:269, y:477},
+																	},
+																	{
+																	text:'Urban, Brgy. Payatas B. 1119',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:444, y:432},
+																	},
+																	{
+																	text:'Quezon City, Manila',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:487, y:455},
+																	},
+																	{
+																	text:'Voucher ID 42352',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:495, y:477},
+																	},
+																	//Middle part
+																	{
+																	text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:51, y:514},
+																	},
+																	{
+																	text:`${data.voucherinfo[0].var_useraddress}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:51, y:527},
+																	},
+																	{
+																	text:`# ${data.voucherinfo[0].var_vouchercode}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:514},
+																	},
+																	{
+																	text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:527},
+																	},
+																	{
+																	text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:540},
+																	},
+																	//table Contents
+																	// .toUpperCase() yung event name before ilagay sa pdfmake
+																	//ito yung ifoforeach mu rae
+																	{
+																	text: `${data.voucherinfo[0].var_eventname}`,
+																	style: 'styleLabelEventName',
+																	absolutePosition: {x:65, y:604},
+																	},
+																	{
+																	text:  `₱ ${(data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50).toFixed(2)}`,
+																	absolutePosition: {x:393, y:604},
+																	style: 'styleLabelEvent',
+																	},
+																	{
+																	text: `₱ ${(data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50).toFixed(2)}`,
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:507, y:604},
+																	},
+																	//- // second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+																	{
+																	text: `Number of Additional Sponsors : ${data.sponsors.length - 2}`,
+																	style: 'styleLabelEventName',
+																	absolutePosition: {x:65, y:630},
+																	},
+																	{
+																	text: '₱ 50/head',
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:393, y:630},
+																	},
+																	{
+																	text: `₱ ${((data.sponsors.length-2)*50).toFixed(2)}`,
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:506, y:630},
+																	},
+																	//total amount
+																	{
+																	text: `₱ ${(((data.sponsors.length-2)*50) + (data.voucherinfo[0].dbl_amount-(data.sponsors.length-2)*50)).toFixed(2)}`,
+																	style: 'styleLabelTA',
+																	absolutePosition: {x:476, y:741},
+																	},
+																	//- //remaining days
+																	{
+																	text: '14',
+																	style: 'styleLabelRemaining',
+																	absolutePosition: {x:338, y:776},
+																	},
+																	//- {
+																	//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
+																	//- style: 'styleLabelFill',
+																	//- absolutePosition: {x:520, y:28},
+																	//- text: 'Date: ' + dateRequested,
+																	//- },
+																],
+																styles: {
+																	styleLabel: {
+																		font: 'EdwardianScript',
+																		fontSize:85,
+																	},
+																	styleHeader: {
+																		font: 'OldEnglishText',
+																		fontSize: 45,
+																		alignment: 'center',
+																		margin: [0, 15, 0, 0],
+																	},
+																	styleHeader2: {
+																		font: 'EdwardianScript',
+																		fontSize: 33,
+																		alignment: 'center',
+																		margin: [0, 5, 0, 5],
+																	},
+																	styleLabel: {
+																		font: 'EdwardianScript',
+																		fontSize: 26,
+																	},
+																	styleLabelTop: {
+																		font: 'Roboto',
+																		fontSize: 11,
+																		color: 'white',
+																	},
+																	styleLabelMiddle: {
+																		font: 'Roboto',
+																		fontSize: 9,
+																	},
+																	styleLabelMiddleTA: {
+																		font: 'Roboto',
+																		fontSize: 18,
+																	},
+																	styleLabelEventName: {
+																		font: 'Roboto',
+																		fontSize: 10,
+																		bold: true,
+																	},
+																	styleLabelEvent: {
+																		font: 'Roboto',
+																		fontSize: 10,
+																	},
+																	styleLabelFill: {
+																		font: 'Roboto',
+																		fontSize: 20,
+																	},
+																	styleLabelTA: {
+																		font: 'Roboto',
+																		fontSize: 15,
+																		color: 'white',
+																		bold: true,
+																	},
+																	styleLabelRemaining: {
+																		font: 'Roboto',
+																		fontSize: 9,
+																		italic: true,
+																	},
+																},
+															}
+															pdfMake.fonts = {
+																Roboto: {
+																	normal: 'Roboto-Regular.ttf',
+																	bold: 'Roboto-Medium.ttf',
+																	italic: 'Roboto-Italic.ttf',
+																	bolditalics: 'Roboto-MediumItalic.ttf',
+																},
+																EdwardianScript: {
+																	normal: 'Edwardian-script-itc-Regular.TTF'
+																},
+																OldEnglishText: {
+																	normal: 'Old-english-text-mt-Regular.ttf'
+																},
+																TimesNewRoman: {
+																	normal: 'Times-new-roman-Regular.ttf'
+																}
+															}
+															pdfMake.createPdf(docDefinition).open();
+															pdfMake.createPdf(docDefinition).download();
+														});
+													})
+									})
 								})
-							})
 							}
 						}
 						
@@ -2689,5 +2729,384 @@ block addjs
 						}
 					})
 				})
+
+				$(document).on('click','.viewDocuButton',function(){
+					var idNow = $(this).val()
+					console.log(idNow)
+					console.log($('.servicename').attr('value'))
+					var servicename = $('.servicename').attr('value')
+
+					$.post('/guest/reservation/docuquery',{id:idNow}).done(data=>{
+						console.log(data)
+						var dateRequested = moment(data.results[0].date_docurequested).format('MM/DD/YYYY')
+						var datebirthday = moment(data.results[0].date_docubirthday).format('MM/DD/YYYY')
+							$('#viewDocuBodyAppend').empty().append(`
+								<form>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label>Date Requested:</label>
+											<input type="text" class="form-control" value="${dateRequested}" disabled>
+											<label>Document Type:</label>
+											<input type="text" class="form-control" value="${data.results[0].var_documenttype}" disabled>
+										</div>
+										<div class="form-group col-md-6">
+											<label>Document Status:</label>
+											<input type="text" class="form-control" value="${data.results[0].char_docustatus}" disabled>
+										</div>
+									</div>
+									<label>Person in the Certificate:</label>
+									<div class="form-row">
+										<div class="form-group col-md-4">
+											<label>Last Name:</label>
+											<input type="text" class="form-control" value="${data.results[0].var_doclastname}" disabled>
+										</div>
+										<div class="form-group col-md-4">
+											<label>First Name:</label>
+											<input type="text" class="form-control" value="${data.results[0].var_docfirstname}" disabled>
+										</div>
+										<div class="form-group col-md-4">
+											<label>Birthday:</label>
+											<input type="text" class="form-control" value="${datebirthday}" disabled>
+										</div>
+									</div>
+									<div class="text-center" id="refund" class="form-group"></div>
+									
+									</div>
+							</form>
+							`)
+
+
+							if(data.results[0].char_docustatus == "To be released"){
+								$('#refund').append(`
+								<button id="voucherdocu" type="button" class="btn btn-common">Print Voucher</button>
+								`)	
+								$('#voucherdocu').click(function(){
+									console.log(data.results[0].int_voucherID)
+									$.post('/guest/voucherdocu',{voucherId:data.results[0].int_voucherID}).done(data=>{
+									
+									
+												console.log(data.voucherinfo[0].var_vouchercode)
+												console.log("info"+data.voucherinfo[0])
+												$(document).off('click', '#voucherButton')
+													function toDataURL(url, callback) {
+														var xhr = new XMLHttpRequest();
+														xhr.onload = function() {
+															var reader = new FileReader();
+															reader.onloadend = function() {
+															callback(reader.result);
+															}
+															reader.readAsDataURL(xhr.response);
+														};
+														xhr.open('GET', url);
+														xhr.responseType = 'blob';
+														xhr.send();
+													}
+													toDataURL('/document_templates/voucherTemplate3witheventname.png', function(dataUrl) {
+														toDataURL('/document_templates/logo.png', function(logo) {
+															var sponsorText = [];
+															var sponsorX = [65,393,507];
+															var sponsorY = 243;
+															
+															var docDefinition = {
+																pageMargins: [ 0, 35, 0, 0 ],
+																content: [
+																	{
+																		image: dataUrl,
+																		width: 610,
+																		//- height: 100,
+																	},
+																	{
+																		image: logo,
+																		width: 45,
+																		height: 40,
+																		absolutePosition: {x:13, y:60},
+																	},
+																	{
+																		image: logo,
+																		width: 45,
+																		height: 40,
+																		absolutePosition: {x:13, y:447},
+																	},
+																	//mga laman sa taas
+																	{
+																	text:'500-0239',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:350, y:45},
+																	},
+																	{
+																	text:'churcheventapp@gmail.com',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:257, y:68},
+																	},
+																	{
+																	text:'inanglupangpangako.com',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:269, y:90},
+																	},
+																	{
+																	text:'Urban, Brgy. Payatas B. 1119',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:444, y:45},
+																	},
+																	{
+																	text:'Quezon City, Manila',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:487, y:68},
+																	},
+																	{
+																	text:`${data.voucherinfo[0].var_vouchercode}`,
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:495, y:90},
+																	},
+																	//Middle part
+																	{
+																	text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:51, y:127},
+																	},
+																	{
+																	text:`${data.voucherinfo[0].var_useraddress}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:51, y:140},
+																	},
+																	{
+																	text:`# ${data.voucherinfo[0].var_vouchercode}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:127},
+																	},
+																	{
+																	text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:140},
+																	},
+																	{
+																	text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:153},
+																	},
+																	//table Contents
+																	// .toUpperCase() yung event name before ilagay sa pdfmake
+																	//ito yung ifoforeach mu rae
+																	{ 
+																	text: `${data.voucherinfo[0].var_servicename}`,
+																	style: 'styleLabelEventName',
+																	absolutePosition: {x:65, y:217},
+																	},
+																	{
+																	text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:393, y:217},
+																	},
+																	{
+																	text:`₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:507, y:217},
+																	},
+																	// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+																	//total amount
+																	{
+																	text: `₱ ${(data.voucherinfo[0].dbl_amount).toFixed(2)}`,
+																	style: 'styleLabelTA',
+																	absolutePosition: {x:476, y:741},
+																	},
+																	
+																	//remaining days
+																	{
+																	text: '14',
+																	style: 'styleLabelRemaining',
+																	absolutePosition: {x:338, y:389},
+																	},
+
+
+
+
+
+																	//IBABANG VOUCHER 387 sa y-axis dinagdag
+																	{
+																	text:'500-0239',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:350, y:432},
+																	},
+																	{
+																	text:'churcheventapp@gmail.com',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:257, y:455},
+																	},
+																	{
+																	text:'inanglupangpangako.com',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:269, y:477},
+																	},
+																	{
+																	text:'Urban, Brgy. Payatas B. 1119',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:444, y:432},
+																	},
+																	{
+																	text:'Quezon City, Manila',
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:487, y:455},
+																	},
+																	{
+																	text:`${data.voucherinfo[0].var_vouchercode}`,
+																	style: 'styleLabelTop',
+																	absolutePosition: {x:495, y:477},
+																	},
+																	//Middle part
+																	{
+																	text:`${data.voucherinfo[0].var_userfname} ${data.voucherinfo[0].var_userlname}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:51, y:514},
+																	},
+																	{
+																	text:`${data.voucherinfo[0].var_useraddress}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:51, y:527},
+																	},
+																	{
+																	text:`# ${data.voucherinfo[0].var_vouchercode}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:514},
+																	},
+																	{
+																	text:`${moment(data.voucherinfo[0].date_issued).format('MM/DD/YYYY')}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:527},
+																	},
+																	{
+																	text:`${moment(data.voucherinfo[0].date_due).format('MM/DD/YYYY')}`,
+																	style: 'styleLabelMiddle',
+																	absolutePosition: {x:225, y:540},
+																	},
+																	//table Contents
+																	// .toUpperCase() yung event name before ilagay sa pdfmake
+																	//ito yung ifoforeach mu rae
+																	{
+																	text: `${data.voucherinfo[0].var_servicename}`,
+																	style: 'styleLabelEventName',
+																	absolutePosition: {x:65, y:604},
+																	},
+																	{
+																	text:  `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
+																	absolutePosition: {x:393, y:604},
+																	style: 'styleLabelEvent',
+																	},
+																	{
+																	text: `₱ ${data.voucherinfo[0].dbl_amount.toFixed(2)}`,
+																	style: 'styleLabelEvent',
+																	absolutePosition: {x:507, y:604},
+																	},
+																	//- // second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
+																	
+																
+																	//total amount
+																	{
+																	text: `₱ ${(data.voucherinfo[0].dbl_amount).toFixed(2)}`,
+																	style: 'styleLabelTA',
+																	absolutePosition: {x:476, y:741},
+																	},
+																	//- //remaining days
+																	{
+																	text: '14',
+																	style: 'styleLabelRemaining',
+																	absolutePosition: {x:338, y:776},
+																	},
+																	//- {
+																	//- text:`${data[0].int_voucherID}` + `${data.int_userID}` + `${data.int_eventinfoID}`,
+																	//- style: 'styleLabelFill',
+																	//- absolutePosition: {x:520, y:28},
+																	//- text: 'Date: ' + dateRequested,
+																	//- },
+																],
+																styles: {
+																	styleLabel: {
+																		font: 'EdwardianScript',
+																		fontSize:85,
+																	},
+																	styleHeader: {
+																		font: 'OldEnglishText',
+																		fontSize: 45,
+																		alignment: 'center',
+																		margin: [0, 15, 0, 0],
+																	},
+																	styleHeader2: {
+																		font: 'EdwardianScript',
+																		fontSize: 33,
+																		alignment: 'center',
+																		margin: [0, 5, 0, 5],
+																	},
+																	styleLabel: {
+																		font: 'EdwardianScript',
+																		fontSize: 26,
+																	},
+																	styleLabelTop: {
+																		font: 'Roboto',
+																		fontSize: 11,
+																		color: 'white',
+																	},
+																	styleLabelMiddle: {
+																		font: 'Roboto',
+																		fontSize: 9,
+																	},
+																	styleLabelMiddleTA: {
+																		font: 'Roboto',
+																		fontSize: 18,
+																	},
+																	styleLabelEventName: {
+																		font: 'Roboto',
+																		fontSize: 10,
+																		bold: true,
+																	},
+																	styleLabelEvent: {
+																		font: 'Roboto',
+																		fontSize: 10,
+																	},
+																	styleLabelFill: {
+																		font: 'Roboto',
+																		fontSize: 20,
+																	},
+																	styleLabelTA: {
+																		font: 'Roboto',
+																		fontSize: 15,
+																		color: 'white',
+																		bold: true,
+																	},
+																	styleLabelRemaining: {
+																		font: 'Roboto',
+																		fontSize: 9,
+																		italic: true,
+																	},
+																},
+															}
+															pdfMake.fonts = {
+																Roboto: {
+																	normal: 'Roboto-Regular.ttf',
+																	bold: 'Roboto-Medium.ttf',
+																	italic: 'Roboto-Italic.ttf',
+																	bolditalics: 'Roboto-MediumItalic.ttf',
+																},
+																EdwardianScript: {
+																	normal: 'Edwardian-script-itc-Regular.TTF'
+																},
+																OldEnglishText: {
+																	normal: 'Old-english-text-mt-Regular.ttf'
+																},
+																TimesNewRoman: {
+																	normal: 'Times-new-roman-Regular.ttf'
+																}
+															}
+															pdfMake.createPdf(docDefinition).open();
+															pdfMake.createPdf(docDefinition).download();
+														});
+													})
+									})
+								})
+							}
+						$('#viewDocuModal').modal('show')
+						$('#viewDocuModal').on('hidden.bs.modal',function(){
+							$('#viewDocuBodyAppend').empty()
+						})
+					})//postdata
+				})//viewdocubuttton
 		});
 

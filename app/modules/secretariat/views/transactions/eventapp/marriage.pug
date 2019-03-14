@@ -117,7 +117,7 @@ block prepend main
 																									i.ti-new-window(style="color:white;")
 																								
 																								a.scheduleButton(href='#')
-																									i.ti-calendar(style="color:white;") #{marriage.int_userpriestID}
+																									i.ti-calendar(style="color:white;")
 																					
 																		-else
 																			tr
@@ -140,7 +140,7 @@ block prepend main
 																				- if(marriage.dbl_balance < (marriage.dbl_amount/2)&& marriage.int_userpriestID ==null)
 																					td
 																						button.btn.assignPriest(type="button" style='background:green; color:white' value=`${marriage.int_eventinfoID}`) Assign Priest
-																				- if(marriage.dbl_balance > (marriage.dbl_amount/2))
+																				- if(marriage.dbl_balance > (marriage.dbl_amount/2) && marriage.int_userpriestID ==null)
 																					td No priest assigned
 																				td.td-actions.text-center
 																					button.btn.btn-primary.actionButton(type='button' value=`${marriage.int_eventinfoID}`)
@@ -154,7 +154,7 @@ block prepend main
 																									i.ti-new-window(style="color:white;")
 																								
 																								a.scheduleButton(href='#')
-																									i.ti-calendar(style="color:white;") #{marriage.int_userpriestID}
+																									i.ti-calendar(style="color:white;")
 																						
 																								
 
@@ -203,7 +203,7 @@ block prepend main
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true' style='color:white') ×
 					.modal-body#paymentAppend
-					.modal-footer
+					.modal-footer.footerpayment
 						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
 						button.btn#updatePaymentButton(type="button" style='background:#367587; color:white') Update Payment
 	#updatepaymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
@@ -609,11 +609,7 @@ block addjs
 						</div>
 					`)
 					console.log(data.requirements)
-					//- for(i=0;i<data.requirements.length;i++){
-					//- $(`#reqAppend`).append(`
-					//- 	<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="size" src="${data.requirements[i].var_reqpath}"/></a>
-					//- `)
-					//- }
+					
 					$('#viewModal').modal('show')
 					$('#viewModal').on('hidden.bs.modal',function(){
 						$('#viewBodyAppend').empty()
@@ -730,7 +726,7 @@ block addjs
 					})
 					
 					$('#requirementSubmitButton').click(function(){
-						
+						console.log(idNow)
 						swal({
 							title:'Are you sure?', 
 							text:'You want to update the requirements?', 
@@ -748,8 +744,9 @@ block addjs
 										//flaw dapat isa lang yung unang ipasa T-T
 
 										if($('.checkbox:checked').length == 1){
+											console.log(idNow)
 											$.post('/secretariat/transaction-marriage/getcabinets',{
-												
+												id:idNow
 												}).done(data=>{
 													console.log(data)
 														$('#folderBodyAppend').append(`
@@ -785,7 +782,7 @@ block addjs
 																<div class="col-md-12">
 																	<div class="form-group"  class="col-md-12">
 																		<label>Folder Name
-																		<input type='text' id="foldername" class="form-control" placeholder="Enter folder name" >
+																		<input type='text' id="foldername" class="form-control" value='Marriage of ${data.name[0].var_lname}' >
 																		
 																	</div>	
 																</div>	
@@ -800,30 +797,32 @@ block addjs
 															}
 
 																
-															$('#requirementModal').modal('hide')
-															$('#folderlocModal').modal('show')
-															$('#folderlocModal').on('hidden.bs.modal',function(){
-																$('#folderBodyAppend').empty()
-																//- $('#requirementModal').modal('show')
-															})
+												$('#requirementModal').modal('hide')
+												$('#folderlocModal').modal('show')
+												$('#folderlocModal').on('hidden.bs.modal',function(){
+													$('#folderBodyAppend').empty()
+													//- $('#requirementModal').modal('show')
+												})
+												
+												$('#setLocButton').click(function(){
+													console.log('ueasdf')
+													$.post('/secretariat/transaction-marriage/setfolderloc', {
+														cabinet:$('#cabinets').val(),
+														division:$('#divisions').val(),
+														foldernumber:$('#folderID').val(),
+														foldername:$('#foldername').val(),
+														eventinfoID:idNow,
+														idchecked:checkedvalue,
+													})
+														.done(data =>{
+															updatereqstat()
 															
-															$('#setLocButton').click(function(){
-																console.log('ueasdf')
-																$.post('/secretariat/transaction-marriage/setfolderloc', {
-																	cabinet:$('#cabinets').val(),
-																	division:$('#divisions').val(),
-																	foldernumber:$('#folderID').val(),
-																	foldername:$('#foldername').val(),
-																	eventinfoID:idNow
-																})
-																	.done(data =>{
-																		updatereqstat()
-																		
-																	})//done
-															})
+														})//done
+												})
 
 
 												})//donedata getcabinetes
+											
 											}//if 1 is checked
 
 										else{
@@ -1031,9 +1030,9 @@ block addjs
 
 										
 												
+											<div class="row">
+													<div class="col-md-12" id="paymenthistorydiv"></div>
 											</div>
-											<div id="paymenthistorydiv"></div>
-											
 											
 											<hr>
 											<div class="row">
@@ -1059,25 +1058,31 @@ block addjs
 										<div id="compose-area"></div>
 									
 									`)
+									if(data.results.char_paymentstatus=='Paid'){
+										$('.footerpayment').empty()
+										$('.footerpayment').append(`
+										<button class="btn btn-outline btn-secondary pull-left" id="cancelButton" type="button" data-dismiss="modal">Close</button>
+										`)
+									}
 									
 									if(data.paymenthistory!=null){
 										console.log('not null')
 										$('#paymenthistorydiv').append(`
-										<div class="col-md-12">
-													<div class="table-responsive">
-														<table class="table table-hover dataTable fixed_header" >
-															<thead class="text-primary">
-																<th >OR No. </th>
-																<th>Date</th> 
-																<th>User Account</th> 
-																<th>Payer</th>
-																<th style ="text-align: right">Amount</th>
-																<th style ="text-align: right">Balance</th>
-															</thead>
-															<tbody id='paymentsummary'></tbody>
-														</table>
-													</div>
-												</div>
+										
+											<div class="table-responsive">
+												<table class="table table-hover dataTable fixed_header" >
+													<thead class="text-primary">
+														<th >OR No. </th>
+														<th>Date</th> 
+													
+														<th>Payer</th>
+														<th style ="text-align: right">Amount</th>
+														<th style ="text-align: right">Balance</th>
+													</thead>
+													<tbody id='paymentsummary'></tbody>
+												</table>
+											</div>
+										
 										`)
 										for(i=0; i<data.paymenthistory.length; i++){
 										console.log('for')
@@ -1086,7 +1091,7 @@ block addjs
 											<tr>
 												<td>${data.paymenthistory[i].int_ORnumber}
 												<td>${datepaid}
-												<td>${data.paymenthistory[i].var_username}
+												
 												<td>${data.paymenthistory[i].var_paidby}
 												<td style ="text-align: right">₱${data.paymenthistory[i].dbl_paymentamount}
 												<td style ="text-align: right">₱${data.paymenthistory[i].dbl_remainingbalance}
@@ -1427,7 +1432,7 @@ block addjs
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="label-control"><strong> Couple: </strong> Mr. ${data.eventdetails.var_lname} and Ms. ${data.eventdetails.var_blname} </label>
+										<label class="label-control"><strong> Couple: </strong> Mr. ${data.eventdetails.var_lname} and Ms. ${data.eventdetails.var_blname} </label><br>
 										<label class="label-control"><strong> Applied by: </strong> ${data.eventdetails.var_userlname}, ${data.eventdetails.var_userfname} </label>
 										<br><label class="label-control"><strong> Date Appplied: </strong> ${dateapplied}</label>
 										
@@ -1634,7 +1639,7 @@ block addjs
 					$('#updateschedbody').empty()
 				})
 				
-				})
+		})
 		function checkifavailable($i){
 				console.log($i)
 				$("#divisions").empty();

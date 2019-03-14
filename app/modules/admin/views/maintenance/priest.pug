@@ -26,16 +26,20 @@ block prepend main
 												td=priest.var_usercontactnum
 												td=priest.var_useremail
 												//- td=priest.var_userstatus
-												if(priest.var_userstatus=='Active')
+												- if(priest.var_userstatus=='Active')
 													td
 														select#selectBox(onchange='transfered(value);' style='color:green' )
 															option(value=`${priest.int_userID}`) Active
 															option(value=`${priest.int_userID}` style='color:red' ) Transfered
-												if(priest.var_userstatus=='Transfered')
+												- else if(priest.var_userstatus=='Transfered')
 													td
 														select#selectBox(onchange='active(value);' style='color:red' )
 															option(value=`${priest.int_userID}`) Transfered
 															option(value=`${priest.int_userID}`  style='color:green') Active
+												-else
+													td
+														select#selectBox(onchange='active(value);' style='color:red' )
+															option(value=`${priest.int_userID}`) Unconfirmed
 												td.td-actions.text-center
 													button.btn.btn-primary.actionButton(type='button' value=`${priest.int_userID}`)
 														i.ti-settings

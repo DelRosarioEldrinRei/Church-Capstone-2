@@ -1,86 +1,101 @@
-extends ../../../../templates/secretariat
-block prepend main
+extends ../../../../templates/guests
+block main
 	style.
-			.fa {
-				font-size: 25px !important;
+		@media screen and (max-width: 576px) {
+			.col-md-4, .col-md-6 {
+				padding-left: 0;
+				padding-right: 0;
 			}
-			.fa-check::before {
-				color: #28a745 !important;
-			}
-			.fa-times::before {
-				color: red !important;
-			}
-			small {
-				font-size: 90% !important;
+			.extra-small-balance {
+				padding-left: 1rem;
 			}
 
-	main.bgc-grey-100
-		#raised-section.main.main-raised
+			.form-wizard-step {
+				padding-bottom: 10px !important;
+			}
+		}
+		#header-style-1 {
+			background-image: url(/imgchurch/bg2.png)
+		}
+	#headers
+		#header-style-1
+			.container
+				.header-caption
+					.row
+						.col-md-12.header-content
+							h3.header-title.animated.fadeInDown.invisible
+								span.text-primary Helium - 
+								| Bootstrap 4 UI Kit
+							h5.header-text.animated.fadeIn.invisible
+								| Lorem ipsum dolor sit amet, consectetuer adipiscing elit<br>Lorem ipsum dolor sit amet, consectetuer.</h5>
+							//- a.page-scroll.btn.btn-lg.btn-default-filled.animated.fadeInUp.invisible(href="#") Download Now
+							//- a.page-scroll.btn.btn-lg.btn-success.animated.fadeInUp.invisible(href="#") Explore
+	#raised-section.main.main-raised
 		section.form-box
 			.container
 				.row
 					.col-md-12.form-wizard.shadow3
 						form#form(action="/guest/marriage/form" method="post" enctype="multipart/form-data")
-								
+								h3 Marriage Application Request
+								p Fill all form field to go next step
+								// Form progress FORM WIZARD HEADERS
+								.form-wizard-steps.form-wizard-tolal-steps-5
+									.form-wizard-progress
+										.form-wizard-progress-line(data-now-value='12.25' data-number-of-steps='3' style='width: 12.25%;')
+									// Step 1
+									.form-wizard-step.active
+										.form-wizard-step-icon
+											i.fa.fa-calendar(aria-hidden='true')
+										p.d-none.d-sm-block Schedule
+									// Step 1
+									// Step 2
+									.form-wizard-step
+										.form-wizard-step-icon
+											i.fa.fa-male(aria-hidden='true')
+										p.d-none.d-sm-block Groom
+									// Step 2
+									// Step 3
+									.form-wizard-step
+										.form-wizard-step-icon
+											i.fa.fa-female(aria-hidden='true')
+										p.d-none.d-sm-block Bride
+									// Step 3
+									// Step 4
+									.form-wizard-step
+										.form-wizard-step-icon
+											i.fa.fa-venus-mars(aria-hidden='true')
+										p.d-none.d-sm-block Couple
+									// Step 4
+									// Step 4
+									.form-wizard-step
+										.form-wizard-step-icon
+											i.fa.fa-briefcase(aria-hidden='true')
+										p.d-none.d-sm-block Sponsors
+									// Step 4
+								// Form progress
+								// Form Step 1 STEPS
 								fieldset
-									h4.label-control Contact Details
-									.row
-										
-										.form-group.col-md-6
-											.form-group
-												label Last Name
-													.text-danger.d-inline *
-												input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-												.invalid-feedback Please re-enter your valid last name.
-
-										.form-group.col-md-6
-											.form-group
-												.invalid-feedback Please re-enter your valid last name.
-												label First Name
-													.text-danger.d-inline *
-												input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
-												.invalid-feedback Please provide a valid first name.
-									.row
-										.form-group.col-md-12
-											.form-group
-												label Address
-													.text-danger.d-inline *
-												input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-												.invalid-feedback Please re-enter your valid first name. 
-
-									.row
-										.form-group.col-md-6
-											.form-group
-												label Contact Number
-													.text-danger.d-inline *
-												input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-												.invalid-feedback Please re-enter your valid contact number.
-
-										.form-group.col-md-6
-											.form-group
-												.invalid-feedback Please re-enter your valid contact number.
-												label Email Address
-													.text-danger.d-inline *
-												input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
-												.invalid-feedback Please provide a valid email address
-									hr
-									h5.label-control Request Details
 									h4
-										.d-none.d-sm-inline Schedule: 
-										
-											
+										.d-none.d-sm-inline Schedule Date: 
+										span Step 1 - 5
+										h6.label-control Desired Date
+											.text-danger.d-inline  *
 										.row
-											.col-md-4
-												.form-group
-													h6.label-control Schedule Date
-														.text-danger.d-inline  *
-															#calendarMarriage
-										
+											.col-md-8.mx-lg-auto.mx-sm-left.my-lg-auto.my-sm-left.text-lg-center.text-sm-left
+												h5
+													#special
+														.form-group
+															.container
+																#calendarMarriage
+														.help-block.with-errors
+										.learn-more.pull-right
+											button.btn#nextButton1(type='button') Next
+								// Form Step 1
 								// Form Step 2 GROOM
 								fieldset
 									h4
 										.d-none.d-sm-inline Groom's Form: 
-										
+										span Step 2 - 5
 									.form-group
 										br
 										.container
@@ -399,13 +414,26 @@ block prepend main
 																h6.label-control Date When You Were Confirmed:
 																	.text-danger.d-inline  *
 																input.marriage.form-control#gcondate(type='date' name='gcondate')
-											
+											.row
+												.col-md-6.px-lg-3.pr-md-3.px-sm-0
+													.form-group
+														h6.label-control Valid ID
+															.text-danger.d-inline  *
+														input#file-0b.file(type='file',accept='image/*' name="validIDGroom" )
+												.col-md-6.px-lg-3.pr-md-3.px-sm-0
+													.form-group
+														h6.label-control Birth Certificate
+															.text-danger.d-inline  *
+														input#file-0b.file(type='file',accept='image/*' name="birthCertGroom")
+									.learn-more.pull-right
+										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+										button.btn#nextGroom(type='button') Next
 								// Form Step 2
 								// Form Step 3 BRIDE
 								fieldset
 									h4
 										.d-none.d-sm-inline Bride's Form: 
-										
+										span Step 3 - 5
 									.form-group
 										br
 										.container
@@ -759,13 +787,26 @@ block prepend main
 																	h6.label-control Date when you were Confirmed:
 																		.text-danger.d-inline  *
 																	input.marriage.form-control#bcondate(type='date' name='bcondate')
-										
+											.row
+												.col-md-6.px-lg-3.pr-md-3.px-sm-0
+													.form-group
+														h6.label-control Valid ID:
+															.text-danger.d-inline  *
+														input#file-0b.file(type='file',accept='image/*' name="validIDBride")
+												.col-md-6.px-lg-3.pr-md-3.px-sm-0
+													.form-group
+														h6.label-control Birth Certificate:
+															.text-danger.d-inline  *
+														input#file-0b.file(type='file',accept='image/*' name="birthCertBride")
+									.learn-more.pull-right
+										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+										button.btn#nextBride(type='button') Next
 								// Form Step 3
 								// Form Step 4 COUPLE
 								fieldset
 									h4
 										.d-none.d-sm-inline Couple's Form: 
-										
+										span Step 4 - 5
 										h6.label-control Living Together?
 											.text-danger.d-inline  *
 										.row
@@ -786,65 +827,62 @@ block prepend main
 																span.check
 												
 									br
-									
-												
-								//- h6.c-grey-900 Principal Sponsors
-								//- .row
-								//- 	.col-md-6
-								//- 		input.form-control(id='firstsponsor' name='sponsorname' type='text' placeholder="Ex. Enter Full Name *")
-								//- 	.col-md-6
-								//- 		input.form-control(id='secondsponsor' name='sponsorname' type='text' placeholder="Ex. Enter Full Name *")
-								//- 	button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button" style='margin-top: 10px')
-								//- 		i.fa.fa-plus
-								//- h6.c-grey-900.label-control Secondary Sponsors
-								//- .row#additionalSponsor
-								//- .text-center
-								//- 	button.btn.btn-primary(type='submit') Submit
-								h6.c-grey-900 Principal Sponsors
-								.row
-								
-									.col-md-6
-										//- .form-group
-										//- label Principal Sponsors
-										input.form-control(id='firstsponsor' name='sponsorname' type='text' placeholder="Ex. Enter Full Name *")
-									.col-md-6
-										//- .form-group
-										//- label 
-										input.form-control(id='secondsponsor' name='sponsorname' type='text' placeholder="Ex. Enter Full Name *")
-									
-								.row
-									.col-md-6
-										
-										.form-group
-											h6.c-grey-900 Number of Additional Sponsors
-											input.form-control(id='numofaddsponsors' name='numofaddsponsors' type='number' placeholder="Enter number of additional sponsors")
-								
-
-
-									
-								.text-center
-									button.btn.btn-primary#submitApplication(type='button') Submit
-							
-									input#errChecker(type='text' hidden)
+									.learn-more.pull-right
+										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+										button.btn.btn-next#nextCouple(type='button') Next
+								// Form Step 4
+								// Form Step 5 SPONSOR
+								fieldset 
+									h4
+										.d-none.d-sm-inline Sponsors Information	
+										span Step 5 - 5
+										h6.label-control Principal Sponsors
+										.row#principalSponsor
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.form-group.m-0
+													input.form-control#firstsponsor(type='text' name='sponsorname' placeholder="Enter Full Name *" required)
+											.col-md-6.px-lg-3.px-md-3.px-sm-0
+												.form-group.m-0
+													input.form-control.balance#secondsponsor(type='text' name='sponsorname' placeholder="Enter Full Name *" required)
+											button#addAdditionalSponsor.btn.btn-sm-round.btn-common.btn-fab.btn-fab-mini.btn-round.ml-2.rounded-circle(type="button")
+												i.fa.fa-plus
+										h6.label-control Secondary Sponsors
+										.row#additionalSponsor
+									br
+									.learn-more.pull-right
+										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
+										button.btn#proceedButton(type='button') Proceed
+	
+	
+	//MODAL
+	#confirmationModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header#headerAppend(style='background:#367587; color:white')
+						h5.modal-title(style='background:#367587; color:white') Confirmation 
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true' style='background:#367587; color:white; margin-right: 5px') ×
+					.modal-body#bodyAppend
+					.modal-footer
+						button#confirmButton.filter.btn.btn-success(type="button") Yes, these are correct. 
+						button#cancelButton.filter.btn.btn-danger(type="button") Cancel
+	#summaryModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header#headerAppend1(style='background:#367587; color:white')
+						h5.modal-title(style='background:#367587; color:white') Summary 
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true' style='background:#367587; color:white; margin-right: 5px') ×
+					.modal-body#bodyAppend1
+					.modal-footer
+						button#submitButton.filter.btn.btn-success(type="button") SUBMIT
+						button#cancelappButton.filter.btn.btn-danger(type="button") CANCEL APPLICATION
 block addjs
 	script.
 		
-		$('#desiredtime').datetimepicker({
-					format: 'LT',
-					icons: {
-						time: "fa fa-clock-o",
-						date: "fa fa-calendar",
-						up: "fa fa-chevron-up",
-						down: "fa fa-chevron-down",
-						previous: 'fa fa-chevron-left',
-						next: 'fa fa-chevron-right',
-						today: 'fa fa-screenshot',
-						clear: 'fa fa-trash',
-						close: 'fa fa-remove'
-					}
-			});
-
-			$('.radioup').click(function() {
+		var numsponsors;
+		//slides
+		$('.radioup').click(function() {
 				$('.textarea1').slideUp();
 			});
 			$('.exampleRadios1').click(function() {
@@ -1122,449 +1160,9 @@ block addjs
 					$("#binlpp").prop('checked', false)
 					}
 			});
-
-		//Realtime Validation
-		function validateForm(){
-			$('form').formValidation({
-				framework: 'bootstrap',
-				icon: {
-					valid: 'fa fa-check',
-					invalid: 'fa fa-times',
-					validating: 'fa fa-spinner'
-				},
-				fields: {
-					scheduledate: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Desired Date`
-								}
-						}
-					},
-					glname: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Last Name`
-								}
-						}
-					},
-					gfname: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your First Name`
-								}
-						}
-					},
-					gbday: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Birthday`
-								}
-						}
-					},
-					gbplace: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Birthplace`
-								}
-						}
-					},
-					gnationality: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Nationality`
-								}
-						}
-					},
-					gcivil: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Civil Status`
-								}
-						}
-					},
-					gaddress: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Address`
-								}
-						}
-					},
-					goccupation: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Occupation`
-								}
-						}
-					},
-					gfathername: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Father's Full Name`
-								}
-						}
-					},
-					gfatherbplace: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Father's Birthplace`
-								}
-						}
-					},
-					gfatherreligion: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Father's Religion`
-								}
-						}
-					},
-					gmothername: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Mother's Full Name`
-								}
-						}
-					},
-					gmotherbplace: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Mother's Birthplace`
-								}
-						}
-					},
-					gmotherreligion: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Mother's Religion`
-								}
-						}
-					},
-					greligion: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Religion`
-								}
-						}
-					},
-					gvalidid: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Valid ID`
-								}
-						}
-					},
-					gbirthcertificate: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Birth Certificate`
-								}
-						}
-					},
-					blname: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Last Name`
-								}
-						}
-					},
-					bfname: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your First Name`
-								}
-						}
-					},
-					bbday: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Birthday`
-								}
-						}
-					},
-					bbplace: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Birthplace`
-								}
-						}
-					},
-					bnationality: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Nationality`
-								}
-						}
-					},
-					bcivil: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Civil Status`
-								}
-						}
-					},
-					baddress: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Address`
-								}
-						}
-					},
-					boccupation: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Occupation`
-								}
-						}
-					},
-					bfathername: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Father's Full Name`
-								}
-						}
-					},
-					bfatherbplace: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Father's Birthplace`
-								}
-						}
-					},
-					bfatherreligion: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Father's Religion`
-								}
-						}
-					},
-					bmothername: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Mother's Full Name`
-								}
-						}
-					},
-					bmotherbplace: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Mother's Birthplace`
-								}
-						}
-					},
-					bmotherreligion: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Mother's Religion`
-								}
-						}
-					},
-					breligion: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Religion`
-								}
-						}
-					},
-					bvalidid: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Valid ID`
-								}
-						}
-					},
-					bbirthcertificate: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Birth Certificate`
-								}
-						}
-					}
-				}
-			})
-			.on('err.field.fv', function(e, data) {
-				// Get the first invalid field
-				var invalidFields = data.fv.getInvalidFields().length;
-				$('#errChecker').val(invalidFields)
-			})
-			.on('success.field.fv', function(e, data) {
-				// Get the first invalid field
-				var invalidFields = data.fv.getInvalidFields().length;
-				$('#errChecker').val(invalidFields)
-			});
-		}
-
-		$(document).ready(function() {
-			validateForm()
-
-
-			$('#submitApplication').click(function(){
-				console.log('SUBMIT BUTTON CLICKED')
-				swal({
-				title:'Are you sure?', 
-				text:'This record will be considered as an approved request, and will then be added to the schedule of the priest. We will wait for the confirmation of the priest.',
-				type:'warning',
-				showCancelButton: false,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Confirm'
-				}).then((result)=>{
-					if(result.value){
-						
-						if($('#bbaptized1').prop("checked")){
-							var bbaptized=1
-						}
-						else{
-							var bbaptized=0
-						}
-						if($('#bconfirm1').prop("checked")){
-							var bconfirmed=1
-						}
-						else{
-							var bconfirmed=0
-						}
-						
-
-						if($('#gbaptized1').prop("checked")){
-							var gbaptized=1
-						}
-						else{
-							var gbaptized=0
-						}
-						if($('#gconfirm1').prop("checked")){
-							var gconfirmed=1
-						}
-						else{
-							var gconfirmed=0
-						}
-
-						boollivingin
-
-						if($('#bcurrentparish1').prop("checked")){
-							var gconfirmed=1
-						}
-						else{
-							var gconfirmed=0
-						}
-
-						if($('#boollivinginyes').prop("checked")){
-							var boollivingin=1
-						}
-						if($('#boollivinginno').prop("checked")){
-							var boollivingin=0
-						}
-						if($('#boolpregnantyes').prop("checked")){
-							var boolpregnant=1
-						}
-						if($('#boolpregnantno').prop("checked")){
-							var boolpregnant=0
-						}
-						$.post('/secretariat/walkin-marriage', {
-							desireddate:$('#desireddate').val(),
-							desiredtime:$('#desiredtime').val(),
-
-							lastname:$('#glastname').val(),
-							firstname:$('#gfirstname').val(),
-							middlename:$('#gmiddlename').val(),
-							birthday:$('#gbirthday').val(),
-							birthplace:$('#gbirthplace').val(),
-							gnationality:$('#gnationality').val(),
-							gcivilstatus:$('#gcivilstatus').val(),
-							goccupation:$('#goccupation').val(),
-							address:$('#gaddress').val(),
-							gfathername:$('#gfathername').val(),
-							gfatherbplace:$('#gfatherbirthplace').val(),
-							gfatherreligion:$('#gfatherreligion').val(),
-							gmothername:$('#gmothername').val(),
-							gmotherbplace:$('#gmotherbirthplace').val(),
-							gmotherreligion:$('#gmotherreligion').val(),
-							greligion:$('#greligion').val(),
-							ginlpp:$('#ginlpp').val(),
-							gothers:$('#gothers').val(),
-							gcurrentparish:$('#gcurrentparish').val(),
-							gbapyes:$('#gbapyes').val(),
-							gbapno:$('#gbapno').val(),
-							gbapplace:$('#gbapplace').val(),
-							gbapdate:$('#gbapdate').val(),
-							gconyes:$('#gconyes').val(),
-							gconno:$('#gconno').val(),
-							gconplace:$('#gconplace').val(),
-							gcondate:$('#gcondate').val(),
-							gbaptized:bbaptized,
-							gconfirmed:gconfirmed,
-
-							blastname:$('#blastname').val(),
-							bfirstname:$('#bfirstname').val(),
-							bmiddlename:$('#bmiddlename').val(),
-							bbirthday:$('#bbirthday').val(),
-							bbirthplace:$('#bbirthplace').val(),
-							bnationality:$('#bnationality').val(),
-							bcivilstatus:$('#bcivilstatus').val(),
-							boccupation:$('#boccupation').val(),
-							baddress:$('#baddress').val(),
-							bfathername:$('#bfathername').val(),
-							bfatherbplace:$('#bfatherbirthplace').val(),
-							bfatherreligion:$('#bfatherreligion').val(),
-							bmothername:$('#bmothername').val(),
-							bmotherbplace:$('#bmotherbirthplace').val(),
-							bmotherreligion:$('#bmotherreligion').val(),
-							breligion:$('#breligion').val(),
-							binlpp:$('#binlpp').val(),
-							bothers:$('#bothers').val(),
-							bcurrentparish:$('#bcurrentparish').val(),
-							bbapyes:$('#bbapyes').val(),
-							bbapno:$('#bbapno').val(),
-							bbapplace:$('#bbapplace').val(),
-							bbapdate:$('#bbapdate').val(),
-							bconyes:$('#bconyes').val(),
-							bconno:$('#bconno').val(),
-							bconplace:$('#bconplace').val(),
-							bcondate:$('#bcondate').val(),
-							bbaptized:bbaptized,
-							bconfirmed:bconfirmed,
-
-							
-							boolpregnant:boolpregnant,
-
-						
-							cpreviousweddingdate:$('#cpreviousweddingdate').val(),
-							cpreviousweddingplace:$('#cpreviousweddingplace').val(),
-
-							boollivingin:boollivingin,
-							
-
-							firstsponsor:$('#firstsponsor').val(),
-							secondsponsor:$('#secondsponsor').val(),
-							numofaddsponsors:$('#numofaddsponsors').val(),
-
-							templastname:$('#templastname').val(),
-							tempfirstname:$('#tempfirstname').val(),
-							tempaddress:$('#tempaddress').val(),
-							tempemailaddress:$('#tempemailaddress').val(),
-							tempcontactnumber:$('#tempcontactnumber').val(),
-
-
-
-
-
-
-
-
-						}).done(data =>{
-							swal({
-							title:'Success',
-							text:'Request added', 
-							type:'success'
-							}).then(function(){
-								window.location=`/secretariat/transaction-marriage`
-							})
-							
-							
-						})//done
-					}
-				})
-			})
-
-
-		var dateNow2
+		
+		$(document).ready(function(){
+			var dateNow2
 			var eventDate ='';
 			var timeStart ='';
 			var timeEnd2 ='';
@@ -1572,7 +1170,7 @@ block addjs
 			var dateNow2;
 			var gender;
 			var numsponsors;
-			$.get('/secretariat/walkin-marriage/utilities/query').done(data=>{
+			$.get('/guest/marriage/utilities/query').done(data=>{
 				console.log("reservation min days: "+data.int_reservationmindays)
 				var downpaymentdeadline = moment(dateNow).add(data.int_downpaymentdays,'days')
 				var fullpaymentdeadline = moment(dateNow).add(data.int_fullpaymentdays,'days')
@@ -1659,6 +1257,408 @@ block addjs
 					}
 					}	
 					})
-			})
-		});
+				$('#nextButton1').click(function(){
+					if(eventDate == '' && timeStart == ''){
+						swal({
+							title: "Please schedule your date",
+							text: "You haven't chosen your desired schedule yet",
+							type: 'warning',
+							confirmButtonColor: '#3085d6',
+							confirmButtonText: 'OK'
+						})
+					}
+					else{
+						$('#nextButton1').addClass('btn-next')
+					}
+					})
+				$('#nextGroom').click(function(){
+						//- $.get('/guest/marriage/utilities/query').done(data=>{
+						var age = moment().diff($('#gbirthday').val(),'years')
+						console.log(age)
 
+						//BLANK
+						if(
+						
+							$('#gfirstname').val() == ''   ||
+							$('#glastname').val() == ''  ||
+							$('#gbirthday').val() == ''  ||
+							$('#gbirthplace').val() == ''  ||
+							$('#gfathername').val() == ''  ||
+							$('#gfatherreligion').val() == ''  ||
+							$('#gfatherbirthplace').val() == ''  ||
+							$('#gmothername').val() == ''  ||
+							$('#gmotherreligion').val() == ''  ||
+							$('#gmotherbirthplace').val() == ''  ||
+							$('#gaddress').val() == ''  ||
+							$('#gcivilstatus').val() =='' ||
+							$('#goccupation').val() =='' ||
+							$('#gaddress').val() =='' ||
+							$('#greligion').val() =='' 
+							
+						){
+							swal({
+								title: "Form is incomplete",
+								text: "Please fill out all the required fields",
+								type: 'warning',
+								confirmButtonColor: '#3085d6',
+								confirmButtonText: 'Okay'
+							})
+						}
+
+						else{
+							if(age < data.int_agemin){
+									swal({
+										title: `Age not valid.`,
+										text: "We are very sorry, but you didn't pass the minimum age requirement to be married. Please check if you have entered your correct birthdate. Thank you.",
+										showCancelButton: true,
+										confirmButtonColor: '#d33' ,
+										cancelButtonColor: '#3085d6',
+										confirmButtonClass: 'btn btn-success',
+										cancelButtonClass: 'btn btn-danger',
+										buttonsStyling: true,
+										cancelButtonText:'Re-enter birthdate',
+										confirmButtonText:'Cancel Application',
+									}).then((result)=>{
+										if (result.value) {
+										window.location='/guest/marriagedetails'
+										}
+									})
+								}
+								
+							else{
+								$('#nextGroom').addClass('btn-next')
+							}
+						}	
+					//- })//get
+					})//nextgroom 
+				$('#nextBride').click(function(){
+				
+					var age = moment().diff($('#bbirthday').val(),'years')
+					console.log(age)
+					//lagay ka dito self ng array para sa mga di nasagutan
+					//BLANK
+					console.log($('#bcivilstatus').val())
+					console.log($('#gcivilstatus').val())
+					if(
+						$('#bfirstname').val() == ''   ||
+						$('#blastname').val() == ''  ||
+						$('#bbirthday').val() == ''  ||
+						$('#bbirthplace').val() == ''  ||
+						$('#bfathername').val() == ''  ||
+						$('#bfatherreligion').val() == ''  ||
+						$('#bfatherbirthplace').val() == ''  ||
+						$('#bmothername').val() == ''  ||
+						$('#bmotherreligion').val() == ''  ||
+						$('#bmotherbirthplace').val() == ''  ||
+						$('#baddress').val() == ''  ||
+						$('#bcivilstatus').val() =='' ||
+						$('#boccupation').val() =='' ||
+						$('#baddress').val() =='' ||
+						$('#breligion').val() =='' 
+						
+						){
+						swal({
+							title: "Form is incomplete",
+							text: "Please fill out all the required fields",
+							type: 'warning',
+							confirmButtonColor: '#3085d6',
+							confirmButtonText: 'Okay'
+						})
+					}
+					else{
+						if(age < data.int_agemin){
+								swal({
+									title: `Age not valid.`,
+									text: "We are very sorry, but you didn't pass the minimum age requirement to be married. Please check if you have entered your correct birthdate. Thank you.",
+									showCancelButton: true,
+									confirmButtonColor: '#d33' ,
+									cancelButtonColor: '#3085d6',
+									confirmButtonClass: 'btn btn-success',
+									cancelButtonClass: 'btn btn-danger',
+									buttonsStyling: true,
+									cancelButtonText:'Re-enter birthdate',
+									confirmButtonText:'Cancel Application',
+								}).then((result)=>{
+									if (result.value) {
+									window.location='/guest/marriagedetails'
+									}
+								})
+						}
+						else if( $('#breligion').val() !='Catholic'  && $('#greligion').val() !='Catholic' ){
+								swal({
+										title: `The couple is non-catholic.`,
+										text: "Please check the religions you have entered.",
+										showCancelButton: true,
+										confirmButtonColor: '#d33' ,
+										cancelButtonColor: '#3085d6',
+										confirmButtonClass: 'btn btn-success',
+										cancelButtonClass: 'btn btn-danger',
+										buttonsStyling: true,
+										cancelButtonText:'Re-enter Religions',
+										confirmButtonText:'Cancel Application',
+									}).then((result)=>{
+										if (result.value) {
+										window.location='/guest/marriagedetails'
+										}
+									})
+						}
+						else if($('#bcivilstatus').val() == "Married" && $('#gcivilstatus').val() !='Married'){
+							swal({
+								title: "Was the couple married to each other before?",
+								text: "It seems like you have entered the wrong civil status for the bride/groom. Please make sure that both status are 'Married' if you were married before. If not, and one is stil married to another person, you cannot marry your partner yet.",
+								showCancelButton: true,
+								confirmButtonColor: '#d33' ,
+								cancelButtonColor: '#3085d6',
+								confirmButtonClass: 'btn btn-success',
+								cancelButtonClass: 'btn btn-danger',
+								buttonsStyling: true,
+								cancelButtonText:'Re-enter Civil Status',
+								confirmButtonText:'Cancel Application',
+							}).then((result)=>{
+								if (result.value) {
+								window.location='/guest/marriagedetails'
+								}
+							})	
+						}
+						else if($('#gcivilstatus').val() == "Married" && $('#bcivilstatus').val() !='Married'){
+							swal({
+								title: "Was the couple married to each other before?",
+								text: "It seems like you have entered the wrong civil status for the bride/groom. Please make sure that both status are 'Married' if you were married before. If not, and one is stil married to another person, you cannot marry your partner yet.",
+								showCancelButton: true,
+								confirmButtonColor: '#d33' ,
+								cancelButtonColor: '#3085d6',
+								confirmButtonClass: 'btn btn-success',
+								cancelButtonClass: 'btn btn-danger',
+								buttonsStyling: true,
+								cancelButtonText:'Re-enter Civil Status',
+								confirmButtonText:'Cancel Application',
+							}).then((result)=>{
+								if (result.value) {
+								window.location='/guest/marriagedetails'
+								}
+							})	
+						}
+						else{
+							$('#nextBride').addClass('btn-next')
+						}
+					}
+					
+					})//nextbride		
+
+				$("#confirmButton").click(function(){
+						var ctrSponsor = $('.sponsorclass').length + 1;
+						console.log($('.sponsorclass'))
+						$('#bodyAppend1').append(`You fell under the category of Non-ordinary marriage, it must be because: `)
+						$('#bodyAppend1').append(`<li>- The groom or the bride is not a Roman Catholic`)
+						$('#bodyAppend1').append(`<li>- The groom or the bride is divorced/widowed/widower`)
+						$('#bodyAppend1').append(`<li>- The groom or the bride is not a Filipino citizen`)
+						$('#bodyAppend1').append(`<li>- The groom and/or the bride is/are part of the militar`)
+						$('#bodyAppend1').append(`<li>- The bride is 5 months or above pregnant`)
+						$('#bodyAppend1').append(`<li>- The couple is living together`)
+						$('#bodyAppend1').append(`<li>- The couple was married before (renewal of vows)`)
+						
+						$('#bodyAppend1').append(`<br><br>There will be additional requirements for the cases stated; therefore, the wedding schedule won't be finalized until you submitted them all. You will learn more about this after your Canonical Interview with the priest, if you wish to continue your application.`)
+						$('#bodyAppend1').append(`<br><br>Note that the Canonical Interview will be scheduled after the payment process.`)
+
+						$('#bodyAppend1').append(`<br><br><strong><h6>Payment Summary:</h6>Service Fee: </strong>`+ data.double_fee)
+						$('#bodyAppend1').append(`<br> <strong>Additional Rate per secondary sponsors:</strong> `+ data.double_addrate*ctrSponsor)
+						$('#bodyAppend1').append(`<br><strong> Total Amount: </strong>(not yet computed)`+ data.double_fee)
+						$('#bodyAppend1').append(`<br><br> You have to pay at least the half of the total amount within ` +data.int_downpaymentdays + ` days and pay the rest after `+  data.int_fullpaymentdays +' days.')
+						
+
+						
+
+						$('#submitButton').click(function(){
+							$(this).attr('disabled', 'disabled');
+							$('#form').submit()
+						})
+						$('#confirmationModal').modal('hide')
+						$('#cancelButton').click(function(){
+							$('#summaryModal').modal('hide')
+							$('#confirmationModal').modal('show')
+						})
+						$('#summaryModal').modal('show')
+						$('#summaryModal').on('hidden.bs.modal',function(){
+							$('#bodyAppend1').empty()
+							$('#headerAppend1').empty()
+						})
+						
+					});//confirm
+				$("#proceedButton").click(function(){
+					if(
+						$('#firstsponsor').val() == '' ||
+						$('#secondsponsor').val() == '' ||
+						$('.sponsorclass').val() == ''
+					){
+						swal({
+								title: "Form is incomplete",
+								text: "Please fill out all the fields or delete them by clicking the delete button on its right",
+								type: 'warning',
+								confirmButtonColor: '#3085d6',
+								confirmButtonText: 'Okay'
+							})
+					}
+					else{
+						var gcivilstatus = $('#gcivilstatus').val();
+						var bcivilstatus = $('#bcivilstatus').val();
+						var greligion = $('#greligion').val();
+						var breligion = $('#breligion').val();
+						var gothers = $('#gothers').val();
+						var bothers = $('#bothers').val();
+						var gnationality = $('#gnationality').val();
+						var bnationality = $('#bnationality').val();
+						
+						if(
+							gcivilstatus != 'Single' || bcivilstatus !="Single" ||
+							gnationality != 'Filipino' || bnationality !="Filipino" ||
+							goccupation == 'Military' || boccupation =="Military" ||
+							$('#boollivinginyes').prop("checked") == true||
+							$('#boolpregnantyes').prop("checked") == true|| 
+							greligion != 'Catholic' || breligion != 'Catholic'||
+							greligion == 'Catholic' && $('#gbapno').prop("checked") == true||
+							breligion == 'Catholic' && $('#bbapno').prop("checked") == true||
+							greligion == 'Catholic' && $('#gbapyes').prop("checked") == true && $('#gconno').prop("checked") == true ||
+							breligion == 'Catholic' && $('#bbapyes').prop("checked") == true && $('#bconno').prop("checked") == true 
+							
+
+							
+						){
+							$('#bodyAppend').append(`<p>We would like to confirm first the following:<ul>`)
+							//CIVILSTATUS
+							if( gcivilstatus != 'Single' && bcivilstatus !="Single" && gcivilstatus != 'Married' && bcivilstatus !="Married"){
+								$('#bodyAppend').append(`<li>-  The groom is ${gcivilstatus} and the bride is ${bcivilstatus}. </li>`)
+							}
+							if( gcivilstatus != 'Single' && bcivilstatus =="Single"){
+								$('#bodyAppend').append(`<li>-  The groom is ${gcivilstatus}.</li>`)
+							}
+							if( gcivilstatus == 'Single' && bcivilstatus !="Single"){
+								$('#bodyAppend').append(`<li>-  The bride is ${bcivilstatus}.</li>`)
+							}
+							if( gcivilstatus == 'Married' && bcivilstatus =="Married"){
+								$('#bodyAppend').append(`<li>-  The couple was married to each other before.</li>`)
+							}
+							//NATIONALITY
+							if( gnationality != 'Filipino' && bnationality !="Filipino"){
+								$('#bodyAppend').append(`<li>-  The groom is ${gnationality} and the bride is ${bnationality}. </li>`)
+							}
+							if( gnationality != 'Filipino' && bnationality =="Filipino"){
+								$('#bodyAppend').append(`<li>-  The groom is ${gnationality}.</li>`)
+							}
+							if( gnationality == 'Filipino' && bnationality !="Filipino"){
+								$('#bodyAppend').append(`<li>-  The bride is ${bnationality}.</li>`)
+							}
+							//OCCUPATION
+							if( goccupation == 'Military' && boccupation =="Military"){
+								$('#bodyAppend').append(`<li>-  The groom is ${goccupation} and the bride is ${boccupation}. </li>`)
+							}
+							if( goccupation == 'Military' && boccupation !="Military"){
+								$('#bodyAppend').append(`<li>-  The groom is ${goccupation}.</li>`)
+							}
+							if( goccupation != 'Military' && boccupation =="Military"){
+								$('#bodyAppend').append(`<li>-  The bride is ${boccupation}.</li>`)
+							}
+							//PREGNANT
+							if( $('#boolpregnantyes').prop("checked") == true){
+								$('#bodyAppend').append(`<li>-  The bride is 5 months or above pregnant.</li>`)
+							}
+							//LIVING IN
+							if($('#boollivinginyes').prop("checked") == true){
+								$('#bodyAppend').append(`<li>-  The couple is living in the same house.</li>`)
+							}
+							//RELIGION
+							if( greligion != 'Catholic' && greligion != 'No Religion'){
+								$('#bodyAppend').append(`<li>-  The groom is a ${greligion}</li>`)
+							}
+							if( breligion != 'Catholic' && breligion != 'No Religion'){
+								$('#bodyAppend').append(`<li>-  The bride is a ${breligion}</li>`)
+							}
+							if( breligion == 'No Religion'){
+								$('#bodyAppend').append(`<li>-  The bride has no religion</li>`)
+							}
+							if( greligion == 'No Religion'){
+								$('#bodyAppend').append(`<li>-  The groom has no religion</li>`)
+							}
+							//BAPTIZED
+							if( greligion == 'Catholic' && $('#gbapno').prop("checked") == true){
+								$('#bodyAppend').append(`<li>-  The groom is Catholic but not yet baptized or confirmed</li>`)
+							}
+							if( breligion == 'Catholic' && $('#bbapno').prop("checked") == true){
+								$('#bodyAppend').append(`<li>-  The bride is Catholic but not yet baptized or confirmed</li>`)
+							}
+							if( greligion == 'Catholic' && $('#gbapyes').prop("checked") == true && $('#gconno').prop("checked") == true ){
+								$('#bodyAppend').append(`<li>-  The groom is Catholic and baptized but not yet confirmed</li>`)
+							}
+							if( breligion == 'Catholic' && $('#bbapyes').prop("checked") == true && $('#bconno').prop("checked") == true ){
+								$('#bodyAppend').append(`<li>-  The bride is Catholic and baptized but not yet confirmed</li>`)
+							}
+							if( $('bcivilstatus').val() == "Married" && $('#gcivilstatus').val()=='Married'){
+								$('#bodyAppend').append(`<li>-  The couple was married before.`)
+							}
+							if($('#ginlpp').checked == false && $('#binlpp').checked == false ) {
+								$('#bodyAppend').append(`<li>-  The groom was from ${gothers} and the bride was from ${bothers}.`)
+							}
+							if($('#ginlpp').checked == true && $('#binlpp').checked == false ) {
+								$('#bodyAppend').append(`<li>-  Thebride is from ${bothers}.`)
+							}
+							if($('#ginlpp').checked == false && $('#binlpp').checked == true ) {
+								$('#bodyAppend').append(`<li>-  The groom is from ${gothers}.`)
+							}
+							$('#cancelButton').click(function(){
+								$('#confirmationModal').modal('hide')
+							})
+							$('#confirmationModal').modal('show')
+							$('#confirmationModal').on('hidden.bs.modal',function(){
+								$('#bodyAppend').empty()
+								
+							})
+						}
+						else{
+							$('#bodyAppend1').append(`<strong><h6>Payment Summary:</h6>Service Fee: </strong>`+ data.double_fee)
+							$('#bodyAppend1').append(`<br> <strong>Additional Rate:</strong> `+ data.double_addrate+`/secondary sponsor`)
+							$('#bodyAppend1').append(`<br><strong> Total Amount: </strong>(not yet computed)`+ data.double_fee)
+							$('#bodyAppend1').append(`<br><br> You have to pay at least the half of the total amount within ` +data.int_downpaymentdays + ` days and pay the rest after `+  data.int_fullpaymentdays +' days.')
+							
+							
+
+							$('#submitButton').click(function(){
+								$('#form').submit()
+							})
+							$('#confirmationModal').modal('hide')
+							$('#cancelButton').click(function(){
+								$('#summaryModal').modal('hide')
+								$('#confirmationModal').modal('show')
+							})
+							$('#summaryModal').modal('show')
+							$('#summaryModal').on('hidden.bs.modal',function(){
+								$('#bodyAppend1').empty()
+								$('#headerAppend1').empty()
+							})
+							
+						
+					}
+					}
+					})//proceed
+
+				
+			$.get('/guest/marriage/query').done(data=>{
+					for(i=0;i<data.length;i++){
+					var dateEvent = moment(data[i].date_eventdate).format('MM/DD/YYYY');
+					var time_start = data[i].time_eventstart = moment(data[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
+					var time_end = moment(data[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+					//- console.log(time_end)
+					//- console.log(dateEvent)
+					//- console.log(data[i].time_eventstart)
+					//- console.log(data[i].char_approvalstatus)
+						$('#calendarSpecial').fullCalendar('renderEvent', {
+						title: 'OCCUPIED EVENT',
+						start: `${dateEvent} ${time_start}`,
+						end: `${dateEvent} ${time_end}`,
+						allDay: false,
+						color:'#4c2508',
+						textColor: "white",
+						});
+					}
+			})	//get marriage query
+		})//get
+		
+		});//docu

@@ -451,4 +451,122 @@ block addjs
 
 
 
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+
+				reader.onload = function (e) {
+					$('#req').attr('src', e.target.result);
+				}
+
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+				
+		$("#file-0b").change(function () {
+			readURL(this);
+		});
+
+		function validateForm(){
+			$('form').formValidation({
+				framework: 'bootstrap',
+				icon: {
+					valid: 'fa fa-check',
+					invalid: 'fa fa-times',
+					validating: 'fa fa-spinner'
+				},
+				fields: {
+					lastname: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Last Name`
+								},
+								regexp: {
+									regexp: /^([a-zs ]{2,})+$/i,
+									message: 'Only Aphabetical Characters, Minimum of 2.'
+								},
+						}
+					},
+					firstname: {
+						validators: {
+								notEmpty: {
+										message: `Please Enter Your Last Name`
+								},
+								regexp: {
+									regexp: /^([a-zs ]{2,})+$/i,
+									message: 'Only Aphabetical Characters, Minimum of 2.'
+								},
+						}
+					},
+					middlename: {
+						validators: {
+							regexp: {
+								regexp: /^([a-zs ]{2,})+$/i,
+								message: 'Only Aphabetical Characters, Minimum of 2.'
+							},
+						}
+					},
+					relation: {
+						validators: {
+						notEmpty: {
+										message: `Please Enter Your Relationship with the Ill`
+								},
+							}
+						},
+					//- birthday: {
+					//- 	validators: {
+					//- 	notEmpty: {
+					//- 					message: `Please Enter Your Birthday`
+					//- 			},
+					//- 		}
+					//- 	},
+					birthplace: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Your Birthplace`
+									},
+									regexp: {
+										regexp: /^([a-zs ]{2,})+$/i,
+										message: 'Only Aphabetical Characters, Minimum of 2.'
+									},
+								}
+							},
+					address: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Your Address`
+									},
+									regexp: {
+										regexp: /^([a-zs0-9-,. ]{8,})+$/i,
+										message: 'Please Enter A Valid Address'
+									},
+								}
+							},
+					details: {
+							validators: {
+									notEmpty: {
+									message: `Please Enter Cause of Death`
+									},
+									regexp: {
+										regexp: /^([a-zs ]{6,})+$/i,
+										message: 'Only Aphabetical Characters, Minimum of 6.'
+									},
+								}
+							},
+					image: {
+							validators: {
+								notEmpty: {
+									message: `Please Enter Birth Certificate`
+									},
+								}
+							},
+					//- venue: {
+					//- 		validators: {
+					//- 				regexp: {
+					//- 					regexp: /^([a-zs ]{6,})+$/i,
+					//- 					message: 'Only Aphabetical Characters, Minimum of 6.'
+					//- 				},
+					//- 			}
+					//- 		},
+					},
 				})

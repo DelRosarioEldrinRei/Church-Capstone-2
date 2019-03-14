@@ -6,16 +6,16 @@ block prepend main
 			.masonry-item.w-100
 				.row.gap-20
 					// #Toatl Visits ====================
-					.col-md-3
-						.layers.bd.bgc-white.p-20.shadow
-							.layer.w-100.mB-10
-								h6.lh-1 Facility Reservations
-							.layer.w-100
-								.peers.ai-sb.fxw-nw
-									.peer.peer-greed
-										span#sparklinedash
-									.peer
-										span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500=reservation.reservationcount
+					//- .col-md-3
+					//- 	.layers.bd.bgc-white.p-20.shadow
+					//- 		.layer.w-100.mB-10
+					//- 			h6.lh-1 Facility Reservations
+					//- 		.layer.w-100
+					//- 			.peers.ai-sb.fxw-nw
+					//- 				.peer.peer-greed
+					//- 					span#sparklinedash
+					//- 				.peer
+					//- 					span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500=reservation.reservationcount
 					// #Total Page Views ====================
 					.col-md-3
 						.layers.bd.bgc-white.p-20.shadow
@@ -201,16 +201,17 @@ block addjs
 
 			var specialServices = {
 				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-				datasets: [{
-						label: "Facility Reservation",
-						fill: false,
-						borderColor: "#52b99f",
-						backgroundColor: "#52b99f",
-						pointBackgroundColor: "#52b99f",
-						pointHoverBackgroundColor: "#FFF",
-						pointHoverBorderColor: "#52b99f",
-						data: [facility[0], facility[1], facility[2], facility[3], facility[4], facility[5], facility[6], facility[7], facility[8], facility[9], facility[10], facility[11]]
-				}, {
+				datasets: [
+					//- {
+					//- 	label: "Facility Reservation",
+					//- 	fill: false,
+					//- 	borderColor: "#52b99f",
+					//- 	backgroundColor: "#52b99f",
+					//- 	pointBackgroundColor: "#52b99f",
+					//- 	pointHoverBackgroundColor: "#FFF",
+					//- 	pointHoverBorderColor: "#52b99f",
+					//- 	data: [facility[0], facility[1], facility[2], facility[3], facility[4], facility[5], facility[6], facility[7], facility[8], facility[9], facility[10], facility[11]]
+				{
 						label: "Document Request",
 						fill: false,
 						borderColor: "#f2af3e",

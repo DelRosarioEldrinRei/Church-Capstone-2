@@ -242,10 +242,10 @@ block addjs
 	script.
 		var information = [0,1,2,3,4,5,6]
 			$(document).ready(function(){
-				for(var i=0; i <= 6; i++){
+				for(var i=0; i <= 7; i++){
 					$('.information' + i).click(function() {
 						var y = $(this).attr("class").match(/\d+/)[0]
-						for(var x=0; x <=6; x++) {
+						for(var x=0; x <=7; x++) {
 							if (y == x){
 								$('.information_details' + x).toggleClass("animated fadeInDown faster display_off")
 								var id = $('#eventinfoID').val()
@@ -536,7 +536,7 @@ block addjs
 																			},
 																			// second row para malaman kung ilan idadagdag per ikot sa y-axis pag nagforeach 26 added
 																			{
-																			text: `Number of Sponsors : ${data.sponsors.length}`,
+																			text: `Number of Additional Sponsors : ${data.sponsors.length-2}`,
 																			style: 'styleLabelEventName',
 																			absolutePosition: {x:65, y:243},
 																			},
@@ -880,35 +880,121 @@ block addjs
 
 								//pre-cana and other schedules
 								if(x == 5){
-									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
-										console.log(id)
+									$.post('/guest/weddingDetails/precanaQuery',{id:id, x:x}).done(data=>{
+										console.log(data)
 										console.log(data.eventdetails.int_eventinfoID)
 										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var canonicalsched = moment(data.interview.date_sched).format('MMMM DD, YYYY')
 										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
 										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
 										$('.information_details' + data.stepclicked).empty().append(`
 										<div class="custom_container_details">
-											<h1>Pre-Cana Seminar</h1>
+											<h1>Pre-cana/RCIA</h1>
 											<div class="items pb-0">
 												<h2 class="done1" aria-hidden="true">
-													
+												
 													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
 													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
-											
+													
 												</h2>
+											</div>
+											<div class="items pb-0" id='canonicaldetails'></div>
+											<div class="items pb-0" id='priestdiv'>
 											</div>
 											
 										</div>
 										`)
-
+										if(data.interview =='null'){
+											$('#canonicaldetails').append(`
+												<p><strong>Pre-cana/RCIA Schedule: </strong>No scheduled date yet</p>
+											`)
+										
+										}
+										else  if(data.interview !='null'){
+											$('#canonicaldetails').append(`
+												<p><strong>Pre-cana/RCIA Schedule: </strong>${canonicalsched}</p>
+											`)
+										
+										}
+										if(data.eventdetails.int_userpriestID == null){
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong></p>
+											<p>No priest assigned yet. Priest will be assigned after the payment process. Thank you.</p>
+											</div>
+											`)
+										}
+										else{
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
+											</div>
+											`)
+										}
+									});
+								}
+								//dry run
+								if(x == 6){
+										$.post('/guest/weddingDetails/dryrunQuery',{id:id, x:x}).done(data=>{
+										console.log(data)
+										console.log(data.eventdetails.int_eventinfoID)
+										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var canonicalsched = moment(data.interview.date_sched).format('MMMM DD, YYYY')
+										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
+										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
+										$('.information_details' + data.stepclicked).empty().append(`
+										<div class="custom_container_details">
+											<h1>Dry-run</h1>
+											<div class="items pb-0">
+												<h2 class="done1" aria-hidden="true">
+												
+													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
+													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
+													
+												</h2>
+											</div>
+											<div class="items pb-0" id='canonicaldetails'></div>
+											<div class="items pb-0" id='priestdiv'>
+											</div>
+											
+										</div>
+										`)
+										if(data.interview =='null'){
+											$('#canonicaldetails').append(`
+												<p><strong>Dry-Run Schedule: </strong>No scheduled date yet</p>
+											`)
+										
+										}
+										else  if(data.interview !='null'){
+											$('#canonicaldetails').append(`
+												<p><strong>Dry-Run Schedule: </strong>${canonicalsched}</p>
+											`)
+										
+										}
+										if(data.eventdetails.int_userpriestID == null){
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong></p>
+											<p>No priest assigned yet. Priest will be assigned after the payment process. Thank you.</p>
+											</div>
+											`)
+										}
+										else{
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
+											</div>
+											`)
+										}
 									});
 								}
 								//finalization
-								if(x == 6){
-									$.post('/guest/weddingDetails/reservationQuery',{id:id, x:x}).done(data=>{
-										console.log(id)
+								if(x == 7){
+									$.post('/guest/weddingDetails/finalizationQuery',{id:id, x:x}).done(data=>{
+										console.log(data)
 										console.log(data.eventdetails.int_eventinfoID)
 										var dateApplied = moment(data.eventdetails.date_applied).format('MMMM DD, YYYY')
+										var canonicalsched = moment(data.interview.date_sched).format('MMMM DD, YYYY')
 										var dateEvent = moment(data.eventdetails.date_eventdate).format('MMMM DD, YYYY')
 										var timeRequested = moment(data.eventdetails.time_eventstart,'HH:mm:ss').format('hh:mm A')
 										$('.information_details' + data.stepclicked).empty().append(`
@@ -916,28 +1002,48 @@ block addjs
 											<h1>Finalization</h1>
 											<div class="items pb-0">
 												<h2 class="done1" aria-hidden="true">
-													
+												
 													<p><strong>Wedding Date: </strong> ${dateEvent}</p>
 													<p><strong>Wedding Time: </strong> ${timeRequested}</p>
-											
+													
 												</h2>
+											</div>
+											<div class="items pb-0" id='canonicaldetails'></div>
+											<div class="items pb-0" id='priestdiv'>
 											</div>
 											
 										</div>
 										`)
-
+										if(data.interview =='null'){
+											$('#canonicaldetails').append(`
+												<p><strong>Marriage Date: </strong>No scheduled date yet</p>
+											`)
+										
+										}
+										else  if(data.interview !='null'){
+											$('#canonicaldetails').append(`
+												<p><strong>Marriage Date: </strong>${canonicalsched}</p>
+											`)
+										
+										}
+										if(data.eventdetails.int_userpriestID == null){
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong></p>
+											<p>No priest assigned yet. Priest will be assigned after the payment process. Thank you.</p>
+											</div>
+											`)
+										}
+										else{
+											$('#priestdiv').empty().append(`
+											<div class="items pb-0">
+											<p><strong> Priest Assigned: </strong>${data.eventdetails.var_priestname}</p>
+											</div>
+											`)
+										}
 									});
 								}
 
-
-								
-								//- <div class="items pt-0">
-								//- 	<!--added 7 para unique padin id niya. May nakaconfigure na kasing id sa taas-->
-								//- 	<input id="item8" type="checkbox">
-								//- 	<label for="item8">Reservation</label>
-								//- 	<h2 class="done" aria-hidden="true">Done</h2>
-								//- 	<h2 class="undone" aria-hidden="true">Not Done</h2>
-								//- </div>
 								var cloneInformation = information.slice();
 								cloneInformation.splice(x,1);
 								$.each(cloneInformation, function( index, value){

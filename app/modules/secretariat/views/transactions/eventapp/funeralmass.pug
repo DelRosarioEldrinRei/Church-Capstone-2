@@ -156,7 +156,7 @@ block prepend main
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true' style='color:white') ×
 					.modal-body#paymentAppend
-					.modal-footer
+					.modal-footer.footerpayment
 						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
 						button.btn#updatePaymentButton(type="button" style='background:#367587; color:white') Update Payment
 	#updatepaymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
@@ -222,7 +222,7 @@ block prepend main
 							.col-md-6
 								#upStatus
 								#status
-					.modal-footer.mx-auto
+					.modal-footer.mx-auto.footerrequirement
 						button.btn.btn-outline.btn-primary.pull-left#updateReqButton(type='button') Update
 	#messageModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
@@ -323,85 +323,105 @@ block addjs
 			$(document).on('click', '.viewButton', function(){
 				console.log(idNow)
 				$.post('/secretariat/transaction-funeralmass/query',{id:idNow}).done(data =>{
-					var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
-					var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
-					var age = moment().diff(data.date_birthday,'years');
-					$('#viewBodyAppend').append(`
-					<form>
-						<div class="form-row">
-							<div class="form-group col-md-6">
-								<label>Desired Date:</label>
-								<input type="text" class="form-control" value="${dateRequested}" disabled>
+					
+
+					
+						var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
+						var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
+						var age = moment().diff(data.date_birthday,'years');
+						$('#viewBodyAppend').append(`
+						<form>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Desired Date:</label>
+									<input type="text" class="form-control" value="${dateRequested}" disabled>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Desired Time:</label>
+									<input type="text" class="form-control" value="${timeRequested}" disabled>
+								</div>
 							</div>
-							<div class="form-group col-md-6">
-								<label>Desired Time:</label>
-								<input type="text" class="form-control" value="${timeRequested}" disabled>
+							<label>Name of the Child:</label>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label>Last Name:</label>
+									<input type="text" class="form-control" value="${data.var_lname}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>First Name:</label>
+									<input type="text" class="form-control" value="${data.var_fname}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Middle Name:</label>
+									<input type="text" class="form-control" value="${(data.var_mname) ? data.var_mname : 'N/A'}" disabled>
+								</div>
 							</div>
-						</div>
-						<label>Name of the Child:</label>
-						<div class="form-row">
-							<div class="form-group col-md-4">
-								<label>Last Name:</label>
-								<input type="text" class="form-control" value="${data.var_lname}" disabled>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label>Gender:</label>
+									<input type="text" class="form-control" value="${data.char_gender}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Birth Date:</label>
+									<input type="text" class="form-control" value="${moment(data.date_birthday).format('MM/DD/YYYY')}" disabled>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Birth Place:</label>
+									<input type="text" class="form-control" value="${data.var_birthplace}" disabled>
+								</div>
 							</div>
-							<div class="form-group col-md-4">
-								<label>First Name:</label>
-								<input type="text" class="form-control" value="${data.var_fname}" disabled>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Relationship with the Deceased:</label>
+									<input type="text" class="form-control" value="${data.var_relation}" disabled>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Cause of Death</label>
+									<input type="text" class="form-control" value="" disabled>
+								</div>
 							</div>
-							<div class="form-group col-md-4">
-								<label>Middle Name:</label>
-								<input type="text" class="form-control" value="${(data.var_mname) ? data.var_mname : 'N/A'}" disabled>
+							<div class="form-group">
+								<label>Blessing Venue:</label>
+								<input type="text" class="form-control" value="${data.var_blessingvenue}" disabled>
 							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col-md-4">
-								<label>Gender:</label>
-								<input type="text" class="form-control" value="${data.char_gender}" disabled>
-							</div>
-							<div class="form-group col-md-4">
-								<label>Birth Date:</label>
-								<input type="text" class="form-control" value="${moment(data.date_birthday).format('MM/DD/YYYY')}" disabled>
-							</div>
-							<div class="form-group col-md-4">
-								<label>Birth Place:</label>
-								<input type="text" class="form-control" value="${data.var_birthplace}" disabled>
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col-md-6">
-								<label>Relationship with the Deceased:</label>
-								<input type="text" class="form-control" value="${data.var_relation}" disabled>
-							</div>
-							<div class="form-group col-md-6">
-								<label>Cause of Death</label>
-								<input type="text" class="form-control" value="" disabled>
-							</div>
-						</div>
-						<div class="form-group">
-							<label>Blessing Venue:</label>
-							<input type="text" class="form-control" value="${data.var_blessingvenue}" disabled>
-						</div>
-					</form>
-					`)
-					$('#viewModal').modal('show')
-					$('#viewModal').on('hidden.bs.modal',function(){
-						$('#viewBodyAppend').empty()
-					})
+						</form>
+						`)
+						$('#viewModal').modal('show')
+						$('#viewModal').on('hidden.bs.modal',function(){
+							$('#viewBodyAppend').empty()
+						})
+					
+
+					
+					
 
 				})
 			})
 			$('.updateReqButton').click(function(){
 				$.post('/secretariat/transaction-funeralmass/query/updateStatus',{id:idNow}).done(data=>{
 					if(data.results.var_applicationtype=='Walk-in'){
+						console.log(data)
 						if(data.requirements[0].var_reqpath==null){
-							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted`)
+							$(`#insertFileAppend`).append(`This is a walk-in application. No file was submitted.
+							<hr>
+							<h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>`)
 							$('#insertFile').modal('show')
 								$('#insertFile').on('hidden.bs.modal',function(){
 									$('#insertFileAppend').empty()
 								})
 						}
 						else{
-							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}`)
+							$(`#walkinAppend`).append(`This is a walk-in application. File is located at: ${data.requirements[0].var_reqpath}
+							<hr>
+							<h6>CONTACT DETAILS</h6>
+							<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+							<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+							<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+							<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>`)
 							$('#walkin').modal('show')
 								$('#walkin').on('hidden.bs.modal',function(){
 									$('#walkinAppend').empty()
@@ -432,12 +452,15 @@ block addjs
 							$(`#reqAppend`).append(`
 							<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
 							`) 
+							var received = moment(data.requirements[i].datetime_reqreceived).format('MMMM DD, YYYY hh:mm A')
+							var approved = moment(data.requirements[i].datetime_requirementapproval).format('MMMM DD, YYYY hh:mm A')
 							$('#status').append(`
-							<input class="reject" disabled=true type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} /> 
-								<h5 class="d-inline">Reject</h5>
-							<br>
-							<input class="accept" disabled=true checked=true type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
-								<h5 class="d-inline">Accept</h5>
+							<p><strong>Submitted: </strong>${received}
+							<p><strong>Approved: </strong>${approved}
+							`)
+							$('.footerrequirement').empty()
+							$('.footerrequirement').append(`
+							<button class="btn btn-outline btn-secondary pull-left" id="cancelButton" type="button" data-dismiss="modal">Close</button>
 							`)
 							}
 							else if(data.requirements[i].var_reqstatus == "Rejected"){
@@ -445,11 +468,12 @@ block addjs
 							<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="rounded shadow3" src="${data.requirements[i].var_reqpath}" style="width: 24rem;"/></a>
 							`)
 							$('#status').append(`
-							<input class="reject" checked="" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
-								<h5class="d-inline">Reject</h5>
-							<br>
-							<input class="accept" type="radio" name="${data.requirements[i].var_reqname}" value=${data.requirements[i].int_requirementID} />
-								<h5 class="d-inline">Accep</h5>
+							<p><strong>Submitted: </strong>${data.requirements[i].datetime_reqreceived}
+							<p><strong>Rejected: </strong>${data.requirements[i].datetime_requirementapproval}
+							`)
+							$('.footerrequirement').empty()
+							$('.footerrequirement').append(`
+							<button class="btn btn-outline btn-secondary pull-left" id="cancelButton" type="button" data-dismiss="modal">Close</button>
 							`)
 							$(`input[name="${data.requirements[i].var_reqname}reject"][class="reject"]`).attr("checked",true);
 							console.log()
@@ -628,6 +652,15 @@ block addjs
 							$('#status').empty()
 						})
 					}
+					if(data.results.var_applicationtype=='No account'){
+						$('#status').append(`
+						<hr><h6>CONTACT DETAILS</h6>
+								<strong>Name: </strong>${data.tempuser.var_userlname}, ${data.tempuser.var_userfname}<br>
+								<strong>Address: </strong>${data.tempuser.var_useraddress} <br>
+								<strong>Contact Number: </strong>${data.tempuser.var_usercontactnum}<br>
+								<strong>Email Address: </strong>${data.tempuser.var_useremail}<br>
+						`)
+					}
 				})
 			})
 			
@@ -690,7 +723,12 @@ block addjs
 						
 						<div id="compose-area"></div>
 					`)
-					
+					if(data.results.char_paymentstatus=='Paid'){
+						$('.footerpayment').empty()
+						$('.footerpayment').append(`
+						<button class="btn btn-outline btn-secondary pull-left" id="cancelButton" type="button" data-dismiss="modal">Close</button>
+						`)
+					}
 					if(data.paymenthistory!=null){
 						console.log('not null')
 						$('#paymenthistorydiv').append(`
