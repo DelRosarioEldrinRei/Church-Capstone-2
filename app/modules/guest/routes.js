@@ -1040,6 +1040,7 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
             })
         })
     })
+    
     guestRouter.get('/baptism/query/regular', (req, res)=>{
         var queryString = `SELECT * FROM tbl_eventinfo where char_approvalstatus = "Approved" GROUP BY date_eventdate` 
             db.query(queryString,(err,results,fields) =>{
@@ -1466,13 +1467,17 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
         res.send(results)
     })
     })
-
     guestRouter.post('/funeral/query', (req, res) => {
     var queryString1 =`SELECT * FROM tbl_user where int_userID = ?`
         db.query(queryString1,[req.body.id], (err, results1, fields) => {
-            res.send({firstQuery:results1[0]});
+            // res.send({firstQuery:results1[0]});
+            var queryString = `SELECT * FROM tbl_eventinfo JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+             where tbl_services.var_eventname != "Baptism"`
+            db.query(queryString,(err,results,fields) =>{
+                res.send({queries:results,firstQuery:results1[0]})
+            })
+        })
         });
-    })
 
     guestRouter.get('/funeral/query/checksched', (req, res) => {
             var queryString2 = `SELECT int_priestID from tbl_priestsequence`
@@ -1512,7 +1517,8 @@ guestRouter.post(`/voucherEvents`, (req, res)=>{
     })
 
     guestRouter.get('/funeral/form', (req, res)=>{
-        res.render('guest/views/forms/funeral',{user: req.session.user})
+        console.log(req.query.eventid)
+        res.render('guest/views/forms/funeral',{user: req.session.user,eventid:req.query.eventid})
     });
     // var requirements = upload.fields([{name:'birthCertificate',maxCount:1});
     guestRouter.post('/funeral/form',upload.single('image'),(req, res) => {

@@ -133,7 +133,8 @@ loginRouter.route('/')
                     delete user.var_password;
                     req.session.user = user;
                     console.log(req.session);
-                    return res.redirect('/guest/funeral/form');
+
+                    return res.redirect(`/guest/funeral/form?eventid=${req.session.eventId}`);
                 }
                 else if(req.session.eventId == 1){
                     delete user.var_password;

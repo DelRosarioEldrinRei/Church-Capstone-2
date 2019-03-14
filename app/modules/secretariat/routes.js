@@ -2141,6 +2141,17 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                     return res.render('secretariat/views/transactions/eventapp/marriage',{marriages:marriages});
         }); 
     });
+    secretariatRouter.get('/walkin-marriage/utilities/query', (req, res)=>{
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 5`
+        db.query(queryString3,(err,results,fields)=>{
+            console.log('=================================')
+            console.log('marriage utilities query')
+            console.log('=================================')
+            console.log(results)
+            console.log('=================================')
+        res.send(results[0])
+    })
+    })
     secretariatRouter.post('/transaction-marriage/query', (req, res)=>{
         var queryString1 =`SELECT * from tbl_eventinfo 
         
@@ -2975,7 +2986,13 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
     secretariatRouter.get('/walkin-anointing', (req, res)=>{
         return res.render('secretariat/views/walk-in/anointing');
     });
-
+    secretariatRouter.get('/walkin-anointing/utilities/query', (req, res)=>{
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 1`
+        db.query(queryString3,(err,results,fields)=>{
+            console.log(results)
+        res.send(results)
+    })
+    })
     secretariatRouter.post('/walkin-anointing',(req,res)=>{
         console.log(req.body)
         var success =0
@@ -2990,11 +3007,13 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
                 console.log(req.session.secretariat.int_userID)
               
             var desiredtime1= moment(req.body.desiredtime, 'h:mm a').format('HH:mm:ss');
+            var desiredend= moment(desiredtime1, 'HH:mm:ss').add(1,'h').format('HH:mm:ss')
             var desireddate= moment(req.body.desireddate, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var birthday= moment(req.body.birthday, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var nowDate = new Date(); 
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied, var_applicationtype) VALUES(?,?,?, ?,?,?,?,?)`
-                db.query(queryString1, [req.session.secretariat.int_userID, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate, "Walk-in"], (err, results, fields) => {
+            var nowDate1 = moment(nowDate).format('YYYY-MM-DD')
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart,time_eventend, char_approvalstatus, char_requirements, date_applied, var_applicationtype) VALUES(?,?,?,?, ?,?,?,?,?)`
+                db.query(queryString1, [req.session.secretariat.int_userID, eventID.int_eventID, desireddate, desiredtime1,desiredend ,"Approved", "Complete", nowDate1, "Walk-in"], (err, results, fields) => {
                     if (err) console.log(err);
                     var eventinfoID= results;
                         if (err) console.log(err);
@@ -3094,7 +3113,35 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
     secretariatRouter.get('/walkin-baptism', (req, res)=>{
      return res.render('secretariat/views/walk-in/baptism');
     });
-
+    secretariatRouter.get('/walkin-baptism/query1', (req, res)=>{
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 9`
+        db.query(queryString3,(err,results2,fields)=>{
+        console.log(results2)
+        var queryString = `SELECT * FROM tbl_eventinfo JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+        where tbl_services.var_eventname != "Baptism"`
+            db.query(queryString,(err,results,fields) =>{
+                res.send({queries:results,utilities:results2})
+            })
+        })
+    })
+    secretariatRouter.post('/walkin-baptism/query/regular/bilang', (req, res)=>{
+        req.body.eventdate = moment(req.body.eventdate).format('YYYY-MM-DD')
+        var queryString = `SELECT COUNT(*)AS bilang FROM tbl_eventinfo WHERE date_eventdate = ?` 
+            db.query(queryString,req.body.eventdate,(err,results,fields) =>{
+                var eventdate = req.body.eventdate
+                results.push(eventdate)
+                console.log(results)
+                res.send(results)
+                
+            })
+    })
+    secretariatRouter.get('/walkin-baptism/query/regular', (req, res)=>{
+        var queryString = `SELECT * FROM tbl_eventinfo where char_approvalstatus = "Approved" GROUP BY date_eventdate` 
+            db.query(queryString,(err,results,fields) =>{
+                console.log(results)
+                    res.send(results)
+            })
+    })
     secretariatRouter.post('/walkin-baptism', (req, res)=>{
     console.log(req.body)
     var success =0
@@ -3108,14 +3155,17 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
                 console.log(results);
                 var eventID = results[0];
                 console.log(req.session.secretariat.int_userID)
-            
+                console.log(req.body.desireddate)
+                console.log(req.body.desiredtime)
             var desiredtime1= moment(req.body.desiredtime, 'h:mm a').format('HH:mm:ss');
+            var desiredtimeend = moment(desiredtime1,'HH:mm:ss').add(1,'h').format('HH:mm:ss')
             var desireddate= moment(req.body.desireddate, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var birthday= moment(req.body.birthday, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var nowDate = new Date(); 
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied,int_paymentID,var_applicationtype) VALUES(?,?,?,?,?,?,?,?,?)`
-                db.query(queryString1, [req.session.secretariat.int_userID, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate, paymentid,'Walk-in'], (err, results, fields) => {
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart,time_eventend, char_approvalstatus, char_requirements, date_applied,int_paymentID,var_applicationtype) VALUES(?,?,?,?,?,?,?,?,?,?)`
+                db.query(queryString1, [req.session.secretariat.int_userID, eventID.int_eventID, desireddate, desiredtime1,desiredtimeend, "Approved", "Complete", nowDate, paymentid,'Walk-in'], (err, results, fields) => {
                     if (err) console.log(err);
+                    console.log(results)
                     var eventinfoID= results;
                         if (err) console.log(err);
                         
@@ -3356,7 +3406,60 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
     secretariatRouter.get('/walkin-funeralblessing', (req, res)=>{
          res.render('secretariat/views/walk-in/funeralblessing');
     });
+    secretariatRouter.get('/walkin-funeral/utilities/query', (req, res)=>{
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 4`
+        db.query(queryString3,(err,results,fields)=>{
+            console.log(results)
+        res.send(results)
+    })
+    })
+    secretariatRouter.post('/walkin-funeralblessing/query', (req, res) => {
+        var queryString1 =`SELECT * FROM tbl_user where int_userID = ?`
+            db.query(queryString1,[req.body.id], (err, results1, fields) => {
+                // res.send({firstQuery:results1[0]});
+                var queryString = `SELECT * FROM tbl_eventinfo JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+                 where tbl_services.var_eventname != "Baptism"`
+                db.query(queryString,(err,results,fields) =>{
+                    res.send({queries:results,firstQuery:results1[0]})
+                })
+            })
+            });
+    secretariatRouter.get('/walkin-funeralblessing/query/checksched', (req, res) => {
+        var queryString2 = `SELECT int_priestID from tbl_priestsequence`
+        db.query(queryString2,(err,results2,fields)=>{
+            var queryString3 = `SELECT date_eventdate,time_eventstart from tbl_eventinfo`
+            db.query(queryString3,(err,results3,fields)=>{
+                for(i=0;i<results3.length;i++){
+                    results3[i].date_eventdate = moment(results3[i].date_eventdate).format('YYYY-MM-DD');
+                }
+                console.log(results2)
+                console.log(results3)
+                res.send({priestLength:results2,schedules:results3});
+            })
+        })
 
+    })
+    secretariatRouter.post('/walkin-funeralblessing/query/checksched2', (req, res) => {
+        var queryString1 = `SELECT date_eventdate,int_eventinfoID from tbl_eventinfo join tbl_priestsequence 
+        on tbl_priestsequence.int_priestID
+        = tbl_eventinfo.int_userpriestID WHERE tbl_eventinfo.int_userpriestID = ?
+        AND tbl_eventinfo.date_eventdate = ? AND tbl_eventinfo.time_eventstart=?`
+        console.log(req.body.priestid)
+        console.log(req.body.eventdate)
+            db.query(queryString1,[req.body.priestid,req.body.eventdate,req.body.eventtime],(err,results,fields)=>{
+                var shit =0;
+                if(results != ""){
+                    console.log("MERON")
+                    shit =1;
+                    res.send({shit})
+                }
+                else{
+                    shit =0;
+                    res.send({shit})
+                }
+                console.log(results)
+            })
+    })
     secretariatRouter.post('/walkin-funeralblessing', (req, res)=>{
       
         console.log(req.body)
@@ -3375,8 +3478,10 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
             var desireddate= moment(req.body.desireddate, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var birthday= moment(req.body.birthday, 'mm/dd/yyyy').format('YYYY-MM-DD');
             var nowDate = new Date(); 
-            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate, time_eventstart, char_approvalstatus, char_requirements, date_applied, var_applicationtype, int_paymentID) VALUES(?,?,?,?, ?,?,?,?,?)`
-                db.query(queryString1, [req.session.secretariat.int_userID, eventID.int_eventID, desireddate, desiredtime1, "Approved", "Complete", nowDate,"Walk-in", paymentid], (err, results, fields) => {
+            console.log(desireddate)
+            var desireddateend = moment(desiredtime1,'HH:mm:ss').add(1,'h').format('HH:mm:ss')
+            var queryString1 = `INSERT INTO tbl_eventinfo(int_userID, int_eventID, date_eventdate,time_eventend,time_eventstart, char_approvalstatus, char_requirements, date_applied, var_applicationtype, int_paymentID) VALUES(?,?,?,?,?, ?,?,?,?,?)`
+                db.query(queryString1, [req.session.secretariat.int_userID, eventID.int_eventID ,desireddate,desireddateend, desiredtime1, "Approved", "Complete", nowDate,"Walk-in", paymentid], (err, results, fields) => {
                     if (err) console.log(err);
                     var eventinfoID= results;
                         if (err) console.log(err);
@@ -3594,6 +3699,13 @@ secretariatRouter.post('/setfolderloc',(req,res)=>{
     secretariatRouter.get('/walkin-houseblessing', (req, res)=>{
         return res.render('secretariat/views/walk-in/houseblessing');
     });
+    secretariatRouter.get('/walkin-establishment/utilities/query', (req, res)=>{
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 12`
+        db.query(queryString3,(err,results,fields)=>{
+            console.log(results)
+        res.send(results)
+    })
+    })
     secretariatRouter.post('/walkin-houseblessing', (req, res)=>{
         console.log(req.body)
         var success =0
