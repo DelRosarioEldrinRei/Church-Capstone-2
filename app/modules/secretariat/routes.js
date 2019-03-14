@@ -29,8 +29,29 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                     db.query(queryString1, (err, results, fields) => {
                                         if (err) console.log(err); 
                                         var priests = results
-			return res.render('secretariat/views/index',{application:application,request:request, baptism:baptism, priests:priests});
+
+
+            
+                console.log('Condition 4')     
+                console.log(results)
+                scheduleoutput= results
+                // res.send({priestsschedule:results})
+                return res.render('secretariat/views/index',{application:application,request:request, baptism:baptism, priests:priests, scheduleoutput:scheduleoutput});
+           
         }); }); }); })
+    });
+    secretariatRouter.get('/all',(req,res)=>{
+        var queryString1= `select * from tbl_schedule 
+            join tbl_user on tbl_schedule.int_userID = tbl_user.int_userID
+            join tbl_eventinfo on tbl_schedule.int_eventinfoID = tbl_eventinfo.int_eventinfoID
+            where tbl_user.char_usertype=? or tbl_user.char_usertype=?`
+            db.query(queryString1, ['Priest', 'Parish Priest'],(err, results, fields) => {
+                for(i=0;i<results.length;i++){
+                    results[i].date_eventdate = moment(results[i].date_eventdate).format('YYYY-MM-DD')
+                }
+                if (err) console.log(err);  
+                res.send({schedules:results});
+            })
     });
     secretariatRouter.post('/schedulechecking', (req, res)=>{
         // console.log(req.body.id)
@@ -365,7 +386,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             var divisions = results
             var tobepassed=[]
             var selectallfiles = `select * from tbl_files 
-            join tbl_filefolders on tbl_files.int_folderID = tbl_filefolders.int_folderID
+            join tbl_filefolders on tbl_filefolders.int_foldernumber = tbl_files.int_folderID
             left join tbl_requirements on tbl_files.int_requirementID = tbl_requirements.int_requirementID
             left join tbl_requirementtype on tbl_requirements.int_reqtypeID= tbl_requirementtype.int_reqtypeID
             left join tbl_services on tbl_requirementtype.int_eventID= tbl_services.int_eventID
@@ -391,7 +412,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         var values= req.body.id.split(',')
         if(values[0]==0){
             var selectallfiles = `select * from tbl_files 
-            join tbl_filefolders on tbl_files.int_folderID = tbl_filefolders.int_folderID
+            join tbl_filefolders on tbl_filefolders.int_foldernumber = tbl_files.int_folderID
             left join tbl_requirements on tbl_files.int_requirementID = tbl_requirements.int_requirementID
             left join tbl_requirementtype on tbl_requirements.int_reqtypeID= tbl_requirementtype.int_reqtypeID
             left join tbl_services on tbl_requirementtype.int_eventID= tbl_services.int_eventID
@@ -412,7 +433,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             
             console.log(values)
             var selectallfiles = `select * from tbl_files 
-            join tbl_filefolders on tbl_files.int_folderID = tbl_filefolders.int_folderID
+            join tbl_filefolders on tbl_filefolders.int_foldernumber = tbl_files.int_folderID
             left join tbl_requirements on tbl_files.int_requirementID = tbl_requirements.int_requirementID
             left join tbl_requirementtype on tbl_requirements.int_reqtypeID= tbl_requirementtype.int_reqtypeID
             left join tbl_services on tbl_requirementtype.int_eventID= tbl_services.int_eventID
@@ -561,8 +582,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             var queryString1= `select * from tbl_schedule 
             join tbl_user on tbl_schedule.int_userID = tbl_user.int_userID
             join tbl_eventinfo on tbl_schedule.int_eventinfoID = tbl_eventinfo.int_eventinfoID
-            where tbl_schedule.var_scheduletype =?   `
-            db.query(queryString1, [req.body.type],(err, results, fields) => {
+            where tbl_schedule.var_scheduletype =? and tbl_user.char_usertype=? or tbl_user.char_usertype=?  `
+            db.query(queryString1, [req.body.type, 'Priest', 'Parish Priest'],(err, results, fields) => {
                 if (err) console.log(err);   
                 console.log('Condition 3')    
                 console.log(results)

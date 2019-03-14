@@ -1,117 +1,158 @@
 extends ../../../templates/secretariat
 block prepend main
-	style.
-	// ### $App Screen Content ###
-	#mainContent
-		.row.gap-20.masonry.pos-r
-			.masonry-sizer.col-md-6
-			.masonry-item.w-100
-				.row.gap-20
-					// #Toatl Visits ====================
-					.col-md-3
-						.layers.bd.bgc-white.p-20.shadow
-							.layer.w-100.mB-10
-								h6.lh-1 Baptism
-							.layer.w-100
-								.peers.ai-sb.fxw-nw
-									.peer.peer-greed
-										span#sparklinedash
-									.peer
-										span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500=baptism.baptismcount
-					// #Total Page Views ====================
-					.col-md-3
-						.layers.bd.bgc-white.p-20.shadow
-							.layer.w-100.mB-10
-								h6.lh-1 Other Event Application
-							.layer.w-100
-								.peers.ai-sb.fxw-nw
-									.peer.peer-greed
-										span#sparklinedash2
-									.peer
-										span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-red-50.c-red-500=application.applicationcount
-					// #Unique Visitors ====================
-					.col-md-3
-						.layers.bd.bgc-white.p-20.shadow
-							.layer.w-100.mB-10
-								h6.lh-1 Document Request
-							.layer.w-100
-								.peers.ai-sb.fxw-nw
-									.peer.peer-greed
-										span#sparklinedash3
-									.peer
-										span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-purple-50.c-purple-500=request.requestcount
-					// #Bounce Rate ====================
-					//- .col-md-3
-					//-   .layers.bd.bgc-white.p-20.shadow
-					//-     .layer.w-100.mB-10
-					//-       h6.lh-1 Facility Reservation
-					//-     .layer.w-100
-					//-       .peers.ai-sb.fxw-nw
-					//-         .peer.peer-greed
-					//-           span#sparklinedash4
-					//-         .peer
-					//-           span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-blue-50.c-blue-500=reservation.reservationcount
-		.container-fluid.mt-3
-			.row
-				.col-md-12.mx-auto
-					//- ul.nav.nav-tabs
-						//- li.nav-item
-						//-   a.nav-link.active(data-toggle='tab', href='#first') First Calendar
-						//- li.nav-item
-						//-   a.nav-link(data-toggle='tab', href='#second') Second Calendar
-						//- li.nav-item
-						//-   a.nav-link(data-toggle='tab', href='#third') Third Calendar
+    style.
+    // ### $App Screen Content ###
+    #mainContent
+        .row.gap-20.masonry.pos-r
+            .masonry-sizer.col-md-6
+            .masonry-item.w-100
+                .row.gap-20
+                    // #Toatl Visits ====================
+                    .col-md-3
+                        .layers.bd.bgc-white.p-20.shadow
+                            .layer.w-100.mB-10
+                                h6.lh-1 Baptism
+                            .layer.w-100
+                                .peers.ai-sb.fxw-nw
+                                    .peer.peer-greed
+                                        span#sparklinedash
+                                    .peer
+                                        span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-green-50.c-green-500=baptism.baptismcount
+                    // #Total Page Views ====================
+                    .col-md-3
+                        .layers.bd.bgc-white.p-20.shadow
+                            .layer.w-100.mB-10
+                                h6.lh-1 Other Event Application
+                            .layer.w-100
+                                .peers.ai-sb.fxw-nw
+                                    .peer.peer-greed
+                                        span#sparklinedash2
+                                    .peer
+                                        span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-red-50.c-red-500=application.applicationcount
+                    // #Unique Visitors ====================
+                    .col-md-3
+                        .layers.bd.bgc-white.p-20.shadow
+                            .layer.w-100.mB-10
+                                h6.lh-1 Document Request
+                            .layer.w-100
+                                .peers.ai-sb.fxw-nw
+                                    .peer.peer-greed
+                                        span#sparklinedash3
+                                    .peer
+                                        span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-purple-50.c-purple-500=request.requestcount
+                    // #Bounce Rate ====================
+                    //- .col-md-3
+                    //-   .layers.bd.bgc-white.p-20.shadow
+                    //-     .layer.w-100.mB-10
+                    //-       h6.lh-1 Facility Reservation
+                    //-     .layer.w-100
+                    //-       .peers.ai-sb.fxw-nw
+                    //-         .peer.peer-greed
+                    //-           span#sparklinedash4
+                    //-         .peer
+                    //-           span.d-ib.lh-0.va-m.fw-600.bdrs-10em.pX-15.pY-15.bgc-blue-50.c-blue-500=reservation.reservationcount
+        .container-fluid.mt-3
+            .row
+                .col-md-12.mx-auto
+                    //- ul.nav.nav-tabs
+                        //- li.nav-item
+                        //-   a.nav-link.active(data-toggle='tab', href='#first') First Calendar
+                        //- li.nav-item
+                        //-   a.nav-link(data-toggle='tab', href='#second') Second Calendar
+                        //- li.nav-item
+                        //-   a.nav-link(data-toggle='tab', href='#third') Third Calendar
 
-						//- li.nav-item.dropdown
-						//- 	a.nav-link.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false')
-						//- 		| Secretariat Schedules
-						//- 	.dropdown-menu
-						//- 		a.dropdown-item(href='#') All
-						//- 		.dropdown-divider
-						//- 		a.dropdown-item(href='#') Services
-						//- 		.dropdown-divider
-						//- 		a.dropdown-item(href='#') Masses
-						//- li.nav-item.dropdown
-						//- 	a.nav-link.dropdown-toggle#priestbutton(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false')
-						//- 		| Priests Schedules
-						//- 	.dropdown-menu#priestappend
-					.row
-						.col-md-6
-							select#typee.form-control(onchange='changescheduledisplayed();')
-								option(selected='', value='All') All
-								option(value='Service') Services
-								option(value='Mass') Masses
-						.col-md-6
-								select#priests.form-control(onchange='changescheduledisplayed();')
-									option(value=`0`) All								
-									each priest in priests
-										option(value=`${priest.int_userID}`)=priest.var_userlname
-			
+                        //- li.nav-item.dropdown
+                        //- 	a.nav-link.dropdown-toggle(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false')
+                        //- 		| Secretariat Schedules
+                        //- 	.dropdown-menu
+                        //- 		a.dropdown-item(href='#') All
+                        //- 		.dropdown-divider
+                        //- 		a.dropdown-item(href='#') Services
+                        //- 		.dropdown-divider
+                        //- 		a.dropdown-item(href='#') Masses
+                        //- li.nav-item.dropdown
+                        //- 	a.nav-link.dropdown-toggle#priestbutton(data-toggle='dropdown' href='#' role='button' aria-haspopup='true' aria-expanded='false')
+                        //- 		| Priests Schedules
+                        //- 	.dropdown-menu#priestappend
+                    .row
+                        .col-md-6
+                            select#typee.form-control(onchange='changescheduledisplayed();')
+                                option(selected='', value='All') All
+                                option(value='Service') Services
+                                option(value='Mass') Masses
+                        .col-md-6
+                                select#priests.form-control(onchange='changescheduledisplayed();')
+                                    option(value=`0`) All								
+                                    each priest in priests
+                                        option(value=`${priest.int_userID}`)=priest.var_userlname
+            
 
-								
+                                
 
 
-					.tab-content
-						// IMPORTANT!!! CALENDARS THAT IVE PUT IN HERE ARE LOCATED AT THE BOTTOM THANKS! :)
-						#first.shadow.tab-pane.active
-						#second.tab-pane.shadow
-						#third.tab-pane.shadow
-			
+                    .tab-content
+                        // IMPORTANT!!! CALENDARS THAT IVE PUT IN HERE ARE LOCATED AT THE BOTTOM THANKS! :)
+                        #calendar.shadow.tab-pane.active
+                        #second.tab-pane.shadow
+                        #third.tab-pane.shadow
+            
 block addjs
-	script.
-		$('#first').fullCalendar()
-		$('#second').fullCalendar()
-		$('#third').fullCalendar()
-		function changescheduledisplayed(){
-			var type = $('#typee').val()
-			var priestID = $('#priests').val()
-			console.log(type)
-			console.log(priestID)
+    script.
+        //- $('#calendar').fullCalendar()
+        //- $('#second').fullCalendar()
+        //- $('#third').fullCalendar()
 
-				
-			$.post('/secretariat/selectedchedule',{type: type, priestID:priestID}).done(data=>{
-				console.log(data)
-			})
-		
-		}
-		
+        $('#calendar').fullCalendar({
+                header: {
+                left: 'title',
+                center: 'agendaDay,month',
+                right: 'prev,next today'
+                },
+                editable: false,
+                firstDay: 0,
+                selectable: true,
+                defaultView: 'month',
+                allDaySlot: false,
+                selectHelper: true,
+                minTime: availablestart,
+                maxTime: availableend,
+                validRange: {
+                    start: dateNow2
+                },
+                businessHours: { dow: [0,1,2,3,4,5,6] },
+                selectConstraint:"businessHours",
+            })
+        //- function changescheduledisplayed(){
+        //-     var type = $('#typee').val()
+        //-     var priestID = $('#priests').val()
+        //-     console.log(type)
+        //-     console.log(priestID)
+
+                
+        //-     $.post('/secretariat/selectedchedule',{type: type, priestID:priestID}).done(data=>{
+        //-         console.log(data.scheduleoutput)
+        //-     })
+        
+        //- }
+        $.get('/secretariat/all').done(data=>{
+        console.log(data.schedules)
+
+        for(i=0;i<data.schedules.length;i++){
+            var dateevent = moment(data.schedules[i].date_eventdate).format('MM/DD/YYYY');
+            var timeeventstart= moment(data.schedules[i].time_eventstart,'hh:mm:ss').format('hh:mm a')
+            var timeeventend = moment(data.schedules[i].time_eventend,'hh:mm:ss').format('hh:mm a')
+            console.log(dateevent)
+            console.log(timeeventstart)
+            console.log(timeeventend)
+            $('#calendar').fullCalendar('renderEvent',{
+            	title: ' SCHEDULES',
+            	start: `${dateevent} ${timeeventstart}`,
+            	end:`${dateevent} ${timeeventend}`,
+            	allDay:true,
+            	color:'black',
+            	textColor: "white",
+            })
+        }
+        })
+        

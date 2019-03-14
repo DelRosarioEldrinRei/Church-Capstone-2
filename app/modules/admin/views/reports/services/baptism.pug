@@ -1,12 +1,53 @@
 extends ../../../../../templates/admin
 block prepend main
 	#mainContent
+	
+		//- #regularbaptism.tab-pane.active
+		//- 	.card.shadow
+		//- 						.card-header.card-header-primary(style='background:#367587; color:white')
+		//- 							.row
+		//- 								.col-md-6
+		//- 									h3.card-title(style='background:#367587; color:white') Services
+
+		//- 						.card-body.table-responsive
+		//- 								table.table.table-hover.dt-responsive#example(style="width:100%;")
+		//- 										thead.text-primary
+		//- 												th ID
+		//- 												th Service Name
+		//- 												th Name
+		//- 												//- th Father's Name
+		//- 												//- th Mother's Name
+		//- 												th Event Date
+		//- 												th Event Time
+		//- 												th Approval Status
+														
+		//- 										tbody
+												
+		//- 										tfoot
+		//- 												th ID
+		//- 												th Service Name
+		//- 												th Name
+		//- 												//- th Father's Name
+		//- 												//- th Mother's Name
+		//- 												th Event Date
+		//- 												th Event Time
+		//- 												th Approval Status
+
+									
+		.row.masonry.pos-r
+			.masonry-sizer.col-md-6
+			.masonry-item.w-100
+		.row.masonry.pos-r
+			.masonry-sizer.col-md-6
+			.masonry-item.w-100
 		.row.masonry.pos-r
 			.masonry-sizer.col-md-6
 			.masonry-item.w-100
 				
 			// line charts
 		.row.gap-20.masonry.pos-r
+			.masonry-item.col-md-3
+			
 			.masonry-item.col-md-6
 				// #Monthly Stats ====================
 				.bd.bgc-white
@@ -15,14 +56,8 @@ block prepend main
 							h5.lh-1 Baptism
 						.layer.w-100.p-20
 							canvas#canvas(height='150')
-			.masonry-item.col-md-6
-				// #Monthly Stats ====================
-				.bd.bgc-white
-					.layers.shadow
-						.layer.w-100.pX-20.pT-20
-							h5.lh-1 Baptism
-						.layer.w-100.p-20
-							canvas#canvas22(height='150')
+			.masonry-item.col-md-3
+			
 			
 			//regular
 			.masonry-item.col-12
@@ -114,6 +149,36 @@ block prepend main
 block addjs
 	
 	script(type='text/javascript').
+			$(document).ready(function() {
+				// itong datatable ay hindi galing sa template as in inimport siya beshy kasi hindi lumalabas yung
+				// mga export button kapag sa datatable na template
+				$('#example').DataTable( {
+						dom: 'Bfrtip',
+						buttons: [
+								'copy', 'csv', 'excel', 'pdf', 'print'
+						],
+						initComplete: function () {
+						this.api().columns().every( function () {
+								var column = this;
+								var select = $('<select><option value=""></option></select>')
+										.appendTo( $(column.footer()).empty() )
+										.on( 'change', function () {
+												var val = $.fn.dataTable.util.escapeRegex(
+														$(this).val()
+												);
+ 
+												column
+														.search( val ? '^'+val+'$' : '', true, false )
+														.draw();
+										} );
+ 
+								column.data().unique().sort().each( function ( d, j ) {
+										select.append( '<option value="'+d+'">'+d+'</option>' )
+								} );
+						} );
+					}
+				} );
+			} );
 			window.onload = function() {
 			
 			var baptismm= document.getElementById('baptismCount').innerHTML;
@@ -347,3 +412,6 @@ block addjs
 			});
 			
 			}	
+
+block filter
+	script(src='/admin/bundlesomecssremoved.js')

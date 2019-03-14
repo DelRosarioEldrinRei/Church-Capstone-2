@@ -24,7 +24,7 @@ adminRouter.use(authMiddleware.adminAuth)
             var queryString1 =`SELECT count(int_eventinfoID) as applicationcount from tbl_eventinfo where int_eventID<>(select int_eventID from tbl_services where var_eventname='Baptism')`
             var queryString2 =`SELECT count(int_reservationID) as reservationcount from tbl_facilityreservation`
             var queryString3 =`SELECT count(int_requestID) as requestcount from tbl_documentrequest`
-            var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism')`
+            var queryString4 =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo where int_eventID=(select int_eventID from tbl_services where var_eventname='Baptism') || int_eventID=(select int_eventID from tbl_services where var_eventname='Special Baptism')`
                 db.query(queryString1, (err, results, fields) => {
                     if (err) console.log(err);
                     var application = results[0];
@@ -356,55 +356,7 @@ adminRouter.use(authMiddleware.adminAuth)
                                                                     var december5 = results[0]
                                                                     marriageCount.push(december5.countt)
                                                                     console.log(marriageCount)       
-                    // db.query(facility,[1],(err, results, fields) => {
-                    //     if (err) console.log(err);
-                    //     var january6 = results[0]
-                    //     facilityCount.push(january6.countt)
-                    //     db.query(facility,[2],(err, results, fields) => {
-                    //         if (err) console.log(err);
-                    //         var february6 = results[0]
-                    //         facilityCount.push(february6.countt)
-                    //         db.query(facility,[3],(err, results, fields) => {
-                    //             if (err) console.log(err);
-                    //             var march6 = results[0]
-                    //             facilityCount.push(march6.countt)
-                    //             db.query(facility,[4],(err, results, fields) => {
-                    //                 if (err) console.log(err);
-                    //                 var april6 = results[0]
-                    //                 facilityCount.push(april6.countt)
-                    //                 db.query(facility,[5],(err, results, fields) => {
-                    //                     if (err) console.log(err);
-                    //                     var may6 = results[0]
-                    //                     facilityCount.push(may6.countt)
-                    //                     db.query(facility,[6],(err, results, fields) => {
-                    //                         if (err) console.log(err);
-                    //                         var june6 = results[0]
-                    //                         facilityCount.push(june6.countt)
-                    //                         db.query(facility,[7],(err, results, fields) => {
-                    //                             if (err) console.log(err);
-                    //                             var july6 = results[0]
-                    //                             facilityCount.push(july6.countt)
-                    //                             db.query(facility,[8],(err, results, fields) => {
-                    //                                 if (err) console.log(err);
-                    //                                 var august6 = results[0]
-                    //                                 facilityCount.push(august6.countt)
-                    //                                 db.query(facility,[9],(err, results, fields) => {
-                    //                                     if (err) console.log(err);
-                    //                                     var september6 = results[0]
-                    //                                     facilityCount.push(september6.countt)
-                    //                                     db.query(facility,[10],(err, results, fields) => {
-                    //                                         if (err) console.log(err);
-                    //                                         var october6 = results[0]
-                    //                                         facilityCount.push(october6.countt)
-                    //                                         db.query(facility,[11],(err, results, fields) => {
-                    //                                             if (err) console.log(err);
-                    //                                             var november6 = results[0]
-                    //                                             facilityCount.push(november6.countt)
-                    //                                             db.query(facility,[12],(err, results, fields) => {
-                    //                                             if (err) console.log(err);
-                    //                                                 var december6 = results[0]
-                    //                                                 facilityCount.push(december6.countt)
-                    //                                                 console.log(facilityCount)
+                   
                     db.query(docu,[1],(err, results, fields) => {
                         if (err) console.log(err);
                         var january7 = results[0]
@@ -790,295 +742,8 @@ adminRouter.use(authMiddleware.adminAuth)
         }); 
         
     });
-//=======================================================
-//FACILITY
-//=======================================================
-    adminRouter.get('/maintenance-facilities', (req, res)=>{
-        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
-        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
-        
-        var queryString1 =`SELECT * FROM tbl_facility join tbl_utilities_facility on 
-        tbl_utilities_facility.int_utilitiesfacilityID=tbl_facility.int_facilityID`
-        db.query(queryString1, (err, results, fields) => {
-            if (err) console.log(err);  
-            for(var i = 0; i < results.length; i++){
-                results[i].time_feeper= moment(results[i].time_feeper, "HH:mm:ss").format('hh'); 
-                results[i].time_addper= moment(results[i].time_addper, 'HH:mm:ss').format('hh'); 
-            }     
-            var facilities = results;
-            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
-                if (err) console.log(err);
-                var newmessages = results[0];
-                console.log(newmessages)
-                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
-                    if (err) console.log(err);
-                    var messages = results;
-                    for(i=0;i<messages.length;i++){ 
-                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
-                    } 
 
-                    console.log(results)
-                    return res.render('admin/views/maintenance/facilities',{ facilities : facilities, messages:messages, newmessages:newmessages });
-                }); });
-        });     
-    });
-    adminRouter.post('/maintenance-facilities/add', (req, res) => {
-        var success =0
-        var notsuccess =1
-        console.log(req.body)
-        var queryString= `INSERT INTO tbl_facility( var_facilityname, var_facilitydesc) VALUES(?,?);`  
-        var queryString1= `INSERT INTO tbl_utilities_facility(int_facilityID,int_reservationmaxdays,int_reservationmindays,int_requirementsdays,var_availabledays,time_availablestart,time_availableend,bool_withpayment,double_fee,time_feeper,double_addrate,time_addper,int_maxpax,var_facilitysize,int_downpaymentdays,int_fullpaymentdays,bool_refundable,int_refundpercent,int_refunddays,char_facilitystatus)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`  
-            db.query(queryString,[req.body.var_facilityname,req.body.var_facilitydesc], (err, results, fields) => {
-                    console.log(results)
-                    var facilitydetails = results;
-                    var availabledays=[];
-                    if(req.body.sun==1){availabledays.push(0)}
-                    if(req.body.mon==1){availabledays.push(1)}
-                    if(req.body.tues==1){availabledays.push(2)}
-                    if(req.body.wed==1){availabledays.push(3)}
-                    if(req.body.thurs==1){availabledays.push(4)}
-                    if(req.body.fri==1){availabledays.push(5)}
-                    if(req.body.sat==1){availabledays.push(6)}
-                    console.log(availabledays)
-                    var days = availabledays.toString();
-                db.query(queryString1,[facilitydetails.insertId, req.body.int_reservationmaxdays, req.body.int_reservationmindays, req.body.int_requirementsdays, days, req.body.time_availablestart, req.body.time_availableend, req.body.bool_withpayment, req.body.double_fee, req.body.time_feeper, req.body.double_addrate, req.body.time_addper, req.body.int_maxpax, req.body.var_facilitysize, req.body.int_downpaymentdays, req.body.int_fullpaymentdays, req.body.bool_refundable, req.body.int_refundpercent, req.body.int_refunddays, 'Can be reserved'], (err, results, fields) => {
-                        res.send({facilityid:facilitydetails.insertId})
-                });});            
-    });
-    adminRouter.post('/maintenance-facilities/delete', (req, res) => {
-        var success =0
-        var notsuccess =1
-        const queryString = `DELETE FROM tbl_utilities_facility WHERE int_facilityID= ?`;
-        const queryString1 = `DELETE FROM tbl_facility WHERE int_facilityID= ?`;
-        db.query(queryString,[req.body.id1], (err, results, fields) => {
-            db.query(queryString1,[req.body.id1], (err, results, fields) => {        
-            if (err) throw err;
-            // return res.redirect('/admin/maintenance-facilities');
-            if (err){
-                console.log(err)
-                res.send({alertDesc:notsuccess})
-            }
-            else{
-                res.send({alertDesc:success})
-                console.log(results)
-            }
-        });});
-    });
-    adminRouter.get('/maintenance-facilities/update', (req, res)=>{
-        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
-        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
-        
-        console.log("==========================================")
-        console.log("View details (req.query.id): "+req.query.id) 
-        console.log("==========================================")
-        var utilitiesID = parseInt(req.query.id)
-        var queryString1 =`SELECT * FROM tbl_facility join tbl_utilities_facility on 
-        tbl_utilities_facility.int_utilitiesfacilityID=tbl_facility.int_facilityID where tbl_facility.int_facilityID=?`
-        db.query(queryString1,[utilitiesID], (err, results, fields) => {
-            if (err) console.log(err);       
-            var facilities = results[0];
-            console.log("==========================================")
-            console.log("Results set: "+JSON.stringify(facilities))
-            console.log("==========================================")
-            var sun=0; var mon=0; var tues=0; var wed=0; var thurs=0; var fri=0; var sat=0;
-            if(facilities.var_availabledays!=null){
-                var days = facilities.var_availabledays.split(',');
-                console.log(days)
-                for(i=0; i<days.length; i++){
-                    if(days[i]==0){sun=1;}
-                    if(days[i]==1){mon=1;}
-                    if(days[i]==2){tues=1;}
-                    if(days[i]==3){wed=1;}
-                    if(days[i]==4){thurs=1;}
-                    if(days[i]==5){fri=1;}
-                    if(days[i]==6){sat=1;}
-                }
-            }
-            if(facilities.time_availablestart!=null)facilities.time_availablestart= moment(facilities.time_availablestart,'HH:mm:ss').format('hh:mm A'); 
-            if(facilities.time_availableend!=null)facilities.time_availableend= moment(facilities.time_availableend,'HH:mm:ss').format('hh:mm A'); 
-            facilities.time_feeper= moment(facilities.time_feeper,'HH:mm:ss').format('hh'); 
-            facilities.time_addper= moment(facilities.time_addper,'HH:mm:ss').format('hh'); 
-            console.log(facilities)
 
-            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
-                if (err) console.log(err);
-                var newmessages = results[0];
-                console.log(newmessages)
-                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
-                    if (err) console.log(err);
-                    var messages = results;
-                    for(i=0;i<messages.length;i++){ 
-                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
-                    } 
-
-                    return res.render('admin/views/maintenance/editfacility',{ facilities : facilities, mon:mon, sun:sun, tues:tues, wed:wed, thurs:thurs, fri:fri, sat:sat, sun:sun, messages:messages, newmessages:newmessages});
-                }); });
-            
-        }); 
-    });
-    adminRouter.post('/maintenance-facilities/changestatus', (req, res)=>{
-        var success =0
-        var notsuccess =1
-        console.log(req.body.id1)
-        var queryString1 = `UPDATE tbl_utilities_facility SET        
-                char_facilitystatus = "${req.body.facilitystatus}"
-                where int_utilitiesfacilityID= ${req.body.id1};`;
-        db.query(queryString1, (err, results, fields) => {
-            if (err) console.log(err);       
-            console.log(results)
-            if (err){
-                console.log(err)
-                res.send({alertDesc:notsuccess})
-            }
-            else{
-                res.send({alertDesc:success})
-            }
-        }); 
-    });
-    adminRouter.post('/maintenance-facilities/upload', upload.single('image'), (req, res)=>{
-        var success =0
-        var notsuccess =1
-        console.log(req.body.id1)
-        var path = '/img/req/'+req.file.filename;
-        var queryString1 = `UPDATE tbl_facility SET        
-                var_facilitypicpath =?
-                where int_facilityID= ${req.body.int_facilityID};`;
-        db.query(queryString1, [path],(err, results, fields) => {
-            if (err) console.log(err);       
-            console.log(results)
-            if (err){
-                console.log(err)
-                res.send({alertDesc:notsuccess})
-            }
-            else{
-                res.send({alertDesc:success})
-            }
-        }); 
-    });
-    adminRouter.post('/maintenance-facilities/update', (req, res)=>{
-        var success =0
-        var notsuccess =1
-        console.log(req.body)
-        console.log(req.body.int_utilitiesfacilityID);  
-        var availabledays=[];
-        if(req.body.sun==1){availabledays.push(0)}
-        if(req.body.mon==1){availabledays.push(1)}
-        if(req.body.tues==1){availabledays.push(2)}
-        if(req.body.wed==1){availabledays.push(3)}
-        if(req.body.thurs==1){availabledays.push(4)}
-        if(req.body.fri==1){availabledays.push(5)}
-        if(req.body.sat==1){availabledays.push(6)}
-        console.log(availabledays)
-        var days = availabledays.toString();
-        console.log(days)
-        var queryString1 = `UPDATE tbl_utilities_facility SET        
-                int_reservationmaxdays='${req.body.int_reservationmaxdays}',
-                int_reservationmindays='${req.body.int_reservationmindays}',
-                int_requirementsdays='${req.body.int_requirementsdays}',
-                
-                time_availablestart='${req.body.time_availablestart}',
-                time_availableend='${req.body.time_availableend}',
-                bool_withpayment='${req.body.bool_withpayment}',
-                double_fee='${req.body.double_fee}',
-                time_feeper='${req.body.time_feeper}',
-                double_addrate='${req.body.double_addrate}',
-                time_addper='${req.body.time_addper}',
-                int_maxpax='${req.body.int_maxpax}',
-                var_facilitysize='${req.body.var_facilitysize}',
-                int_downpaymentdays='${req.body.int_downpaymentdays}',
-                int_fullpaymentdays='${req.body.int_fullpaymentdays}',
-                bool_refundable='${req.body.bool_refundable}',
-                int_refundpercent='${req.body.int_refundpercent}',
-                int_refunddays='${req.body.int_refunddays}',
-                var_availabledays='${days}',
-                char_facilitystatus='${req.body.char_facilitystatus}'
-                
-                where int_utilitiesfacilityID= ?`;
-        var queryString = `UPDATE tbl_facility SET        
-                var_facilityname='${req.body.var_facilityname}',
-                var_facilitydesc='${req.body.var_facilitydesc}'
-                
-                where int_facilityID= ?`;
-        db.query(queryString, [req.body.int_facilityID], (err, results, fields) => {
-            if (err) console.log(err);
-            db.query(queryString1, [req.body.int_utilitiesfacilityID], (err, results, fields) => {
-                if (err) console.log(err);              
-            console.log(availabledays)
-            if (err){
-                console.log(err)
-                res.send({alertDesc:notsuccess})
-            }
-            else{
-                res.send({alertDesc:success})
-                console.log(results)
-            }
-        }); }); 
-    });
-   
-//=======================================================
-//MINISTRIES/ORG
-//=======================================================
-    adminRouter.get('/maintenance-ministries', (req, res)=>{
-        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
-        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
-        
-        var queryString1 =`SELECT * FROM tbl_ministry`
-        db.query(queryString1, (err, results, fields) => {
-            if (err) console.log(err);       
-            var ministries = results;
-            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
-                if (err) console.log(err);
-                var newmessages = results[0];
-                console.log(newmessages)
-                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
-                    if (err) console.log(err);
-                    var messages = results;
-                    for(i=0;i<messages.length;i++){ 
-                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
-                    } 
-                    return res.render('admin/views/maintenance/ministries',{ ministries : ministries, messages:messages, newmessages:newmessages });
-
-                }); });
-        });     
-    });
-    adminRouter.post('/maintenance-ministries/addministry', (req, res) => {
-    
-        var queryString= `INSERT INTO tbl_ministry(var_ministryname,var_ministrydesc) VALUES(?,?);`  
-            db.query(queryString,  [req.body.ministryname,req.body.ministrydesc], (err, results, fields) => {
-                if (err) throw err;
-                    return res.redirect('/admin/maintenance-ministries');
-            });            
-    });
-    adminRouter.post('/maintenance-ministries/delete', (req, res) => {
-        const queryString = `DELETE FROM tbl_ministry
-        WHERE int_ministryID= ?`;
-        
-        db.query(queryString,[req.body.id1], (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/admin/maintenance-ministries');
-            
-        });
-    });
-    adminRouter.post('/maintenance-ministries/query', (req, res) => {
-        
-        var queryString = `SELECT * FROM tbl_ministry 
-        WHERE int_ministryID = ?`;
-        db.query(queryString,[req.body.id], (err, results, fields) => {        
-            if (err) throw err;
-            res.send(results[0])
-            console.log(results[0])
-        });
-    });
-    adminRouter.post('/maintenance-ministries/edit', (req, res) => {
-        const queryString = `UPDATE tbl_ministry SET var_ministryname =?,var_ministrydesc=?
-        WHERE int_ministryID= ?`;
-        
-        db.query(queryString,[req.body.ministryname,req.body.ministrydesc,req.body.id1], (err, results, fields) => {        
-            if (err) throw err;
-            return res.redirect('/admin/maintenance-ministries');
-            
-        });
-    });
 //=======================================================
 //REQUIREMENTS 
 //=============================== ========================
@@ -1347,80 +1012,6 @@ adminRouter.use(authMiddleware.adminAuth)
             return res.redirect('/admin/maintenance-facility-requirements');    
         });
     });
-//=======================================================
-// ITEM MONITORING
-//=======================================================
-adminRouter.get('/maintenance-items', (req, res)=>{
-    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ?`
-    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
-    
-    var queryString =`SELECT * FROM tbl_items`
-    db.query(queryString, (err, results1, fields) => {
-    if (err) console.log(err);
-    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
-        if (err) console.log(err);
-        var newmessages = results[0];
-        console.log(newmessages)
-        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
-            if (err) console.log(err);
-            var messages = results;
-            for(i=0;i<messages.length;i++){ 
-                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
-            } 
-
-            return res.render('admin/views/maintenance/item',{items:results1, messages:messages, newmessages:newmessages});
-        }); });
-    });
-});
-adminRouter.post('/maintenance-items/add', (req, res) => {
-    var queryString1=`INSERT INTO tbl_items(var_itemname,var_itemdesc,int_goodquantity,int_damagedquantity) 
-    VALUES(?,?,?,?)`  
-    db.query(queryString1,[req.body.reqname,req.body.reqdesc,req.body.good,0], (err, results, fields) => {
-            if (err) console.log(err);
-            return res.redirect('/admin/maintenance-items');
-        }); 
-});
-adminRouter.post('/maintenance-items/delete', (req, res) => {
-    const queryString = `DELETE FROM tbl_items
-    WHERE int_itemID= ?`;
-    db.query(queryString,[req.body.id], (err, results, fields) => {        
-        if (err) throw err;
-        return res.redirect('/admin/maintenance-items');
-        
-    });
-});
-adminRouter.post('/maintenance-items/query', (req, res) => {
-    const queryString = `SELECT * from tbl_items
-    WHERE int_itemID = ?`;
-    db.query(queryString,[req.body.id], (err, results, fields) => {        
-        if (err) throw err;
-        res.send(results[0])
-        console.log(results[0].int_goodquantity)
-        });
-});
-adminRouter.post('/maintenance-items/addItems', (req, res) => {
-    const queryString1 = `SELECT int_goodquantity from tbl_items
-    WHERE int_itemID = ?`;
-    db.query(queryString1,[req.body.id], (err, results1, fields) => {
-        console.log(results1[0].int_goodquantity)
-        sum = eval(req.body.total) + eval(results1[0].int_goodquantity)
-        console.log("sum: " + sum)
-        const queryString2 = `UPDATE tbl_items SET int_goodquantity =?
-        WHERE int_itemID =?`;
-        db.query(queryString2,[sum,req.body.id], (err, results2, fields) => { 
-        if (err) throw err;
-        return res.redirect('/admin/maintenance-items');
-        });
-    });
-});
-adminRouter.post('/maintenance-items/edit', (req, res) => {
-    const queryString = `UPDATE tbl_items SET var_itemname =?, var_itemdesc= ?,int_goodquantity=?,int_damagedquantity=?
-    WHERE int_itemID= ?`;
-    db.query(queryString,[req.body.itemname,req.body.itemdesc,req.body.good,req.body.damaged,req.body.id], (err, results, fields) => {        
-        if (err) throw err;
-        return res.redirect('/admin/maintenance-items');    
-    });
-});
 
 //===============================================================================================//
 // U T I L I T I E S //
@@ -2124,7 +1715,7 @@ adminRouter.get('/reports-baptism', (req, res)=>{
                                         if (err) console.log(err);
                                         var july2 = results[0]
                                         specialbaptismCount.push(july2.countt)
-                                        db.query(event,['Special Baptism', 8],(err, results, fields) => {
+                                           db.query(event,['Special Baptism', 8],(err, results, fields) => {
                                             if (err) console.log(err);
                                             var august2 = results[0]
                                             specialbaptismCount.push(august2.countt)
@@ -4397,6 +3988,33 @@ adminRouter.get('/queries-priests', (req, res)=>{
                     } 
 
                     return res.render('admin/views/queries/users/priests',{ queries : queries, messages:messages, newmessages:newmessages});
+                }); }); 
+}); 
+});
+adminRouter.get('/queries-tempusers', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
+    var queryString1 =`SELECT * from tbl_tempuser order by var_userlname`
+    db.query(queryString1, (err, results, fields) => {
+        if (err) console.log(err);       
+        var queries = results;
+        for(i=0;i<queries.length;i++){ 
+            queries[i].date_eventdate=moment(queries[i].date_eventdate).format('MM/DD/YYYY')
+            queries[i].time_eventstart=moment(queries[i].time_eventstart, 'HH:mm:ss').format('hh:mm A')
+            }    
+            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                if (err) console.log(err);
+                var newmessages = results[0];
+                console.log(newmessages)
+                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var messages = results;
+                    for(i=0;i<messages.length;i++){ 
+                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                    } 
+
+                    return res.render('admin/views/queries/users/tempuser',{ queries : queries, messages:messages, newmessages:newmessages});
                 }); }); 
 }); 
 });
