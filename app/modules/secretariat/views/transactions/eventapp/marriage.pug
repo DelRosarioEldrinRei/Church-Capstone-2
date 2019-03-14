@@ -726,7 +726,7 @@ block addjs
 					})
 					
 					$('#requirementSubmitButton').click(function(){
-						
+						console.log(idNow)
 						swal({
 							title:'Are you sure?', 
 							text:'You want to update the requirements?', 
@@ -744,8 +744,9 @@ block addjs
 										//flaw dapat isa lang yung unang ipasa T-T
 
 										if($('.checkbox:checked').length == 1){
+											console.log(idNow)
 											$.post('/secretariat/transaction-marriage/getcabinets',{
-												
+												id:idNow
 												}).done(data=>{
 													console.log(data)
 														$('#folderBodyAppend').append(`
@@ -781,7 +782,7 @@ block addjs
 																<div class="col-md-12">
 																	<div class="form-group"  class="col-md-12">
 																		<label>Folder Name
-																		<input type='text' id="foldername" class="form-control" placeholder="Enter folder name" >
+																		<input type='text' id="foldername" class="form-control" value='Marriage of ${data.name[0].var_lname}' >
 																		
 																	</div>	
 																</div>	
@@ -821,6 +822,7 @@ block addjs
 
 
 												})//donedata getcabinetes
+											
 											}//if 1 is checked
 
 										else{
@@ -1028,9 +1030,9 @@ block addjs
 
 										
 												
+											<div class="row">
+													<div class="col-md-12" id="paymenthistorydiv"></div>
 											</div>
-											<div id="paymenthistorydiv"></div>
-											
 											
 											<hr>
 											<div class="row">
@@ -1066,21 +1068,21 @@ block addjs
 									if(data.paymenthistory!=null){
 										console.log('not null')
 										$('#paymenthistorydiv').append(`
-										<div class="col-md-12">
-													<div class="table-responsive">
-														<table class="table table-hover dataTable fixed_header" >
-															<thead class="text-primary">
-																<th >OR No. </th>
-																<th>Date</th> 
-																<th>User Account</th> 
-																<th>Payer</th>
-																<th style ="text-align: right">Amount</th>
-																<th style ="text-align: right">Balance</th>
-															</thead>
-															<tbody id='paymentsummary'></tbody>
-														</table>
-													</div>
-												</div>
+										
+											<div class="table-responsive">
+												<table class="table table-hover dataTable fixed_header" >
+													<thead class="text-primary">
+														<th >OR No. </th>
+														<th>Date</th> 
+													
+														<th>Payer</th>
+														<th style ="text-align: right">Amount</th>
+														<th style ="text-align: right">Balance</th>
+													</thead>
+													<tbody id='paymentsummary'></tbody>
+												</table>
+											</div>
+										
 										`)
 										for(i=0; i<data.paymenthistory.length; i++){
 										console.log('for')
@@ -1089,7 +1091,7 @@ block addjs
 											<tr>
 												<td>${data.paymenthistory[i].int_ORnumber}
 												<td>${datepaid}
-												<td>${data.paymenthistory[i].var_username}
+												
 												<td>${data.paymenthistory[i].var_paidby}
 												<td style ="text-align: right">₱${data.paymenthistory[i].dbl_paymentamount}
 												<td style ="text-align: right">₱${data.paymenthistory[i].dbl_remainingbalance}
@@ -1430,7 +1432,7 @@ block addjs
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="label-control"><strong> Couple: </strong> Mr. ${data.eventdetails.var_lname} and Ms. ${data.eventdetails.var_blname} </label>
+										<label class="label-control"><strong> Couple: </strong> Mr. ${data.eventdetails.var_lname} and Ms. ${data.eventdetails.var_blname} </label><br>
 										<label class="label-control"><strong> Applied by: </strong> ${data.eventdetails.var_userlname}, ${data.eventdetails.var_userfname} </label>
 										<br><label class="label-control"><strong> Date Appplied: </strong> ${dateapplied}</label>
 										

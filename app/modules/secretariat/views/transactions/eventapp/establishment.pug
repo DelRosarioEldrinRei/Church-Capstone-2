@@ -127,9 +127,11 @@ block prepend main
 																			- if(establishment.int_userpriestID !=null)
 																				td
 																					span #{establishment.var_priestname}
-																			- if(establishment.int_userpriestID ==null)
+																			- if(establishment.int_userpriestID ==null&&establishment.var_reqpath=='None')
 																				td
 																					button.btn.assignPriest(type="button" style='background:green; color:white' value=`${establishment.int_eventinfoID}`) Assign Priest
+																			- if(establishment.int_userpriestID ==null&&establishment.var_reqpath!='None')
+																				td No priest assigned yet
 																			td.td-actions.text-center
 																				button.btn.btn-primary.actionButton(type='button' value=`${establishment.int_eventinfoID}`)
 																					i.ti-settings
