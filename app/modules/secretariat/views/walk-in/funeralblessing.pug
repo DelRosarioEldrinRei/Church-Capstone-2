@@ -67,13 +67,7 @@ block prepend main
 								.row
 									.col-md-6
 										.form-group
-											label Schedule Date
-												.text-danger.d-inline  *
-											input.form-control.start-date(id='desireddate' name='desireddate' type='text', placeholder='Enter Desired Date', data-provide='datepicker')
-									.col-md-6
-										.form-group
-											label  Schedule Time
-											input.form-control(id='desiredtime' name='desireddate' type='text' placeholder='10:00 am')
+											#calendarFuneral
 								.row
 									.col-md-4
 										.form-group
@@ -210,6 +204,13 @@ block prepend main
 							input#errChecker(type='text' hidden)
 block addjs
 	script.
+		var dateNow2
+		var eventDate ='';
+		var timeStart ='';
+		var timeEnd2 ='';
+		var dateNow = new Date()
+		var dateNow2;
+		var gender;
 		// Place where the blessing will happen logic
 		$('#hospitalname').hide();
 		$('#othervenue').hide();
@@ -377,18 +378,102 @@ block addjs
 						if($('#place1').prop("checked")){
 							venue= $('#address').val()
 							var funeraltype='Funeral Service'
+							$.get('/secretariat/walkin-funeralblessing/query/checksched').done(data=>{
+							//- console.log("schedule length: " + data.schedules.length)
+							//- console.log("priest length: "+ data.priestLength.length)
+							let total = 0;
+							for(let i=0;i<data.schedules.length;i++){
+								for(let j=0;j<data.priestLength.length;j++){
+									let x = data.priestLength.length - 1
+									console.log("schedule: " + data.schedules[i].date_eventdate + " " + data.schedules[i].time_eventstart)
+									console.log("priest number: " + data.priestLength[j].int_priestID)
+									let currentDate = data.schedules[i].date_eventdate
+									let currentTime = data.schedules[i].time_eventstart
+									$.post('/secretariat/walkin-funeralblessing/query/checksched2',{
+										priestid:data.priestLength[j].int_priestID,
+										eventdate:data.schedules[i].date_eventdate,
+										eventtime:data.schedules[i].time_eventstart
+									}).done(data=>{
+										console.log(data.shit)
+										if(data.shit == 1){
+											total+=1;
+											console.log("priest not avail")
+										}
+										if(total == x){
+											
+										}
+										if(x == j){
+											console.log(total,'total')
+											total = 0
+										}
+									})
+								}
+							}
+						})
 						}
 						if($("#place2").prop("checked")){
 							venue= 'Ina ng Lupang Pangako Parish'
 							var funeraltype='Funeral Mass'
+							$.post('/secretariat/walkin-funeralblessing/query').done(data=>{
+							console.log(data.queries)
+							for(i=0;i<data.queries.length;i++){
+							var dateEvent = moment(data.queries[i].date_eventdate).format('MM/DD/YYYY');
+							var time_start = data.queries[i].time_eventstart = moment(data.queries[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
+							var time_end = moment(data.queries[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+							//- console.log(time_end)
+							//- console.log(dateEvent)
+							//- console.log(data.queries[i].time_eventstart)
+							//- console.log(data.queries[i].char_approvalstatus)
+								$('#calendarFuneral').fullCalendar('renderEvent', {
+								title: 'OCCUPIED',
+								start: `${dateEvent} ${time_start}`,
+								end: `${dateEvent} ${time_end}`,
+								allDay: false,
+								color:'#4c2508',
+								textColor: "white",
+								});
+							}
+							})
 						}
 						if($("#place3").prop("checked")){
 							venue= $('#othervenue').val()
 							var funeraltype='Funeral Service'
+							$.get('/secretariat/walkin-funeralblessing/query/checksched').done(data=>{
+							//- console.log("schedule length: " + data.schedules.length)
+							//- console.log("priest length: "+ data.priestLength.length)
+							let total = 0;
+							for(let i=0;i<data.schedules.length;i++){
+								for(let j=0;j<data.priestLength.length;j++){
+									let x = data.priestLength.length - 1
+									console.log("schedule: " + data.schedules[i].date_eventdate + " " + data.schedules[i].time_eventstart)
+									console.log("priest number: " + data.priestLength[j].int_priestID)
+									let currentDate = data.schedules[i].date_eventdate
+									let currentTime = data.schedules[i].time_eventstart
+									$.post('/secretariat/walkin-funeralblessing/query/checksched2',{
+										priestid:data.priestLength[j].int_priestID,
+										eventdate:data.schedules[i].date_eventdate,
+										eventtime:data.schedules[i].time_eventstart
+									}).done(data=>{
+										console.log(data.shit)
+										if(data.shit == 1){
+											total+=1;
+											console.log("priest not avail")
+										}
+										if(total == x){
+											
+										}
+										if(x == j){
+											console.log(total,'total')
+											total = 0
+										}
+									})
+								}
+							}
+						})
 						}
 						$.post('/secretariat/walkin-funeralblessing', {
-							desireddate:$('#desireddate').val(),
-							desiredtime:$('#desiredtime').val(),
+							desireddate:eventDate,
+							desiredtime:timeStart,
 							lastname: $('#lname').val(),
 							firstname: $('#fname').val(),
 							middlename: $('#mname').val(),
@@ -428,6 +513,99 @@ block addjs
 					}
 				})
 			})
+
+				
+		$.get('/secretariat/walkin-funeral/utilities/query').done(data=>{
+			console.log(data[0].int_reservationmindays)
+			dateNow2 = moment(dateNow,'YYYY-MM-DD hh:mm a').add(data[0].int_reservationmindays,'days').format('YYYY-MM-DD')
+			$('#calendarFuneral').fullCalendar({
+				header: {
+				left: 'title',
+				center: 'agendaDay,month',
+				right: 'prev,next today'
+				},
+				editable: false,
+				firstDay: 0,
+				selectable: true,
+				defaultView: 'month',
+				allDaySlot: false,
+				selectHelper: true,
+				minTime:data[0].time_availablestart,
+				maxTime:data[0].time_availableend,
+				validRange: {
+					start: dateNow2
+				},
+				businessHours: { dow: [0,1,2,3,4,5,6] },
+				selectConstraint:"businessHours",
+				select:function(date,jsEvent,view){
+				var view = $('#calendarFuneral').fullCalendar('getView');
+				console.log(view.name)
+				if(view.name == 'agendaDay'){
+					eventDate = date.format('YYYY-MM-DD')
+					timeStart = date.format('hh:mm a')
+					timeEnd1 = date.add(1,'hour').format('YYYY-MM-DD hh:mm a')
+					timeEnd2 = moment(timeEnd1).format('hh:mm a')
+					console.log(eventDate)
+					console.log(timeStart)
+					console.log(timeEnd2)
+					swal({
+						title: 'You have selected this date, are you sure?',
+						html: `Date: ${eventDate}  <br>` +
+						`Time Start: ${timeStart} <br>` +
+						`Time End: ${timeEnd2} <br>`,
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonClass: 'btn btn-success',
+						cancelButtonClass: 'btn btn-danger',
+						buttonsStyling: true,   
+					}).then((value) => {
+						if(value.value) {
+							$("#calendarFuneral").fullCalendar('removeEvents',[1])
+							swal(
+								'Sucess!',
+								'Event Date has been set.',
+								'success'
+							).then((value)=>{
+							console.log('DESIRED TIME')
+							$('#calendarFuneral').fullCalendar('renderEvent', {
+								title: 'DESIRED TIME',
+								start: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeStart}`,
+								end: `${moment(eventDate,'YYYY-MM-DD').format('MM/DD/YYYY')} ${timeEnd2}`,
+								allDay: false,
+								id:1,
+								overlap: false,
+								droppable:true
+							});
+							return value
+							console.log(eventDate)
+							})
+						} else if (
+							value.dismiss === swal.DismissReason.cancel
+						) {
+							eventDate = '';
+							timeStart = '';
+							timeEnd2 = '';
+						}
+					})
+				}
+				else if(view.name == 'month'){
+					$('#calendarFuneral').fullCalendar('changeView', 'agendaDay')
+					$('#calendarFuneral').fullCalendar('gotoDate', date);
+				}
+				else{
+					return  
+				}
+				}
+			})
+		})
+
+
+
+
+
+
+
 		});
 		$('#withfiledrpdwn').hide();
 

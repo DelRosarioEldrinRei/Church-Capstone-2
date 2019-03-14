@@ -421,6 +421,12 @@ html(lang='en')
 			else{
 				console.log('no checking')
 			}
+
+			$.post('/guest/schedulechecking').done(data =>{
+				console.log('checking schedule')
+				console.log(data)
+			})
+			
 			$(document).ready(function() {
 				$('.dataTable').DataTable( {
 						responsive: {

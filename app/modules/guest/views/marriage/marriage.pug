@@ -17,12 +17,6 @@ block main
 		#header-style-1 {
 			background-image: url(/imgchurch/bg2.png)
 		}
-		.form-control {
-			margin-bottom: 0;
-		}
-		.hidden {
-				display:none;
-		}
 	#headers
 		#header-style-1
 			.container
@@ -93,6 +87,7 @@ block main
 														.form-group
 															.container
 																#calendarMarriage
+														.help-block.with-errors
 										.learn-more.pull-right
 											button.btn#nextButton1(type='button') Next
 								// Form Step 1
@@ -109,30 +104,29 @@ block main
 											.row
 												.col-md-4.px-lg-3.px-md-0.px-sm-0
 													.form-group
-														input.form-control#glastname(type='text' placeholder="Last Name *" name='lastname' )
+														input.form-control#glastname(type='text' placeholder="Last Name *" name='lastname' required='' )
+														.help-block.with-errors
 												.col-md-4.p-lg-0.px-md-3.px-sm-0
 													.form-group
-														input.form-control#gfirstname(type='text' placeholder="First Name *" name='firstname' )
+														input.form-control#gfirstname(type='text' placeholder="First Name *" name='firstname' required='' )
+														.help-block.with-errors
 												.col-md-4.px-lg-3.px-md-0.px-sm-0
 													.form-group
-														input.form-control#gmiddlename(type='text' placeholder="Middle Name" name='middlename' )
-											.row.scrollbday
+														input.form-control#gmiddlename(type='text' placeholder="Middle Name" name='middlename' required='' )
+														.help-block.with-errors
+											.row
 												.col-md-4.px-lg-3.px-md-0.px-sm-0
 													.form-group
 														h6.label-control Birthday
 															.text-danger.d-inline  *
 														input.birthday.form-control#gbirthday(type='date' name='birthday')
-														p
-															span.gemsg.hidden
-																i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																|  Please Enter Your Birthday.
-															span.gemsgcorrect.hidden
-																i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
+														.help-block.with-errors
 												.col-md-4.p-lg-0.px-md-3.px-sm-0
 													.form-group
 														h6.label-control Birthplace:
 															.text-danger.d-inline  *
-														input.form-control#gbirthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" )
+														input.form-control#gbirthplace(type='text' name='birthplace' placeholder="Ex. Payatas, Quezon City" required='' )
+														.help-block.with-errors
 												.col-md-4.px-lg-3.px-md-0.px-sm-0
 													.form-group
 														h6.label-control Nationality:
@@ -275,12 +269,59 @@ block main
 																h6.label-control Occupation:
 																	.text-danger.d-inline  *
 																input.form-control#goccupation(type='text' name='goccupation' placeholder="Ex. Driver")
+																.help-block.with-errors
 											
 												.col-md-6.px-lg-3.px-md-0.px-sm-0.pl-sm-3
 													.form-group
 														h6(for='exampleFormControlTextarea1') Address:
 															.text-danger.d-inline  *
-														textarea#gaddress.form-control(rows='1' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" )
+														textarea#gaddress.form-control(rows='1' name='address' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' )
+														.help-block.with-errors
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Father's Full Name:
+															.text-danger.d-inline  *
+														input.form-control#gfathername(type='text' name='gfathername' placeholder="Ex. Juan Dela Cruz" required='' )
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h6.label-control Father's Birthplace:
+															.text-danger.d-inline  *
+														input.form-control#gfatherbirthplace(type='text' name='gfatherbplace' placeholder="Ex. Caloocan, Quezon City" required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Father's Religion
+															.text-danger.d-inline  *
+														select#gfatherreligion(type="text" name='gfatherreligion')
+															option Catholic
+															option Non-Catholic
+															option Non-Christion
+															option No religion											
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Mother's Full Name:
+															.text-danger.d-inline  *
+														input.form-control#gmothername(type='text' name='gmothername' placeholder="Ex. Maria Dela Cruz" required='' )
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h6.label-control Mother's Birthplace:
+															.text-danger.d-inline  *
+														input.form-control#gmotherbirthplace(type='text' name='gmotherbplace' placeholder="Ex. San Isidro, Quezon City" required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Mother's Religion
+															.text-danger.d-inline  *
+														select#gmotherreligion(type="text" name='gmotherreligion')
+															option Catholic
+															option Non-Catholic
+															option Non-Christion
+															option No religion
+											
 											.row
 												.col-md-3.px-lg-3.px-md-0.px-sm-0.pl-sm-3
 													.form-group
@@ -299,64 +340,22 @@ block main
 														.col-md-2
 															.form-check
 																label.form-check-label
-																	input.form-check-input#ginlpp(type="radio" name="gcurrentparishbool" value="1" checked)
+																	input.exampleRadios1.form-check-input#ginlpp(type="radio" name="gcurrentparishbool" value="1" checked)
 																	| INLPP
 																	span.circle
 																		span.check
 															.form-check
 																label.form-check-label
-																	input.form-check-input#gothers(type="radio" name="gcurrentparishbool" value="0")
+																	input.exampleRadios1.form-check-input#gothers(type="radio" name="gcurrentparishbool" value="0")
 																	| Others
 																	span.circle
 																		span.check
 														.col-md-10
 															input.form-control#gcurrentparish(type='text' name='gcurrentparish' value='Ina ng Lupang Pangako Parish' disabled)
-															p
-																span.gemsginvalidcurrentparish.hidden
-																	i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																	|  Please Enter Your Current Parish.
-																span.gemsgcorrectcurrentparish.hidden
-																	i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
-											.row
-												.col-md-4.px-lg-3.px-md-0.px-sm-0
-													.form-group
-														h6.label-control Father's Full Name:
-															.text-danger.d-inline  *
-														input.form-control#gfathername(type='text' name='gfathername' placeholder="Ex. Juan Dela Cruz" )
-												.col-md-4.p-lg-0.px-md-3.px-sm-0
-													.form-group
-														h6.label-control Father's Birthplace:
-															.text-danger.d-inline  *
-														input.form-control#gfatherbirthplace(type='text' name='gfatherbplace' placeholder="Ex. Caloocan, Quezon City" )
-												.col-md-4.px-lg-3.px-md-0.px-sm-0
-													.form-group
-														h6.label-control Father's Religion
-															.text-danger.d-inline  *
-														select#gfatherreligion(type="text" name='gfatherreligion')
-															option Catholic
-															option Non-Catholic
-															option Non-Christion
-															option No religion
-											.row
-												.col-md-4.px-lg-3.px-md-0.px-sm-0
-													.form-group
-														h6.label-control Mother's Full Name:
-															.text-danger.d-inline  *
-														input.form-control#gmothername(type='text' name='gmothername' placeholder="Ex. Maria Dela Cruz" )
-												.col-md-4.p-lg-0.px-md-3.px-sm-0
-													.form-group
-														h6.label-control Mother's Birthplace:
-															.text-danger.d-inline  *
-														input.form-control#gmotherbirthplace(type='text' name='gmotherbplace' placeholder="Ex. San Isidro, Quezon City" )
-												.col-md-4.px-lg-3.px-md-0.px-sm-0
-													.form-group
-														h6.label-control Mother's Religion
-															.text-danger.d-inline  *
-														select#gmotherreligion(type="text" name='gmotherreligion')
-															option Catholic
-															option Non-Catholic
-															option Non-Christion
-															option No religion
+															.help-block.with-errors
+										   
+												
+												
 											.row
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
@@ -383,22 +382,10 @@ block main
 																	h6.label-control Parish where you were baptized:
 																		.text-danger.d-inline  *
 																	input.form-control#gbapplace(type='text' name='gbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish"  )
-																	p
-																		span.gemsginvalidbaptized.hidden
-																			i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																			|  Please Enter Place Where You Were Baptized.
-																		span.gemsgcorrectbaptized.hidden
-																			i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 																.form-group
 																	h6.label-control Date when you were baptized:
 																		.text-danger.d-inline  *
 																	input.marriage.form-control#gbapdate(type='date' name='gbapdate')
-																	p
-																		span.gemsginvalidbaptizeddate.hidden
-																			i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																			|  Please Enter Your Baptism Date.
-																		span.gemsgcorrectbaptizeddate.hidden
-																			i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
 														h6.label-control Confirmed?
@@ -422,23 +409,11 @@ block main
 															.form-group
 																h6.label-control Parish Where You Were Confirmed:
 																	.text-danger.d-inline  *
-																input.form-control#gconplace(type='text' name='gconplace' placeholder=" Ex. Ina ng Lupang Pangako Parish" )
-																p
-																	span.gemsginvalidconfirmed.hidden
-																		i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																		|  Please Enter Place Where You Were Confirmed.
-																	span.gemsgcorrectconfirmed.hidden
-																		i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
+																input.form-control#gconplace(type='text' name='gconplace' placeholder=" Ex. Ina ng Lupang Pangako Parish" required='' )
 															.form-group
 																h6.label-control Date When You Were Confirmed:
 																	.text-danger.d-inline  *
 																input.marriage.form-control#gcondate(type='date' name='gcondate')
-																p
-																	span.gemsginvalidconfirmeddate.hidden
-																		i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																		|  Please Enter Date of Confirmation.
-																	span.gemsgcorrectconfirmeddate.hidden
-																		i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 											.row
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
@@ -467,30 +442,29 @@ block main
 											.row
 												.col-md-4.px-lg-3.px-md-0.px-sm-0
 													.form-group
-														input.form-control#blastname(type='text' placeholder="Last Name *" name='blastname' )
+														input.form-control#blastname(type='text' placeholder="Last Name *" name='blastname' required='' )
+														.help-block.with-errors
 												.col-md-4.p-lg-0.px-md-3.px-sm-0
 													.form-group
-														input.form-control#bfirstname(type='text' placeholder="First Name *" name='bfirstname' )
+														input.form-control#bfirstname(type='text' placeholder="First Name *" name='bfirstname' required='' )
+														.help-block.with-errors
 												.col-md-4.px-lg-3.px-md-0.px-sm-0
 													.form-group
-														input.form-control#bmiddlename(type='text' placeholder="Middle Name" name='bmiddlename' )
-											.row.bscrollbday
+														input.form-control#bmiddlename(type='text' placeholder="Middle Name" name='bmiddlename' required='' )
+														.help-block.with-errors
+											.row
 												.col-md-4.px-lg-3.px-md-0.px-sm-0
 													.form-group
 														h6.label-control Birthday:
 															.text-danger.d-inline  *
-														input.birthday.bridebday.form-control#bbirthday(type='date' name='bbirthday')
-														p
-															span.bemsg.hidden
-																i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																|  Please Enter Your Birthday.
-															span.bemsgcorrect.hidden
-																i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
+														input.birthday.form-control#bbirthday(type='date' name='bbirthday')
+														.help-block.with-errors
 												.col-md-4.p-lg-0.px-md-3.px-sm-0
 													.form-group
 														h6.label-control Birthplace:
 															.text-danger.d-inline  *
-														input.form-control#bbirthplace(type='text' name='bbirthplace' placeholder="Ex. Payatas, Quezon City" )
+														input.form-control#bbirthplace(type='text' name='bbirthplace' placeholder="Ex. Payatas, Quezon City" required='' )
+														.help-block.with-errors
 												.col-md-4.px-lg-3.px-md-0.px-sm-0
 													.form-group
 														h6.label-control Nationality:
@@ -635,6 +609,7 @@ block main
 																h6.label-control Occupation:
 																	.text-danger.d-inline  *
 																input.form-control#boccupation(type='text' name='boccupation' placeholder="Ex. Driver")
+																.help-block.with-errors
 														.col-md-4.px-lg-3.px-md-0.px-sm-0
 															.form-group
 																h6.label-control 5 months pregnant?:
@@ -663,29 +638,62 @@ block main
 															h6.label-control Previous Wedding Date:
 																.text-danger.d-inline  *
 															input.birthday.form-control#cpreviousweddingdate(type='date' name='cprevweddingdate')
-															p
-																span.bemsginvalidpreviousweddingdate.hidden
-																	i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																	|  Please Enter Previous Wedding Date
-																span.bemsgcorrectpreviousweddingdate.hidden
-																	i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 													.col-md-8
 														.form-group
 															h6.label-control Previous Wedding Place/Parish:
 																.text-danger.d-inline  *
 														input.form-control#cpreviousweddingplace(type='text' name='cprevweddingplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
-														p
-															span.bemsginvalidpreviousweddingplace.hidden
-																i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																|  Please Enter Previous Wedding Place/Parish
-															span.bemsgcorrectpreviousweddingplace.hidden
-																i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 											.row
 												.col-md-12.px-lg-3.px-md-0.px-sm-0.pl-sm-3
 													.form-group
 														h6(for='exampleFormControlTextarea1') Address:
 															.text-danger.d-inline  *
-														input.form-control#baddress(name='baddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" )
+														textarea.form-control#baddress(rows='1' name='baddress' placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" required='' )
+														.help-block.with-errors
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Father's Full Name:
+															.text-danger.d-inline  *
+														input.form-control#bfathername(type='text' name='bfathername' placeholder="Ex. Juan Dela Cruz" required='' )
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h6.label-control Father's Birthplace:
+															.text-danger.d-inline  *
+														input.form-control#bfatherbirthplace(type'text' name='bfatherbplace' placeholder="Ex. Caloocan, Quezon City" required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Father's Religion:
+															.text-danger.d-inline  *
+														select#bfatherreligion(type="text" name='bfatherreligion')
+															option Catholic
+															option Non-Catholic
+															option Non-Christion
+															option No religion
+											
+											.row
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Mother's Full Name:
+														input.form-control#bmothername(type='text' name='bmothername' placeholder="Ex. Maria Dela Cruz" required='' )
+														.help-block.with-errors
+												.col-md-4.p-lg-0.px-md-3.px-sm-0
+													.form-group
+														h6.label-control Mother's Birthplace:
+														input.form-control#bmotherbirthplace(type'text' name='bmotherbplace' placeholder="Ex. San Isidro, Quezon City" required='' )
+														.help-block.with-errors
+												.col-md-4.px-lg-3.px-md-0.px-sm-0
+													.form-group
+														h6.label-control Mother's Religion:
+															.text-danger.d-inline  *
+														select#bmotherreligion(type="text" name='bmotherreligion')
+															option Catholic
+															option Non-Catholic
+															option Non-Christion
+															option No religion
+											
 											.row
 												.col-md-3.px-lg-3.px-md-0.px-sm-0.pl-sm-3
 													.form-group
@@ -716,51 +724,10 @@ block main
 																		span.check
 														.col-md-10
 															input.form-control#bcurrentparish(type='text' name='bcurrentparish' value="Ina ng Lupang Pangako Parish" disabled)
-															p
-																span.bemsginvalidcurrentparish.hidden
-																	i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																	|  Please Enter Your Current Parish.
-																span.bemsgcorrectcurrentparish.hidden
-																	i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
-											.row
-												.col-md-4.px-lg-3.px-md-0.px-sm-0
-													.form-group
-														h6.label-control Father's Full Name:
-															.text-danger.d-inline  *
-														input.form-control#bfathername(type='text' name='bfathername' placeholder="Ex. Juan Dela Cruz" )
-												.col-md-4.p-lg-0.px-md-3.px-sm-0
-													.form-group
-														h6.label-control Father's Birthplace:
-															.text-danger.d-inline  *
-														input.form-control#bfatherbirthplace(type'text' name='bfatherbplace' placeholder="Ex. Caloocan, Quezon City" )
-												.col-md-4.px-lg-3.px-md-0.px-sm-0
-													.form-group
-														h6.label-control Father's Religion:
-															.text-danger.d-inline  *
-														select#bfatherreligion(type="text" name='bfatherreligion')
-															option Catholic
-															option Non-Catholic
-															option Non-Christion
-															option No religion
-											
-											.row
-												.col-md-4.px-lg-3.px-md-0.px-sm-0
-													.form-group
-														h6.label-control Mother's Full Name:
-														input.form-control#bmothername(type='text' name='bmothername' placeholder="Ex. Maria Dela Cruz" )
-												.col-md-4.p-lg-0.px-md-3.px-sm-0
-													.form-group
-														h6.label-control Mother's Birthplace:
-														input.form-control#bmotherbirthplace(type'text' name='bmotherbplace' placeholder="Ex. San Isidro, Quezon City" )
-												.col-md-4.px-lg-3.px-md-0.px-sm-0
-													.form-group
-														h6.label-control Mother's Religion:
-															.text-danger.d-inline  *
-														select#bmotherreligion(type="text" name='bmotherreligion')
-															option Catholic
-															option Non-Catholic
-															option Non-Christion
-															option No religion
+															.help-block.with-errors
+										   
+												
+												
 											.row
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
@@ -787,22 +754,10 @@ block main
 																	h6.label-control Parish Where You Were Baptized:
 																		.text-danger.d-inline  *
 																	input.form-control#bbapplace(type='text' name='bbapplace' placeholder="Ex. Ina ng Lupang Pangako Parish")
-																	p
-																		span.bemsginvalidbaptized.hidden
-																			i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																			|  Please Enter Place Where You Were Baptized.
-																		span.bemsgcorrectbaptized.hidden
-																			i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 																.form-group
 																	h6.label-control Date When You Were Baptized:
 																		.text-danger.d-inline  *
 																	input.marriage.form-control#bbapdate(type='date' name='bbapdate')
-																	p
-																		span.bemsginvalidbaptizeddate.hidden
-																			i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																			|  Please Enter Your Baptism Date.
-																		span.bemsgcorrectbaptizeddate.hidden
-																			i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 												.col-md-6.px-lg-3.pr-md-3.px-sm-0
 													.form-group
 														h6.label-control Confirmed?
@@ -827,13 +782,7 @@ block main
 																.form-group
 																	h6.label-control Parish where you were Confirmed:
 																		.text-danger.d-inline  *
-																	input.form-control#bconplace(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish" )
-																	p
-																		span.bemsginvalidconfirmed.hidden
-																			i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																			|  Please Enter Place Where You Were Confirmed.
-																		span.bemsgcorrectconfirmed.hidden
-																			i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
+																	input.form-control#bconplace(type='text' name='bconplace' placeholder="Ex. Ina ng Lupang Pangako Parish" required='' )
 																.form-group
 																	h6.label-control Date when you were Confirmed:
 																		.text-danger.d-inline  *
@@ -909,7 +858,8 @@ block main
 									.learn-more.pull-right#finaleSubmit
 										button.btn.std-btn.btn-secondary.btn-previous.m-0(type='button') Prev
 										button.btn#proceedButton(type='button') Proceed
-						input#errChecker(type='text' hidden)
+	
+	
 	//MODAL
 	#confirmationModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
@@ -1337,26 +1287,7 @@ block addjs
 						})
 					}
 					else{
-						$('html, body').animate({
-							scrollTop:$('.header-text').position().top},600);
-						var parent_fieldset = $(this).parents('fieldset');
-						var next_step = true;
-						// navigation steps / progress steps
-						var current_active_step = $(this).parents('.form-wizard').find('.form-wizard-step.active');
-						var progress_line = $(this).parents('.form-wizard').find('.form-wizard-progress-line');
-
-						if( next_step ) {
-							parent_fieldset.fadeOut(400, function() {
-								// change icons
-								current_active_step.removeClass('active').addClass('activated').next().addClass('active');
-								// progress bar
-								bar_progress(progress_line, 'right');
-								// show next step
-								$(this).next().fadeIn();
-								// scroll window to beginning of the form
-								scroll_to_class( $('.form-wizard'), 20 );
-							});
-						}
+						$('#nextButton1').addClass('btn-next')
 					}
 					})
 				$('#nextGroom').click(function(){
@@ -1365,47 +1296,28 @@ block addjs
 						console.log(age)
 
 						//BLANK
-						// required only alphabetical characters, minimum of 2
-						var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
-						//only alphabetical characters, minimum of 2
-						var $regexvalidation2 = /^([a-zs ]{2,})*$/i;
-						// required only alphabetical characters, minimum of 6
-						var $regexvalidation3 = /^([a-zs ]{6,})+$/i;
-						// required only alphabetical characters, minimum of 3
-						var $regexvalidation4 = /^([a-zs ]{3,})+$/i;
-						//contact number validation
-						var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
-						//contact number validation
-						var $contactnumber = /^(09|\+639)\d{9}$/;
 						if(
-							!$('#gfirstname').val().match($regexvalidation1) ||
-							!$('#glastname').val().match($regexvalidation1)  ||
-							!$('#gmiddlename').val().match($regexvalidation2)  ||
+						
+							$('#gfirstname').val() == ''   ||
+							$('#glastname').val() == ''  ||
 							$('#gbirthday').val() == ''  ||
-							!$('#gbirthplace').val().match($regexvalidation1)  ||
-							!$('#gfathername').val().match($regexvalidation3)  ||
+							$('#gbirthplace').val() == ''  ||
+							$('#gfathername').val() == ''  ||
 							$('#gfatherreligion').val() == ''  ||
-							!$('#gfatherbirthplace').val().match($regexvalidation1)  ||
-							!$('#gmothername').val().match($regexvalidation3)  ||
+							$('#gfatherbirthplace').val() == ''  ||
+							$('#gmothername').val() == ''  ||
 							$('#gmotherreligion').val() == ''  ||
-							!$('#gmotherbirthplace').val().match($regexvalidation1)  ||
-							!$('#gaddress').val().match($addressvalidation)  ||
+							$('#gmotherbirthplace').val() == ''  ||
+							$('#gaddress').val() == ''  ||
 							$('#gcivilstatus').val() =='' ||
-							!$('#goccupation').val().match($regexvalidation4) ||
-							$('#greligion').val() == '' ||
-							$('.groomid').val() == '' ||
-							$('.groomid').val() == undefined ||
-							$('.groombirthcertificate').val() == '' ||
-							$('.groombirthcertificate').val() == undefined ||
-							$('#gothers').prop("checked") && !$('#gcurrentparish').val().match($regexvalidation4) ||
-							$('#gbapyes').prop("checked") && !$('#gbapplace').val().match($regexvalidation4) || 
-							$('#gbapyes').prop("checked") && $('#gbapdate').val() == ''  || 
-							$('#gconyes').prop("checked") && !$('#gconplace').val().match($regexvalidation4) ||
-							$('#gconyes').prop("checked") && $('#gcondate').val() == ''
+							$('#goccupation').val() =='' ||
+							$('#gaddress').val() =='' ||
+							$('#greligion').val() =='' 
+							
 						){
 							swal({
-								title: "Form is incomplete/invalid",
-								text: "Please fill out and validate all the required fields",
+								title: "Form is incomplete",
+								text: "Please fill out all the required fields",
 								type: 'warning',
 								confirmButtonColor: '#3085d6',
 								confirmButtonText: 'Okay'
@@ -1439,27 +1351,7 @@ block addjs
 								}
 								
 							else{
-								$('.birthday').css("border", "1px solid #c8c2c2")
-								$('html, body').animate({
-									scrollTop:$('.header-text').position().top},600);
-								var parent_fieldset = $(this).parents('fieldset');
-								var next_step = true;
-								// navigation steps / progress steps
-								var current_active_step = $(this).parents('.form-wizard').find('.form-wizard-step.active');
-								var progress_line = $(this).parents('.form-wizard').find('.form-wizard-progress-line');
-
-								if( next_step ) {
-									parent_fieldset.fadeOut(400, function() {
-										// change icons
-										current_active_step.removeClass('active').addClass('activated').next().addClass('active');
-										// progress bar
-										bar_progress(progress_line, 'right');
-										// show next step
-										$(this).next().fadeIn();
-										// scroll window to beginning of the form
-										scroll_to_class( $('.form-wizard'), 20 );
-									});
-								}
+								$('#nextGroom').addClass('btn-next')
 							}
 						}	
 					//- })//get
@@ -1472,45 +1364,22 @@ block addjs
 					//BLANK
 					console.log($('#bcivilstatus').val())
 					console.log($('#gcivilstatus').val())
-					var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
-					//only alphabetical characters, minimum of 2
-					var $regexvalidation2 = /^([a-zs ]{2,})*$/i;
-					// required only alphabetical characters, minimum of 6
-					var $regexvalidation3 = /^([a-zs ]{6,})+$/i;
-					// required only alphabetical characters, minimum of 3
-					var $regexvalidation4 = /^([a-zs ]{3,})+$/i;
-					//contact number validation
-					var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
-					//contact number validation
-					var $contactnumber = /^(09|\+639)\d{9}$/;
 					if(
-						!$('#bfirstname').val().match($regexvalidation1)   ||
-						!$('#blastname').val().match($regexvalidation1)  ||
-						!$('#gmiddlename').val().match($regexvalidation2)  ||
+						$('#bfirstname').val() == ''   ||
+						$('#blastname').val() == ''  ||
 						$('#bbirthday').val() == ''  ||
-						!$('#bbirthplace').val().match($regexvalidation1)  ||
-						!$('#bfathername').val().match($regexvalidation3)  ||
+						$('#bbirthplace').val() == ''  ||
+						$('#bfathername').val() == ''  ||
 						$('#bfatherreligion').val() == ''  ||
-						!$('#bfatherbirthplace').val().match($regexvalidation1)  ||
-						!$('#bmothername').val().match($regexvalidation3)  ||
+						$('#bfatherbirthplace').val() == ''  ||
+						$('#bmothername').val() == ''  ||
 						$('#bmotherreligion').val() == ''  ||
-						!$('#bmotherbirthplace').val().match($regexvalidation1)  ||
-						!$('#baddress').val().match($addressvalidation)  ||
+						$('#bmotherbirthplace').val() == ''  ||
+						$('#baddress').val() == ''  ||
 						$('#bcivilstatus').val() =='' ||
-						!$('#boccupation').val().match($regexvalidation4)  ||
-						$('#breligion').val() =='' ||
-						$('.brideid').val() == '' ||
-						$('.brideid').val() == undefined ||
-						$('.bridebirthcertificate').val() == '' ||
-						$('.bridebirthcertificate').val() == undefined ||
-						$('#bothers').prop("checked") && !$('#bcurrentparish').val().match($regexvalidation4) ||
-						$('#bbapyes').prop("checked") && !$('#bbapplace').val().match($regexvalidation4) || 
-						$('#bbapyes').prop("checked") && $('#bbapdate').val() == ''|| 
-						$('#bconyes').prop("checked") && !$('#bconplace').val().match($regexvalidation4) ||
-						$('#bconyes').prop("checked") && $('#bcondate').val() == '' ||
-						$('#bcivilstatus').val() == 'Married' && $('#gcivilstatus').val()=='Married' && !$('#cpreviousweddingplace').val().match($regexvalidation4) ||
-						$('#bcivilstatus').val() == 'Married' && $('#gcivilstatus').val()=='Married' && $('#cpreviousweddingdate').val() == ''
-
+						$('#boccupation').val() =='' ||
+						$('#baddress').val() =='' ||
+						$('#breligion').val() =='' 
 						
 						){
 						swal({
@@ -1601,27 +1470,7 @@ block addjs
 							})	
 						}
 						else{
-							$('.bbirthday').css("border", "1px solid #c8c2c2")
-							$('html, body').animate({
-								scrollTop:$('.header-text').position().top},600);
-							var parent_fieldset = $(this).parents('fieldset');
-							var next_step = true;
-							// navigation steps / progress steps
-							var current_active_step = $(this).parents('.form-wizard').find('.form-wizard-step.active');
-							var progress_line = $(this).parents('.form-wizard').find('.form-wizard-progress-line');
-
-							if( next_step ) {
-								parent_fieldset.fadeOut(400, function() {
-									// change icons
-									current_active_step.removeClass('active').addClass('activated').next().addClass('active');
-									// progress bar
-									bar_progress(progress_line, 'right');
-									// show next step
-									$(this).next().fadeIn();
-									// scroll window to beginning of the form
-									scroll_to_class( $('.form-wizard'), 20 );
-								});
-							}
+							$('#nextBride').addClass('btn-next')
 						}
 					}
 					

@@ -83,6 +83,7 @@ block main
 										.d-none.d-sm-inline Blessing Details:
 										span Step 2 - 2
 										input.form-control#userID(type='hidden' name='userID' value=`${user.int_userID}`)
+										input.form-control#eventID(type='hidden' name='eventID' value=`${eventid}`)
 										h6.label-control Name of the deceased
 											.text-danger.d-inline  *
 										.row
@@ -161,34 +162,35 @@ block main
 													h6.label-control Place where the will happen
 														.text-danger.d-inline  *
 													.ml-4
-														.form-check
-															label.form-check-label
-																input.exampleRadios1.form-check-input#blessingloc1(type="radio" name="venue" value="sameaddress" checked)
-																| Same as his/her address
-																span.circle
-																	span.check
-														.form-check
-															label.form-check-label
-																input.radioup.form-check-input#blessingloc2(type="radio" name="venue" value="INLPP")
-																| INLPP
-																span.circle
-																	span.check
-														.form-check
-															label.form-check-label
-																input.exampleRadios3.form-check-input#blessingloc3(type="radio" name="venue" value="other")
-																| Other
-																span.circle
-																	span.check
-															#textarea2.form-group
-																h6.label-control Enter Complete Address
-																	.text-danger.d-inline  *
-																textarea.form-control#othervenue.venuevalidation(placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" rows="2" name='othervenue')
-																p
-																	span.emsgvenue.hidden
-																		i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
-																			| Please Enter Venue. Minimum of 8 Characters
-																	span.emsgcorrectvenue.hidden
-																		i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
+														- if(eventid == 4)
+															.form-check
+																label.form-check-label
+																	input.exampleRadios1.form-check-input#blessingloc1(type="radio" name="venue" value="sameaddress" checked)
+																	| Same as his/her address
+																	span.circle
+																		span.check
+															//- .form-check
+															//- 	label.form-check-label
+															//- 		input.radioup.form-check-input#blessingloc2(type="radio" name="venue" value="INLPP")
+															//- 		| INLPP
+															//- 		span.circle
+															//- 			span.check
+															.form-check
+																label.form-check-label
+																	input.exampleRadios3.form-check-input#blessingloc3(type="radio" name="venue" value="other")
+																	| Other
+																	span.circle
+																		span.check
+																#textarea2.form-group
+																	h6.label-control Enter Complete Address
+																		.text-danger.d-inline  *
+																	textarea.form-control#othervenue.venuevalidation(placeholder="Ex. Urban, Bgy. Payatas B 1119 QC" rows="2" name='othervenue')
+																	p
+																		span.emsgvenue.hidden
+																			i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+																			|  Please Enter Venue.
+																		span.emsgcorrectvenue.hidden
+																			i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 											.col-md-6.px-lg-3.px-md-3.px-sm-0
 												.form-group
 													h6.label-control Birth Certificate
@@ -215,8 +217,8 @@ block addjs
 			$('#textarea2').slideDown();
 		});
 		$(document).ready(function(){
-				validateForm()
-
+				//- validateForm()
+				console.log($('#eventID').val())
 				function validateFileType(){
 					var fileName = document.getElementById("file-0b").value;
 					console.log(fileName)
@@ -412,74 +414,67 @@ block addjs
 				}
 				}
 			})
-		})
-		//- $('.desiredDate').datetimepicker({
-		//- 	format: 'YYYY-MM-DD',
-		//- 	minDate: startDate,
-		//- 	maxDate: endDate,
-		//- 	icons: {
-		//- 			time: "fa fa-clock-o",
-		//- 			date: "fa fa-calendar",
-		//- 			up: "fa fa-chevron-up",
-		//- 			down: "fa fa-chevron-down",
-		//- 			previous: 'fa fa-chevron-left',
-		//- 			next: 'fa fa-chevron-right',
-		//- 			today: 'fa fa-screenshot',
-		//- 			clear: 'fa fa-trash',
-		//- 			close: 'fa fa-remove',
-		//- 	},
-		//- });	
-				})
+			if($('#eventID').val() == 7){
 
-		$('#birthday').on('keypress keydown keyup focus focusout',function(e){
-			if ($(this).val().length == 0) {
-				// there is a mismatch, hence show the error message
-					$('.emsgcorrect').addClass('hidden');
-					$('.emsg').removeClass('hidden');
-					$('.emsg').show();
-				}
-			else{
-				// else, do not display message
-				$('.emsg').addClass('hidden');
-				$('.emsgcorrect').removeClass('hidden');
-				$('.emsgcorrect').show();
+			$.post('/guest/funeral/query').done(data=>{
+			console.log(data.queries)
+			for(i=0;i<data.queries.length;i++){
+			var dateEvent = moment(data.queries[i].date_eventdate).format('MM/DD/YYYY');
+			var time_start = data.queries[i].time_eventstart = moment(data.queries[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
+			var time_end = moment(data.queries[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+			//- console.log(time_end)
+			//- console.log(dateEvent)
+			//- console.log(data.queries[i].time_eventstart)
+			//- console.log(data.queries[i].char_approvalstatus)
+				$('#calendarFuneral').fullCalendar('renderEvent', {
+				title: 'OCCUPIED',
+				start: `${dateEvent} ${time_start}`,
+				end: `${dateEvent} ${time_end}`,
+				allDay: false,
+				color:'#4c2508',
+				textColor: "white",
+				});
 			}
-			e.stopPropagation();
-		});
-
-			var $regexname = /^([a-zs0-9-, ]{8,})+$/i;
-			$('.venuevalidation').on('keypress keydown keyup',function(e){
-				if (!$(this).val().match($regexname)) {
-					// there is a mismatch, hence show the error message
-						$('.emsgcorrectvenue').addClass('hidden');
-						$('.emsgvenue').removeClass('hidden');
-						$('.emsgvenue').show();
+			})
+			}
+			else{
+			$.get('/guest/funeral/query/checksched').done(data=>{
+				//- console.log("schedule length: " + data.schedules.length)
+				//- console.log("priest length: "+ data.priestLength.length)
+				let total = 0;
+				for(let i=0;i<data.schedules.length;i++){
+					for(let j=0;j<data.priestLength.length;j++){
+						let x = data.priestLength.length - 1
+						console.log("schedule: " + data.schedules[i].date_eventdate + " " + data.schedules[i].time_eventstart)
+						console.log("priest number: " + data.priestLength[j].int_priestID)
+						let currentDate = data.schedules[i].date_eventdate
+						let currentTime = data.schedules[i].time_eventstart
+						$.post('/guest/funeral/query/checksched2',{
+							priestid:data.priestLength[j].int_priestID,
+							eventdate:data.schedules[i].date_eventdate,
+							eventtime:data.schedules[i].time_eventstart
+						}).done(data=>{
+							console.log(data.shit)
+							if(data.shit == 1){
+								total+=1;
+								console.log("priest not avail")
+							}
+							if(total == x){
+								
+							}
+							if(x == j){
+								console.log(total,'total')
+								total = 0
+							}
+						})
 					}
-				else{
-					// else, do not display message
-					$('.emsgvenue').addClass('hidden');
-					$('.emsgcorrectvenue').removeClass('hidden');
-					$('.emsgcorrectvenue').show();
 				}
-				e.stopPropagation();
-			});
+			})
+		}
+		})
 
-			//- var $regexname1 = /^([a-zs0-9-, ]{8,})+$/i;
-			//- $('.venuevalidation').on('keypress keydown keyup',function(e){
-			//- 	if (!$(this).val().match($regexname1)) {
-			//- 		// there is a mismatch, hence show the error message
-			//- 			$('.emsgcorrectvenue1').addClass('hidden');
-			//- 			$('.emsgvenue1').removeClass('hidden');
-			//- 			$('.emsgvenue1').show();
-			//- 		}
-			//- 	else{
-			//- 		// else, do not display message
-			//- 		$('.emsgvenue1').addClass('hidden');
-			//- 		$('.emsgcorrectvenue1').removeClass('hidden');
-			//- 		$('.emsgcorrectvenue1').show();
-			//- 	}
-			//- 	e.stopPropagation();
-			//- });
+
+
 
 		function readURL(input) {
 			if (input.files && input.files[0]) {
@@ -600,14 +595,3 @@ block addjs
 					//- 		},
 					},
 				})
-			.on('err.field.fv', function(e, data) {
-				// Get the first invalid field
-				var invalidFields = data.fv.getInvalidFields().length;
-				$('#errChecker').val(invalidFields)
-			})
-			.on('success.field.fv', function(e, data) {
-				// Get the first invalid field
-				var invalidFields = data.fv.getInvalidFields().length;
-				$('#errChecker').val(invalidFields)
-			});
-		}
