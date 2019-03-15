@@ -420,6 +420,26 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
         })
     })
     })
+
+    secretariatRouter.get('/receipts',(req,res)=>{
+        console.log(req.query)
+        console.log(req.body)
+        var queryString2 = `select * from tbl_paymenthistory`
+        db.query(queryString2,(err,results,fields) =>{
+            if(err) console.log(err)
+            
+                var ors = results;
+                console.log(ors)
+                for(var i = 0; i < ors.length; i++){
+
+                    // reservations[i].date_reservedate= moment(reservations[i].date_reservedate).format('MM/DD/YYYY');
+                    ors[i].date_paymentdate= moment(ors[i].date_paymentdate, 'YYYY-MM-DD').format('MM/DD/YYYY');
+                    // reservations[i].datetime_reserveend= moment(reservations[i].datetime_reserveend, 'HH:mm:ss').format('MM/DD/YYYY h:mm a');
+                }
+            return res.render('secretariat/views/OR', {ors:ors})
+        
+    })
+    })
     secretariatRouter.post('/folderdetails',(req,res)=>{
         console.log(req.body)
         // console.log(req.query)

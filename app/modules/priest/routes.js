@@ -86,10 +86,12 @@ priestRouter.get('/priestRegularSchedule', (req, res)=>{
 priestRouter.post('/queryConfirmAppointment', (req,res)=>{
     var queryString1 = `UPDATE tbl_eventinfo SET bool_priestapproval=? where int_eventinfoID = ?`
     db.query(queryString1,[1,req.body.id],(err,results,fields)=>{
+        var queryString1 = `UPDATE tbl_schedule SET var_schedulestatus=? where int_eventinfoID = ?`
+    db.query(queryString1,['Confirmed',req.body.id],(err,results,fields)=>{
 
         if(err) throw err;
         return res.redirect('/priest');
-        
+    })
     })
 });
 

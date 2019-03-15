@@ -146,7 +146,7 @@ html
 								},
 								regexp: {
 										regexp: /^[A-Za-z\d@$!%*?&]{6,}$/,
-										message: 'Minimum six characters, Valid Special Characters [@$!%*?&]'
+										message: 'Minimum 6 characters, Valid Special Characters [@$!%*?&]'
 								},
 							remote: {
 								url: `/signup/username/query`,
@@ -249,7 +249,7 @@ html
 									},
 									regexp: {
 										regexp: /^[A-Za-z\d@$!%*?&]{6,}$/,
-										message: 'Minimum six characters, Valid Special Characters [@$!%*?&]'
+										message: 'Minimum 6 characters, Valid Special Characters [@$!%*?&]'
 									},
 							}
 						},
@@ -257,7 +257,11 @@ html
 							validators: {
 									notEmpty: {
 											message: `Please Re-enter Your Password`
-									}
+									},
+									identical: {
+										field: 'password',
+										message: 'The password and its confirm are not the same.'
+									},
 							}
 						},
 					},

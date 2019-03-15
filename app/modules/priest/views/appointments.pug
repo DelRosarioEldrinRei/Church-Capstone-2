@@ -23,36 +23,36 @@ block prepend main
 					.col-md-12.form-wizard.px-0.mx-auto
 						.form-group
 							#calendarPriest
-				.row.appo
-					.col-md-12.form-wizard.pr-0
-						.table-responsive
-							table.table.text-center
-								thead
-									tr
-										th #
-										th Event Type
-										//- th Parishioner
-										th Schedule
-										//- th Venue
-										th Actions
-								tbody
-									each detail in details
-										tr.text-center
-											td=detail.int_eventinfoID
-											td=detail.var_eventname
-											//- td=detail.varlast
-											td=detail.date_eventdate
-											//- td=detail.location
-											td.td-actions
-												button.viewButton(type="button" ,value=`${detail.int_eventinfoID}`).btn.btn-primary.btn-sm
-													| View
-												| &nbsp;
-												button.btn.btn-success.btn-sm.acceptButton(type='button',value=`${detail.int_eventinfoID}`)
-													| Accept
-												| &nbsp;
-												button.btn.btn-danger.btn-sm.cancelButton(type='button',value=`${detail.int_eventinfoID}`) 
-													| Cancel
-												| &nbsp;
+				//- .row.appo
+				//- 	.col-md-12.form-wizard.pr-0
+				//- 		.table-responsive
+				//- 			table.table.text-center
+				//- 				thead
+				//- 					tr
+				//- 						th #
+				//- 						th Event Type
+				//- 						//- th Parishioner
+				//- 						th Schedule
+				//- 						//- th Venue
+				//- 						th Actions
+				//- 				tbody
+				//- 					each detail in details
+				//- 						tr.text-center
+				//- 							td=detail.int_eventinfoID
+				//- 							td=detail.var_eventname
+				//- 							//- td=detail.varlast
+				//- 							td=detail.date_eventdate
+				//- 							//- td=detail.location
+				//- 							td.td-actions
+				//- 								button.viewButton(type="button" ,value=`${detail.int_eventinfoID}`).btn.btn-primary.btn-sm
+				//- 									| View
+				//- 								| &nbsp;
+				//- 								button.btn.btn-success.btn-sm.acceptButton(type='button',value=`${detail.int_eventinfoID}`)
+				//- 									| Accept
+				//- 								| &nbsp;
+				//- 								button.btn.btn-danger.btn-sm.cancelButton(type='button',value=`${detail.int_eventinfoID}`) 
+				//- 									| Cancel
+				//- 								| &nbsp;
 
 	#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		.modal-dialog(role='document')
@@ -95,7 +95,7 @@ block addjs
 				var id = $(this).val();
 				console.log(id)
 				swal({
-					title: 'Are you sure you want to accept the event?',
+					title: 'Are you sure you want to decline the event?',
 					text: "You won't be able to revert this!",
 					type: 'warning',
 					showCancelButton: true,

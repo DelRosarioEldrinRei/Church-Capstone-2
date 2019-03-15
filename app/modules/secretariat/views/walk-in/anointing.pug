@@ -24,52 +24,42 @@ block prepend main
 							form
 								h5.label-control Contact Details
 								.row
-									
-									.form-group.col-md-6
-										.form-group
-											label Last Name
-												.text-danger.d-inline *
-											input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-											.invalid-feedback Please re-enter your valid last name.
-
-									.form-group.col-md-6
-										.form-group
-											.invalid-feedback Please re-enter your valid last name.
-											label First Name
-												.text-danger.d-inline *
-											input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
-											.invalid-feedback Please provide a valid first name.
-								.row
-									.form-group.col-md-12
-										.form-group
-											label Address
-												.text-danger.d-inline *
-											input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-											.invalid-feedback Please re-enter your valid first name. 
-
-								.row
-									.form-group.col-md-6
-										.form-group
-											label Contact Number
-												.text-danger.d-inline *
-											input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-											.invalid-feedback Please re-enter your valid contact number.
-
-									.form-group.col-md-6
-										.form-group
-											.invalid-feedback Please re-enter your valid contact number.
-											label Email Address
-												.text-danger.d-inline *
-											input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
-											.invalid-feedback Please provide a valid email address
-								hr
-								h5.label-control Request Details
-								.row
+									.col-md-6
+										.row
+											.col-md-12
+												.form-group
+													label Last Name
+														.text-danger.d-inline *
+													input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+											.col-md-12
+												.form-group
+													label First Name
+														.text-danger.d-inline *
+													input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
+											.col-md-12
+												.form-group
+													label Address
+														.text-danger.d-inline *
+													input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+											.col-md-12
+												.form-group
+													label Contact Number
+														.text-danger.d-inline *
+													input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+											.col-md-12
+												.form-group
+													label Email Address
+														.text-danger.d-inline *
+													input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
 									.col-md-6
 										.form-group
 											label Schedule Date
 												.text-danger.d-inline  *
-													#calendarAnointing
+											#calendarAnointing
+								hr
+								h5.label-control Request Details
+								.row
+									.col-md-6
 								.row
 									.col-md-4
 										.form-group
