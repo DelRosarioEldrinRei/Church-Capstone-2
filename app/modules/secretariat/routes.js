@@ -641,7 +641,21 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 
     })
 
-
+    secretariatRouter.post('/transaction-cancel', (req, res)=>{
+        console.log(req.body)
+        var cancelled = `select * from tbl_eventinfo where int_eventinfoID =?`
+        db.query(cancelled, [req.body.id],(err, results, fields) => {
+        res.send({results:results[0]})
+        })
+    })
+    secretariatRouter.post('/transaction-record', (req, res)=>{
+        console.log(req.body)
+        var cancelled = `select * from tbl_eventinfo where int_eventinfoID =?`
+        db.query(cancelled, [req.body.id],(err, results, fields) => {
+            if(err) console.log(err)
+        res.send({results:results[0]})
+        })
+    })
 //===============================================================================================//
 // T R A N S A C T I O N S //
 //===============================================================================================//
@@ -1031,6 +1045,27 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
            res.send(results[0])
        })
     });
+
+    secretariatRouter.get('/receipts',(req,res)=>{
+        console.log(req.query)
+        console.log(req.body)
+        var queryString2 = `select * from tbl_paymenthistory`
+        db.query(queryString2,(err,results,fields) =>{
+            if(err) console.log(err)
+          
+                var ors = results;
+                console.log(ors)
+                for(var i = 0; i < ors.length; i++){
+
+                    // reservations[i].date_reservedate= moment(reservations[i].date_reservedate).format('MM/DD/YYYY');
+                    ors[i].date_paymentdate= moment(ors[i].date_paymentdate, 'YYYY-MM-DD').format('MM/DD/YYYY');
+                    // reservations[i].datetime_reserveend= moment(reservations[i].datetime_reserveend, 'HH:mm:ss').format('MM/DD/YYYY h:mm a');
+                }
+               
+            return res.render('secretariat/views/OR', {ors:ors })
+                   
+    })
+    })
     secretariatRouter.post('/transaction-documentrequest/tobereleasedstatus', (req, res)=>{
         var updategenerated =`update tbl_documentrequest set char_docustatus ='To be released'
         where int_requestID =?`
