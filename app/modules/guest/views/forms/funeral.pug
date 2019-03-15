@@ -293,6 +293,9 @@ block addjs
 							if($("#blessingloc3").prop("checked")){
 								venue= $('#othervenue').val(),
 								blessloc='1'
+							}else {
+								venue = 'Ina ng Lupang Pangako'
+								blessloc='2'
 							}
 								var formData= new FormData();
 								formData.append('desireddate1', eventDate),
