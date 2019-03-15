@@ -155,25 +155,61 @@ block addjs
             })
         
         }
+        console.log($('#typee').val())
+        if($('#typee').val() == "All"){
         $.get('/secretariat/all').done(data=>{
         console.log(data.schedules)
-
+        var today = new Date();
+        //- if(new Date(today.getFullYear(),today.getMonth()+1,0).getDate() == today.getDate()){
+        var numOfDays = new Date(today.getFullYear(),today.getMonth()+2,0).getDate();
+        for(i=1;i<=numOfDays;i++){
+            var currDate = new Date();
+            currDate.setMonth(currDate.getMonth()+1)
+            currDate.setDate(i);
+            if(currDate.getDay() == 0){
+                console.log(currDate)
+                $.post('/secretariat/regularmass',{currDate:currDate}).done(data=>{
+                    console.log(data)
+                })
+            }
+        }
+        //- }
         for(i=0;i<data.schedules.length;i++){
+            
             var dateevent = moment(data.schedules[i].date_eventdate).format('MM/DD/YYYY');
+            //- console.log(dateevent.getDay())
             var timestart= moment(data.schedules[i].time_eventstart,'HH:mm:ss').format('hh:mm a')
             var timeend = moment(data.schedules[i].time_eventend,'HH:mm:ss').format('hh:mm a')
             console.log(dateevent)
             console.log(moment(data.schedules[i].time_eventstart,'HH:mm:ss').format('hh:mm a'))
             console.log(moment(data.schedules[i].time_eventend,'HH:mm:ss').format('hh:mm a'))
+            console.log(data.schedules[i].var_password)
+            if(data.schedules[i].char_approvalstatus == "Approved"){
             $('#calendar').fullCalendar('renderEvent', {
-                title: 'DESIRED TIME',
+                title: `${data.schedules[i].var_eventname}`,
                 start: `${dateevent} ${timestart}`,
                 end: `${dateevent} ${timeend}`,
                 allDay: false,
                 id:1,
+                color:'green',
                 overlap: false,
                 droppable:true
             });
+            }
+            else{
+                $('#calendar').fullCalendar('renderEvent', {
+                title: `${data.schedules[i].var_eventname}`,
+                start: `${dateevent} ${timestart}`,
+                end: `${dateevent} ${timeend}`,
+                allDay: false,
+                id:1,
+                color:'red',
+                overlap: false,
+                droppable:true
+            }); 
+            }
+
         }
         })
+        }
         
