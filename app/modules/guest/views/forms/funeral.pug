@@ -159,10 +159,10 @@ block main
 														.text-danger.d-inline  *
 													textarea#details.form-control(rows='3' name='details' placeholder="Please enter the cause of death")
 												.form-group
-													h6.label-control Place where the will happen
-														.text-danger.d-inline  *
-													.ml-4
-														- if(eventid == 4)
+													- if(eventid == 4)
+														h6.label-control Place where the will happen
+															.text-danger.d-inline  *
+														.ml-4
 															.form-check
 																label.form-check-label
 																	input.exampleRadios1.form-check-input#blessingloc1(type="radio" name="venue" value="sameaddress" checked)
@@ -216,21 +216,35 @@ block addjs
 		$('.exampleRadios3').click(function() {
 			$('#textarea2').slideDown();
 		});
+		function validateFileType(){
+			var fileName = document.getElementById("file-0b").value;
+			console.log(fileName)
+			var idxDot = fileName.lastIndexOf(".") + 1;
+			var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+			if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+				//TO DO
+			}else{
+				alert("Only jpg/jpeg and png files are allowed!");
+				$("#file-0b").val(null)
+			}
+		}
 		$(document).ready(function(){
-				//- validateForm()
+				validateForm()
 				console.log($('#eventID').val())
-				function validateFileType(){
-					var fileName = document.getElementById("file-0b").value;
-					console.log(fileName)
-					var idxDot = fileName.lastIndexOf(".") + 1;
-					var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-					if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
-						//TO DO
-					}else{
-						alert("Only jpg/jpeg and png files are allowed!");
-						$("#file-0b").val(null)
+					$('#next').click(function(){
+					if(eventDate == ''){
+						swal({
+							title: "Please schedule your date",
+							text: "You haven't chosen your desired schedule yet",
+							type: 'warning',
+							confirmButtonColor: '#3085d6',
+							confirmButtonText: 'OK'
+						})
 					}
-				}
+					else{
+						$('#next').addClass('btn-next')
+					}
+				})
 
 				$('#submitButton').click(function(){
 							var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
@@ -414,6 +428,7 @@ block addjs
 				}
 				}
 			})
+		})
 			if($('#eventID').val() == 7){
 
 			$.post('/guest/funeral/query').done(data=>{
@@ -474,7 +489,55 @@ block addjs
 		})
 
 
+		$('#birthday').on('keypress keydown keyup focus focusout',function(e){
+			if ($(this).val().length == 0) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrect').addClass('hidden');
+					$('.emsg').removeClass('hidden');
+					$('.emsg').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsg').addClass('hidden');
+				$('.emsgcorrect').removeClass('hidden');
+				$('.emsgcorrect').show();
+			}
+			e.stopPropagation();
+		});
 
+			var $regexname = /^([a-zs0-9-, ]{8,})+$/i;
+			$('.venuevalidation').on('keypress keydown keyup',function(e){
+				if (!$(this).val().match($regexname)) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrectvenue').addClass('hidden');
+						$('.emsgvenue').removeClass('hidden');
+						$('.emsgvenue').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsgvenue').addClass('hidden');
+					$('.emsgcorrectvenue').removeClass('hidden');
+					$('.emsgcorrectvenue').show();
+				}
+				e.stopPropagation();
+			});
+
+			//- var $regexname1 = /^([a-zs0-9-, ]{8,})+$/i;
+			//- $('.venuevalidation').on('keypress keydown keyup',function(e){
+			//- 	if (!$(this).val().match($regexname1)) {
+			//- 		// there is a mismatch, hence show the error message
+			//- 			$('.emsgcorrectvenue1').addClass('hidden');
+			//- 			$('.emsgvenue1').removeClass('hidden');
+			//- 			$('.emsgvenue1').show();
+			//- 		}
+			//- 	else{
+			//- 		// else, do not display message
+			//- 		$('.emsgvenue1').addClass('hidden');
+			//- 		$('.emsgcorrectvenue1').removeClass('hidden');
+			//- 		$('.emsgcorrectvenue1').show();
+			//- 	}
+			//- 	e.stopPropagation();
+			//- });
 
 		function readURL(input) {
 			if (input.files && input.files[0]) {
@@ -595,3 +658,14 @@ block addjs
 					//- 		},
 					},
 				})
+			.on('err.field.fv', function(e, data) {
+				// Get the first invalid field
+				var invalidFields = data.fv.getInvalidFields().length;
+				$('#errChecker').val(invalidFields)
+			})
+			.on('success.field.fv', function(e, data) {
+				// Get the first invalid field
+				var invalidFields = data.fv.getInvalidFields().length;
+				$('#errChecker').val(invalidFields)
+			});
+		}
