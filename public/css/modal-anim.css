@@ -7,7 +7,7 @@
     z-index: 9999999;
 }
 
-.modal-dialog.modal-lg {
+/* .modal-dialog.modal-lg {
     position:absolute;
     top:50% !important;
     left: 16%;
@@ -29,7 +29,15 @@
     margin:auto 5%;
     width:90%;
     height:80%;
-  }
+  } */
+
+  .modal-dialog {
+    display:flex!important;
+    flex-direction:column;
+    justify-content:center;
+    align-content:center;
+    align-items: flex-start;
+    }
 
 .fade .modal-content {
 	-webkit-transform: scale(0.7);

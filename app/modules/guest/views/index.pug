@@ -408,6 +408,7 @@ block addjs
 
 									$('#headerAppend1').append(`
 										<h5 id="exampleModalLabel" class="modal-title">Blessing Request</h5>
+										<button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="p-3">x</button>
 									`)
 
 									var append1 = `
@@ -423,9 +424,9 @@ block addjs
 										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.anointing.double_fee)} </span></p>
 										<br>
 										<p style="text-align: center;">
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingPrev" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
 											<button class="btn std-btn btn-common" id="proceedAnointing" type="button" value=${data.anointing.int_eventID}>Apply</button>
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
 										</p>
 										`
 									var append2 = `
@@ -441,9 +442,9 @@ block addjs
 										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.funeralmass.double_fee)} </span></p>
 										<br>
 										<p style="text-align: center;">
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingPrev" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
 											<button class="btn std-btn btn-common" id="proceedFuneralmass" type="button" value=${data.funeralmass.int_eventID}>Apply</button>
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
 										</p>
 										`
 									var append3 = `
@@ -459,9 +460,9 @@ block addjs
 										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.funeralservice.double_fee)} </span></p>
 										<br>
 										<p style="text-align: center;">
-										<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+										<button class="btn std-btn btn-common blessingPrev" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
 										<button class="btn std-btn btn-common" id="proceedFuneralservice" type="button" value=${data.funeralservice.int_eventID}>Apply</button>
-										<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+										<button class="btn std-btn btn-common blessingNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
 										</p>
 										`
 									var append4 = `
@@ -477,40 +478,75 @@ block addjs
 										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.houseblessing.double_fee)} </span></p>
 										<br>
 										<p style="text-align: center;">
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingPrev" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
 											<button class="btn std-btn btn-common" id="proceedHouseblessing" type="button" value=${data.houseblessing.int_eventID}>Apply</button>
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
 										</p>
 										`
 
 										$('#modalAppend').empty().append(append1)
 										anointingClick()
 
-										var guest = 1	;
-										$(document).on('click', '.blessingPrevNext', function(event){
+										var guest = 0;
+										$(document).on('click', '.blessingNext', function(event){
+											guest++
+											console.log(guest)
 											console.log('hello')
 											event.preventDefault();
 											if(guest == 0){
-												guest++;
 												$('#modalAppend').empty().append(append1)
+												$('.blessingNext').prop( "disabled", false );
 											}
 											else if(guest == 1){
-												guest++;
 												$('#modalAppend').empty().append(append2)
+												$('.blessingNext').prop( "disabled", false );
 											}
 											else if(guest == 2){
-												guest++;
 												$('#modalAppend').empty().append(append3)
+												$('.blessingNext').prop( "disabled", false );
 											}
 											else if(guest == 3){
-												guest++;
 												$('#modalAppend').empty().append(append4)
+												$('.blessingNext').prop( "disabled", true );
+											} else if(guest <= 4){
+												$('#modalAppend').empty().append(append4)
+												$('.blessingNext').prop( "disabled", true );
+												guest = 3;
+											}
+											//- console.log(guest);
+
+											anointingClick()
+											funeralMassClick()
+											funeralServiceClick()
+											houseBlessingClick()
+										});
+
+										$(document).on('click', '.blessingPrev', function(event){
+											guest--
+											console.log(guest)
+											console.log('hello')
+											event.preventDefault();
+											if(guest == 0){
+												$('#modalAppend').empty().append(append1)
+												$('.blessingPrev').prop( "disabled", false );
+											}
+											else if(guest == 1){
+												$('#modalAppend').empty().append(append2)
+												$('.blessingPrev').prop( "disabled", false );
+											}
+											else if(guest == 2){
+												$('#modalAppend').empty().append(append3)
+												$('.blessingPrev').prop( "disabled", false );
+											}
+											else if(guest == 3){
+												$('#modalAppend').empty().append(append4)
+												$('.blessingPrev').prop( "disabled", true );
+											} else if(guest <= -1){
+												$('#modalAppend').empty().append(append1)
+												$('.blessingPrev').prop( "disabled", true );
 												guest = 0;
 											}
-											else {
-												guest = 0;
-											}
-											console.log(guest);
+											//- console.log(guest);
 
 											anointingClick()
 											funeralMassClick()
@@ -612,6 +648,7 @@ block addjs
 									// LEAVE THIS HEADER AS IT IS
 									$('#headerAppend').append(`
 										<h5 id="exampleModalLabel" class="modal-title">${data.regularbap.var_eventname}</h5>
+										<button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="p-3">x</button>
 									`)
 
 									var requirements = `<p class='requirements'><strong>Requirements</strong></p>`
