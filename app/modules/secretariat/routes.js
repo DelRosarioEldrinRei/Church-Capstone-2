@@ -87,7 +87,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                             if(err) console.log(err)
                             console.log(results2)
                             console.log(schedID)
-                        
+                            res.send({details:details})
                         })
                     } 
                     else if(time.isBetween(time_schedstart, time_schedend)){
@@ -101,7 +101,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                             if(err) console.log(err)
                             console.log(results2)
                             console.log(schedID)
-                        
+                            res.send({details:details})
                         })
                     }
                     else{
@@ -194,7 +194,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                 var ongoing =`UPDATE tbl_eventinfo SET var_eventstatus ='On Going' where int_eventinfoID =?`
                                 db.query(ongoing, [allresultss.int_eventinfoID],(err, results, fields) => {
                                     if (err) console.log(err);
-                                    
+                                    res.send(results)
                                 })
                                 
                         }
@@ -209,10 +209,24 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                 var ongoing =`UPDATE tbl_eventinfo SET var_eventstatus ='Done' where int_eventinfoID =?`
                                 db.query(ongoing, [allresultss.int_eventinfoID],(err, results, fields) => {
                                     if (err) console.log(err);
-                                    
+                                    res.send(results)
                                 })
                                 
                         }
+                    }
+
+                    if(moment(datefromdb).isAfter(dateNow)){
+                        
+                            console.log('After')
+                                console.log(allresult[i])
+                                var allresultss = allresult[i]
+                                var ongoing =`UPDATE tbl_eventinfo SET var_eventstatus ='Done' where int_eventinfoID =?`
+                                db.query(ongoing, [allresultss.int_eventinfoID],(err, results, fields) => {
+                                    if (err) console.log(err);
+                                    res.send(results)
+                                })
+                                
+                        
                     }
 
                 }//ifapproved
@@ -1262,8 +1276,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                              
                                          // addschedules(eventinfodetails)
                                          var schedname = 'Baptism of '+ eventinfodetailss.var_lname +', ' + eventinfodetailss.var_fname
-                                         var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,  var_venue) values(?,?,?,?,?,?)`
-                                         db.query(schedtag, [priestinfo.int_userID,req.body.eventid, schedname,eventinfodetailss.date_eventdate,  eventinfodetailss.time_eventstart, 'INLPP'], (err, results, fields) => {
+                                         var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart, time_schedend,  var_venue) values(?,?,?,?,?,?,?)`
+                                         db.query(schedtag, [priestinfo.int_userID,req.body.eventid, schedname,eventinfodetailss.date_eventdate,  eventinfodetailss.time_eventstart,  eventinfodetailss.time_eventend, 'INLPP'], (err, results, fields) => {
                                              console.log(err) 
                                      
                                         var notifdesc ='You have been assigned to an event (Baptism)'
@@ -1866,8 +1880,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                              
                                          // addschedules(eventinfodetails)
                                          var schedname = 'Baptism of '+ eventinfodetailss.var_lname +', ' + eventinfodetailss.var_fname
-                                         var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,  var_venue) values(?,?,?,?,?,?)`
-                                         db.query(schedtag, [priestinfo.int_userID,req.body.id, schedname,eventinfodetailss.date_eventdate,  eventinfodetailss.time_eventstart, 'INLPP'], (err, results, fields) => {
+                                         var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart, time_schedend,  var_venue) values(?,?,?,?,?,?,?)`
+                                         db.query(schedtag, [priestinfo.int_userID,req.body.id, schedname,eventinfodetailss.date_eventdate,  eventinfodetailss.time_eventstart,eventinfodetailss.time_eventend, 'INLPP'], (err, results, fields) => {
                                              console.log(err) 
                                      
                                         var notifdesc ='You have been assigned to an event (Baptism)'
@@ -2549,8 +2563,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                              
                                          // addschedules(eventinfodetails)
                                          var schedname = 'Anointing of '+ eventinfodetailss.var_lname +', ' + eventinfodetailss.var_fname
-                                         var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,  var_venue) values(?,?,?,?,?,?)`
-                                         db.query(schedtag, [priestinfo.int_userID,req.body.eventid, schedname,eventinfodetailss.date_eventdate,  eventinfodetailss.time_eventstart, 'INLPP'], (err, results, fields) => {
+                                         var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,  time_schedend,  var_venue) values(?,?,?,?,?,?,?)`
+                                         db.query(schedtag, [priestinfo.int_userID,req.body.eventid, schedname,eventinfodetailss.date_eventdate,  eventinfodetailss.time_eventstart,  eventinfodetailss.time_eventend, 'INLPP'], (err, results, fields) => {
                                              console.log(err) 
                                      
                                         var notifdesc ='You have been assigned to an event (Anointing of the sick)'
@@ -3352,8 +3366,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                              
                                          // addschedules(eventinfodetails)
                                          var schedname = 'Funeral of '+ eventinfodetailss.var_lname +', ' + eventinfodetailss.var_fname
-                                         var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,  var_venue) values(?,?,?,?,?,?)`
-                                         db.query(schedtag, [priestinfo.int_userID, req.body.eventid, schedname,eventinfodetailss.date_eventdate,  eventinfodetailss.time_eventstart, 'INLPP'], (err, results, fields) => {
+                                         var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,time_schedstart,  var_venue) values(?,?,?,?,?,?,?)`
+                                         db.query(schedtag, [priestinfo.int_userID, req.body.eventid, schedname,eventinfodetailss.date_eventdate,  eventinfodetailss.time_eventstart, eventinfodetailss.time_eventend, 'INLPP'], (err, results, fields) => {
                                              console.log(err) 
                                      
                                         var notifdesc ='You have been assigned to an event (Anointing of the sick)'
@@ -3619,8 +3633,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                              
                                          // addschedules(eventinfodetails)
                                          var schedname = 'Funeral of '+ eventinfodetailss.var_lname +', ' + eventinfodetailss.var_fname
-                                         var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,  var_venue) values(?,?,?,?,?,?)`
-                                         db.query(schedtag, [priestinfo.int_userID,req.body.eventid, schedname,eventinfodetailss.date_eventdate,  eventinfodetailss.time_eventstart, 'INLPP'], (err, results, fields) => {
+                                         var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,  time_schedend,  var_venue) values(?,?,?,?,?,?,?)`
+                                         db.query(schedtag, [priestinfo.int_userID,req.body.eventid, schedname,eventinfodetailss.date_eventdate,  eventinfodetailss.time_eventstart,eventinfodetailss.time_eventend, 'INLPP'], (err, results, fields) => {
                                              console.log(err) 
                                      
                                         var notifdesc ='You have been assigned to an event (Anointing of the sick)'
@@ -4754,8 +4768,8 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
             //if confirmed and if baptised
 
             var schedname = 'Marriage of Mr. '+ priestutilities.var_lname +' and Ms. ' + priestutilities.var_blname
-            var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,  var_venue) values(?,?,?,?,?,?)`
-            db.query(schedtag, [req.body.priestid, req.body.id, schedname,priestutilities.date_eventdate,  priestutilities.time_eventstart, 'INLPP'], (err, results, fields) => {
+            var schedtag = `insert into tbl_schedule(int_userID, int_eventinfoID, var_schedulename, date_sched, time_schedstart,time_schedend,  var_venue) values(?,?,?,?,?,?,?)`
+            db.query(schedtag, [req.body.priestid, req.body.id, schedname,priestutilities.date_eventdate,  priestutilities.time_eventstart, priestutilities.time_eventend, 'INLPP'], (err, results, fields) => {
                 console.log(err) 
                 var canonicalid = results; 
                 var canonicalwedsched = `insert into tbl_wedschedule(int_scheduleID, int_weddingsteps, bool_conpriest, bool_conguest) values(?,?,?,?)`
