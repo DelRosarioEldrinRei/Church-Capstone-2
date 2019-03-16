@@ -298,8 +298,7 @@ var upload = multer({ storage: storage})
         join tbl_eventinfo on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
         join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID
         join tbl_utilities on tbl_utilities.int_eventID = tbl_services.int_eventID 
-        where tbl_payment.dbl_balance <> 0 and tbl_eventinfo.int_userID =? 
-        and char_approvalstatus<>'Cancelled'`
+        where tbl_payment.dbl_balance <> 0 and tbl_eventinfo.int_userID =? and char_approvalstatus<>'Cancelled'`
         db.query(queryString1,[req.session.userID], (err, results, fields) => {
             if (err) console.log(err); 
             var details = results
@@ -313,12 +312,24 @@ var upload = multer({ storage: storage})
                 afterTime = moment(details[i].date_fullpaymentdeadline, format);
                 var dateNow =moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
                 console.log('==================')
+                console.log('Date now: ')
+                console.log(dateNow)
+                console.log('==================')
+                console.log('Deadline ')
+                console.log(fullpaymentdeadlinee)
+                console.log('==================')
+                console.log('Time now ')
+                console.log(time)
+                console.log('==================')
+                console.log('Time deadline ')
+                console.log(afterTime)
+                console.log('==================')
                 
+                console.log(moment(fullpaymentdeadlinee).isSame(dateNow))
+                console.log(time.isAfter(afterTime))
 
                 if(moment(fullpaymentdeadlinee).isSame(dateNow)){
-                    console.log('Same date')
                     if(time.isAfter(afterTime)){
-                        console.log('After Time')
                         var eventinfoID = details[i].int_eventinfoID
                         console.log(eventinfoID)
                     
@@ -335,29 +346,7 @@ var upload = multer({ storage: storage})
                     })
                     }  
                 }
-                else if(moment(fullpaymentdeadlinee).isAfter(dateNow)){
-                    console.log('After date')
-                        var eventinfoID = details[i].int_eventinfoID
-                        console.log(eventinfoID)
-                    
-                    var queryString1 =`UPDATE tbl_eventinfo SET char_approvalstatus ='Cancelled',var_eventstatus ='Cancelled', date_approval= ? where int_eventinfoID =?`
-                    db.query(queryString1,[dateNow,eventinfoID], (err, results2, fields) => {
-                        if(err) console.log(err)
-                        console.log(results2)
-                        console.log(eventinfoID)
-                        var notifdesc ='Your application was automatically cancelled because you did not meet the payment deadline. If you have any concerns, you may send us a message or go directly to the office. Thank you.'
-                        var insertnotif = `insert into tbl_notification(int_userID, var_notifdesc, int_eventinfoID, datetime_received) values(?,?,?,?)`
-                        db.query(insertnotif,[req.session.userID, notifdesc, eventinfoID, dateNoww], (err, results4, fields) => {
-                            if(err) console.log(err)
-                        })
-                    })
-                    
-                }
-                else if(i == details.length-1){
-                    console.log('Before')
-                    res.send({details:details})
-                } 
-                    
+                else if(i == details.length-1) res.send({details:details})
             }//for
 
         }); 

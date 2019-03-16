@@ -94,7 +94,7 @@ block prepend main
 						button.close.text-white(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true') ×
 					.modal-body#documentAppend
-					.modal-footer.footer.mx-auto
+					.modal-footer#footer.mx-auto
 						button.btn.btn-outline.btn-primary.pull-right#generateButton Generate
 	#updateModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
@@ -118,7 +118,7 @@ block prepend main
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
 							span(aria-hidden='true' style='color:white') ×
 					.modal-body#paymentAppend
-					.modal-footer.footerpayment
+					.modal-footer#footerpayment
 						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
 						button.btn#updatePaymentButton(type="button" style='background:#367587; color:white') Update Payment
 	#updatepaymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
@@ -178,16 +178,11 @@ block addjs
 						</form>
 					`)
 					if(data.char_docustatus=='Generated'){
-						$('.footer').append(`
+						$('#footer').append(`
 						<button type='button' class='btn btn-success' value='${data.int_requestID}' id='tobereleasedbutton'>Ready to be released!</button>
 						`)
 					}
-					if(data.char_docustatus=='To be released' || data.char_docustatus=='Released'){
-					$('.footer').empty()
-							$('.footer').append(`
-							<button class="btn btn-outline btn-secondary pull-left" id="cancelButton" type="button" data-dismiss="modal">Close</button>
-							`)
-					}
+					
 					
 
 
@@ -575,8 +570,8 @@ block addjs
 					`)
 
 					if(data.results.char_docustatus=='Released'){
-						$('.footerpayment').empty()
-						$('.footerpayment').append(`
+						$('#footerpayment').empty()
+						$('#footerpayment').append(`
 						<button class="btn btn-outline btn-secondary pull-left" id="cancelButton" type="button" data-dismiss="modal">Close</button>
 						`)
 					}

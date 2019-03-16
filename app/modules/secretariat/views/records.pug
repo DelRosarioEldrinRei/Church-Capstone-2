@@ -80,7 +80,10 @@ block prepend main
 																						#toolbar-options.hidden
 																							a.viewButton(href='#')
 																								i.ti-file(style="color:white;")
-																							
+																							a.updateButton(href='#')
+																								i.ti-pencil(style="color:white;")
+																							a.updateReqButton(href='#')
+																								i.ti-new-window(style="color:white;")
 
 
 
@@ -143,7 +146,7 @@ block addjs
 			})
 			$('.viewButton').click(function(){
 				console.log(idNow)
-				$.post('/secretariat/transaction-record',{id:idNow}).done(data =>{
+				$.post('/secretariat/transaction-record/query',{id:idNow}).done(data =>{
 					var dateRequested = moment(data.results.date_eventdate).format('MMMM DD, YYYY')
 					
 					var timeRequested = moment(data.results.time_eventstart,'HH:mm:ss').format('hh:mm A')

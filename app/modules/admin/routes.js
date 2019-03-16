@@ -4036,12 +4036,12 @@ adminRouter.get('/reports-allreports', (req, res)=>{
     where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docurequested) = MONTH(CURRENT_TIMESTAMP)`
 
      // LAHAT NG NARELEASE NGAYONG BUWAN
-     var docureqreqcount =`SELECT count(int_requestID) as docureqreqcount from tbl_documentrequest 
+     var docureqreqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
      join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
      where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docureleased) = MONTH(CURRENT_TIMESTAMP)`
     
-     // LAHAT NG collection ngayong buwan
-     var docureqcollection =`SELECT count(int_requestID) as docureqcollection from tbl_documentrequest 
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqcollection =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
      join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
      join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
      join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
