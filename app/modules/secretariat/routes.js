@@ -257,7 +257,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                             if(err) console.log(err)
                             console.log(results2)
                             console.log(schedID)
-                            res.send({details:details})
+                        
                         })
                     } 
                     else if(time.isBetween(time_schedstart, time_schedend)){
@@ -271,7 +271,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                             if(err) console.log(err)
                             console.log(results2)
                             console.log(schedID)
-                            res.send({details:details})
+                        
                         })
                     }
                     else{
@@ -364,7 +364,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                 var ongoing =`UPDATE tbl_eventinfo SET var_eventstatus ='On Going' where int_eventinfoID =?`
                                 db.query(ongoing, [allresultss.int_eventinfoID],(err, results, fields) => {
                                     if (err) console.log(err);
-                                    res.send(results)
+                                    
                                 })
                                 
                         }
@@ -379,7 +379,7 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
                                 var ongoing =`UPDATE tbl_eventinfo SET var_eventstatus ='Done' where int_eventinfoID =?`
                                 db.query(ongoing, [allresultss.int_eventinfoID],(err, results, fields) => {
                                     if (err) console.log(err);
-                                    res.send(results)
+                                    
                                 })
                                 
                         }
@@ -4058,7 +4058,6 @@ secretariatRouter.use(authMiddleware.secretariatAuth)
 				
 					var approvalUpdate = `UPDATE tbl_eventinfo SET char_approvalstatus = "Approved", date_approval=?
 					WHERE int_eventinfoID =?`
-
 
 					db.query(selectstatus,[req.body.id1], (err, results, fields) => {
 						if (err) console.log(err);
