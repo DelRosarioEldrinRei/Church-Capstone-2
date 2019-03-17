@@ -83,7 +83,7 @@ block prepend main
 													th Payment Status
 													th Approval Status
 													th Priest Assigned
-													th.text-right(style=" width:120px") Actions
+													th.text-center(style=" width:120px") Actions
 												tbody
 													each regular in regulars
 
@@ -116,6 +116,8 @@ block prepend main
 																					i.ti-pencil(style="color:white;")
 																				a.updateReqButton(href='#')
 																					i.ti-new-window(style="color:white;")
+																	- if(regular.char_approvalstatus=='Approved')
+																		button.btn.btn-success.generateButton(type='button' value=`${regular.int_eventinfoID}` style='margin-left: 2px') Generate
 														-else
 															tr
 																//- td=regular.int_eventinfoID
@@ -145,6 +147,8 @@ block prepend main
 																					i.ti-pencil(style="color:white;")
 																				a.updateReqButton(href='#')
 																					i.ti-new-window(style="color:white;")
+																	- if(regular.char_approvalstatus=='Approved')
+																		button.btn.btn-success.generateButton(type='button' value=`${regular.int_eventinfoID}` style='margin-left: 2px') Generate
 	
 	#paymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
 			.modal-dialog.modal-lg(role="document")
@@ -278,6 +282,101 @@ block prepend main
 block addjs
 	
 	script(type='text/javascript').
+		$(document).on(	'click', '.generateButton', function(){
+				$(document).off('click', '.generateButton')
+				idNow = $(this).val();
+				console.log(idNow)
+				$.post('/secretariat/transaction-baptism/query',{id:idNow}).done(data =>{
+					var dateRequested = moment(data.date_eventdate).format('MM/DD/YYYY')
+					var timeRequested = moment(data.time_eventstart,'HH:mm:ss').format('hh:mm A')
+					var age = moment().diff(data.date_birthday,'years');
+									
+
+				console.log('generated na sya')
+				
+				function toDataURL(url, callback) {
+					var xhr = new XMLHttpRequest();
+					xhr.onload = function() {
+						var reader = new FileReader();
+						reader.onloadend = function() {
+						callback(reader.result);
+						}
+						reader.readAsDataURL(xhr.response);
+					};
+					xhr.open('GET', url);
+					xhr.responseType = 'blob';
+					xhr.send();
+				}
+				toDataURL('/document_templates/baptism_certificate.jpg', function(dataUrl) {
+					var fullName = data.var_doclastname + ', ' + data.var_docfirstname;
+					var dateRequested = moment(data.date_docurequested).format('MM/DD/YYYY');
+					var docDefinition = {
+						pageMargins: [ 0, 0, 0, 0 ],
+						content: [
+							{
+								image: dataUrl,
+								width: 610,
+								//- height: 100,
+							},
+							{
+							text: fullName,
+							style: 'styleLabelFill',
+							absolutePosition: {x:125, y:247},
+							//- text: 'Date: ' + dateRequested,
+							},
+						],
+						styles: {
+							styleLabel: {
+								font: 'EdwardianScript',
+								fontSize:85,
+							},
+							styleHeader: {
+								font: 'OldEnglishText',
+								fontSize: 45,
+								alignment: 'center',
+								margin: [0, 15, 0, 0],
+							},
+							styleHeader2: {
+								font: 'EdwardianScript',
+								fontSize: 33,
+								alignment: 'center',
+								margin: [0, 5, 0, 5],
+							},
+							styleLabel: {
+								font: 'EdwardianScript',
+								fontSize: 26,
+							},
+							styleLabelFill: {
+								font: 'EdwardianScript',
+								fontSize: 35,
+							},
+						},
+					}
+					pdfMake.fonts = {
+						Roboto: {
+							normal: 'Roboto-Regular.ttf',
+							bold: 'Roboto-Medium.ttf',
+							italic: 'Roboto-Italic.ttf',
+							bolditalics: 'Roboto-MediumItalic.ttf',
+						},
+						EdwardianScript: {
+							normal: 'Roboto-Regular.ttf',
+							bold: 'Roboto-Medium.ttf',
+							italic: 'Roboto-Italic.ttf',
+							bolditalics: 'Roboto-MediumItalic.ttf',
+						},
+						OldEnglishText: {
+							normal: 'Old-english-text-mt-Regular.ttf'
+						},
+						TimesNewRoman: {
+							normal: 'Times-new-roman-Regular.ttf'
+						}
+					}
+					pdfMake.createPdf(docDefinition).open();
+					
+				})
+			})
+		})
 		$(document).ready(function(){
 			var ctr = 0;
 			for(var i =0; i<= $('.approvalreq').length; i++){
@@ -315,7 +414,7 @@ block addjs
 					$('.approval').eq(i).addClass('badge btn btn-primary-lg bgc-red-100 c-red-700')
 				}
 			}
-
+			
 			var idNow;
 			$('.actionButton').click(function(){
 				idNow = $(this).val();

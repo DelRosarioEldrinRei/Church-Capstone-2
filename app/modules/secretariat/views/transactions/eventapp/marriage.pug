@@ -100,7 +100,7 @@ block prepend main
 																				- if(marriage.int_userpriestID !=null)
 																					td
 																						span #{marriage.var_priestname}
-																				- if(marriage.dbl_balance < (marriage.dbl_amount/2)&& marriage.int_userpriestID ==null)
+																				- if(marriage.dbl_balance <= (marriage.dbl_amount/2)&& marriage.int_userpriestID ==null)
 																					td
 																						button.btn.assignPriest(type="button" style='background:green; color:white' value=`${marriage.int_eventinfoID}`) Assign Priest
 																				- if(marriage.dbl_balance > (marriage.dbl_amount/2))
@@ -137,7 +137,7 @@ block prepend main
 																				- if(marriage.int_userpriestID !=null)
 																					td
 																						span #{marriage.var_priestname}
-																				- if(marriage.dbl_balance < (marriage.dbl_amount/2)&& marriage.int_userpriestID ==null)
+																				- if(marriage.dbl_balance <= (marriage.dbl_amount/2)&& marriage.int_userpriestID ==null)
 																					td
 																						button.btn.assignPriest(type="button" style='background:green; color:white' value=`${marriage.int_eventinfoID}`) Assign Priest
 																				- if(marriage.dbl_balance > (marriage.dbl_amount/2) && marriage.int_userpriestID ==null)
