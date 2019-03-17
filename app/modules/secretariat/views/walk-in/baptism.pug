@@ -22,70 +22,70 @@ block prepend main
 						h6.c-grey-900 Regular Baptism
 						.mT-30
 							form
-								h5.label-control Contact Details
 								.row
-									
-									.form-group.col-md-6
-										.form-group
-											label Last Name
-												.text-danger.d-inline *
-											input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-											.invalid-feedback Please re-enter your valid last name.
-
-									.form-group.col-md-6
-										.form-group
-											.invalid-feedback Please re-enter your valid last name.
-											label First Name
-												.text-danger.d-inline *
-											input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
-											.invalid-feedback Please provide a valid first name.
-								.row
-									.form-group.col-md-12
-										.form-group
-											label Address
-												.text-danger.d-inline *
-											input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-											.invalid-feedback Please re-enter your valid first name. 
-
-								.row
-									.form-group.col-md-6
-										.form-group
-											label Contact Number
-												.text-danger.d-inline *
-											input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-											.invalid-feedback Please re-enter your valid contact number.
-
-									.form-group.col-md-6
-										.form-group
-											.invalid-feedback Please re-enter your valid contact number.
-											label Email Address
-												.text-danger.d-inline *
-											input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
-											.invalid-feedback Please provide a valid email address
-								hr
-								h5.label-control Application Details
-								.row
-									.col-md-3.px-lg-3.px-md-3.px-sm-0
-											.form-group.m-0.p-0
-												h6.label-control Baptism Type
-													.text-danger.d-inline  *
-												.custom-control.custom-radio
-													input#regularbap.custom-control-input(type='radio', name='baptismtype' value="Regular"  checked)
-													label.custom-control-label(for='regularbap') 
-														label Regular
-												.custom-control.custom-radio
-													input#specialbap.custom-control-input(type='radio', name='baptismtype' value="Special")
-													label.custom-control-label(for='specialbap') 
-														label Special
-									.col-md-4
-										.form-group
-											label Schedule Date
-												#special
+									.col-md-6
+										.row
+											.col-md-12
+												.form-group.text-right
+													h6.label-control Baptism Type
+														.text-danger.d-inline  *
+													.custom-control.custom-radio
+														input#regularbap.custom-control-input(type='radio', name='baptismtype' value="Regular"  checked)
+														label.custom-control-label(for='regularbap') 
+															label Regular
+													.custom-control.custom-radio
+														input#specialbap.custom-control-input(type='radio', name='baptismtype' value="Special")
+														label.custom-control-label(for='specialbap') 
+															label Special
+												h5.label-control Contact Details
+												.form-group
+													label Last Name
+														.text-danger.d-inline *
+													input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+											.col-md-12
+												.form-group
+													label First Name
+														.text-danger.d-inline *
+													input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
+											.col-md-12
+												.form-group
+													label Address
+														.text-danger.d-inline *
+													input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+											.col-md-12
+												.form-group
+													label Contact Number
+														.text-danger.d-inline *
+													input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+											.col-md-12
+												label Email Address
 													.text-danger.d-inline *
+												input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
+									//- .col-md-1
+									//- 	.form-group.m-0.p-0
+									//- 			h6.label-control Baptism Type
+									//- 				.text-danger.d-inline  *
+									//- 			.custom-control.custom-radio
+									//- 				input#regularbap.custom-control-input(type='radio', name='baptismtype' value="Regular"  checked)
+									//- 				label.custom-control-label(for='regularbap') 
+									//- 					label Regular
+									//- 			.custom-control.custom-radio
+									//- 				input#specialbap.custom-control-input(type='radio', name='baptismtype' value="Special")
+									//- 				label.custom-control-label(for='specialbap') 
+									//- 					label Special
+									.col-md-6
+										.form-group
+												label Schedule Date
+													.text-danger.d-inline  *
+												#special
 														#calendarSpecial
 												#regular
-													.text-danger.d-inline *
 														#calendarRegular
+								.row
+									.col-md-3.px-lg-3.px-md-3.px-sm-0
+										
+									.col-md-4
+										
 									//- 			.text-danger.d-inline  *
 									//- 		input.form-control.start-date(id='desireddate' name='desireddate' type='text', placeholder='Enter Desired Date', data-provide='datepicker')
 									//- .col-md-4
@@ -225,7 +225,7 @@ block prepend main
 											label Payment Details
 											.form-group
 												input.checkbox#paid(type="checkbox" )
-												| Paid
+												|  Paid
 									.col-md-9#paymentdetails
 										.form-group
 											.row
@@ -653,14 +653,23 @@ block addjs
 		$("#specialbap").on('click',function(){
 			
 			console.log("SHIT")
-			$('#special').fadeIn(1000)
-			$('#regular').fadeOut(1000)
+			setTimeout(function(){
+				$('#regular').fadeOut(400)
+			}, 100)
+			setTimeout(function(){
+				$('#special').fadeIn(400)
+			}, 400)
 		})
 		$("#regularbap").on('click',function(){
-			
+			setTimeout(function(){
+				$('#special').fadeOut(400)
+			}, 100)
+			setTimeout(function(){
+				$('#regular').fadeIn(400)
+			}, 400)
 			console.log("SHIT")
-			$('#regular').fadeIn(1000)
-			$('#special').fadeOut(1000)
+			//- $('#regular').fadeIn(1000)
+			//- $('#special').fadeOut(1000)
 		})
 		//- else if($("#regularbap").prop("checked")){
 		//- 	$('#regular').slideDown()

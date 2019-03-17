@@ -26,6 +26,12 @@ block main
 			color: #4c2508;
 			line-height: 26px;
 		}
+		.form-control {
+			margin-bottom: 0;
+		}
+		.hidden {
+			display:none;
+		}
 	#headers
 		#header-style-1
 			.container
@@ -80,7 +86,7 @@ block main
 																					#calendarEstablishment
 																	.help-block.with-errors
 									.learn-more.pull-right
-												button.btn.btn-next(type='button') Next
+												button#nextButton1.btn(type='button') Next
 									
 								// Form Step 1
 								// Form Step 2
@@ -97,31 +103,51 @@ block main
 													.form-group
 														h6.label-control Owner
 															.text-danger.d-inline  *
-														input.form-control#owner1(type='text' placeholder="Enter Name of Owner" name='owner1' pattern="[A-Za-z ]{3,}" oninvalid="setCustomValidity('Enter Valid Name of Owner')" onchange="try{setCustomValidity('')}catch(e){}")
-														.help-block.with-errors
+														input.form-control#owner1(type='text' placeholder="Enter Name of Owner" name='owner1')
+														p
+															span.emsginvalidowner.hidden
+																i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+																|  Please Enter Name of Owner.
+															span.emsgcorrectowner.hidden
+																i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 													.form-group
 														h6.label-control House/Establishment Location
 															.text-danger.d-inline  *
-														textarea.form-control#locations1(placeholder="Please Enter Complete Address" rows="1" name='location1' pattern="^[a-zA-Z0-9,.- ]*${10,}" oninvalid="setCustomValidity('Enter Valid Address')" onchange="try{setCustomValidity('')}catch(e){}")
-														.help-block.with-errors
+														textarea.form-control#locations1(placeholder="Please Enter Complete Address" rows="1" name='location1')
+														p
+															span.emsginvalidlocation.hidden
+																i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+																|  Please Enter Location.
+															span.emsgcorrectlocation.hidden
+																i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 												.col-md-6.px-lg-3.px-md-3.px-sm-0
 													.form-group
 														h6.label-control Contact Number
 															.text-danger.d-inline  *
-														input.form-control#contactnumber1(type='text' name='contactnumber1' placeholder="XXXXXXXXXXX"  pattern="[0-9]{11}" title="Input numbers only" oninvalid="setCustomValidity('Please input numbers only.')" onchange="try{setCustomValidity('')}catch(e){}")
-														.help-block.with-errors
+														input.form-control#contactnumber1(type='text' name='contactnumber1' placeholder="Ex 09324232323or +639232423232")
+														p
+															span.emsginvalidcontact.hidden
+																i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+																|  Please Enter Contact Number.
+															span.emsgcorrectcontact.hidden
+																i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 													.form-group 
 														h6.label-control Email
 															.text-danger.d-inline  *
 														input.form-control.mb-2#email1(type='Email' name='email1' placeholder="mark242@gmail.com" )
-														.help-block.with-errors
+														p
+															span.emsginvalidemail.hidden
+																i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+																|  Please Enter Email.
+															span.emsgcorrectemail.hidden
+																i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 														//- pattern="/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/" email 
 											.row
 												.col-md-8.px-lg-3.px-md-3.px-sm-0.mx-auto
 													.form-group
 															h6.label-control Birth Certificate
 																.text-danger.d-inline  *
-															input#file-0b.file(type='file',accept='image/*',name="image")
+															input#file-0b.file(type='file',accept='image/*',name="image" onchange="validateFileType()")
 											//- .row
 											//- 	.col-md-6.px-lg-3.px-md-3.px-sm-0
 											//- 		.form-group
@@ -138,10 +164,39 @@ block main
 								// Form Step 2
 block addjs
 	script.
+		function validateFileType(){
+				var fileName = document.getElementById("file-0b").value;
+				console.log(fileName)
+				var idxDot = fileName.lastIndexOf(".") + 1;
+				var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+				if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+					//TO DO
+				}else{
+					alert("Only jpg/jpeg and png files are allowed!");
+					$("#file-0b").val(null)
+				}  
+			}
+
 		$(document).ready(function(){
 			validateForm()
+
+			$('#nextButton1').click(function(){
+			if(eventDate == ''){
+					swal({
+						title: "Please schedule your date",
+						text: "You haven't chosen your desired schedule yet",
+						type: 'warning',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: 'OK'
+					})
+				}
+				else{
+					$('#nextButton1').addClass('btn-next')
+				}
+			})
+
 			$('#submitButton').click(function(){
-					$(this).attr('disabled', 'disabled');
+					//- $(this).attr('disabled', 'disabled');
 					var idNow = $(this).val();
 					console.log(idNow)
 					$.post('/index/establishment/query',{
@@ -162,8 +217,28 @@ block addjs
 							email= $('#email1').val(),
 							blessloc= '2'
 						}
-						
-					
+
+						// required only alphabetical characters, minimum of 2
+						var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+						//only alphabetical characters, minimum of 2
+						var $regexvalidation2 = /^([a-zs ]{2,})*$/i;
+						// required only alphabetical characters, minimum of 6
+						var $regexvalidation3 = /^([a-zs ]{6,})+$/i;
+						//contact number validation
+						var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+						//contact number validation
+						var $contactnumber = /^(09|\+639)\d{9}$/;
+						//contact number validation
+						var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+						if(
+								$('#owner1').val().match($regexvalidation1) &&
+								$('#locations1').val().match($addressvalidation)  &&
+								$('#contactnumber1').val().match($contactnumber)   &&
+								$('#email1').val().match($email) &&
+								$('#file-0b').val() != '' &&
+								$('#file-0b').val() != undefined
+								){
+
 							var formData= new FormData();
 							formData.append('desireddate1', eventDate),
 							formData.append('desiredtime1', timeStart),
@@ -175,7 +250,6 @@ block addjs
 							formData.append('contactnumber',contactnumber),
 							formData.append('email',email),
 							formData.append('blessloc',blessloc),
-							
 							
 						$.ajax({
 							type: 'POST',
@@ -197,7 +271,15 @@ block addjs
 							}
 
 						})
-
+								} else {
+									swal({
+										title: "Form is not complete/valid yet",
+										text: "Please fill out and validate all the required fields",
+										type: 'warning',
+										confirmButtonColor: '#3085d6',
+										confirmButtonText: 'OK'
+									})
+								}
 					})
 						
 				})		
@@ -276,8 +358,8 @@ block addjs
 						defaultView: 'month',
 						allDaySlot: false,
 						selectHelper: true,
-						minTime:data.time_availablestart,
-						maxTime:data.time_availableend,
+						//- minTime:data.time_availablestart,
+						//- maxTime:data.time_availableend,
 						validRange: {
 							start: dateNow2
 						},
@@ -347,6 +429,106 @@ block addjs
 				})
 			});
 
+			var $ownername = /^([a-zs ]{2,})+$/i;
+			$('#owner1').on('keypress keydown keyup',function(e){
+				if (!$(this).val().match($ownername)) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrectowner').addClass('hidden');
+						$('.emsginvalidowner').removeClass('hidden');
+						$('.emsginvalidowner').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsginvalidowner').addClass('hidden');
+					$('.emsgcorrectowner').removeClass('hidden');
+					$('.emsgcorrectowner').show();
+				}
+				e.stopPropagation();
+			});
+
+			var $location = /^([a-zs0-9-,. ]{8,})+$/i;
+			$('#locations1').on('keypress keydown keyup',function(e){
+				if (!$(this).val().match($location)) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrectlocation').addClass('hidden');
+						$('.emsginvalidlocation').removeClass('hidden');
+						$('.emsginvalidlocation').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsginvalidlocation').addClass('hidden');
+					$('.emsgcorrectlocation').removeClass('hidden');
+					$('.emsgcorrectlocation').show();
+				}
+				e.stopPropagation();
+			});
+
+			var $contactnumber = /^(09|\+639)\d{9}$/;
+			$('#contactnumber1').on('keypress keydown keyup',function(e){
+				if (!$(this).val().match($contactnumber)) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrectcontact').addClass('hidden');
+						$('.emsginvalidcontact').removeClass('hidden');
+						$('.emsginvalidcontact').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsginvalidcontact').addClass('hidden');
+					$('.emsgcorrectcontact').removeClass('hidden');
+					$('.emsgcorrectcontact').show();
+				}
+				e.stopPropagation();
+			});
+
+			var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+			$('#email1').on('keypress keydown keyup',function(e){
+				if (!$(this).val().match($email)) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrectemail').addClass('hidden');
+						$('.emsginvalidemail').removeClass('hidden');
+						$('.emsginvalidemail').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsginvalidemail').addClass('hidden');
+					$('.emsgcorrectemail').removeClass('hidden');
+					$('.emsgcorrectemail').show();
+				}
+				e.stopPropagation();
+			});
+
+			$('#file-0b').on('keypress keydown keyup',function(e){
+				if (!$(this).val().length == 0 || $(this).val() == undefined) {
+					// there is a mismatch, hence show the error message
+						$('.emsgcorrectbirthcertificate').addClass('hidden');
+						$('.emsginvalidbirthcertificate').removeClass('hidden');
+						$('.emsginvalidbirthcertificate').show();
+					}
+				else{
+					// else, do not display message
+					$('.emsginvalidbirthcertificate').addClass('hidden');
+					$('.emsgcorrectbirthcertificate').removeClass('hidden');
+					$('.emsgcorrectbirthcertificate').show();
+				}
+				e.stopPropagation();
+			});
+
+			function readURL(input) {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
+
+					reader.onload = function (e) {
+						$('#req').attr('src', e.target.result);
+					}
+
+					reader.readAsDataURL(input.files[0]);
+				}
+			}
+					
+			$("#file-0b").change(function () {
+				readURL(this);
+			});
+
 		function validateForm(){
 			$('form').formValidation({
 				framework: 'bootstrap',
@@ -356,98 +538,13 @@ block addjs
 					validating: 'fa fa-spinner'
 				},
 				fields: {
-					lastname: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Last Name`
-								},
-								regexp: {
-									regexp: /^([a-zs ]{2,})+$/i,
-									message: 'Only Aphabetical Characters, Minimum of 2.'
-								},
-						}
-					},
-					firstname: {
-						validators: {
-								notEmpty: {
-										message: `Please Enter Your Last Name`
-								},
-								regexp: {
-									regexp: /^([a-zs ]{2,})+$/i,
-									message: 'Only Aphabetical Characters, Minimum of 2.'
-								},
-						}
-					},
-					middlename: {
-						validators: {
-							regexp: {
-								regexp: /^([a-zs ]{2,})+$/i,
-								message: 'Only Aphabetical Characters, Minimum of 2.'
-							},
-						}
-					},
-					relation: {
-						validators: {
-						notEmpty: {
-										message: `Please Enter Your Relationship with the Ill`
-								},
-							}
-						},
-					//- birthday: {
-					//- 	validators: {
-					//- 	notEmpty: {
-					//- 					message: `Please Enter Your Birthday`
-					//- 			},
-					//- 		}
-					//- 	},
-					birthplace: {
-							validators: {
-									notEmpty: {
-									message: `Please Enter Your Birthplace`
-									},
-									regexp: {
-										regexp: /^([a-zs ]{2,})+$/i,
-										message: 'Only Aphabetical Characters, Minimum of 2.'
-									},
-								}
-							},
-					address: {
-							validators: {
-									notEmpty: {
-									message: `Please Enter Your Address`
-									},
-									regexp: {
-										regexp: /^([a-zs0-9-,. ]{8,})+$/i,
-										message: 'Please Enter A Valid Address'
-									},
-								}
-							},
-					details: {
-							validators: {
-									notEmpty: {
-									message: `Please Enter Cause of Death`
-									},
-									regexp: {
-										regexp: /^([a-zs ]{6,})+$/i,
-										message: 'Only Aphabetical Characters, Minimum of 6.'
-									},
-								}
-							},
 					image: {
 							validators: {
 								notEmpty: {
-									message: `Please Enter Details`
+									message: `Please Enter Your Birth Certificate`
 									},
 								}
 							},
-					//- venue: {
-					//- 		validators: {
-					//- 				regexp: {
-					//- 					regexp: /^([a-zs ]{6,})+$/i,
-					//- 					message: 'Only Aphabetical Characters, Minimum of 6.'
-					//- 				},
-					//- 			}
-					//- 		},
 					},
 				})
 			.on('err.field.fv', function(e, data) {

@@ -660,6 +660,133 @@ adminRouter.use(authMiddleware.adminAuth)
             console.log(results[0])   
         });
     });
+    adminRouter.post('/folderdetails',(req,res)=>{
+        console.log(req.body)
+        // console.log(req.query)
+        var values= req.body.id.split(',')
+        if(values[0]==0){
+            var selectallfiles = `select * from tbl_files 
+            join tbl_filefolders on tbl_filefolders.int_foldernumber = tbl_files.int_folderID
+            left join tbl_requirements on tbl_files.int_requirementID = tbl_requirements.int_requirementID
+            left join tbl_requirementtype on tbl_requirements.int_reqtypeID= tbl_requirementtype.int_reqtypeID
+            left join tbl_services on tbl_requirementtype.int_eventID= tbl_services.int_eventID
+            where tbl_files.int_cabinetID =?`
+            db.query(selectallfiles,[values[1]],(err,results,fields) =>{
+                   // values[i]= results[i].var_fileloc.split('-')
+                if(err) console.log(err)
+                var files = results;
+                console.log(files)
+                for(var i = 0; i < files.length; i++){
+                    files[i].datetime_reqreceived= moment(files[i].datetime_reqreceived, 'YYYY-MM-DD HH:mm:ss').format('MM/DD/YYYY h:mm A')
+                }
+                res.send({files:files})
+            })
+        }
+        else{
+
+            
+            console.log(values)
+            var selectallfiles = `select * from tbl_files 
+            join tbl_filefolders on tbl_filefolders.int_foldernumber = tbl_files.int_folderID
+            left join tbl_requirements on tbl_files.int_requirementID = tbl_requirements.int_requirementID
+            left join tbl_requirementtype on tbl_requirements.int_reqtypeID= tbl_requirementtype.int_reqtypeID
+            left join tbl_services on tbl_requirementtype.int_eventID= tbl_services.int_eventID
+            where tbl_files.int_cabinetID =? and tbl_files.int_divisionID =?`
+            db.query(selectallfiles,[values[1], values[0]],(err,results,fields) =>{
+                if(err) console.log(err)
+                var files = results;
+                console.log(files)
+                for(var i = 0; i < files.length; i++){
+                    files[i].datetime_reqreceived= moment(files[i].datetime_reqreceived, 'YYYY-MM-DD HH:mm:ss').format('MM/DD/YYYY h:mm A');
+                }
+                res.send({files:files})
+            })
+        }
+    })
+    adminRouter.post('/getcabinets',(req,res)=>{
+        var queryString2 = `select * from tbl_filecabinets`
+        db.query(queryString2,(err,results,fields) =>{
+            if(err) console.log(err)
+
+            res.send({cabinets:results})
+        })
+    })
+    adminRouter.get('/receipts',(req,res)=>{
+        console.log(req.query)
+        console.log(req.body)
+        var queryString2 = `select * from tbl_paymenthistory`
+        db.query(queryString2,(err,results,fields) =>{
+            if(err) console.log(err)
+            var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+            var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+            
+                var ors = results;
+                console.log(ors)
+                for(var i = 0; i < ors.length; i++){
+
+                    // reservations[i].date_reservedate= moment(reservations[i].date_reservedate).format('MM/DD/YYYY');
+                    ors[i].date_paymentdate= moment(ors[i].date_paymentdate, 'YYYY-MM-DD').format('MM/DD/YYYY');
+                    // reservations[i].datetime_reserveend= moment(reservations[i].datetime_reserveend, 'HH:mm:ss').format('MM/DD/YYYY h:mm a');
+                }
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+            return res.render('admin/views/queries/OR', {ors:ors,  messages:messages, newmessages:newmessages })
+                    })})
+    })
+    })
+    adminRouter.get('/cabinets',(req,res)=>{
+        console.log(req.query)
+        console.log(req.body)
+
+        var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+        
+        var queryString2 = `select * from tbl_filedivisions where int_cabinetID =?`
+        db.query(queryString2,[req.query.id],(err,results,fields) =>{
+            if(err) console.log(err)
+            var cabinetid=req.query.id
+            var divisions = results
+            var tobepassed=[]
+            var selectallfiles = `select * from tbl_files 
+            join tbl_filefolders on tbl_filefolders.int_foldernumber = tbl_files.int_folderID
+            left join tbl_requirements on tbl_files.int_requirementID = tbl_requirements.int_requirementID
+            left join tbl_requirementtype on tbl_requirements.int_reqtypeID= tbl_requirementtype.int_reqtypeID
+            left join tbl_services on tbl_requirementtype.int_eventID= tbl_services.int_eventID
+            where tbl_files.int_cabinetID =?`
+            db.query(selectallfiles,[req.query.id],(err,results,fields) =>{
+                   // values[i]= results[i].var_fileloc.split('-')
+                if(err) console.log(err)
+                var files = results;
+                console.log(files)
+                for(var i = 0; i < files.length; i++){
+
+                    // reservations[i].date_reservedate= moment(reservations[i].date_reservedate).format('MM/DD/YYYY');
+                    files[i].datetime_reqreceived= moment(files[i].datetime_reqreceived, 'YYYY-MM-DD HH:mm:ss').format('MM/DD/YYYY h:mm A');
+                    // reservations[i].datetime_reserveend= moment(reservations[i].datetime_reserveend, 'HH:mm:ss').format('MM/DD/YYYY h:mm a');
+                }
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        return res.render('admin/views/queries/files', {divisions:divisions, files:files, cabinetid: cabinetid, messages:messages, newmessages:newmessages  })
+                    })})
+        })
+    })
+    })
 //=======================================================
 //PRIESTS
 //=======================================================
@@ -3791,7 +3918,986 @@ adminRouter.get('/reports', (req, res)=>{
 
 
 
-    }); }); }); }); }); });//upto message
+    }); }); }); }); }); 
+});//upto message
+
+
+adminRouter.get('/reports-allreports', (req, res)=>{
+    //count ng lahat ng applications
+    // sum ng payments received within specific time
+
+    // for this month 
+
+
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    // COUNT NG MGA NANGYARI NGAYONG BUWAN
+    var baptismcount =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var specialbaptismcount =`SELECT count(int_eventinfoID) as specialbaptismcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var anointingcount =`SELECT count(int_eventinfoID) as anointingcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var funeralmasscount =`SELECT count(int_eventinfoID) as funeralmasscount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var funeralservicecount =`SELECT count(int_eventinfoID) as funeralservicecount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var marriagecount =`SELECT count(int_eventinfoID) as marriagecount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var houseblessingcount =`SELECT count(int_eventinfoID) as houseblessingcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    //=============================================================================================================================
+
+    //COUNT NG MGA APPLICATION NGAYONG BUWAN
+    var baptismappcount =`SELECT count(int_eventinfoID) as baptismappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var specialbaptismappcount =`SELECT count(int_eventinfoID) as specialbaptismappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var anointingappcount =`SELECT count(int_eventinfoID) as anointingappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var funeralmassappcount =`SELECT count(int_eventinfoID) as funeralmassappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var funeralserviceappcount =`SELECT count(int_eventinfoID) as funeralserviceappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var marriageappcount =`SELECT count(int_eventinfoID) as marriageappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var houseblessingappcount =`SELECT count(int_eventinfoID) as houseblessingappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+
+    //=============================================================================================================================
+
+    // COLLECTION NAMAN 
+    var baptismcollection =`SELECT sum(dbl_paymentamount) as baptismcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var specialbaptismcollection =`SELECT sum(dbl_paymentamount) as specialbaptismcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    
+    var funeralmasscollection =`SELECT sum(dbl_paymentamount) as funeralmasscollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    
+    
+    var marriagecollection =`SELECT sum(dbl_paymentamount) as marriagecollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var anointingcollection = 0
+    var funeralservicecollection =0
+    var houseblessingcollection =0
+
+
+    //=============================================================================================================================
+    //document request
+
+    // LAHAT NG REQUEST NGAYONG BUWAN
+    var docureqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+    join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+    where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docurequested) = MONTH(CURRENT_TIMESTAMP)`
+
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqreqcount =`SELECT count(int_requestID) as docureqreqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docureleased) = MONTH(CURRENT_TIMESTAMP)`
+    
+     // LAHAT NG collection ngayong buwan
+     var docureqcollection =`SELECT sum(dbl_paymentamount) as docureqcollection from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docureleased) = MONTH(CURRENT_TIMESTAMP)`
+ 
+    db.query(baptismcount, (err, baptismcountt, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismcount, (err, specialbaptismcountt, fields) => {
+    if (err) console.log(err);
+    db.query(anointingcount, (err, anointingcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmasscount, (err, funeralmasscountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralservicecount, (err, funeralservicecountt, fields) => {
+    if (err) console.log(err);
+    db.query(marriagecount, (err, marriagecountt, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingcount, (err, houseblessingcountt, fields) => {
+    if (err) console.log(err);
+
+    
+    db.query(baptismappcount, (err, baptismappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismappcount, (err, specialbaptismappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(anointingappcount, (err, anointingappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmassappcount, (err, funeralmassappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralserviceappcount, (err, funeralserviceappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(marriageappcount, (err, marriageappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingappcount, (err, houseblessingappcountt, fields) => {
+    if (err) console.log(err);
+
+    db.query(baptismcollection, (err, baptismcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismcollection, (err, specialbaptismcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(anointingcollection, (err, anointingcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmasscollection, (err, funeralmasscollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(funeralservicecollection, (err, funeralservicecollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(marriagecollection, (err, marriagecollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingcollection, (err, houseblessingcollectionn, fields) => {
+    if (err) console.log(err);
+
+
+    db.query(docureqcount, (err, docureqcountt, fields) => {
+    if (err) console.log(err);
+    db.query(docureqreqcount, (err, docureqreqcountt, fields) => {
+    if (err) console.log(err);
+    db.query(docureqcollection, (err, docureqcollectionn, fields) => {
+    if (err) console.log(err);
+    
+
+    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+        if (err) console.log(err);
+        var newmessages = results[0];
+        console.log(newmessages)
+        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var messages = results;
+            for(i=0;i<messages.length;i++){ 
+                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+            } 
+                
+
+     return res.render('admin/views/reports/allreports',{ 
+         baptismcount : baptismcountt[0], 
+         specialbaptismcount:specialbaptismcountt[0],
+         anointingcount:anointingcountt[0],
+         funeralmasscount:funeralmasscountt[0],
+         funeralservicecount:funeralservicecountt[0],
+         marriagecount:marriagecountt[0],
+         houseblessingcount:houseblessingcountt[0],
+
+         baptismappcount : baptismappcountt[0], 
+         specialbaptismappcount:specialbaptismappcountt[0],
+         anointingappcount:anointingappcountt[0],
+         funeralmassappcount:funeralmassappcountt[0],
+         funeralserviceappcount:funeralserviceappcountt[0],
+         marriageappcount:marriageappcountt[0],
+         houseblessingappcount:houseblessingappcountt[0],
+
+         baptismcollection : baptismcollectionn[0], 
+         specialbaptismcollection:specialbaptismcollectionn[0],
+         anointingcollection:anointingcollectionn,
+         funeralmasscollection:funeralmasscollectionn[0],
+         funeralservicecollection:funeralservicecollectionn,
+         marriagecollection:marriagecollectionn[0],
+         houseblessingcollection:houseblessingcollectionn,
+
+         docureqcount:docureqcountt[0],
+         docureqreqcount:docureqreqcountt[0],
+         docureqcollection:docureqcollectionn[0],
+         messages:messages, newmessages:newmessages
+        
+        });
+
+        
+})})})})})})})
+})})})})})})})
+})})})})})})})
+    })})})
+})})
+})
+
+adminRouter.post('/reports-allreports', (req, res)=>{
+    //count ng lahat ng applications
+    // sum ng payments received within specific time
+
+    // for this month 
+
+
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    // COUNT NG MGA NANGYARI NGAYONG BUWAN
+    var baptismcount =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var specialbaptismcount =`SELECT count(int_eventinfoID) as specialbaptismcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var anointingcount =`SELECT count(int_eventinfoID) as anointingcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var funeralmasscount =`SELECT count(int_eventinfoID) as funeralmasscount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var funeralservicecount =`SELECT count(int_eventinfoID) as funeralservicecount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var marriagecount =`SELECT count(int_eventinfoID) as marriagecount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var houseblessingcount =`SELECT count(int_eventinfoID) as houseblessingcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    //=============================================================================================================================
+
+    //COUNT NG MGA APPLICATION NGAYONG BUWAN
+    var baptismappcount =`SELECT count(int_eventinfoID) as baptismappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var specialbaptismappcount =`SELECT count(int_eventinfoID) as specialbaptismappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var anointingappcount =`SELECT count(int_eventinfoID) as anointingappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var funeralmassappcount =`SELECT count(int_eventinfoID) as funeralmassappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var funeralserviceappcount =`SELECT count(int_eventinfoID) as funeralserviceappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var marriageappcount =`SELECT count(int_eventinfoID) as marriageappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var houseblessingappcount =`SELECT count(int_eventinfoID) as houseblessingappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+
+    //=============================================================================================================================
+
+    // COLLECTION NAMAN 
+    var baptismcollection =`SELECT sum(dbl_paymentamount) as baptismcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var specialbaptismcollection =`SELECT sum(dbl_paymentamount) as specialbaptismcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    
+    var funeralmasscollection =`SELECT sum(dbl_paymentamount) as funeralmasscollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    
+    
+    var marriagecollection =`SELECT sum(dbl_paymentamount) as marriagecollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var anointingcollection = `SELECT sum(dbl_paymentamount) as anointingcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var funeralservicecollection =`SELECT sum(dbl_paymentamount) as funeralservicecollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+    var houseblessingcollection =`SELECT sum(dbl_paymentamount) as houseblessingcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+
+
+    //=============================================================================================================================
+    //document request
+
+    // LAHAT NG REQUEST NGAYONG BUWAN
+    var docureqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+    join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+    where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docurequested) = MONTH(CURRENT_TIMESTAMP)`
+
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqreqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docureleased) = MONTH(CURRENT_TIMESTAMP)`
+    
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqcollection =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docureleased) = MONTH(CURRENT_TIMESTAMP)`
+ 
+    db.query(baptismcount, (err, baptismcountt, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismcount, (err, specialbaptismcountt, fields) => {
+    if (err) console.log(err);
+    db.query(anointingcount, (err, anointingcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmasscount, (err, funeralmasscountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralservicecount, (err, funeralservicecountt, fields) => {
+    if (err) console.log(err);
+    db.query(marriagecount, (err, marriagecountt, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingcount, (err, houseblessingcountt, fields) => {
+    if (err) console.log(err);
+
+    
+    db.query(baptismappcount, (err, baptismappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismappcount, (err, specialbaptismappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(anointingappcount, (err, anointingappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmassappcount, (err, funeralmassappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralserviceappcount, (err, funeralserviceappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(marriageappcount, (err, marriageappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingappcount, (err, houseblessingappcountt, fields) => {
+    if (err) console.log(err);
+
+    db.query(baptismcollection, (err, baptismcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismcollection, (err, specialbaptismcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(anointingcollection, (err, anointingcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmasscollection, (err, funeralmasscollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(funeralservicecollection, (err, funeralservicecollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(marriagecollection, (err, marriagecollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingcollection, (err, houseblessingcollectionn, fields) => {
+    if (err) console.log(err);
+
+
+    db.query(docureqcount, (err, docureqcountt, fields) => {
+    if (err) console.log(err);
+    db.query(docureqreqcount, (err, docureqreqcountt, fields) => {
+    if (err) console.log(err);
+    db.query(docureqcollection, (err, docureqcollectionn, fields) => {
+    if (err) console.log(err);
+    
+
+    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+        if (err) console.log(err);
+        var newmessages = results[0];
+        console.log(newmessages)
+        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var messages = results;
+            for(i=0;i<messages.length;i++){ 
+                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+            } 
+                
+
+     res.send({ 
+         baptismcount : baptismcountt[0], 
+         specialbaptismcount:specialbaptismcountt[0],
+         anointingcount:anointingcountt[0],
+         funeralmasscount:funeralmasscountt[0],
+         funeralservicecount:funeralservicecountt[0],
+         marriagecount:marriagecountt[0],
+         houseblessingcount:houseblessingcountt[0],
+
+         baptismappcount : baptismappcountt[0], 
+         specialbaptismappcount:specialbaptismappcountt[0],
+         anointingappcount:anointingappcountt[0],
+         funeralmassappcount:funeralmassappcountt[0],
+         funeralserviceappcount:funeralserviceappcountt[0],
+         marriageappcount:marriageappcountt[0],
+         houseblessingappcount:houseblessingappcountt[0],
+
+         baptismcollection : baptismcollectionn[0], 
+         specialbaptismcollection:specialbaptismcollectionn[0],
+         anointingcollection:anointingcollectionn,
+         funeralmasscollection:funeralmasscollectionn[0],
+         funeralservicecollection:funeralservicecollectionn,
+         marriagecollection:marriagecollectionn[0],
+         houseblessingcollection:houseblessingcollectionn,
+
+         docureqcount:docureqcountt[0],
+         docureqreqcount:docureqreqcountt[0],
+         docureqcollection:docureqcollectionn[0],
+         messages:messages, newmessages:newmessages
+        
+        });
+
+        
+})})})})})})})
+})})})})})})})
+})})})})})})})
+    })})})
+})})
+})
+
+
+
+adminRouter.post('/reports-weekreports', (req, res)=>{
+    //count ng lahat ng applications
+    // sum ng payments received within specific time
+
+    // for this month 
+
+
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    // COUNT NG MGA NANGYARI NGAYONG BUWAN
+    var baptismcount =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Baptism' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    var specialbaptismcount =`SELECT count(int_eventinfoID) as specialbaptismcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Special Baptism' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    var anointingcount =`SELECT count(int_eventinfoID) as anointingcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    var funeralmasscount =`SELECT count(int_eventinfoID) as funeralmasscount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Mass' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    var funeralservicecount =`SELECT count(int_eventinfoID) as funeralservicecount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    var marriagecount =`SELECT count(int_eventinfoID) as marriagecount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Marriage' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    var houseblessingcount =`SELECT count(int_eventinfoID) as houseblessingcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    //=============================================================================================================================
+
+    //COUNT NG MGA APPLICATION NGAYONG BUWAN
+    var baptismappcount =`SELECT count(int_eventinfoID) as baptismappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Baptism' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+
+    var specialbaptismappcount =`SELECT count(int_eventinfoID) as specialbaptismappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Special Baptism' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+
+    var anointingappcount =`SELECT count(int_eventinfoID) as anointingappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+
+    var funeralmassappcount =`SELECT count(int_eventinfoID) as funeralmassappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Mass' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+
+    var funeralserviceappcount =`SELECT count(int_eventinfoID) as funeralserviceappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+
+    var marriageappcount =`SELECT count(int_eventinfoID) as marriageappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Marriage' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+    
+    var houseblessingappcount =`SELECT count(int_eventinfoID) as houseblessingappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+
+
+    //=============================================================================================================================
+
+    // COLLECTION NAMAN 
+    var baptismcollection =`SELECT sum(dbl_paymentamount) as baptismcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    var specialbaptismcollection =`SELECT sum(dbl_paymentamount) as specialbaptismcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    
+    var funeralmasscollection =`SELECT sum(dbl_paymentamount) as funeralmasscollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    
+    
+    var marriagecollection =`SELECT sum(dbl_paymentamount) as marriagecollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    
+    var anointingcollection = `SELECT sum(dbl_paymentamount) as anointingcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    var funeralservicecollection =`SELECT sum(dbl_paymentamount) as funeralservicecollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Service' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+    var houseblessingcollection =`SELECT sum(dbl_paymentamount) as houseblessingcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'House Blessing' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+
+
+    //=============================================================================================================================
+    //document request
+
+    // LAHAT NG REQUEST NGAYONG BUWAN
+    var docureqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+    join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+    where tbl_serviceutilities.var_servicename = 'Document Request' and WEEK(tbl_documentrequest.date_docurequested) = WEEK(CURRENT_TIMESTAMP)`
+
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqreqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and WEEK(tbl_documentrequest.date_docureleased) = WEEK(CURRENT_TIMESTAMP)`
+    
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqcollection =`SELECT sum(dbl_paymentamount) as docureqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and WEEK(tbl_documentrequest.date_docureleased) = WEEK(CURRENT_TIMESTAMP)`
+ 
+    db.query(baptismcount, (err, baptismcountt, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismcount, (err, specialbaptismcountt, fields) => {
+    if (err) console.log(err);
+    db.query(anointingcount, (err, anointingcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmasscount, (err, funeralmasscountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralservicecount, (err, funeralservicecountt, fields) => {
+    if (err) console.log(err);
+    db.query(marriagecount, (err, marriagecountt, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingcount, (err, houseblessingcountt, fields) => {
+    if (err) console.log(err);
+
+    
+    db.query(baptismappcount, (err, baptismappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismappcount, (err, specialbaptismappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(anointingappcount, (err, anointingappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmassappcount, (err, funeralmassappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralserviceappcount, (err, funeralserviceappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(marriageappcount, (err, marriageappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingappcount, (err, houseblessingappcountt, fields) => {
+    if (err) console.log(err);
+
+    db.query(baptismcollection, (err, baptismcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismcollection, (err, specialbaptismcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(anointingcollection, (err, anointingcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmasscollection, (err, funeralmasscollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(funeralservicecollection, (err, funeralservicecollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(marriagecollection, (err, marriagecollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingcollection, (err, houseblessingcollectionn, fields) => {
+    if (err) console.log(err);
+
+
+    db.query(docureqcount, (err, docureqcountt, fields) => {
+    if (err) console.log(err);
+    db.query(docureqreqcount, (err, docureqreqcountt, fields) => {
+    if (err) console.log(err);
+    db.query(docureqcollection, (err, docureqcollectionn, fields) => {
+    if (err) console.log(err);
+    
+
+    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+        if (err) console.log(err);
+        var newmessages = results[0];
+        console.log(newmessages)
+        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var messages = results;
+            for(i=0;i<messages.length;i++){ 
+                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+            } 
+                
+
+     res.send({ 
+         baptismcount : baptismcountt[0], 
+         specialbaptismcount:specialbaptismcountt[0],
+         anointingcount:anointingcountt[0],
+         funeralmasscount:funeralmasscountt[0],
+         funeralservicecount:funeralservicecountt[0],
+         marriagecount:marriagecountt[0],
+         houseblessingcount:houseblessingcountt[0],
+
+         baptismappcount : baptismappcountt[0], 
+         specialbaptismappcount:specialbaptismappcountt[0],
+         anointingappcount:anointingappcountt[0],
+         funeralmassappcount:funeralmassappcountt[0],
+         funeralserviceappcount:funeralserviceappcountt[0],
+         marriageappcount:marriageappcountt[0],
+         houseblessingappcount:houseblessingappcountt[0],
+
+         baptismcollection : baptismcollectionn[0], 
+         specialbaptismcollection:specialbaptismcollectionn[0],
+         anointingcollection:anointingcollectionn,
+         funeralmasscollection:funeralmasscollectionn[0],
+         funeralservicecollection:funeralservicecollectionn,
+         marriagecollection:marriagecollectionn[0],
+         houseblessingcollection:houseblessingcollectionn,
+
+         docureqcount:docureqcountt[0],
+         docureqreqcount:docureqreqcountt[0],
+         docureqcollection:docureqcollectionn[0],
+         messages:messages, newmessages:newmessages
+        
+        });
+
+        
+})})})})})})})
+})})})})})})})
+})})})})})})})
+    })})})
+})})
+})
+
+
+
+adminRouter.post('/reports-dayreports', (req, res)=>{
+    //count ng lahat ng applications
+    // sum ng payments received within specific time
+
+    // for this month 
+
+    var datenow = new Date();
+    var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+    console.log(dateNow)
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    // COUNT NG MGA NANGYARI NGAYONG BUWAN
+    var baptismcount =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Baptism' and tbl_eventinfo.date_eventdate=?`
+
+    var specialbaptismcount =`SELECT count(int_eventinfoID) as specialbaptismcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Special Baptism' and tbl_eventinfo.date_eventdate=?`
+
+    var anointingcount =`SELECT count(int_eventinfoID) as anointingcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and tbl_eventinfo.date_eventdate=?`
+
+    var funeralmasscount =`SELECT count(int_eventinfoID) as funeralmasscount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Mass' and tbl_eventinfo.date_eventdate=?`
+
+    var funeralservicecount =`SELECT count(int_eventinfoID) as funeralservicecount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and tbl_eventinfo.date_eventdate=?`
+
+    var marriagecount =`SELECT count(int_eventinfoID) as marriagecount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Marriage' and tbl_eventinfo.date_eventdate=?`
+
+    var houseblessingcount =`SELECT count(int_eventinfoID) as houseblessingcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and tbl_eventinfo.date_eventdate=?`
+
+    //=============================================================================================================================
+
+    //COUNT NG MGA APPLICATION NGAYONG BUWAN
+    var baptismappcount =`SELECT count(int_eventinfoID) as baptismappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Baptism' and tbl_eventinfo.date_applied=?`
+
+    var specialbaptismappcount =`SELECT count(int_eventinfoID) as specialbaptismappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Special Baptism' and tbl_eventinfo.date_applied=?`
+
+    var anointingappcount =`SELECT count(int_eventinfoID) as anointingappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and tbl_eventinfo.date_applied=?`
+
+    var funeralmassappcount =`SELECT count(int_eventinfoID) as funeralmassappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Mass' and tbl_eventinfo.date_applied=?`
+
+    var funeralserviceappcount =`SELECT count(int_eventinfoID) as funeralserviceappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and tbl_eventinfo.date_applied=?`
+
+    var marriageappcount =`SELECT count(int_eventinfoID) as marriageappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Marriage' and tbl_eventinfo.date_applied=?`
+    
+    var houseblessingappcount =`SELECT count(int_eventinfoID) as houseblessingappcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and tbl_eventinfo.date_applied=?`
+
+
+    //=============================================================================================================================
+
+    // COLLECTION NAMAN 
+    var baptismcollection =`SELECT sum(dbl_paymentamount) as baptismcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and tbl_eventinfo.date_eventdate=?`
+
+    var specialbaptismcollection =`SELECT sum(dbl_paymentamount) as specialbaptismcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and tbl_eventinfo.date_eventdate=?`
+
+    
+    var funeralmasscollection =`SELECT sum(dbl_paymentamount) as funeralmasscollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and tbl_eventinfo.date_eventdate=?`
+    
+    
+    var marriagecollection =`SELECT sum(dbl_paymentamount) as marriagecollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and tbl_eventinfo.date_eventdate=?`
+    
+    var anointingcollection = `SELECT sum(dbl_paymentamount) as anointingcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and tbl_eventinfo.date_eventdate=?`
+
+    var funeralservicecollection =`SELECT sum(dbl_paymentamount) as funeralservicecollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Service' and tbl_eventinfo.date_eventdate=?`
+
+    var houseblessingcollection =`SELECT sum(dbl_paymentamount) as houseblessingcollection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'House Blessing' and tbl_eventinfo.date_eventdate=?`
+
+
+    //=============================================================================================================================
+    //document request
+
+    // LAHAT NG REQUEST NGAYONG BUWAN
+    
+    var docureqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+    join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+    where tbl_serviceutilities.var_servicename = 'Document Request' and tbl_documentrequest.date_docurequested=?`
+
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqreqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and tbl_documentrequest.date_docureleased=?`
+    
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqcollection =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and tbl_documentrequest.date_docureleased=?`
+ 
+    db.query(baptismcount, [dateNow],(err, baptismcountt, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismcount, [dateNow],(err, specialbaptismcountt, fields) => {
+    if (err) console.log(err);
+    db.query(anointingcount, [dateNow],(err, anointingcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmasscount, [dateNow],(err, funeralmasscountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralservicecount, [dateNow],(err, funeralservicecountt, fields) => {
+    if (err) console.log(err);
+    db.query(marriagecount, [dateNow],(err, marriagecountt, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingcount, [dateNow],(err, houseblessingcountt, fields) => {
+    if (err) console.log(err);
+
+    
+    db.query(baptismappcount, [dateNow],(err, baptismappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismappcount, [dateNow],(err, specialbaptismappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(anointingappcount, [dateNow],(err, anointingappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmassappcount, [dateNow],(err, funeralmassappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(funeralserviceappcount, [dateNow],(err, funeralserviceappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(marriageappcount, [dateNow],(err, marriageappcountt, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingappcount, [dateNow],(err, houseblessingappcountt, fields) => {
+    if (err) console.log(err);
+
+    db.query(baptismcollection, [dateNow],(err, baptismcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(specialbaptismcollection, [dateNow],(err, specialbaptismcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(anointingcollection, [dateNow],(err, anointingcollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(funeralmasscollection, [dateNow],(err, funeralmasscollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(funeralservicecollection, [dateNow],(err, funeralservicecollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(marriagecollection, [dateNow],(err, marriagecollectionn, fields) => {
+    if (err) console.log(err);
+    db.query(houseblessingcollection, [dateNow],(err, houseblessingcollectionn, fields) => {
+    if (err) console.log(err);
+
+
+    db.query(docureqcount, [dateNow],(err, docureqcountt, fields) => {
+    if (err) console.log(err);
+    db.query(docureqreqcount, [dateNow],(err, docureqreqcountt, fields) => {
+    if (err) console.log(err);
+    db.query(docureqcollection, [dateNow],(err, docureqcollectionn, fields) => {
+    if (err) console.log(err);
+    
+
+    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+        if (err) console.log(err);
+        var newmessages = results[0];
+        console.log(newmessages)
+        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var messages = results;
+            for(i=0;i<messages.length;i++){ 
+                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+            } 
+                
+
+     res.send({ 
+         baptismcount : baptismcountt[0], 
+         specialbaptismcount:specialbaptismcountt[0],
+         anointingcount:anointingcountt[0],
+         funeralmasscount:funeralmasscountt[0],
+         funeralservicecount:funeralservicecountt[0],
+         marriagecount:marriagecountt[0],
+         houseblessingcount:houseblessingcountt[0],
+
+         baptismappcount : baptismappcountt[0], 
+         specialbaptismappcount:specialbaptismappcountt[0],
+         anointingappcount:anointingappcountt[0],
+         funeralmassappcount:funeralmassappcountt[0],
+         funeralserviceappcount:funeralserviceappcountt[0],
+         marriageappcount:marriageappcountt[0],
+         houseblessingappcount:houseblessingappcountt[0],
+
+         baptismcollection : baptismcollectionn[0], 
+         specialbaptismcollection:specialbaptismcollectionn[0],
+         anointingcollection:anointingcollectionn,
+         funeralmasscollection:funeralmasscollectionn[0],
+         funeralservicecollection:funeralservicecollectionn,
+         marriagecollection:marriagecollectionn[0],
+         houseblessingcollection:houseblessingcollectionn,
+
+         docureqcount:docureqcountt[0],
+         docureqreqcount:docureqreqcountt[0],
+         docureqcollection:docureqcollectionn[0],
+         messages:messages, newmessages:newmessages
+        
+        });
+
+        
+})})})})})})})
+})})})})})})})
+})})})})})})})
+    })})})
+})})
+})
 
 
 //=======================================================
@@ -3802,7 +4908,8 @@ adminRouter.get('/queries-services', (req, res)=>{
         var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
         
     var queryString1 =`SELECT * FROM tbl_eventinfo
-    JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+    left JOIN tbl_user on tbl_eventinfo.int_userID =tbl_user.int_userID
+    left JOIN tbl_tempuser on tbl_eventinfo.int_tempuserID =tbl_tempuser.int_tempuserID
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID  
         JOIN tbl_relation on tbl_eventinfo.int_eventinfoID =tbl_relation.int_eventinfoID
         order by tbl_services.var_eventname
@@ -3829,44 +4936,14 @@ adminRouter.get('/queries-services', (req, res)=>{
                 }); }); 
 }); 
 });
-adminRouter.get('/queries-facilityreservation', (req, res)=>{
-    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
-        var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
-        
-    var queryString1 =`SELECT * FROM tbl_facilityreservation
-        JOIN tbl_user on tbl_facilityreservation.int_userID =tbl_user.int_userID
-        JOIN tbl_facility on tbl_facilityreservation.int_facilityID =tbl_facility.int_facilityID
-        order by tbl_facilityreservation.int_reservationID
-        `
-    db.query(queryString1, (err, results, fields) => {
-        if (err) console.log(err);       
-        var queries = results;
-        for(i=0;i<queries.length;i++){ 
-            queries[i].datetime_reservestart=moment(queries[i].datetime_reservestart).format('MM/DD/YYYY hh:mm A')
-            queries[i].datetime_reserveend=moment(queries[i].datetime_reserveend).format('MM/DD/YYYY hh:mm A')
-            
-            }     
-            db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
-                if (err) console.log(err);
-                var newmessages = results[0];
-                console.log(newmessages)
-                db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
-                    if (err) console.log(err);
-                    var messages = results;
-                    for(i=0;i<messages.length;i++){ 
-                        messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
-                    } 
 
-                    return res.render('admin/views/queries/specialservices/facility',{ queries : queries, messages:messages, newmessages:newmessages});
-                }); });
-}); 
-});
 adminRouter.get('/queries-documentrequest', (req, res)=>{
     var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
         var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
         
     var queryString1 =`SELECT * FROM tbl_documentrequest
-        JOIN tbl_user on tbl_documentrequest.int_userID =tbl_user.int_userID
+        left JOIN tbl_user on tbl_documentrequest.int_userID =tbl_user.int_userID
+        left JOIN tbl_tempuser on tbl_documentrequest.int_tempuserID =tbl_tempuser.int_tempuserID
         JOIN tbl_document on tbl_documentrequest.int_documentID =tbl_document.int_documentID
         order by tbl_documentrequest.int_requestID
         `
@@ -3909,7 +4986,8 @@ adminRouter.get('/queries-houseblessing', (req, res)=>{
         var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
         
     var queryString1 =`SELECT * FROM tbl_houseblessing
-        JOIN tbl_user on tbl_houseblessing.int_userID =tbl_user.int_userID
+        left JOIN tbl_user on tbl_houseblessing.int_userID =tbl_user.int_userID
+        left JOIN tbl_tempuser on tbl_houseblessing.int_tempuserID =tbl_tempuser.int_tempuserID
         order by tbl_houseblessing.int_houseblessID
         `
     db.query(queryString1, (err, results, fields) => {

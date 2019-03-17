@@ -23,36 +23,36 @@ block prepend main
 					.col-md-12.form-wizard.px-0.mx-auto
 						.form-group
 							#calendarPriest
-				.row.appo
-					.col-md-12.form-wizard.pr-0
-						.table-responsive
-							table.table.text-center
-								thead
-									tr
-										th #
-										th Event Type
-										//- th Parishioner
-										th Schedule
-										//- th Venue
-										th Actions
-								tbody
-									each detail in details
-										tr.text-center
-											td=detail.int_eventinfoID
-											td=detail.var_eventname
-											//- td=detail.varlast
-											td=detail.date_eventdate
-											//- td=detail.location
-											td.td-actions
-												button.viewButton(type="button" ,value=`${detail.int_eventinfoID}`).btn.btn-primary.btn-sm
-													| View
-												| &nbsp;
-												button.btn.btn-success.btn-sm.acceptButton(type='button',value=`${detail.int_eventinfoID}`)
-													| Accept
-												| &nbsp;
-												button.btn.btn-danger.btn-sm.cancelButton(type='button',value=`${detail.int_eventinfoID}`) 
-													| Cancel
-												| &nbsp;
+				//- .row.appo
+				//- 	.col-md-12.form-wizard.pr-0
+				//- 		.table-responsive
+				//- 			table.table.text-center
+				//- 				thead
+				//- 					tr
+				//- 						th #
+				//- 						th Event Type
+				//- 						//- th Parishioner
+				//- 						th Schedule
+				//- 						//- th Venue
+				//- 						th Actions
+				//- 				tbody
+				//- 					each detail in details
+				//- 						tr.text-center
+				//- 							td=detail.int_eventinfoID
+				//- 							td=detail.var_eventname
+				//- 							//- td=detail.varlast
+				//- 							td=detail.date_eventdate
+				//- 							//- td=detail.location
+				//- 							td.td-actions
+				//- 								button.viewButton(type="button" ,value=`${detail.int_eventinfoID}`).btn.btn-primary.btn-sm
+				//- 									| View
+				//- 								| &nbsp;
+				//- 								button.btn.btn-success.btn-sm.acceptButton(type='button',value=`${detail.int_eventinfoID}`)
+				//- 									| Accept
+				//- 								| &nbsp;
+				//- 								button.btn.btn-danger.btn-sm.cancelButton(type='button',value=`${detail.int_eventinfoID}`) 
+				//- 									| Cancel
+				//- 								| &nbsp;
 
 	#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
 		.modal-dialog(role='document')
@@ -95,7 +95,7 @@ block addjs
 				var id = $(this).val();
 				console.log(id)
 				swal({
-					title: 'Are you sure you want to accept the event?',
+					title: 'Are you sure you want to decline the event?',
 					text: "You won't be able to revert this!",
 					type: 'warning',
 					showCancelButton: true,
@@ -195,17 +195,17 @@ block addjs
 			},
 				})
 				$.get('/priest/priestSchedule').done(data=>{
-					for(i=0;i<data.length;i++){
-					var dateEvent = moment(data[i].date_eventdate).format('MM/DD/YYYY');
-					var time_start = data[i].time_eventstart = moment(data[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
-					var time_end = moment(data[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+					for(i=0;i<data.schedules.length;i++){
+					var dateEvent = moment(data.schedules[i].date_eventdate).format('MM/DD/YYYY');
+					var time_start = data.schedules[i].time_eventstart = moment(data.schedules[i].time_eventstart,'hh:mm:ss').format('hh:mm a');
+					var time_end = moment(data.schedules[i].time_eventstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
 					console.log(time_end)
 					console.log(dateEvent)
-					console.log(data[i].time_eventstart)
-					console.log(data[i].char_approvalstatus)
-						if(data[i].char_approvalstatus == "Pending"){
+					console.log(data.schedules[i].time_eventstart)
+					console.log(data.schedules[i].char_approvalstatus)
+						if(data.schedules[i].char_approvalstatus == "Pending"){
 							$('#calendarPriest').fullCalendar('renderEvent', {
-							title:`${data[i].var_eventname}`,
+							title:`${data.schedules[i].var_eventname}`,
 							start: `${dateEvent} ${time_start}`,
 							end: `${dateEvent} ${time_end}`,
 							allDay: false,
@@ -213,16 +213,33 @@ block addjs
 							textColor: "white",
 							});
 						}
-						else if(data[i].char_approvalstatus == "Approved"){
+						else if(data.schedules[i].char_approvalstatus == "Approved"){
 							$('#calendarPriest').fullCalendar('renderEvent', {
-							title:`${data[i].var_eventname}`,
+							title:`${data.schedules[i].var_eventname}`,
 							start: `${dateEvent} ${time_start}`,
 							end: `${dateEvent} ${time_end}`,
 							allDay: false,
 							color:'green',
 							textColor: "white",
-							});
+							},true);
 						}
+
+					}
+					for(i=0;i<data.mass.length;i++){
+					var dateEvent = moment(data.mass[i].date_massdate).format('MM/DD/YYYY');
+					var time_start = data.mass[i].time_eventstart = moment(data.mass[i].time_massstart,'hh:mm:ss').format('hh:mm a');
+					var time_end = moment(data.mass[i].time_massstart,'hh:mm:ss').add(1,'hour').format('hh:mm a');
+					console.log(time_end)
+					console.log(dateEvent)
+					console.log(data.mass[i].time_massstart)
+							$('#calendarPriest').fullCalendar('renderEvent', {
+							title:`Regular Mass`,
+							start: `${dateEvent} ${time_start}`,
+							end: `${dateEvent} ${time_end}`,
+							allDay: false,
+							color:'red',
+							textColor: "white",
+							},true);
 
 					}
 				})

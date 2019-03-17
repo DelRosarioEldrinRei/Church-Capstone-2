@@ -102,7 +102,11 @@ block addjs
         //- $('#calendar').fullCalendar()
         //- $('#second').fullCalendar()
         //- $('#third').fullCalendar()
-
+        var queryKo = !{JSON.stringify(rendered)}
+        console.log(queryKo.rendered)
+        
+        var ctr=0;
+        console.log($('#rendered').val())
         $('#calendar').fullCalendar({
             header: {
                 left: 'title',
@@ -157,23 +161,34 @@ block addjs
         }
         console.log($('#typee').val())
         if($('#typee').val() == "All"){
+        var newScheds =[];
         $.get('/secretariat/all').done(data=>{
         console.log(data.schedules)
         var today = new Date();
-        //- if(new Date(today.getFullYear(),today.getMonth()+1,0).getDate() == today.getDate()){
+        if(new Date(today.getFullYear(),today.getMonth()+1,0).getDate() == today.getDate()){
         var numOfDays = new Date(today.getFullYear(),today.getMonth()+2,0).getDate();
         for(i=1;i<=numOfDays;i++){
             var currDate = new Date();
             currDate.setMonth(currDate.getMonth()+1)
             currDate.setDate(i);
             if(currDate.getDay() == 0){
-                console.log(currDate)
+                console.log(currDate.getMonth())
                 $.post('/secretariat/regularmass',{currDate:currDate}).done(data=>{
                     console.log(data)
+                    if(data == true){
+                    }
                 })
             }
+            console.log(i,numOfDays)
+            if(i == numOfDays){
+                if(queryKo.rendered != 1){
+                alert('Schedules of Masses for next month is ready!')
+                location.href=`/secretariat/?rendered=1`;
+                }
+            }
+
         }
-        //- }
+        }
         for(i=0;i<data.schedules.length;i++){
             
             var dateevent = moment(data.schedules[i].date_eventdate).format('MM/DD/YYYY');
@@ -194,7 +209,7 @@ block addjs
                 color:'green',
                 overlap: false,
                 droppable:true
-            });
+            },true);
             }
             else{
                 $('#calendar').fullCalendar('renderEvent', {
@@ -206,10 +221,27 @@ block addjs
                 color:'red',
                 overlap: false,
                 droppable:true
-            }); 
+            },true); 
             }
 
         }
+        for(let j=0;j<data.mass.length;j++){
+            var dateevent = moment(data.mass[j].date_massdate).format('MM/DD/YYYY');
+            var timestart= moment(data.mass[j].time_massstart,'HH:mm:ss').format('hh:mm a')
+            var timeend = moment(timestart,'HH:mm:ss').add('h',1).format('hh:mm a')
+            //- console.log("mass "+dateevent,timestart,timeend)
+            $('#calendar').fullCalendar('renderEvent', {
+                title: 'Regular Mass',
+                start: `${dateevent} ${timestart}`,
+                end: `${dateevent} ${timeend}`,
+                allDay: false,
+                id:1,
+                color:'green',
+                overlap: false,
+                droppable:true
+            },true)
+        }
+
         })
         }
         

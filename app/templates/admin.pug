@@ -129,7 +129,11 @@ html
 								span.title Reports
 								span.arrow
 									i.ti-angle-right
+							
 							ul.dropdown-menu
+								li
+									a.sidebar-link(href='/admin/reports-allreports') All Reports
+										
 								li.nav-item.dropdown
 									a.dropdown-toggle(href='javascript:void(0);')
 										span.icon-holder
@@ -171,9 +175,7 @@ html
 													a.sidebar-link(href='/admin/reports-documentrequest') Document Request
 										//- li
 										//- 	a.sidebar-link(href='/admin/reports-houseblessing') House Blessing
-								//- li
-								//- 	a.sidebar-link(href='/admin/reports-documentrequest') Daily
-										
+								
 
 						li.nav-item.dropdown
 							a.dropdown-toggle(href='javascript:void(0);')
@@ -196,8 +198,8 @@ html
 										//- 	a.sidebar-link(href='/admin/queries-facilityreservation') Facility Reservation
 										li
 											a.sidebar-link(href='/admin/queries-documentrequest') Document Request
-										//- li
-										//- 	a.sidebar-link(href='/admin/queries-houseblessing') House Blessing
+										li
+											a.sidebar-link(href='/admin/queries-houseblessing') House Blessing
 								li.nav-item.dropdown
 									a.dropdown-toggle(href='javascript:void(0);')
 										span.icon-holder
@@ -211,6 +213,23 @@ html
 											a.sidebar-link(href='/admin/queries-priests') Priests
 										li
 											a.sidebar-link(href='/admin/queries-tempusers') Temporary Users
+								li.nav-item.dropdown
+									a.dropdown-toggle(href='javascript:void(0);')
+										span.icon-holder
+										span.title Files
+										span.arrow
+											i.ti-angle-right
+									ul.dropdown-menu
+										li.nav-item.dropdown
+											a.dropdown-toggle#filesbutton(href='javascript:void(0);')
+												span.icon-holder
+													
+												span.title All Files
+												span.arrow
+													i.ti-angle-right
+											ul.dropdown-menu#cabinetappend
+										li
+											a.sidebar-link(href='/admin/receipts') Receipts
 						
 						li.nav-item.dropdown
 							//- a.dropdown-toggle(href='/admin/utilities')
@@ -321,5 +340,19 @@ html
 			//- style: 'primary',
 			event: 'click',
 			hideOnClick: true
+		});
+		$('#filesbutton').click(function() {
+		console.log('napindot na si files')
+		$('#cabinetappend').empty()
+			$.post('/admin/getcabinets').done(data =>{
+				console.log(data)
+				console.log('eyy')
+				
+			for(var i=0; i< data.cabinets.length; i++){
+				$('#cabinetappend').append(`
+					<li><a href="/admin/cabinets?id=${data.cabinets[i].int_cabinetID}">${data.cabinets[i].var_cabinetname}</a></li>
+				`)
+			}
+			})
 		});
 	block addjs

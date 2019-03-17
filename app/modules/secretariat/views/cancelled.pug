@@ -82,11 +82,7 @@ block prepend main
 																						#toolbar-options.hidden
 																							a.viewButton(href='#')
 																								i.ti-file(style="color:white;")
-																							a.updateButton(href='#')
-																								i.ti-pencil(style="color:white;")
-																							a.updateReqButton(href='#')
-																								i.ti-new-window(style="color:white;")
-
+																							
 
 
 	
@@ -148,7 +144,7 @@ block addjs
 			})
 			$('.viewButton').click(function(){
 				console.log(idNow)
-				$.post('/secretariat/transaction-cancel/query',{id:idNow}).done(data =>{
+				$.post('/secretariat/transaction-cancel',{id:idNow}).done(data =>{
 					var dateRequested = moment(data.results.date_eventdate).format('MMMM DD, YYYY')
 					
 					var timeRequested = moment(data.results.time_eventstart,'HH:mm:ss').format('hh:mm A')
@@ -167,11 +163,7 @@ block addjs
 					
 					`)
 					console.log(data.requirements)
-					//- for(i=0;i<data.requirements.length;i++){
-					//- $(`#reqAppend`).append(`
-					//- 	<a class="image-link" href="${data.requirements[i].var_reqpath}" title="${data.requirements[i].var_reqname}"><img class="size" src="${data.requirements[i].var_reqpath}"/></a>
-					//- `)
-					//- }
+					
 					$('#viewModal').modal('show')
 					$('#viewModal').on('hidden.bs.modal',function(){
 						$('#viewBodyAppend').empty()

@@ -42,7 +42,8 @@ html
 						//- 	img.rounded-circle.border.border-dark.pos-a.centerXY(src='/Helium/img/churchiconblack.png', alt=''  style="width: 5rem")
 				.col-12.col-md-5.peer.pX-40.pY-40.h-100.bgc-white.scrollable.pos-r(style='min-width: 320px;')
 					h3.c-grey-900.mB-10 
-						img.rounded-circle.shadow2(src='/Helium/img/INLPP.png', alt=''  style="width: 3.5rem")
+						a.navbar-brand.m-0(href='/guest')
+								img.rounded-circle.shadow2(src='/Helium/img/INLPP.png', alt='' style="width: 3.5rem")
 						|  Register
 					form.form(method='POST', action='/signup' novalidate)
 						.form-group
@@ -115,18 +116,6 @@ html
 									.text-danger.d-inline *
 								input.form-control(type='password' name='confirmpassword' placeholder="Re-enter Password" required)
 								.invalid-feedback Please re-enter your password.
-							.form-check
-								label.form-check-label
-								input.form-check-input(type='checkbox', value='', required)
-								span.form-check-sign
-									span.check
-									| I agree to the 
-									a(href='#something') terms and conditions
-									| .
-									.text-danger.d-inline
-									//-  *	mysql-init.txt.
-
-								.invalid-feedback You must agree to our terms and conditions
 								.text-center
 									button.btn.btn-primary.mt-3(id='hello' type='submit') Submit
 							.form-group
@@ -156,8 +145,8 @@ html
 									message: 'Please Enter Your Username',
 								},
 								regexp: {
-										regexp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
-										message: 'Minimum six characters, at least one uppercase letter, one lowercase letter, one number and one special character. Valid Special Characters [@$!%*?&]'
+										regexp: /^[A-Za-z\d@$!%*?&]{6,}$/,
+										message: 'Minimum 6 characters, Valid Special Characters [@$!%*?&]'
 								},
 							remote: {
 								url: `/signup/username/query`,
@@ -259,8 +248,8 @@ html
 										message: 'The password and its confirm are not the same.'
 									},
 									regexp: {
-										regexp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-										message: 'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.'
+										regexp: /^[A-Za-z\d@$!%*?&]{6,}$/,
+										message: 'Minimum 6 characters, Valid Special Characters [@$!%*?&]'
 									},
 							}
 						},
@@ -268,7 +257,11 @@ html
 							validators: {
 									notEmpty: {
 											message: `Please Re-enter Your Password`
-									}
+									},
+									identical: {
+										field: 'password',
+										message: 'The password and its confirm are not the same.'
+									},
 							}
 						},
 					},

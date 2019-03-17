@@ -23,14 +23,19 @@ priestRouter.get('/', (req, res)=>{
     var queryString1 =`SELECT * FROM tbl_eventinfo
     JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
     where tbl_eventinfo.int_userpriestID = ? AND tbl_eventinfo.bool_priestapproval = 0`
+
     db.query(queryString1,[req.session.priest.int_userID], (err, results, fields) => {
         if (err) console.log(err);
         details=results;
         for(i=0; i < details.length; i++){
             details[i].date_eventdate = moment(details[i].date_eventdate).format('YYYY-MM-DD');
         }
-        return res.render('priest/views/appointments',{ details : details});
         
+
+            return res.render('priest/views/appointments',{ details : details});
+        
+        
+
     });
 });
 
@@ -64,9 +69,12 @@ priestRouter.get('/priestSchedule', (req, res)=>{
     JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
     WHERE tbl_user.int_userID = ? AND tbl_services.var_eventname != "Baptism" AND tbl_eventinfo.bool_priestapproval=1`
     db.query(queryString,[req.session.userID],(err,results,fields)=>{
+        var queryString2 =`select * from tbl_mass where int_priestID = ${req.session.priest.int_userID}`
+        db.query(queryString2,(err,results2)=>{    
         console.log(results)
         console.log(req.session.userID)
-        res.send(results)
+        res.send({schedules:results,mass:results2})
+        })
     })
 });
 
@@ -86,10 +94,12 @@ priestRouter.get('/priestRegularSchedule', (req, res)=>{
 priestRouter.post('/queryConfirmAppointment', (req,res)=>{
     var queryString1 = `UPDATE tbl_eventinfo SET bool_priestapproval=? where int_eventinfoID = ?`
     db.query(queryString1,[1,req.body.id],(err,results,fields)=>{
+        var queryString1 = `UPDATE tbl_schedule SET var_schedulestatus=? where int_eventinfoID = ?`
+    db.query(queryString1,['Confirmed',req.body.id],(err,results,fields)=>{
 
         if(err) throw err;
         return res.redirect('/priest');
-        
+    })
     })
 });
 

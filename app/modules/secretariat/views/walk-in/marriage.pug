@@ -15,75 +15,51 @@ block prepend main
 			}
 
 	main.bgc-grey-100
-		#raised-section.main.main-raised
-		section.form-box
-			.container
 				.row
-					.col-md-12.form-wizard.shadow3
+					.col-md-12.form-wizard
 						form#form(action="/guest/marriage/form" method="post" enctype="multipart/form-data")
 								
 								fieldset
 									h4.label-control Contact Details
 									.row
-										
-										.form-group.col-md-6
+										.col-md-6
+											.row
+												.col-md-12
+													.form-group
+														label Last Name
+															.text-danger.d-inline *
+														input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+												.col-md-12
+													.form-group
+														label First Name
+															.text-danger.d-inline *
+														input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
+												.col-md-12
+													.form-group
+														label Address
+															.text-danger.d-inline *
+														input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+												.col-md-12
+													.form-group
+														label Contact Number
+															.text-danger.d-inline *
+														input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
+												.col-md-12
+													.form-group
+														label Email Address
+															.text-danger.d-inline *
+														input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
+										.col-md-6
 											.form-group
-												label Last Name
-													.text-danger.d-inline *
-												input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-												.invalid-feedback Please re-enter your valid last name.
-
-										.form-group.col-md-6
-											.form-group
-												.invalid-feedback Please re-enter your valid last name.
-												label First Name
-													.text-danger.d-inline *
-												input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
-												.invalid-feedback Please provide a valid first name.
-									.row
-										.form-group.col-md-12
-											.form-group
-												label Address
-													.text-danger.d-inline *
-												input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-												.invalid-feedback Please re-enter your valid first name. 
-
-									.row
-										.form-group.col-md-6
-											.form-group
-												label Contact Number
-													.text-danger.d-inline *
-												input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-												.invalid-feedback Please re-enter your valid contact number.
-
-										.form-group.col-md-6
-											.form-group
-												.invalid-feedback Please re-enter your valid contact number.
-												label Email Address
-													.text-danger.d-inline *
-												input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
-												.invalid-feedback Please provide a valid email address
+												label.label-control Schedule Date
+													.text-danger.d-inline  *
+												#calendarMarriage
 									hr
-									h5.label-control Request Details
-									h4
-										.d-none.d-sm-inline Schedule: 
-										
-											
-										.row
-											.col-md-4
-												.form-group
-													h6.label-control Schedule Date
-														.text-danger.d-inline  *
-															#calendarMarriage
-										
 								// Form Step 2 GROOM
 								fieldset
 									h4
 										.d-none.d-sm-inline Groom's Form: 
-										
 									.form-group
-										br
-										.container
 											h6.label-control Name
 												.text-danger.d-inline  *
 											.row
@@ -118,7 +94,7 @@ block prepend main
 															.text-danger.d-inline  *
 														//- input.form-control#gnationality(type='text' name='gnationality' value='Filipino')
 														//- .help-block.with-errors
-														select#gnationality(type="text" name='gnationality')
+														select.form-control#gnationality(type="text" name='gnationality')
 															option Afghan
 															option Albanian
 															option Algerian
@@ -244,7 +220,7 @@ block prepend main
 															.form-group
 																h6.label-control Civil Status
 																	.text-danger.d-inline  *
-																select#gcivilstatus(type="text" name='gcivilstatus')
+																select#gcivilstatus.form-control(type="text" name='gcivilstatus')
 																	option Single
 																	option Married
 																	option Divorced
@@ -279,7 +255,7 @@ block prepend main
 													.form-group
 														h6.label-control Father's Religion
 															.text-danger.d-inline  *
-														select#gfatherreligion(type="text" name='gfatherreligion')
+														select#gfatherreligion.form-control(type="text" name='gfatherreligion')
 															option Catholic
 															option Non-Catholic
 															option Non-Christion
@@ -301,7 +277,7 @@ block prepend main
 													.form-group
 														h6.label-control Mother's Religion
 															.text-danger.d-inline  *
-														select#gmotherreligion(type="text" name='gmotherreligion')
+														select#gmotherreligion.form-control(type="text" name='gmotherreligion')
 															option Catholic
 															option Non-Catholic
 															option Non-Christion
@@ -312,7 +288,7 @@ block prepend main
 													.form-group
 														h6.label-control Religion
 															.text-danger.d-inline  *
-														select#greligion(type="text" name='greligion' )
+														select#greligion.form-control(type="text" name='greligion' )
 															option Catholic
 															option Non-Catholic
 															option Non-Christion
@@ -407,8 +383,6 @@ block prepend main
 										.d-none.d-sm-inline Bride's Form: 
 										
 									.form-group
-										br
-										.container
 											h6.label-control Name:
 												.text-danger.d-inline  *
 											.row
@@ -441,7 +415,7 @@ block prepend main
 													.form-group
 														h6.label-control Nationality:
 															.text-danger.d-inline  *
-														select#bnationality(type="text" name='bnationality')
+														select#bnationality.form-control(type="text" name='bnationality')
 															option Afghan
 															option Albanian
 															option Algerian
@@ -567,7 +541,7 @@ block prepend main
 															.form-group
 																h6.label-control Civil Status
 																	.text-danger.d-inline  *
-																select#bcivilstatus(type="text" name='bcivilstatus')
+																select#bcivilstatus.form-control(type="text" name='bcivilstatus')
 																	option Single
 																	option Married
 																	option Divorced
@@ -639,7 +613,7 @@ block prepend main
 													.form-group
 														h6.label-control Father's Religion:
 															.text-danger.d-inline  *
-														select#bfatherreligion(type="text" name='bfatherreligion')
+														select#bfatherreligion.form-control(type="text" name='bfatherreligion')
 															option Catholic
 															option Non-Catholic
 															option Non-Christion
@@ -660,7 +634,7 @@ block prepend main
 													.form-group
 														h6.label-control Mother's Religion:
 															.text-danger.d-inline  *
-														select#bmotherreligion(type="text" name='bmotherreligion')
+														select#bmotherreligion.form-control(type="text" name='bmotherreligion')
 															option Catholic
 															option Non-Catholic
 															option Non-Christion
@@ -671,7 +645,7 @@ block prepend main
 													.form-group
 														h6.label-control Religion
 															.text-danger.d-inline  *
-														select#breligion(type="text" name='breligion' )
+														select#breligion.form-control(type="text" name='breligion' )
 															option Catholic
 															option Non-Catholic
 															option Non-Christion

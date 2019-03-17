@@ -8,6 +8,15 @@ block prepend main
 		#counter > div > div > div > span > i {
 			color:white;
 		}
+		.form-control {
+			margin-bottom: 0;
+		}
+		.hidden {
+			display:none;
+		}
+		.swal2-container {
+			z-index: 99999999999999;
+		}
 	#headers
 		#header-style-1
 			.container
@@ -121,8 +130,7 @@ block prepend main
 										p.pl-2.description 1. Anointing of the sick
 											br
 											| 2.  Funeral Blessings
-											br
-											| 3.  House Blessing
+											
 									.learn-more
 											button.btn.std-btn.btn-common.inquireButtonnew(type='button', data-toggle='modal', data-target='#inquireModal1' value='Blessing Request') Inquire
 				.col-lg-4.col-md-6.col-xs-12
@@ -226,7 +234,7 @@ block prepend main
 					.modal-header
 						h5 Your contact particulars
 						button.close(type='button', data-dismiss='modal', aria-label='Close')
-							span(aria-hidden='true' style=' margin-right: 5px') ×
+							span.p-3(aria-hidden='true') ×
 					.modal-body#tempbodyAppend
 						.form-group
 							.form-row
@@ -234,40 +242,60 @@ block prepend main
 									.form-group
 										h5.label-control Last Name
 											.text-danger.d-inline *
-										input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-										.invalid-feedback Please re-enter your valid last name.
-
+										input.form-control#templastname(type='text' placeholder="Ex. Dela Cruz" name='lastname')
+										p
+											span.emsginvalidlastname.hidden
+												i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+												|  Please Enter Last Name
+											span.emsgcorrectlastname.hidden
+												i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 								.form-group.col-md-6
 									.form-group
-										.invalid-feedback Please re-enter your valid last name.
 										h5.label-control  First Name
 											.text-danger.d-inline *
-										input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname' required)
-										.invalid-feedback Please provide a valid first name.
+										input.form-control#tempfirstname(type='text' placeholder="Ex. Juan" name='firstname')
+										p
+											span.emsginvalidfirstname.hidden
+												i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+												|  Please Enter Your First Name
+											span.emsgcorrectfirstname.hidden
+												i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 							.form-row
 								.form-group.col-md-12
 									.form-group
 										h5.label-control  Address
 											.text-danger.d-inline *
-										input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-										.invalid-feedback Please re-enter your valid first name. 
-
+										input.form-control#tempaddress(type='text' placeholder="Ex. Dela Cruz" name='lastname')
+										p
+											span.emsginvalidaddress.hidden
+												i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+												|  Please Enter Your Address
+											span.emsgcorrectaddress.hidden
+												i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 							.form-row
 								.form-group.col-md-6
 									.form-group
 										h5.label-control  Contact Number
 											.text-danger.d-inline *
-										input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname' required)
-										.invalid-feedback Please re-enter your valid contact number.
-
+										input.form-control#tempcontactnumber(type='text' placeholder="Ex. Dela Cruz" name='lastname')
+										p
+											span.emsginvalidcontact.hidden
+												i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+												|  Please Enter Your Contact Number
+											span.emsgcorrectcontact.hidden
+												i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 								.form-group.col-md-6
 									.form-group
 										.invalid-feedback Please re-enter your valid contact number.
 										h5.label-control  Email Address
 											.text-danger.d-inline *
-										input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname' required)
-										.invalid-feedback Please provide a valid email address
-							
+										input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname')
+										p
+											span.emsginvalidemail.hidden
+												i.fa.fa-times.text-danger(style="font-size:20px" aria-hidden="true")
+												|  Please Enter Your Email Address
+											span.emsgcorrectemail.hidden
+												i.fa.fa-check.text-success(style="font-size:20px" aria-hidden="true")
 							p Please fill out all the fields. This is an important step for us to update you regarding your request. Thank you.
 					.modal-footer
 						button#submitButton.filter.btn.btn-success(type="button") Submit. 
@@ -462,6 +490,7 @@ block addjs
 
 									$('#headerAppend1').append(`
 										<h5 id="exampleModalLabel" class="modal-title">Blessing Request</h5>
+										<button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="p-3">x</button>
 									`)
 
 									var append1 = `
@@ -477,9 +506,9 @@ block addjs
 										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.anointing.double_fee)} </span></p>
 										<br>
 										<p style="text-align: center;">
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingPrev" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
 											<button class="btn std-btn btn-common" id="proceedAnointing" type="button" value=${data.anointing.int_eventID}>Apply</button>
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
 										</p>
 										`
 									var append2 = `
@@ -495,9 +524,9 @@ block addjs
 										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.funeralmass.double_fee)} </span></p>
 										<br>
 										<p style="text-align: center;">
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingPrev" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
 											<button class="btn std-btn btn-common" id="proceedFuneralmass" type="button" value=${data.funeralmass.int_eventID}>Apply</button>
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
 										</p>
 										`
 									var append3 = `
@@ -513,9 +542,9 @@ block addjs
 										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.funeralservice.double_fee)} </span></p>
 										<br>
 										<p style="text-align: center;">
-										<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+										<button class="btn std-btn btn-common blessingPrev" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
 										<button class="btn std-btn btn-common" id="proceedFuneralservice" type="button" value=${data.funeralservice.int_eventID}>Apply</button>
-										<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+										<button class="btn std-btn btn-common blessingNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
 										</p>
 										`
 									var append4 = `
@@ -531,40 +560,76 @@ block addjs
 										<p class="pl-2 description">Application Fee: <span class='text-danger'> ${isNullOrEmpty(data.houseblessing.double_fee)} </span></p>
 										<br>
 										<p style="text-align: center;">
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingPrev" type="button"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
 											<button class="btn std-btn btn-common" id="proceedHouseblessing" type="button" value=${data.houseblessing.int_eventID}>Apply</button>
-											<button class="btn std-btn btn-common blessingPrevNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+											<button class="btn std-btn btn-common blessingNext" type="button"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
 										</p>
 										`
 
 										$('#modalAppend').empty().append(append1)
 										anointingClick()
 
-										var index = 1	;
-										$(document).on('click', '.blessingPrevNext', function(event){
+										var guest = 0	;
+										$(document).on('click', '.blessingNext', function(event){
+											guest++
+											console.log(guest)
 											console.log('hello')
 											event.preventDefault();
-											if(index == 0){
-												index++;
+											if(guest == 0){
 												$('#modalAppend').empty().append(append1)
+												$('.blessingNext').prop( "disabled", false );
 											}
-											else if(index == 1){
-												index++;
+											else if(guest == 1){
 												$('#modalAppend').empty().append(append2)
+												$('.blessingNext').prop( "disabled", false );
 											}
-											else if(index == 2){
-												index++;
+											else if(guest == 2){
 												$('#modalAppend').empty().append(append3)
+												$('.blessingNext').prop( "disabled", false );
 											}
-											else if(index == 3){
-												index++;
+											else if(guest <= 3){
+												$('#modalAppend').empty().append(append3)
+												$('.blessingNext').prop( "disabled", true );
+												guest = 3;
+											} 
+											//- else if(guest <= 4){
+											//- 	$('#modalAppend').empty().append(append1)
+											//- 	$('.blessingNext').prop( "disabled", true );
+											//- }
+											//- console.log(guest);
+
+											anointingClick()
+											funeralMassClick()
+											funeralServiceClick()
+											houseBlessingClick()
+										});
+
+										$(document).on('click', '.blessingPrev', function(event){
+											guest--
+											console.log(guest)
+											console.log('hello')
+											event.preventDefault();
+											if(guest == 0){
+												$('#modalAppend').empty().append(append1)
+												$('.blessingPrev').prop( "disabled", false );
+											}
+											else if(guest == 1){
+												$('#modalAppend').empty().append(append2)
+												$('.blessingPrev').prop( "disabled", false );
+											}
+											else if(guest == 2){
+												$('#modalAppend').empty().append(append3)
+												$('.blessingPrev').prop( "disabled", false );
+											}
+											else if(guest == 3){
 												$('#modalAppend').empty().append(append4)
-												index = 0;
+												$('.blessingPrev').prop( "disabled", true );
+											} else if(guest <= -1){
+												$('#modalAppend').empty().append(append1)
+												$('.blessingPrev').prop( "disabled", true );
+												guest = 0;
 											}
-											else {
-												index = 0;
-											}
-											console.log(index);
+											//- console.log(guest);
 
 											anointingClick()
 											funeralMassClick()
@@ -609,7 +674,38 @@ block addjs
 								//for no
 								else {
 									//- window.location=`/index/anointingform`
-									$('#submitButton').click(function(){
+									//- $('#submitButton').on('click', function(){
+									//- 		$.post('/index/tempuser',{
+									//- 			templastname:$('#templastname').val(),
+									//- 			tempfirstname:$('#tempfirstname').val(),
+									//- 			tempaddress:$('#tempaddress').val(),
+									//- 			tempemailaddress:$('#tempemailaddress').val(),
+									//- 			tempcontactnumber:$('#tempcontactnumber').val(),
+									//- 			}).done(data =>{
+									//- 			window.location=`/index/anointingform?id=${data.tempuser.insertId}`
+									//- 		})
+									//- 	})
+
+										$('#submitButton').on('click', function(){
+										var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+										var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+										var $contactnumber = /^(09|\+639)\d{9}$/;
+										var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+										if(
+											!$('#templastname').val().match($regexvalidation1) ||
+											!$('#tempfirstname').val().match($regexvalidation1) ||
+											!$('#tempaddress').val().match($addressvalidation) ||
+											!$('#tempcontactnumber').val().match($contactnumber) ||
+											!$('#tempemailaddress').val().match($email)
+										){
+											swal({
+												title: "Form is not complete/valid yet",
+												text: "Please fill out and validate all the required fields",
+												type: 'warning',
+												confirmButtonColor: '#3085d6',
+												confirmButtonText: 'OK'
+											})
+										} else {
 											$.post('/index/tempuser',{
 												templastname:$('#templastname').val(),
 												tempfirstname:$('#tempfirstname').val(),
@@ -619,12 +715,17 @@ block addjs
 												}).done(data =>{
 												window.location=`/index/anointingform?id=${data.tempuser.insertId}`
 											})
+										}
 										})
 	
 
 									$('#tempUserModal').modal('show');	
 									$('#tempUserModal').on('hidden.bs.modal',function(){
-										$('#tempbodyAppend').empty()
+										$('#templastname').val('')
+										$('#tempfirstname').val('')
+										$('#tempaddress').val('')
+										$('#tempcontactnumber').val('')
+										$('#tempemailaddress').val('')
 									})
 
 								}
@@ -664,7 +765,26 @@ block addjs
 								//for no
 								else {
 									//- window.location=`/index/funeralform`
-									$('#submitButton').click(function(){
+									$('#submitButton').on('click', function(){
+										var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+										var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+										var $contactnumber = /^(09|\+639)\d{9}$/;
+										var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+										if(
+											!$('#templastname').val().match($regexvalidation1) ||
+											!$('#tempfirstname').val().match($regexvalidation1) ||
+											!$('#tempaddress').val().match($addressvalidation) ||
+											!$('#tempcontactnumber').val().match($contactnumber) ||
+											!$('#tempemailaddress').val().match($email)
+										){
+											swal({
+												title: "Form is not complete/valid yet",
+												text: "Please fill out and validate all the required fields",
+												type: 'warning',
+												confirmButtonColor: '#3085d6',
+												confirmButtonText: 'OK'
+											})
+										} else {
 											$.post('/index/tempuser',{
 												templastname:$('#templastname').val(),
 												tempfirstname:$('#tempfirstname').val(),
@@ -674,12 +794,16 @@ block addjs
 												}).done(data =>{
 												window.location=`/index/funeralform?id=${data.tempuser.insertId}`
 											})
+										}
 										})
-	
 
 									$('#tempUserModal').modal('show');	
 									$('#tempUserModal').on('hidden.bs.modal',function(){
-										$('#tempbodyAppend').empty()
+										$('#templastname').val('')
+										$('#tempfirstname').val('')
+										$('#tempaddress').val('')
+										$('#tempcontactnumber').val('')
+										$('#tempemailaddress').val('')
 									})
 
 								}
@@ -717,7 +841,27 @@ block addjs
 								//for no
 								else {
 									//- window.location=`/index/funeralform`
-									$('#submitButton').click(function(){
+
+									$('#submitButton').on('click', function(){
+										var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+										var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+										var $contactnumber = /^(09|\+639)\d{9}$/;
+										var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+										if(
+											!$('#templastname').val().match($regexvalidation1) ||
+											!$('#tempfirstname').val().match($regexvalidation1) ||
+											!$('#tempaddress').val().match($addressvalidation) ||
+											!$('#tempcontactnumber').val().match($contactnumber) ||
+											!$('#tempemailaddress').val().match($email)
+										){
+											swal({
+												title: "Form is not complete/valid yet",
+												text: "Please fill out and validate all the required fields",
+												type: 'warning',
+												confirmButtonColor: '#3085d6',
+												confirmButtonText: 'OK'
+											})
+										} else {
 											$.post('/index/tempuser',{
 												templastname:$('#templastname').val(),
 												tempfirstname:$('#tempfirstname').val(),
@@ -727,12 +871,17 @@ block addjs
 												}).done(data =>{
 												window.location=`/index/funeralform?id=${data.tempuser.insertId}`
 											})
+										}
 										})
 	
 
 									$('#tempUserModal').modal('show');	
 									$('#tempUserModal').on('hidden.bs.modal',function(){
-										$('#tempbodyAppend').empty()
+										$('#templastname').val('')
+										$('#tempfirstname').val('')
+										$('#tempaddress').val('')
+										$('#tempcontactnumber').val('')
+										$('#tempemailaddress').val('')
 									})
 								}
 								})
@@ -768,7 +917,26 @@ block addjs
 								//for no
 								else {
 									//- window.location=`/index/establishmentform`
-									$('#submitButton').click(function(){
+									$('#submitButton').on('click', function(){
+										var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+										var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+										var $contactnumber = /^(09|\+639)\d{9}$/;
+										var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+										if(
+											!$('#templastname').val().match($regexvalidation1) ||
+											!$('#tempfirstname').val().match($regexvalidation1) ||
+											!$('#tempaddress').val().match($addressvalidation) ||
+											!$('#tempcontactnumber').val().match($contactnumber) ||
+											!$('#tempemailaddress').val().match($email)
+										){
+											swal({
+												title: "Form is not complete/valid yet",
+												text: "Please fill out and validate all the required fields",
+												type: 'warning',
+												confirmButtonColor: '#3085d6',
+												confirmButtonText: 'OK'
+											})
+										} else {
 											$.post('/index/tempuser',{
 												templastname:$('#templastname').val(),
 												tempfirstname:$('#tempfirstname').val(),
@@ -778,12 +946,17 @@ block addjs
 												}).done(data =>{
 												window.location=`/index/establishmentform?id=${data.tempuser.insertId}`
 											})
+										}
 										})
-	
+
 
 									$('#tempUserModal').modal('show');	
 									$('#tempUserModal').on('hidden.bs.modal',function(){
-										$('#tempbodyAppend').empty()
+										$('#templastname').val('')
+										$('#tempfirstname').val('')
+										$('#tempaddress').val('')
+										$('#tempcontactnumber').val('')
+										$('#tempemailaddress').val('')
 									})
 								}
 								})
@@ -837,6 +1010,7 @@ block addjs
 									// LEAVE THIS HEADER AS IT IS
 									$('#headerAppend').append(`
 										<h5 id="exampleModalLabel" class="modal-title">${data.regularbap.var_eventname}</h5>
+										<button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="p-3">x</button>
 									`)
 
 									var requirements = `<p class='requirements'><strong>Requirements</strong></p>`
@@ -1039,7 +1213,7 @@ block addjs
 																					//for no
 																					else {
 																						
-																						$('#submitButton').click(function(){
+																						$('#submitButton').on('click', function(){
 																								$.post('/index/tempuser',{
 																									templastname:$('#templastname').val(),
 																									tempfirstname:$('#tempfirstname').val(),
@@ -1056,7 +1230,11 @@ block addjs
 
 																						$('#tempUserModal').modal('show');	
 																						$('#tempUserModal').on('hidden.bs.modal',function(){
-																							$('#tempbodyAppend').empty()
+																							$('#templastname').val('')
+																							$('#tempfirstname').val('')
+																							$('#tempaddress').val('')
+																							$('#tempcontactnumber').val('')
+																							$('#tempemailaddress').val('')
 																						})
 																					}
 																				})
@@ -1096,8 +1274,27 @@ block addjs
 																		}
 																		//for no
 																		else {
-																			
-																			$('#submitButton').click(function(){
+
+																			$('#submitButton').on('click', function(){
+																				var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+																				var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+																				var $contactnumber = /^(09|\+639)\d{9}$/;
+																				var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+																				if(
+																					!$('#templastname').val().match($regexvalidation1) ||
+																					!$('#tempfirstname').val().match($regexvalidation1) ||
+																					!$('#tempaddress').val().match($addressvalidation) ||
+																					!$('#tempcontactnumber').val().match($contactnumber) ||
+																					!$('#tempemailaddress').val().match($email)
+																				){
+																					swal({
+																						title: "Form is not complete/valid yet",
+																						text: "Please fill out and validate all the required fields",
+																						type: 'warning',
+																						confirmButtonColor: '#3085d6',
+																						confirmButtonText: 'OK'
+																					})
+																				} else {
 																					$.post('/index/tempuser',{
 																						templastname:$('#templastname').val(),
 																						tempfirstname:$('#tempfirstname').val(),
@@ -1105,16 +1302,18 @@ block addjs
 																						tempemailaddress:$('#tempemailaddress').val(),
 																						tempcontactnumber:$('#tempcontactnumber').val(),
 																						}).done(data =>{
-
-																							window.location=`/index/document/form?documentType=${$('#documenttype').val()}&lastName=${$('#lastName').val()}&firstName=${$('#firstName').val()}&eventDate=${eventDate}&birthday=${birthDate}&eventinfoID=${eventinfoID}&id=${data.tempuser.insertId}`
-																						
+																						window.location=`/index/document/form?documentType=${$('#documenttype').val()}&lastName=${$('#lastName').val()}&firstName=${$('#firstName').val()}&eventDate=${eventDate}&birthday=${birthDate}&eventinfoID=${eventinfoID}&id=${data.tempuser.insertId}`
 																					})
+																				}
 																				})
-											
 
 																			$('#tempUserModal').modal('show');	
 																			$('#tempUserModal').on('hidden.bs.modal',function(){
-																				$('#tempbodyAppend').empty()
+																				$('#templastname').val('')
+																				$('#tempfirstname').val('')
+																				$('#tempaddress').val('')
+																				$('#tempcontactnumber').val('')
+																				$('#tempemailaddress').val('')
 																			})
 																		}
 																	})
@@ -1144,6 +1343,90 @@ block addjs
 							}
 						})
 			})
+		var $regexvalidation1 = /^([a-zs ]{2,})+$/i;
+		$('#templastname').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($regexvalidation1)) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrectlastname').addClass('hidden');
+					$('.emsginvalidlastname').removeClass('hidden');
+					$('.emsginvalidlastname').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsginvalidlastname').addClass('hidden');
+				$('.emsgcorrectlastname').removeClass('hidden');
+				$('.emsgcorrectlastname').show();
+			}
+			e.stopPropagation();
+		});
+
+		$('#tempfirstname').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($regexvalidation1)) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrectfirstname').addClass('hidden');
+					$('.emsginvalidfirstname').removeClass('hidden');
+					$('.emsginvalidfirstname').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsginvalidfirstname').addClass('hidden');
+				$('.emsgcorrectfirstname').removeClass('hidden');
+				$('.emsgcorrectfirstname').show();
+			}
+			e.stopPropagation();
+		});
+
+		var $addressvalidation = /^([a-zs0-9-,. ]{8,})+$/i;
+		$('#tempaddress').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($addressvalidation)) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrectaddress').addClass('hidden');
+					$('.emsginvalidaddress').removeClass('hidden');
+					$('.emsginvalidaddress').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsginvalidaddress').addClass('hidden');
+				$('.emsgcorrectaddress').removeClass('hidden');
+				$('.emsgcorrectaddress').show();
+			}
+			e.stopPropagation();
+		});
+
+		var $contactnumber = /^(09|\+639)\d{9}$/;
+		$('#tempcontactnumber').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($contactnumber)) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrectcontact').addClass('hidden');
+					$('.emsginvalidcontact').removeClass('hidden');
+					$('.emsginvalidcontact').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsginvalidcontact').addClass('hidden');
+				$('.emsgcorrectcontact').removeClass('hidden');
+				$('.emsgcorrectcontact').show();
+			}
+			e.stopPropagation();
+		});
+
+		var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+		$('#tempemailaddress').on('keypress keydown keyup focus focusout',function(e){
+			if (!$(this).val().match($email)) {
+				// there is a mismatch, hence show the error message
+					$('.emsgcorrectemail').addClass('hidden');
+					$('.emsginvalidemail').removeClass('hidden');
+					$('.emsginvalidemail').show();
+				}
+			else{
+				// else, do not display message
+				$('.emsginvalidemail').addClass('hidden');
+				$('.emsgcorrectemail').removeClass('hidden');
+				$('.emsgcorrectemail').show();
+			}
+			e.stopPropagation();
+		});
+
 			////////////////////////////////////////////
 			function isNullOrEmpty(val){
 				return (val == null || val == '' || val == undefined) ? 'free' : `₱ ${val}` ;
