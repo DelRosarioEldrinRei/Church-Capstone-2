@@ -308,8 +308,17 @@ block addjs
 					xhr.send();
 				}
 				toDataURL('/document_templates/baptism_certificate.jpg', function(dataUrl) {
-					var fullName = data.var_doclastname + ', ' + data.var_docfirstname;
-					var dateRequested = moment(data.date_docurequested).format('MM/DD/YYYY');
+					var fullName = data.var_fname + ' ' + data.var_mname + ' ' + data.var_lname;
+					var nameOfGuardian = data.var_userfname + ' ' + data.var_userlname;
+					var birthdate = moment(data.date_birthday).format('MM/DD/YYYY');
+					var birthmonth =  moment(data.date_birthday).format('MMMM');
+					var birthday   =  moment(data.date_birthday).format('D');
+					var birthyear  =  moment(data.date_birthday).format('YYYY');
+
+					var eventdate = moment(data.date_eventdate).format('MM/DD/YYYY');
+					var eventmonth =  moment(data.date_eventdate).format('MMMM');
+					var eventday   =  moment(data.date_eventdate).format('D');
+					var eventyear  =  moment(data.date_eventdate).format('YYYY');
 					var docDefinition = {
 						pageMargins: [ 0, 0, 0, 0 ],
 						content: [
@@ -321,8 +330,42 @@ block addjs
 							{
 							text: fullName,
 							style: 'styleLabelFill',
-							absolutePosition: {x:125, y:247},
-							//- text: 'Date: ' + dateRequested,
+							absolutePosition: {x:90, y:260},
+							},
+							{
+							text: data.var_fathername,
+							style: 'styleLabelFill',
+							absolutePosition: {x:110, y:290},
+							},
+							{
+							text: data.var_mothername,
+							style: 'styleLabelFill',
+							absolutePosition: {x:90, y:320},
+							},
+							{
+							text: data.var_birthplace,
+							style: 'styleLabelFill',
+							absolutePosition: {x:110, y:355},
+							},
+							{
+							text: birthmonth,
+							style: 'styleLabelFill',
+							absolutePosition: {x:100, y:385},
+							},
+							{
+							text: birthday + ', ' + birthyear ,
+							style: 'styleLabelFill',
+							absolutePosition: {x:290, y:385},
+							},
+							{
+							text: eventmonth,
+							style: 'styleLabelFill',
+							absolutePosition: {x:100, y:465},
+							},
+							{
+							text: eventday + ', ' + eventyear ,
+							style: 'styleLabelFill',
+							absolutePosition: {x:290, y:465},
 							},
 						],
 						styles: {
@@ -348,7 +391,7 @@ block addjs
 							},
 							styleLabelFill: {
 								font: 'EdwardianScript',
-								fontSize: 35,
+								fontSize: 20,
 							},
 						},
 					}
