@@ -1,0 +1,212 @@
+extends ../../../../templates/admin
+block prepend main
+	#wrap
+	div(style='clear:both')
+	.content
+		.container-fluid
+			.row
+				.col-lg-12.col-md-12
+					.form-control
+						select#selectedtype.form-control(onchange='changescheduledisplayed();')
+							option(selected='', value='Monthly') Monthly
+							option(value='Weekly') Weekly
+							option(value='Daily') Daily
+			.row
+			.row
+				.col-lg-12.col-md-12
+						.card.shadow
+								.card-header.card-header-primary(style='background:#367587; color:white')
+									.row
+										.col-md-6
+											each services in service
+												h3.card-title(style='background:#367587; color:white')=services.var_eventname
+
+								.card-body.table-responsive
+										table.table.table-hover.dt-responsive.example(style="width:100%;")
+												thead.text-primary
+														//- th Service Name
+														//- th Total of new applications
+												//- 		th Total of applications
+												//- 		th Total of collection
+														
+												tbody#tablebody
+													
+													tr
+														td APPLICATIONS
+														td
+													tr
+														td Total of approved applications
+														td=approved.count
+													tr
+														td Total of pending applications
+														td=pending.count
+													tr
+														td Total of cancelled applications
+														td=cancelled.count
+													tr
+														td TOTAL
+														td=totalapplication
+													tr
+														td
+														td
+													tr
+														td COLLECTIONS
+														td
+													tr
+														td Collected
+														-if(collection !=null)
+															td=collection.collection
+														-else
+															td 0
+													tr
+														td Refunded
+														-if(collection !=null)
+															td=collection.collection
+														-else
+															td 0
+													tr
+														td TOTAL
+														-if(collection !=null)
+															td=collection.collection
+														-else
+															td 0
+														
+													
+			
+														
+												
+
+																
+	
+block addjs
+	script.
+		function changescheduledisplayed(){
+		    var type = $('#selectedtype').val()
+		   
+		    console.log(type)
+
+			if(type=='Monthly'){
+				console.log('==Monthly==')
+
+				$('#tablebody').empty()
+				$.post('/admin/reports-allreports').done(data=>{
+					console.log(data)
+
+						if(data.collection.collection==null){
+							var collection=0
+						}
+						else{
+							var collection = data.collection.collection
+						}
+						
+				
+				
+					
+
+				$('#tablebody').append(`
+					<tr>
+						<td>${data.service.var_eventname}</td>
+						<td>${data.count.count}</td>
+						<td>${data.appcount.appcount}</td>
+						<td>0</td>
+					</tr>
+				`)	
+
+			
+
+			})
+			}
+			if(type=='Weekly'){
+				$('#tablebody').empty()
+				console.log('==Weekly==')
+				$.post('/admin/reports-weekreports').done(data=>{
+					console.log(data)
+
+					if(data.collection.collection==null){
+						var collection=0
+					}
+					else{
+						var collection = data.collection.collection
+					}
+					
+
+				$('#tablebody').append(`
+				<tr>
+					<td>${data.service.var_eventname}</td>
+					<td>${data.count.count}</td>
+					<td>${data.appcount.appcount}</td>
+					<td>0</td>
+				</tr>
+				
+				`)		
+			})
+			}
+			if(type=='Daily'){
+				$('#tablebody').empty()
+				console.log('==Daily==')
+				$.post('/admin/reports-dayreports').done(data=>{
+					console.log(data)
+
+					if(data.collection.collection==null){
+						var collection=0
+					}
+					else{
+						var collection = data.collection.collection
+					}
+					
+
+				$('#tablebody').append(`
+				<tr>
+					<td>${data.service.var_eventname}</td>
+					<td>${data.count.count}</td>
+					<td>${data.appcount.appcount}</td>
+					<td>0</td>
+				</tr>
+				
+				`)	
+
+				
+			})
+				//- $.post('/secretariat/selectedchedule',{type: type, priestID:priestID}).done(data=>{
+				//- 	console.log(data.scheduleoutput)
+				//- })
+			}
+				
+		
+		}
+		
+			$(document).ready(function() {
+				// itong datatable ay hindi galing sa template as in inimport siya beshy kasi hindi lumalabas yung
+				// mga export button kapag sa datatable na template
+				$('.example').DataTable( {
+						dom: 'Bfrtip',
+						buttons: [
+								'copy', 'csv', 'excel', 'pdf', 'print'
+						],
+						initComplete: function () {
+						this.api().columns().every( function () {
+								var column = this;
+								var select = $('<select><option value=""></option></select>')
+										.appendTo( $(column.footer()).empty() )
+										.on( 'change', function () {
+												var val = $.fn.dataTable.util.escapeRegex(
+														$(this).val()
+												);
+ 
+												column
+														.search( val ? '^'+val+'$' : '', true, false )
+														.draw();
+										} );
+ 
+								column.data().unique().sort().each( function ( d, j ) {
+										select.append( '<option value="'+d+'">'+d+'</option>' )
+								} );
+						} );
+					}
+				} );
+			} );
+		// ampanget kasi ng itsura ng pagination kaya dito tinanggal ko yung css niya kaya tatawagin lang to
+		// pag gumamit ng datatable na hindi from template. Kapag niremove mo yung css diyan tapos cinall mo yung datatable
+		// na nasa template, walang design yung pagination ng template kaya ampanget
+block filter
+	script(src='/admin/bundlesomecssremoved.js')

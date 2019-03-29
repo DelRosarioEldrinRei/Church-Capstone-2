@@ -1,0 +1,325 @@
+extends ../../../../templates/admin
+block prepend main
+	#wrap
+	div(style='clear:both')
+	.content
+		.container-fluid
+			.row
+				.col-lg-12.col-md-12
+					.form-control
+						select#selectedtype.form-control(onchange='changescheduledisplayed();')
+							option(selected='', value='Monthly') Monthly
+							option(value='Weekly') Weekly
+							option(value='Daily') Daily
+			.row
+			.row
+				.col-lg-12.col-md-12
+						.card.shadow
+								.card-header.card-header-primary(style='background:#367587; color:white')
+									.row
+										.col-md-6
+											each services in service
+												h3.card-title(style='background:#367587; color:white')=services.var_eventname
+
+								.card-body.table-responsive
+										table.table.table-hover.dt-responsive#example(style="width:100%;")
+												thead.text-primary
+														th(style='width: 5px')
+														th(style='width: 50px')
+														th
+												//- 		th Total of applications
+												//- 		th Total of collection
+														
+												tbody#tablebody
+													
+													tr
+														td(style='width: 5px')
+														td(style='width: 50px') APPLICATIONS
+														td
+													tr
+														td(style='width: 5px')
+														td(style='width: 50px') Total of approved applications
+														td=approved.count
+													tr
+														td(style='width: 5px')
+														td(style='width: 50px') Total of pending applications
+														td=pending.count
+													tr
+														td(style='width: 5px')
+														td(style='width: 50px') Total of cancelled applications
+														td=cancelled.count
+													tr
+														td(style='width: 5px')
+														td(style='width: 50px') TOTAL APPLICATIONS
+														td=totalapplication
+													tr
+														td(style='width: 5px')
+														td(style='width: 50px')
+														td
+													tr
+														td(style='width: 5px')
+														td(style='width: 50px') COLLECTIONS
+														td
+													tr
+														td(style='width: 5px')
+														td(style='width: 50px') Collected
+														-if(collection !=null)
+															td=collection
+														-else
+															td 0
+													tr
+														td(style='width: 5px')
+														td(style='width: 50px') Refunded
+														-if(collection !=null)
+															td=collection
+														-else
+															td 0
+													tr
+														td(style='width: 5px')
+														td(style='width: 25px') TOTAL COLLECTION
+														-if(collection !=null)
+															td=collection
+														-else
+															td 0
+												tfoot
+														th
+														th
+														th
+														
+													
+			
+														
+												
+
+																
+	
+block addjs
+	script.
+		function changescheduledisplayed(){
+		    var type = $('#selectedtype').val()
+		   
+		    console.log(type)
+
+			if(type=='Monthly'){
+				console.log('==Monthly==')
+
+				$('#tablebody').empty()
+				$.post('/admin/indivreport-monthlyanointing').done(data=>{
+					console.log(data)	
+
+				$('#tablebody').append(`
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">APPLICATIONS</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Total of approved applications</td>
+						<td>${data.approved.count}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Total of pending applications</td>
+						<td>${data.pending.count}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Total of cancelled applications</td>
+						<td>${data.cancelled.count}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">TOTAL APPLICATIONS</td>
+						<td>${data.totalapplication}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">COLLECTIONS</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Collected</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Refunded</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 25px;">TOTAL COLLECTION</td>
+						<td>0</td>
+					</tr>
+				`)	
+			})
+			}
+			if(type=='Weekly'){
+				$('#tablebody').empty()
+				console.log('==Weekly==')
+				$.post('/admin/indivreport-weeklyanointing').done(data=>{
+					console.log(data)
+
+				$('#tablebody').append(`
+				<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">APPLICATIONS</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Total of approved applications</td>
+						<td>${data.approved.count}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Total of pending applications</td>
+						<td>${data.pending.count}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Total of cancelled applications</td>
+						<td>${data.cancelled.count}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">TOTAL APPLICATIONS</td>
+						<td>${data.totalapplication}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">COLLECTIONS</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Collected</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Refunded</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 25px;">TOTAL COLLECTION</td>
+						<td>0</td>
+					</tr>
+				
+				`)		
+			})
+			}
+			if(type=='Daily'){
+				$('#tablebody').empty()
+				console.log('==Daily==')
+				$.post('/admin/indivreport-dailyanointing').done(data=>{
+					console.log(data)
+
+					
+
+				$('#tablebody').append(`
+				<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">APPLICATIONS</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Total of approved applications</td>
+						<td>${data.approved.count}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Total of pending applications</td>
+						<td>${data.pending.count}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Total of cancelled applications</td>
+						<td>${data.cancelled.count}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">TOTAL APPLICATIONS</td>
+						<td>${data.totalapplication}</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;"></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">COLLECTIONS</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Collected</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 50px;">Refunded</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td style="width: 5px;"></td>
+						<td style="width: 25px;">TOTAL COLLECTION</td>
+						<td>0</td>
+					</tr>
+				`)	
+
+				
+			})
+				//- $.post('/secretariat/selectedchedule',{type: type, priestID:priestID}).done(data=>{
+				//- 	console.log(data.scheduleoutput)
+				//- })
+			}
+		}
+		
+			$(document).ready(function() {
+				
+				$('#example').DataTable( {
+						dom: 'Bfrtip',
+						buttons: [
+								'copy', 'csv', 'excel', 'pdf', 'print'
+						],
+						initComplete: function () {
+						this.api().columns().every( function () {
+								var column = this;
+								var select = $('<select><option value=""></option></select>')
+										.appendTo( $(column.footer()).empty() )
+										.on( 'change', function () {
+												var val = $.fn.dataTable.util.escapeRegex(
+														$(this).val()
+												);
+ 
+												column
+														.search( val ? '^'+val+'$' : '', true, false )
+														.draw();
+										} );
+ 
+								column.data().unique().sort().each( function ( d, j ) {
+										select.append( '<option value="'+d+'">'+d+'</option>' )
+								} );
+						} );
+					}
+				} );
+			} );
+		
+block filter
+	script(src='/admin/bundlesomecssremoved.js')

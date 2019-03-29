@@ -3921,7 +3921,911 @@ adminRouter.get('/reports', (req, res)=>{
     }); }); }); }); }); 
 });//upto message
 
+adminRouter.get('/indivreport-anointing', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
 
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'Anointing of the sick'`
+    var collection = 0
+
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        return res.render('admin/views/indiv/anointing',
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+adminRouter.post('/indivreport-monthlyanointing', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'Anointing of the sick'`
+    var collection = 0
+
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        res.send(
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+adminRouter.post('/indivreport-weeklyanointing', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'Anointing of the sick'`
+    var collection = 0
+
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        res.send(
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+adminRouter.post('/indivreport-dailyanointing', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+    var datenow = new Date();
+    var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+    console.log(dateNow)
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    tbl_eventinfo.date_applied =? and 
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    tbl_eventinfo.date_applied =? and 
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' and 
+    tbl_eventinfo.date_applied =? and 
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Anointing of the sick' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'Anointing of the sick'`
+    var collection = 0
+
+    db.query(approved,[dateNow], (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending,[dateNow], (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled,[dateNow], (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        res.send(
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+
+adminRouter.get('/indivreport-funeralservice', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'Funeral Service'`
+    var collection = 0
+
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        return res.render('admin/views/indiv/funeralservice',
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+adminRouter.post('/indivreport-monthlyfuneralservice', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'Funeral Service'`
+    var collection = 0
+
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        res.send(
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+adminRouter.post('/indivreport-weeklyfuneralservice', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'Funeral Service'`
+    var collection = 0
+
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        res.send(
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+adminRouter.post('/indivreport-dailyfuneralservice', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+    var datenow = new Date();
+    var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+    console.log(dateNow)
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    tbl_eventinfo.date_applied =? and 
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    tbl_eventinfo.date_applied =? and 
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' and 
+    tbl_eventinfo.date_applied =? and 
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'Funeral Service' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'Funeral Service'`
+    var collection = 0
+
+    db.query(approved,[dateNow], (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending,[dateNow], (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled,[dateNow], (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        res.send(
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+
+
+adminRouter.get('/indivreport-houseblessing', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'House Blessing'`
+    var collection = 0
+
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        return res.render('admin/views/indiv/houseblessing',
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+adminRouter.post('/indivreport-monthlyhouseblessing', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'House Blessing'`
+    var collection = 0
+
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        res.send(
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+adminRouter.post('/indivreport-weeklyhouseblessing', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'House Blessing'`
+    var collection = 0
+
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        res.send(
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+adminRouter.post('/indivreport-dailyhouseblessing', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+    var datenow = new Date();
+    var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+    console.log(dateNow)
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    tbl_eventinfo.date_applied =? and 
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    tbl_eventinfo.date_applied =? and 
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' and 
+    tbl_eventinfo.date_applied =? and 
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = 'House Blessing' 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = 'House Blessing'`
+    var collection = 0
+
+    db.query(approved,[dateNow], (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending,[dateNow], (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled,[dateNow], (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        res.send(
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collection,service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})
+})
+
+adminRouter.get('/indivreport-funeralmass', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Funeral Mass"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+
+                        return res.render('admin/views/indiv/funeralmass',
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collectionn[0],service:servicee, 
+                            totalapplication:totalapplication,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})})
+})
+
+
+//===========================================================================================================
+//all reports
 adminRouter.get('/reports-allreports', (req, res)=>{
     //count ng lahat ng applications
     // sum ng payments received within specific time
@@ -3935,31 +4839,31 @@ adminRouter.get('/reports-allreports', (req, res)=>{
     // COUNT NG MGA NANGYARI NGAYONG BUWAN
     var baptismcount =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var specialbaptismcount =`SELECT count(int_eventinfoID) as specialbaptismcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var anointingcount =`SELECT count(int_eventinfoID) as anointingcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var funeralmasscount =`SELECT count(int_eventinfoID) as funeralmasscount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var funeralservicecount =`SELECT count(int_eventinfoID) as funeralservicecount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var marriagecount =`SELECT count(int_eventinfoID) as marriagecount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var houseblessingcount =`SELECT count(int_eventinfoID) as houseblessingcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     //=============================================================================================================================
 
@@ -4000,27 +4904,27 @@ adminRouter.get('/reports-allreports', (req, res)=>{
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var specialbaptismcollection =`SELECT sum(dbl_paymentamount) as specialbaptismcollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     
     var funeralmasscollection =`SELECT sum(dbl_paymentamount) as funeralmasscollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
     
     
     var marriagecollection =`SELECT sum(dbl_paymentamount) as marriagecollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
     
     var anointingcollection = 0
     var funeralservicecollection =0
@@ -4153,7 +5057,6 @@ adminRouter.get('/reports-allreports', (req, res)=>{
     })})})
 })})
 })
-
 adminRouter.post('/reports-allreports', (req, res)=>{
     //count ng lahat ng applications
     // sum ng payments received within specific time
@@ -4167,31 +5070,31 @@ adminRouter.post('/reports-allreports', (req, res)=>{
     // COUNT NG MGA NANGYARI NGAYONG BUWAN
     var baptismcount =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var specialbaptismcount =`SELECT count(int_eventinfoID) as specialbaptismcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var anointingcount =`SELECT count(int_eventinfoID) as anointingcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var funeralmasscount =`SELECT count(int_eventinfoID) as funeralmasscount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var funeralservicecount =`SELECT count(int_eventinfoID) as funeralservicecount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var marriagecount =`SELECT count(int_eventinfoID) as marriagecount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var houseblessingcount =`SELECT count(int_eventinfoID) as houseblessingcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     //=============================================================================================================================
 
@@ -4232,45 +5135,45 @@ adminRouter.post('/reports-allreports', (req, res)=>{
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var specialbaptismcollection =`SELECT sum(dbl_paymentamount) as specialbaptismcollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     
     var funeralmasscollection =`SELECT sum(dbl_paymentamount) as funeralmasscollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
     
     
     var marriagecollection =`SELECT sum(dbl_paymentamount) as marriagecollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
     
     var anointingcollection = `SELECT sum(dbl_paymentamount) as anointingcollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Anointing of the sick' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var funeralservicecollection =`SELECT sum(dbl_paymentamount) as funeralservicecollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Service' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
     var houseblessingcollection =`SELECT sum(dbl_paymentamount) as houseblessingcollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_eventdate) = MONTH(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'House Blessing' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
 
 
     //=============================================================================================================================
@@ -4399,9 +5302,6 @@ adminRouter.post('/reports-allreports', (req, res)=>{
     })})})
 })})
 })
-
-
-
 adminRouter.post('/reports-weekreports', (req, res)=>{
     //count ng lahat ng applications
     // sum ng payments received within specific time
@@ -4415,31 +5315,31 @@ adminRouter.post('/reports-weekreports', (req, res)=>{
     // COUNT NG MGA NANGYARI NGAYONG BUWAN
     var baptismcount =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Baptism' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Baptism' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     var specialbaptismcount =`SELECT count(int_eventinfoID) as specialbaptismcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Special Baptism' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Special Baptism' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     var anointingcount =`SELECT count(int_eventinfoID) as anointingcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Anointing of the sick' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Anointing of the sick' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     var funeralmasscount =`SELECT count(int_eventinfoID) as funeralmasscount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Funeral Mass' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Mass' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     var funeralservicecount =`SELECT count(int_eventinfoID) as funeralservicecount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Funeral Service' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Service' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     var marriagecount =`SELECT count(int_eventinfoID) as marriagecount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Marriage' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Marriage' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     var houseblessingcount =`SELECT count(int_eventinfoID) as houseblessingcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'House Blessing' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'House Blessing' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     //=============================================================================================================================
 
@@ -4480,45 +5380,45 @@ adminRouter.post('/reports-weekreports', (req, res)=>{
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Baptism' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Baptism' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     var specialbaptismcollection =`SELECT sum(dbl_paymentamount) as specialbaptismcollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Special Baptism' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Special Baptism' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     
     var funeralmasscollection =`SELECT sum(dbl_paymentamount) as funeralmasscollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Funeral Mass' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Mass' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
     
     
     var marriagecollection =`SELECT sum(dbl_paymentamount) as marriagecollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Marriage' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Marriage' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
     
     var anointingcollection = `SELECT sum(dbl_paymentamount) as anointingcollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Anointing of the sick' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Anointing of the sick' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     var funeralservicecollection =`SELECT sum(dbl_paymentamount) as funeralservicecollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Funeral Service' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'Funeral Service' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
     var houseblessingcollection =`SELECT sum(dbl_paymentamount) as houseblessingcollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'House Blessing' and WEEK(tbl_eventinfo.date_eventdate) = WEEK(CURRENT_TIMESTAMP)`
+    where tbl_services.var_eventname = 'House Blessing' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
 
 
     //=============================================================================================================================
@@ -4647,9 +5547,6 @@ adminRouter.post('/reports-weekreports', (req, res)=>{
     })})})
 })})
 })
-
-
-
 adminRouter.post('/reports-dayreports', (req, res)=>{
     //count ng lahat ng applications
     // sum ng payments received within specific time
@@ -4665,31 +5562,31 @@ adminRouter.post('/reports-dayreports', (req, res)=>{
     // COUNT NG MGA NANGYARI NGAYONG BUWAN
     var baptismcount =`SELECT count(int_eventinfoID) as baptismcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Baptism' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Baptism' and tbl_eventinfo.date_applied=?`
 
     var specialbaptismcount =`SELECT count(int_eventinfoID) as specialbaptismcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Special Baptism' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Special Baptism' and tbl_eventinfo.date_applied=?`
 
     var anointingcount =`SELECT count(int_eventinfoID) as anointingcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Anointing of the sick' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Anointing of the sick' and tbl_eventinfo.date_applied=?`
 
     var funeralmasscount =`SELECT count(int_eventinfoID) as funeralmasscount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Funeral Mass' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Funeral Mass' and tbl_eventinfo.date_applied=?`
 
     var funeralservicecount =`SELECT count(int_eventinfoID) as funeralservicecount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Funeral Service' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Funeral Service' and tbl_eventinfo.date_applied=?`
 
     var marriagecount =`SELECT count(int_eventinfoID) as marriagecount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'Marriage' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Marriage' and tbl_eventinfo.date_applied=?`
 
     var houseblessingcount =`SELECT count(int_eventinfoID) as houseblessingcount from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
-    where tbl_services.var_eventname = 'House Blessing' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'House Blessing' and tbl_eventinfo.date_applied=?`
 
     //=============================================================================================================================
 
@@ -4730,45 +5627,45 @@ adminRouter.post('/reports-dayreports', (req, res)=>{
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Baptism' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Baptism' and tbl_eventinfo.date_applied=?`
 
     var specialbaptismcollection =`SELECT sum(dbl_paymentamount) as specialbaptismcollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Special Baptism' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Special Baptism' and tbl_eventinfo.date_applied=?`
 
     
     var funeralmasscollection =`SELECT sum(dbl_paymentamount) as funeralmasscollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Funeral Mass' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Funeral Mass' and tbl_eventinfo.date_applied=?`
     
     
     var marriagecollection =`SELECT sum(dbl_paymentamount) as marriagecollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Marriage' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Marriage' and tbl_eventinfo.date_applied=?`
     
     var anointingcollection = `SELECT sum(dbl_paymentamount) as anointingcollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Anointing of the sick' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Anointing of the sick' and tbl_eventinfo.date_applied=?`
 
     var funeralservicecollection =`SELECT sum(dbl_paymentamount) as funeralservicecollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'Funeral Service' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'Funeral Service' and tbl_eventinfo.date_applied=?`
 
     var houseblessingcollection =`SELECT sum(dbl_paymentamount) as houseblessingcollection from tbl_eventinfo 
     join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
     join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
-    where tbl_services.var_eventname = 'House Blessing' and tbl_eventinfo.date_eventdate=?`
+    where tbl_services.var_eventname = 'House Blessing' and tbl_eventinfo.date_applied=?`
 
 
     //=============================================================================================================================

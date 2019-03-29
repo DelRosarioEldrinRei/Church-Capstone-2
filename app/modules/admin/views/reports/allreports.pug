@@ -25,14 +25,14 @@ block prepend main
 												thead.text-primary
 														th Service Name
 														th Total of new applications
-														th Total of applications
+														//- th Total of applications
 														th Total of collection
 														
 												tbody#tablebody
 													tr
 														td Anointing of the sick
 														td=anointingcount.anointingcount
-														td=anointingappcount.anointingappcount
+														//- td=anointingappcount.anointingappcount
 														-if(anointingcollection !=null)
 															td=anointingcollection.anointingcollection
 														-else
@@ -41,7 +41,7 @@ block prepend main
 													tr
 														td Baptism
 														td=baptismcount.baptismcount
-														td=baptismappcount.baptismappcount
+														//- td=baptismappcount.baptismappcount
 														-if(baptismcollection.baptismcollection !=null)
 															td=baptismcollection.baptismcollection
 														-else
@@ -49,7 +49,7 @@ block prepend main
 													tr
 														td Special Baptism
 														td=specialbaptismcount.specialbaptismcount
-														td=specialbaptismappcount.specialbaptismappcount
+														//- td=specialbaptismappcount.specialbaptismappcount
 														-if(specialbaptismcollection.specialbaptismcollection !=null)
 															td=specialbaptismcollection.specialbaptismcollection
 														-else
@@ -57,7 +57,7 @@ block prepend main
 													tr
 														td Funeral Mass
 														td=funeralmasscount.funeralmasscount
-														td=funeralmassappcount.funeralmassappcount
+														//- td=funeralmassappcount.funeralmassappcount
 														-if(funeralmasscollection.funeralmasscollection !=null)
 															td=funeralmasscollection.funeralmasscollection
 														-else
@@ -65,7 +65,7 @@ block prepend main
 													tr
 														td Funeral Service
 														td=funeralservicecount.funeralservicecount
-														td=funeralserviceappcount.funeralserviceappcount
+														//- td=funeralserviceappcount.funeralserviceappcount
 														-if(funeralservicecollection !=null)
 															td=funeralservicecollection.funeralservicecollection
 														-else
@@ -74,7 +74,7 @@ block prepend main
 													tr
 														td House Blessing
 														td=houseblessingcount.houseblessingcount
-														td=houseblessingappcount.houseblessingappcount
+														//- td=houseblessingappcount.houseblessingappcount
 														-if(houseblessingcollection !=null)
 															td=houseblessingcollection.houseblessingcollection
 														-else
@@ -83,7 +83,7 @@ block prepend main
 													tr
 														td Marriage
 														td=marriagecount.marriagecount
-														td=marriageappcount.marriageappcount
+														//- td=marriageappcount.marriageappcount
 														-if(marriagecollection.marriagecollection !=null)
 															td=marriagecollection.marriagecollection
 														-else
@@ -191,43 +191,43 @@ block addjs
 					<tr>
 						<td>Anointing of the sick</td>
 						<td>${data.anointingcount.anointingcount}</td>
-						<td>${data.anointingappcount.anointingappcount}</td>
+						
 						<td>0</td>
 					</tr>
 					<tr>
 						<td>Baptism</td>
 						<td>${data.baptismcount.baptismcount}</td>
-						<td>${data.baptismappcount.baptismappcount}</td>
+						
 						<td>${baptismcollection}</td>
 					</tr>
 					<tr>
 						<td>Special Baptism</td>
 						<td>${data.specialbaptismcount.specialbaptismcount}</td>
-						<td>${data.specialbaptismappcount.specialbaptismappcount}</td>
+						
 						<td>${specialbaptismcollection}</td>
 					</tr>
 					<tr>
 						<td>Funeral Mass</td>
 						<td>${data.funeralmasscount.funeralmasscount}</td>
-						<td>${data.funeralmassappcount.funeralmassappcount}</td>
+						
 						<td>${funeralmasscollection}</td>
 					</tr>
 					<tr>
 						<td>Funeral Service</td>
 						<td>${data.funeralservicecount.funeralservicecount}</td>
-						<td>${data.funeralserviceappcount.funeralserviceappcount}</td>
+						
 						<td>0</td>
 					</tr>
 					<tr>
 						<td>House Blessing</td>
 						<td>${data.houseblessingcount.houseblessingcount}</td>
-						<td>${data.houseblessingappcount.houseblessingappcount}</td>
+						
 						<td>0</td>
 					</tr>
 					<tr>
 						<td>Marriage</td>
 						<td>${data.marriagecount.marriagecount}</td>
-						<td>${data.marriageappcount.marriageappcount}</td>
+						
 						<td>${marriagecollection}</td>
 					</tr>
 				`)	
@@ -295,43 +295,43 @@ block addjs
 				<tr>
 					<td>Anointing of the sick</td>
 					<td>${data.anointingcount.anointingcount}</td>
-					<td>${data.anointingappcount.anointingappcount}</td>
+					
 					<td>0</td>
 				</tr>
 				<tr>
 					<td>Baptism</td>
 					<td>${data.baptismcount.baptismcount}</td>
-					<td>${data.baptismappcount.baptismappcount}</td>
+					
 					<td>${baptismcollection}</td>
 				</tr>
 				<tr>
 					<td>Special Baptism</td>
 					<td>${data.specialbaptismcount.specialbaptismcount}</td>
-					<td>${data.specialbaptismappcount.specialbaptismappcount}</td>
+					
 					<td>${specialbaptismcollection}</td>
 				</tr>
 				<tr>
 					<td>Funeral Mass</td>
 					<td>${data.funeralmasscount.funeralmasscount}</td>
-					<td>${data.funeralmassappcount.funeralmassappcount}</td>
+					
 					<td>${funeralmasscollection}</td>
 				</tr>
 				<tr>
 					<td>Funeral Service</td>
 					<td>${data.funeralservicecount.funeralservicecount}</td>
-					<td>${data.funeralserviceappcount.funeralserviceappcount}</td>
+					
 					<td>0</td>
 				</tr>
 				<tr>
 					<td>House Blessing</td>
 					<td>${data.houseblessingcount.houseblessingcount}</td>
-					<td>${data.houseblessingappcount.houseblessingappcount}</td>
+					
 					<td>0</td>
 				</tr>
 				<tr>
 					<td>Marriage</td>
 					<td>${data.marriagecount.marriagecount}</td>
-					<td>${data.marriageappcount.marriageappcount}</td>
+					
 					<td>${marriagecollection}</td>
 				</tr>
 				`)		
@@ -395,43 +395,43 @@ block addjs
 				<tr>
 					<td>Anointing of the sick</td>
 					<td>${data.anointingcount.anointingcount}</td>
-					<td>${data.anointingappcount.anointingappcount}</td>
+					
 					<td>0</td>
 				</tr>
 				<tr>
 					<td>Baptism</td>
 					<td>${data.baptismcount.baptismcount}</td>
-					<td>${data.baptismappcount.baptismappcount}</td>
+					
 					<td>${baptismcollection}</td>
 				</tr>
 				<tr>
 					<td>Special Baptism</td>
 					<td>${data.specialbaptismcount.specialbaptismcount}</td>
-					<td>${data.specialbaptismappcount.specialbaptismappcount}</td>
+					
 					<td>${specialbaptismcollection}</td>
 				</tr>
 				<tr>
 					<td>Funeral Mass</td>
 					<td>${data.funeralmasscount.funeralmasscount}</td>
-					<td>${data.funeralmassappcount.funeralmassappcount}</td>
+					
 					<td>${funeralmasscollection}</td>
 				</tr>
 				<tr>
 					<td>Funeral Service</td>
 					<td>${data.funeralservicecount.funeralservicecount}</td>
-					<td>${data.funeralserviceappcount.funeralserviceappcount}</td>
+					
 					<td>0</td>
 				</tr>
 				<tr>
 					<td>House Blessing</td>
 					<td>${data.houseblessingcount.houseblessingcount}</td>
-					<td>${data.houseblessingappcount.houseblessingappcount}</td>
+					
 					<td>0</td>
 				</tr>
 				<tr>
 					<td>Marriage</td>
 					<td>${data.marriagecount.marriagecount}</td>
-					<td>${data.marriageappcount.marriageappcount}</td>
+					
 					<td>${marriagecollection}</td>
 				</tr>
 				`)	

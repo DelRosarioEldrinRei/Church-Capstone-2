@@ -15,7 +15,7 @@ block prepend main
 							h5.lh-1 Anointing of the sick
 						.layer.w-100.p-20
 							canvas#linegraph(height='150')
-						a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Event
+						//- a.btn.btn-primary.pull-right(href="#" data-toggle="modal" data-target="#conditionModal") Add Event
 			.masonry-item.col-md-6
 				// #Monthly Stats ====================
 				.bd.bgc-white
@@ -61,57 +61,57 @@ block prepend main
 															//ANOINTING
 															p(hidden)#anointingpieapproval #{anointingpieapproval}
 															p(hidden)#anointingrequirement #{anointingrequirement}
-	#conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
-		.modal-dialog.modal-notify.modal-success(role='document' style="max-width:1050px;")
-			// Content
-			.modal-content
-				// Header
-				.modal-header(style='background:#367587; color:white;')
-					p.heading.lead Add Event
-					button.close.text-white(type='button' data-dismiss='modal' aria-label='Close')
-						span.white-text(aria-hidden='true') &times;
-				// Body
-				.modal-body
-					.row
-				.col-lg-12.col-md-12
-						.card.shadow
-								.card-header.card-header-primary(style='background:#367587; color:white')
-									.row
-										.col-md-6
-											h3.card-title(style='background:#367587; color:white') Services
+	//- #conditionModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true')
+	//- 	.modal-dialog.modal-notify.modal-success(role='document' style="max-width:1050px;")
+	//- 		// Content
+	//- 		.modal-content
+	//- 			// Header
+	//- 			.modal-header(style='background:#367587; color:white;')
+	//- 				p.heading.lead Add Event
+	//- 				button.close.text-white(type='button' data-dismiss='modal' aria-label='Close')
+	//- 					span.white-text(aria-hidden='true') &times;
+	//- 			// Body
+	//- 			.modal-body
+	//- 				.row
+	//- 			.col-lg-12.col-md-12
+	//- 					.card.shadow
+	//- 							.card-header.card-header-primary(style='background:#367587; color:white')
+	//- 								.row
+	//- 									.col-md-6
+	//- 										h3.card-title(style='background:#367587; color:white') Services
 
-								.card-body.table-responsive
-										table.table.table-hover.dt-responsive#example(style="width:100%;")
-												thead.text-primary
-														th ID
-														th Service Name
-														th Name
-														//- th Father's Name
-														//- th Mother's Name
-														th Event Date
-														th Event Time
-														th Approval Status
+	//- 							.card-body.table-responsive
+	//- 									table.table.table-hover.dt-responsive#example(style="width:100%;")
+	//- 											thead.text-primary
+	//- 													th ID
+	//- 													th Service Name
+	//- 													th Name
+	//- 													//- th Father's Name
+	//- 													//- th Mother's Name
+	//- 													th Event Date
+	//- 													th Event Time
+	//- 													th Approval Status
 														
-												tbody
+	//- 											tbody
 													
-														tr
-															td 1
-															td 1
-															td 1
-															//- td 1
-															//- td 1
-															td 1
-															td 1
-															td 1
-												tfoot
-														th ID
-														th Service Name
-														th Name
-														//- th Father's Name
-														//- th Mother's Name
-														th Event Date
-														th Event Time
-														th Approval Status
+	//- 													tr
+	//- 														td 1
+	//- 														td 1
+	//- 														td 1
+	//- 														//- td 1
+	//- 														//- td 1
+	//- 														td 1
+	//- 														td 1
+	//- 														td 1
+	//- 											tfoot
+	//- 													th ID
+	//- 													th Service Name
+	//- 													th Name
+	//- 													//- th Father's Name
+	//- 													//- th Mother's Name
+	//- 													th Event Date
+	//- 													th Event Time
+	//- 													th Approval Status
 
 			
 						.row
