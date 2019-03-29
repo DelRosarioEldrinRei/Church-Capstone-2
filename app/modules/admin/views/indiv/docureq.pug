@@ -1,0 +1,171 @@
+extends ../../../../templates/admin
+block prepend main
+	#wrap
+	div(style='clear:both')
+	.content
+		.container-fluid
+			.row
+				.col-lg-12.col-md-12
+					.form-control
+						select#selectedtype.form-control(onchange='changescheduledisplayed();')
+							option(selected='', value='Monthly') Monthly
+							option(value='Weekly') Weekly
+							option(value='Daily') Daily
+			.row
+			.row
+				.col-lg-12.col-md-12
+						.card.shadow
+								.card-header.card-header-primary(style='background:#367587; color:white')
+									.row
+										.col-md-6
+											
+											h3.card-title(style='background:#367587; color:white') Document Request
+
+								.card-body.table-responsive
+										table.table.table-hover.dt-responsive#example(style="width:100%;")
+												thead.text-primary
+														th(style='width: 5px')
+														th(style='width: 50px')
+														th
+												//- 		th Total of applications
+												//- 		th Total of collection
+														
+												tbody#tablebody
+													
+												
+													tr
+														td(style='width: 5px')
+														td(style='width: 50px') COLLECTIONS
+														td
+													tr
+														td(style='width: 5px')
+														td Total of new requests
+														td=docureqcount.docureqcount
+													
+													tr
+														td(style='width: 5px')
+														td Total of document released
+														
+															-if(docureqreqcount.docureqreqcount !=null)
+																td=docureqreqcount.docureqreqcount
+															-else
+																td 0
+													tr
+														td(style='width: 5px')
+														td Total of collection
+															-if(docureqcollection.docureqcollection !=null)
+																td=docureqcollection.docureqcollection
+															-else
+																td 0
+												tfoot
+														th
+														th
+														th
+														
+													
+			
+														
+												
+
+																
+	
+block addjs
+	script.
+		function changescheduledisplayed(){
+		    var type = $('#selectedtype').val()
+		   
+		    console.log(type)
+
+			if(type=='Monthly'){
+				console.log('==Monthly==')
+
+				
+				$.post('/admin/indivreport-monthlydocureq').done(data=>{
+					console.log(data)	
+
+				$('#tabledocureq').empty()
+				$('#tabledocureq').append(`
+					<tr>
+						<td>Document Request</td>
+						<td>${data.docureqcount.docureqcount}</td>
+						<td>${data.docureqreqcount.docureqcount}</td>
+						<td>${data.docureqcollection.docureqcollection}</td>
+					</tr>
+				`)
+			})
+			}
+			if(type=='Weekly'){
+				
+				console.log('==Weekly==')
+				$.post('/admin/indivreport-weeklydocureq').done(data=>{
+					console.log(data)
+
+				$('#tabledocureq').empty()
+				$('#tabledocureq').append(`
+					<tr>
+						<td>Document Request</td>
+						<td>${data.docureqcount.docureqcount}</td>
+						<td>${data.docureqreqcount.docureqcount}</td>
+						<td>${data.docureqcollection.docureqcollection}</td>
+					</tr>
+				`)
+			})
+			}
+			if(type=='Daily'){
+				
+				console.log('==Daily==')
+				$.post('/admin/indivreport-dailydocureq').done(data=>{
+					console.log(data)
+
+					
+
+				$('#tabledocureq').empty()
+				$('#tabledocureq').append(`
+					<tr>
+						<td>Document Request</td>
+						<td>${data.docureqcount.docureqcount}</td>
+						<td>${data.docureqreqcount.docureqcount}</td>
+						<td>${data.docureqcollection.docureqcollection}</td>
+					</tr>
+				`)
+
+				
+			})
+				//- $.post('/secretariat/selectedchedule',{type: type, priestID:priestID}).done(data=>{
+				//- 	console.log(data.scheduleoutput)
+				//- })
+			}
+		}
+		
+			$(document).ready(function() {
+				
+				$('#example').DataTable( {
+						dom: 'Bfrtip',
+						buttons: [
+								'copy', 'csv', 'excel', 'pdf', 'print'
+						],
+						initComplete: function () {
+						this.api().columns().every( function () {
+								var column = this;
+								var select = $('<select><option value=""></option></select>')
+										.appendTo( $(column.footer()).empty() )
+										.on( 'change', function () {
+												var val = $.fn.dataTable.util.escapeRegex(
+														$(this).val()
+												);
+ 
+												column
+														.search( val ? '^'+val+'$' : '', true, false )
+														.draw();
+										} );
+ 
+								column.data().unique().sort().each( function ( d, j ) {
+										select.append( '<option value="'+d+'">'+d+'</option>' )
+								} );
+						} );
+					}
+				} );
+			} );
+		
+block filter
+	script(src='/admin/bundlesomecssremoved.js')

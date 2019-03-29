@@ -292,8 +292,8 @@ indexRouter.get('/funeral/utilities/query', (req, res)=>{
 
 indexRouter.get('/funeralform', (req, res) => {
 
-  var queryString= `select int_eventID from tbl_services where var_eventname="Funeral Service"`
-  db.query(queryString, (err, results, fields) => {
+  var queryString= `select * from tbl_services where int_eventID= ?`
+  db.query(queryString, [req.query.svcid],(err, results, fields) => {
       if (err) console.log(err);
       console.log(results);
       console.log(req.query)
@@ -302,7 +302,7 @@ indexRouter.get('/funeralform', (req, res) => {
         var user=results2[0]
       console.log(results2)
 
-      return res.render('home/views/forms/funeral',{ID:results, user:user})
+      return res.render('home/views/forms/funeral',{eventid:req.query.svcid, user:user})
   });})
   
 });
@@ -310,7 +310,12 @@ indexRouter.post('/funeral/query', (req, res) => {
 
 var queryString1 =`SELECT * FROM tbl_tempuser where int_tempuserID = ?`
 db.query(queryString1,[req.body.id], (err, results1, fields) => {
-  res.send({firstQuery:results1[0]});
+  var queryString = `SELECT * FROM tbl_eventinfo JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+             where tbl_services.var_eventname != "Baptism"`
+            db.query(queryString,(err,results,fields) =>{
+                res.send({queries:results,firstQuery:results1[0]})
+            })
+  // res.send({firstQuery:results1[0]});
 });
 
 })
@@ -318,32 +323,33 @@ db.query(queryString1,[req.body.id], (err, results1, fields) => {
 indexRouter.post('/funeral/form',upload.single('image'),(req, res) => {
   var success =0
   var notsuccess =1
-  if (req.body.blessloc== '1'){
+  console.log(req.body)
+  if (req.body.eventid== '4'){
       
       var queryString= `select int_eventID from tbl_services where var_eventname="Funeral Service"`
       db.query(queryString, (err, results, fields) => {
           if (err) console.log(err);
           var eventID = results[0];
-          var desiredtime1= moment(req.body.desiredtime1, 'hh:mm A').format('HH:mm:ss');
-          var desiredtimeend= moment(req.body.desiredtimeend, 'hh:mm A').format('HH:mm:ss');
+          var desiredtime1= moment(req.body.desiredtime1, 'HH:mm A').format('HH:mm:ss');
+          var desiredtimeend= moment(req.body.desiredtimeend, 'HH:mm A').format('HH:mm:ss');
           var datenow = new Date();
           var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-          var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID,date_eventdate, time_eventstart, time_eventend, char_approvalstatus, char_requirements, date_applied, var_applicationtype) VALUES(?,?,?,?,?,?,?,?,?)`;
-          db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1,desiredtime1, desiredtimeend,"Pending", 'Submitted', dateNow, 'No account'], (err, results, fields) => {
+          var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID,date_eventdate, time_eventstart, time_eventend, char_approvalstatus, char_requirements, date_applied) VALUES(?,?,?,?,?,?,?,?)`;
+          db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1,desiredtime1, desiredtimeend,"Pending", 'Submitted', dateNow], (err, results, fields) => {
               if (err) console.log(err);
               var eventinfoID= results;
 
-          queries( eventID, eventinfoID.insertId)});});
+          queries( eventID, eventinfoID.insertId);;});});
   }
 
-  if(req.body.blessloc =='2'){
+  if(req.body.eventid =='7'){
       
       var queryString5= `select int_eventID from tbl_services where var_eventname="Funeral Mass";`
       db.query(queryString5, (err, results, fields) => {
           if (err) console.log(err);
           var eventID = results[0];  
-          var desiredtime1= moment(req.body.desiredtime1, 'hh:mm A').format('HH:mm:ss');
-          var desiredtimeend= moment(req.body.desiredtimeend, 'hh:mm A').format('HH:mm:ss');
+          var desiredtime1= moment(req.body.desiredtime1, 'HH:mm A').format('HH:mm:ss');
+          var desiredtimeend= moment(req.body.desiredtimeend, 'HH:mm A').format('HH:mm:ss');
           var paymentQuery= `select * from tbl_utilities where int_eventID = ?`
           db.query(paymentQuery,[eventID.int_eventID], (err, results, fields) => {
               if (err) console.log(err);
@@ -364,8 +370,8 @@ indexRouter.post('/funeral/form',upload.single('image'),(req, res) => {
                   console.log(paymentid)
                   var datenow = new Date();
                   var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-                  var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID, date_eventdate, time_eventstart, time_eventend, int_paymentID, char_approvalstatus, char_requirements, date_applied, var_applicationtype) VALUES(?,?,?,?,?,?,?,?,?,?)`;
-                  db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1, desiredtime1, desiredtimeend,paymentid.insertId, "Pending", "Submitted", dateNow, 'No account'], (err, results, fields) => {
+                  var queryString1 = `INSERT INTO tbl_eventinfo(int_tempuserID, int_eventID, date_eventdate, time_eventstart, time_eventend, int_paymentID, char_approvalstatus, char_requirements, date_applied) VALUES(?,?,?,?,?,?,?,?,?)`;
+                  db.query(queryString1, [req.body.userID, eventID.int_eventID, req.body.desireddate1, desiredtime1, desiredtimeend,paymentid.insertId, "Pending", "Submitted", dateNow], (err, results, fields) => {
                       if (err) console.log(err);
                       var eventinfoID= results;
                       var text="";
@@ -431,7 +437,7 @@ indexRouter.post('/funeral/form',upload.single('image'),(req, res) => {
   }
 
                   
-});
+      });
 
 
 //==============================================================

@@ -577,7 +577,14 @@ block addjs
 						function funeralMassClick(){
 							$('#proceedFuneralmass').click(function(){
 								
+									//- window.location=`/guest/funeral/form`
+								
+								console.log("WORKING")
+								$.post('/guest/funeral/beforeloggingin',{id:7}).done(data =>{
 									window.location=`/guest/funeral/form`
+								})
+											
+										
 
 								$('#inquireModal1').modal('hide');	
 								
@@ -586,9 +593,10 @@ block addjs
 
 						function funeralServiceClick(){
 							$('#proceedFuneralservice').click(function(){
-								
+								console.log("WORKING")
+								$.post('/guest/funeral/beforeloggingin',{id:4}).done(data =>{
 									window.location=`/guest/funeral/form`
-
+								})
 								$('#inquireModal1').modal('hide');	
 							})
 						}
@@ -752,9 +760,7 @@ block addjs
 											
 										})
 								})//post done		
-						}//if baptism
-						
-								
+						}//if baptism						
 			})
 
 		

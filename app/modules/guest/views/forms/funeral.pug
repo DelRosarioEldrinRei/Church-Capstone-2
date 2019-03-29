@@ -273,7 +273,7 @@ block addjs
 						//- $(this).attr('disabled', 'disabled');
 						var idNow = $(this).val();
 						console.log(idNow)
-						$.post('/index/funeral/query',{
+						$.post('/guest/funeral/query',{
 							firstname: $('#firstname').val(),id:idNow
 						}).done(data=>{
 							if($('#male').prop("checked")){
@@ -313,10 +313,11 @@ block addjs
 								formData.append('address', $('#address').val()),
 								formData.append('details', $('#details').val()),
 								formData.append('relation', $('#relation').val()),
+								formData.append('eventid', $('#eventID').val()),
 								formData.append('image', $('#file-0b')[0].files[0]);
 							$.ajax({
 								type: 'POST',
-								url: '/index/funeral/form',
+								url: '/guest/funeral/form',
 								data: formData,
 								processData:false,
 								contentType:false,
@@ -329,7 +330,7 @@ block addjs
 											Okay:'okay'
 										}
 									}).then((value)=>{
-										window.location='/index'
+										window.location='/guest/reservation'
 									})
 								}
 

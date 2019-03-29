@@ -417,7 +417,7 @@ block addjs
 														absolutePosition: {x:225, y:153},
 														},
 														{
-														text: `₱ ${(((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount) - (((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount)*(data.voucherinfo[0].int_refundpercent*0.01))).toFixed(2)}`,
+														text: `₱ ${data.voucherinfo[0].dbl_refundamount.toFixed(2)}`,
 														style: 'styleLabelMiddleTA',
 														absolutePosition: {x:505, y:143},
 														},
@@ -432,14 +432,14 @@ block addjs
 														absolutePosition: {x:393, y:217},
 														},
 														{
-														text: `₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
+														text: `₱ ${data.voucherinfo[0].dbl_refundamount.toFixed(2)}`,
 														style: 'styleLabelEvent',
 														absolutePosition: {x:507, y:217},
 														},
 														
 														//total amount
 														{
-														text: `₱ ${(((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount) - (((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount)*(data.voucherinfo[0].int_refundpercent*0.01))).toFixed(2)}`,
+														text: `₱ ${data.voucherinfo[0].dbl_refundamount.toFixed(2)}`,
 														style: 'styleLabelTA',
 														absolutePosition: {x:476, y:354},
 														},
@@ -503,7 +503,7 @@ block addjs
 														absolutePosition: {x:225, y:540},
 														},
 														{
-														text: `₱ ${(((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount) - (((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount)*(data.voucherinfo[0].int_refundpercent*0.01))).toFixed(2)}`,
+														text: `₱ ${data.voucherinfo[0].dbl_refundamount.toFixed(2)}`,
 														style: 'styleLabelMiddleTA',
 														absolutePosition: {x:505, y:530},
 														},
@@ -521,13 +521,13 @@ block addjs
 														absolutePosition: {x:393, y:604},
 														},
 														{
-														text: `₱ ${((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount).toFixed(2)}`,
+														text: `₱ ${data.voucherinfo[0].dbl_refundamount.toFixed(2)}`,
 														style: 'styleLabelEvent',
 														absolutePosition: {x:507, y:604},
 														},
 														//total amount
 														{
-														text: `₱ ${(((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount) - (((data.sponsors.length*50) + data.voucherinfo[0].dbl_amount)*(data.voucherinfo[0].int_refundpercent*0.01))).toFixed(2)}`,
+														text: `₱ ${data.voucherinfo[0].dbl_refundamount.toFixed(2)}`,
 														style: 'styleLabelTA',
 														absolutePosition: {x:476, y:741},
 														},

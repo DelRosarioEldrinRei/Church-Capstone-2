@@ -329,7 +329,7 @@ block addjs
 							gender= $('#customRadio2').val()
 						}
 						if($('#sameaddress').prop("checked")){
-							venue= data.firstQuery.var_useraddress
+							venue= $('#address').val()
 						}
 						if($("#exampleRadios1").prop("checked")){
 							venue= $('#hospitalname').val()
@@ -356,7 +356,7 @@ block addjs
 							formData.append('image', $('#file-0b')[0].files[0]);
 						$.ajax({
 							type: 'POST',
-							url: '/index/anointing/form',
+							url: '/guest/anointing/form',
 							data: formData,
 							processData:false,
 							contentType:false,
@@ -370,7 +370,7 @@ block addjs
 											Okay:'okay'
 										}
 									}).then((value)=>{
-										window.location='/index#services'
+										window.location='/guest/reservation'
 									})
 							}
 

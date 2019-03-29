@@ -713,7 +713,7 @@ block addjs
 												tempemailaddress:$('#tempemailaddress').val(),
 												tempcontactnumber:$('#tempcontactnumber').val(),
 												}).done(data =>{
-												window.location=`/index/anointingform?id=${data.tempuser.insertId}`
+												window.location=`/index/anointingform?id=${data.tempuser.insertId}&svcid=4`
 											})
 										}
 										})
@@ -792,7 +792,7 @@ block addjs
 												tempemailaddress:$('#tempemailaddress').val(),
 												tempcontactnumber:$('#tempcontactnumber').val(),
 												}).done(data =>{
-												window.location=`/index/funeralform?id=${data.tempuser.insertId}`
+												window.location=`/index/funeralform?id=${data.tempuser.insertId}&svcid=7`
 											})
 										}
 										})

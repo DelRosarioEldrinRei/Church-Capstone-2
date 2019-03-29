@@ -98,6 +98,12 @@ var upload = multer({ storage: storage})
                 req.session.eventId = req.body.id
                 res.send('hello')
         })
+    guestRouter.post('/funeral/beforeloggingin', (req, res) => {
+            console.log(req.body.id)
+            req.session.eventId = req.body.id
+            res.send('hello')
+            console.log(req.session)
+    })
       
       guestRouter.post('/blessingrequest', (req, res) => {
       
@@ -525,6 +531,7 @@ guestRouter.post(`/voucherdocu`, (req, res)=>{
     guestRouter.get('/reservation', (req, res)=>{
         var queryString1 =`SELECT * FROM tbl_eventinfo 
         JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+        JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
         WHERE tbl_eventinfo.int_userID = ?`
         db.query(queryString1, [req.session.user.int_userID], (err, results, fields) => {
             if (err) console.log(err);
@@ -742,12 +749,41 @@ guestRouter.post(`/voucherdocu`, (req, res)=>{
         
         var queryString1 =`UPDATE tbl_eventinfo SET char_approvalstatus ='Cancelled',var_eventstatus ='Cancelled', date_approval= ? where int_eventinfoID = ${req.body.id}`
         db.query(queryString1,[dateNow], (err, results, fields) => {
-            console.log(queryString1)
+            console.log(results)
+            var queryString2 =`select * from tbl_eventinfo
+            where int_eventinfoID=?`
+            db.query(queryString2, [req.body.id],(err, results, fields) => {
+            console.log('=====================================')
+            console.log(results)
+            console.log('=====================================')
+            if(results[0].int_eventID == 3 || results[0].int_eventID == 5 || results[0].int_eventID == 7 ||results[0].int_eventID == 9){
+                var queryString2 =`select * from tbl_eventinfo
+                JOIN tbl_payment ON tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID
+                JOIN tbl_services ON tbl_services.int_eventID = tbl_eventinfo.int_eventID
+                JOIN tbl_utilities ON tbl_utilities.int_eventID = tbl_eventinfo.int_eventID
+                where tbl_eventinfo.int_eventinfoID=?`
+                db.query(queryString2, [req.body.id],(err, resultss, fields) => {
+                    console.log('=====================================')
+                    console.log('==================SELECTED WITH PAYMENT===================')
+                    console.log(resultss)
+                    console.log('=====================================')
+                var refundamount= ((resultss[0].dbl_amount - resultss[0].dbl_balance) *(resultss[0].int_refundpercent *0.01))
+                console.log(refundamount)
+                var queryString3 =`UPDATE tbl_payment SET 
+                dbl_refundamount =? where int_paymentID = ?`
+                db.query(queryString3,[refundamount, resultss[0].int_paymentID], (err, resultssss, fields) => {
+                    console.log('==================UPDATE AMOUNT===================')
+                    console.log(resultssss)
+                    console.log('=====================================')
+                
+                })
+                })
+            }
             var notifdesc ='A parishioner has cancelled his/her application/request. See the \"Cancelled Transactions\" to view the details.'
             var insertnotif = `insert into tbl_notification(int_userID, var_notifdesc, int_eventinfoID, datetime_received) values(?,?,?,?)`
                 db.query(insertnotif,[6, notifdesc, req.body.id, datenow], (err, results4, fields) => {
                     if(err) console.log(err)
-                    console.log(err)
+                    
                     if (err)
                     {
                         console.log(err)
@@ -759,7 +795,7 @@ guestRouter.post(`/voucherdocu`, (req, res)=>{
                         res.send({alertDesc:success})
                     }
                 })
-            
+        })
         });
     });
 
@@ -1571,8 +1607,8 @@ guestRouter.post(`/voucherdocu`, (req, res)=>{
 // F U N E R A L  B L E S S I N G
 //=============================================================
     guestRouter.get('/funeral/utilities/query', (req, res)=>{
-        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = 4`
-        db.query(queryString3,(err,results,fields)=>{
+        var queryString3 = `SELECT * FROM tbl_utilities where int_eventID = ?`
+        db.query(queryString3,[req.session.eventId],(err,results,fields)=>{
             console.log(results)
         res.send(results)
     })
@@ -1597,8 +1633,8 @@ guestRouter.post(`/voucherdocu`, (req, res)=>{
                     for(i=0;i<results3.length;i++){
                         results3[i].date_eventdate = moment(results3[i].date_eventdate).format('YYYY-MM-DD');
                     }
-                    console.log(results2)
-                    console.log(results3)
+                    // console.log(results2)
+                    // console.log(results3)
                     res.send({priestLength:results2,schedules:results3});
                 })
             })
@@ -1609,8 +1645,8 @@ guestRouter.post(`/voucherdocu`, (req, res)=>{
         on tbl_priestsequence.int_priestID
         = tbl_eventinfo.int_userpriestID WHERE tbl_eventinfo.int_userpriestID = ?
         AND tbl_eventinfo.date_eventdate = ? AND tbl_eventinfo.time_eventstart=?`
-        console.log(req.body.priestid)
-        console.log(req.body.eventdate)
+        // console.log(req.body.priestid)
+        // console.log(req.body.eventdate)
             db.query(queryString1,[req.body.priestid,req.body.eventdate,req.body.eventtime],(err,results,fields)=>{
                 var shit =0;
                 if(results != ""){
@@ -1622,19 +1658,20 @@ guestRouter.post(`/voucherdocu`, (req, res)=>{
                     shit =0;
                     res.send({shit})
                 }
-                console.log(results)
+                // console.log(results)
             })
     })
 
     guestRouter.get('/funeral/form', (req, res)=>{
         console.log(req.query.eventid)
-        res.render('guest/views/forms/funeral',{user: req.session.user,eventid:req.query.eventid})
+        res.render('guest/views/forms/funeral',{user: req.session.user,eventid:req.session.eventId})
     });
     // var requirements = upload.fields([{name:'birthCertificate',maxCount:1});
     guestRouter.post('/funeral/form',upload.single('image'),(req, res) => {
         var success =0
         var notsuccess =1
-        if (req.body.blessloc== '1'){
+        console.log(req.body)
+        if (req.body.eventid== '4'){
             
             var queryString= `select int_eventID from tbl_services where var_eventname="Funeral Service"`
             db.query(queryString, (err, results, fields) => {
@@ -1652,7 +1689,7 @@ guestRouter.post(`/voucherdocu`, (req, res)=>{
                 queries( eventID, eventinfoID.insertId);;});});
         }
 
-        if(req.body.blessloc =='2'){
+        if(req.body.eventid =='7'){
             
             var queryString5= `select int_eventID from tbl_services where var_eventname="Funeral Mass";`
             db.query(queryString5, (err, results, fields) => {

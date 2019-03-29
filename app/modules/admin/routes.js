@@ -4781,9 +4781,18 @@ adminRouter.get('/indivreport-funeralmass', (req, res)=>{
     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
     where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
     
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
     db.query(collection, (err, collectionn, fields) => {
         if (err) console.log(err);
         console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
     db.query(approved, (err, approvedd, fields) => {
         if (err) console.log(err);
         db.query(pending, (err, pendingg, fields) => {
@@ -4810,20 +4819,1527 @@ adminRouter.get('/indivreport-funeralmass', (req, res)=>{
                         for(i=0;i<messages.length;i++){ 
                             messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
                         } 
-
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
                         return res.render('admin/views/indiv/funeralmass',
                         { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
-                            appcount:appcountt[0], collection:collectionn[0],service:servicee, 
-                            totalapplication:totalapplication,
+                            appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                            totalapplication:totalapplication,collectiontotal:collectiontotal,
                             messages:messages, newmessages:newmessages
                            
                            });
 
                     })})})})
-            })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-monthlyfuneralmass', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Funeral Mass"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-weeklyfuneralmass', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" 
+    and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Funeral Mass"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-dailyfuneralmass', (req, res)=>{
+    var datenow = new Date();
+    var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+    console.log(dateNow)
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Funeral Mass" 
+    and tbl_eventinfo.date_applied =?`
+
+    var service = `select * from tbl_services where var_eventname = "Funeral Mass"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and tbl_eventinfo.date_applied =?`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Funeral Mass' and tbl_eventinfo.date_applied =?`
+    
+    db.query(collection,[dateNow], (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund,[dateNow], (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved,[dateNow], (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending,[dateNow], (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled,[dateNow], (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount,[dateNow], (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service,[dateNow], (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
 })
 
 
+adminRouter.get('/indivreport-regularbaptism', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Baptism"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        return res.render('admin/views/indiv/regularbaptism',
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                            totalapplication:totalapplication,collectiontotal:collectiontotal,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-monthlyregularbaptism', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Baptism"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-weeklyregularbaptism', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" 
+    and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Baptism"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-dailyregularbaptism', (req, res)=>{
+    var datenow = new Date();
+    var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+    console.log(dateNow)
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Baptism" 
+    and tbl_eventinfo.date_applied =?`
+
+    var service = `select * from tbl_services where var_eventname = "Baptism"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and tbl_eventinfo.date_applied =?`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Baptism' and tbl_eventinfo.date_applied =?`
+    
+    db.query(collection,[dateNow], (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund,[dateNow], (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved,[dateNow], (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending,[dateNow], (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled,[dateNow], (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount,[dateNow], (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service,[dateNow], (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+
+
+adminRouter.get('/indivreport-specialbaptism', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Special Baptism"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        return res.render('admin/views/indiv/specialbaptism',
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                            totalapplication:totalapplication,collectiontotal:collectiontotal,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-monthlyspecialbaptism', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Special Baptism"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-weeklyspecialbaptism', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" 
+    and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Special Baptism"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-dailyspecialbaptism', (req, res)=>{
+    var datenow = new Date();
+    var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+    console.log(dateNow)
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Special Baptism" 
+    and tbl_eventinfo.date_applied =?`
+
+    var service = `select * from tbl_services where var_eventname = "Special Baptism"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and tbl_eventinfo.date_applied =?`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Special Baptism' and tbl_eventinfo.date_applied =?`
+    
+    db.query(collection,[dateNow], (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund,[dateNow], (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved,[dateNow], (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending,[dateNow], (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled,[dateNow], (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount,[dateNow], (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service,[dateNow], (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+
+adminRouter.get('/indivreport-marriage', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Marriage"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        return res.render('admin/views/indiv/marriage',
+                        { approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                            appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                            totalapplication:totalapplication,collectiontotal:collectiontotal,
+                            messages:messages, newmessages:newmessages
+                           
+                           });
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-monthlymarriage', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" 
+    and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Marriage"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and MONTH(tbl_eventinfo.date_applied) = MONTH(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-weeklymarriage', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP) and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" 
+    and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+
+    var service = `select * from tbl_services where var_eventname = "Marriage"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and WEEK(tbl_eventinfo.date_applied) = WEEK(CURRENT_TIMESTAMP)`
+    
+    db.query(collection, (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund, (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved, (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending, (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled, (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount, (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service, (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+adminRouter.post('/indivreport-dailymarriage', (req, res)=>{
+    var datenow = new Date();
+    var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+    console.log(dateNow)
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+     
+    var approved =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Approved'`
+
+    var pending =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Pending'`
+
+    var cancelled =`SELECT count(int_eventinfoID) as count from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" and 
+    tbl_eventinfo.date_applied =? and
+    tbl_eventinfo.char_approvalstatus= 'Cancelled'`
+
+    var appcount =`SELECT count(int_eventinfoID) as appcount from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    where tbl_services.var_eventname = "Marriage" 
+    and tbl_eventinfo.date_applied =?`
+
+    var service = `select * from tbl_services where var_eventname = "Marriage"`
+    var collection =`SELECT sum(dbl_paymentamount) as collection from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and tbl_eventinfo.date_applied =?`
+    
+    var refund =`SELECT sum(dbl_refundedamount) as refund from tbl_eventinfo 
+    join tbl_services on tbl_services.int_eventID = tbl_eventinfo.int_eventID 
+    join tbl_payment on tbl_payment.int_paymentID = tbl_eventinfo.int_paymentID 
+    join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_paymenthistory.int_paymentID 
+    where tbl_services.var_eventname = 'Marriage' and tbl_eventinfo.date_applied =?`
+    
+    db.query(collection,[dateNow], (err, collectionn, fields) => {
+        if (err) console.log(err);
+        console.log(collectionn)
+        db.query(refund,[dateNow], (err, refundd, fields) => {
+            if (err) console.log(err);
+            console.log(refundd)
+    db.query(approved,[dateNow], (err, approvedd, fields) => {
+        if (err) console.log(err);
+        db.query(pending,[dateNow], (err, pendingg, fields) => {
+            if (err) console.log(err);
+            db.query(cancelled,[dateNow], (err, cancelledd, fields) => {
+                if (err) console.log(err);
+        db.query(appcount,[dateNow], (err, appcountt, fields) => {
+            if (err) console.log(err);
+            db.query(service,[dateNow], (err, servicee, fields) => {
+                if (err) console.log(err);
+                // console.log(servicee
+                console.log(approvedd[0].count)
+                console.log(cancelledd[0].count)
+                console.log(pendingg[0].count)
+                var totalapplication =  parseInt(approvedd[0].count)+parseInt(cancelledd[0].count)+parseInt(pendingg[0].count)
+                console.log(totalapplication)
+                db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+                    if (err) console.log(err);
+                    var newmessages = results[0];
+                    console.log(newmessages)
+                    db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+                        if (err) console.log(err);
+                        var messages = results;
+                        for(i=0;i<messages.length;i++){ 
+                            messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+                        } 
+                        var collectiontotal = collectionn[0].collection - refundd[0].refund
+                        console.log(collectiontotal)
+                        res.send({ approved:approvedd[0],  pending:pendingg[0],  cancelled:cancelledd[0], 
+                                appcount:appcountt[0], collection:collectionn[0], refund:refundd[0],service:servicee, 
+                                totalapplication:totalapplication,collectiontotal:collectiontotal,
+                                messages:messages, newmessages:newmessages
+                               
+                               });
+                        
+
+                    })})})})
+            })})})})})
+})
+
+
+adminRouter.get('/indivreport-docurequest', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+    
+    var docureqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+    join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+    where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docurequested) = MONTH(CURRENT_TIMESTAMP)`
+
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqreqcount =`SELECT count(int_requestID) as docureqreqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docureleased) = MONTH(CURRENT_TIMESTAMP)`
+    
+     // LAHAT NG collection ngayong buwan
+     var docureqcollection =`SELECT sum(dbl_paymentamount) as docureqcollection from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docureleased) = MONTH(CURRENT_TIMESTAMP)`
+ 
+    
+     db.query(docureqcount, (err, docureqcountt, fields) => {
+        if (err) console.log(err);
+        db.query(docureqreqcount, (err, docureqreqcountt, fields) => {
+        if (err) console.log(err);
+        db.query(docureqcollection, (err, docureqcollectionn, fields) => {
+        if (err) console.log(err);
+        
+                
+    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+        if (err) console.log(err);
+        var newmessages = results[0];
+        console.log(newmessages)
+        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var messages = results;
+            for(i=0;i<messages.length;i++){ 
+                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+            } 
+           
+            
+            return res.render('admin/views/indiv/docureq',
+            { 
+                docureqcount:docureqcountt[0],
+                docureqreqcount:docureqreqcountt[0],
+                docureqcollection:docureqcollectionn[0],
+                messages:messages, newmessages:newmessages
+                
+                });
+
+        })})})})})
+          
+})
+
+adminRouter.post('/indivreport-monthlydocureq', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+    
+    var docureqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+    join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+    where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docurequested) = MONTH(CURRENT_TIMESTAMP)`
+
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqreqcount =`SELECT count(int_requestID) as docureqreqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docureleased) = MONTH(CURRENT_TIMESTAMP)`
+    
+     // LAHAT NG collection ngayong buwan
+     var docureqcollection =`SELECT sum(dbl_paymentamount) as docureqcollection from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and MONTH(tbl_documentrequest.date_docureleased) = MONTH(CURRENT_TIMESTAMP)`
+ 
+    
+     db.query(docureqcount, (err, docureqcountt, fields) => {
+        if (err) console.log(err);
+        db.query(docureqreqcount, (err, docureqreqcountt, fields) => {
+        if (err) console.log(err);
+        db.query(docureqcollection, (err, docureqcollectionn, fields) => {
+        if (err) console.log(err);
+        
+                
+    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+        if (err) console.log(err);
+        var newmessages = results[0];
+        console.log(newmessages)
+        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var messages = results;
+            for(i=0;i<messages.length;i++){ 
+                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+            } 
+           
+            
+            res.send({ 
+                docureqcount:docureqcountt[0],
+                docureqreqcount:docureqreqcountt[0],
+                docureqcollection:docureqcollectionn[0],
+                messages:messages, newmessages:newmessages
+                
+                });
+
+        })})})})})
+          
+})
+adminRouter.post('/indivreport-weeklydocureq', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+    
+    // LAHAT NG REQUEST NGAYONG BUWAN
+    var docureqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+    join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+    where tbl_serviceutilities.var_servicename = 'Document Request' and WEEK(tbl_documentrequest.date_docurequested) = WEEK(CURRENT_TIMESTAMP)`
+
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqreqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and WEEK(tbl_documentrequest.date_docureleased) = WEEK(CURRENT_TIMESTAMP)`
+    
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqcollection =`SELECT sum(dbl_paymentamount) as docureqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and WEEK(tbl_documentrequest.date_docureleased) = WEEK(CURRENT_TIMESTAMP)`
+ 
+    
+     db.query(docureqcount, (err, docureqcountt, fields) => {
+        if (err) console.log(err);
+        db.query(docureqreqcount, (err, docureqreqcountt, fields) => {
+        if (err) console.log(err);
+        db.query(docureqcollection, (err, docureqcollectionn, fields) => {
+        if (err) console.log(err);
+        
+                
+    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+        if (err) console.log(err);
+        var newmessages = results[0];
+        console.log(newmessages)
+        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var messages = results;
+            for(i=0;i<messages.length;i++){ 
+                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+            } 
+           
+            
+            res.send({ 
+                docureqcount:docureqcountt[0],
+                docureqreqcount:docureqreqcountt[0],
+                docureqcollection:docureqcollectionn[0],
+                messages:messages, newmessages:newmessages
+                
+                });
+
+        })})})})})
+          
+})
+adminRouter.post('/indivreport-dailydocureq', (req, res)=>{
+    var message =`SELECT * from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? limit 4`
+    var newmessage =`SELECT count(int_messageID) as newmessage from tbl_message join tbl_user on tbl_user.int_userID = tbl_message.int_senderID where int_receiverID= ? and var_messagestatus = 'Delivered'`
+    var datenow = new Date();
+    var dateNow = moment(datenow,'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+    console.log(dateNow)
+    // LAHAT NG REQUEST NGAYONG BUWAN
+    var docureqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+    join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+    where tbl_serviceutilities.var_servicename = 'Document Request' and tbl_documentrequest.date_docurequested=?`
+
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqreqcount =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and tbl_documentrequest.date_docureleased=?`
+    
+     // LAHAT NG NARELEASE NGAYONG BUWAN
+     var docureqcollection =`SELECT count(int_requestID) as docureqcount from tbl_documentrequest 
+     join tbl_serviceutilities on tbl_serviceutilities.int_serviceutilitiesID = tbl_documentrequest.int_serviceutilitiesID 
+     join tbl_payment on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     join tbl_paymenthistory on tbl_payment.int_paymentID = tbl_documentrequest.int_paymentID 
+     where tbl_serviceutilities.var_servicename = 'Document Request' and tbl_documentrequest.date_docureleased=?`
+ 
+    
+     db.query(docureqcount,[dateNow], (err, docureqcountt, fields) => {
+        if (err) console.log(err);
+        db.query(docureqreqcount,[dateNow], (err, docureqreqcountt, fields) => {
+        if (err) console.log(err);
+        db.query(docureqcollection, [dateNow],(err, docureqcollectionn, fields) => {
+        if (err) console.log(err);
+        
+                
+    db.query(newmessage, [req.session.admin.int_userID],(err, results, fields) => {
+        if (err) console.log(err);
+        var newmessages = results[0];
+        console.log(newmessages)
+        db.query(message, [req.session.admin.int_userID],(err, results, fields) => {
+            if (err) console.log(err);
+            var messages = results;
+            for(i=0;i<messages.length;i++){ 
+                messages[i].datetime_sent=moment(messages[i].datetime_sent).format('MM/DD/YYYY hh:mm A')
+            } 
+            
+            
+            res.send({ 
+                docureqcount:docureqcountt[0],
+                docureqreqcount:docureqreqcountt[0],
+                docureqcollection:docureqcollectionn[0],
+                messages:messages, newmessages:newmessages
+                
+                });
+
+        })})})})})
+          
+})
 //===========================================================================================================
 //all reports
 adminRouter.get('/reports-allreports', (req, res)=>{

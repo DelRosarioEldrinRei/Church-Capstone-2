@@ -99,6 +99,17 @@ block prepend main
 							.gallery#reqAppend
 					.modal-footer
 						button.btn.btn-outline.btn-secondary.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+	#updatepaymentModal.modal.fade(tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+			.modal-dialog.modal-lg(role="document")
+				.modal-content
+					.modal-header(style='background:#367587')
+						h5.modal-title(style='color:white') Payment Status
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true' style='color:white') ×
+					.modal-body#updatepaymentAppend
+					.modal-footer
+						button.btn.btn-outline.btn-secondary.pull-left#cancellButton(type='button', data-dismiss='modal') Close
+						button.btn#updatePayment(type="button" style='background:#367587; color:white') Update Payment	
 	
 block addjs
 	script.
@@ -159,9 +170,25 @@ block addjs
 							<h6 class="label-control"> Desired Time:</h6>
 							<input type="text" class="form-control" value="${timeRequested}" disabled> 
 						</div>
+						<div class="col-md-12">
+							<div class="text-center" id="refund" class="form-group">
+								
+							</div>
+						</div>
+						
 					</div>
 					
 					`)
+
+					if(data.results.int_eventID =='3' ||data.results.int_eventID =='5' ||
+					data.results.int_eventID =='7' ||data.results.int_eventID =='9'){
+						if(data.results.bool_refunded ==1){
+
+						$('#refund').append(`
+							<button id="refundslip" type="button" class="btn btn-common" value = ${idNow}>Print Refund Slip</button>
+						`)
+						}
+					}
 					console.log(data.requirements)
 					
 					$('#viewModal').modal('show')
@@ -172,6 +199,32 @@ block addjs
 
 				})
 			})
-			//requirements
+			
 			
 		})
+		$(document).on('click','#refundslip',function(){
+					var idNow = $(this).val()
+					console.log(idNow)
+					swal({
+						title:'Are you sure?', 
+						text:'You will not be able to revert this.', 
+						type:'warning',
+						showCancelButton: false,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Confirm'
+						}).then((result)=>{
+							if(result.value){
+								$.post('/secretariat/transaction-cancel/query',{id:idNow}).done(data=>{
+									console.log(data)
+									swal({
+										title:'Success',
+										text:'Refunded!', 
+										type:'success'
+									}).then(function(){
+										location.reload()
+									})
+								})
+							}
+						})
+						})
