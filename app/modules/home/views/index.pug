@@ -288,7 +288,6 @@ block prepend main
 									.form-group
 										.invalid-feedback Please re-enter your valid contact number.
 										h5.label-control  Email Address
-											.text-danger.d-inline *
 										input.form-control#tempemailaddress(type='text' placeholder="Ex. Juan" name='firstname')
 										p
 											span.emsginvalidemail.hidden
@@ -695,8 +694,7 @@ block addjs
 											!$('#templastname').val().match($regexvalidation1) ||
 											!$('#tempfirstname').val().match($regexvalidation1) ||
 											!$('#tempaddress').val().match($addressvalidation) ||
-											!$('#tempcontactnumber').val().match($contactnumber) ||
-											!$('#tempemailaddress').val().match($email)
+											!$('#tempcontactnumber').val().match($contactnumber)
 										){
 											swal({
 												title: "Form is not complete/valid yet",
@@ -774,8 +772,7 @@ block addjs
 											!$('#templastname').val().match($regexvalidation1) ||
 											!$('#tempfirstname').val().match($regexvalidation1) ||
 											!$('#tempaddress').val().match($addressvalidation) ||
-											!$('#tempcontactnumber').val().match($contactnumber) ||
-											!$('#tempemailaddress').val().match($email)
+											!$('#tempcontactnumber').val().match($contactnumber)
 										){
 											swal({
 												title: "Form is not complete/valid yet",
@@ -851,8 +848,7 @@ block addjs
 											!$('#templastname').val().match($regexvalidation1) ||
 											!$('#tempfirstname').val().match($regexvalidation1) ||
 											!$('#tempaddress').val().match($addressvalidation) ||
-											!$('#tempcontactnumber').val().match($contactnumber) ||
-											!$('#tempemailaddress').val().match($email)
+											!$('#tempcontactnumber').val().match($contactnumber)
 										){
 											swal({
 												title: "Form is not complete/valid yet",
@@ -926,8 +922,7 @@ block addjs
 											!$('#templastname').val().match($regexvalidation1) ||
 											!$('#tempfirstname').val().match($regexvalidation1) ||
 											!$('#tempaddress').val().match($addressvalidation) ||
-											!$('#tempcontactnumber').val().match($contactnumber) ||
-											!$('#tempemailaddress').val().match($email)
+											!$('#tempcontactnumber').val().match($contactnumber)
 										){
 											swal({
 												title: "Form is not complete/valid yet",
@@ -1284,8 +1279,7 @@ block addjs
 																					!$('#templastname').val().match($regexvalidation1) ||
 																					!$('#tempfirstname').val().match($regexvalidation1) ||
 																					!$('#tempaddress').val().match($addressvalidation) ||
-																					!$('#tempcontactnumber').val().match($contactnumber) ||
-																					!$('#tempemailaddress').val().match($email)
+																					!$('#tempcontactnumber').val().match($contactnumber)
 																				){
 																					swal({
 																						title: "Form is not complete/valid yet",
@@ -1406,23 +1400,6 @@ block addjs
 				$('.emsginvalidcontact').addClass('hidden');
 				$('.emsgcorrectcontact').removeClass('hidden');
 				$('.emsgcorrectcontact').show();
-			}
-			e.stopPropagation();
-		});
-
-		var $email = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-		$('#tempemailaddress').on('keypress keydown keyup focus focusout',function(e){
-			if (!$(this).val().match($email)) {
-				// there is a mismatch, hence show the error message
-					$('.emsgcorrectemail').addClass('hidden');
-					$('.emsginvalidemail').removeClass('hidden');
-					$('.emsginvalidemail').show();
-				}
-			else{
-				// else, do not display message
-				$('.emsginvalidemail').addClass('hidden');
-				$('.emsgcorrectemail').removeClass('hidden');
-				$('.emsgcorrectemail').show();
 			}
 			e.stopPropagation();
 		});

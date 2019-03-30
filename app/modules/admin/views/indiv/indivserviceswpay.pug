@@ -32,40 +32,49 @@ block prepend main
 												tbody#tablebody
 													
 													tr
-														td APPLICATIONS
+														td 
+															b APPLICATIONS
 														td
 													tr
-														td Total of approved applications
+														td 
+															b Total of approved applications
 														td=approved.count
 													tr
-														td Total of pending applications
+														td 
+															b Total of pending applications
 														td=pending.count
 													tr
-														td Total of cancelled applications
+														td 
+															b Total of cancelled applications
 														td=cancelled.count
 													tr
-														td TOTAL
+														td 
+															b TOTAL
 														td=totalapplication
 													tr
 														td
 														td
 													tr
-														td COLLECTIONS
+														td 
+															b COLLECTIONS
 														td
 													tr
-														td Collected
+														td 
+															b Collected
 														-if(collection !=null)
 															td=collection.collection
 														-else
 															td 0
 													tr
-														td Refunded
+														td 
+															b Refunded
 														-if(collection !=null)
 															td=collection.collection
 														-else
 															td 0
 													tr
-														td TOTAL
+														td 
+															b TOTAL
 														-if(collection !=null)
 															td=collection.collection
 														-else
@@ -105,7 +114,7 @@ block addjs
 
 				$('#tablebody').append(`
 					<tr>
-						<td>${data.service.var_eventname}</td>
+						<td class="font-weight-bold">${data.service.var_eventname}</td>
 						<td>${data.count.count}</td>
 						<td>${data.appcount.appcount}</td>
 						<td>0</td>
@@ -132,7 +141,7 @@ block addjs
 
 				$('#tablebody').append(`
 				<tr>
-					<td>${data.service.var_eventname}</td>
+					<td class="font-weight-bold">${data.service.var_eventname}</td>
 					<td>${data.count.count}</td>
 					<td>${data.appcount.appcount}</td>
 					<td>0</td>
@@ -157,7 +166,7 @@ block addjs
 
 				$('#tablebody').append(`
 				<tr>
-					<td>${data.service.var_eventname}</td>
+					<td class="font-weight-bold">${data.service.var_eventname}</td>
 					<td>${data.count.count}</td>
 					<td>${data.appcount.appcount}</td>
 					<td>0</td>

@@ -35,16 +35,19 @@ block prepend main
 												
 													tr
 														td(style='width: 5px')
-														td(style='width: 50px') COLLECTIONS
+														td(style='width: 50px') 
+															b COLLECTIONS
 														td
 													tr
 														td(style='width: 5px')
-														td Total of new requests
+														td 
+															b Total of new requests
 														td=docureqcount.docureqcount
 													
 													tr
 														td(style='width: 5px')
-														td Total of document released
+														td 
+															b Total of document released
 														
 															-if(docureqreqcount.docureqreqcount !=null)
 																td=docureqreqcount.docureqreqcount
@@ -52,7 +55,8 @@ block prepend main
 																td 0
 													tr
 														td(style='width: 5px')
-														td Total of collection
+														td 
+															b Total of collection
 															-if(docureqcollection.docureqcollection !=null)
 																td=docureqcollection.docureqcollection
 															-else

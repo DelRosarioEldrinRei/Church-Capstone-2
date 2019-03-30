@@ -34,23 +34,28 @@ block prepend main
 													
 													tr
 														td(style='width: 5px')
-														td(style='width: 50px') APPLICATIONS
+														td(style='width: 50px') 
+															b APPLICATIONS
 														td
 													tr
 														td(style='width: 5px')
-														td(style='width: 50px') Total of approved applications
+														td(style='width: 50px') 
+															b Total of approved applications
 														td=approved.count
 													tr
 														td(style='width: 5px')
-														td(style='width: 50px') Total of pending applications
+														td(style='width: 50px') 
+															b Total of pending applications
 														td=pending.count
 													tr
 														td(style='width: 5px')
-														td(style='width: 50px') Total of cancelled applications
+														td(style='width: 50px') 
+															b Total of cancelled applications
 														td=cancelled.count
 													tr
 														td(style='width: 5px')
-														td(style='width: 50px') TOTAL APPLICATIONS
+														td(style='width: 50px') 
+															b TOTAL APPLICATIONS
 														td=totalapplication
 													tr
 														td(style='width: 5px')
@@ -58,11 +63,13 @@ block prepend main
 														td
 													tr
 														td(style='width: 5px')
-														td(style='width: 50px') COLLECTIONS
+														td(style='width: 50px') 
+															b COLLECTIONS
 														td
 													tr
 														td(style='width: 5px')
-														td(style='width: 50px') Collected
+														td(style='width: 50px') 
+															b Collected
 														-if(collection !=null)
 															td=collection.collection
 														-else
@@ -70,14 +77,16 @@ block prepend main
 															
 													tr
 														td(style='width: 5px')
-														td(style='width: 50px') Refunded
+														td(style='width: 50px') 
+															b Refunded
 														-if(refund !=null)
 															td=refund.refund
 														-else
 															td 0
 													tr
 														td(style='width: 5px')
-														td(style='width: 25px') TOTAL COLLECTION
+														td(style='width: 25px') 
+															b TOTAL COLLECTION
 														-if(collectiontotal !=null)
 															td=collectiontotal
 														-else
@@ -111,27 +120,27 @@ block addjs
 				$('#tablebody').append(`
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">APPLICATIONS</td>
+						<td class="font-weight-bold" style="width: 50px;">APPLICATIONS</td>
 						<td></td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Total of approved applications</td>
+						<td class="font-weight-bold" style="width: 50px;">Total of approved applications</td>
 						<td>${data.approved.count}</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Total of pending applications</td>
+						<td class="font-weight-bold" style="width: 50px;">Total of pending applications</td>
 						<td>${data.pending.count}</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Total of cancelled applications</td>
+						<td class="font-weight-bold" style="width: 50px;">Total of cancelled applications</td>
 						<td>${data.cancelled.count}</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">TOTAL APPLICATIONS</td>
+						<td class="font-weight-bold" style="width: 50px;">TOTAL APPLICATIONS</td>
 						<td>${data.totalapplication}</td>
 					</tr>
 					<tr>
@@ -141,22 +150,22 @@ block addjs
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">COLLECTIONS</td>
+						<td class="font-weight-bold" style="width: 50px;">COLLECTIONS</td>
 						<td></td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Collected</td>
+						<td class="font-weight-bold" style="width: 50px;">Collected</td>
 						<td>0</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Refunded</td>
+						<td class="font-weight-bold" style="width: 50px;">Refunded</td>
 						<td>0</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 25px;">TOTAL COLLECTION</td>
+						<td class="font-weight-bold" style="width: 25px;">TOTAL COLLECTION</td>
 						<td>0</td>
 					</tr>
 				`)	
@@ -171,27 +180,27 @@ block addjs
 				$('#tablebody').append(`
 				<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">APPLICATIONS</td>
+						<td class="font-weight-bold" style="width: 50px;">APPLICATIONS</td>
 						<td></td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Total of approved applications</td>
+						<td class="font-weight-bold" style="width: 50px;">Total of approved applications</td>
 						<td>${data.approved.count}</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Total of pending applications</td>
+						<td class="font-weight-bold" style="width: 50px;">Total of pending applications</td>
 						<td>${data.pending.count}</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Total of cancelled applications</td>
+						<td class="font-weight-bold" style="width: 50px;">Total of cancelled applications</td>
 						<td>${data.cancelled.count}</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">TOTAL APPLICATIONS</td>
+						<td class="font-weight-bold" style="width: 50px;">TOTAL APPLICATIONS</td>
 						<td>${data.totalapplication}</td>
 					</tr>
 					<tr>
@@ -201,22 +210,22 @@ block addjs
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">COLLECTIONS</td>
+						<td class="font-weight-bold" style="width: 50px;">COLLECTIONS</td>
 						<td></td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Collected</td>
+						<td class="font-weight-bold" style="width: 50px;">Collected</td>
 						<td>0</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Refunded</td>
+						<td class="font-weight-bold" style="width: 50px;">Refunded</td>
 						<td>0</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 25px;">TOTAL COLLECTION</td>
+						<td class="font-weight-bold" style="width: 25px;">TOTAL COLLECTION</td>
 						<td>0</td>
 					</tr>
 				
@@ -234,52 +243,52 @@ block addjs
 				$('#tablebody').append(`
 				<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">APPLICATIONS</td>
+						<td class="font-weight-bold" style="width: 50px;">APPLICATIONS</td>
 						<td></td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Total of approved applications</td>
+						<td class="font-weight-bold" style="width: 50px;">Total of approved applications</td>
 						<td>${data.approved.count}</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Total of pending applications</td>
+						<td class="font-weight-bold" style="width: 50px;">Total of pending applications</td>
 						<td>${data.pending.count}</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Total of cancelled applications</td>
+						<td class="font-weight-bold" style="width: 50px;">Total of cancelled applications</td>
 						<td>${data.cancelled.count}</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">TOTAL APPLICATIONS</td>
+						<td class="font-weight-bold" style="width: 50px;">TOTAL APPLICATIONS</td>
 						<td>${data.totalapplication}</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;"></td>
+						<td class="font-weight-bold" style="width: 50px;"></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">COLLECTIONS</td>
+						<td class="font-weight-bold" style="width: 50px;">COLLECTIONS</td>
 						<td></td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Collected</td>
+						<td class="font-weight-bold" style="width: 50px;">Collected</td>
 						<td>0</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 50px;">Refunded</td>
+						<td class="font-weight-bold" style="width: 50px;">Refunded</td>
 						<td>0</td>
 					</tr>
 					<tr>
 						<td style="width: 5px;"></td>
-						<td style="width: 25px;">TOTAL COLLECTION</td>
+						<td class="font-weight-bold" style="width: 25px;">TOTAL COLLECTION</td>
 						<td>0</td>
 					</tr>
 				`)	
